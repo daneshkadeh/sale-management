@@ -1,0 +1,181 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.hbsoft</groupId>
+  <artifactId>ssm</artifactId>
+  <packaging>pom</packaging>
+  <version>${ssm.version}</version>
+  <name>SuperSalesManagememt (Root)</name>
+  
+  <repositories>
+    <repository>
+      <id>JBoss repository</id>
+      <url>http://repository.jboss.com/maven2/</url>
+    </repository>
+  </repositories>
+  
+  <build>
+    <plugins>
+	   <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<configuration>
+		 <source>1.5</source>
+		 <target>1.5</target>
+		</configuration>
+	   </plugin>
+	</plugins>
+  
+  </build>
+  
+   <modules>
+      <module>ssm-core</module>
+      <module>ssm-gui</module>
+   </modules>
+   
+   <properties>
+	<ssm.version>1.0-SNAPSHOT</ssm.version>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<spring.version>2.5.6</spring.version>
+	<cglib.version>2.2</cglib.version>
+	
+	<mysql.version>5.1.9</mysql.version>
+	<persistence-api.version>1.0</persistence-api.version>
+	<hibernate.version>3.3.2.GA</hibernate.version>
+	<hibernate-annotations.version>3.4.0.GA</hibernate-annotations.version>
+	<hibernate-commons-annotations.version>3.1.0.GA</hibernate-commons-annotations.version>
+	<hibernate-entitymanager.version>3.4.0.ga</hibernate-entitymanager.version>
+	<javassist.version>3.11.0.GA</javassist.version>
+	<log4j.version>1.2.14</log4j.version>
+	<slf4j-log4j12.version>1.5.2</slf4j-log4j12.version>
+	<dom4j.version>1.6.1</dom4j.version>
+	<commons-logging.version>1.1.1</commons-logging.version>
+	<commons-collections.version>3.2.1</commons-collections.version>
+	<antlr.version>2.7.7</antlr.version>
+	
+	<swingx.version>1.6.1</swingx.version>
+	<miglayout.version>3.7.3.1</miglayout.version>
+   </properties>   
+   
+	<dependencyManagement>
+  <dependencies>
+	<dependency>
+		<groupId>com.hbsoft</groupId>
+		<artifactId>ssm-core</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.hbsoft</groupId>
+		<artifactId>ssm-gui</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+    <!-- JUnit testing framework -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- Spring framework -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring</artifactId>
+		<version>${spring.version}</version>
+	</dependency>
+    
+    <!-- Spring AOP dependency -->
+    <dependency>
+    	<groupId>cglib</groupId>
+		<artifactId>cglib</artifactId>
+		<version>${cglib.version}</version>
+	</dependency>
+    
+     <!-- MySQL database driver -->
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>${mysql.version}</version>
+	</dependency>
+
+	<!-- Hibernate library dependecy -->
+	<dependency>  
+        <groupId>javax.persistence</groupId>  
+        <artifactId>persistence-api</artifactId>  
+        <version>${persistence-api.version}</version>  
+    </dependency> 
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-core</artifactId>
+		<version>${hibernate.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-annotations</artifactId>
+		<version>${hibernate-annotations.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-commons-annotations</artifactId>
+		<version>${hibernate-commons-annotations.version}</version>
+	</dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>${hibernate-entitymanager.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javassist</groupId>
+      <artifactId>javassist</artifactId>
+      <version>${javassist.version}</version>
+   </dependency>
+
+   <!-- log4j dependency -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>${slf4j-log4j12.version}</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>dom4j</groupId>
+		<artifactId>dom4j</artifactId>
+		<version>${dom4j.version}</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>commons-logging</groupId>
+		<artifactId>commons-logging</artifactId>
+		<version>${commons-logging.version}</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>commons-collections</groupId>
+		<artifactId>commons-collections</artifactId>
+		<version>${commons-collections.version}</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>antlr</groupId>
+		<artifactId>antlr</artifactId>
+		<version>${antlr.version}</version>
+	</dependency>
+	    <!-- SwingX: extensions for Swing components -->
+         <dependency>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>swingx</artifactId>
+            <version>${swingx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.miglayout</groupId>
+      <artifactId>miglayout</artifactId>
+      <version>${miglayout.version}</version>
+    </dependency>
+  </dependencies>
+  </dependencyManagement>
+</project>

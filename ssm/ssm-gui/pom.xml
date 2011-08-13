@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+	<parent>
+		<groupId>com.hbsoft</groupId>
+		<artifactId>ssm</artifactId>
+		<version>${ssm.version}</version>
+	</parent>
+
+	<artifactId>ssm-gui</artifactId>
+	<version>${ssm.version}</version>
+	<packaging>jar</packaging>
+	<name>SuperSalesManagement GUI module</name>
+	<description>
+		Module gui of super sales management.
+	</description>
+ 
+  <dependencies>
+	<dependency>
+		<groupId>com.hbsoft</groupId>
+		<artifactId>ssm-core</artifactId>
+	</dependency>
+	<dependency>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>swingx</artifactId>
+    </dependency>
+  </dependencies>
+</project>
