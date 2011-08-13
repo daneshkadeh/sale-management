@@ -28,4 +28,8 @@ public class GoodsDaoImpl extends CustomHibernateDaoSupport implements GoodsDao 
 		return (Goods)list.get(0);
 	}
 
+	public List<Goods> findAll() {
+		return (List<Goods>) getHibernateTemplate().find("from Goods");
+	}
+
 }

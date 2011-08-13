@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_invoice")
@@ -36,6 +37,7 @@ public class Invoice {
 	}
 
 	@Column(name = "created_date", nullable = false)
+	@NotNull
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -45,6 +47,7 @@ public class Invoice {
 	}
 
 	@Column(name = "customer_id", nullable = false)
+	@NotNull
 	public Integer getCustomerId() {
 		return customerId;
 	}
@@ -54,6 +57,7 @@ public class Invoice {
 	}
 
 	@Column(name = "total_before_tax", nullable = false)
+	@NotNull
 	public Double getTotalBeforeTax() {
 		return totalBeforeTax;
 	}
@@ -63,6 +67,7 @@ public class Invoice {
 	}
 
 	@Column(name = "tax_total", nullable = false)
+	@NotNull
 	public Double getTaxTotal() {
 		return taxTotal;
 	}
@@ -72,6 +77,7 @@ public class Invoice {
 	}
 
 	@Column(name = "total_after_tax", nullable = false)
+	@NotNull
 	public Double getTotalAfterTax() {
 		return totalAfterTax;
 	}

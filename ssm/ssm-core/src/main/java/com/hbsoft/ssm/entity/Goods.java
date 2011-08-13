@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_goods")
@@ -35,6 +36,7 @@ public class Goods {
 	}
 	
     @Column(name = "name", nullable = false)
+    @NotNull
 	public String getName() {
 		return name;
 	}
@@ -44,6 +46,7 @@ public class Goods {
 	}
 
 	@Column(name = "priceBeforeTax", nullable = false)
+	@NotNull
 	public Double getPriceBeforeTax() {
 		return priceBeforeTax;
 	}
@@ -53,6 +56,7 @@ public class Goods {
 	}
 
 	@Column(name = "tax", nullable = false)
+	@NotNull
 	public Double getTax() {
 		return tax;
 	}
@@ -62,6 +66,7 @@ public class Goods {
 	}
 
 	@Column(name = "price_after_tax", nullable = false)
+	@NotNull
 	public Double getPriceAfterTax() {
 		return priceAfterTax;
 	}
@@ -71,6 +76,7 @@ public class Goods {
 	}
 
 	@Column(name = "addQuan", nullable = false)
+	@NotNull
 	public Integer getAddQuantity() {
 		return addQuantity;
 	}
@@ -80,6 +86,7 @@ public class Goods {
 	}
 
 	@Column(name = "curQuan", nullable = false)
+	@NotNull
 	public Integer getCurQuantity() {
 		return curQuantity;
 	}

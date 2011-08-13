@@ -2,11 +2,6 @@ package com.hbsoft.ssm.view;
 
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-
 import com.hbsoft.ssm.entity.Goods;
 import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.view.object.DetailDataModel;

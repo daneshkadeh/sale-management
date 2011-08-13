@@ -7,19 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-
-//id 	int(11) 			No 	None 	auto_increment 	Browse distinct values 	Change 	Drop 	Primary 	Unique 	Index 	Fulltext
-//goods_id 	int(11) 			No 	None 		Browse distinct values 	Change 	Drop 	Primary 	Unique 	Index 	Fulltext
-//goods_name 	varchar(250) 	latin1_swedish_ci 		No 	None 		Browse distinct values 	Change 	Drop 	Primary 	Unique 	Index 	Fulltext
-//quantity 	int(11) 			No 	0 		Browse distinct values 	Change 	Drop 	Primary 	Unique 	Index 	Fulltext
-//price_before_tax 	float 			No 	0 		Browse distinct values 	Change 	Drop 	Primary 	Unique 	Index 	Fulltext
-//tax 	float 			No 	0 		Browse distinct values 	Change 	Drop 	Primary 	Unique 	Index 	Fulltext
-//price_after_tax 	float 			No 	0 		Browse distinct values 	Change 	Drop 	Primary 	Unique 	Index 	Fulltext
-//money_before_tax 	float 			No 	0 		Browse distinct values 	Change 	Drop 	Primary 	Unique 	Index 	Fulltext
-//money_of_tax 	float 			No 	0 		Browse distinct values 	Change 	Drop 	Primary 	Unique 	Index 	Fulltext
-//money_after_tax 	float 			No 	0 		Browse distinct values 	Change 	Drop 	Primary 	Unique 	Index 	Fulltext
-//invoice_id 	int(11) 			No 	0
 @Entity
 @Table(name = "tbl_detail_invoice")
 public class DetailInvoice {
@@ -51,6 +40,7 @@ public class DetailInvoice {
 	}
 
 	@Column(name = "goods_id", nullable = false)
+	@NotNull
 	public Integer getGoodsId() {
 		return goodsId;
 	}
@@ -60,6 +50,7 @@ public class DetailInvoice {
 	}
 
 	@Column(name = "goods_name", nullable = false)
+	@NotNull
 	public String getGoodsName() {
 		return goodsName;
 	}
@@ -69,6 +60,7 @@ public class DetailInvoice {
 	}
 
 	@Column(name = "quantity", nullable = false)
+	@NotNull
 	public Integer getQuantity() {
 		return quantity;
 	}
@@ -78,6 +70,7 @@ public class DetailInvoice {
 	}
 
 	@Column(name = "price_before_tax", nullable = false)
+	@NotNull
 	public Double getPriceBeforeTax() {
 		return priceBeforeTax;
 	}
@@ -87,6 +80,7 @@ public class DetailInvoice {
 	}
 
 	@Column(name = "tax", nullable = false)
+	@NotNull
 	public Double getTax() {
 		return tax;
 	}
@@ -96,6 +90,7 @@ public class DetailInvoice {
 	}
 
 	@Column(name = "price_after_tax", nullable = false)
+	@NotNull
 	public Double getPriceAfterTax() {
 		return priceAfterTax;
 	}
@@ -105,6 +100,7 @@ public class DetailInvoice {
 	}
 
 	@Column(name = "money_before_tax", nullable = false)
+	@NotNull
 	public Double getMoneyBeforeTax() {
 		return moneyBeforeTax;
 	}
@@ -114,6 +110,7 @@ public class DetailInvoice {
 	}
 
 	@Column(name = "money_of_tax", nullable = false)
+	@NotNull
 	public Double getMoneyOfTax() {
 		return moneyOfTax;
 	}
@@ -123,6 +120,7 @@ public class DetailInvoice {
 	}
 
 	@Column(name = "money_after_tax", nullable = false)
+	@NotNull
 	public Double getMoneyAfterTax() {
 		return moneyAfterTax;
 	}
@@ -132,6 +130,7 @@ public class DetailInvoice {
 	}
 
 	@Column(name = "invoice_id", nullable = false)
+	@NotNull
 	public Integer getInvoiceId() {
 		return invoiceId;
 	}
