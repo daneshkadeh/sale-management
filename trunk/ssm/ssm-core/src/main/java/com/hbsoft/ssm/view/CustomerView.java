@@ -290,7 +290,7 @@ public class CustomerView extends JFrame {
 
 	}
 
-	private class RowListener implements ListSelectionListener {
+	protected class RowListener implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent event) {
 			if (event.getValueIsAdjusting()) {
 				return;

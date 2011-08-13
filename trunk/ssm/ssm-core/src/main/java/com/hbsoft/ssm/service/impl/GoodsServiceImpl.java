@@ -1,5 +1,7 @@
 package com.hbsoft.ssm.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,10 @@ public class GoodsServiceImpl implements GoodsService {
 
 	public Goods findById(Integer id) {
 		return goodsDao.findById(id);
+	}
+
+	public List<Goods> findAll() {
+		return goodsDao.findAll();
 	}
 
 }
