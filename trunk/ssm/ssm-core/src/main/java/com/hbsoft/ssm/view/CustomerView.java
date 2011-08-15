@@ -31,6 +31,7 @@ import net.miginfocom.swing.MigLayout;
 import com.hbsoft.ssm.entity.Customer;
 import com.hbsoft.ssm.service.CustomerService;
 import com.hbsoft.ssm.util.ConfigProvider;
+import com.hbsoft.ssm.util.i18n.ControlConfiguration;
 
 public class CustomerView extends JFrame {
 	private Log logger = LogFactory.getLog(CustomerView.class);
