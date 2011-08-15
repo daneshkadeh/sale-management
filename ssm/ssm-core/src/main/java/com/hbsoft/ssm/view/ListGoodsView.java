@@ -4,6 +4,7 @@ import java.util.List;
 import com.hbsoft.ssm.entity.Goods;
 import com.hbsoft.ssm.service.GoodsService;
 import com.hbsoft.ssm.util.ConfigProvider;
+import com.hbsoft.ssm.util.i18n.ControlConfiguration;
 import com.hbsoft.ssm.view.object.DetailDataModel;
 import com.hbsoft.ssm.view.object.FieldType;
 
@@ -12,13 +13,13 @@ public class ListGoodsView<Goods> extends AbstractListView<Goods> {
 	
 	@Override
 	protected void initialPresentationView(List<DetailDataModel> listDataModel) {
-		listDataModel.add(new DetailDataModel("Goods Id", "id", FieldType.TEXT_BOX, true, true));
-		listDataModel.add(new DetailDataModel("Goods name", "name", FieldType.TEXT_BOX, true, true));
-		listDataModel.add(new DetailDataModel("PriceBT", "priceBeforeTax", FieldType.TEXT_BOX, true, true));
-		listDataModel.add(new DetailDataModel("Tax", "tax", FieldType.TEXT_BOX, true, true));
-		listDataModel.add(new DetailDataModel("PriceAT", "priceAfterTax", FieldType.TEXT_BOX, true, true));
-		listDataModel.add(new DetailDataModel("AddQuan", "addQuantity", FieldType.TEXT_BOX, true, true));
-		listDataModel.add(new DetailDataModel("CurQuan", "curQuantity", FieldType.TEXT_BOX, true, true));
+		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.id"), "id", FieldType.TEXT_BOX, true, true));
+		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.name"), "name", FieldType.TEXT_BOX, true, true));
+		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.priceBeforeTax"), "priceBeforeTax", FieldType.TEXT_BOX, true, true));
+		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.tax"), "tax", FieldType.TEXT_BOX, true, true));
+		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.priceAfterTax"), "priceAfterTax", FieldType.TEXT_BOX, true, true));
+		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.addQuantity"), "addQuantity", FieldType.TEXT_BOX, true, true));
+		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.curQuantity"), "curQuantity", FieldType.TEXT_BOX, true, true));
 	}
 	
 	@Override
