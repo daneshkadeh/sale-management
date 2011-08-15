@@ -16,6 +16,7 @@ import com.hbsoft.ssm.service.DetailInvoiceService;
 import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.view.CustomerView;
 import com.hbsoft.ssm.view.EditGoodsView;
+import com.hbsoft.ssm.view.ListGoodsView;
 
 public class MainProgram {
 	public static Log s_logger = LogFactory.getLog(MainProgram.class);
@@ -67,8 +68,9 @@ public class MainProgram {
     	java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new CustomerView().setVisible(true);
+//                new CustomerView().setVisible(true);
 //            	new EditGoodsView().setVisible(true);
+            	new ListGoodsView().setVisible(true);
             }
         });
         
