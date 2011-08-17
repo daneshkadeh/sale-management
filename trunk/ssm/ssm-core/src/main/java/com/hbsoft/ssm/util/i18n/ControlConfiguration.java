@@ -37,8 +37,7 @@ public class ControlConfiguration {
 	public static void init() {
 
 		try {
-			m_properties.load(ControlConfiguration.class
-					.getResourceAsStream(CONSTANT_PROPERTY_FILE));
+			m_properties.load(ControlConfiguration.class.getResourceAsStream(CONSTANT_PROPERTY_FILE));
 		} catch (IOException e) {
 			s_log.error("Resource not found: " + CONSTANT_PROPERTY_FILE);
 		}
@@ -122,14 +121,13 @@ public class ControlConfiguration {
 	}
 
 	/**
-	 * Set message bundle. It is called at beginning of application or after
-	 * login if language of user is different from english
+	 * Set message bundle. It is called at beginning of application or after login if language of user is different from
+	 * english
 	 * 
 	 * @param lableMsgBundle
 	 *            bundle of message
 	 */
-	public static void setLabelMessageBundle(Locale locale,
-			String... messageFileNames) {
+	public static void setLabelMessageBundle(Locale locale, String... messageFileNames) {
 		s_messages = new MultiFamilyResouceBundle(locale, messageFileNames);
 	}
 
@@ -182,8 +180,7 @@ public class ControlConfiguration {
 
 		int pos = text.indexOf(searchChar, from);
 		while (pos >= 0) {
-			if (pos >= 0
-					&& (pos >= text.length() - 1 || text.charAt(pos + 1) != searchChar)) {
+			if (pos >= 0 && (pos >= text.length() - 1 || text.charAt(pos + 1) != searchChar)) {
 				return pos;
 			}
 			pos = text.indexOf(searchChar, pos + 2);
@@ -247,10 +244,8 @@ public class ControlConfiguration {
 					result = text.substring(0, pos);
 				}
 				result = deleteSingleChar(result, MNEMONIC_CHAR);
-				result = result.replaceAll("" + TOOLTIP_CHAR + TOOLTIP_CHAR, ""
-						+ TOOLTIP_CHAR);
-				result = result.replaceAll("" + MNEMONIC_CHAR + MNEMONIC_CHAR,
-						"" + MNEMONIC_CHAR);
+				result = result.replaceAll("" + TOOLTIP_CHAR + TOOLTIP_CHAR, "" + TOOLTIP_CHAR);
+				result = result.replaceAll("" + MNEMONIC_CHAR + MNEMONIC_CHAR, "" + MNEMONIC_CHAR);
 
 			}
 		} catch (Exception ex) {
@@ -299,16 +294,14 @@ public class ControlConfiguration {
 	 * Sets the default time zone for the whole GUI application.
 	 * 
 	 * @param timezone
-	 *            {@link TimeZone} default timezone to set. Normally this is
-	 *            gotten from server.
+	 *            {@link TimeZone} default timezone to set. Normally this is gotten from server.
 	 */
 	public static void setDefaultTimeZone(TimeZone timezone) {
 		s_defaultTimeZone = timezone;
 	}
 
 	/**
-	 * Gets the default time zone of the GUI, which is set when the application
-	 * starts up.
+	 * Gets the default time zone of the GUI, which is set when the application starts up.
 	 * 
 	 * @return {@link TimeZone}.
 	 */

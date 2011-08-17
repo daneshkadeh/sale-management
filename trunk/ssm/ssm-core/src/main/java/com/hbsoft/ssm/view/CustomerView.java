@@ -35,7 +35,7 @@ import com.hbsoft.ssm.util.i18n.ControlConfiguration;
 
 public class CustomerView extends JFrame {
 	private Log logger = LogFactory.getLog(CustomerView.class);
-	
+
 	JLabel titleLabel;
 
 	JLabel idEditLabel;
@@ -58,8 +58,7 @@ public class CustomerView extends JFrame {
 
 	private Boolean selector = false;
 	private Integer JTEXTFIELD_SIZE = 20;
-	CustomerService customerService = ConfigProvider.getInstance()
-			.getCustomerSerice();
+	CustomerService customerService = ConfigProvider.getInstance().getCustomerSerice();
 
 	public CustomerView() {
 		initComponents();
@@ -131,14 +130,12 @@ public class CustomerView extends JFrame {
 		});
 
 		tblCustomerList = new JTable();
-		tblCustomerList.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[][] { { null, null },
+		tblCustomerList.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null },
 
-				}, new String[] { "Id", "Name" }));
+		}, new String[] { "Id", "Name" }));
 		displayCustomerList(customerService.findAll());
 		tblCustomerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tblCustomerList.getSelectionModel().addListSelectionListener(
-				new RowListener());
+		tblCustomerList.getSelectionModel().addListSelectionListener(new RowListener());
 
 		jScrollPane1 = new JScrollPane();
 		jScrollPane1.setViewportView(tblCustomerList);
@@ -147,8 +144,7 @@ public class CustomerView extends JFrame {
 		Container container = getContentPane();
 		container.setLayout(new MigLayout("fillx,insets 1, width :500:"));
 
-		JPanel titlePanel = new JPanel(new MigLayout(
-				"wrap 1, center, width :500:"));
+		JPanel titlePanel = new JPanel(new MigLayout("wrap 1, center, width :500:"));
 		titlePanel.add(titleLabel, "center");
 		container.add(titlePanel, "wrap");
 
@@ -193,8 +189,7 @@ public class CustomerView extends JFrame {
 			oneRow.add(customer.getName());
 			tableData.add(oneRow);
 		}
-		tblCustomerList
-				.setModel(new DefaultTableModel(tableData, tableHeaders));
+		tblCustomerList.setModel(new DefaultTableModel(tableData, tableHeaders));
 		selector = false;
 		idEditTextField.setText("");
 		nameEditTextField.setText("");
@@ -207,8 +202,7 @@ public class CustomerView extends JFrame {
 			customerService.save(customer);
 		} catch (Exception e) {
 			logger.error("Error when insert a customer!", e);
-			JOptionPane.showMessageDialog(this,
-					"Technical error! Can not add new customer!", "Error",
+			JOptionPane.showMessageDialog(this, "Technical error! Can not add new customer!", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
 		displayCustomerList(customerService.findAll());
@@ -216,47 +210,41 @@ public class CustomerView extends JFrame {
 
 	private void btnUpdateActionPerformed(ActionEvent evt) {
 		if (selector) {
-			Integer id = Integer.parseInt(tblCustomerList.getValueAt(
-					tblCustomerList.getSelectedRows()[0], 0).toString());
+			Integer id = Integer.parseInt(tblCustomerList.getValueAt(tblCustomerList.getSelectedRows()[0], 0)
+					.toString());
 			Customer customer = customerService.findById(id);
 			customer.setName(nameEditTextField.getText());
 			try {
 				customerService.update(customer);
 			} catch (Exception e) {
 				logger.error("Error when update a customer!", e);
-				JOptionPane.showMessageDialog(this,
-						"Technical error! Can not update customer!", "Error",
+				JOptionPane.showMessageDialog(this, "Technical error! Can not update customer!", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
-			
+
 			displayCustomerList(customerService.findAll());
 		} else {
-			JOptionPane.showMessageDialog(this,
-					"Please select one row to update!", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Please select one row to update!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void btnDeleteActionPerformed(ActionEvent evt) {
 		if (selector) {
-			Integer id = Integer.parseInt(tblCustomerList.getValueAt(
-					tblCustomerList.getSelectedRows()[0], 0).toString());
-			
+			Integer id = Integer.parseInt(tblCustomerList.getValueAt(tblCustomerList.getSelectedRows()[0], 0)
+					.toString());
+
 			// TODO: should support delete by Id to reduce 1 select query.
 			Customer customer = customerService.findById(id);
 			try {
 				customerService.delete(customer);
 			} catch (Exception e) {
 				logger.error("Error when delete a customer!", e);
-				JOptionPane.showMessageDialog(this,
-						"Technical error! Can not delete customer!", "Error",
+				JOptionPane.showMessageDialog(this, "Technical error! Can not delete customer!", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 			displayCustomerList(customerService.findAll());
 		} else {
-			JOptionPane.showMessageDialog(this,
-					"Please select one row to delete!", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Please select one row to delete!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -266,11 +254,9 @@ public class CustomerView extends JFrame {
 			InvoiceView invoiceView = new InvoiceView(Integer.valueOf(idEditTextField.getText()));
 			invoiceView.setVisible(true);
 		} else {
-			JOptionPane.showMessageDialog(this,
-					"Please select a customer!", "Info",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Please select a customer!", "Info", JOptionPane.INFORMATION_MESSAGE);
 		}
-		
+
 	}
 
 	private void btnSearchActionPerformed(ActionEvent evt) {
@@ -284,8 +270,7 @@ public class CustomerView extends JFrame {
 		} else if (!"".equals(nameSearchTextField.getText().trim())) {
 			displayCustomerList(customerService.findLikeName(nameSearchTextField.getText().trim()));
 		} else {
-			JOptionPane.showMessageDialog(this,
-					"Please put the criteria to search!", "Warning",
+			JOptionPane.showMessageDialog(this, "Please put the criteria to search!", "Warning",
 					JOptionPane.WARNING_MESSAGE);
 		}
 
@@ -297,10 +282,8 @@ public class CustomerView extends JFrame {
 				return;
 			}
 			try {
-				idEditTextField.setText(tblCustomerList.getValueAt(
-						tblCustomerList.getSelectedRow(), 0).toString());
-				nameEditTextField.setText(tblCustomerList.getValueAt(
-						tblCustomerList.getSelectedRow(), 1).toString());
+				idEditTextField.setText(tblCustomerList.getValueAt(tblCustomerList.getSelectedRow(), 0).toString());
+				nameEditTextField.setText(tblCustomerList.getValueAt(tblCustomerList.getSelectedRow(), 1).toString());
 
 				selector = true;
 			} catch (Exception e) {

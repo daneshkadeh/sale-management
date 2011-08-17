@@ -23,11 +23,11 @@ public class DetailInvoice {
 	private Double moneyOfTax;
 	private Double moneyAfterTax;
 	private Integer invoiceId;
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
@@ -134,7 +134,5 @@ public class DetailInvoice {
 	public Integer getInvoiceId() {
 		return invoiceId;
 	}
-	
-	
 
 }

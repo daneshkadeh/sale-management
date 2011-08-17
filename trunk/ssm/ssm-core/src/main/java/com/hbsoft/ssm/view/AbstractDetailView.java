@@ -35,7 +35,7 @@ import com.hbsoft.ssm.view.object.FieldType;
 
 public abstract class AbstractDetailView<T> extends JFrame {
 	private Log logger = LogFactory.getLog(AbstractDetailView.class);
-	
+
 	protected List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
 	protected Map<DetailDataModel, JComponent> mapFields = new HashMap<DetailDataModel, JComponent>();
 	JButton btnOK;
@@ -61,8 +61,7 @@ public abstract class AbstractDetailView<T> extends JFrame {
 		return null;
 	}
 
-	public abstract void initialPresentationView(
-			List<DetailDataModel> listDataModel);
+	public abstract void initialPresentationView(List<DetailDataModel> listDataModel);
 
 	private void initComponents() {// Layout the screen
 		Container container = getContentPane();
@@ -117,11 +116,9 @@ public abstract class AbstractDetailView<T> extends JFrame {
 			for (ConstraintViolation<T> violation : validateResult) {
 				logger.error(violation.getMessage());
 			}
-			JOptionPane.showMessageDialog(this,
-					"Some fields are invalid!", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Some fields are invalid!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-		
+
 	}
 
 	protected void saveOrUpdate(T entity2) {
@@ -131,31 +128,25 @@ public abstract class AbstractDetailView<T> extends JFrame {
 
 	protected Set<ConstraintViolation<T>> bindAndValidate(T entity2) {
 		for (Method method : entity2.getClass().getMethods()) {
-			DetailDataModel dataModel = getDataModelFromSetMethod(method
-					.getName());
+			DetailDataModel dataModel = getDataModelFromSetMethod(method.getName());
 			if (dataModel != null) {
 				JComponent component = mapFields.get(dataModel);
 				if (dataModel.getFieldType() == FieldType.TEXT_BOX) {
 					JTextComponent textComponent = (JTextComponent) component;
 					try {
 						Method getMethod = entity2.getClass().getMethod(
-								"get"
-										+ capitalizeFirstChar(dataModel
-												.getFieldName()));
+								"get" + capitalizeFirstChar(dataModel.getFieldName()));
 						Class<?> paramClass = getMethod.getReturnType();
 						if (textComponent.getText().isEmpty()) {
-							method.invoke(entity2, (Object)null);
+							method.invoke(entity2, (Object) null);
 						} else if (paramClass.equals(Double.class)) {
-							method.invoke(entity2,
-									Double.valueOf(textComponent.getText()));
+							method.invoke(entity2, Double.valueOf(textComponent.getText()));
 						} else if (paramClass.equals(Integer.class)) {
-							method.invoke(entity2,
-									Integer.valueOf(textComponent.getText()));
+							method.invoke(entity2, Integer.valueOf(textComponent.getText()));
 						} else if (paramClass.equals(String.class)) {
 							method.invoke(entity2, textComponent.getText());
 						} else {
-							throw new RuntimeException("Do not support class "
-									+ paramClass.getCanonicalName());
+							throw new RuntimeException("Do not support class " + paramClass.getCanonicalName());
 						}
 
 					} catch (Exception e) {
@@ -176,8 +167,7 @@ public abstract class AbstractDetailView<T> extends JFrame {
 
 	private DetailDataModel getDataModelFromSetMethod(String setMethodName) {
 		for (DetailDataModel dataModel : listDataModel) {
-			if (setMethodName.equals("set"
-					+ capitalizeFirstChar(dataModel.getFieldName()))) {
+			if (setMethodName.equals("set" + capitalizeFirstChar(dataModel.getFieldName()))) {
 				return dataModel;
 			}
 		}
@@ -185,8 +175,7 @@ public abstract class AbstractDetailView<T> extends JFrame {
 	}
 
 	private static String capitalizeFirstChar(String fieldName) {
-		return (fieldName.substring(0, 1).toUpperCase())
-				+ fieldName.substring(1);
+		return (fieldName.substring(0, 1).toUpperCase()) + fieldName.substring(1);
 	}
 
 	protected void btnCancelActionPerformed(ActionEvent evt) {

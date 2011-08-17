@@ -44,8 +44,7 @@ public class EditInvoiceDetailView extends JFrame {
 	private DetailInvoice detailInvoice;
 	private boolean isNew;
 
-	public EditInvoiceDetailView(InvoiceView parentInvoiceView,
-			DetailInvoice detailInvoice, boolean isNew) {
+	public EditInvoiceDetailView(InvoiceView parentInvoiceView, DetailInvoice detailInvoice, boolean isNew) {
 		this.parentInvoiceView = parentInvoiceView;
 		this.detailInvoice = detailInvoice;
 		this.isNew = isNew;
@@ -114,24 +113,19 @@ public class EditInvoiceDetailView extends JFrame {
 			tflGoodsId.setText(detailInvoice.getGoodsId().toString());
 			tflGoodsName.setText(detailInvoice.getGoodsName());
 			tflQuantity.setText(detailInvoice.getQuantity().toString());
-			tflPriceBeforeTax.setText(detailInvoice.getPriceBeforeTax()
-					.toString());
+			tflPriceBeforeTax.setText(detailInvoice.getPriceBeforeTax().toString());
 			tflTax.setText(detailInvoice.getTax().toString());
-			tflPriceAfterTax.setText(detailInvoice.getPriceAfterTax()
-					.toString());
-			tflMoneyBeforeTax.setText(detailInvoice.getMoneyBeforeTax()
-					.toString());
+			tflPriceAfterTax.setText(detailInvoice.getPriceAfterTax().toString());
+			tflMoneyBeforeTax.setText(detailInvoice.getMoneyBeforeTax().toString());
 			tflMoneyOfTax.setText(detailInvoice.getMoneyOfTax().toString());
-			tflMoneyAfterTax.setText(detailInvoice.getMoneyAfterTax()
-					.toString());
+			tflMoneyAfterTax.setText(detailInvoice.getMoneyAfterTax().toString());
 		}
 
 		// Layout the screen
 		Container container = getContentPane();
 		container.setLayout(new MigLayout("fillx,insets 1, width :500:"));
 
-		JPanel titlePanel = new JPanel(new MigLayout(
-				"wrap 1, center, , width :500:"));
+		JPanel titlePanel = new JPanel(new MigLayout("wrap 1, center, , width :500:"));
 		titlePanel.add(lblTitle, "center");
 		container.add(titlePanel, "wrap");
 
@@ -169,32 +163,23 @@ public class EditInvoiceDetailView extends JFrame {
 	}
 
 	protected void btnOKActionPerformed(ActionEvent evt) {
-		if (tflGoodsId.getText().isEmpty() || tflGoodsName.getText().isEmpty()
-				|| tflQuantity.getText().isEmpty()
-				|| tflPriceBeforeTax.getText().isEmpty()
-				|| tflTax.getText().isEmpty()
-				|| tflPriceAfterTax.getText().isEmpty()
-				|| tflMoneyBeforeTax.getText().isEmpty()
-				|| tflMoneyOfTax.getText().isEmpty()
-				|| tflMoneyAfterTax.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(this,
-					"Please fill all madatory fields!", "Warning",
+		if (tflGoodsId.getText().isEmpty() || tflGoodsName.getText().isEmpty() || tflQuantity.getText().isEmpty()
+				|| tflPriceBeforeTax.getText().isEmpty() || tflTax.getText().isEmpty()
+				|| tflPriceAfterTax.getText().isEmpty() || tflMoneyBeforeTax.getText().isEmpty()
+				|| tflMoneyOfTax.getText().isEmpty() || tflMoneyAfterTax.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(this, "Please fill all madatory fields!", "Warning",
 					JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 		detailInvoice.setGoodsId(Integer.valueOf(tflGoodsId.getText()));
 		detailInvoice.setGoodsName(tflGoodsName.getText());
 		detailInvoice.setQuantity(Integer.valueOf(tflQuantity.getText()));
-		detailInvoice.setPriceBeforeTax(Double.valueOf(tflPriceBeforeTax
-				.getText()));
+		detailInvoice.setPriceBeforeTax(Double.valueOf(tflPriceBeforeTax.getText()));
 		detailInvoice.setTax(Double.valueOf(tflTax.getText()));
-		detailInvoice.setPriceAfterTax(Double.valueOf(tflPriceAfterTax
-				.getText()));
-		detailInvoice.setMoneyBeforeTax(Double.valueOf(tflMoneyBeforeTax
-				.getText()));
+		detailInvoice.setPriceAfterTax(Double.valueOf(tflPriceAfterTax.getText()));
+		detailInvoice.setMoneyBeforeTax(Double.valueOf(tflMoneyBeforeTax.getText()));
 		detailInvoice.setMoneyOfTax(Double.valueOf(tflMoneyOfTax.getText()));
-		detailInvoice.setMoneyAfterTax(Double.valueOf(tflMoneyAfterTax
-				.getText()));
+		detailInvoice.setMoneyAfterTax(Double.valueOf(tflMoneyAfterTax.getText()));
 		parentInvoiceView.notifyEditInvoiceDetail(detailInvoice, isNew);
 		this.dispose();
 	}

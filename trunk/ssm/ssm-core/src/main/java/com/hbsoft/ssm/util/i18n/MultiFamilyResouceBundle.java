@@ -11,10 +11,9 @@ public class MultiFamilyResouceBundle {
 	private List<ResourceBundle> m_bundles = new ArrayList<ResourceBundle>();
 
 	/**
-	 * Load and store the resouces for each family according to the current
-	 * locale. Note that the order of the resource in the list is counted for
-	 * deciding the priority. The later the resouce is added into the list, the
-	 * higher is its priority.
+	 * Load and store the resouces for each family according to the current locale. Note that the order of the resource
+	 * in the list is counted for deciding the priority. The later the resouce is added into the list, the higher is its
+	 * priority.
 	 * 
 	 * The message of FW is only loaded first.
 	 * 
@@ -23,16 +22,14 @@ public class MultiFamilyResouceBundle {
 	 * @param resourceFamilyNames
 	 *            array of String. This is expected not empty.
 	 */
-	public MultiFamilyResouceBundle(Locale locale,
-			String... resourceFamilyNames) {
+	public MultiFamilyResouceBundle(Locale locale, String... resourceFamilyNames) {
 		m_bundles.clear();
 		for (String resourceFamilyName : resourceFamilyNames) {
 			// the add(int, ...) is used to make sure the last bundle has the
 			// highest priority.
 			// the justification is this method is only use one or twice when
 			// starting the application
-			m_bundles.add(0,
-					Utf8ResourceBundle.getBundle(resourceFamilyName, locale));
+			m_bundles.add(0, Utf8ResourceBundle.getBundle(resourceFamilyName, locale));
 		}
 	}
 
@@ -44,8 +41,7 @@ public class MultiFamilyResouceBundle {
 	}
 
 	/**
-	 * Keeps looking the text of the given key until it is found. Otherwise the
-	 * key will be return;
+	 * Keeps looking the text of the given key until it is found. Otherwise the key will be return;
 	 * 
 	 * @param key
 	 * @return text

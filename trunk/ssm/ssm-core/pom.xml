@@ -18,13 +18,13 @@
 	</description>
   
   <dependencies>
-    <!-- JUnit testing framework -->
+  
+    <!-- TestNG testing framework -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
+		 <groupId>org.testng</groupId>
+		 <artifactId>testng</artifactId>
+		 <scope>test</scope>
+	</dependency>
     
     <!-- Spring framework -->
 	<dependency>
