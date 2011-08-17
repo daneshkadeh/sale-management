@@ -28,15 +28,15 @@ public abstract class AbstractListView<T extends Object> extends JFrame {
 	JButton btnSort;
 	JTable tblListEntities;
 	JScrollPane jScrollPane;
-	
-//	Class<T> clazz;
+
+	// Class<T> clazz;
 	protected List<T> entities;
 	List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
 	public boolean selector = false;
-	
+
 	public AbstractListView() {
 		// TODO: should get command class from T
-//		clazz = getCommandClass();
+		// clazz = getCommandClass();
 		initialPresentationView(listDataModel);
 		initComponents();
 	}
@@ -46,12 +46,11 @@ public abstract class AbstractListView<T extends Object> extends JFrame {
 	protected List<T> loadData() {
 		return new ArrayList<T>();
 	}
-	
 
 	// protected Class<T> getCommandClass() {
 	// return null;
 	// }
-	
+
 	private void initComponents() {
 		btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -65,30 +64,29 @@ public abstract class AbstractListView<T extends Object> extends JFrame {
 				btnSortActionPerformed(evt);
 			}
 		});
-		
+
 		tblListEntities = new JTable();
 		displayCustomerList();
 		tblListEntities.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tblListEntities.getSelectionModel().addListSelectionListener(
-				new RowListener());
+		tblListEntities.getSelectionModel().addListSelectionListener(new RowListener());
 
 		jScrollPane = new JScrollPane();
 		jScrollPane.setViewportView(tblListEntities);
-		
+
 		Container container = getContentPane();
 		container.setLayout(new MigLayout("fillx,insets 1, width :1000:"));
-		
+
 		JPanel pnlListEntities = new JPanel(new MigLayout());
 		pnlListEntities.add(jScrollPane, "wrap");
 		container.add(pnlListEntities, "wrap");
-		
+
 		JPanel pnlButton = new JPanel(new MigLayout());
 		pnlButton.add(btnSearch);
 		pnlButton.add(btnSort);
 		container.add(pnlButton, "wrap");
 		pack();
 	}
-	
+
 	private void displayCustomerList() {
 		entities = loadData();
 		Vector<String> tableHeaders = new Vector<String>();
@@ -110,43 +108,40 @@ public abstract class AbstractListView<T extends Object> extends JFrame {
 			}
 			tableData.add(oneRow);
 		}
-		tblListEntities
-				.setModel(new DefaultTableModel(tableData, tableHeaders));
+		tblListEntities.setModel(new DefaultTableModel(tableData, tableHeaders));
 		selector = false;
-		
+
 	}
-	
+
 	private DetailDataModel getDataModelFromGetMethod(String setMethodName) {
 		for (DetailDataModel dataModel : listDataModel) {
-			if (setMethodName.equals("get"
-					+ capitalizeFirstChar(dataModel.getFieldName()))) {
+			if (setMethodName.equals("get" + capitalizeFirstChar(dataModel.getFieldName()))) {
 				return dataModel;
 			}
 		}
 		return null;
 	}
-	
+
 	private static String capitalizeFirstChar(String fieldName) {
-		return (fieldName.substring(0, 1).toUpperCase())
-				+ fieldName.substring(1);
+		return (fieldName.substring(0, 1).toUpperCase()) + fieldName.substring(1);
 	}
-	
+
 	protected void btnSortActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
 	}
 
 	protected void btnSearchActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	protected class RowListener implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent event) {
 			if (event.getValueIsAdjusting()) {
 				return;
 			}
 			try {
-				selector  = true;
+				selector = true;
 			} catch (Exception e) {
 			}
 		}

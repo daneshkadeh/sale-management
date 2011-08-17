@@ -20,11 +20,11 @@ public class Invoice {
 	private Double totalBeforeTax;
 	private Double taxTotal;
 	private Double totalAfterTax;
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)

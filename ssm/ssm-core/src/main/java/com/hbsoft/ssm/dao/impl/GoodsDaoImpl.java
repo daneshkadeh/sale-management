@@ -12,7 +12,7 @@ import com.hbsoft.ssm.util.CustomHibernateDaoSupport;
 public class GoodsDaoImpl extends CustomHibernateDaoSupport implements GoodsDao {
 
 	public void save(Goods goods) {
-		getHibernateTemplate().save(goods);		
+		getHibernateTemplate().save(goods);
 	}
 
 	public void update(Goods goods) {
@@ -24,8 +24,8 @@ public class GoodsDaoImpl extends CustomHibernateDaoSupport implements GoodsDao 
 	}
 
 	public Goods findById(Integer id) {
-		List list = getHibernateTemplate().find("from Goods where id=?",id);
-		return (Goods)list.get(0);
+		List list = getHibernateTemplate().find("from Goods where id=?", id);
+		return (Goods) list.get(0);
 	}
 
 	public List<Goods> findAll() {

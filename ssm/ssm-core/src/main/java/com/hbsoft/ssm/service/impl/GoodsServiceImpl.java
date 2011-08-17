@@ -14,7 +14,7 @@ public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
 	GoodsDao goodsDao;
-	
+
 	public void save(Goods goods) {
 		goodsDao.save(goods);
 	}

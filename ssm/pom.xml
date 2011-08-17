@@ -56,6 +56,7 @@
 	
 	<swingx.version>1.6.1</swingx.version>
 	<miglayout.version>3.7.3.1</miglayout.version>
+	<testng.version>6.1.1</testng.version>
    </properties>   
    
 	<dependencyManagement>
@@ -70,13 +71,14 @@
 		<artifactId>ssm-gui</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
-    <!-- JUnit testing framework -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
+	
+	<!-- TestNG -->
+	<dependency>
+		<groupId>org.testng</groupId>
+		<artifactId>testng</artifactId>
+		 <version>${testng.version}</version>
+		<scope>test</scope>
+	</dependency>
     
     <!-- Spring framework -->
 	<dependency>

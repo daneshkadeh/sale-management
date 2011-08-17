@@ -12,7 +12,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Autowired
 	InvoiceDao invoiceDao;
-	
+
 	public void save(Invoice invoice) {
 		invoiceDao.save(invoice);
 	}

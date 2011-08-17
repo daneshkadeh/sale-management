@@ -16,7 +16,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	CustomerDao customerDao;
-	
+
 	public void save(Customer customer) {
 		customerDao.save(customer);
 	}

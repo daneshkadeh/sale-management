@@ -19,24 +19,24 @@ public class Goods {
 	private Double priceAfterTax;
 	private Integer addQuantity;
 	private Integer curQuantity;
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return id;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-    @Column(name = "name", nullable = false)
-    @NotNull
+
+	@Column(name = "name", nullable = false)
+	@NotNull
 	public String getName() {
 		return name;
 	}

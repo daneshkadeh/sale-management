@@ -65,12 +65,9 @@ public class InvoiceView extends JFrame {
 
 	private Boolean selector = false;
 	private Integer JTEXTFIELD_SIZE = 20;
-	InvoiceService invoiceService = ConfigProvider.getInstance()
-			.getInvoiceService();
-	DetailInvoiceService detailInvoiceService = ConfigProvider.getInstance()
-			.getDetailInvoiceService();
-	CustomerService customerService = ConfigProvider.getInstance()
-			.getCustomerSerice();
+	InvoiceService invoiceService = ConfigProvider.getInstance().getInvoiceService();
+	DetailInvoiceService detailInvoiceService = ConfigProvider.getInstance().getDetailInvoiceService();
+	CustomerService customerService = ConfigProvider.getInstance().getCustomerSerice();
 
 	private Integer customerId;
 	private Date createdDate = new Date();
@@ -85,8 +82,7 @@ public class InvoiceView extends JFrame {
 		// TODO: should support I18N
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		lblTitle = new JLabel();
-		lblTitle.setText("Invoice of customer: " + customerId + " - "
-				+ customerService.findById(customerId).getName());
+		lblTitle.setText("Invoice of customer: " + customerId + " - " + customerService.findById(customerId).getName());
 
 		lblInvoiceId = new JLabel();
 		lblInvoiceId.setText("Invoice Id");
@@ -156,15 +152,12 @@ public class InvoiceView extends JFrame {
 			}
 		});
 		tblInvoiceDetailList = new JTable();
-		tblInvoiceDetailList.setModel(new DefaultTableModel(new Object[][] { {
-				null, null, null, null, null, null, null, null, null }, },
-				new String[] { "GoodId", "GoodName", "Quan", "PriceBT", "Tax",
-						"PriceAT", "MoneyBT", "MoneyTax", "MoneyAT" }));
+		tblInvoiceDetailList.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null,
+				null, null, null }, }, new String[] { "GoodId", "GoodName", "Quan", "PriceBT", "Tax", "PriceAT",
+				"MoneyBT", "MoneyTax", "MoneyAT" }));
 		displayDetailInvoiceList(listDetailInvoice);
-		tblInvoiceDetailList
-				.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tblInvoiceDetailList.getSelectionModel().addListSelectionListener(
-				new RowListener());
+		tblInvoiceDetailList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tblInvoiceDetailList.getSelectionModel().addListSelectionListener(new RowListener());
 		// tblInvoiceDetailList.setSize(1024, 768);
 
 		jScrollPane1 = new JScrollPane();
@@ -175,8 +168,7 @@ public class InvoiceView extends JFrame {
 		Container container = getContentPane();
 		container.setLayout(new MigLayout("fillx,insets 1, width :1024:"));
 
-		JPanel titlePanel = new JPanel(new MigLayout(
-				"wrap 1, center, , width :1024:"));
+		JPanel titlePanel = new JPanel(new MigLayout("wrap 1, center, , width :1024:"));
 		titlePanel.add(lblTitle, "center");
 		container.add(titlePanel, "wrap");
 
@@ -217,8 +209,8 @@ public class InvoiceView extends JFrame {
 	private void displayDetailInvoiceList(List<DetailInvoice> detailInvoiceList) {
 		Vector<String> tableHeaders = new Vector<String>();
 		Vector<Vector<Object>> tableData = new Vector<Vector<Object>>();
-		tableHeaders.addAll(Arrays.asList("GoodId", "GoodName", "Quan",
-				"PriceBT", "Tax", "PriceAT", "MoneyBT", "MoneyTax", "MoneyAT"));
+		tableHeaders.addAll(Arrays.asList("GoodId", "GoodName", "Quan", "PriceBT", "Tax", "PriceAT", "MoneyBT",
+				"MoneyTax", "MoneyAT"));
 		for (DetailInvoice detailInvoice : detailInvoiceList) {
 			Vector<Object> oneRow = new Vector<Object>();
 			oneRow.add(detailInvoice.getGoodsId());
@@ -232,8 +224,7 @@ public class InvoiceView extends JFrame {
 			oneRow.add(detailInvoice.getMoneyAfterTax());
 			tableData.add(oneRow);
 		}
-		tblInvoiceDetailList.setModel(new DefaultTableModel(tableData,
-				tableHeaders));
+		tblInvoiceDetailList.setModel(new DefaultTableModel(tableData, tableHeaders));
 		selector = false;
 	}
 
@@ -243,11 +234,9 @@ public class InvoiceView extends JFrame {
 
 	protected void btnOKActionPerformed(ActionEvent evt) {
 		// TODO: should have generic bindAndValidate mechanism here!
-		if (tflTax.getText().isEmpty() || tflTotalBeforeTax.getText().isEmpty()
-				|| tflTotalAfterTax.getText() == null
+		if (tflTax.getText().isEmpty() || tflTotalBeforeTax.getText().isEmpty() || tflTotalAfterTax.getText() == null
 				|| CollectionUtils.isEmpty(listDetailInvoice)) {
-			JOptionPane.showMessageDialog(this,
-					"Please fill all madatory fields! Invoice is not saved.", "Warning",
+			JOptionPane.showMessageDialog(this, "Please fill all madatory fields! Invoice is not saved.", "Warning",
 					JOptionPane.WARNING_MESSAGE);
 			return;
 		}
@@ -264,21 +253,17 @@ public class InvoiceView extends JFrame {
 				detailInvoice.setInvoiceId(invoice.getId());
 			}
 			detailInvoiceService.saveOrUpdateAll(listDetailInvoice);
-			JOptionPane.showMessageDialog(this,
-					"Inserted new invoice successfully!", "Info",
+			JOptionPane.showMessageDialog(this, "Inserted new invoice successfully!", "Info",
 					JOptionPane.INFORMATION_MESSAGE);
 			this.dispose();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this,
-					"Error when insert new invoice!", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Error when insert new invoice!", "Error", JOptionPane.ERROR_MESSAGE);
 			logger.error("Error when insert new invoice! Please check data!", e);
 		}
 	}
 
 	protected void btnAddActionPerformed(ActionEvent evt) {
-		EditInvoiceDetailView detailView = new EditInvoiceDetailView(this,
-				null, true);
+		EditInvoiceDetailView detailView = new EditInvoiceDetailView(this, null, true);
 		detailView.setVisible(true);
 	}
 
@@ -288,13 +273,10 @@ public class InvoiceView extends JFrame {
 					tblInvoiceDetailList.getSelectedRows()[0], 0).toString());
 
 			DetailInvoice detailInvoice = getDetailInvoice(goodsId);
-			EditInvoiceDetailView detailView = new EditInvoiceDetailView(this,
-					detailInvoice, false);
+			EditInvoiceDetailView detailView = new EditInvoiceDetailView(this, detailInvoice, false);
 			detailView.setVisible(true);
 		} else {
-			JOptionPane.showMessageDialog(this,
-					"Please select one row to update!", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Please select one row to update!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -308,9 +290,7 @@ public class InvoiceView extends JFrame {
 			listDetailInvoice.remove(detailInvoice);
 			displayDetailInvoiceList(listDetailInvoice);
 		} else {
-			JOptionPane.showMessageDialog(this,
-					"Please select one row to delete!", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Please select one row to delete!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -326,25 +306,18 @@ public class InvoiceView extends JFrame {
 		}
 	}
 
-	public void notifyEditInvoiceDetail(DetailInvoice detailInvoice,
-			boolean isNew) {
+	public void notifyEditInvoiceDetail(DetailInvoice detailInvoice, boolean isNew) {
 		DetailInvoice sameGood = getDetailInvoice(detailInvoice.getGoodsId());
 		if (sameGood == null) {
 			listDetailInvoice.add(detailInvoice);
 		} else if (isNew) {
-			sameGood.setQuantity(sameGood.getQuantity()
-					+ detailInvoice.getQuantity());
-			sameGood.setPriceBeforeTax(sameGood.getPriceBeforeTax()
-					+ detailInvoice.getPriceBeforeTax());
-			sameGood.setPriceAfterTax(sameGood.getPriceAfterTax()
-					+ detailInvoice.getPriceAfterTax());
+			sameGood.setQuantity(sameGood.getQuantity() + detailInvoice.getQuantity());
+			sameGood.setPriceBeforeTax(sameGood.getPriceBeforeTax() + detailInvoice.getPriceBeforeTax());
+			sameGood.setPriceAfterTax(sameGood.getPriceAfterTax() + detailInvoice.getPriceAfterTax());
 			sameGood.setTax(sameGood.getTax() + detailInvoice.getTax());
-			sameGood.setMoneyBeforeTax(sameGood.getMoneyBeforeTax()
-					+ detailInvoice.getMoneyBeforeTax());
-			sameGood.setMoneyOfTax(sameGood.getMoneyOfTax()
-					+ detailInvoice.getMoneyOfTax());
-			sameGood.setMoneyAfterTax(sameGood.getMoneyAfterTax()
-					+ detailInvoice.getMoneyAfterTax());
+			sameGood.setMoneyBeforeTax(sameGood.getMoneyBeforeTax() + detailInvoice.getMoneyBeforeTax());
+			sameGood.setMoneyOfTax(sameGood.getMoneyOfTax() + detailInvoice.getMoneyOfTax());
+			sameGood.setMoneyAfterTax(sameGood.getMoneyAfterTax() + detailInvoice.getMoneyAfterTax());
 		} else { // is updated
 			sameGood = detailInvoice;
 		}

@@ -14,7 +14,7 @@ public class DetailInvoiceServiceImpl implements DetailInvoiceService {
 
 	@Autowired
 	DetailInvoiceDao detailInvoiceDao;
-	
+
 	public void save(DetailInvoice detailInvoice) {
 		detailInvoiceDao.save(detailInvoice);
 	}
@@ -22,7 +22,7 @@ public class DetailInvoiceServiceImpl implements DetailInvoiceService {
 	public void saveOrUpdateAll(List<DetailInvoice> listDetailInvoice) {
 		detailInvoiceDao.saveOrUpdateAll(listDetailInvoice);
 	}
-	
+
 	public void update(DetailInvoice detailInvoice) {
 		detailInvoiceDao.update(detailInvoice);
 	}

@@ -9,15 +9,14 @@ import com.hbsoft.ssm.entity.DetailInvoice;
 import com.hbsoft.ssm.util.CustomHibernateDaoSupport;
 
 @Repository("detailInvoiceDao")
-public class DetailInvoiceDaoImpl extends CustomHibernateDaoSupport implements
-		DetailInvoiceDao {
+public class DetailInvoiceDaoImpl extends CustomHibernateDaoSupport implements DetailInvoiceDao {
 
 	public void save(DetailInvoice detailInvoice) {
-		getHibernateTemplate().save(detailInvoice);		
+		getHibernateTemplate().save(detailInvoice);
 	}
 
 	public void update(DetailInvoice detailInvoice) {
-		getHibernateTemplate().update(detailInvoice);		
+		getHibernateTemplate().update(detailInvoice);
 	}
 
 	public void delete(DetailInvoice detailInvoice) {
@@ -25,10 +24,10 @@ public class DetailInvoiceDaoImpl extends CustomHibernateDaoSupport implements
 	}
 
 	public DetailInvoice findById(Integer id) {
-		List list = getHibernateTemplate().find("from DetailInvoice where id=?",id);
-		return (DetailInvoice)list.get(0);
+		List list = getHibernateTemplate().find("from DetailInvoice where id=?", id);
+		return (DetailInvoice) list.get(0);
 	}
-	
+
 	public void saveOrUpdateAll(List<DetailInvoice> listDetailInvoice) {
 		getHibernateTemplate().saveOrUpdateAll(listDetailInvoice);
 	}

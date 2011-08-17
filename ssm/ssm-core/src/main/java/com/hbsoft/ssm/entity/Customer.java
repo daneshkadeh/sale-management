@@ -14,23 +14,24 @@ import javax.validation.constraints.NotNull;
 public class Customer {
 	private Integer id;
 	private String name;
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return id;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-    @Column(name = "name", nullable = false)
-    @NotNull
+
+	@Column(name = "name", nullable = false)
+	@NotNull
 	public String getName() {
 		return name;
 	}
