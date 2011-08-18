@@ -1,24 +1,13 @@
 package com.hbsoft.ssm.program;
 
-import java.util.Date;
 import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.xml.DOMConfigurator;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.hbsoft.ssm.entity.Customer;
-import com.hbsoft.ssm.entity.DetailInvoice;
-import com.hbsoft.ssm.entity.Goods;
-import com.hbsoft.ssm.entity.Invoice;
-import com.hbsoft.ssm.service.DetailInvoiceService;
 import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.util.i18n.ControlConfiguration;
-import com.hbsoft.ssm.view.CustomerView;
 import com.hbsoft.ssm.view.EditGoodsView;
-import com.hbsoft.ssm.view.ListGoodsView;
 
 public class MainProgram {
 	public static Log s_logger = LogFactory.getLog(MainProgram.class);

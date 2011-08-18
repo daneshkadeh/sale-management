@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,22 +15,19 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.util.StringUtils;
-
-import net.miginfocom.swing.MigLayout;
 
 import com.hbsoft.ssm.entity.Customer;
 import com.hbsoft.ssm.service.CustomerService;
 import com.hbsoft.ssm.util.ConfigProvider;
-import com.hbsoft.ssm.util.i18n.ControlConfiguration;
 
 public class CustomerView extends JFrame {
 	private Log logger = LogFactory.getLog(CustomerView.class);

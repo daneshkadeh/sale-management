@@ -9,6 +9,7 @@ import com.hbsoft.ssm.view.object.DetailDataModel;
 import com.hbsoft.ssm.view.object.FieldType;
 
 public class EditGoodsView<goods> extends AbstractDetailView<Goods> {
+	private static final long serialVersionUID = 8247461633468843994L;
 
 	@Override
 	public void initialPresentationView(List<DetailDataModel> listDataModel) {
