@@ -8,6 +8,7 @@
 	Or "mvn clean eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true" if you want to download source, javadoc.
 4. 
 5. Import to eclipse
+6.
 
 ------ Updating --------
 	
