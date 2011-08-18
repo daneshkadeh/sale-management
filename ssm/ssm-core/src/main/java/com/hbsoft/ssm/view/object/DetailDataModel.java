@@ -4,7 +4,7 @@ public class DetailDataModel {
 	private String label;
 	private String fieldName;
 	private FieldType fieldType;
-	private Class clazz;
+	private Class<?> clazz;
 	private boolean editable;
 	private boolean enable;
 
@@ -57,11 +57,11 @@ public class DetailDataModel {
 		return enable;
 	}
 
-	public void setClazz(Class clazz) {
+	public void setClazz(Class<?> clazz) {
 		this.clazz = clazz;
 	}
 
-	public Class getClazz() {
+	public Class<?> getClazz() {
 		return clazz;
 	}
 }

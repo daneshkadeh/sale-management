@@ -29,7 +29,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.hbsoft.ssm.entity.Customer;
 import com.hbsoft.ssm.entity.DetailInvoice;
 import com.hbsoft.ssm.entity.Invoice;
 import com.hbsoft.ssm.service.CustomerService;

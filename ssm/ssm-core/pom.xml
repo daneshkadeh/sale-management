@@ -110,8 +110,9 @@
             <artifactId>swingx</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.miglayout</groupId>
-      <artifactId>miglayout</artifactId>
+		<groupId>com.miglayout</groupId>
+		<artifactId>miglayout</artifactId>	  
+		<classifier>swing</classifier>
     </dependency>
   </dependencies>
 </project>

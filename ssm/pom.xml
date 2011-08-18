@@ -181,9 +181,10 @@
             <version>${swingx.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.miglayout</groupId>
-      <artifactId>miglayout</artifactId>
-      <version>${miglayout.version}</version>
+		<groupId>com.miglayout</groupId>
+		<artifactId>miglayout</artifactId>
+		<version>${miglayout.version}</version>
+		<classifier>swing</classifier>
     </dependency>
   </dependencies>
   </dependencyManagement>

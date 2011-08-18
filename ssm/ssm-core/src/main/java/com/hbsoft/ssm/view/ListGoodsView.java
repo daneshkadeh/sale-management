@@ -1,8 +1,7 @@
 package com.hbsoft.ssm.view;
 
 import java.util.List;
-import com.hbsoft.ssm.entity.Goods;
-import com.hbsoft.ssm.service.GoodsService;
+
 import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.util.i18n.ControlConfiguration;
 import com.hbsoft.ssm.view.object.DetailDataModel;
@@ -10,6 +9,7 @@ import com.hbsoft.ssm.view.object.FieldType;
 
 public class ListGoodsView<Goods> extends AbstractListView<Goods> {
 	// private GoodsService goodsService = ConfigProvider.getInstance().getGoodsService();
+	private static final long serialVersionUID = -8034885109793508234L;
 
 	@Override
 	protected void initialPresentationView(List<DetailDataModel> listDataModel) {

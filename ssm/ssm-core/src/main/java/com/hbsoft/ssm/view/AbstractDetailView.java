@@ -3,7 +3,6 @@ package com.hbsoft.ssm.view;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.Method;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,16 +23,18 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import net.miginfocom.swing.MigLayout;
 
 import com.hbsoft.ssm.view.object.DetailDataModel;
 import com.hbsoft.ssm.view.object.FieldType;
 
 public abstract class AbstractDetailView<T> extends JFrame {
+	private static final long serialVersionUID = 1L;
+
 	private Log logger = LogFactory.getLog(AbstractDetailView.class);
 
 	protected List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
@@ -179,6 +180,6 @@ public abstract class AbstractDetailView<T> extends JFrame {
 	}
 
 	protected void btnCancelActionPerformed(ActionEvent evt) {
-		this.dispose();
+		dispose();
 	}
 }

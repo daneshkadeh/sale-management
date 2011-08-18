@@ -19,11 +19,10 @@ import javax.swing.table.DefaultTableModel;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.hbsoft.ssm.entity.Customer;
-import com.hbsoft.ssm.view.CustomerView.RowListener;
 import com.hbsoft.ssm.view.object.DetailDataModel;
 
 public abstract class AbstractListView<T extends Object> extends JFrame {
+	private static final long serialVersionUID = -1311942671249671111L;
 	JButton btnSearch;
 	JButton btnSort;
 	JTable tblListEntities;
