@@ -9,5 +9,5 @@ public interface InvoiceService {
 
 	void delete(Invoice invoice);
 
-	Invoice findById(Invoice id);
+	Invoice findById(Integer id);
 }

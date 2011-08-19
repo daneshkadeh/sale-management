@@ -6,32 +6,32 @@ import com.hbsoft.ssm.entity.Goods;
 import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.util.i18n.ControlConfiguration;
 import com.hbsoft.ssm.view.object.DetailDataModel;
-import com.hbsoft.ssm.view.object.FieldType;
+import com.hbsoft.ssm.view.object.FieldTypeEnum;
 
-public class EditGoodsView<goods> extends AbstractDetailView<Goods> {
+public class EditGoodsView extends AbstractDetailView<Goods> {
 	private static final long serialVersionUID = 8247461633468843994L;
 
 	@Override
 	public void initialPresentationView(List<DetailDataModel> listDataModel) {
 		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.id"), "id",
-				FieldType.TEXT_BOX, true, true));
+				FieldTypeEnum.TEXT_BOX, true, true));
 		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.name"), "name",
-				FieldType.TEXT_BOX, true, true));
+				FieldTypeEnum.TEXT_BOX, true, true));
 		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.priceBeforeTax"),
-				"priceBeforeTax", FieldType.TEXT_BOX, true, true));
+				"priceBeforeTax", FieldTypeEnum.TEXT_BOX, true, true));
 		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.tax"), "tax",
-				FieldType.TEXT_BOX, true, true));
+				FieldTypeEnum.TEXT_BOX, true, true));
 		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.priceAfterTax"),
-				"priceAfterTax", FieldType.TEXT_BOX, true, true));
+				"priceAfterTax", FieldTypeEnum.TEXT_BOX, true, true));
 		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.addQuantity"),
-				"addQuantity", FieldType.TEXT_BOX, true, true));
+				"addQuantity", FieldTypeEnum.TEXT_BOX, true, true));
 		listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.curQuantity"),
-				"curQuantity", FieldType.TEXT_BOX, true, true));
+				"curQuantity", FieldTypeEnum.TEXT_BOX, true, true));
 	}
 
 	@Override
-	protected void saveOrUpdate(Goods entity2) {
-		ConfigProvider.getInstance().getGoodsService().save(entity2);
+	protected void saveOrUpdate(Goods goods) {
+		ConfigProvider.getInstance().getGoodsService().save(goods);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.hbsoft.ssm.dao.impl;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -30,6 +31,21 @@ public class DetailInvoiceDaoImpl extends CustomHibernateDaoSupport implements D
 
 	public void saveOrUpdateAll(List<DetailInvoice> listDetailInvoice) {
 		getHibernateTemplate().saveOrUpdateAll(listDetailInvoice);
+	}
+
+	public List<DetailInvoice> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<DetailInvoice> findLikeName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void saveOrUpdate(Collection<DetailInvoice> collection) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

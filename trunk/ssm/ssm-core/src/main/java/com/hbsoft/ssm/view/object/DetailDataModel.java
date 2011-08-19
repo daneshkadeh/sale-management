@@ -3,65 +3,66 @@ package com.hbsoft.ssm.view.object;
 public class DetailDataModel {
 	private String label;
 	private String fieldName;
-	private FieldType fieldType;
+	private FieldTypeEnum fieldType;
 	private Class<?> clazz;
-	private boolean editable;
-	private boolean enable;
+	private boolean isEditable;
+	private boolean isEnable;
 
-	public DetailDataModel(String label, String fieldName, FieldType fieldType, boolean editable, boolean enable) {
+	public DetailDataModel(String label, String fieldName, FieldTypeEnum fieldType, boolean editable, boolean enable) {
 		this.label = label;
 		this.fieldName = fieldName;
 		this.fieldType = fieldType;
-		this.editable = editable;
-		this.enable = enable;
+		isEditable = editable;
+		isEnable = enable;
 		// this.setClazz(clazz);
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
 	}
 
 	public String getLabel() {
 		return label;
 	}
 
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public String getFieldName() {
 		return fieldName;
 	}
 
-	public void setFieldType(FieldType fieldType) {
-		this.fieldType = fieldType;
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
 	}
 
-	public FieldType getFieldType() {
+	public FieldTypeEnum getFieldType() {
 		return fieldType;
 	}
 
-	public void setEditable(boolean editable) {
-		this.editable = editable;
+	public void setFieldType(FieldTypeEnum fieldType) {
+		this.fieldType = fieldType;
 	}
 
-	public boolean isEditable() {
-		return editable;
-	}
-
-	public void setEnable(boolean enable) {
-		this.enable = enable;
-	}
-
-	public boolean isEnable() {
-		return enable;
+	public Class<?> getClazz() {
+		return clazz;
 	}
 
 	public void setClazz(Class<?> clazz) {
 		this.clazz = clazz;
 	}
 
-	public Class<?> getClazz() {
-		return clazz;
+	public boolean isEditable() {
+		return isEditable;
 	}
+
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
+	}
+
+	public boolean isEnable() {
+		return isEnable;
+	}
+
+	public void setEnable(boolean isEnable) {
+		this.isEnable = isEnable;
+	}
+
 }

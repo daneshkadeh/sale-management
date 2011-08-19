@@ -7,7 +7,7 @@ import com.hbsoft.ssm.entity.DetailInvoice;
 public interface DetailInvoiceService {
 	void save(DetailInvoice detailInvoice);
 
-	void saveOrUpdateAll(List<DetailInvoice> listDetailInvoice);
+	void saveOrUpdate(List<DetailInvoice> listDetailInvoice);
 
 	void update(DetailInvoice detailInvoice);
 

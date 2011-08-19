@@ -30,6 +30,8 @@ import com.hbsoft.ssm.service.CustomerService;
 import com.hbsoft.ssm.util.ConfigProvider;
 
 public class CustomerView extends JFrame {
+	private static final long serialVersionUID = 99225375801248919L;
+
 	private Log logger = LogFactory.getLog(CustomerView.class);
 
 	JLabel titleLabel;

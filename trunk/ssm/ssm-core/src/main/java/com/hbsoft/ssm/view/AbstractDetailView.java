@@ -2,6 +2,7 @@ package com.hbsoft.ssm.view;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,20 +30,21 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.hbsoft.ssm.entity.AbstractEntity;
 import com.hbsoft.ssm.view.object.DetailDataModel;
-import com.hbsoft.ssm.view.object.FieldType;
+import com.hbsoft.ssm.view.object.FieldTypeEnum;
 
-public abstract class AbstractDetailView<T> extends JFrame {
+public abstract class AbstractDetailView<T extends AbstractEntity> extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private Log logger = LogFactory.getLog(AbstractDetailView.class);
 
 	protected List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
 	protected Map<DetailDataModel, JComponent> mapFields = new HashMap<DetailDataModel, JComponent>();
-	JButton btnOK;
-	JButton btnCancel;
-	Class<T> clazz;
-	T entity;
+	private JButton btnOK;
+	private JButton btnCancel;
+	private Class<T> clazz;
+	private T entity;
 	private Integer JTEXTFIELD_SIZE = 20;
 
 	public AbstractDetailView() {
@@ -68,7 +70,7 @@ public abstract class AbstractDetailView<T> extends JFrame {
 		Container container = getContentPane();
 		container.setLayout(new MigLayout("fillx,insets 1, width :500:"));
 
-		JPanel pnlEdit = new JPanel(new MigLayout());
+		JPanel pnlEdit = new JPanel(new MigLayout("wrap 2"));
 		for (DetailDataModel dataModel : listDataModel) {
 			JLabel dataLabel = new JLabel(dataModel.getLabel());
 			pnlEdit.add(dataLabel);
@@ -83,21 +85,21 @@ public abstract class AbstractDetailView<T> extends JFrame {
 			default:
 				throw new RuntimeException("FieldType does not supported!");
 			}
-			pnlEdit.add(dataField, "wrap");
+			pnlEdit.add(dataField);
 		}
 
 		container.add(pnlEdit, "wrap");
 
 		btnOK = new JButton("OK");
-		btnOK.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		btnOK.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
 				btnOKActionPerformed(evt);
 			}
 		});
 
 		btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
 				btnCancelActionPerformed(evt);
 			}
 		});
@@ -132,7 +134,7 @@ public abstract class AbstractDetailView<T> extends JFrame {
 			DetailDataModel dataModel = getDataModelFromSetMethod(method.getName());
 			if (dataModel != null) {
 				JComponent component = mapFields.get(dataModel);
-				if (dataModel.getFieldType() == FieldType.TEXT_BOX) {
+				if (dataModel.getFieldType() == FieldTypeEnum.TEXT_BOX) {
 					JTextComponent textComponent = (JTextComponent) component;
 					try {
 						Method getMethod = entity2.getClass().getMethod(

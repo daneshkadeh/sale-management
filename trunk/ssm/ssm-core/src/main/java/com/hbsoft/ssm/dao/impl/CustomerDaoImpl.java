@@ -1,5 +1,6 @@
 package com.hbsoft.ssm.dao.impl;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -41,6 +42,11 @@ public class CustomerDaoImpl extends CustomHibernateDaoSupport implements Custom
 	public List<Customer> findLikeName(String name) {
 		List<Customer> list = getHibernateTemplate().find("from Customer where name like '%" + name + "%'");
 		return list;
+	}
+
+	public void saveOrUpdate(Collection<Customer> collection) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

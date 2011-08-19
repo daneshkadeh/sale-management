@@ -37,36 +37,38 @@ import com.hbsoft.ssm.service.InvoiceService;
 import com.hbsoft.ssm.util.ConfigProvider;
 
 public class InvoiceView extends JFrame {
+	private static final long serialVersionUID = -2959605446443105863L;
+
 	private Log logger = LogFactory.getLog(InvoiceView.class);
 
-	JLabel lblTitle;
-	JLabel lblInvoiceId;
-	JTextField tflInvoiceId;
-	JLabel lblCustomerId;
-	JTextField tflCustomerId;
-	JLabel lblCreatedDate;
-	JTextField tflCreatedDate;
-	JLabel lblTotalBeforeTax;
-	JTextField tflTotalBeforeTax;
-	JLabel lblTax;
-	JTextField tflTax;
-	JLabel lblTotalAfterTax;
-	JTextField tflTotalAfterTax;
-	JButton btnOK;
-	JButton btnCancel;
+	private JLabel lblTitle;
+	private JLabel lblInvoiceId;
+	private JTextField tflInvoiceId;
+	private JLabel lblCustomerId;
+	private JTextField tflCustomerId;
+	private JLabel lblCreatedDate;
+	private JTextField tflCreatedDate;
+	private JLabel lblTotalBeforeTax;
+	private JTextField tflTotalBeforeTax;
+	private JLabel lblTax;
+	private JTextField tflTax;
+	private JLabel lblTotalAfterTax;
+	private JTextField tflTotalAfterTax;
+	private JButton btnOK;
+	private JButton btnCancel;
 
-	JLabel lblDetailInvoice;
-	JButton btnAdd;
-	JButton btnUpdate;
-	JButton btnDelete;
-	JTable tblInvoiceDetailList;
-	JScrollPane jScrollPane1;
+	private JLabel lblDetailInvoice;
+	private JButton btnAdd;
+	private JButton btnUpdate;
+	private JButton btnDelete;
+	private JTable tblInvoiceDetailList;
+	private JScrollPane jScrollPane1;
 
 	private Boolean selector = false;
 	private Integer JTEXTFIELD_SIZE = 20;
-	InvoiceService invoiceService = ConfigProvider.getInstance().getInvoiceService();
-	DetailInvoiceService detailInvoiceService = ConfigProvider.getInstance().getDetailInvoiceService();
-	CustomerService customerService = ConfigProvider.getInstance().getCustomerSerice();
+	private InvoiceService invoiceService = ConfigProvider.getInstance().getInvoiceService();
+	private DetailInvoiceService detailInvoiceService = ConfigProvider.getInstance().getDetailInvoiceService();
+	private CustomerService customerService = ConfigProvider.getInstance().getCustomerSerice();
 
 	private Integer customerId;
 	private Date createdDate = new Date();
@@ -228,7 +230,7 @@ public class InvoiceView extends JFrame {
 	}
 
 	protected void btnCancelActionPerformed(ActionEvent evt) {
-		this.dispose();
+		dispose();
 	}
 
 	protected void btnOKActionPerformed(ActionEvent evt) {
@@ -251,10 +253,10 @@ public class InvoiceView extends JFrame {
 			for (DetailInvoice detailInvoice : listDetailInvoice) {
 				detailInvoice.setInvoiceId(invoice.getId());
 			}
-			detailInvoiceService.saveOrUpdateAll(listDetailInvoice);
+			detailInvoiceService.saveOrUpdate(listDetailInvoice);
 			JOptionPane.showMessageDialog(this, "Inserted new invoice successfully!", "Info",
 					JOptionPane.INFORMATION_MESSAGE);
-			this.dispose();
+			dispose();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Error when insert new invoice!", "Error", JOptionPane.ERROR_MESSAGE);
 			logger.error("Error when insert new invoice! Please check data!", e);

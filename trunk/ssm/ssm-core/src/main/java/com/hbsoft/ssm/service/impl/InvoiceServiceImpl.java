@@ -25,8 +25,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		invoiceDao.delete(invoice);
 	}
 
-	public Invoice findById(Invoice id) {
+	public Invoice findById(Integer id) {
 		return invoiceDao.findById(id);
 	}
-
 }
