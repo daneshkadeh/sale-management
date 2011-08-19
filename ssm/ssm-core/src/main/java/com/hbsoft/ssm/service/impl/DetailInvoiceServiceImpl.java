@@ -5,34 +5,34 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hbsoft.ssm.dao.DetailInvoiceDao;
+import com.hbsoft.ssm.dao.impl.DetailInvoiceDaoImpl;
 import com.hbsoft.ssm.entity.DetailInvoice;
 import com.hbsoft.ssm.service.DetailInvoiceService;
 
 @Service("detailInvoiceService")
 public class DetailInvoiceServiceImpl implements DetailInvoiceService {
 
-	@Autowired
-	DetailInvoiceDao detailInvoiceDao;
+    @Autowired
+    DetailInvoiceDaoImpl detailInvoiceDao;
 
-	public void save(DetailInvoice detailInvoice) {
-		detailInvoiceDao.save(detailInvoice);
-	}
+    public void save(DetailInvoice detailInvoice) {
+        detailInvoiceDao.save(detailInvoice);
+    }
 
-	public void saveOrUpdate(List<DetailInvoice> listDetailInvoice) {
-		detailInvoiceDao.saveOrUpdate(listDetailInvoice);
-	}
+    public void saveOrUpdate(List<DetailInvoice> listDetailInvoice) {
+        detailInvoiceDao.saveOrUpdateAll(listDetailInvoice);
+    }
 
-	public void update(DetailInvoice detailInvoice) {
-		detailInvoiceDao.update(detailInvoice);
-	}
+    public void update(DetailInvoice detailInvoice) {
+        detailInvoiceDao.update(detailInvoice);
+    }
 
-	public void delete(DetailInvoice detailInvoice) {
-		detailInvoiceDao.delete(detailInvoice);
-	}
+    public void delete(DetailInvoice detailInvoice) {
+        detailInvoiceDao.delete(detailInvoice);
+    }
 
-	public DetailInvoice findById(Integer id) {
-		return detailInvoiceDao.findById(id);
-	}
+    public DetailInvoice findById(Integer id) {
+        return detailInvoiceDao.findById(id);
+    }
 
 }

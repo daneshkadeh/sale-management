@@ -1,0 +1,51 @@
+package com.hbsoft.ssm.dao.impl;
+
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+import com.hbsoft.ssm.entity.BaseIdObject;
+
+public class HibernateBaseDaoImpl<T extends BaseIdObject> extends HibernateDaoSupport {
+    @Autowired
+    public void anyMethodName(SessionFactory sessionFactory) {
+        setSessionFactory(sessionFactory);
+    }
+
+    public void save(BaseIdObject entity) {
+        getHibernateTemplate().save(entity);
+    }
+
+    public void update(BaseIdObject entity) {
+        getHibernateTemplate().update(entity);
+    }
+
+    public void delete(BaseIdObject entity) {
+        getHibernateTemplate().delete(entity);
+
+    }
+
+    public void saveOrUpdateAll(List<T> list) {
+        getHibernateTemplate().saveOrUpdateAll(list);
+    }
+
+    public T findById(Integer id) {
+        List list = getHibernateTemplate().find("from " + getObjectClass() + " where id=?", id);
+        if (CollectionUtils.isNotEmpty(list)) {
+            return (T) list.get(0);
+        }
+        return null;
+    }
+
+    public List<T> findAll() {
+        List<T> list = getHibernateTemplate().find("from " + getObjectClass());
+        return list;
+    }
+
+    public String getObjectClass() {
+        return null;
+    }
+}
