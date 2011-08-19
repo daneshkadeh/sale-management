@@ -19,8 +19,8 @@ public class DetailInvoiceServiceImpl implements DetailInvoiceService {
 		detailInvoiceDao.save(detailInvoice);
 	}
 
-	public void saveOrUpdateAll(List<DetailInvoice> listDetailInvoice) {
-		detailInvoiceDao.saveOrUpdateAll(listDetailInvoice);
+	public void saveOrUpdate(List<DetailInvoice> listDetailInvoice) {
+		detailInvoiceDao.saveOrUpdate(listDetailInvoice);
 	}
 
 	public void update(DetailInvoice detailInvoice) {

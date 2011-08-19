@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_invoice")
-public class Invoice {
+public class Invoice extends AbstractEntity {
 	private Integer id;
 	private Date createdDate;
 	private Integer customerId;

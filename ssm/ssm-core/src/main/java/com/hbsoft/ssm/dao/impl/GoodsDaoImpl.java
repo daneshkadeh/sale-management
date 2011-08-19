@@ -1,5 +1,6 @@
 package com.hbsoft.ssm.dao.impl;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -29,7 +30,17 @@ public class GoodsDaoImpl extends CustomHibernateDaoSupport implements GoodsDao 
 	}
 
 	public List<Goods> findAll() {
-		return (List<Goods>) getHibernateTemplate().find("from Goods");
+		return getHibernateTemplate().find("from Goods");
+	}
+
+	public List<Goods> findLikeName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void saveOrUpdate(Collection<Goods> collection) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

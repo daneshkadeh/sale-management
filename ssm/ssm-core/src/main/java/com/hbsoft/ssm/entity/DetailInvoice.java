@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_detail_invoice")
-public class DetailInvoice {
+public class DetailInvoice extends AbstractEntity {
 	private Integer id;
 	private Integer goodsId;
 	private String goodsName;

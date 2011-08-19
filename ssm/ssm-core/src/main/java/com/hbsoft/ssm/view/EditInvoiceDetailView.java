@@ -15,29 +15,31 @@ import net.miginfocom.swing.MigLayout;
 import com.hbsoft.ssm.entity.DetailInvoice;
 
 public class EditInvoiceDetailView extends JFrame {
-	JLabel lblTitle;
+	private static final long serialVersionUID = 4260850965302203799L;
 
-	JLabel lblGoodsId;
-	JTextField tflGoodsId;
-	JLabel lblGoodsName;
-	JTextField tflGoodsName;
-	JLabel lblQuantity;
-	JTextField tflQuantity;
-	JLabel lblPriceBeforeTax;
-	JTextField tflPriceBeforeTax;
-	JLabel lblTax;
-	JTextField tflTax;
-	JLabel lblPriceAfterTax;
-	JTextField tflPriceAfterTax;
-	JLabel lblMoneyBeforeTax;
-	JTextField tflMoneyBeforeTax;
-	JLabel lblMoneyOfTax;
-	JTextField tflMoneyOfTax;
-	JLabel lblMoneyAfterTax;
-	JTextField tflMoneyAfterTax;
+	private JLabel lblTitle;
 
-	JButton btnOK;
-	JButton btnCancel;
+	private JLabel lblGoodsId;
+	private JTextField tflGoodsId;
+	private JLabel lblGoodsName;
+	private JTextField tflGoodsName;
+	private JLabel lblQuantity;
+	private JTextField tflQuantity;
+	private JLabel lblPriceBeforeTax;
+	private JTextField tflPriceBeforeTax;
+	private JLabel lblTax;
+	private JTextField tflTax;
+	private JLabel lblPriceAfterTax;
+	private JTextField tflPriceAfterTax;
+	private JLabel lblMoneyBeforeTax;
+	private JTextField tflMoneyBeforeTax;
+	private JLabel lblMoneyOfTax;
+	private JTextField tflMoneyOfTax;
+	private JLabel lblMoneyAfterTax;
+	private JTextField tflMoneyAfterTax;
+
+	private JButton btnOK;
+	private JButton btnCancel;
 
 	private Integer JTEXTFIELD_SIZE = 20;
 	private InvoiceView parentInvoiceView;
@@ -159,7 +161,7 @@ public class EditInvoiceDetailView extends JFrame {
 	}
 
 	protected void btnCancelActionPerformed(ActionEvent evt) {
-		this.dispose();
+		dispose();
 	}
 
 	protected void btnOKActionPerformed(ActionEvent evt) {
@@ -181,6 +183,6 @@ public class EditInvoiceDetailView extends JFrame {
 		detailInvoice.setMoneyOfTax(Double.valueOf(tflMoneyOfTax.getText()));
 		detailInvoice.setMoneyAfterTax(Double.valueOf(tflMoneyAfterTax.getText()));
 		parentInvoiceView.notifyEditInvoiceDetail(detailInvoice, isNew);
-		this.dispose();
+		dispose();
 	}
 }
