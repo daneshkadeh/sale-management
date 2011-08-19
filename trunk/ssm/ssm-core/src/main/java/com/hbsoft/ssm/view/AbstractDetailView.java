@@ -30,11 +30,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.hbsoft.ssm.entity.AbstractEntity;
+import com.hbsoft.ssm.entity.BaseIdObject;
 import com.hbsoft.ssm.view.object.DetailDataModel;
 import com.hbsoft.ssm.view.object.FieldTypeEnum;
 
-public abstract class AbstractDetailView<T extends AbstractEntity> extends JFrame {
+public abstract class AbstractDetailView<T extends BaseIdObject> extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private Log logger = LogFactory.getLog(AbstractDetailView.class);
