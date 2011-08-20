@@ -3,12 +3,8 @@ package com.hbsoft.ssm.exportdata;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.print.attribute.standard.MediaSize.Engineering;
-
-import com.hbasoft.model.Person;
-
 public class ExportThread extends Thread {
-	
+
 	private String targetFileName = "";
 	private String targetDirectory = "";
 	private String exportType = "";
@@ -16,14 +12,14 @@ public class ExportThread extends Thread {
 	private ArrayList dataList = null;
 	private ExportEngine exportEngine = null;
 	private Class classType;
-	
-	public ExportThread(String targetDir, String targetFileName,
-			String exportType, Class classType) {
-		this.targetDirectory = targetDir;
+
+	public ExportThread(String targetDir, String targetFileName, String exportType, Class classType) {
+		targetDirectory = targetDir;
 		this.targetFileName = targetFileName;
 		this.exportType = exportType;
 		this.classType = classType;
 	}
+
 	@Override
 	public void run() {
 		String outPutFile;
@@ -31,25 +27,26 @@ public class ExportThread extends Thread {
 		exportEngine = new ExportEngine(outPutFile, classType);
 		exportEngine.setDataList(dataList);
 		export();
-		if(isOpened == true) {
+		if (isOpened == true) {
 			openFile(outPutFile);
 		}
 	}
+
 	private void export() {
-		if(ExportType.EXCEL.equals(exportType)) {
+		if (ExportType.EXCEL.equals(exportType)) {
 			exportEngine.exportExcel();
-		} else if(ExportType.CVS.equals(exportType)) {
+		} else if (ExportType.CVS.equals(exportType)) {
 			exportEngine.exportCSV();
-		} else if(ExportType.XML.equals(exportType)) {
+		} else if (ExportType.XML.equals(exportType)) {
 			exportEngine.exportXML();
 		}
-		
+
 	}
-	
+
 	public void setDataList(ArrayList dataList) {
 		this.dataList = dataList;
 	}
-	
+
 	private void openFile(final String outPutFile) {
 		try {
 			Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + outPutFile);
@@ -57,11 +54,13 @@ public class ExportThread extends Thread {
 			e.printStackTrace();
 		}
 	}
+
 	public boolean isOpened() {
 		return isOpened;
 	}
+
 	public void setOpened(boolean isOpened) {
 		this.isOpened = isOpened;
 	}
-	
+
 }

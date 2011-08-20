@@ -8,12 +8,12 @@ public class DetailDataModel {
 	private boolean isEditable;
 	private boolean isEnable;
 
-	public DetailDataModel(String label, String fieldName, FieldTypeEnum fieldType, boolean editable, boolean enable) {
+	public DetailDataModel(String label, String fieldName, FieldTypeEnum fieldType, boolean isEditable, boolean isEnable) {
 		this.label = label;
 		this.fieldName = fieldName;
 		this.fieldType = fieldType;
-		isEditable = editable;
-		isEnable = enable;
+		this.isEditable = isEditable;
+		this.isEnable = isEnable;
 		// this.setClazz(clazz);
 	}
 
