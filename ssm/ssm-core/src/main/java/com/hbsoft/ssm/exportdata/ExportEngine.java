@@ -17,24 +17,22 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-import com.hbasoft.model.Person;
-
 public class ExportEngine {
 	private String outPutFile;
 	ArrayList dataList;
 	Class classType;
-	public ExportEngine(final String outPutFile,
-				Class classType) {
+
+	public ExportEngine(final String outPutFile, Class classType) {
 		super();
 		this.outPutFile = outPutFile;
 		this.classType = classType;
 	}
-	
+
 	public void exportExcel() {
 		try {
 			WritableWorkbook workbook = Workbook.createWorkbook(new File(outPutFile));
 			WritableSheet sheet = workbook.createSheet("Sheet0", 0);
-			//generate label
+			// generate label
 			Field[] fields = classType.getDeclaredFields();
 			int col1 = 0;
 			for (Field field : fields) {
@@ -43,50 +41,50 @@ public class ExportEngine {
 				col1++;
 			}
 			int row = 1;
-			for(int i=0; i< dataList.size(); i++) {
+			for (int i = 0; i < dataList.size(); i++) {
 				int col = 0;
-			for (Field field : fields) {
-				try {
-					Method method = classType.getMethod("get"+upperFirstChar(field.getName()));
+				for (Field field : fields) {
+					try {
+						Method method = classType.getMethod("get" + upperFirstChar(field.getName()));
 						Object obj = method.invoke(dataList.get(i), null);
 						Label labelData = null;
-						if(obj instanceof java.lang.Number) {
-							Number number = new Number(col, row, (Integer)obj);
+						if (obj instanceof java.lang.Number) {
+							Number number = new Number(col, row, (Integer) obj);
 							sheet.addCell(number);
-						} else if(obj instanceof String) {
-							 labelData = new Label(col, row, obj.toString());
-							 sheet.addCell(labelData);
-						} else if(obj instanceof Date) {
+						} else if (obj instanceof String) {
+							labelData = new Label(col, row, obj.toString());
+							sheet.addCell(labelData);
+						} else if (obj instanceof Date) {
 							DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
-							 labelData = new Label(col, row, df.format((Date)obj));
-							 sheet.addCell(labelData);
+							labelData = new Label(col, row, df.format((Date) obj));
+							sheet.addCell(labelData);
 						} else {
 							System.out.println("Not supported");
-						}	
-					
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+						}
+
+					} catch (SecurityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					col++;
 				}
-				
-				col++;
-			}
-			row++;
+				row++;
 			}
 			workbook.write();
-			workbook.close(); 
+			workbook.close();
 			System.out.println("create excel finish");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -99,23 +97,25 @@ public class ExportEngine {
 			e.printStackTrace();
 		}
 	}
-	public void exportCSV(){
-		
+
+	public void exportCSV() {
+
 	}
+
 	public void exportXML() {
-		
+
 	}
-	
+
 	private String upperFirstChar(String s) {
-		return s.substring(0,1).toUpperCase() + s.substring(1);
+		return s.substring(0, 1).toUpperCase() + s.substring(1);
 	}
-	
+
 	private void loadData() {
-		if(this.dataList == null) {
-			this.dataList = new ArrayList();
+		if (dataList == null) {
+			dataList = new ArrayList();
 		}
 	}
-	
+
 	public void setDataList(final ArrayList dataList) {
 		this.dataList = dataList;
 	}
