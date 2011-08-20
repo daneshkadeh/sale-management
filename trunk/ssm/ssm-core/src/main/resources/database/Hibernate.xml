@@ -15,14 +15,16 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
     		</props>
     	</property>
     	
-		<property name="annotatedClasses">
+    	<property name="pakagesToScan" value="com.hbsoft.ssm.entity"></property>
+    	
+		<!-- property name="annotatedClasses">
 			<list>
 				<value>com.hbsoft.ssm.entity.Customer</value>
 				<value>com.hbsoft.ssm.entity.Goods</value>
 				<value>com.hbsoft.ssm.entity.Invoice</value>
 				<value>com.hbsoft.ssm.entity.DetailInvoice</value>
 			</list>
-		</property>
+		</property -->
     </bean>
 
 </beans>    
