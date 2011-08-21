@@ -7,8 +7,4 @@ import com.hbsoft.ssm.entity.DetailInvoice;
 @Repository("detailInvoiceDao")
 public class DetailInvoiceDaoImpl extends HibernateBaseDaoImpl<DetailInvoice> {
 
-    public String getObjectClass() {
-        return "DetailInvoice";
-    }
-
 }

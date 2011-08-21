@@ -1,5 +1,7 @@
 package com.hbsoft.ssm.dao.impl;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -10,6 +12,21 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.hbsoft.ssm.entity.BaseIdObject;
 
 public class HibernateBaseDaoImpl<T extends BaseIdObject> extends HibernateDaoSupport {
+    private Class clazz;
+
+    public HibernateBaseDaoImpl() {
+        clazz = getEntityClass();
+    }
+
+    protected Class<T> getEntityClass() {
+        Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        return (Class<T>) controllerType;
+    }
+
+    public HibernateBaseDaoImpl(Class objectClazz) {
+        this.clazz = objectClazz;
+    }
+
     @Autowired
     public void anyMethodName(SessionFactory sessionFactory) {
         setSessionFactory(sessionFactory);
@@ -33,7 +50,7 @@ public class HibernateBaseDaoImpl<T extends BaseIdObject> extends HibernateDaoSu
     }
 
     public T findById(Integer id) {
-        List list = getHibernateTemplate().find("from " + getObjectClass() + " where id=?", id);
+        List list = getHibernateTemplate().find("from " + getEntityClass().getSimpleName() + " where id=?", id);
         if (CollectionUtils.isNotEmpty(list)) {
             return (T) list.get(0);
         }
@@ -41,11 +58,7 @@ public class HibernateBaseDaoImpl<T extends BaseIdObject> extends HibernateDaoSu
     }
 
     public List<T> findAll() {
-        List<T> list = getHibernateTemplate().find("from " + getObjectClass());
+        List<T> list = getHibernateTemplate().find("from " + getEntityClass().getSimpleName());
         return list;
-    }
-
-    public String getObjectClass() {
-        return null;
     }
 }

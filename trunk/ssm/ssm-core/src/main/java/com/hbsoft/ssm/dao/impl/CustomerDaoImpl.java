@@ -13,8 +13,4 @@ public class CustomerDaoImpl extends HibernateBaseDaoImpl<Customer> {
         List<Customer> list = getHibernateTemplate().find("from Customer where name like '%" + name + "%'");
         return list;
     }
-
-    public String getObjectClass() {
-        return "Customer";
-    }
 }
