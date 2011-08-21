@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.hbsoft.ssm.entity.Goods;
 import com.hbsoft.ssm.util.ConfigProvider;
-import com.hbsoft.ssm.util.i18n.ControlConfiguration;
 import com.hbsoft.ssm.view.object.DetailDataModel;
 import com.hbsoft.ssm.view.object.FieldTypeEnum;
 
@@ -13,20 +12,13 @@ public class ListGoodsView extends AbstractListView<Goods> {
 
     @Override
     protected void initialPresentationView(List<DetailDataModel> listDataModel) {
-        listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.id"), "id",
-                FieldTypeEnum.TEXT_BOX, true, true));
-        listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.name"), "name",
-                FieldTypeEnum.TEXT_BOX, true, true));
-        listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.priceBeforeTax"),
-                "priceBeforeTax", FieldTypeEnum.TEXT_BOX, true, true));
-        listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.tax"), "tax",
-                FieldTypeEnum.TEXT_BOX, true, true));
-        listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.priceAfterTax"),
-                "priceAfterTax", FieldTypeEnum.TEXT_BOX, true, true));
-        listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.addQuantity"),
-                "addQuantity", FieldTypeEnum.TEXT_BOX, true, true));
-        listDataModel.add(new DetailDataModel(ControlConfiguration.getText("label.EditGoodsView.curQuantity"),
-                "curQuantity", FieldTypeEnum.TEXT_BOX, true, true));
+        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX, true, true));
+        listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXT_BOX, true, true));
+        listDataModel.add(new DetailDataModel("priceBeforeTax", FieldTypeEnum.TEXT_BOX, true, true));
+        listDataModel.add(new DetailDataModel("tax", FieldTypeEnum.TEXT_BOX, true, true));
+        listDataModel.add(new DetailDataModel("priceAfterTax", FieldTypeEnum.TEXT_BOX, true, true));
+        listDataModel.add(new DetailDataModel("addQuantity", FieldTypeEnum.TEXT_BOX, true, true));
+        listDataModel.add(new DetailDataModel("curQuantity", FieldTypeEnum.TEXT_BOX, true, true));
     }
 
     @Override

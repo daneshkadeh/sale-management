@@ -19,8 +19,11 @@ public class HibernateBaseDaoImpl<T extends BaseIdObject> extends HibernateDaoSu
     }
 
     protected Class<T> getEntityClass() {
-        Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        return (Class<T>) controllerType;
+        if (clazz == null) {
+            Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            clazz = (Class<T>) controllerType;
+        }
+        return clazz;
     }
 
     public HibernateBaseDaoImpl(Class objectClazz) {

@@ -6,7 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.hbsoft.ssm.util.ConfigProvider;
-import com.hbsoft.ssm.util.i18n.ControlConfiguration;
+import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 import com.hbsoft.ssm.view.ListGoodsView;
 
 public class MainProgram {
@@ -15,8 +15,8 @@ public class MainProgram {
 
     public static void main(String[] args) {
         ConfigProvider configProvider = ConfigProvider.getInstance();
-        ControlConfiguration.init();
-        ControlConfiguration.setLabelMessageBundle(Locale.FRENCH, MESSSAGE_FILE);
+        ControlConfigUtils.init();
+        ControlConfigUtils.setLabelMessageBundle(Locale.FRENCH, MESSSAGE_FILE);
         /*
          * s_logger.info("Testing project Hibernate-Spring-log4j-Swing"); Customer customer1 = new Customer();
          * customer1.setName("customer1"); configProvider.getCustomerSerice().save(customer1);
@@ -49,6 +49,8 @@ public class MainProgram {
                 new ListGoodsView().setVisible(true);
             }
         });
+
+        // System.exit(0);
 
     }
 }
