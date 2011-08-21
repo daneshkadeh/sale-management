@@ -15,7 +15,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
     		</props>
     	</property>
     	
-    	<property name="pakagesToScan" value="com.hbsoft.ssm.entity"></property>
+    	<property name="packagesToScan" value="com.hbsoft.ssm.entity"></property>
     	
 		<!-- property name="annotatedClasses">
 			<list>

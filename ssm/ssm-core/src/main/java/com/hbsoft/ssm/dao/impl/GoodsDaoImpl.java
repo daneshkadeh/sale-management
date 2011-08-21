@@ -6,7 +6,5 @@ import com.hbsoft.ssm.entity.Goods;
 
 @Repository("goodsDao")
 public class GoodsDaoImpl extends HibernateBaseDaoImpl<Goods> {
-    public String getObjectClass() {
-        return "Goods";
-    }
+
 }
