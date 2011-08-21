@@ -31,12 +31,13 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.util.StringUtils;
 
-import com.hbsoft.ssm.entity.BaseIdObject;
+import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 import com.hbsoft.ssm.view.object.DetailDataModel;
 import com.hbsoft.ssm.view.object.FieldTypeEnum;
 
-public abstract class AbstractDetailView<T extends BaseIdObject> extends JFrame {
+public abstract class AbstractDetailView<T> extends JFrame {
     private static final long serialVersionUID = 1L;
 
     private Log logger = LogFactory.getLog(AbstractDetailView.class);
@@ -75,7 +76,9 @@ public abstract class AbstractDetailView<T extends BaseIdObject> extends JFrame 
 
         JPanel pnlEdit = new JPanel(new MigLayout("wrap 2"));
         for (DetailDataModel dataModel : listDataModel) {
-            JLabel dataLabel = new JLabel(dataModel.getLabel());
+            String label = ControlConfigUtils.getText("label." + getEntityClass().getSimpleName() + "."
+                    + dataModel.getFieldName());
+            JLabel dataLabel = new JLabel(label);
             pnlEdit.add(dataLabel);
             JTextField dataField = null;
             switch (dataModel.getFieldType()) {
@@ -142,7 +145,7 @@ public abstract class AbstractDetailView<T extends BaseIdObject> extends JFrame 
                     JTextComponent textComponent = (JTextComponent) component;
                     try {
                         Method getMethod = entity2.getClass().getMethod(
-                                "get" + capitalizeFirstChar(dataModel.getFieldName()));
+                                "get" + StringUtils.capitalize(dataModel.getFieldName()));
                         Class<?> paramClass = getMethod.getReturnType();
                         if (textComponent.getText().isEmpty()) {
                             method.invoke(entity2, (Object) null);
@@ -174,15 +177,11 @@ public abstract class AbstractDetailView<T extends BaseIdObject> extends JFrame 
 
     private DetailDataModel getDataModelFromSetMethod(String setMethodName) {
         for (DetailDataModel dataModel : listDataModel) {
-            if (setMethodName.equals("set" + capitalizeFirstChar(dataModel.getFieldName()))) {
+            if (setMethodName.equals("set" + StringUtils.capitalize(dataModel.getFieldName()))) {
                 return dataModel;
             }
         }
         return null;
-    }
-
-    private static String capitalizeFirstChar(String fieldName) {
-        return (fieldName.substring(0, 1).toUpperCase()) + fieldName.substring(1);
     }
 
     protected void btnCancelActionPerformed(ActionEvent evt) {

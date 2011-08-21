@@ -1,68 +1,48 @@
 package com.hbsoft.ssm.view.object;
 
 public class DetailDataModel {
-	private String label;
-	private String fieldName;
-	private FieldTypeEnum fieldType;
-	private Class<?> clazz;
-	private boolean isEditable;
-	private boolean isEnable;
+    private String fieldName;
+    private FieldTypeEnum fieldType;
+    private boolean isEditable;
+    private boolean isEnable;
 
-	public DetailDataModel(String label, String fieldName, FieldTypeEnum fieldType, boolean isEditable, boolean isEnable) {
-		this.label = label;
-		this.fieldName = fieldName;
-		this.fieldType = fieldType;
-		this.isEditable = isEditable;
-		this.isEnable = isEnable;
-		// this.setClazz(clazz);
-	}
+    public DetailDataModel(String fieldName, FieldTypeEnum fieldType, boolean isEditable, boolean isEnable) {
+        this.fieldName = fieldName;
+        this.fieldType = fieldType;
+        this.isEditable = isEditable;
+        this.isEnable = isEnable;
+    }
 
-	public String getLabel() {
-		return label;
-	}
+    public String getFieldName() {
+        return fieldName;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 
-	public String getFieldName() {
-		return fieldName;
-	}
+    public FieldTypeEnum getFieldType() {
+        return fieldType;
+    }
 
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
-	}
+    public void setFieldType(FieldTypeEnum fieldType) {
+        this.fieldType = fieldType;
+    }
 
-	public FieldTypeEnum getFieldType() {
-		return fieldType;
-	}
+    public boolean isEditable() {
+        return isEditable;
+    }
 
-	public void setFieldType(FieldTypeEnum fieldType) {
-		this.fieldType = fieldType;
-	}
+    public void setEditable(boolean isEditable) {
+        this.isEditable = isEditable;
+    }
 
-	public Class<?> getClazz() {
-		return clazz;
-	}
+    public boolean isEnable() {
+        return isEnable;
+    }
 
-	public void setClazz(Class<?> clazz) {
-		this.clazz = clazz;
-	}
-
-	public boolean isEditable() {
-		return isEditable;
-	}
-
-	public void setEditable(boolean isEditable) {
-		this.isEditable = isEditable;
-	}
-
-	public boolean isEnable() {
-		return isEnable;
-	}
-
-	public void setEnable(boolean isEnable) {
-		this.isEnable = isEnable;
-	}
+    public void setEnable(boolean isEnable) {
+        this.isEnable = isEnable;
+    }
 
 }

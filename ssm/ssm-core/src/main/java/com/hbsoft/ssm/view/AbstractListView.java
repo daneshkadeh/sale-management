@@ -3,9 +3,10 @@ package com.hbsoft.ssm.view;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,130 +20,187 @@ import javax.swing.table.DefaultTableModel;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.StringUtils;
+
+import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 import com.hbsoft.ssm.view.object.DetailDataModel;
 
-public abstract class AbstractListView<T extends Object> extends JFrame {
-	private static final long serialVersionUID = -1311942671249671111L;
-	JButton btnSearch;
-	JButton btnSort;
-	JTable tblListEntities;
-	JScrollPane jScrollPane;
+/**
+ * This is an abstract view for list entities. </br> Subclasses must override {@link #initialPresentationView(List)} and
+ * {@link #loadData()} to show.
+ * 
+ * 
+ * @author phamcongbang
+ * 
+ * @param <T>
+ */
+public abstract class AbstractListView<T> extends JFrame {
+    private static final long serialVersionUID = -1311942671249671111L;
+    Log logger = LogFactory.getLog(getClass());
 
-	// Class<T> clazz;
-	protected List<T> entities;
-	List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
-	public boolean selector = false;
+    JButton btnSearch;
+    JButton btnSort;
+    JTable tblListEntities;
+    JScrollPane jScrollPane;
 
-	public AbstractListView() {
-		// TODO: should get command class from T
-		// clazz = getCommandClass();
-		initialPresentationView(listDataModel);
-		initComponents();
-	}
+    // Class<T> clazz;
+    protected List<T> entities;
+    List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
+    public boolean selector = false;
 
-	protected abstract void initialPresentationView(List<DetailDataModel> listDataModel);
+    public AbstractListView() {
+        // TODO: should get command class from T
+        // clazz = getCommandClass();
+        initialPresentationView(listDataModel);
+        initComponents();
+    }
 
-	protected List<T> loadData() {
-		return new ArrayList<T>();
-	}
+    /**
+     * List fields need to show on the view.
+     * 
+     * @param listDataModel
+     */
+    protected abstract void initialPresentationView(List<DetailDataModel> listDataModel);
 
-	// protected Class<T> getCommandClass() {
-	// return null;
-	// }
+    /**
+     * 
+     * @return all data should be show on the view.
+     */
+    protected List<T> loadData() {
+        // TODO: all data must be get on this AbstractListView
+        return new ArrayList<T>();
+    }
 
-	private void initComponents() {
-		btnSearch = new JButton("Search");
-		btnSearch.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnSearchActionPerformed(evt);
-			}
-		});
-		btnSort = new JButton("Sort");
-		btnSort.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnSortActionPerformed(evt);
-			}
-		});
+    // protected Class<T> getCommandClass() {
+    // return null;
+    // }
 
-		tblListEntities = new JTable();
-		displayCustomerList();
-		tblListEntities.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tblListEntities.getSelectionModel().addListSelectionListener(new RowListener());
+    private void initComponents() {
+        btnSearch = new JButton("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+        btnSort = new JButton("Sort");
+        btnSort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSortActionPerformed(evt);
+            }
+        });
 
-		jScrollPane = new JScrollPane();
-		jScrollPane.setViewportView(tblListEntities);
+        tblListEntities = new JTable();
+        displayEntitiesList();
+        tblListEntities.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblListEntities.getSelectionModel().addListSelectionListener(new RowListener());
 
-		Container container = getContentPane();
-		container.setLayout(new MigLayout("fillx,insets 1, width :1000:"));
+        jScrollPane = new JScrollPane();
+        jScrollPane.setViewportView(tblListEntities);
 
-		JPanel pnlListEntities = new JPanel(new MigLayout());
-		pnlListEntities.add(jScrollPane, "wrap");
-		container.add(pnlListEntities, "wrap");
+        Container container = getContentPane();
+        container.setLayout(new MigLayout("fillx,insets 1, width :1000:"));
 
-		JPanel pnlButton = new JPanel(new MigLayout());
-		pnlButton.add(btnSearch);
-		pnlButton.add(btnSort);
-		container.add(pnlButton, "wrap");
-		pack();
-	}
+        JPanel pnlListEntities = new JPanel(new MigLayout());
+        pnlListEntities.add(jScrollPane, "wrap");
+        container.add(pnlListEntities, "wrap");
 
-	private void displayCustomerList() {
-		entities = loadData();
-		Vector<String> tableHeaders = new Vector<String>();
-		Vector<Vector<Object>> tableData = new Vector<Vector<Object>>();
-		for (DetailDataModel dataModel : listDataModel) {
-			tableHeaders.add(dataModel.getLabel());
-		}
-		for (T entity : entities) {
-			Vector<Object> oneRow = new Vector<Object>();
-			for (Method method : entity.getClass().getMethods()) {
-				DetailDataModel dataModel = getDataModelFromGetMethod(method.getName());
-				if (dataModel != null) {
-					try {
-						oneRow.add(method.invoke(entity));
-					} catch (Exception e) {
-						throw new RuntimeException("Can not invoke method " + method.getName());
-					}
-				}
-			}
-			tableData.add(oneRow);
-		}
-		tblListEntities.setModel(new DefaultTableModel(tableData, tableHeaders));
-		selector = false;
+        JPanel pnlButton = new JPanel(new MigLayout());
+        pnlButton.add(btnSearch);
+        pnlButton.add(btnSort);
+        container.add(pnlButton, "wrap");
+        pack();
+    }
 
-	}
+    private void displayEntitiesList() {
+        entities = loadData();
+        int numOfCols = listDataModel.size();
+        String[] tableHeaders = new String[numOfCols];
+        Class<?>[] tableClasses = new Class<?>[numOfCols];
+        Object[][] tableData = new Object[numOfCols][entities.size()];
 
-	private DetailDataModel getDataModelFromGetMethod(String setMethodName) {
-		for (DetailDataModel dataModel : listDataModel) {
-			if (setMethodName.equals("get" + capitalizeFirstChar(dataModel.getFieldName()))) {
-				return dataModel;
-			}
-		}
-		return null;
-	}
+        for (int i = 0; i < numOfCols; i++) {
+            String label = ControlConfigUtils.getText("label." + getEntityClass().getSimpleName() + "."
+                    + listDataModel.get(i).getFieldName());
+            tableHeaders[i] = label;
+            tableClasses[i] = getFieldClass(listDataModel.get(i).getFieldName());
+        }
 
-	private static String capitalizeFirstChar(String fieldName) {
-		return (fieldName.substring(0, 1).toUpperCase()) + fieldName.substring(1);
-	}
+        int iRow = 0;
+        for (T entity : entities) {
+            // Vector<Object> oneRow = new Vector<Object>();
+            Object[] rowData = new Object[listDataModel.size()];
+            for (int i = 0; i < numOfCols; i++) {
+                DetailDataModel dataModel = listDataModel.get(i);
+                Method method = null;
+                try {
+                    method = getEntityClass().getMethod("get" + StringUtils.capitalize(dataModel.getFieldName()));
+                } catch (Exception e) {
+                    throw new RuntimeException("Can not find GET method for field " + dataModel.getFieldName());
+                }
 
-	protected void btnSortActionPerformed(ActionEvent evt) {
-		// TODO Auto-generated method stub
-	}
+                try {
+                    // TODO: should handle cell in CellEditor
+                    rowData[i] = method.invoke(entity);
+                } catch (Exception e) {
+                    throw new RuntimeException("Can not invoke method " + method.getName());
+                }
+            }
 
-	protected void btnSearchActionPerformed(ActionEvent evt) {
-		// TODO Auto-generated method stub
+            tableData[iRow] = rowData;
+            iRow++;
+        }
+        tblListEntities.setModel(new DefaultTableModel(tableData, tableHeaders));
+        selector = false;
 
-	}
+    }
 
-	protected class RowListener implements ListSelectionListener {
-		public void valueChanged(ListSelectionEvent event) {
-			if (event.getValueIsAdjusting()) {
-				return;
-			}
-			try {
-				selector = true;
-			} catch (Exception e) {
-			}
-		}
-	}
+    private Class<?> getFieldClass(String fieldName) {
+        try {
+            Method method = getEntityClass().getMethod("get" + StringUtils.capitalize(fieldName));
+            return method.getReturnType();
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Can not find fieldName " + fieldName, e);
+        }
+    }
+
+    public static void main(String args[]) {
+
+    }
+
+    private DetailDataModel getDataModelFromGetMethod(String setMethodName) {
+        for (DetailDataModel dataModel : listDataModel) {
+            if (setMethodName.equals("get" + StringUtils.capitalize(dataModel.getFieldName()))) {
+                return dataModel;
+            }
+        }
+        return null;
+    }
+
+    protected Class<T> getEntityClass() {
+        Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        return (Class<T>) controllerType;
+    }
+
+    protected void btnSortActionPerformed(ActionEvent evt) {
+        // TODO Auto-generated method stub
+    }
+
+    protected void btnSearchActionPerformed(ActionEvent evt) {
+        // TODO Auto-generated method stub
+
+    }
+
+    protected class RowListener implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent event) {
+            if (event.getValueIsAdjusting()) {
+                return;
+            }
+            try {
+                selector = true;
+            } catch (Exception e) {
+            }
+        }
+    }
 }

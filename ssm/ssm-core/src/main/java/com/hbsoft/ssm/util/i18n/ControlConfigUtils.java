@@ -11,8 +11,8 @@ import java.util.TimeZone;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class ControlConfiguration {
-	private static Log s_log = LogFactory.getLog(ControlConfiguration.class);
+public class ControlConfigUtils {
+	private static Log s_log = LogFactory.getLog(ControlConfigUtils.class);
 	private static final char MNEMONIC_CHAR = '&';
 	private static final char TOOLTIP_CHAR = '#';
 	private final static String CONSTANT_PROPERTY_FILE = "/config/overrides.properties";
@@ -37,7 +37,7 @@ public class ControlConfiguration {
 	public static void init() {
 
 		try {
-			m_properties.load(ControlConfiguration.class.getResourceAsStream(CONSTANT_PROPERTY_FILE));
+			m_properties.load(ControlConfigUtils.class.getResourceAsStream(CONSTANT_PROPERTY_FILE));
 		} catch (IOException e) {
 			s_log.error("Resource not found: " + CONSTANT_PROPERTY_FILE);
 		}
