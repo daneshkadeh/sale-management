@@ -7,7 +7,7 @@ import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.view.object.DetailDataModel;
 import com.hbsoft.ssm.view.object.FieldTypeEnum;
 
-public class ListGoodsView extends AbstractListView<Goods> {
+public class ListGoodsView extends AbstractCommonListView<Goods> {
     private static final long serialVersionUID = -8034885109793508234L;
 
     @Override
