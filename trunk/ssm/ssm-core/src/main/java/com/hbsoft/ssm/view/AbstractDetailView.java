@@ -76,7 +76,7 @@ public abstract class AbstractDetailView<T> extends JFrame {
 
         JPanel pnlEdit = new JPanel(new MigLayout("wrap 2"));
         for (DetailDataModel dataModel : listDataModel) {
-            String label = ControlConfigUtils.getText("label." + getEntityClass().getSimpleName() + "."
+            String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + dataModel.getFieldName());
             JLabel dataLabel = new JLabel(label);
             pnlEdit.add(dataLabel);
