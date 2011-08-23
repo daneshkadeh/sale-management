@@ -25,9 +25,4 @@ public class ListGoodsView extends AbstractCommonListView<Goods> {
     protected List<Goods> loadData() {
         return ConfigProvider.getInstance().getGoodsService().findAll();
     }
-
-    // @Override
-    // protected Class<com.hbsoft.ssm.entity.Goods> getCommandClass() {
-    // return com.hbsoft.ssm.entity.Goods.class;
-    // }
 }
