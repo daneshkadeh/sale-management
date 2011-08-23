@@ -16,16 +16,16 @@
   
   <build>
     <plugins>
-	   <plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-compiler-plugin</artifactId>
-		<configuration>
-		 <source>1.5</source>
-		 <target>1.5</target>
-		</configuration>
-	   </plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<configuration>
+				<source>1.5</source>
+				<target>1.5</target>
+			</configuration>
+		</plugin>
 	</plugins>
-  
+	
   </build>
   
    <modules>
@@ -57,6 +57,7 @@
 	<swingx.version>1.6.1</swingx.version>
 	<miglayout.version>3.7.3.1</miglayout.version>
 	<testng.version>6.1.1</testng.version>
+	<jasperreport.version>4.1.1</jasperreport.version>
    </properties>   
    
 	<dependencyManagement>
@@ -174,18 +175,29 @@
 		<artifactId>antlr</artifactId>
 		<version>${antlr.version}</version>
 	</dependency>
-	    <!-- SwingX: extensions for Swing components -->
-         <dependency>
-            <groupId>org.swinglabs</groupId>
-            <artifactId>swingx</artifactId>
-            <version>${swingx.version}</version>
+	
+	<!-- SwingX: extensions for Swing components -->
+	<dependency>
+		<groupId>org.swinglabs</groupId>
+		<artifactId>swingx</artifactId>
+		<version>${swingx.version}</version>
     </dependency>
+	
+	<!-- MigLayout for swing -->
     <dependency>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout</artifactId>
 		<version>${miglayout.version}</version>
 		<classifier>swing</classifier>
+		
+	<!-- Jasper report -->	
     </dependency>
+		<dependency>
+		<groupId>net.sf.jasperreports</groupId>
+		<artifactId>jasperreports</artifactId>		
+		<version>${jasperreport.version}</version>
+	</dependency>
+	
   </dependencies>
   </dependencyManagement>
 </project>

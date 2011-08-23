@@ -1,6 +1,5 @@
 package com.hbsoft.ssm.view;
 
-import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -8,7 +7,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -38,8 +36,6 @@ public abstract class AbstractListView<T> extends JPanel {
     private static final long serialVersionUID = -1311942671249671111L;
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
-    private JButton btnSearch;
-    private JButton btnSort;
     private JTable tblListEntities;
     private JScrollPane jScrollPane;
 
@@ -73,19 +69,6 @@ public abstract class AbstractListView<T> extends JPanel {
 
     private void initComponents() {
         this.setLayout(new MigLayout("wrap", "grow, fill", "grow, fill"));
-
-        // btnSearch = new JButton("Search");
-        // btnSearch.addActionListener(new java.awt.event.ActionListener() {
-        // public void actionPerformed(java.awt.event.ActionEvent evt) {
-        // btnSearchActionPerformed(evt);
-        // }
-        // });
-        // btnSort = new JButton("Sort");
-        // btnSort.addActionListener(new java.awt.event.ActionListener() {
-        // public void actionPerformed(java.awt.event.ActionEvent evt) {
-        // btnSortActionPerformed(evt);
-        // }
-        // });
 
         tblListEntities = new JTable();
         displayEntitiesList();
@@ -181,14 +164,6 @@ public abstract class AbstractListView<T> extends JPanel {
     protected Class<T> getEntityClass() {
         Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         return (Class<T>) controllerType;
-    }
-
-    protected void btnSortActionPerformed(ActionEvent evt) {
-        // TODO Auto-generated method stub
-    }
-
-    protected void btnSearchActionPerformed(ActionEvent evt) {
-        // TODO Auto-generated method stub
     }
 
     protected class RowListener implements ListSelectionListener {
