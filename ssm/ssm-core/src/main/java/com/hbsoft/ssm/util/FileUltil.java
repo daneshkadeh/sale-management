@@ -7,7 +7,7 @@ import java.io.IOException;
  * @author Thanh Hoang
  *
  */
-public class FileHelper {
+public class FileUtil {
 	/**
 	 * Run file with suitable program
 	 * @param filePath       the path of file
