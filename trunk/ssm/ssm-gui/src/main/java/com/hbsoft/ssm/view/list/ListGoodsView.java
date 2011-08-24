@@ -1,17 +1,24 @@
-package com.hbsoft.ssm.view;
+package com.hbsoft.ssm.view.list;
 
 import java.util.List;
 
 import com.hbsoft.ssm.entity.Goods;
+import com.hbsoft.ssm.model.DetailDataModel;
+import com.hbsoft.ssm.model.FieldTypeEnum;
 import com.hbsoft.ssm.util.ConfigProvider;
-import com.hbsoft.ssm.view.object.DetailDataModel;
-import com.hbsoft.ssm.view.object.FieldTypeEnum;
+import com.hbsoft.ssm.view.AbstractCommonListView;
 
-public class EditGoodsView extends AbstractDetailView<Goods> {
-    private static final long serialVersionUID = 8247461633468843994L;
+/**
+ * The common list screen of {@link Goods} entity.
+ * 
+ * @author Phan Hong Phuc
+ * 
+ */
+public class ListGoodsView extends AbstractCommonListView<Goods> {
+    private static final long serialVersionUID = -8034885109793508234L;
 
     @Override
-    public void initialPresentationView(List<DetailDataModel> listDataModel) {
+    protected void initialPresentationView(List<DetailDataModel> listDataModel) {
         listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX, true, true));
         listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXT_BOX, true, true));
         listDataModel.add(new DetailDataModel("priceBeforeTax", FieldTypeEnum.TEXT_BOX, true, true));
@@ -22,13 +29,7 @@ public class EditGoodsView extends AbstractDetailView<Goods> {
     }
 
     @Override
-    protected void saveOrUpdate(Goods goods) {
-        ConfigProvider.getInstance().getGoodsService().save(goods);
+    protected List<Goods> loadData() {
+        return ConfigProvider.getInstance().getGoodsService().findAll();
     }
-
-    // @Override
-    // protected Class<Goods> getEntityClass() {
-    // return Goods.class;
-    // }
-
 }

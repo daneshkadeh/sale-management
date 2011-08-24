@@ -112,6 +112,8 @@
 		<groupId>antlr</groupId>
 		<artifactId>antlr</artifactId>
 	</dependency>
+	
+	<!-- Swingx -->
 	<dependency>
             <groupId>org.swinglabs</groupId>
             <artifactId>swingx</artifactId>
@@ -123,6 +125,12 @@
 		<artifactId>miglayout</artifactId>	  
 		<classifier>swing</classifier>
     </dependency>
+	
+	<!-- Beansbinding -->
+	<dependency>
+		<groupId>org.jdesktop</groupId>
+		<artifactId>beansbinding</artifactId>
+	</dependency>
 	
 	<!-- Jasper report -->
 	<dependency>

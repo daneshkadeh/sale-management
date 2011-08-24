@@ -1,5 +1,6 @@
 package com.hbsoft.ssm.view;
 
+import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -19,10 +20,13 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.decorator.ColorHighlighter;
+import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.springframework.util.StringUtils;
 
+import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
-import com.hbsoft.ssm.view.object.DetailDataModel;
 
 /**
  * This is an abstract view for list entities.
@@ -41,7 +45,7 @@ public abstract class AbstractListView<T> extends JPanel {
 
     // Class<T> clazz;
     protected List<T> entities;
-    List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
+    private List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
     public boolean selector = false;
 
     public AbstractListView() {
@@ -70,7 +74,10 @@ public abstract class AbstractListView<T> extends JPanel {
     private void initComponents() {
         this.setLayout(new MigLayout("wrap", "grow, fill", "grow, fill"));
 
-        tblListEntities = new JTable();
+        tblListEntities = new JXTable();
+        ((JXTable) tblListEntities).addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, null,
+                Color.RED));
+
         displayEntitiesList();
         tblListEntities.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblListEntities.getSelectionModel().addListSelectionListener(new RowListener());
@@ -98,7 +105,6 @@ public abstract class AbstractListView<T> extends JPanel {
         DefaultTableModel tableModel = createTableModel();
         tblListEntities.setModel(tableModel);
         selector = false;
-
     }
 
     private DefaultTableModel createTableModel() {

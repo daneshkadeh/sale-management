@@ -20,9 +20,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
+import com.hbsoft.ssm.view.list.ListGoodsView;
 
 public class MainProgram {
-    private static final Dimension WINDOW_MIN_SIZE = new Dimension(800, 600);
+    private static final Dimension WINDOW_MIN_SIZE = new Dimension(400, 300);
     public static Log s_logger = LogFactory.getLog(MainProgram.class);
     private static final String MESSSAGE_FILE = "i18n/messages";
 
