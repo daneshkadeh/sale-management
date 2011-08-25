@@ -22,8 +22,22 @@
 		<artifactId>ssm-core</artifactId>
 	</dependency>
 	<dependency>
-            <groupId>org.swinglabs</groupId>
-            <artifactId>swingx</artifactId>
+		<groupId>org.swinglabs</groupId>
+		<artifactId>swingx</artifactId>
     </dependency>
+	
+	<!-- Apache common -->
+	<dependency>
+		<groupId>commons-collections</groupId>
+		<artifactId>commons-collections</artifactId>		
+	</dependency>
+		<dependency>
+		<groupId>commons-beanutils</groupId>
+		<artifactId>commons-beanutils</artifactId>
+	</dependency>	
+	<dependency>
+		<groupId>commons-lang</groupId>
+		<artifactId>commons-lang</artifactId>
+	</dependency>
   </dependencies>
 </project>
