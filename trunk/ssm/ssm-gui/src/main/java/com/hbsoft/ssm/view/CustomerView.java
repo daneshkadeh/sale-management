@@ -1,6 +1,5 @@
 package com.hbsoft.ssm.view;
 
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,7 +7,6 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,7 +27,7 @@ import com.hbsoft.ssm.entity.Customer;
 import com.hbsoft.ssm.service.CustomerService;
 import com.hbsoft.ssm.util.ConfigProvider;
 
-public class CustomerView extends JFrame {
+public class CustomerView extends JPanel {
     private static final long serialVersionUID = 99225375801248919L;
 
     private Log logger = LogFactory.getLog(CustomerView.class);
@@ -63,7 +61,7 @@ public class CustomerView extends JFrame {
     }
 
     private void initComponents() {
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        // setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         titleLabel = new JLabel();
         titleLabel.setText("Customer management");
 
@@ -139,26 +137,26 @@ public class CustomerView extends JFrame {
         jScrollPane1.setViewportView(tblCustomerList);
 
         // Layout the screen
-        Container container = getContentPane();
-        container.setLayout(new MigLayout("fillx,insets 1, width :500:"));
+        // Container container = getContentPane();
+        this.setLayout(new MigLayout("fillx,insets 1, width :500:"));
 
         JPanel titlePanel = new JPanel(new MigLayout("wrap 1, center, width :500:"));
         titlePanel.add(titleLabel, "center");
-        container.add(titlePanel, "wrap");
+        this.add(titlePanel, "wrap");
 
         JPanel editPanel = new JPanel(new MigLayout());
         editPanel.add(idEditLabel, "gap unrelated");
         editPanel.add(idEditTextField, "wrap");
         editPanel.add(nameEditLabel);
         editPanel.add(nameEditTextField);
-        container.add(editPanel, "wrap");
+        this.add(editPanel, "wrap");
 
         JPanel editButtonPanel = new JPanel(new MigLayout());
         editButtonPanel.add(btnAdd, "gap 10");
         editButtonPanel.add(btnUpdate, "gap 10");
         editButtonPanel.add(btnDelete, "gap 10");
         editButtonPanel.add(btnGoToCart, "gap 10");
-        container.add(editButtonPanel, "wrap");
+        this.add(editButtonPanel, "wrap");
 
         JPanel listPanel = new JPanel(new MigLayout());
         listPanel.add(customerListLabel, "wrap");
@@ -166,14 +164,14 @@ public class CustomerView extends JFrame {
         listPanel.add(idSearchTextField, "");
         listPanel.add(nameSearchLabel, "gap 10");
         listPanel.add(nameSearchTextField, "wrap");
-        container.add(listPanel, "wrap");
+        this.add(listPanel, "wrap");
 
         JPanel tablePanel = new JPanel(new MigLayout());
         tablePanel.add(btnSearch, "wrap");
         tablePanel.add(jScrollPane1);
-        container.add(tablePanel);
+        this.add(tablePanel);
 
-        pack();
+        // pack();
     }
 
     private void displayCustomerList(List<Customer> customerList) {
