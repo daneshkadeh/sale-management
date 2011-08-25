@@ -49,8 +49,6 @@ public abstract class AbstractListView<T> extends JPanel {
     public boolean selector = false;
 
     public AbstractListView() {
-        // TODO: should get command class from T
-        // clazz = getCommandClass();
         initialPresentationView(listDataModel);
         initComponents();
     }

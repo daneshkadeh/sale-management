@@ -51,7 +51,6 @@ public abstract class AbstractDetailView<T> extends JFrame {
     private Integer JTEXTFIELD_SIZE = 20;
 
     public AbstractDetailView() {
-        // TODO: should get command class from T
         clazz = getEntityClass();
         try {
             entity = clazz.newInstance();
