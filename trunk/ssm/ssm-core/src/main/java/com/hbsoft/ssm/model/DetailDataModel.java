@@ -1,4 +1,4 @@
-package com.hbsoft.ssm.view.object;
+package com.hbsoft.ssm.model;
 
 public class DetailDataModel {
     private String fieldName;
