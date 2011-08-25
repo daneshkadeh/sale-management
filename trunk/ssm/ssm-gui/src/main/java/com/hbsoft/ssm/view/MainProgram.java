@@ -11,6 +11,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,7 +39,7 @@ public class MainProgram {
         ControlConfigUtils.setLabelMessageBundle(Locale.FRENCH, MESSSAGE_FILE);
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
             }
@@ -59,7 +60,6 @@ public class MainProgram {
         frame.setJMenuBar(menuBar);
         frame.pack();
         frame.setVisible(true);
-
     }
 
     private static JMenuBar createMenuBar(final JFrame frame) {
