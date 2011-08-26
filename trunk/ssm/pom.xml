@@ -59,6 +59,7 @@
 	<testng.version>6.1.1</testng.version>
 	<beansbinding.version>1.2.1</beansbinding.version>
 	<jasperreport.version>4.1.1</jasperreport.version>
+	<glazedlists.version>1.8.0</glazedlists.version>
    </properties>   
    
 	<dependencyManagement>
@@ -223,13 +224,19 @@
 		<version>${beansbinding.version}</version>
 	</dependency>
 	
+	<!-- GlazedList -->
+	<dependency>
+		<groupId> net.java.dev.glazedlists</groupId>
+		<artifactId>glazedlists_java15</artifactId>		
+		<version>${glazedlists.version}</version>
+	</dependency>
+	
 	<!-- Jasper report -->	
     <dependency>
 		<groupId>net.sf.jasperreports</groupId>
 		<artifactId>jasperreports</artifactId>		
 		<version>${jasperreport.version}</version>
 	</dependency>
-	
   </dependencies>
   </dependencyManagement>
 </project>

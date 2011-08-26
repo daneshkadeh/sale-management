@@ -145,6 +145,11 @@
 		<groupId>org.jdesktop</groupId>
 		<artifactId>beansbinding</artifactId>
 	</dependency>
+	<!-- GlazedList -->
+	<dependency>
+		<groupId> net.java.dev.glazedlists</groupId>
+		<artifactId>glazedlists_java15</artifactId>
+	</dependency>
 	
 	<!-- Jasper report -->
 	<dependency>

@@ -14,7 +14,6 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -24,6 +23,11 @@ import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.springframework.util.StringUtils;
+
+import ca.odell.glazedlists.EventList;
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.gui.TableFormat;
+import ca.odell.glazedlists.swing.EventTableModel;
 
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
@@ -37,6 +41,7 @@ import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
  * @param <T>
  */
 public abstract class AbstractListView<T> extends JPanel {
+    private static final Color HIGHLIGHT_ROW_COLOR = new Color(220, 220, 250);
     private static final long serialVersionUID = -1311942671249671111L;
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
@@ -44,8 +49,8 @@ public abstract class AbstractListView<T> extends JPanel {
     private JScrollPane jScrollPane;
 
     // Class<T> clazz;
-    protected List<T> entities;
-    private List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
+    protected EventList<T> entities;
+    private final List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
     public boolean selector = false;
 
     public AbstractListView() {
@@ -73,8 +78,9 @@ public abstract class AbstractListView<T> extends JPanel {
         this.setLayout(new MigLayout("wrap", "grow, fill", "grow, fill"));
 
         tblListEntities = new JXTable();
-        ((JXTable) tblListEntities).addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, null,
-                Color.RED));
+        // Highlight the row when mouse over.
+        ((JXTable) tblListEntities).addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW,
+                HIGHLIGHT_ROW_COLOR, null));
 
         displayEntitiesList();
         tblListEntities.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -84,9 +90,6 @@ public abstract class AbstractListView<T> extends JPanel {
 
         this.add(jScrollPane, "grow");
 
-        // JPanel pnlButton = new JPanel(new MigLayout());
-        // pnlButton.add(btnSearch);
-        // pnlButton.add(btnSort);
         JPanel pnlButton = createButtonPanel(tblListEntities);
         this.add(pnlButton);
     }
@@ -99,47 +102,10 @@ public abstract class AbstractListView<T> extends JPanel {
     protected abstract JPanel createButtonPanel(JTable table);
 
     private void displayEntitiesList() {
-        entities = loadData();
-        DefaultTableModel tableModel = createTableModel();
+        entities = GlazedLists.eventList(loadData());
+        EventTableModel<T> tableModel = new EventTableModel<T>(entities, new BasicTableFormat());
         tblListEntities.setModel(tableModel);
         selector = false;
-    }
-
-    private DefaultTableModel createTableModel() {
-        int numOfCols = listDataModel.size();
-
-        // Create names and clazzes for columns in tables.
-        String[] tableHeaders = new String[numOfCols];
-        Class<?>[] tableClasses = new Class<?>[numOfCols];
-        for (int i = 0; i < numOfCols; i++) {
-            String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
-                    + listDataModel.get(i).getFieldName());
-            tableHeaders[i] = label;
-            tableClasses[i] = getClassOfField(listDataModel.get(i).getFieldName());
-        }
-
-        // Create data for table.s
-        Object[][] tableData = new Object[numOfCols][entities.size()];
-        int iRow = 0;
-        try {
-            for (T entity : entities) {
-                Object[] rowData = new Object[listDataModel.size()];
-                for (int i = 0; i < numOfCols; i++) {
-                    DetailDataModel dataModel = listDataModel.get(i);
-                    Method method = getGetterMethoḍ̣̣̣̣(dataModel.getFieldName());
-                    // TODO: should handle cell in CellEditor
-                    rowData[i] = method.invoke(entity);
-                }
-                tableData[iRow] = rowData;
-                iRow++;
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-        return new DefaultTableModel(tableData, tableHeaders);
     }
 
     private Method getGetterMethoḍ̣̣̣̣(String fieldName) {
@@ -175,10 +141,34 @@ public abstract class AbstractListView<T> extends JPanel {
             if (event.getValueIsAdjusting()) {
                 return;
             }
+            selector = true;
+        }
+    }
+
+    private class BasicTableFormat implements TableFormat<T> {
+
+        public int getColumnCount() {
+            return listDataModel.size();
+        }
+
+        public String getColumnName(int column) {
+            return ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
+                    + listDataModel.get(column).getFieldName());
+        }
+
+        public Object getColumnValue(T entity, int column) {
+            DetailDataModel dataModel = listDataModel.get(column);
+            Method method = getGetterMethoḍ̣̣̣̣(dataModel.getFieldName());
             try {
-                selector = true;
-            } catch (Exception e) {
+                return method.invoke(entity);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                throw new RuntimeException();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+                throw new RuntimeException();
             }
         }
     }
+
 }
