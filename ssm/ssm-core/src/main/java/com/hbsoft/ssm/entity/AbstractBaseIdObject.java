@@ -14,7 +14,7 @@ import javax.persistence.MappedSuperclass;
  */
 
 @MappedSuperclass
-public class BaseIdObject {
+public abstract class AbstractBaseIdObject {
     private Integer id;
 
     public void setId(Integer id) {

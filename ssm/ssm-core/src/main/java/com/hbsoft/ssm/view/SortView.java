@@ -1,5 +1,6 @@
 package com.hbsoft.ssm.view;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -10,9 +11,16 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.ListCellRenderer;
+import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.SortOrder;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -65,10 +73,21 @@ public class SortView extends JPanel {
         // Add a null value at head of list to display a blank item in combobox
         colNamesList.add(0, StringUtils.EMPTY);
 
-        String[] orderValues = new String[] { "<", ">" };
-        initAndAddKeyRow("SortView.Label.Key1", cbbNames1, cbbOrder1, colNamesList, orderValues);
-        initAndAddKeyRow("SortView.Label.Key2", cbbNames2, cbbOrder2, colNamesList, orderValues);
-        initAndAddKeyRow("SortView.Label.Key3", cbbNames3, cbbOrder3, colNamesList, orderValues);
+        SortOrder[] orderValues = new SortOrder[] { SortOrder.ASCENDING, SortOrder.DESCENDING };
+        cbbNames1 = new JComboBox(new DefaultComboBoxModel(colNamesList.toArray()));
+        cbbNames2 = new JComboBox(new DefaultComboBoxModel(colNamesList.toArray()));
+        cbbNames3 = new JComboBox(new DefaultComboBoxModel(colNamesList.toArray()));
+
+        ComboboxOrderRenderer orderRenderer = new ComboboxOrderRenderer();
+        cbbOrder1 = new JComboBox(orderValues);
+        cbbOrder1.setRenderer(orderRenderer);
+        cbbOrder2 = new JComboBox(orderValues);
+        cbbOrder2.setRenderer(orderRenderer);
+        cbbOrder3 = new JComboBox(orderValues);
+        cbbOrder3.setRenderer(orderRenderer);
+        initAndAddKeyRow("SortView.Label.Key1", cbbNames1, cbbOrder1);
+        initAndAddKeyRow("SortView.Label.Key2", cbbNames2, cbbOrder2);
+        initAndAddKeyRow("SortView.Label.Key3", cbbNames3, cbbOrder3);
 
         // Delete and Advance button
         JPanel pnl1 = new JPanel();
@@ -99,11 +118,33 @@ public class SortView extends JPanel {
     private JButton createSortButton() {
         JButton sortButton = new JButton(ControlConfigUtils.getString("SortView.Button.Sort"));
         sortButton.addActionListener(new ActionListener() {
+            /**
+             * {@inheritDoc}
+             */
             public void actionPerformed(ActionEvent e) {
-                // TODO
+                List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
+                if (StringUtils.isNotBlank((String) cbbNames1.getSelectedItem())) {
+                    sortKeys.add(createSortKey(table, cbbNames1, cbbOrder1));
+                }
+                if (StringUtils.isNotBlank((String) cbbNames2.getSelectedItem())) {
+                    sortKeys.add(createSortKey(table, cbbNames2, cbbOrder2));
+                }
+                if (StringUtils.isNotBlank((String) cbbNames3.getSelectedItem())) {
+                    sortKeys.add(createSortKey(table, cbbNames3, cbbOrder3));
+                }
+                TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+                sorter.setSortKeys(sortKeys);
+                table.setRowSorter(sorter);
+
             }
         });
         return sortButton;
+    }
+
+    private SortKey createSortKey(JTable tbl, JComboBox cbbNames, JComboBox cbbOrder) {
+        int columnIndex = getColumnIndex(tbl, (String) cbbNames.getSelectedItem());
+        SortOrder sortOrder = (SortOrder) cbbOrder.getSelectedItem();
+        return new SortKey(columnIndex, sortOrder);
     }
 
     private JButton createCancelButton() {
@@ -140,12 +181,9 @@ public class SortView extends JPanel {
         return btnDel;
     }
 
-    private void initAndAddKeyRow(String stringCode, JComboBox cbbNames, JComboBox cbbOrder, List<String> colNamesList,
-            String[] orderValues) {
+    private void initAndAddKeyRow(String stringCode, JComboBox cbbNames, JComboBox cbbOrder) {
         add(new JLabel(ControlConfigUtils.getString(stringCode)));
-        cbbNames = new JComboBox(new DefaultComboBoxModel(colNamesList.toArray()));
         add(cbbNames);
-        cbbOrder = new JComboBox(orderValues);
         add(cbbOrder);
     }
 
@@ -156,5 +194,40 @@ public class SortView extends JPanel {
             colNames.add(tbl.getColumnName(i));
         }
         return colNames;
+    }
+
+    private int getColumnIndex(JTable tbl, String columnName) {
+        for (int i = 0; i < tbl.getColumnCount(); i++) {
+            if (columnName.equals(tbl.getColumnName(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Renderer for the comboBox order.
+     * 
+     * @author Phan Hong Phuc
+     * 
+     */
+    private class ComboboxOrderRenderer implements ListCellRenderer {
+        /**
+         * {@inheritDoc}
+         */
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+                boolean cellHasFocus) {
+            SortOrder order = (SortOrder) value;
+            switch (order) {
+            case ASCENDING:
+                return new JLabel("<");
+            case DESCENDING:
+                return new JLabel(">");
+            default:
+                break;
+            }
+            return null;
+        }
+
     }
 }
