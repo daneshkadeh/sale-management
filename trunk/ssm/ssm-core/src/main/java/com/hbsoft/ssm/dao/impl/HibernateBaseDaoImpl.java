@@ -9,9 +9,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import com.hbsoft.ssm.entity.BaseIdObject;
+import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 
-public class HibernateBaseDaoImpl<T extends BaseIdObject> extends HibernateDaoSupport {
+public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSupport {
     private Class clazz;
 
     public HibernateBaseDaoImpl() {
@@ -35,15 +35,15 @@ public class HibernateBaseDaoImpl<T extends BaseIdObject> extends HibernateDaoSu
         setSessionFactory(sessionFactory);
     }
 
-    public void save(BaseIdObject entity) {
+    public void save(AbstractBaseIdObject entity) {
         getHibernateTemplate().save(entity);
     }
 
-    public void update(BaseIdObject entity) {
+    public void update(AbstractBaseIdObject entity) {
         getHibernateTemplate().update(entity);
     }
 
-    public void delete(BaseIdObject entity) {
+    public void delete(AbstractBaseIdObject entity) {
         getHibernateTemplate().delete(entity);
 
     }

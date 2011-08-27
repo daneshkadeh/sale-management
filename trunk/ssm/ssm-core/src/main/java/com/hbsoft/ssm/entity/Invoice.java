@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_invoice")
-public class Invoice extends BaseIdObject {
+public class Invoice extends AbstractBaseIdObject {
     private Date createdDate;
     private Integer customerId;
     private Double totalBeforeTax;

@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 
 /**
@@ -34,7 +35,7 @@ import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
  * 
  * @param <T>
  */
-public abstract class AbstractCommonListView<T> extends AbstractListView<T> {
+public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> extends AbstractListView<T> {
     private static final long serialVersionUID = -7157596822400727053L;
 
     @Override

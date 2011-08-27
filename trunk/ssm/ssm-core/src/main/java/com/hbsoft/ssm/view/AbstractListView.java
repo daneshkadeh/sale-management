@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -26,9 +27,12 @@ import org.springframework.util.StringUtils;
 
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.SortedList;
 import ca.odell.glazedlists.gui.TableFormat;
 import ca.odell.glazedlists.swing.EventTableModel;
+import ca.odell.glazedlists.swing.TableComparatorChooser;
 
+import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 
@@ -40,7 +44,7 @@ import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
  * 
  * @param <T>
  */
-public abstract class AbstractListView<T> extends JPanel {
+public abstract class AbstractListView<T extends AbstractBaseIdObject> extends JPanel {
     private static final Color HIGHLIGHT_ROW_COLOR = new Color(220, 220, 250);
     private static final long serialVersionUID = -1311942671249671111L;
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
@@ -85,6 +89,11 @@ public abstract class AbstractListView<T> extends JPanel {
         displayEntitiesList();
         tblListEntities.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblListEntities.getSelectionModel().addListSelectionListener(new RowListener());
+
+        // Install sorting for table
+        SortedList<T> sortedEntities = new SortedList<T>(entities, new DefaultEntityComparator());
+        TableComparatorChooser<T> tableComparatorChooser = TableComparatorChooser.install(tblListEntities,
+                sortedEntities, TableComparatorChooser.MULTIPLE_COLUMN_MOUSE);
 
         jScrollPane = new JScrollPane(tblListEntities);
 
@@ -145,17 +154,35 @@ public abstract class AbstractListView<T> extends JPanel {
         }
     }
 
+    /**
+     * Set up columns for the table.
+     * 
+     * @author Phan Hong Phuc
+     * 
+     */
     private class BasicTableFormat implements TableFormat<T> {
 
+        /**
+         * 
+         * {@inheritDoc}
+         */
         public int getColumnCount() {
             return listDataModel.size();
         }
 
+        /**
+         * 
+         * {@inheritDoc}
+         */
         public String getColumnName(int column) {
             return ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + listDataModel.get(column).getFieldName());
         }
 
+        /**
+         * 
+         * {@inheritDoc}
+         */
         public Object getColumnValue(T entity, int column) {
             DetailDataModel dataModel = listDataModel.get(column);
             Method method = getGetterMethoḍ̣̣̣̣(dataModel.getFieldName());
@@ -169,6 +196,24 @@ public abstract class AbstractListView<T> extends JPanel {
                 throw new RuntimeException();
             }
         }
+    }
+
+    /**
+     * Default comparator for the entity.
+     * 
+     * @author Phan Hong Phuc
+     * 
+     */
+    private class DefaultEntityComparator implements Comparator<T> {
+
+        /**
+         * 
+         * By default 2 entity compare by their Id. TODO: consider last update date field
+         */
+        public int compare(T t1, T t2) {
+            return t1.getId() - t2.getId();
+        }
+
     }
 
 }
