@@ -41,9 +41,26 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
     @Override
     protected JPanel createButtonPanel(final JTable table) {
         JPanel pnlButton = new JPanel();
+
         JButton btnDisplayAll = new JButton(ControlConfigUtils.getString("ListView.Common.Button.DisplayAll"));
+        btnDisplayAll.addActionListener(new ActionListener() {
+            @SuppressWarnings("unchecked")
+            public void actionPerformed(ActionEvent e) {
+                AdvanceTableModel tableModel = (AdvanceTableModel) table.getModel();
+                tableModel.showAllRows();
+            }
+        });
+
         JButton btnDisplaySelectedRow = new JButton(
                 ControlConfigUtils.getString("ListView.Common.Button.DisplaySelectedRow"));
+        btnDisplaySelectedRow.addActionListener(new ActionListener() {
+            @SuppressWarnings("unchecked")
+            public void actionPerformed(ActionEvent e) {
+                AdvanceTableModel tableModel = (AdvanceTableModel) table.getModel();
+                tableModel.hideRows(getUnselectedRows(table));
+            }
+        });
+
         JButton btnSearch = new JButton(ControlConfigUtils.getString("ListView.Common.Button.Search"));
 
         JButton btnSort = new JButton(ControlConfigUtils.getString("ListView.Common.Button.Sort"));
@@ -92,6 +109,19 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
         frame.setContentPane(panel);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private int[] getUnselectedRows(JTable table) {
+        int unselectedRowCount = table.getRowCount() - table.getSelectedRowCount();
+        int[] unselectedRows = new int[unselectedRowCount];
+        int k = 0;
+        for (int i = 0; i < table.getRowCount(); i++) {
+            if (!table.getSelectionModel().isSelectedIndex(i)) {
+                unselectedRows[k++] = i;
+            }
+        }
+
+        return unselectedRows;
     }
 
 }
