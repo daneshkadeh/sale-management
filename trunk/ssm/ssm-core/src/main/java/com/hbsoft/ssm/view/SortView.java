@@ -37,18 +37,16 @@ import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 public class SortView extends JPanel {
     private static final long serialVersionUID = -4257029787878899984L;
 
+    private static final int NUM_OF_KEYS = 3;
+
     // Table input
     private JTable table;
 
     // ComboBox column name
-    private JComboBox cbbNames1;
-    private JComboBox cbbNames2;
-    private JComboBox cbbNames3;
+    private List<JComboBox> cbbNames = new ArrayList<JComboBox>(NUM_OF_KEYS);
 
     // ComboBox order
-    private JComboBox cbbOrder1;
-    private JComboBox cbbOrder2;
-    private JComboBox cbbOrder3;
+    private List<JComboBox> cbbOrders = new ArrayList<JComboBox>(NUM_OF_KEYS);
 
     // Checkbox
     private JCheckBox cbxSaveSortCriteria;
@@ -69,25 +67,20 @@ public class SortView extends JPanel {
     private void initComponents() {
         setLayout(new MigLayout("insets 20 20 20 20, wrap 3"));
 
+        // Sort keys
         List<String> colNamesList = getColumnNames(table);
         // Add a null value at head of list to display a blank item in combobox
         colNamesList.add(0, StringUtils.EMPTY);
-
         SortOrder[] orderValues = new SortOrder[] { SortOrder.ASCENDING, SortOrder.DESCENDING };
-        cbbNames1 = new JComboBox(new DefaultComboBoxModel(colNamesList.toArray()));
-        cbbNames2 = new JComboBox(new DefaultComboBoxModel(colNamesList.toArray()));
-        cbbNames3 = new JComboBox(new DefaultComboBoxModel(colNamesList.toArray()));
-
         ComboboxOrderRenderer orderRenderer = new ComboboxOrderRenderer();
-        cbbOrder1 = new JComboBox(orderValues);
-        cbbOrder1.setRenderer(orderRenderer);
-        cbbOrder2 = new JComboBox(orderValues);
-        cbbOrder2.setRenderer(orderRenderer);
-        cbbOrder3 = new JComboBox(orderValues);
-        cbbOrder3.setRenderer(orderRenderer);
-        initAndAddKeyRow("SortView.Label.Key1", cbbNames1, cbbOrder1);
-        initAndAddKeyRow("SortView.Label.Key2", cbbNames2, cbbOrder2);
-        initAndAddKeyRow("SortView.Label.Key3", cbbNames3, cbbOrder3);
+        for (int i = 0; i < NUM_OF_KEYS; i++) {
+            JComboBox cbbName = new JComboBox(new DefaultComboBoxModel(colNamesList.toArray()));
+            cbbNames.add(cbbName);
+            JComboBox cbbOrder = new JComboBox(orderValues);
+            cbbOrder.setRenderer(orderRenderer);
+            cbbOrders.add(cbbOrder);
+            initAndAddKeyRow("SortView.Label.Key", i, cbbName, cbbOrder);
+        }
 
         // Delete and Advance button
         JPanel pnl1 = new JPanel();
@@ -123,19 +116,16 @@ public class SortView extends JPanel {
              */
             public void actionPerformed(ActionEvent e) {
                 List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
-                if (StringUtils.isNotBlank((String) cbbNames1.getSelectedItem())) {
-                    sortKeys.add(createSortKey(table, cbbNames1, cbbOrder1));
-                }
-                if (StringUtils.isNotBlank((String) cbbNames2.getSelectedItem())) {
-                    sortKeys.add(createSortKey(table, cbbNames2, cbbOrder2));
-                }
-                if (StringUtils.isNotBlank((String) cbbNames3.getSelectedItem())) {
-                    sortKeys.add(createSortKey(table, cbbNames3, cbbOrder3));
+                for (int i = 0; i < NUM_OF_KEYS; i++) {
+                    JComboBox cbbName = cbbNames.get(i);
+                    JComboBox cbbOrder = cbbOrders.get(i);
+                    if (StringUtils.isNotBlank((String) cbbName.getSelectedItem())) {
+                        sortKeys.add(createSortKey(table, cbbName, cbbOrder));
+                    }
                 }
                 TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
                 sorter.setSortKeys(sortKeys);
                 table.setRowSorter(sorter);
-
             }
         });
         return sortButton;
@@ -172,17 +162,17 @@ public class SortView extends JPanel {
         JButton btnDel = new JButton(ControlConfigUtils.getString("SortView.Button.Delete"));
         btnDel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cbbNames1.setSelectedItem(StringUtils.EMPTY);
-                cbbNames2.setSelectedItem(StringUtils.EMPTY);
-                cbbNames3.setSelectedItem(StringUtils.EMPTY);
+                for (JComboBox cbbName : cbbNames) {
+                    cbbName.setSelectedItem(StringUtils.EMPTY);
+                }
             }
         });
 
         return btnDel;
     }
 
-    private void initAndAddKeyRow(String stringCode, JComboBox cbbNames, JComboBox cbbOrder) {
-        add(new JLabel(ControlConfigUtils.getString(stringCode)));
+    private void initAndAddKeyRow(String stringCode, int keyNumber, JComboBox cbbNames, JComboBox cbbOrder) {
+        add(new JLabel(ControlConfigUtils.getString(stringCode) + keyNumber));
         add(cbbNames);
         add(cbbOrder);
     }

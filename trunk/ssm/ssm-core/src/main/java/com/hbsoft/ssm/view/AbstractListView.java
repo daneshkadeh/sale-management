@@ -6,8 +6,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -15,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -25,12 +27,7 @@ import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.springframework.util.StringUtils;
 
-import ca.odell.glazedlists.EventList;
-import ca.odell.glazedlists.GlazedLists;
-import ca.odell.glazedlists.SortedList;
-import ca.odell.glazedlists.gui.TableFormat;
-import ca.odell.glazedlists.swing.EventTableModel;
-import ca.odell.glazedlists.swing.TableComparatorChooser;
+import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 import com.hbsoft.ssm.model.DetailDataModel;
@@ -49,11 +46,11 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
     private static final long serialVersionUID = -1311942671249671111L;
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
-    private JTable tblListEntities;
+    private JXTable tblListEntities;
     private JScrollPane jScrollPane;
 
     // Class<T> clazz;
-    protected EventList<T> entities;
+    protected List<T> entities;
     private final List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
     public boolean selector = false;
 
@@ -83,17 +80,20 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
 
         tblListEntities = new JXTable();
         // Highlight the row when mouse over.
-        ((JXTable) tblListEntities).addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW,
-                HIGHLIGHT_ROW_COLOR, null));
+        tblListEntities
+                .addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, HIGHLIGHT_ROW_COLOR, null));
 
         displayEntitiesList();
-        tblListEntities.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblListEntities.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tblListEntities.getSelectionModel().addListSelectionListener(new RowListener());
 
+        // TableRowSorter<TableModel> rowSorter = (TableRowSorter<TableModel>) tblListEntities.getRowSorter();
+        // tblListEntities.getModel().
+
         // Install sorting for table
-        SortedList<T> sortedEntities = new SortedList<T>(entities, new DefaultEntityComparator());
-        TableComparatorChooser<T> tableComparatorChooser = TableComparatorChooser.install(tblListEntities,
-                sortedEntities, TableComparatorChooser.MULTIPLE_COLUMN_MOUSE);
+        // SortedList<T> sortedEntities = new SortedList<T>(entities, new DefaultEntityComparator());
+        // TableComparatorChooser<T> tableComparatorChooser = TableComparatorChooser.install(tblListEntities,
+        // sortedEntities, TableComparatorChooser.MULTIPLE_COLUMN_MOUSE);
 
         jScrollPane = new JScrollPane(tblListEntities);
 
@@ -111,23 +111,34 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
     protected abstract JPanel createButtonPanel(JTable table);
 
     private void displayEntitiesList() {
-        entities = GlazedLists.eventList(loadData());
-        EventTableModel<T> tableModel = new EventTableModel<T>(entities, new BasicTableFormat());
+        entities = loadData();
+        // EventTableModel<T> tableModel = new EventTableModel<T>(entities, new BasicTableFormat());
+        AdvanceTableModel tableModel = new AdvanceTableModel();
         tblListEntities.setModel(tableModel);
         selector = false;
     }
 
-    private Method getGetterMethoḍ̣̣̣̣(String fieldName) {
+    /**
+     * Return getter or setter method base on <code>getter</code> parameter.
+     * 
+     * @param fieldName
+     *            the name of property
+     * @param getter
+     *            <code>true</code> getter method, <code>false</code> setter method.
+     * @return
+     */
+    private Method getGetterSetterMethod(String fieldName, boolean getter) {
         try {
-            return getEntityClass().getMethod("get" + StringUtils.capitalize(fieldName));
+            String methodPrefix = getter ? "get" : "set";
+            return getEntityClass().getMethod(methodPrefix + StringUtils.capitalize(fieldName));
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException("field " + fieldName + " or its getter method does not exist in class "
+            throw new RuntimeException("field " + fieldName + " or its setter/getter method does not exist in class "
                     + getEntityClass().getName());
         }
     }
 
     private Class<?> getClassOfField(String fieldName) {
-        return getGetterMethoḍ̣̣̣̣(fieldName).getReturnType();
+        return getGetterSetterMethod(fieldName, true).getReturnType();
     }
 
     private DetailDataModel getDataModelFromGetMethod(String setMethodName) {
@@ -146,6 +157,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
     }
 
     protected class RowListener implements ListSelectionListener {
+        @Override
         public void valueChanged(ListSelectionEvent event) {
             if (event.getValueIsAdjusting()) {
                 return;
@@ -155,65 +167,116 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
     }
 
     /**
-     * Set up columns for the table.
+     * Model support for table can be hide rows. The supported methods:</br> <code>hideRows()</code> and
+     * <code>showAllRows()</code>
      * 
      * @author Phan Hong Phuc
      * 
      */
-    private class BasicTableFormat implements TableFormat<T> {
+    public class AdvanceTableModel extends AbstractTableModel {
+        private static final long serialVersionUID = -4720974982417224609L;
+
+        private Set<Integer> hiddenRows = new HashSet<Integer>();
 
         /**
+         * Hide rows.
          * 
+         * @param rowIndices
+         *            Index of rows which will be hidden
+         */
+        public void hideRows(int[] rowIndices) {
+            for (int i : rowIndices) {
+                hiddenRows.add(i);
+            }
+            fireTableDataChanged();
+        }
+
+        /**
+         * Show all rows being hidden.
+         */
+        public void showAllRows() {
+            hiddenRows.clear();
+            fireTableDataChanged();
+        }
+
+        /**
          * {@inheritDoc}
          */
+        @Override
+        public int getRowCount() {
+            return entities.size() - hiddenRows.size();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            T entity = getVisibleRows().get(rowIndex);
+            DetailDataModel dataModel = listDataModel.get(columnIndex);
+            Method method = getGetterSetterMethod(dataModel.getFieldName(), true);
+            try {
+                return method.invoke(entity);
+            } catch (IllegalAccessException e) {
+                logger.error(e.getMessage());
+                throw new RuntimeException();
+            } catch (InvocationTargetException e) {
+                logger.error(e.getMessage());
+                throw new RuntimeException();
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public int getColumnCount() {
             return listDataModel.size();
         }
 
-        /**
-         * 
-         * {@inheritDoc}
-         */
+        @Override
         public String getColumnName(int column) {
             return ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + listDataModel.get(column).getFieldName());
         }
 
-        /**
-         * 
-         * {@inheritDoc}
-         */
-        public Object getColumnValue(T entity, int column) {
-            DetailDataModel dataModel = listDataModel.get(column);
-            Method method = getGetterMethoḍ̣̣̣̣(dataModel.getFieldName());
+        @Override
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+            T entity = getVisibleRows().get(rowIndex);
+            DetailDataModel dataModel = listDataModel.get(columnIndex);
+            Method method = getGetterSetterMethod(dataModel.getFieldName(), false);
             try {
-                return method.invoke(entity);
+                method.invoke(entity, aValue);
+            } catch (IllegalArgumentException e) {
+                logger.error(e.getMessage());
+                throw new RuntimeException();
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
                 throw new RuntimeException();
             } catch (InvocationTargetException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
                 throw new RuntimeException();
             }
+
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return getClassOfField(listDataModel.get(columnIndex).getFieldName());
+        }
+
+        private List<T> getVisibleRows() {
+            List<T> visibleRows = new ArrayList<T>(getRowCount());
+            for (int i = 0; i < entities.size(); i++) {
+                if (!hiddenRows.contains(i)) {
+                    visibleRows.add(entities.get(i));
+                }
+            }
+            return visibleRows;
         }
     }
 
-    /**
-     * Default comparator for the entity.
-     * 
-     * @author Phan Hong Phuc
-     * 
-     */
-    private class DefaultEntityComparator implements Comparator<T> {
-
-        /**
-         * 
-         * By default 2 entity compare by their Id. TODO: consider last update date field
-         */
-        public int compare(T t1, T t2) {
-            return t1.getId() - t2.getId();
-        }
+    private class TableHeaderRenderer extends DefaultTableCellHeaderRenderer {
 
     }
-
 }
