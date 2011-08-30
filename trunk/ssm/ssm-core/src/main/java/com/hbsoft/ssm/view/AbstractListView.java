@@ -179,15 +179,22 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
         private Set<Integer> hiddenRows = new HashSet<Integer>();
 
         /**
+         * The remaining entities after hiding rows.
+         */
+        private List<T> currentEntities = entities;
+
+        /**
          * Hide rows.
          * 
          * @param rowIndices
          *            Index of rows which will be hidden
          */
         public void hideRows(int[] rowIndices) {
+            hiddenRows.clear();
             for (int i : rowIndices) {
                 hiddenRows.add(i);
             }
+            currentEntities = getVisibleEntities();
             fireTableDataChanged();
         }
 
@@ -196,6 +203,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
          */
         public void showAllRows() {
             hiddenRows.clear();
+            currentEntities = entities;
             fireTableDataChanged();
         }
 
@@ -204,7 +212,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
          */
         @Override
         public int getRowCount() {
-            return entities.size() - hiddenRows.size();
+            return currentEntities.size();
         }
 
         /**
@@ -212,7 +220,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
          */
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            T entity = getVisibleRows().get(rowIndex);
+            T entity = currentEntities.get(rowIndex);
             DetailDataModel dataModel = listDataModel.get(columnIndex);
             Method method = getGetterSetterMethod(dataModel.getFieldName(), true);
             try {
@@ -242,7 +250,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-            T entity = getVisibleRows().get(rowIndex);
+            T entity = currentEntities.get(rowIndex);
             DetailDataModel dataModel = listDataModel.get(columnIndex);
             Method method = getGetterSetterMethod(dataModel.getFieldName(), false);
             try {
@@ -265,14 +273,14 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
             return getClassOfField(listDataModel.get(columnIndex).getFieldName());
         }
 
-        private List<T> getVisibleRows() {
-            List<T> visibleRows = new ArrayList<T>(getRowCount());
-            for (int i = 0; i < entities.size(); i++) {
+        private List<T> getVisibleEntities() {
+            List<T> visibleEntities = new ArrayList<T>(getRowCount());
+            for (int i = 0; i < currentEntities.size(); i++) {
                 if (!hiddenRows.contains(i)) {
-                    visibleRows.add(entities.get(i));
+                    visibleEntities.add(currentEntities.get(i));
                 }
             }
-            return visibleRows;
+            return visibleEntities;
         }
     }
 

@@ -44,6 +44,7 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
 
         JButton btnDisplayAll = new JButton(ControlConfigUtils.getString("ListView.Common.Button.DisplayAll"));
         btnDisplayAll.addActionListener(new ActionListener() {
+            @Override
             @SuppressWarnings("unchecked")
             public void actionPerformed(ActionEvent e) {
                 AdvanceTableModel tableModel = (AdvanceTableModel) table.getModel();
@@ -54,6 +55,7 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
         JButton btnDisplaySelectedRow = new JButton(
                 ControlConfigUtils.getString("ListView.Common.Button.DisplaySelectedRow"));
         btnDisplaySelectedRow.addActionListener(new ActionListener() {
+            @Override
             @SuppressWarnings("unchecked")
             public void actionPerformed(ActionEvent e) {
                 AdvanceTableModel tableModel = (AdvanceTableModel) table.getModel();
@@ -66,9 +68,11 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
         JButton btnSort = new JButton(ControlConfigUtils.getString("ListView.Common.Button.Sort"));
         btnSort.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
 
+                    @Override
                     public void run() {
                         showPanelInNewFrame(new SortView(table));
                     }
@@ -111,13 +115,19 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
         frame.setVisible(true);
     }
 
+    /**
+     * Get selected model indices of rows.
+     * 
+     * @param table
+     * @return
+     */
     private int[] getUnselectedRows(JTable table) {
         int unselectedRowCount = table.getRowCount() - table.getSelectedRowCount();
         int[] unselectedRows = new int[unselectedRowCount];
         int k = 0;
         for (int i = 0; i < table.getRowCount(); i++) {
             if (!table.getSelectionModel().isSelectedIndex(i)) {
-                unselectedRows[k++] = i;
+                unselectedRows[k++] = table.convertRowIndexToModel(i);
             }
         }
 
