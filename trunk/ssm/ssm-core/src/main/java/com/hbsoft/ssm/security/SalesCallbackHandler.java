@@ -8,11 +8,11 @@ import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
-public class HBCallbackHandler implements CallbackHandler {
+public class SalesCallbackHandler implements CallbackHandler {
 	private String username;
 	private String password;
 	
-	public HBCallbackHandler(String username, String password) {
+	public SalesCallbackHandler(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
@@ -28,8 +28,7 @@ public class HBCallbackHandler implements CallbackHandler {
 		        PasswordCallback passwordCB = (PasswordCallback) callback; 
 		        passwordCB.setPassword(password.toCharArray()); 
 		      } 
-		    } 
-
+		    }
 	}
 
 }
