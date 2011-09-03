@@ -2,15 +2,15 @@ package com.hbsoft.ssm.security;
 
 import java.security.Principal;
 
-public class HBUserGroupPrincipal implements Principal {
-    private String id;
+public class SalesPrincipal implements Principal {
+    private Integer id;
     private String name;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -18,24 +18,24 @@ public class HBUserGroupPrincipal implements Principal {
         this.name = name;
     }
 
-    public HBUserGroupPrincipal(String id, String name) {
+    public SalesPrincipal(Integer id, String name) {
         super();
         this.id = id;
         this.name = name;
     }
 
-   
     public String getName() {
-        return this.getClass().getName();
-    }
+		// TODO Auto-generated method stub
+		return this.name;
+	}
 
-    @Override
+	@Override
     public boolean equals(Object obj) {
         // TODO Auto-generated method stub
-        if (!(obj instanceof HBUserGroupPrincipal)) {
+        if (!(obj instanceof SalesPrincipal)) {
             return false;
         }
-        HBUserGroupPrincipal other = (HBUserGroupPrincipal) obj;
+        SalesPrincipal other = (SalesPrincipal) obj;
         return getName().equals(other.getName()) && getId().equals(other.getId());
     }
 
@@ -43,5 +43,4 @@ public class HBUserGroupPrincipal implements Principal {
     public int hashCode() {
         return getName().hashCode() * 27 + getId().hashCode() * 27;
     }
-
 }

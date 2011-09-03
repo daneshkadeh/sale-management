@@ -1,11 +1,10 @@
 package com.hbsoft.ssm.security;
 
-public class HBUsernameCredential {
-	private String id;
+public class UsernameCredential {
+	private Integer id;
     private String username;
 
-    public HBUsernameCredential(String id, String username) {
-        super();
+    public UsernameCredential(Integer id, String username) {
         this.id = id;
         this.username = username;
     }
@@ -28,11 +27,11 @@ public class HBUsernameCredential {
         return super.toString();
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
