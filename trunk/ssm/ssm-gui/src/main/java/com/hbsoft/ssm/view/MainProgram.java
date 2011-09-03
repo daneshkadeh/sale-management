@@ -22,6 +22,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 import com.hbsoft.ssm.view.list.ListGoodsView;
+import com.hbsoft.ssm.view.security.LoginDialog;
 
 public class MainProgram {
     private static final Dimension WINDOW_MIN_SIZE = new Dimension(400, 300);
@@ -107,7 +108,15 @@ public class MainProgram {
                 frame.dispose();
             }
         });
-
+        //test
+        JMenuItem loginItem = new JMenuItem("Login");
+        loginItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                LoginDialog loginDialog = new LoginDialog(frame);
+                loginDialog.setVisible(true);
+            }
+        });
+        //End test
         fileMenu.add(userMenuItem);
         fileMenu.add(customerMenuItem);
         fileMenu.add(productMenuItem);
@@ -116,6 +125,7 @@ public class MainProgram {
         fileMenu.add(invoiceMenuItem);
         fileMenu.addSeparator();
         fileMenu.add(exitMenuItem);
+        fileMenu.add(loginItem);
 
         menuBar.add(fileMenu);
         menuBar.add(helpMenu);
