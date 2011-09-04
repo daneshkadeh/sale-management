@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,6 +23,7 @@ public class LoginDialog extends JDialog {
     private JLabel lblPassword;
     private JButton btnLogin;
     private JButton btnCancel;
+    private Boolean isLogin = false;
     
     public LoginDialog(Frame parent) {
     	super(parent, "Login", true);
@@ -61,8 +64,19 @@ public class LoginDialog extends JDialog {
 
 
         btnLogin = new JButton("Login");
-
+        btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				isLogin = true;
+				dispose();
+			}
+		});
         btnCancel = new JButton("Cancel");
+        btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				isLogin = false;
+				dispose();
+			}
+		});
         
         JPanel bp = new JPanel();
         bp.add(btnLogin);
@@ -77,4 +91,15 @@ public class LoginDialog extends JDialog {
         setResizable(false);
         setLocationRelativeTo(parent);
     }
+    
+    public String getUsername() {
+    	return tflUsername.getText().trim();
+    }
+    
+    public String getPassword() {
+    	return new String(pflPassword.getPassword());
+    }
+	public Boolean getIsLogin() {
+		return isLogin;
+	}
 }
