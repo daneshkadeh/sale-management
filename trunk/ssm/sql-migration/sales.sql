@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 04, 2011 at 12:23 AM
+-- Generation Time: Sep 04, 2011 at 11:27 PM
 -- Server version: 5.0.45
 -- PHP Version: 5.2.4
 
@@ -37,6 +37,25 @@ INSERT INTO `tbl_auth_login` (`id`, `appName`, `loginModuleClass`, `controlFlag`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_auth_permission`
+--
+
+CREATE TABLE `tbl_auth_permission` (
+  `id` int(11) NOT NULL auto_increment,
+  `permissionClass` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `actions` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `tbl_auth_permission`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_auth_principal`
 --
 
@@ -53,6 +72,23 @@ CREATE TABLE `tbl_auth_principal` (
 
 INSERT INTO `tbl_auth_principal` (`id`, `name`, `class`) VALUES
 (1, 'Manager', 'com.hbsoft.ssm.security.SalesPrincipal');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_auth_principal_permission`
+--
+
+CREATE TABLE `tbl_auth_principal_permission` (
+  `principal_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY  (`principal_id`,`permission_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_auth_principal_permission`
+--
+
 
 -- --------------------------------------------------------
 
@@ -190,8 +226,8 @@ CREATE TABLE `tbl_invoice` (
 -- Constraints for table `tbl_detail_invoice`
 --
 ALTER TABLE `tbl_detail_invoice`
-  ADD CONSTRAINT `tbl_detail_invoice_ibfk_2` FOREIGN KEY (`goods_id`) REFERENCES `tbl_goods` (`id`),
-  ADD CONSTRAINT `tbl_detail_invoice_ibfk_1` FOREIGN KEY (`invoice_id`) REFERENCES `tbl_invoice` (`id`);
+  ADD CONSTRAINT `tbl_detail_invoice_ibfk_1` FOREIGN KEY (`invoice_id`) REFERENCES `tbl_invoice` (`id`),
+  ADD CONSTRAINT `tbl_detail_invoice_ibfk_2` FOREIGN KEY (`goods_id`) REFERENCES `tbl_goods` (`id`);
 
 --
 -- Constraints for table `tbl_invoice`
