@@ -27,7 +27,6 @@ public class SalesLoginModule implements LoginModule {
 	 private Map<String, ?> options;
 	 private boolean authenticated = true;
 	 private String username;
-	 private Integer userId;
 	 private String password;
 	 private Set principalsAdded = new HashSet(0);
 	 private User userStored;
@@ -48,7 +47,7 @@ public class SalesLoginModule implements LoginModule {
             return false;
         }
         // set credential
-        UsernameCredential cred = new UsernameCredential(userId, username);
+        UsernameCredential cred = new UsernameCredential(username);
         subject.getPublicCredentials().add(cred);
         // lookup user groups, add to Subject
         lookupPrincipal(userStored);
@@ -90,7 +89,6 @@ public class SalesLoginModule implements LoginModule {
 	        String passwordStored = userStored.getPassword();
 	        if(passwordStored.equals(password)) {
 	        	authenticated = true;
-	        	userId = userStored.getId();
 	        }
         }
         return authenticated;
@@ -109,7 +107,7 @@ public class SalesLoginModule implements LoginModule {
 			if(principal.getClazz().equals(SALES_PRINCIPAL_CLASS)) {
 				Integer id = principal.getId();
 				String name = principal.getName();
-				SalesPrincipal salesPrincipal = new SalesPrincipal(id, name);
+				SalesPrincipal salesPrincipal = new SalesPrincipal(name);
 				principalsAdded.add(salesPrincipal);
 			}
 		}
