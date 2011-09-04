@@ -17,7 +17,7 @@ public class Principal extends AbstractBaseIdObject {
 	private String name;
 	private String clazz;
 	private Set<User> users = new HashSet<User>();
-	
+	private Set<Permission> permissions = new HashSet<Permission>();
 	@Column(name = "name", nullable = false)
     @NotNull
 	public String getName() {
@@ -41,5 +41,13 @@ public class Principal extends AbstractBaseIdObject {
 	}
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "tbl_auth_principal_permission", joinColumns = {@JoinColumn(name="principal_id")}, inverseJoinColumns = {@JoinColumn(name="permission_id")})
+	public Set<Permission> getPermissions() {
+		return permissions;
+	}
+	public void setPermissions(Set<Permission> permissions) {
+		this.permissions = permissions;
 	}
 }
