@@ -5,7 +5,6 @@ import java.security.Principal;
 import java.security.UnresolvedPermission;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +29,7 @@ public class PermissionService {
      * @param principal
      * @param permission
      */
-    static void addPermission(Principal principal, Permission permission) {
+    public static void addPermission(Principal principal, Permission permission) {
         PermissionEntity permissionEntity = new PermissionEntity();
         permissionEntity.setName(permission.getName());
         permissionEntity.setActions(permission.getActions());
@@ -38,8 +37,8 @@ public class PermissionService {
         permissionEntityService.save(permissionEntity);
         // add permission to principal
         PrincipalEntity principalEntity = principalEntityService.findByName(principal.getName());
-        principalEntity.setPermissions(Collections.singleton(permissionEntity));
-        principalEntityService.save(principalEntity);
+        principalEntity.getPermissions().add(permissionEntity);
+        principalEntityService.update(principalEntity);
     }
 
     public static List<Permission> findPermissions(Set<Principal> principalSet) {

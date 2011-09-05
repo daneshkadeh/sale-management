@@ -17,7 +17,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
+/**
+ * The policy of Sales project
+ * @author Hoang Le
+ *
+ */
 public class SalesPolicy extends Policy {
 
     @Override
@@ -33,7 +37,6 @@ public class SalesPolicy extends Policy {
         // TODO Auto-generated method stub
         Permissions permissions = new Permissions();
         // lookup permissions
-        Set principalIds = new HashSet();
         final Set salesPrincipalSet = new HashSet();
         Principal[] principals = domain.getPrincipals();
         if (principals != null && principals.length > 0) {
@@ -42,7 +45,6 @@ public class SalesPolicy extends Policy {
                 if (p instanceof SalesPrincipal) {
                     SalesPrincipal salesPrincipal = (SalesPrincipal) p;
                     salesPrincipalSet.add(salesPrincipal);
-                    // principalIds.add(userGroup.getId());
                 }
             }
         }
@@ -72,19 +74,13 @@ public class SalesPolicy extends Policy {
 
     @Override
     public boolean implies(final ProtectionDomain domain, final Permission permission) {
-        if (permission.getName().equals("/tmp/test.tx")) {
-            int i = 0;
-        }
         PermissionCollection perms = getPermissions(domain);
-
         boolean implies = perms.implies(permission);
-
         return implies;
     }
 
     @Override
     public void refresh() {
-        // TODO Auto-generated method stub
         super.refresh();
     }
 
