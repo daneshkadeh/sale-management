@@ -19,7 +19,7 @@ public class User extends AbstractBaseIdObject {
 	private String username;
 	private String password;
 	
-	private Set<Principal> principals = new HashSet<Principal>();
+	private Set<PrincipalEntity> principals = new HashSet<PrincipalEntity>();
 	
 	@Column(name = "username", nullable = false)
     @NotNull
@@ -41,11 +41,11 @@ public class User extends AbstractBaseIdObject {
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "tbl_auth_user_principal", joinColumns = {@JoinColumn(name="user_id")}, inverseJoinColumns = {@JoinColumn(name="principal_id")})
-	public Set<Principal> getPrincipals() {
+	public Set<PrincipalEntity> getPrincipals() {
 		return principals;
 	}
 	
-	public void setPrincipals(Set<Principal> principals) {
+	public void setPrincipals(Set<PrincipalEntity> principals) {
 		this.principals = principals;
 	}
 }

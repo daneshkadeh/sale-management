@@ -8,6 +8,10 @@ import com.hbsoft.ssm.service.CustomerService;
 import com.hbsoft.ssm.service.DetailInvoiceService;
 import com.hbsoft.ssm.service.GoodsService;
 import com.hbsoft.ssm.service.InvoiceService;
+import com.hbsoft.ssm.service.LoginConfigService;
+import com.hbsoft.ssm.service.PermissionEntityService;
+import com.hbsoft.ssm.service.PrincipalEntityService;
+import com.hbsoft.ssm.service.UserService;
 
 public class ConfigProvider {
     private static ConfigProvider configProvider;
@@ -43,5 +47,21 @@ public class ConfigProvider {
 
     public DetailInvoiceService getDetailInvoiceService() {
         return (DetailInvoiceService) appContext.getBean("detailInvoiceService");
+    }
+
+    public LoginConfigService getLoginConfigService() {
+        return (LoginConfigService) appContext.getBean("loginConfigService");
+    }
+
+    public UserService getUserService() {
+        return (UserService) appContext.getBean("userService");
+    }
+
+    public PermissionEntityService getPermissionEntityService() {
+        return (PermissionEntityService) appContext.getBean("permissionEntityService");
+    }
+
+    public PrincipalEntityService getPrincipalEntityService() {
+        return (PrincipalEntityService) appContext.getBean("principalEntityService");
     }
 }

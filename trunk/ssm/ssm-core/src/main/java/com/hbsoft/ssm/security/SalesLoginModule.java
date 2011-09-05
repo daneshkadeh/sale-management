@@ -14,7 +14,7 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
-import com.hbsoft.ssm.entity.Principal;
+import com.hbsoft.ssm.entity.PrincipalEntity;
 import com.hbsoft.ssm.entity.User;
 import com.hbsoft.ssm.service.UserService;
 import com.hbsoft.ssm.util.ConfigProvider;
@@ -102,8 +102,8 @@ public class SalesLoginModule implements LoginModule {
 	}
 	
 	private Set lookupPrincipal(User user) {
-		Set<Principal> principals = user.getPrincipals();
-        for (Principal principal : principals) {
+		Set<PrincipalEntity> principals = user.getPrincipals();
+        for (PrincipalEntity principal : principals) {
 			if(principal.getClazz().equals(SALES_PRINCIPAL_CLASS)) {
 				Integer id = principal.getId();
 				String name = principal.getName();
