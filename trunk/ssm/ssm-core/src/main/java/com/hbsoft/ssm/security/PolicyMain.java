@@ -1,6 +1,7 @@
 package com.hbsoft.ssm.security;
 
 import java.io.FilePermission;
+import java.security.Policy;
 import java.security.Principal;
 import java.security.PrivilegedAction;
 
@@ -21,11 +22,11 @@ public class PolicyMain {
         String password = "123456";
 
         SalesPolicy salesPolicy = new SalesPolicy();
-        // Policy.setPolicy();
+         Policy.setPolicy(salesPolicy);
         try {
             LoginContext ctx;
-            // ctx = new LoginContext(appName, new SalesCallbackHandler(username, password));
-            ctx = new LoginContext(appName, new SalesCallbackHandler(new JFrame()));
+             ctx = new LoginContext(appName, new SalesCallbackHandler(username, password));
+//            ctx = new LoginContext(appName, new SalesCallbackHandler(new JFrame()));
             ctx.login();
             // print username
             Subject subject = ctx.getSubject();
@@ -41,16 +42,14 @@ public class PolicyMain {
             }
             System.out.println("SecurityManager" + sm);
 
-            final FilePermission filePerm = new FilePermission("/tmp/test", "read");
+            final FilePermission filePerm = new FilePermission("/tmp/test", "read, execute");
             PermissionService.addPermission(managerPrincipal, filePerm);
             boolean allowed = true;
             try {
                 Subject.doAsPrivileged(subject, new PrivilegedAction() {
-
                     public Object run() {
                         SecurityManager sm = System.getSecurityManager();
                         if (sm == null) {
-
                             sm.checkPermission(filePerm);
                         }
                         return null;
@@ -58,6 +57,7 @@ public class PolicyMain {
 
                 }, null);
             } catch (SecurityException e) {
+                e.printStackTrace();
                 allowed = false;
             }
 
@@ -70,7 +70,7 @@ public class PolicyMain {
             ctx.logout();
         } catch (LoginException e) {
             // TODO Auto-generated catch block
-
+        	
         }
 
     }

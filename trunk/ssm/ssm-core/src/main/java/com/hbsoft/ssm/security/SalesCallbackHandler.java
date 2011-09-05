@@ -26,13 +26,13 @@ public class SalesCallbackHandler implements CallbackHandler {
 	}
 	public void handle(Callback[] callbacks) throws IOException,
 			UnsupportedCallbackException {
-		 LoginDialog loginDialog = new LoginDialog(jFrame);
-		 loginDialog.setVisible(true);
-		 
-		 if (loginDialog.getIsLogin() == true) {
-			 username = loginDialog.getUsername();
-			 password = loginDialog.getPassword();
-		 }
+//		 LoginDialog loginDialog = new LoginDialog(jFrame);
+//		 loginDialog.setVisible(true);
+//		 
+//		 if (loginDialog.getIsLogin() == true) {
+//			 username = loginDialog.getUsername();
+//			 password = loginDialog.getPassword();
+//		 }
 		 for (int i = 0; i < callbacks.length; i++) { 
 		      Callback callback = callbacks[i]; 
 		      if (callback instanceof NameCallback) { 

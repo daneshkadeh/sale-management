@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -34,7 +35,7 @@ public class PrincipalEntity extends AbstractBaseIdObject {
 	public void setClazz(String clazz) {
 		this.clazz = clazz;
 	}
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "tbl_auth_user_principal", joinColumns = {@JoinColumn(name="principal_id")}, inverseJoinColumns = {@JoinColumn(name="user_id")})
 	public Set<User> getUsers() {
 		return users;
@@ -42,7 +43,7 @@ public class PrincipalEntity extends AbstractBaseIdObject {
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "tbl_auth_principal_permission", joinColumns = {@JoinColumn(name="principal_id")}, inverseJoinColumns = {@JoinColumn(name="permission_id")})
 	public Set<PermissionEntity> getPermissions() {
 		return permissions;
