@@ -14,12 +14,12 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_auth_permission")
-public class Permission extends AbstractBaseIdObject {
+public class PermissionEntity extends AbstractBaseIdObject {
 	private String name;
 	private String permissionClass;
 	private String actions;
 	
-	private Set<Principal> principals = new HashSet<Principal>();
+	private Set<PrincipalEntity> principals = new HashSet<PrincipalEntity>();
 
 	@Column(name = "name", nullable = false)
     @NotNull
@@ -53,11 +53,11 @@ public class Permission extends AbstractBaseIdObject {
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "tbl_auth_principal_permission", joinColumns = {@JoinColumn(name="permission_id")}, inverseJoinColumns = {@JoinColumn(name="principal_id")})
-	public Set<Principal> getPrincipals() {
+	public Set<PrincipalEntity> getPrincipals() {
 		return principals;
 	}
 
-	public void setPrincipals(Set<Principal> principals) {
+	public void setPrincipals(Set<PrincipalEntity> principals) {
 		this.principals = principals;
 	}
 }
