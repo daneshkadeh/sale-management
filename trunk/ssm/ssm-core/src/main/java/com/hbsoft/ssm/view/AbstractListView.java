@@ -27,7 +27,6 @@ import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.springframework.util.StringUtils;
 
-import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 import com.hbsoft.ssm.model.DetailDataModel;
@@ -282,9 +281,5 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
             }
             return visibleEntities;
         }
-    }
-
-    private class TableHeaderRenderer extends DefaultTableCellHeaderRenderer {
-
     }
 }
