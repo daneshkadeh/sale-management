@@ -26,7 +26,8 @@ import net.miginfocom.swing.MigLayout;
  * <li>{@link #getDestinationValues()}</li>
  * </ul>
  * 
- * 
+ * @param T
+ *            the data type of elements in {@link JList}s.
  * @author Phan Hong Phuc
  */
 public class MultiSelectionBox<T> extends JPanel {
