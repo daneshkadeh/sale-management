@@ -3,14 +3,12 @@ package com.hbsoft.ssm.model;
 public class DetailDataModel {
     private String fieldName;
     private FieldTypeEnum fieldType;
-    private boolean isEditable;
-    private boolean isEnable;
+    private boolean isEditable = true;
+    private boolean isEnable = true;
 
-    public DetailDataModel(String fieldName, FieldTypeEnum fieldType, boolean isEditable, boolean isEnable) {
+    public DetailDataModel(String fieldName, FieldTypeEnum fieldType) {
         this.fieldName = fieldName;
         this.fieldType = fieldType;
-        this.isEditable = isEditable;
-        this.isEnable = isEnable;
     }
 
     public String getFieldName() {
@@ -33,16 +31,18 @@ public class DetailDataModel {
         return isEditable;
     }
 
-    public void setEditable(boolean isEditable) {
+    public DetailDataModel setEditable(boolean isEditable) {
         this.isEditable = isEditable;
+        return this;
     }
 
     public boolean isEnable() {
         return isEnable;
     }
 
-    public void setEnable(boolean isEnable) {
+    public DetailDataModel setEnable(boolean isEnable) {
         this.isEnable = isEnable;
+        return this;
     }
 
 }

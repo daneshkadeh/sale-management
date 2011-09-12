@@ -1,6 +1,5 @@
 package com.hbsoft.ssm.view;
 
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Method;
@@ -14,7 +13,6 @@ import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -37,7 +35,7 @@ import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 
-public abstract class AbstractDetailView<T> extends JFrame {
+public abstract class AbstractDetailView<T> extends JPanel {
     private static final long serialVersionUID = 1L;
 
     private Log logger = LogFactory.getLog(AbstractDetailView.class);
@@ -69,21 +67,21 @@ public abstract class AbstractDetailView<T> extends JFrame {
 
     public abstract void initialPresentationView(List<DetailDataModel> listDataModel);
 
-    private void initComponents() {// Layout the screen
-        Container container = getContentPane();
-        container.setLayout(new MigLayout("fillx,insets 1, width :500:"));
+    private void initComponents() {
+        // Layout the screen
+        setLayout(new MigLayout("fillx,insets 1, width :500:"));
 
         JPanel pnlEdit = new JPanel(new MigLayout("wrap 2"));
         for (DetailDataModel dataModel : listDataModel) {
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + dataModel.getFieldName());
-            JLabel dataLabel = new JLabel(label);
-            pnlEdit.add(dataLabel);
-            JTextField dataField = null;
+            JLabel lblLabel = new JLabel(label);
+            pnlEdit.add(lblLabel);
+            JComponent dataField;
             switch (dataModel.getFieldType()) {
             case TEXT_BOX:
                 dataField = new JTextField(JTEXTFIELD_SIZE);
-                dataField.setEditable(dataModel.isEditable());
+                ((JTextField) dataField).setEditable(dataModel.isEditable());
                 dataField.setEnabled(dataModel.isEnable());
                 mapFields.put(dataModel, dataField);
                 break;
@@ -93,7 +91,7 @@ public abstract class AbstractDetailView<T> extends JFrame {
             pnlEdit.add(dataField);
         }
 
-        container.add(pnlEdit, "wrap");
+        add(pnlEdit, "wrap");
 
         btnOK = new JButton("OK");
         btnOK.addActionListener(new ActionListener() {
@@ -112,15 +110,13 @@ public abstract class AbstractDetailView<T> extends JFrame {
         JPanel pnlButton = new JPanel(new MigLayout("center, , width :500:"));
         pnlButton.add(btnOK, "center");
         pnlButton.add(btnCancel);
-        container.add(pnlButton);
-        pack();
+        add(pnlButton);
     }
 
     protected void btnOKActionPerformed(ActionEvent evt) {
         Set<ConstraintViolation<T>> validateResult = bindAndValidate(entity);
         if (CollectionUtils.isEmpty(validateResult)) {
             saveOrUpdate(entity);
-            dispose();
         } else {
             for (ConstraintViolation<T> violation : validateResult) {
                 logger.error(violation.getMessage());
@@ -184,6 +180,5 @@ public abstract class AbstractDetailView<T> extends JFrame {
     }
 
     protected void btnCancelActionPerformed(ActionEvent evt) {
-        dispose();
     }
 }
