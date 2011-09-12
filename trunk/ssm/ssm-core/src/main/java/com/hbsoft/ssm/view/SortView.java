@@ -172,7 +172,7 @@ public class SortView extends JPanel {
     }
 
     private void initAndAddKeyRow(String stringCode, int keyNumber, JComboBox cbbNames, JComboBox cbbOrder) {
-        add(new JLabel(ControlConfigUtils.getString(stringCode) + keyNumber));
+        add(new JLabel(ControlConfigUtils.getString(stringCode) + " " + keyNumber));
         add(cbbNames);
         add(cbbOrder);
     }
