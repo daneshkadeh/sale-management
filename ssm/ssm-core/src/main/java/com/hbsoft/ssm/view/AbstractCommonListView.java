@@ -37,6 +37,7 @@ import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
  */
 public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> extends AbstractListView<T> {
     private static final long serialVersionUID = -7157596822400727053L;
+    JFrame detailFrame = new JFrame();
 
     @Override
     protected JPanel createButtonPanel(final JTable table) {
@@ -85,7 +86,16 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
         JButton btnImport = new JButton(ControlConfigUtils.getString("ListView.Common.Button.Import"));
         JButton btnExport = new JButton(ControlConfigUtils.getString("ListView.Common.Button.Export"));
         JButton btnDeleteRow = new JButton(ControlConfigUtils.getString("ListView.Common.Button.DeleteSelectedRow"));
+
         JButton btnInsertRow = new JButton(ControlConfigUtils.getString("ListView.Common.Button.InsertRow"));
+        btnInsertRow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openDetailView();
+            }
+
+        });
+
         JButton btnClose = new JButton(ControlConfigUtils.getString("ListView.Common.Button.Close"));
 
         pnlButton.add(btnDisplayAll);
@@ -100,6 +110,43 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
         pnlButton.add(btnClose);
 
         return pnlButton;
+    }
+
+    protected AbstractDetailView getDetailView() {
+        return null;
+    }
+
+    private void openDetailView() {
+        AbstractDetailView detailView = getDetailView();
+        if (detailView != null) {
+            detailView.setEnabled(true);
+            detailView.setListView(this);
+
+            detailFrame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+            detailFrame.setContentPane(detailView);
+            detailFrame.setVisible(true);
+            detailFrame.repaint();
+            detailFrame.pack();
+        }
+    }
+
+    /**
+     * entity2 was saved on AbstractDetailView and sent to AbstractListView to refresh data.
+     * 
+     * @param entity2
+     * @param isNew
+     */
+    public void notifyFromDetailView(T entity2, boolean isNew) {
+        if (isNew) {
+            entities.add(entity2);
+        } else {
+            throw new RuntimeException("Unsupport notify update!");
+        }
+        // TODO: this is not good! displayEntitiesList() reload all data => performance problem!
+        displayEntitiesList();
+        if (detailFrame != null) {
+            detailFrame.dispose();
+        }
     }
 
     /**

@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,14 +33,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
 
+import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
+import com.hbsoft.ssm.model.ReferenceDataModel;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 
-public abstract class AbstractDetailView<T> extends JPanel {
+public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends JPanel {
     private static final long serialVersionUID = 1L;
 
     private Log logger = LogFactory.getLog(AbstractDetailView.class);
+
+    protected AbstractCommonListView listView;
 
     protected List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
     protected Map<DetailDataModel, JComponent> mapFields = new HashMap<DetailDataModel, JComponent>();
@@ -46,6 +52,9 @@ public abstract class AbstractDetailView<T> extends JPanel {
     private JButton btnCancel;
     private Class<T> clazz;
     private T entity;
+
+    private ReferenceDataModel refDataModel = new ReferenceDataModel();
+
     private Integer JTEXTFIELD_SIZE = 20;
 
     public AbstractDetailView() {
@@ -57,7 +66,12 @@ public abstract class AbstractDetailView<T> extends JPanel {
         }
 
         initialPresentationView(listDataModel);
+        setReferenceDataModel(refDataModel, entity);
         initComponents();
+    }
+
+    public void setListView(AbstractCommonListView view) {
+        this.listView = view;
     }
 
     protected Class<T> getEntityClass() {
@@ -66,6 +80,15 @@ public abstract class AbstractDetailView<T> extends JPanel {
     }
 
     public abstract void initialPresentationView(List<DetailDataModel> listDataModel);
+
+    /**
+     * Set data for ComboBox, MultiSelectBox.
+     * 
+     * @param refDataModel
+     * @param entity
+     */
+    protected void setReferenceDataModel(ReferenceDataModel refDataModel, T entity) {
+    }
 
     private void initComponents() {
         // Layout the screen
@@ -83,11 +106,16 @@ public abstract class AbstractDetailView<T> extends JPanel {
                 dataField = new JTextField(JTEXTFIELD_SIZE);
                 ((JTextField) dataField).setEditable(dataModel.isEditable());
                 dataField.setEnabled(dataModel.isEnable());
-                mapFields.put(dataModel, dataField);
+                break;
+            case COMBO_BOX:
+                // get the referenceDataList from ReferenceDataModel using referenceDataId of column.
+                dataField = new JComboBox(new DefaultComboBoxModel(refDataModel.getRefDataListMap()
+                        .get(dataModel.getReferenceDataId()).getIdLabelMap().keySet().toArray()));
                 break;
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
+            mapFields.put(dataModel, dataField);
             pnlEdit.add(dataField);
         }
 
@@ -117,6 +145,7 @@ public abstract class AbstractDetailView<T> extends JPanel {
         Set<ConstraintViolation<T>> validateResult = bindAndValidate(entity);
         if (CollectionUtils.isEmpty(validateResult)) {
             saveOrUpdate(entity);
+            listView.notifyFromDetailView(entity, true);
         } else {
             for (ConstraintViolation<T> violation : validateResult) {
                 logger.error(violation.getMessage());
@@ -136,12 +165,11 @@ public abstract class AbstractDetailView<T> extends JPanel {
             DetailDataModel dataModel = getDataModelFromSetMethod(method.getName());
             if (dataModel != null) {
                 JComponent component = mapFields.get(dataModel);
-                if (dataModel.getFieldType() == FieldTypeEnum.TEXT_BOX) {
-                    JTextComponent textComponent = (JTextComponent) component;
-                    try {
-                        Method getMethod = entity2.getClass().getMethod(
-                                "get" + StringUtils.capitalize(dataModel.getFieldName()));
-                        Class<?> paramClass = getMethod.getReturnType();
+                try {
+                    if (dataModel.getFieldType() == FieldTypeEnum.TEXT_BOX) {
+                        JTextComponent textComponent = (JTextComponent) component;
+
+                        Class<?> paramClass = getPropertyReturnType(entity2, dataModel);
                         if (textComponent.getText().isEmpty()) {
                             method.invoke(entity2, (Object) null);
                         } else if (paramClass.equals(Double.class)) {
@@ -153,11 +181,26 @@ public abstract class AbstractDetailView<T> extends JPanel {
                         } else {
                             throw new RuntimeException("Do not support class " + paramClass.getCanonicalName());
                         }
+                    } else if (dataModel.getFieldType() == FieldTypeEnum.COMBO_BOX) {
+                        JComboBox comboBox = (JComboBox) component;
+                        String id = comboBox.getSelectedItem().toString();
+                        Class<?> paramClass = getPropertyReturnType(entity2, dataModel);
 
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
+                        // TODO: duplicate code with FieldType TEXT_BOX
+                        if (paramClass.equals(Double.class)) {
+                            method.invoke(entity2, Double.valueOf(id));
+                        } else if (paramClass.equals(Integer.class)) {
+                            method.invoke(entity2, Integer.valueOf(id));
+                        } else if (paramClass.equals(String.class)) {
+                            method.invoke(entity2, id);
+                        } else {
+                            throw new RuntimeException("Do not support class " + paramClass.getCanonicalName());
+                        }
+                    } else {
+                        throw new RuntimeException("Do not support FieldTypeEnum " + dataModel.getFieldType());
                     }
-
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -168,6 +211,21 @@ public abstract class AbstractDetailView<T> extends JPanel {
 
         Validator validator = factory.getValidator();
         return validator.validate(entity2);
+    }
+
+    /**
+     * Get type of property from dataModel and getter of entity. The getter must follow convention get+FieldName. TODO:
+     * This returnType could be set directly to DetailDataModel?
+     * 
+     * @param entity2
+     * @param dataModel
+     * @return
+     * @throws NoSuchMethodException
+     */
+    private Class<?> getPropertyReturnType(T entity2, DetailDataModel dataModel) throws NoSuchMethodException {
+        Method getMethod = entity2.getClass().getMethod("get" + StringUtils.capitalize(dataModel.getFieldName()));
+        Class<?> paramClass = getMethod.getReturnType();
+        return paramClass;
     }
 
     private DetailDataModel getDataModelFromSetMethod(String setMethodName) {

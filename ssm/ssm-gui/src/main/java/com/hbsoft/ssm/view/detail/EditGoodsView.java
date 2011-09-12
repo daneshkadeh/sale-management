@@ -5,6 +5,8 @@ import java.util.List;
 import com.hbsoft.ssm.entity.Goods;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
+import com.hbsoft.ssm.model.ReferenceDataList;
+import com.hbsoft.ssm.model.ReferenceDataModel;
 import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.view.AbstractDetailView;
 
@@ -16,16 +18,31 @@ import com.hbsoft.ssm.view.AbstractDetailView;
  */
 public class EditGoodsView extends AbstractDetailView<Goods> {
     private static final long serialVersionUID = 8247461633468843994L;
+    private static final String TAX_REF_ID = "0";
 
     @Override
     public void initialPresentationView(List<DetailDataModel> listDataModel) {
         listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("priceBeforeTax", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("tax", FieldTypeEnum.TEXT_BOX));
+        DetailDataModel taxDataModel = new DetailDataModel("tax", FieldTypeEnum.COMBO_BOX);
+        taxDataModel.setReferenceDataId(TAX_REF_ID);
+        listDataModel.add(taxDataModel);
         listDataModel.add(new DetailDataModel("priceAfterTax", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("addQuantity", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("curQuantity", FieldTypeEnum.TEXT_BOX));
+    }
+
+    @Override
+    protected void setReferenceDataModel(ReferenceDataModel refDataModel, Goods entity) {
+        super.setReferenceDataModel(refDataModel, entity);
+
+        // TODO: we will support method to retriev ReferenceDataList from objects on abstract class.
+        ReferenceDataList refDataList = new ReferenceDataList();
+        refDataList.getIdLabelMap().put("1.0", "1.0");
+        refDataList.getIdLabelMap().put("2.0", "2.0");
+        refDataList.getIdLabelMap().put("3.0", "3.0");
+        refDataModel.putRefDataList(TAX_REF_ID, refDataList);
     }
 
     @Override

@@ -14,6 +14,15 @@ import javax.swing.JTable;
 
 import com.hbsoft.ssm.model.DetailDataModel;
 
+/**
+ * This view is used for a master entity and its detail entities.</br> Example: An invoice and list detail invoice. User
+ * can input directly invoice and detail invoice information on this screen.
+ * 
+ * @author phamcongbang
+ * 
+ * @param <T>
+ * @param <E>
+ */
 public abstract class AbstractMasterDetailView<T, E> extends JPanel {
     private T masterEntity;
     private Class<T> masterClazz;
