@@ -5,6 +5,7 @@ public class DetailDataModel {
     private FieldTypeEnum fieldType;
     private boolean isEditable = true;
     private boolean isEnable = true;
+    private String referenceDataId;
 
     public DetailDataModel(String fieldName, FieldTypeEnum fieldType) {
         this.fieldName = fieldName;
@@ -43,6 +44,19 @@ public class DetailDataModel {
     public DetailDataModel setEnable(boolean isEnable) {
         this.isEnable = isEnable;
         return this;
+    }
+
+    /**
+     * Id to identify the referenceData of property in ReferenceDataModel
+     * 
+     * @param referenceDataId
+     */
+    public void setReferenceDataId(String referenceDataId) {
+        this.referenceDataId = referenceDataId;
+    }
+
+    public String getReferenceDataId() {
+        return referenceDataId;
     }
 
 }

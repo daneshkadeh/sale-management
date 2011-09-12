@@ -21,6 +21,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
+import com.hbsoft.ssm.view.list.ListCustomerView;
 import com.hbsoft.ssm.view.list.ListGoodsView;
 import com.hbsoft.ssm.view.security.LoginDialog;
 
@@ -75,9 +76,12 @@ public class MainProgram {
         customerMenuItem.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                CustomerView customerView = new CustomerView();
-                customerView.setVisible(true);
-                frame.setContentPane(customerView);
+                // CustomerView customerView = new CustomerView();
+                // customerView.setVisible(true);
+                // frame.setContentPane(customerView);
+                ListCustomerView listCustomerView = new ListCustomerView();
+                listCustomerView.setVisible(true);
+                frame.setContentPane(listCustomerView);
                 frame.repaint();
                 frame.pack();
             }
@@ -108,7 +112,7 @@ public class MainProgram {
                 frame.dispose();
             }
         });
-        //test
+        // test
         JMenuItem loginItem = new JMenuItem("Login");
         loginItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -116,7 +120,7 @@ public class MainProgram {
                 loginDialog.setVisible(true);
             }
         });
-        //End test
+        // End test
         fileMenu.add(userMenuItem);
         fileMenu.add(customerMenuItem);
         fileMenu.add(productMenuItem);

@@ -27,7 +27,6 @@ import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.springframework.util.StringUtils;
 
-
 import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
@@ -109,7 +108,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
      */
     protected abstract JPanel createButtonPanel(JTable table);
 
-    private void displayEntitiesList() {
+    protected void displayEntitiesList() {
         entities = loadData();
         // EventTableModel<T> tableModel = new EventTableModel<T>(entities, new BasicTableFormat());
         AdvanceTableModel tableModel = new AdvanceTableModel();

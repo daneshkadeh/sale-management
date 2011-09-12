@@ -7,6 +7,8 @@ import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
 import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.view.AbstractCommonListView;
+import com.hbsoft.ssm.view.AbstractDetailView;
+import com.hbsoft.ssm.view.detail.EditGoodsView;
 
 /**
  * The common list screen of {@link Goods} entity.
@@ -31,5 +33,10 @@ public class ListGoodsView extends AbstractCommonListView<Goods> {
     @Override
     protected List<Goods> loadData() {
         return ConfigProvider.getInstance().getGoodsService().findAll();
+    }
+
+    @Override
+    protected AbstractDetailView getDetailView() {
+        return new EditGoodsView();
     }
 }
