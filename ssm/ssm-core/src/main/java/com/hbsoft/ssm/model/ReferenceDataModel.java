@@ -10,17 +10,7 @@ import java.util.Map;
  * 
  */
 public class ReferenceDataModel {
-    // private List<ReferenceDataList> refDataList = new ArrayList<ReferenceDataList>();
     private Map<String, ReferenceDataList> refDataListMap = new HashMap<String, ReferenceDataList>();
-
-    //
-    // public void setRefDataList(List<ReferenceDataList> refDataList) {
-    // this.refDataList = refDataList;
-    // }
-    //
-    // public List<ReferenceDataList> getRefDataList() {
-    // return refDataList;
-    // }
 
     public void putRefDataList(String refId, ReferenceDataList refDataList) {
         refDataListMap.put(refId, refDataList);
