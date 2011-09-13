@@ -36,8 +36,10 @@ import org.springframework.util.StringUtils;
 import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
+import com.hbsoft.ssm.model.ReferenceDataList;
 import com.hbsoft.ssm.model.ReferenceDataModel;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
+import com.hbsoft.ssm.view.component.MultiSelectionBox;
 
 public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -109,8 +111,15 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 break;
             case COMBO_BOX:
                 // get the referenceDataList from ReferenceDataModel using referenceDataId of column.
+                // TODO: getRenderer to render data using class of DataList
                 dataField = new JComboBox(new DefaultComboBoxModel(refDataModel.getRefDataListMap()
-                        .get(dataModel.getReferenceDataId()).getIdLabelMap().keySet().toArray()));
+                        .get(dataModel.getReferenceDataId()).getDataList().toArray()));
+                break;
+            case MULTI_SELECT_BOX:
+                ReferenceDataList refDataList = refDataModel.getRefDataListMap().get(dataModel.getReferenceDataId());
+
+                // TODO: Not find out solution to set parameterize T here! Why don't we use object type?
+                dataField = new MultiSelectionBox<String>(refDataList.getDataList(), new ArrayList<String>());
                 break;
             default:
                 throw new RuntimeException("FieldType does not supported!");
@@ -196,6 +205,14 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                         } else {
                             throw new RuntimeException("Do not support class " + paramClass.getCanonicalName());
                         }
+                    } else if (dataModel.getFieldType() == FieldTypeEnum.MULTI_SELECT_BOX) {
+                        MultiSelectionBox<String> multiBox = (MultiSelectionBox<String>) component;
+                        List<String> unselected = multiBox.getSourceValues();
+                        List<String> selected = multiBox.getDestinationValues();
+                        // TODO: set selected value into entity
+                        // for each item in listData of entity, remove, then set selected into entity. (prevent
+                        // hibernate mapping issue).
+
                     } else {
                         throw new RuntimeException("Do not support FieldTypeEnum " + dataModel.getFieldType());
                     }

@@ -1,16 +1,33 @@
 package com.hbsoft.ssm.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-public class ReferenceDataList {
-    private Map<String, String> idLabelMap = new HashMap<String, String>();
+public class ReferenceDataList<T> {
+    private List<T> dataList;
 
-    public void setIdLabelMap(Map<String, String> idLabelMap) {
-        this.idLabelMap = idLabelMap;
+    /*
+     * This property does not work
+     */
+    private Class<T> clazz;
+
+    public ReferenceDataList(List<T> dataList) {
+        this.dataList = dataList;
+
+        // TODO: this not work?
+        // Type parameterizedType = ((ParameterizedType)
+        // this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        // this.clazz = (Class<T>) parameterizedType;
     }
 
-    public Map<String, String> getIdLabelMap() {
-        return idLabelMap;
+    public void setDataList(List<T> dataList) {
+        this.dataList = dataList;
+    }
+
+    public List<T> getDataList() {
+        return dataList;
+    }
+
+    public Class<T> getClazz() {
+        return clazz;
     }
 }
