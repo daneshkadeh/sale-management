@@ -95,7 +95,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         // Layout the screen
         setLayout(new MigLayout("wrap"));
 
-        JPanel pnlEdit = new JPanel(new MigLayout("wrap 2, debug", "[][fill, grow]"));
+        JPanel pnlEdit = new JPanel(new MigLayout("wrap 2", "[][fill, grow]"));
         for (DetailDataModel dataModel : listDataModel) {
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + dataModel.getFieldName());
