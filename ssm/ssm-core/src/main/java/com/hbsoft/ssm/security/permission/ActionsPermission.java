@@ -1,4 +1,4 @@
-package com.hbsoft.ssm.security;
+package com.hbsoft.ssm.security.permission;
 
 import java.security.Permission;
 import java.util.Collections;
