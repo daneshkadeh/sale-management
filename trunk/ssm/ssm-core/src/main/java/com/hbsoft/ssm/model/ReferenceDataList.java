@@ -2,15 +2,10 @@ package com.hbsoft.ssm.model;
 
 import java.util.List;
 
-public class ReferenceDataList<T> {
-    private List<T> dataList;
+public class ReferenceDataList {
+    private List<?> dataList;
 
-    /*
-     * This property does not work
-     */
-    private Class<T> clazz;
-
-    public ReferenceDataList(List<T> dataList) {
+    public ReferenceDataList(List<?> dataList) {
         this.dataList = dataList;
 
         // TODO: this not work?
@@ -19,15 +14,11 @@ public class ReferenceDataList<T> {
         // this.clazz = (Class<T>) parameterizedType;
     }
 
-    public void setDataList(List<T> dataList) {
+    public void setDataList(List<?> dataList) {
         this.dataList = dataList;
     }
 
-    public List<T> getDataList() {
+    public List<?> getDataList() {
         return dataList;
-    }
-
-    public Class<T> getClazz() {
-        return clazz;
     }
 }

@@ -29,7 +29,7 @@ import net.miginfocom.swing.MigLayout;
  *            the data type of elements in {@link JList}s.
  * @author Phan Hong Phuc
  */
-public class MultiSelectionBox<T> extends JPanel {
+public class MultiSelectionBox extends JPanel {
     private static final long serialVersionUID = 1L;
 
     // Subcomponents
@@ -41,8 +41,8 @@ public class MultiSelectionBox<T> extends JPanel {
     private JButton btnDeselectAll;
 
     // Data
-    private List<T> sources = new ArrayList<T>();
-    private List<T> destinations = new ArrayList<T>();
+    private List<Object> sources = new ArrayList<Object>();
+    private List<Object> destinations = new ArrayList<Object>();
 
     // Renderer
     private ListCellRenderer cellRenderer = new DefaultListCellRenderer();
@@ -54,10 +54,10 @@ public class MultiSelectionBox<T> extends JPanel {
      * @param sources
      * @param destinations
      */
-    public MultiSelectionBox(List<T> sources, List<T> destinations) {
+    public MultiSelectionBox(List<?> sources, List<?> destinations) {
         super();
-        this.sources = new ArrayList<T>(sources);
-        this.destinations = new ArrayList<T>(destinations);
+        this.sources = new ArrayList<Object>(sources);
+        this.destinations = new ArrayList<Object>(destinations);
         initComponents();
     }
 
@@ -68,16 +68,16 @@ public class MultiSelectionBox<T> extends JPanel {
      * @param destinations
      * @param cellRenderer
      */
-    public MultiSelectionBox(List<T> sources, List<T> destinations, ListCellRenderer cellRenderer) {
+    public MultiSelectionBox(List<?> sources, List<?> destinations, ListCellRenderer cellRenderer) {
         super();
-        this.sources = sources;
-        this.destinations = destinations;
+        this.sources = new ArrayList<Object>(sources);
+        this.destinations = new ArrayList<Object>(destinations);
         this.cellRenderer = cellRenderer;
         initComponents();
     }
 
     private void initComponents() {
-        setLayout(new MigLayout("gap 10", "[48%, grow,fill][center][48%,grow,fill]", "[grow,center]"));
+        setLayout(new MigLayout("gap 10, insets 0 0 0 0", "[48%, grow,fill][center][48%,grow,fill]", "[grow,center]"));
         lstSource = createJList(sources, cellRenderer);
         lstDest = createJList(destinations, cellRenderer);
         btnDeselectSingle = new JButton("<");
@@ -124,9 +124,9 @@ public class MultiSelectionBox<T> extends JPanel {
         add(lstDest, "grow");
     }
 
-    private JList createJList(List<T> data, ListCellRenderer renderer) {
+    private JList createJList(List<Object> data, ListCellRenderer renderer) {
         DefaultListModel listModel = new DefaultListModel();
-        for (T d : data) {
+        for (Object d : data) {
             listModel.addElement(d);
         }
         JList jList = new JList(listModel);
@@ -171,22 +171,21 @@ public class MultiSelectionBox<T> extends JPanel {
         enableDisableButtons();
     }
 
-    @SuppressWarnings("unchecked")
-    private List<T> getAllValuesOfJList(JList jList) {
+    private List<Object> getAllValuesOfJList(JList jList) {
         DefaultListModel sourceModel = (DefaultListModel) jList.getModel();
-        List<T> sourceData = new ArrayList<T>(sourceModel.size());
+        List<Object> sourceData = new ArrayList<Object>(sourceModel.size());
         for (int i = 0; i < sourceModel.size(); i++) {
-            sourceData.add((T) sourceModel.get(i));
+            sourceData.add(sourceModel.get(i));
         }
         return sourceData;
     }
 
     /**
-     * Get destination data
+     * Get destination data.
      * 
      * @return the list of values in destination list box.
      */
-    public List<T> getDestinationValues() {
+    public List<Object> getDestinationValues() {
         return getAllValuesOfJList(lstDest);
     }
 
@@ -195,7 +194,7 @@ public class MultiSelectionBox<T> extends JPanel {
      * 
      * @return the list of values in sources list box.
      */
-    public List<T> getSourceValues() {
+    public List<Object> getSourceValues() {
         return getAllValuesOfJList(lstSource);
     }
 

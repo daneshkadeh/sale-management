@@ -36,7 +36,6 @@ import org.springframework.util.StringUtils;
 import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
-import com.hbsoft.ssm.model.ReferenceDataList;
 import com.hbsoft.ssm.model.ReferenceDataModel;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 import com.hbsoft.ssm.view.component.MultiSelectionBox;
@@ -94,41 +93,43 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
     private void initComponents() {
         // Layout the screen
-        setLayout(new MigLayout("fillx,insets 1, width :500:"));
+        setLayout(new MigLayout("wrap"));
 
-        JPanel pnlEdit = new JPanel(new MigLayout("wrap 2"));
+        JPanel pnlEdit = new JPanel(new MigLayout("wrap 2, debug", "[][fill, grow]"));
         for (DetailDataModel dataModel : listDataModel) {
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + dataModel.getFieldName());
             JLabel lblLabel = new JLabel(label);
-            pnlEdit.add(lblLabel);
             JComponent dataField;
             switch (dataModel.getFieldType()) {
             case TEXT_BOX:
                 dataField = new JTextField(JTEXTFIELD_SIZE);
                 ((JTextField) dataField).setEditable(dataModel.isEditable());
                 dataField.setEnabled(dataModel.isEnable());
+                pnlEdit.add(lblLabel);
+                pnlEdit.add(dataField);
                 break;
             case COMBO_BOX:
                 // get the referenceDataList from ReferenceDataModel using referenceDataId of column.
                 // TODO: getRenderer to render data using class of DataList
                 dataField = new JComboBox(new DefaultComboBoxModel(refDataModel.getRefDataListMap()
-                        .get(dataModel.getReferenceDataId()).getDataList().toArray()));
+                        .get(dataModel.getReferenceDataId()).toArray()));
+                pnlEdit.add(lblLabel);
+                pnlEdit.add(dataField);
                 break;
             case MULTI_SELECT_BOX:
-                ReferenceDataList refDataList = refDataModel.getRefDataListMap().get(dataModel.getReferenceDataId());
-
-                // TODO: Not find out solution to set parameterize T here! Why don't we use object type?
-                dataField = new MultiSelectionBox<String>(refDataList.getDataList(), new ArrayList<String>());
+                List<Object> refDataList = refDataModel.getRefDataListMap().get(dataModel.getReferenceDataId());
+                dataField = new MultiSelectionBox(refDataList, new ArrayList<Object>());
+                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(dataField);
                 break;
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
             mapFields.put(dataModel, dataField);
-            pnlEdit.add(dataField);
         }
 
-        add(pnlEdit, "wrap");
+        add(pnlEdit, "grow");
 
         btnOK = new JButton("OK");
         btnOK.addActionListener(new ActionListener() {
@@ -144,10 +145,10 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             }
         });
 
-        JPanel pnlButton = new JPanel(new MigLayout("center, , width :500:"));
-        pnlButton.add(btnOK, "center");
+        JPanel pnlButton = new JPanel();
+        pnlButton.add(btnOK);
         pnlButton.add(btnCancel);
-        add(pnlButton);
+        add(pnlButton, "center");
     }
 
     protected void btnOKActionPerformed(ActionEvent evt) {
@@ -206,9 +207,9 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                             throw new RuntimeException("Do not support class " + paramClass.getCanonicalName());
                         }
                     } else if (dataModel.getFieldType() == FieldTypeEnum.MULTI_SELECT_BOX) {
-                        MultiSelectionBox<String> multiBox = (MultiSelectionBox<String>) component;
-                        List<String> unselected = multiBox.getSourceValues();
-                        List<String> selected = multiBox.getDestinationValues();
+                        MultiSelectionBox multiBox = (MultiSelectionBox) component;
+                        List<Object> unselected = multiBox.getSourceValues();
+                        List<Object> selected = multiBox.getDestinationValues();
                         // TODO: set selected value into entity
                         // for each item in listData of entity, remove, then set selected into entity. (prevent
                         // hibernate mapping issue).

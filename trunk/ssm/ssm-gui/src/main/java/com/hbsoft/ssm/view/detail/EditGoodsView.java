@@ -6,7 +6,6 @@ import java.util.List;
 import com.hbsoft.ssm.entity.Goods;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
-import com.hbsoft.ssm.model.ReferenceDataList;
 import com.hbsoft.ssm.model.ReferenceDataModel;
 import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.view.AbstractDetailView;
@@ -37,10 +36,8 @@ public class EditGoodsView extends AbstractDetailView<Goods> {
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, Goods entity) {
         super.setReferenceDataModel(refDataModel, entity);
-
-        // TODO: we will support method to retrieve ReferenceDataList from objects on abstract class.
-        ReferenceDataList<String> refDataList = new ReferenceDataList<String>(Arrays.asList("1.0", "2.0", "3.0"));
-        refDataModel.putRefDataList(TAX_REF_ID, refDataList);
+        List<Double> taxRefs = Arrays.asList(1.0, 2.0, 3.0);
+        refDataModel.putRefDataList(TAX_REF_ID, taxRefs);
     }
 
     @Override
