@@ -1,5 +1,6 @@
 package com.hbsoft.ssm.entity;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.hbsoft.ssm.security.BasePrincipal;
 @Entity
 @Table(name = "tbl_auth_principal")
 public class PrincipalEntity extends AbstractBaseIdObject {
@@ -19,6 +22,12 @@ public class PrincipalEntity extends AbstractBaseIdObject {
 	private String clazz;
 	private Set<User> users = new HashSet<User>();
 	private Set<PermissionEntity> permissions = new HashSet<PermissionEntity>();
+	
+	public PrincipalEntity(BasePrincipal basePrincipal) {
+		this.name = basePrincipal.getName();
+		this.clazz = basePrincipal.getClass().getName();
+	}
+	
 	@Column(name = "name", nullable = false)
     @NotNull
 	public String getName() {
@@ -26,6 +35,9 @@ public class PrincipalEntity extends AbstractBaseIdObject {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public PrincipalEntity() {
+		super();
 	}
 	@Column(name = "class", nullable = false)
     @NotNull
