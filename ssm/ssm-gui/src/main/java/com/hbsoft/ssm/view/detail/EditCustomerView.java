@@ -6,13 +6,12 @@ import java.util.List;
 import com.hbsoft.ssm.entity.Customer;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
-import com.hbsoft.ssm.model.ReferenceDataList;
 import com.hbsoft.ssm.model.ReferenceDataModel;
 import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.view.AbstractDetailView;
 
 public class EditCustomerView extends AbstractDetailView<Customer> {
-
+    private static final long serialVersionUID = 2202186074068854009L;
     private static final String REF_TEST_MODEL = "0";
 
     @Override
@@ -32,8 +31,7 @@ public class EditCustomerView extends AbstractDetailView<Customer> {
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, Customer entity) {
         super.setReferenceDataModel(refDataModel, entity);
-        ReferenceDataList<String> refDataList = new ReferenceDataList<String>(Arrays.asList("Role1", "Role2", "Role3",
-                "Role4", "Role5", "Role6"));
+        List<String> refDataList = Arrays.asList("Role1", "Role2", "Role3", "Role4", "Role5", "Role6");
         refDataModel.putRefDataList(REF_TEST_MODEL, refDataList);
     }
 }

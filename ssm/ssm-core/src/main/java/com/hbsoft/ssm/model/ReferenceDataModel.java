@@ -1,6 +1,8 @@
 package com.hbsoft.ssm.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,17 +12,17 @@ import java.util.Map;
  * 
  */
 public class ReferenceDataModel {
-    private Map<String, ReferenceDataList> refDataListMap = new HashMap<String, ReferenceDataList>();
+    private Map<String, List<Object>> refDataListMap = new HashMap<String, List<Object>>();
 
-    public void putRefDataList(String refId, ReferenceDataList refDataList) {
-        refDataListMap.put(refId, refDataList);
+    public void putRefDataList(String refId, List<?> refDataList) {
+        refDataListMap.put(refId, new ArrayList<Object>(refDataList));
     }
 
-    public void setRefDataListMap(Map<String, ReferenceDataList> refDataListMap) {
-        this.refDataListMap = refDataListMap;
-    }
+    // public void setRefDataListMap(Map<String, List<?>> refDataListMap) {
+    // this.refDataListMap = refDataListMap;
+    // }
 
-    public Map<String, ReferenceDataList> getRefDataListMap() {
+    public Map<String, List<Object>> getRefDataListMap() {
         return refDataListMap;
     }
 }
