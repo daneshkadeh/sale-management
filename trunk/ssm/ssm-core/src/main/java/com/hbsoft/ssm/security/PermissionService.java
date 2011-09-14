@@ -1,5 +1,6 @@
 package com.hbsoft.ssm.security;
 
+import java.security.BasicPermission;
 import java.security.Permission;
 import java.security.Principal;
 import java.security.UnresolvedPermission;
@@ -10,6 +11,8 @@ import java.util.Set;
 
 import com.hbsoft.ssm.entity.PermissionEntity;
 import com.hbsoft.ssm.entity.PrincipalEntity;
+import com.hbsoft.ssm.security.permission.ActionsPermission;
+import com.hbsoft.ssm.security.permission.RecordPermission;
 import com.hbsoft.ssm.service.PermissionEntityService;
 import com.hbsoft.ssm.service.PrincipalEntityService;
 import com.hbsoft.ssm.util.ConfigProvider;
@@ -29,7 +32,7 @@ public class PermissionService {
      * @param principal
      * @param permission
      */
-    public static void addPermission(Principal principal, Permission permission) {
+    public static void addPermission(BasePrincipal principal, ActionsPermission permission) {
         PermissionEntity permissionEntity = new PermissionEntity();
         permissionEntity.setName(permission.getName());
         permissionEntity.setActions(permission.getActions());
@@ -37,8 +40,18 @@ public class PermissionService {
         permissionEntityService.save(permissionEntity);
         // add permission to principal
         PrincipalEntity principalEntity = principalEntityService.findByName(principal.getName());
+        if(principalEntity == null) {
+        	principalEntity = new PrincipalEntity(principal);
+        	principalEntityService.save(principalEntity);
+        }
         principalEntity.getPermissions().add(permissionEntity);
         principalEntityService.update(principalEntity);
+    }
+    
+    public static void addPermissionSet(BasePrincipal principal, Set<ActionsPermission> permissionSet) {
+    	for (ActionsPermission permission : permissionSet) {
+    		addPermission(principal, permission);
+    	}
     }
 
     public static List<Permission> findPermissions(Set<Principal> principalSet) {

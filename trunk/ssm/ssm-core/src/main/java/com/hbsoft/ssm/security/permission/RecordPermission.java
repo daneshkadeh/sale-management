@@ -1,4 +1,5 @@
-package com.hbsoft.ssm.security;
+package com.hbsoft.ssm.security.permission;
+
 
 public class RecordPermission extends ActionsPermission {
     public RecordPermission(String name, String actions) {

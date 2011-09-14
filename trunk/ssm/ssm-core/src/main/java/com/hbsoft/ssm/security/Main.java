@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 
 import org.omg.CORBA.CTX_RESTRICT_SCOPE;
 
+
 public class Main {
     public static void main(String[] args) throws SQLException {
         LoginConfiguration.init();
