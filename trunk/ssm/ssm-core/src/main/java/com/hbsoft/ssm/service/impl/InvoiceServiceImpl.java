@@ -1,5 +1,7 @@
 package com.hbsoft.ssm.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +29,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     public Invoice findById(Integer id) {
         return invoiceDao.findById(id);
+    }
+
+    @Override
+    public List<Invoice> findAll() {
+        return invoiceDao.findAll();
     }
 }

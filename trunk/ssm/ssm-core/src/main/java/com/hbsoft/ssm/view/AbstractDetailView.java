@@ -66,9 +66,14 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             throw new RuntimeException(e);
         }
 
-        initialPresentationView(listDataModel);
+        initialPresentationView(listDataModel, entity);
         setReferenceDataModel(refDataModel, entity);
-        initComponents();
+        try {
+            initComponents();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void setListView(AbstractCommonListView view) {
@@ -80,7 +85,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         return (Class<T>) controllerType;
     }
 
-    public abstract void initialPresentationView(List<DetailDataModel> listDataModel);
+    public abstract void initialPresentationView(List<DetailDataModel> listDataModel, T entity);
 
     /**
      * Set data for ComboBox, MultiSelectBox.
@@ -91,7 +96,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, T entity) {
     }
 
-    private void initComponents() {
+    protected void initComponents() throws Exception {
         // Layout the screen
         setLayout(new MigLayout("wrap"));
 
@@ -101,6 +106,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     + dataModel.getFieldName());
             JLabel lblLabel = new JLabel(label);
             JComponent dataField;
+
+            Method getMethod = entity.getClass().getMethod("get" + StringUtils.capitalize(dataModel.getFieldName()));
             switch (dataModel.getFieldType()) {
             case TEXT_BOX:
                 dataField = new JTextField(JTEXTFIELD_SIZE);
@@ -108,6 +115,11 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 dataField.setEnabled(dataModel.isEnable());
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
+
+                Object value = getMethod.invoke(entity);
+                if (value != null) {
+                    ((JTextField) dataField).setText(String.valueOf(value));
+                }
                 break;
             case COMBO_BOX:
                 // get the referenceDataList from ReferenceDataModel using referenceDataId of column.
@@ -175,6 +187,10 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             DetailDataModel dataModel = getDataModelFromSetMethod(method.getName());
             if (dataModel != null) {
                 JComponent component = mapFields.get(dataModel);
+                if (!dataModel.isEditable()) {
+                    continue;
+                }
+
                 try {
                     if (dataModel.getFieldType() == FieldTypeEnum.TEXT_BOX) {
                         JTextComponent textComponent = (JTextComponent) component;
@@ -218,6 +234,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                         throw new RuntimeException("Do not support FieldTypeEnum " + dataModel.getFieldType());
                     }
                 } catch (Exception e) {
+                    logger.error("Technical error.", e);
                     throw new RuntimeException(e);
                 }
             }

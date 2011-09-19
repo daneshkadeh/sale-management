@@ -116,7 +116,7 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
         return null;
     }
 
-    private void openDetailView() {
+    protected void openDetailView() {
         AbstractDetailView detailView = getDetailView();
         if (detailView != null) {
             detailView.setEnabled(true);
@@ -138,7 +138,12 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
      */
     public void notifyFromDetailView(T entity2, boolean isNew) {
         if (isNew) {
-            entities.add(entity2);
+
+            // TODO: Should not new entities here! But not find out why it is null?
+            // if (entities == null) {
+            // entities = new ArrayList<T>();
+            // }
+            // entities.add(entity2);
         } else {
             throw new RuntimeException("Unsupport notify update!");
         }

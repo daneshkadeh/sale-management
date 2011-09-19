@@ -23,6 +23,7 @@ import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 import com.hbsoft.ssm.view.list.ListCustomerView;
 import com.hbsoft.ssm.view.list.ListGoodsView;
+import com.hbsoft.ssm.view.list.ListInvoiceView;
 import com.hbsoft.ssm.view.security.LoginDialog;
 
 public class MainProgram {
@@ -105,6 +106,18 @@ public class MainProgram {
         statisticMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
         JMenuItem invoiceMenuItem = new JMenuItem(ControlConfigUtils.getString("JMenu.File.Invoice"));
         invoiceMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK));
+        invoiceMenuItem.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                // Create and set up the content pane.
+                ListInvoiceView listInvoiceView = new ListInvoiceView();
+                listInvoiceView.setVisible(true);
+                frame.setContentPane(listInvoiceView);
+                frame.repaint();
+                frame.pack();
+            }
+        });
+
         JMenuItem exitMenuItem = new JMenuItem(ControlConfigUtils.getString("JMenu.File.Exit"));
         exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
         exitMenuItem.addActionListener(new ActionListener() {
