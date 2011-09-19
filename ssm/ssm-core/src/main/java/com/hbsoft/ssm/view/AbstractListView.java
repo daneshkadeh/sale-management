@@ -48,8 +48,10 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
     private JScrollPane jScrollPane;
 
     // Class<T> clazz;
-    protected List<T> entities;
-    private final List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
+    protected List<T> entities = new ArrayList<T>();
+
+    // This model is used by sub classes.
+    protected final List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
     public boolean selector = false;
 
     public AbstractListView() {
@@ -179,7 +181,15 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
         /**
          * The remaining entities after hiding rows.
          */
-        private List<T> currentEntities = entities;
+        private List<T> currentEntities;
+
+        public AdvanceTableModel() {
+            if (entities == null) {
+                currentEntities = new ArrayList<T>();
+            } else {
+                currentEntities = entities;
+            }
+        }
 
         /**
          * Hide rows.

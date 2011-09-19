@@ -15,7 +15,7 @@ public class EditCustomerView extends AbstractDetailView<Customer> {
     private static final String REF_TEST_MODEL = "0";
 
     @Override
-    public void initialPresentationView(List<DetailDataModel> listDataModel) {
+    public void initialPresentationView(List<DetailDataModel> listDataModel, Customer customer) {
         listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXT_BOX));
         DetailDataModel testModel = new DetailDataModel("testField", FieldTypeEnum.MULTI_SELECT_BOX);
