@@ -18,6 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 import javax.validation.Configuration;
@@ -40,6 +41,11 @@ import com.hbsoft.ssm.model.ReferenceDataModel;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 import com.hbsoft.ssm.view.component.MultiSelectionBox;
 
+/**
+ * @author Pham Cong Bang
+ * 
+ * @param <T>
+ */
 public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends JPanel {
     private static final long serialVersionUID = 1L;
 
@@ -57,6 +63,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     private ReferenceDataModel refDataModel = new ReferenceDataModel();
 
     private Integer JTEXTFIELD_SIZE = 20;
+    private Integer JPASSWORDFIELD_SIZE = 20;
 
     public AbstractDetailView() {
         clazz = getEntityClass();
@@ -108,6 +115,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             JComponent dataField;
 
             Method getMethod = entity.getClass().getMethod("get" + StringUtils.capitalize(dataModel.getFieldName()));
+            Object value;
             switch (dataModel.getFieldType()) {
             case TEXT_BOX:
                 dataField = new JTextField(JTEXTFIELD_SIZE);
@@ -116,7 +124,19 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
 
-                Object value = getMethod.invoke(entity);
+                value = getMethod.invoke(entity);
+                if (value != null) {
+                    ((JTextField) dataField).setText(String.valueOf(value));
+                }
+                break;
+            case PASSWORD:
+                dataField = new JPasswordField(JPASSWORDFIELD_SIZE);
+                ((JPasswordField) dataField).setEditable(dataModel.isEditable());
+                dataField.setEnabled(dataModel.isEnable());
+                pnlEdit.add(lblLabel);
+                pnlEdit.add(dataField);
+
+                value = getMethod.invoke(entity);
                 if (value != null) {
                     ((JTextField) dataField).setText(String.valueOf(value));
                 }
@@ -195,6 +215,21 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     if (dataModel.getFieldType() == FieldTypeEnum.TEXT_BOX) {
                         JTextComponent textComponent = (JTextComponent) component;
 
+                        Class<?> paramClass = getPropertyReturnType(entity2, dataModel);
+                        if (textComponent.getText().isEmpty()) {
+                            method.invoke(entity2, (Object) null);
+                        } else if (paramClass.equals(Double.class)) {
+                            method.invoke(entity2, Double.valueOf(textComponent.getText()));
+                        } else if (paramClass.equals(Integer.class)) {
+                            method.invoke(entity2, Integer.valueOf(textComponent.getText()));
+                        } else if (paramClass.equals(String.class)) {
+                            method.invoke(entity2, textComponent.getText());
+                        } else {
+                            throw new RuntimeException("Do not support class " + paramClass.getCanonicalName());
+                        }
+                    } else if (dataModel.getFieldType() == FieldTypeEnum.PASSWORD) {
+                    	JPasswordField textComponent = (JPasswordField) component;
+                    	
                         Class<?> paramClass = getPropertyReturnType(entity2, dataModel);
                         if (textComponent.getText().isEmpty()) {
                             method.invoke(entity2, (Object) null);
