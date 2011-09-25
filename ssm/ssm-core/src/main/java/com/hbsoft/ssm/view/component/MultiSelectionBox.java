@@ -19,14 +19,12 @@ import net.miginfocom.swing.MigLayout;
 
 /**
  * The component multi-selection box. This component includes the source list box, the destination list box and 4
- * buttons to move elements between these 2 list boxes. </br> The useful methods:
+ * buttons to move elements between these 2 list boxes. </p> The useful methods:
  * <ul>
  * <li>{@link #getSourceValues()}</li>
  * <li>{@link #getDestinationValues()}</li>
  * </ul>
  * 
- * @param T
- *            the data type of elements in {@link JList}s.
  * @author Phan Hong Phuc
  */
 public class MultiSelectionBox extends JPanel {
@@ -152,7 +150,7 @@ public class MultiSelectionBox extends JPanel {
      * @param from
      * @param to
      * @param allElements
-     *            move all elements if <code>true</code>, else just move the selected value of <code>from</code> JList.
+     *            move all elements if <code>true</code>, else just move the selected values of <code>from</code> JList.
      */
     private void move(JList from, JList to, boolean allElements) {
         DefaultListModel fromModel = (DefaultListModel) from.getModel();

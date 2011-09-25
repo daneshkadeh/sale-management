@@ -215,17 +215,11 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
             fireTableDataChanged();
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public int getRowCount() {
             return currentEntities.size();
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             T entity = currentEntities.get(rowIndex);
@@ -242,9 +236,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public int getColumnCount() {
             return listDataModel.size();

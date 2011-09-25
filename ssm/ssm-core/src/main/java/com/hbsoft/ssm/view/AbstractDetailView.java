@@ -15,12 +15,13 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.text.JTextComponent;
+import javax.swing.text.NumberFormatter;
 import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -30,6 +31,7 @@ import javax.validation.ValidatorFactory;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
@@ -55,6 +57,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
     protected List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
     protected Map<DetailDataModel, JComponent> mapFields = new HashMap<DetailDataModel, JComponent>();
+
     private JButton btnOK;
     private JButton btnCancel;
     private Class<T> clazz;
@@ -107,6 +110,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         // Layout the screen
         setLayout(new MigLayout("wrap"));
 
+        add(createButtonPanel());
+
         JPanel pnlEdit = new JPanel(new MigLayout("wrap 2", "[][fill, grow]"));
         for (DetailDataModel dataModel : listDataModel) {
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
@@ -118,8 +123,20 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             Object value;
             switch (dataModel.getFieldType()) {
             case TEXT_BOX:
-                dataField = new JTextField(JTEXTFIELD_SIZE);
-                ((JTextField) dataField).setEditable(dataModel.isEditable());
+                Class<?> propertyReturnType = getPropertyReturnType(entity, dataModel);
+                if (ClassUtils.isAssignable(propertyReturnType, Number.class)) {
+                    NumberFormatter numFormatter = new NumberFormatter();
+                    numFormatter.setAllowsInvalid(false);
+                    if (ClassUtils.isAssignable(propertyReturnType, Integer.class)) {
+                        numFormatter.setValueClass(Integer.class);
+                    } else {
+                        numFormatter.setValueClass(Double.class);
+                    }
+                    dataField = new JFormattedTextField(numFormatter);
+                } else {
+                    dataField = new JFormattedTextField();
+                }
+                ((JFormattedTextField) dataField).setEditable(dataModel.isEditable());
                 dataField.setEnabled(dataModel.isEnable());
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
@@ -183,6 +200,11 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         add(pnlButton, "center");
     }
 
+    private JPanel createButtonPanel() {
+        // TODO hpp: move btnOK and Cancel to here, add other button.
+        return new JPanel();
+    }
+
     protected void btnOKActionPerformed(ActionEvent evt) {
         Set<ConstraintViolation<T>> validateResult = bindAndValidate(entity);
         if (CollectionUtils.isEmpty(validateResult)) {
@@ -197,13 +219,13 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
     }
 
-    protected void saveOrUpdate(T entity2) {
-        // TODO Should abtract this method also. getDao(T).saveOrUpdate(entity2)
+    protected void saveOrUpdate(T entity) {
+        // TODO Should abtract this method also. getDao(T).saveOrUpdate(entity)
 
     }
 
-    protected Set<ConstraintViolation<T>> bindAndValidate(T entity2) {
-        for (Method method : entity2.getClass().getMethods()) {
+    protected Set<ConstraintViolation<T>> bindAndValidate(T entity) {
+        for (Method method : entity.getClass().getMethods()) {
             DetailDataModel dataModel = getDataModelFromSetMethod(method.getName());
             if (dataModel != null) {
                 JComponent component = mapFields.get(dataModel);
@@ -213,47 +235,49 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
                 try {
                     if (dataModel.getFieldType() == FieldTypeEnum.TEXT_BOX) {
-                        JTextComponent textComponent = (JTextComponent) component;
+                        JFormattedTextField textComponent = (JFormattedTextField) component;
 
-                        Class<?> paramClass = getPropertyReturnType(entity2, dataModel);
+                        Class<?> paramClass = getPropertyReturnType(entity, dataModel);
                         if (textComponent.getText().isEmpty()) {
-                            method.invoke(entity2, (Object) null);
+                            method.invoke(entity, (Object) null);
                         } else if (paramClass.equals(Double.class)) {
-                            method.invoke(entity2, Double.valueOf(textComponent.getText()));
+                            method.invoke(entity, (Double) textComponent.getValue());
                         } else if (paramClass.equals(Integer.class)) {
-                            method.invoke(entity2, Integer.valueOf(textComponent.getText()));
+                            method.invoke(entity, (Integer) textComponent.getValue());
+                        } else if (paramClass.equals(Long.class)) {
+                            method.invoke(entity, (Long) textComponent.getValue());
                         } else if (paramClass.equals(String.class)) {
-                            method.invoke(entity2, textComponent.getText());
+                            method.invoke(entity, textComponent.getText());
                         } else {
                             throw new RuntimeException("Do not support class " + paramClass.getCanonicalName());
                         }
                     } else if (dataModel.getFieldType() == FieldTypeEnum.PASSWORD) {
-                    	JPasswordField textComponent = (JPasswordField) component;
-                    	
-                        Class<?> paramClass = getPropertyReturnType(entity2, dataModel);
+                        JPasswordField textComponent = (JPasswordField) component;
+
+                        Class<?> paramClass = getPropertyReturnType(entity, dataModel);
                         if (textComponent.getText().isEmpty()) {
-                            method.invoke(entity2, (Object) null);
+                            method.invoke(entity, (Object) null);
                         } else if (paramClass.equals(Double.class)) {
-                            method.invoke(entity2, Double.valueOf(textComponent.getText()));
+                            method.invoke(entity, Double.valueOf(textComponent.getText()));
                         } else if (paramClass.equals(Integer.class)) {
-                            method.invoke(entity2, Integer.valueOf(textComponent.getText()));
+                            method.invoke(entity, Integer.valueOf(textComponent.getText()));
                         } else if (paramClass.equals(String.class)) {
-                            method.invoke(entity2, textComponent.getText());
+                            method.invoke(entity, textComponent.getText());
                         } else {
                             throw new RuntimeException("Do not support class " + paramClass.getCanonicalName());
                         }
                     } else if (dataModel.getFieldType() == FieldTypeEnum.COMBO_BOX) {
                         JComboBox comboBox = (JComboBox) component;
                         String id = comboBox.getSelectedItem().toString();
-                        Class<?> paramClass = getPropertyReturnType(entity2, dataModel);
+                        Class<?> paramClass = getPropertyReturnType(entity, dataModel);
 
                         // TODO: duplicate code with FieldType TEXT_BOX
                         if (paramClass.equals(Double.class)) {
-                            method.invoke(entity2, Double.valueOf(id));
+                            method.invoke(entity, Double.valueOf(id));
                         } else if (paramClass.equals(Integer.class)) {
-                            method.invoke(entity2, Integer.valueOf(id));
+                            method.invoke(entity, Integer.valueOf(id));
                         } else if (paramClass.equals(String.class)) {
-                            method.invoke(entity2, id);
+                            method.invoke(entity, id);
                         } else {
                             throw new RuntimeException("Do not support class " + paramClass.getCanonicalName());
                         }
@@ -280,22 +304,26 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         ValidatorFactory factory = config.buildValidatorFactory();
 
         Validator validator = factory.getValidator();
-        return validator.validate(entity2);
+        return validator.validate(entity);
     }
 
     /**
      * Get type of property from dataModel and getter of entity. The getter must follow convention get+FieldName. TODO:
      * This returnType could be set directly to DetailDataModel?
      * 
-     * @param entity2
+     * @param entity
      * @param dataModel
      * @return
      * @throws NoSuchMethodException
      */
-    private Class<?> getPropertyReturnType(T entity2, DetailDataModel dataModel) throws NoSuchMethodException {
-        Method getMethod = entity2.getClass().getMethod("get" + StringUtils.capitalize(dataModel.getFieldName()));
-        Class<?> paramClass = getMethod.getReturnType();
-        return paramClass;
+    private Class<?> getPropertyReturnType(T entity, DetailDataModel dataModel) {
+        try {
+            Method getMethod = entity.getClass().getMethod("get" + StringUtils.capitalize(dataModel.getFieldName()));
+            Class<?> paramClass = getMethod.getReturnType();
+            return paramClass;
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     private DetailDataModel getDataModelFromSetMethod(String setMethodName) {

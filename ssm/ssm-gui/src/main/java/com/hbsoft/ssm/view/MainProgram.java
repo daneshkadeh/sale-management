@@ -1,6 +1,7 @@
 package com.hbsoft.ssm.view;
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,6 +13,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,10 +57,24 @@ public class MainProgram {
      * Create the GUI and show it. For thread safety, this method should be invoked from the event-dispatching thread.
      */
     private static void createAndShowGUI() {
+        // Set System L&F
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
         // Create and set up the window.
         final JFrame frame = new JFrame("Sales Management");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(WINDOW_MIN_SIZE);
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         JMenuBar menuBar = createMenuBar(frame);
 
         frame.setJMenuBar(menuBar);
@@ -82,9 +99,11 @@ public class MainProgram {
                 // frame.setContentPane(customerView);
                 ListCustomerView listCustomerView = new ListCustomerView();
                 listCustomerView.setVisible(true);
-                frame.setContentPane(listCustomerView);
-                frame.repaint();
-                frame.pack();
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(listCustomerView);
+                // frame.setContentPane(listCustomerView);
+                // frame.repaint();
+                // frame.pack();
             }
         });
 
