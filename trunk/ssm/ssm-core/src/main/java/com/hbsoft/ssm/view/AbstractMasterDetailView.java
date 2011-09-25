@@ -22,14 +22,17 @@ import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
  * @author phamcongbang
  * 
  * @param <T>
+ *            parent entity type
  * @param <E>
+ *            child entity type
  */
 public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E extends AbstractBaseIdObject> extends
         AbstractDetailView<T> {
+    private static final long serialVersionUID = 5571051971772731048L;
     private List<E> detailEntities = new ArrayList<E>();
     private Class<E> detailClazz;
 
-    private AbstractListView listDetailView;
+    private AbstractListView<E> listDetailView;
 
     public AbstractMasterDetailView() {
         super();
@@ -51,6 +54,8 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
     protected void initComponents() throws Exception {
         super.initComponents();
         listDetailView = new AbstractCommonListView<E>() {
+            private static final long serialVersionUID = -8455234397691564647L;
+
             protected Class<E> getEntityClass() {
                 return getDetailClass();
             };
@@ -80,8 +85,10 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
             };
 
             @Override
-            protected AbstractDetailView getDetailView() {
+            protected AbstractDetailView<E> getDetailView() {
                 return new AbstractDetailView<E>() {
+                    private static final long serialVersionUID = 3347750315592358049L;
+
                     @Override
                     public void initialPresentationView(List<DetailDataModel> listDataModel, E entity) {
                         initialEditDetailPresentationView(listDataModel, entity);
