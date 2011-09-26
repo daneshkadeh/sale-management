@@ -126,7 +126,6 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 Class<?> propertyReturnType = getPropertyReturnType(entity, dataModel);
                 if (ClassUtils.isAssignable(propertyReturnType, Number.class)) {
                     NumberFormatter numFormatter = new NumberFormatter();
-                    numFormatter.setAllowsInvalid(false);
                     if (ClassUtils.isAssignable(propertyReturnType, Integer.class)) {
                         numFormatter.setValueClass(Integer.class);
                     } else {
@@ -134,7 +133,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     }
                     dataField = new JFormattedTextField(numFormatter);
                 } else {
-                    dataField = new JFormattedTextField();
+                    // The format type is String
+                    dataField = new JFormattedTextField("");
                 }
                 ((JFormattedTextField) dataField).setEditable(dataModel.isEditable());
                 dataField.setEnabled(dataModel.isEnable());
@@ -143,7 +143,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
                 value = getMethod.invoke(entity);
                 if (value != null) {
-                    ((JTextField) dataField).setText(String.valueOf(value));
+                    ((JFormattedTextField) dataField).setValue(value);
                 }
                 break;
             case PASSWORD:
@@ -234,57 +234,22 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 }
 
                 try {
+                    Class<?> paramClass = getPropertyReturnType(entity, dataModel);
                     if (dataModel.getFieldType() == FieldTypeEnum.TEXT_BOX) {
-                        JFormattedTextField textComponent = (JFormattedTextField) component;
-
-                        Class<?> paramClass = getPropertyReturnType(entity, dataModel);
-                        if (textComponent.getText().isEmpty()) {
-                            method.invoke(entity, (Object) null);
-                        } else if (paramClass.equals(Double.class)) {
-                            method.invoke(entity, (Double) textComponent.getValue());
-                        } else if (paramClass.equals(Integer.class)) {
-                            method.invoke(entity, (Integer) textComponent.getValue());
-                        } else if (paramClass.equals(Long.class)) {
-                            method.invoke(entity, (Long) textComponent.getValue());
-                        } else if (paramClass.equals(String.class)) {
-                            method.invoke(entity, textComponent.getText());
-                        } else {
-                            throw new RuntimeException("Do not support class " + paramClass.getCanonicalName());
-                        }
+                        JFormattedTextField txtField = (JFormattedTextField) component;
+                        method.invoke(entity, paramClass.cast(txtField.getValue()));
                     } else if (dataModel.getFieldType() == FieldTypeEnum.PASSWORD) {
-                        JPasswordField textComponent = (JPasswordField) component;
-
-                        Class<?> paramClass = getPropertyReturnType(entity, dataModel);
-                        if (textComponent.getText().isEmpty()) {
-                            method.invoke(entity, (Object) null);
-                        } else if (paramClass.equals(Double.class)) {
-                            method.invoke(entity, Double.valueOf(textComponent.getText()));
-                        } else if (paramClass.equals(Integer.class)) {
-                            method.invoke(entity, Integer.valueOf(textComponent.getText()));
-                        } else if (paramClass.equals(String.class)) {
-                            method.invoke(entity, textComponent.getText());
-                        } else {
-                            throw new RuntimeException("Do not support class " + paramClass.getCanonicalName());
-                        }
+                        JPasswordField pwdField = (JPasswordField) component;
+                        method.invoke(entity, pwdField.getText());
                     } else if (dataModel.getFieldType() == FieldTypeEnum.COMBO_BOX) {
                         JComboBox comboBox = (JComboBox) component;
-                        String id = comboBox.getSelectedItem().toString();
-                        Class<?> paramClass = getPropertyReturnType(entity, dataModel);
-
-                        // TODO: duplicate code with FieldType TEXT_BOX
-                        if (paramClass.equals(Double.class)) {
-                            method.invoke(entity, Double.valueOf(id));
-                        } else if (paramClass.equals(Integer.class)) {
-                            method.invoke(entity, Integer.valueOf(id));
-                        } else if (paramClass.equals(String.class)) {
-                            method.invoke(entity, id);
-                        } else {
-                            throw new RuntimeException("Do not support class " + paramClass.getCanonicalName());
-                        }
+                        method.invoke(entity, paramClass.cast(comboBox.getSelectedItem()));
                     } else if (dataModel.getFieldType() == FieldTypeEnum.MULTI_SELECT_BOX) {
                         MultiSelectionBox multiBox = (MultiSelectionBox) component;
                         List<Object> unselected = multiBox.getSourceValues();
                         List<Object> selected = multiBox.getDestinationValues();
+                        // List<>
+
                         // TODO: set selected value into entity
                         // for each item in listData of entity, remove, then set selected into entity. (prevent
                         // hibernate mapping issue).
