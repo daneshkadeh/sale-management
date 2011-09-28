@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -64,4 +65,9 @@ public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends Hibern
         List<T> list = getHibernateTemplate().find("from " + getEntityClass().getSimpleName());
         return list;
     }
+
+    public List<T> findByCriteria(DetachedCriteria criteria, int firstResult, int maxResults) {
+        return (List<T>) getHibernateTemplate().findByCriteria(criteria, firstResult, maxResults);
+    }
+
 }

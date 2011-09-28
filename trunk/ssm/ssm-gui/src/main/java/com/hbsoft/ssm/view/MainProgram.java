@@ -94,16 +94,11 @@ public class MainProgram {
         customerMenuItem.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                // CustomerView customerView = new CustomerView();
-                // customerView.setVisible(true);
-                // frame.setContentPane(customerView);
                 ListCustomerView listCustomerView = new ListCustomerView();
                 listCustomerView.setVisible(true);
-                frame.getContentPane().removeAll();
-                frame.getContentPane().add(listCustomerView);
-                // frame.setContentPane(listCustomerView);
-                // frame.repaint();
-                // frame.pack();
+                frame.setContentPane(listCustomerView);
+                frame.repaint();
+                frame.pack();
             }
         });
 
