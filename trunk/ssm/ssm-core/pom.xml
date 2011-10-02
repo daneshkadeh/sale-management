@@ -108,6 +108,11 @@
 	</dependency>
 	
 	<dependency>
+			<groupId>biz.minaret.log4j</groupId>
+			<artifactId>datedFileAppender</artifactId>
+    </dependency>
+	
+	<dependency>
 		<groupId>dom4j</groupId>
 		<artifactId>dom4j</artifactId>
 	</dependency>
