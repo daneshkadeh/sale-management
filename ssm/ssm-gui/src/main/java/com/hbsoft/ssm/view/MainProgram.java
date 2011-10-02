@@ -38,7 +38,7 @@ public class MainProgram {
         // Not find solution to get class path from ssm-core.
         // String classpath = MainProgram.class.getClassLoader().get
         DOMConfigurator.configure("src/main/resources/log4j.xml");
-        s_logger.info("Testing project Hibernate-Spring-log4j-Swing");
+        s_logger.info("Starting super sales management application...");
         ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
         ConfigProvider configProvider = ConfigProvider.getInstance();
         ControlConfigUtils.init();
