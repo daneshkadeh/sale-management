@@ -23,7 +23,7 @@ public class EditInvoiceView extends AbstractDetailView<Invoice> {
 
     @Override
     public void initialPresentationView(List<DetailDataModel> listDataModel, Invoice invoice) {
-        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
+        // listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
 
         DetailDataModel createdDateField = new DetailDataModel("createdDate", FieldTypeEnum.TEXT_BOX);
         createdDateField.setEditable(false);

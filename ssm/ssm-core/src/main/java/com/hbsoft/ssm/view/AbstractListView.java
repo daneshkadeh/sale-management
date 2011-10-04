@@ -370,23 +370,17 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
     }
 
     /**
-     * entity2 was saved on AbstractDetailView and sent to AbstractListView to refresh data.
+     * Entity was saved on AbstractDetailView and sent to AbstractListView to refresh data.
      * 
-     * @param entity2
+     * @param entity
      * @param isNew
      */
-    public void notifyFromDetailView(T entity2, boolean isNew) {
+    public void notifyFromDetailView(T entity, boolean isNew) {
         if (isNew) {
-
-            // TODO: Should not new entities here! But not find out why it is null?
-            // if (entities == null) {
-            // entities = new ArrayList<T>();
-            // }
-            // entities.add(entity2);
-        } else {
-            throw new RuntimeException("Unsupport notify update!");
+            entities.add(entity);
         }
-        // TODO: this is not good! displayEntitiesList() reload all data => performance problem!
-        displayEntitiesList();
+
+        // int selectedRow = tblListEntities.getSelectedRow();
+        ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
     }
 }

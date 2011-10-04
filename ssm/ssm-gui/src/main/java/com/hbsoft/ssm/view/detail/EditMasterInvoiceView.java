@@ -31,7 +31,7 @@ public class EditMasterInvoiceView extends AbstractMasterDetailView<Invoice, Det
 
     @Override
     public void initialPresentationView(List<DetailDataModel> listDataModel, Invoice invoice) {
-        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
+        // listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
 
         DetailDataModel createdDateField = new DetailDataModel("createdDate", FieldTypeEnum.TEXT_BOX);
         createdDateField.setEditable(false);
@@ -46,7 +46,7 @@ public class EditMasterInvoiceView extends AbstractMasterDetailView<Invoice, Det
 
     @Override
     protected void initialListDetailPresentationView(List<DetailDataModel> listDataModel) {
-        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
+        // listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("goodsId", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("goodsName", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("quantity", FieldTypeEnum.TEXT_BOX));

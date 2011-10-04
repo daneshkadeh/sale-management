@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.text.NumberFormatter;
 import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
@@ -127,11 +128,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 Class<?> propertyReturnType = getPropertyReturnType(entity, dataModel);
                 if (ClassUtils.isAssignable(propertyReturnType, Number.class)) {
                     NumberFormatter numFormatter = new NumberFormatter();
-                    if (ClassUtils.isAssignable(propertyReturnType, Integer.class)) {
-                        numFormatter.setValueClass(Integer.class);
-                    } else {
-                        numFormatter.setValueClass(Double.class);
-                    }
+                    numFormatter.setValueClass(propertyReturnType);
                     dataField = new JFormattedTextField(numFormatter);
                     ((JFormattedTextField) dataField).setHorizontalAlignment(JFormattedTextField.RIGHT);
                 } else {
@@ -209,8 +206,11 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     protected void btnOKActionPerformed(ActionEvent evt) {
         Set<ConstraintViolation<T>> validateResult = bindAndValidate(entity);
         if (CollectionUtils.isEmpty(validateResult)) {
+            boolean isNew = (entity.getId() == null);
             saveOrUpdate(entity);
-            listView.notifyFromDetailView(entity, true);
+            listView.notifyFromDetailView(entity, isNew);
+            // TODO HPP find another way to close dialog.
+            SwingUtilities.getRoot(AbstractDetailView.this).setVisible(false);
         } else {
             for (ConstraintViolation<T> violation : validateResult) {
                 logger.error(violation.getMessage());

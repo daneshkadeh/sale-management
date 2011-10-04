@@ -17,7 +17,7 @@ public class EditDetailInvoiceView extends AbstractDetailView<DetailInvoice> {
 
     @Override
     public void initialPresentationView(List<DetailDataModel> listDataModel, DetailInvoice detailInvoice) {
-        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
+        // listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("goodsId", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("goodsName", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("quantity", FieldTypeEnum.TEXT_BOX));
