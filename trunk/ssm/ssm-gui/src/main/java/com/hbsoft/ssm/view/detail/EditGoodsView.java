@@ -26,7 +26,7 @@ public class EditGoodsView extends AbstractDetailView<Goods> {
 
     @Override
     public void initialPresentationView(List<DetailDataModel> listDataModel, Goods goods) {
-        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
+        // listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("priceBeforeTax", FieldTypeEnum.TEXT_BOX));
         DetailDataModel taxDataModel = new DetailDataModel("tax", FieldTypeEnum.COMBO_BOX);
