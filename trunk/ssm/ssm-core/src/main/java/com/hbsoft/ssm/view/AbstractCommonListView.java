@@ -112,7 +112,7 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
         return pnlButton;
     }
 
-    protected AbstractDetailView getDetailView() {
+    protected AbstractDetailView<T> getDetailView() {
         return null;
     }
 
@@ -127,30 +127,6 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
             detailFrame.setVisible(true);
             detailFrame.repaint();
             detailFrame.pack();
-        }
-    }
-
-    /**
-     * entity2 was saved on AbstractDetailView and sent to AbstractListView to refresh data.
-     * 
-     * @param entity2
-     * @param isNew
-     */
-    public void notifyFromDetailView(T entity2, boolean isNew) {
-        if (isNew) {
-
-            // TODO: Should not new entities here! But not find out why it is null?
-            // if (entities == null) {
-            // entities = new ArrayList<T>();
-            // }
-            // entities.add(entity2);
-        } else {
-            throw new RuntimeException("Unsupport notify update!");
-        }
-        // TODO: this is not good! displayEntitiesList() reload all data => performance problem!
-        displayEntitiesList();
-        if (detailFrame != null) {
-            detailFrame.dispose();
         }
     }
 

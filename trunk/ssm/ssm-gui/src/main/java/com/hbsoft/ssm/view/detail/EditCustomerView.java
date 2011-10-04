@@ -14,6 +14,10 @@ public class EditCustomerView extends AbstractDetailView<Customer> {
     private static final long serialVersionUID = 2202186074068854009L;
     private static final String REF_TEST_MODEL = "0";
 
+    public EditCustomerView(Customer entity) {
+        super(entity);
+    }
+
     @Override
     public void initialPresentationView(List<DetailDataModel> listDataModel, Customer customer) {
         listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));

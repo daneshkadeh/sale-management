@@ -1,9 +1,13 @@
 package com.hbsoft.ssm.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -15,6 +19,7 @@ public class Invoice extends AbstractBaseIdObject {
     private Double totalBeforeTax;
     private Double taxTotal;
     private Double totalAfterTax;
+    private List<DetailInvoice> detailInvoices;
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
@@ -65,4 +70,14 @@ public class Invoice extends AbstractBaseIdObject {
     public Double getTotalAfterTax() {
         return totalAfterTax;
     }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "invoice", fetch = FetchType.EAGER)
+    public List<DetailInvoice> getDetailInvoices() {
+        return detailInvoices;
+    }
+
+    public void setDetailInvoices(List<DetailInvoice> detailInvoices) {
+        this.detailInvoices = detailInvoices;
+    }
+
 }

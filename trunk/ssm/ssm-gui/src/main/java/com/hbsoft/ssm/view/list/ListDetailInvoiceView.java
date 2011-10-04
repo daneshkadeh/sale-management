@@ -55,8 +55,9 @@ public class ListDetailInvoiceView extends AbstractCommonListView<DetailInvoice>
     }
 
     @Override
-    protected AbstractDetailView getDetailView() {
-        return new EditDetailInvoiceView();
+    protected Class<? extends AbstractDetailView<DetailInvoice>> getDetailViewClass() {
+        // TODO Auto-generated method stub
+        return EditDetailInvoiceView.class;
     }
 
 }

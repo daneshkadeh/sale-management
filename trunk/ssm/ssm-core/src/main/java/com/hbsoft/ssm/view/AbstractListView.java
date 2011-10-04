@@ -1,19 +1,27 @@
 package com.hbsoft.ssm.view;
 
 import java.awt.Color;
+import java.awt.Dialog.ModalityType;
+import java.awt.Dimension;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
@@ -25,10 +33,10 @@ import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
-import org.springframework.util.StringUtils;
 
 import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 import com.hbsoft.ssm.model.DetailDataModel;
+import com.hbsoft.ssm.util.Solution3sClassUtils;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 
 /**
@@ -45,7 +53,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
     private JXTable tblListEntities;
-    private JScrollPane jScrollPane;
 
     // Class<T> clazz;
     protected List<T> entities = new ArrayList<T>();
@@ -84,6 +91,11 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
                 .addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, HIGHLIGHT_ROW_COLOR, null));
 
         displayEntitiesList();
+
+        // Hide the entity column by set width = 0
+        tblListEntities.getColumnModel().getColumn(0).setMinWidth(0);
+        tblListEntities.getColumnModel().getColumn(0).setMaxWidth(0);
+
         tblListEntities.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tblListEntities.getSelectionModel().addListSelectionListener(new RowListener());
 
@@ -95,8 +107,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
         // TableComparatorChooser<T> tableComparatorChooser = TableComparatorChooser.install(tblListEntities,
         // sortedEntities, TableComparatorChooser.MULTIPLE_COLUMN_MOUSE);
 
-        jScrollPane = new JScrollPane(tblListEntities);
-
+        JScrollPane jScrollPane = new JScrollPane(tblListEntities);
         this.add(jScrollPane, "grow");
 
         JPanel pnlButton = createButtonPanel(tblListEntities);
@@ -108,52 +119,115 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
      * 
      * @return the panel containing the buttons.
      */
-    protected abstract JPanel createButtonPanel(JTable table);
+    protected JPanel createButtonPanel(JTable table) {
+        JPanel buttonPanel = new JPanel();
+        JButton btnAdd = new JButton("Add");
+        btnAdd.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showDetailView(null);
+            }
+
+        });
+
+        JButton btnDelete = new JButton("Delete");
+        btnDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int option = JOptionPane.showConfirmDialog((JFrame) SwingUtilities.getRoot(AbstractListView.this),
+                        "Are you sure want to delete the selected row?", "Confirm delete", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE);
+                if (option == JOptionPane.YES_OPTION) {
+                    int[] selectedRows = tblListEntities.getSelectedRows();
+                    for (int i : selectedRows) {
+                        int rowModelIndex = tblListEntities.convertRowIndexToModel(i);
+                        entities.remove(rowModelIndex);
+                    }
+                }
+            }
+        });
+
+        JButton btnEdit = new JButton("Edit");
+        btnEdit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = tblListEntities.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this),
+                            "Please select a row to edit", "Warning", JOptionPane.OK_OPTION,
+                            JOptionPane.WARNING_MESSAGE);
+                } else {
+                    showDetailView((T) tblListEntities.getValueAt(selectedRow, 0));
+                }
+            }
+        });
+
+        buttonPanel.add(btnEdit);
+        buttonPanel.add(btnDelete);
+        buttonPanel.add(btnAdd);
+        return buttonPanel;
+    }
+
+    /**
+     * Show the detail view with specific entity (when button Add or Edit is clicked).
+     * 
+     * @param entity
+     *            the entity which the detail view display for. If <code>null</code>, new entity is displayed.
+     */
+    private void showDetailView(T entity) {
+        Class<? extends AbstractDetailView<T>> detailViewClass = getDetailViewClass();
+        Class<T> entityClass = getEntityClass();
+        try {
+            if (entity == null) {
+                entity = entityClass.newInstance();
+            }
+            AbstractDetailView<T> detailView = detailViewClass.getConstructor(entityClass).newInstance(entity);
+
+            // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).
+            detailView.setListView(AbstractListView.this);
+
+            JDialog dialog = new JDialog((Window) SwingUtilities.getRoot(AbstractListView.this));
+            dialog.setContentPane(detailView);
+            Dimension preferredSize = detailView.getPreferredSize();
+            Dimension dialogSize = new Dimension(preferredSize.width + 20, preferredSize.height + 40);
+            dialog.setMinimumSize(dialogSize);
+            dialog.setModalityType(ModalityType.APPLICATION_MODAL);
+            dialog.setVisible(true);
+        } catch (Exception ex) {
+            logger.error(ex.getCause());
+            logger.error(ex.getMessage());
+            throw new RuntimeException("There are problems when init the detail view.");
+        }
+    }
+
+    protected abstract Class<? extends AbstractDetailView<T>> getDetailViewClass();
 
     protected void displayEntitiesList() {
         entities = loadData();
         // EventTableModel<T> tableModel = new EventTableModel<T>(entities, new BasicTableFormat());
         AdvanceTableModel tableModel = new AdvanceTableModel();
+
         tblListEntities.setModel(tableModel);
         selector = false;
     }
 
-    /**
-     * Return getter or setter method base on <code>getter</code> parameter.
-     * 
-     * @param fieldName
-     *            the name of property
-     * @param getter
-     *            <code>true</code> getter method, <code>false</code> setter method.
-     * @return
-     */
-    private Method getGetterSetterMethod(String fieldName, boolean getter) {
-        try {
-            String methodPrefix = getter ? "get" : "set";
-            return getEntityClass().getMethod(methodPrefix + StringUtils.capitalize(fieldName));
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("field " + fieldName + " or its setter/getter method does not exist in class "
-                    + getEntityClass().getName());
-        }
-    }
-
     private Class<?> getClassOfField(String fieldName) {
-        return getGetterSetterMethod(fieldName, true).getReturnType();
+        return Solution3sClassUtils.getGetterMethod(getEntityClass(), fieldName).getReturnType();
     }
 
-    private DetailDataModel getDataModelFromGetMethod(String setMethodName) {
-        for (DetailDataModel dataModel : listDataModel) {
-            if (setMethodName.equals("get" + StringUtils.capitalize(dataModel.getFieldName()))) {
-                return dataModel;
-            }
-        }
-        return null;
-    }
+    // private DetailDataModel getDataModelFromGetMethod(String setMethodName) {
+    // for (DetailDataModel dataModel : listDataModel) {
+    // if (setMethodName.equals("get" + StringUtils.capitalize(dataModel.getFieldName()))) {
+    // return dataModel;
+    // }
+    // }
+    // return null;
+    // }
 
     @SuppressWarnings("unchecked")
     protected Class<T> getEntityClass() {
-        Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        return (Class<T>) controllerType;
+        return (Class<T>) Solution3sClassUtils.getArgumentClass(getClass());
     }
 
     protected class RowListener implements ListSelectionListener {
@@ -223,8 +297,14 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             T entity = currentEntities.get(rowIndex);
-            DetailDataModel dataModel = listDataModel.get(columnIndex);
-            Method method = getGetterSetterMethod(dataModel.getFieldName(), true);
+
+            // The hide extra column contain the entity
+            if (columnIndex == 0) {
+                return entity;
+            }
+
+            DetailDataModel dataModel = listDataModel.get(columnIndex - 1);
+            Method method = Solution3sClassUtils.getGetterMethod(getEntityClass(), dataModel.getFieldName());
             try {
                 return method.invoke(entity);
             } catch (IllegalAccessException e) {
@@ -238,20 +318,23 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
 
         @Override
         public int getColumnCount() {
-            return listDataModel.size();
+            return listDataModel.size() + 1; // Add a more column contain entity value.
         }
 
         @Override
         public String getColumnName(int column) {
+            if (column == 0) {
+                return "";
+            }
             return ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
-                    + listDataModel.get(column).getFieldName());
+                    + listDataModel.get(column - 1).getFieldName());
         }
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             T entity = currentEntities.get(rowIndex);
             DetailDataModel dataModel = listDataModel.get(columnIndex);
-            Method method = getGetterSetterMethod(dataModel.getFieldName(), false);
+            Method method = Solution3sClassUtils.getSetterMethod(getEntityClass(), dataModel.getFieldName());
             try {
                 method.invoke(entity, aValue);
             } catch (IllegalArgumentException e) {
@@ -269,7 +352,10 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
 
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            return getClassOfField(listDataModel.get(columnIndex).getFieldName());
+            if (columnIndex == 0) {
+                return getEntityClass();
+            }
+            return getClassOfField(listDataModel.get(columnIndex - 1).getFieldName());
         }
 
         private List<T> getVisibleEntities() {
@@ -281,5 +367,26 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
             }
             return visibleEntities;
         }
+    }
+
+    /**
+     * entity2 was saved on AbstractDetailView and sent to AbstractListView to refresh data.
+     * 
+     * @param entity2
+     * @param isNew
+     */
+    public void notifyFromDetailView(T entity2, boolean isNew) {
+        if (isNew) {
+
+            // TODO: Should not new entities here! But not find out why it is null?
+            // if (entities == null) {
+            // entities = new ArrayList<T>();
+            // }
+            // entities.add(entity2);
+        } else {
+            throw new RuntimeException("Unsupport notify update!");
+        }
+        // TODO: this is not good! displayEntitiesList() reload all data => performance problem!
+        displayEntitiesList();
     }
 }

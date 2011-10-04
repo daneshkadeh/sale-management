@@ -3,8 +3,6 @@ package com.hbsoft.ssm.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +30,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
@@ -40,11 +39,13 @@ import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
 import com.hbsoft.ssm.model.ReferenceDataModel;
+import com.hbsoft.ssm.util.Solution3sClassUtils;
 import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
 import com.hbsoft.ssm.view.component.MultiSelectionBox;
 
 /**
  * @author Pham Cong Bang
+ * @author Phan Hong Phuc
  * 
  * @param <T>
  */
@@ -53,46 +54,46 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
     private Log logger = LogFactory.getLog(AbstractDetailView.class);
 
-    protected AbstractCommonListView listView;
+    // TODO HPP consider to remove this reference. We should fire event to listView instead of keep a reference.
+    protected AbstractListView<T> listView;
 
     protected List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
     protected Map<DetailDataModel, JComponent> mapFields = new HashMap<DetailDataModel, JComponent>();
 
     private JButton btnOK;
     private JButton btnCancel;
-    private Class<T> clazz;
-    private T entity;
+    protected T entity;
 
     private ReferenceDataModel refDataModel = new ReferenceDataModel();
 
-    private Integer JTEXTFIELD_SIZE = 20;
     private Integer JPASSWORDFIELD_SIZE = 20;
 
-    public AbstractDetailView() {
-        clazz = getEntityClass();
-        try {
-            entity = clazz.newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+    /**
+     * Initialize the detail view.
+     * 
+     * @param entity
+     *            the entity of detail view.
+     */
+    public AbstractDetailView(T entity) {
+        this.entity = entity;
         initialPresentationView(listDataModel, entity);
         setReferenceDataModel(refDataModel, entity);
         try {
             initComponents();
         } catch (Exception e) {
+            logger.error(e.getCause());
+            logger.error(e.getMessage());
             throw new RuntimeException(e);
         }
-
     }
 
-    public void setListView(AbstractCommonListView view) {
+    public void setListView(AbstractListView<T> view) {
         this.listView = view;
     }
 
+    @SuppressWarnings("unchecked")
     protected Class<T> getEntityClass() {
-        Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        return (Class<T>) controllerType;
+        return (Class<T>) Solution3sClassUtils.getArgumentClass(getClass());
     }
 
     public abstract void initialPresentationView(List<DetailDataModel> listDataModel, T entity);
@@ -108,7 +109,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
     protected void initComponents() throws Exception {
         // Layout the screen
-        setLayout(new MigLayout("wrap"));
+        setLayout(new MigLayout("wrap", "fill, grow"));
 
         add(createButtonPanel());
 
@@ -120,7 +121,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             JComponent dataField;
 
             Method getMethod = entity.getClass().getMethod("get" + StringUtils.capitalize(dataModel.getFieldName()));
-            Object value;
+            Object value = getMethod.invoke(entity);
             switch (dataModel.getFieldType()) {
             case TEXT_BOX:
                 Class<?> propertyReturnType = getPropertyReturnType(entity, dataModel);
@@ -132,6 +133,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                         numFormatter.setValueClass(Double.class);
                     }
                     dataField = new JFormattedTextField(numFormatter);
+                    ((JFormattedTextField) dataField).setHorizontalAlignment(JFormattedTextField.RIGHT);
                 } else {
                     // The format type is String
                     dataField = new JFormattedTextField("");
@@ -141,10 +143,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
 
-                value = getMethod.invoke(entity);
-                if (value != null) {
-                    ((JFormattedTextField) dataField).setValue(value);
-                }
+                ((JFormattedTextField) dataField).setValue(value);
                 break;
             case PASSWORD:
                 dataField = new JPasswordField(JPASSWORDFIELD_SIZE);
@@ -153,10 +152,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
 
-                value = getMethod.invoke(entity);
-                if (value != null) {
-                    ((JTextField) dataField).setText(String.valueOf(value));
-                }
+                ((JTextField) dataField).setText(ObjectUtils.toString(value));
                 break;
             case COMBO_BOX:
                 // get the referenceDataList from ReferenceDataModel using referenceDataId of column.
@@ -165,20 +161,23 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                         .get(dataModel.getReferenceDataId()).toArray()));
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
+
+                ((JComboBox) dataField).setSelectedItem(value);
                 break;
             case MULTI_SELECT_BOX:
-                List<Object> refDataList = refDataModel.getRefDataListMap().get(dataModel.getReferenceDataId());
-                dataField = new MultiSelectionBox(refDataList, new ArrayList<Object>());
+                List refDataList = refDataModel.getRefDataListMap().get(dataModel.getReferenceDataId());
+                dataField = new MultiSelectionBox(refDataList, new ArrayList());
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
+
+                // ((MultiSelectionBox) dataField)
+
                 break;
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
             mapFields.put(dataModel, dataField);
         }
-
-        add(pnlEdit, "grow");
 
         btnOK = new JButton("OK");
         btnOK.addActionListener(new ActionListener() {
@@ -197,7 +196,9 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         JPanel pnlButton = new JPanel();
         pnlButton.add(btnOK);
         pnlButton.add(btnCancel);
-        add(pnlButton, "center");
+        pnlEdit.add(pnlButton, "span, center, grow");
+
+        add(pnlEdit, "grow");
     }
 
     private JPanel createButtonPanel() {
@@ -246,8 +247,9 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                         method.invoke(entity, paramClass.cast(comboBox.getSelectedItem()));
                     } else if (dataModel.getFieldType() == FieldTypeEnum.MULTI_SELECT_BOX) {
                         MultiSelectionBox multiBox = (MultiSelectionBox) component;
-                        List<Object> unselected = multiBox.getSourceValues();
-                        List<Object> selected = multiBox.getDestinationValues();
+                        List unselected = multiBox.getSourceValues();
+                        List selected = multiBox.getDestinationValues();
+                        method.invoke(entity, selected);
                         // List<>
 
                         // TODO: set selected value into entity

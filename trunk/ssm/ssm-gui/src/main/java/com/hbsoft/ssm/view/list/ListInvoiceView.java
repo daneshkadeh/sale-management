@@ -6,8 +6,8 @@ import com.hbsoft.ssm.entity.Invoice;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
 import com.hbsoft.ssm.util.ConfigProvider;
-import com.hbsoft.ssm.view.AbstractCommonListView;
 import com.hbsoft.ssm.view.AbstractDetailView;
+import com.hbsoft.ssm.view.AbstractListView;
 import com.hbsoft.ssm.view.detail.EditMasterInvoiceView;
 
 /**
@@ -16,7 +16,8 @@ import com.hbsoft.ssm.view.detail.EditMasterInvoiceView;
  * @author phamcongbang
  * 
  */
-public class ListInvoiceView extends AbstractCommonListView<Invoice> {
+public class ListInvoiceView extends AbstractListView<Invoice> {
+    private static final long serialVersionUID = -9117198848678726047L;
 
     @Override
     protected void initialPresentationView(List<DetailDataModel> listDataModel) {
@@ -37,8 +38,8 @@ public class ListInvoiceView extends AbstractCommonListView<Invoice> {
     }
 
     @Override
-    protected AbstractDetailView getDetailView() {
-        return new EditMasterInvoiceView();
+    protected Class<? extends AbstractDetailView<Invoice>> getDetailViewClass() {
+        return EditMasterInvoiceView.class;
     }
 
 }

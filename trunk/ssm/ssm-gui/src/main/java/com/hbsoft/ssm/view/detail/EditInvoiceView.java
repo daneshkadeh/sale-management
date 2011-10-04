@@ -17,6 +17,10 @@ import com.hbsoft.ssm.view.AbstractDetailView;
 @Deprecated
 public class EditInvoiceView extends AbstractDetailView<Invoice> {
 
+    public EditInvoiceView(Invoice entity) {
+        super(entity);
+    }
+
     @Override
     public void initialPresentationView(List<DetailDataModel> listDataModel, Invoice invoice) {
         listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
