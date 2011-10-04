@@ -18,6 +18,7 @@ import com.hbsoft.ssm.util.Solution3sClassUtils;
  * can input directly invoice and detail invoice information on this screen.
  * 
  * @author phamcongbang
+ * @author Phan Hong Phuc
  * 
  * @param <T>
  *            parent entity type
@@ -31,8 +32,6 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
     private Log logger = LogFactory.getLog(AbstractMasterDetailView.class);
 
     private List<E> detailEntities = new ArrayList<E>();
-
-    private AbstractListView<E> listDetailView;
 
     /**
      * The default constructor.
@@ -64,8 +63,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
 
     protected void initComponents() throws Exception {
         super.initComponents();
-        listDetailView = new ChildListView();
-        add(listDetailView, "grow");
+        add(new ChildListView(), "grow");
     }
 
     private class ChildListView extends AbstractListView<E> {
