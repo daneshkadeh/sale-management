@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -99,6 +101,20 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
         tblListEntities.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tblListEntities.getSelectionModel().addListSelectionListener(new RowListener());
 
+        // Show edit view when double on a such row.
+        tblListEntities.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    // JXTable target = (JXTable)e.getSource();
+                    // int row = target.getSelectedRow();
+                    // int column = target.getSelectedColumn();
+                    // // do some action
+                    performEditAction();
+                }
+            }
+        });
+
         // TableRowSorter<TableModel> rowSorter = (TableRowSorter<TableModel>) tblListEntities.getRowSorter();
         // tblListEntities.getModel().
 
@@ -152,14 +168,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
         btnEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = tblListEntities.getSelectedRow();
-                if (selectedRow == -1) {
-                    JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this),
-                            "Please select a row to edit", "Warning", JOptionPane.OK_OPTION,
-                            JOptionPane.WARNING_MESSAGE);
-                } else {
-                    showDetailView((T) tblListEntities.getValueAt(selectedRow, 0));
-                }
+                performEditAction();
             }
         });
 
@@ -187,11 +196,13 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
             // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).
             detailView.setListView(AbstractListView.this);
 
-            JDialog dialog = new JDialog((Window) SwingUtilities.getRoot(AbstractListView.this));
+            Window parentContainer = (Window) SwingUtilities.getRoot(AbstractListView.this);
+            JDialog dialog = new JDialog(parentContainer);
             dialog.setContentPane(detailView);
             Dimension preferredSize = detailView.getPreferredSize();
             Dimension dialogSize = new Dimension(preferredSize.width + 20, preferredSize.height + 40);
             dialog.setMinimumSize(dialogSize);
+            dialog.setLocationRelativeTo(parentContainer); // Display the dialog in the center.
             dialog.setModalityType(ModalityType.APPLICATION_MODAL);
             dialog.setVisible(true);
         } catch (Exception ex) {
@@ -215,15 +226,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
     private Class<?> getClassOfField(String fieldName) {
         return Solution3sClassUtils.getGetterMethod(getEntityClass(), fieldName).getReturnType();
     }
-
-    // private DetailDataModel getDataModelFromGetMethod(String setMethodName) {
-    // for (DetailDataModel dataModel : listDataModel) {
-    // if (setMethodName.equals("get" + StringUtils.capitalize(dataModel.getFieldName()))) {
-    // return dataModel;
-    // }
-    // }
-    // return null;
-    // }
 
     @SuppressWarnings("unchecked")
     protected Class<T> getEntityClass() {
@@ -376,11 +378,27 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends J
      * @param isNew
      */
     public void notifyFromDetailView(T entity, boolean isNew) {
+        // Keep the selected row before the data of table is changed.
+        int selectedRow = tblListEntities.getSelectedRow();
         if (isNew) {
             entities.add(entity);
+            selectedRow = entities.size() - 1; // If add new entity, the selected row has the last index.
         }
 
-        // int selectedRow = tblListEntities.getSelectedRow();
+        // fireTableDataChanged to rerender the table.
         ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
+
+        // After fireTableDataChanged() the selection is lost. We need to reselect it programmatically.
+        tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
+    }
+
+    private void performEditAction() {
+        int selectedRow = tblListEntities.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this), "Please select a row to edit",
+                    "Warning", JOptionPane.OK_OPTION, JOptionPane.WARNING_MESSAGE);
+        } else {
+            showDetailView((T) tblListEntities.getValueAt(selectedRow, 0));
+        }
     }
 }
