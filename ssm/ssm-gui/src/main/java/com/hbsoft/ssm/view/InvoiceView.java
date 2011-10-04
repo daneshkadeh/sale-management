@@ -252,7 +252,7 @@ public class InvoiceView extends JFrame {
             invoiceService.save(invoice);
 
             for (DetailInvoice detailInvoice : listDetailInvoice) {
-                detailInvoice.setInvoiceId(invoice.getId());
+                detailInvoice.setInvoice(invoice);
             }
             detailInvoiceService.saveOrUpdate(listDetailInvoice);
             JOptionPane.showMessageDialog(this, "Inserted new invoice successfully!", "Info",

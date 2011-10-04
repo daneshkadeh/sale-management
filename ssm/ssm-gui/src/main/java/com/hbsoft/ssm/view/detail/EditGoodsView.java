@@ -20,6 +20,10 @@ public class EditGoodsView extends AbstractDetailView<Goods> {
     private static final long serialVersionUID = 8247461633468843994L;
     private static final String TAX_REF_ID = "0";
 
+    public EditGoodsView(Goods entity) {
+        super(entity);
+    }
+
     @Override
     public void initialPresentationView(List<DetailDataModel> listDataModel, Goods goods) {
         listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));

@@ -6,8 +6,8 @@ import com.hbsoft.ssm.entity.Goods;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
 import com.hbsoft.ssm.util.ConfigProvider;
-import com.hbsoft.ssm.view.AbstractCommonListView;
 import com.hbsoft.ssm.view.AbstractDetailView;
+import com.hbsoft.ssm.view.AbstractListView;
 import com.hbsoft.ssm.view.detail.EditGoodsView;
 
 /**
@@ -16,7 +16,7 @@ import com.hbsoft.ssm.view.detail.EditGoodsView;
  * @author Phan Hong Phuc
  * 
  */
-public class ListGoodsView extends AbstractCommonListView<Goods> {
+public class ListGoodsView extends AbstractListView<Goods> {
     private static final long serialVersionUID = -8034885109793508234L;
 
     @Override
@@ -36,7 +36,7 @@ public class ListGoodsView extends AbstractCommonListView<Goods> {
     }
 
     @Override
-    protected AbstractDetailView getDetailView() {
-        return new EditGoodsView();
+    protected Class<? extends AbstractDetailView<Goods>> getDetailViewClass() {
+        return EditGoodsView.class;
     }
 }

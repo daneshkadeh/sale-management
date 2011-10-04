@@ -2,6 +2,8 @@ package com.hbsoft.ssm.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -17,7 +19,7 @@ public class DetailInvoice extends AbstractBaseIdObject {
     private Double moneyBeforeTax;
     private Double moneyOfTax;
     private Double moneyAfterTax;
-    private Integer invoiceId;
+    private Invoice invoice;
 
     public void setGoodsId(Integer goodsId) {
         this.goodsId = goodsId;
@@ -109,14 +111,14 @@ public class DetailInvoice extends AbstractBaseIdObject {
         return moneyAfterTax;
     }
 
-    public void setInvoiceId(Integer invoiceId) {
-        this.invoiceId = invoiceId;
+    @ManyToOne
+    @JoinColumn(name = "invoice_id", nullable = false)
+    public Invoice getInvoice() {
+        return invoice;
     }
 
-    @Column(name = "invoice_id", nullable = false)
-    @NotNull
-    public Integer getInvoiceId() {
-        return invoiceId;
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 
 }
