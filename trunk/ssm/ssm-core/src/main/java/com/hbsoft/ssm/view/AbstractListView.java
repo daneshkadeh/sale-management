@@ -49,7 +49,7 @@ import com.hbsoft.ssm.util.i18n.ControlConfigUtils;
  * 
  * @param <T>
  */
-public abstract class AbstractListView<T extends AbstractBaseIdObject> extends JPanel {
+public abstract class AbstractListView<T extends AbstractBaseIdObject> extends AbstractView {
     private static final Color HIGHLIGHT_ROW_COLOR = new Color(220, 220, 250);
     private static final long serialVersionUID = -1311942671249671111L;
     private static final Log logger = LogFactory.getLog(AbstractListView.class);

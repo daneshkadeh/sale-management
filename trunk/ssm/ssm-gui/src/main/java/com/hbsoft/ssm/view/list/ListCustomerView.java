@@ -2,10 +2,11 @@ package com.hbsoft.ssm.view.list;
 
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+
 import com.hbsoft.ssm.entity.Customer;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
-import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.view.AbstractDetailView;
 import com.hbsoft.ssm.view.AbstractListView;
 import com.hbsoft.ssm.view.detail.EditCustomerView;
@@ -21,7 +22,8 @@ public class ListCustomerView extends AbstractListView<Customer> {
 
     @Override
     protected List<Customer> loadData() {
-        return ConfigProvider.getInstance().getCustomerSerice().findAll();
+        DetachedCriteria dc = getDaoHelper().getDao(Customer.class).getCriteria();
+        return getDaoHelper().getDao(Customer.class).findByCriteria(dc, -1, -1);
     }
 
     @Override

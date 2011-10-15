@@ -5,7 +5,6 @@ import java.util.List;
 import com.hbsoft.ssm.entity.Goods;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
-import com.hbsoft.ssm.util.ConfigProvider;
 import com.hbsoft.ssm.view.AbstractDetailView;
 import com.hbsoft.ssm.view.AbstractListView;
 import com.hbsoft.ssm.view.detail.EditGoodsView;
@@ -32,7 +31,7 @@ public class ListGoodsView extends AbstractListView<Goods> {
 
     @Override
     protected List<Goods> loadData() {
-        return ConfigProvider.getInstance().getGoodsService().findAll();
+        return getDaoHelper().getDao(Goods.class).findAll();
     }
 
     @Override

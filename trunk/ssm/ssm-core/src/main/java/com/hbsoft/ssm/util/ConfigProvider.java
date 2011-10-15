@@ -64,4 +64,8 @@ public class ConfigProvider {
     public PrincipalEntityService getPrincipalEntityService() {
         return (PrincipalEntityService) appContext.getBean("principalEntityService");
     }
+
+    public DaoHelper getDaoHelper() {
+        return (DaoHelper) appContext.getBean("daoHelper");
+    }
 }
