@@ -50,7 +50,7 @@ import com.hbsoft.ssm.view.component.MultiSelectionBox;
  * 
  * @param <T>
  */
-public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends JPanel {
+public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends AbstractView {
     private static final long serialVersionUID = 1L;
 
     private Log logger = LogFactory.getLog(AbstractDetailView.class);

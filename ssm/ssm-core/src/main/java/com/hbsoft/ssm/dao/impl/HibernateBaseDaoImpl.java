@@ -10,13 +10,20 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import com.hbsoft.ssm.dao.HibernateBaseDao;
 import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 
-public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSupport {
+public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSupport implements
+        HibernateBaseDao<T> {
     private Class clazz;
 
     public HibernateBaseDaoImpl() {
         clazz = getEntityClass();
+    }
+
+    @Override
+    public void setEntityClass(Class<T> clazz) {
+        this.clazz = clazz;
     }
 
     protected Class<T> getEntityClass() {
@@ -64,6 +71,10 @@ public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends Hibern
     public List<T> findAll() {
         List<T> list = getHibernateTemplate().find("from " + getEntityClass().getSimpleName());
         return list;
+    }
+
+    public DetachedCriteria getCriteria() {
+        return DetachedCriteria.forClass(getEntityClass());
     }
 
     public List<T> findByCriteria(DetachedCriteria criteria, int firstResult, int maxResults) {

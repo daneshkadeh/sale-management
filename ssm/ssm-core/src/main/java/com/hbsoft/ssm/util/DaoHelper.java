@@ -1,6 +1,6 @@
 package com.hbsoft.ssm.util;
 
-import com.hbsoft.ssm.dao.impl.HibernateBaseDaoImpl;
+import com.hbsoft.ssm.dao.HibernateBaseDao;
 
 /**
  * 
@@ -8,5 +8,5 @@ import com.hbsoft.ssm.dao.impl.HibernateBaseDaoImpl;
  * 
  */
 public interface DaoHelper {
-    HibernateBaseDaoImpl getDao(Class clazz);
+    public <T> HibernateBaseDao<T> getDao(Class<T> clazz);
 }
