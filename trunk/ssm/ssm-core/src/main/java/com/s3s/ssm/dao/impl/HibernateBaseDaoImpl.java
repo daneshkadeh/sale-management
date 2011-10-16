@@ -8,6 +8,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.s3s.ssm.dao.HibernateBaseDao;
@@ -85,13 +86,27 @@ public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends Hibern
     }
 
     @Override
-    public DetachedCriteria getCriteria() {
-        return DetachedCriteria.forClass(getEntityClass());
+    public DetachedCriteria getCriteria(Class<? extends AbstractBaseIdObject> clazz) {
+        return DetachedCriteria.forClass(clazz);
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     * <p>
+     * A delegation of {@link HibernateTemplate#findByCriteria(DetachedCriteria, int, int)}.
+     * 
+     */
+    @SuppressWarnings("unchecked")
     @Override
     public List<T> findByCriteria(DetachedCriteria criteria, int firstResult, int maxResults) {
         return getHibernateTemplate().findByCriteria(criteria, firstResult, maxResults);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<T> findByCriteria(DetachedCriteria criteria) {
+        return getHibernateTemplate().findByCriteria(criteria);
     }
 
 }

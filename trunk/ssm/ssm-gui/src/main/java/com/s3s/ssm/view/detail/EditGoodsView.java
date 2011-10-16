@@ -41,9 +41,4 @@ public class EditGoodsView extends AbstractDetailView<Goods> {
         List<Double> taxRefs = Arrays.asList(1.0, 2.0, 3.0);
         refDataModel.putRefDataList(TAX_REF_ID, taxRefs);
     }
-
-    @Override
-    protected void saveOrUpdate(Goods goods) {
-        getDaoHelper().getDao(Goods.class).saveOrUpdate(goods);
-    }
 }

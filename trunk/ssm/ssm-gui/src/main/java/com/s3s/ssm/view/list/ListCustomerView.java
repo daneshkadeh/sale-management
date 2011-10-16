@@ -2,8 +2,6 @@ package com.s3s.ssm.view.list;
 
 import java.util.List;
 
-import org.hibernate.criterion.DetachedCriteria;
-
 import com.s3s.ssm.entity.Customer;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.FieldTypeEnum;
@@ -22,8 +20,7 @@ public class ListCustomerView extends AbstractListView<Customer> {
 
     @Override
     protected List<Customer> loadData() {
-        DetachedCriteria dc = getDaoHelper().getDao(Customer.class).getCriteria();
-        return getDaoHelper().getDao(Customer.class).findByCriteria(dc, -1, -1);
+        return getDaoHelper().getDao(Customer.class).findAll();
     }
 
     @Override

@@ -25,7 +25,6 @@
     </repositories>
   
   <dependencies>
-	
 	<!-- Apache common -->
   	<dependency>
 		<groupId>commons-collections</groupId>

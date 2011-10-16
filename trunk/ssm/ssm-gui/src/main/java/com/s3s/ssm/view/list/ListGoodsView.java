@@ -2,10 +2,14 @@ package com.s3s.ssm.view.list;
 
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 
 import com.s3s.ssm.entity.Goods;
 import com.s3s.ssm.model.DetailDataModel;
@@ -38,7 +42,9 @@ public class ListGoodsView extends AbstractSearchListView<Goods> {
 
     @Override
     protected List<Goods> loadData() {
-        return getDaoHelper().getDao(Goods.class).findAll();
+        DetachedCriteria dc = getDaoHelper().getDao(Goods.class).getCriteria(getEntityClass());
+        dc.add(Restrictions.like("name", txtGoodNameCriteria.getText(), MatchMode.ANYWHERE));
+        return getDaoHelper().getDao(Goods.class).findByCriteria(dc);
     }
 
     @Override
@@ -49,14 +55,14 @@ public class ListGoodsView extends AbstractSearchListView<Goods> {
     @Override
     protected JPanel createSearchPanel() {
         JPanel panel = new JPanel();
-        txtGoodNameCriteria = new JTextField();
+        txtGoodNameCriteria = new JTextField(20);
+        panel.add(new JLabel("Good name"));
         panel.add(txtGoodNameCriteria);
         return panel;
     }
 
     @Override
     protected void clearCriteria() {
-        // TODO Auto-generated method stub
-
+        txtGoodNameCriteria.setText(StringUtils.EMPTY);
     }
 }

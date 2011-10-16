@@ -17,7 +17,6 @@ import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -157,7 +156,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int option = JOptionPane.showConfirmDialog((JFrame) SwingUtilities.getRoot(AbstractListView.this),
+                int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this),
                         "Are you sure want to delete the selected row?", "Confirm delete", JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE);
                 if (option == JOptionPane.YES_OPTION) {
@@ -239,7 +238,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     public class AdvanceTableModel extends AbstractTableModel {
         private static final long serialVersionUID = -4720974982417224609L;
 
-        private Set<Integer> hiddenRows = new HashSet<Integer>();
+        private final Set<Integer> hiddenRows = new HashSet<Integer>();
 
         /**
          * The remaining entities after hiding rows.
@@ -391,7 +390,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     protected void refreshData() {
-        entities = loadData();
+        entities.removeAll(entities);
+        entities.addAll(loadData());
         // fireTableDataChanged to rerender the table.
         ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
     }
