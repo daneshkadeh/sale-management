@@ -13,6 +13,14 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.hbsoft.ssm.dao.HibernateBaseDao;
 import com.hbsoft.ssm.entity.AbstractBaseIdObject;
 
+/**
+ * Basic implementation for DAOs. </br> Bean name of extended DAOs must follow naming convention: EntityName + 'Dao' so
+ * that it could be collected in DaoHelperImpl.
+ * 
+ * @author phamcongbang
+ * 
+ * @param <T>
+ */
 public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSupport implements
         HibernateBaseDao<T> {
     private Class clazz;
