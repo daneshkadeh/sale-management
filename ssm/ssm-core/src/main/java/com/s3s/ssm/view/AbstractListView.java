@@ -3,9 +3,11 @@ package com.s3s.ssm.view;
 import java.awt.Color;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -15,12 +17,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
@@ -49,6 +56,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
  * @param <T>
  */
 public abstract class AbstractListView<T extends AbstractBaseIdObject> extends AbstractView {
+    private static final String ADD_ACTION_KEY = "addAction";
     private static final Color HIGHLIGHT_ROW_COLOR = new Color(97, 111, 231);
     private static final long serialVersionUID = -1311942671249671111L;
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
@@ -63,6 +71,9 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     // This model is used by sub classes.
     protected final List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
 
+    private Action addAction;
+    private Action editAction;
+
     public AbstractListView() {
         this(null, null);
     }
@@ -72,8 +83,25 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         this.parentClass = parentClass;
         initialPresentationView(listDataModel);
 
+        addAction = new AddAction();
+        editAction = new EditAction();
         setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[grow, fill]0[]"));
+
+        addBindings();
         addComponents();
+    }
+
+    protected void addBindings() {
+        // Key binding
+        InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+
+        // Ctrl-A to add new row
+        KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK);
+        inputMap.put(key, ADD_ACTION_KEY);
+
+        ActionMap actionMap = getActionMap();
+        actionMap.put(ADD_ACTION_KEY, addAction);
+
     }
 
     /**
@@ -143,14 +171,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     protected JPanel createButtonPanel(JTable table) {
         JPanel buttonPanel = new JPanel();
         JButton btnAdd = new JButton("Add");
-        btnAdd.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showDetailView(null);
-            }
-
-        });
+        btnAdd.addActionListener(addAction);
 
         JButton btnDelete = new JButton("Delete");
         btnDelete.addActionListener(new ActionListener() {
@@ -170,12 +191,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         });
 
         JButton btnEdit = new JButton("Edit");
-        btnEdit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                performEditAction();
-            }
-        });
+        btnEdit.addActionListener(editAction);
 
         buttonPanel.add(btnEdit);
         buttonPanel.add(btnDelete);
@@ -394,5 +410,21 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         entities.addAll(loadData());
         // fireTableDataChanged to rerender the table.
         ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
+    }
+
+    private class AddAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            showDetailView(null);
+        }
+    }
+
+    private class EditAction extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            performEditAction();
+        }
+
     }
 }
