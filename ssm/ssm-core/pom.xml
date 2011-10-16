@@ -105,11 +105,10 @@
 	<dependency>
 		<groupId>org.slf4j</groupId>
 		<artifactId>slf4j-log4j12</artifactId>
-	</dependency>
-	
+	</dependency>	
 	<dependency>
-			<groupId>biz.minaret.log4j</groupId>
-			<artifactId>datedFileAppender</artifactId>
+		<groupId>apache</groupId>
+		<artifactId>log4j-datedFileAppender</artifactId>		
     </dependency>
 	
 	<dependency>
