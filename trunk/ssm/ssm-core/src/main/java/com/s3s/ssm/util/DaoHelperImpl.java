@@ -16,22 +16,23 @@ import com.s3s.ssm.dao.HibernateBaseDao;
  */
 @Repository("daoHelper")
 public class DaoHelperImpl implements DaoHelper {
-    private Map<Class<?>, HibernateBaseDao<?>> mapDAOs = new HashMap<Class<?>, HibernateBaseDao<?>>();
+    private final Map<Class<?>, HibernateBaseDao<?>> mapDAOs = new HashMap<Class<?>, HibernateBaseDao<?>>();
 
     public DaoHelperImpl() {
         initDAOs();
     }
 
     /**
-     * Loop all entity package com.hbsoft.ssm.entity to get classes. Get DAOs from spring bean or create DAO
+     * Loop all entity package com.s3s.ssm.entity to get classes. Get DAOs from spring bean or create DAO
      * HibernateBaseDaoImpl Then put into mapDAOs. TODO: This is not working.
      */
     private void initDAOs() {
-        // Todo: loop all entity package com.hbsoft.ssm.entity to get classes
+        // Todo: loop all entity package com.s3s.ssm.entity to get classes
         // get DAOs from spring bean or create DAO HibernateBaseDaoImpl
         // Maybe we have to set up DAO context in this method.
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T> HibernateBaseDao<T> getDao(Class<T> clazz) {
         HibernateBaseDao<T> dao = (HibernateBaseDao<T>) mapDAOs.get(clazz);

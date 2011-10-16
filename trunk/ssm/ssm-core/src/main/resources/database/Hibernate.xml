@@ -15,19 +15,19 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
     		</props>
     	</property>
     	
-    	<property name="packagesToScan" value="com.hbsoft.ssm.entity"></property>
+    	<property name="packagesToScan" value="com.s3s.ssm.entity"></property>
     	
 		<!-- property name="annotatedClasses">
 			<list>
-				<value>com.hbsoft.ssm.entity.Customer</value>
-				<value>com.hbsoft.ssm.entity.Goods</value>
-				<value>com.hbsoft.ssm.entity.Invoice</value>
-				<value>com.hbsoft.ssm.entity.DetailInvoice</value>
+				<value>com.s3s.ssm.entity.Customer</value>
+				<value>com.s3s.ssm.entity.Goods</value>
+				<value>com.s3s.ssm.entity.Invoice</value>
+				<value>com.s3s.ssm.entity.DetailInvoice</value>
 			</list>
 		</property -->
     </bean>
     
-    <bean id="defaultBaseDao" class="com.hbsoft.ssm.dao.impl.DefaultBaseDaoImpl" scope="prototype">
+    <bean id="defaultBaseDao" class="com.s3s.ssm.dao.impl.DefaultBaseDaoImpl" scope="prototype">
     </bean>
 
 </beans>    

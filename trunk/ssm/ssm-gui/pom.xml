@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   
 	<parent>
-		<groupId>com.hbsoft</groupId>
+		<groupId>com.s3s</groupId>
 		<artifactId>ssm</artifactId>
 		<version>${ssm.version}</version>
 	</parent>
@@ -18,7 +18,7 @@
  
   <dependencies>
 	<dependency>
-		<groupId>com.hbsoft</groupId>
+		<groupId>com.s3s</groupId>
 		<artifactId>ssm-core</artifactId>
 	</dependency>
 	<dependency>
