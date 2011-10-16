@@ -3,13 +3,14 @@ package com.hbsoft.ssm.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.stereotype.Repository;
 
 import com.hbsoft.ssm.dao.HibernateBaseDao;
 
 /**
- * This class help to get DAO from an entity class. Support working with entity.
+ * This class help to get DAO from an entity class. Support working with entities.
  * 
  * @author phamcongbang
  * 
@@ -38,7 +39,7 @@ public class DaoHelperImpl implements DaoHelper {
         if (dao == null) {
             try {
                 dao = (HibernateBaseDao<T>) ConfigProvider.getInstance().getApplicationContext()
-                        .getBean(clazz.getSimpleName() + "DaoImpl");
+                        .getBean(StringUtils.uncapitalize(clazz.getSimpleName()) + "Dao");
             } catch (BeansException e) {
                 dao = (HibernateBaseDao<T>) ConfigProvider.getInstance().getApplicationContext()
                         .getBean("defaultBaseDao");
