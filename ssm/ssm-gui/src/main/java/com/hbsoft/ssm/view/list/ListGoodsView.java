@@ -2,11 +2,16 @@ package com.hbsoft.ssm.view.list;
 
 import java.util.List;
 
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import org.apache.commons.lang.math.RandomUtils;
+
 import com.hbsoft.ssm.entity.Goods;
 import com.hbsoft.ssm.model.DetailDataModel;
 import com.hbsoft.ssm.model.FieldTypeEnum;
 import com.hbsoft.ssm.view.AbstractDetailView;
-import com.hbsoft.ssm.view.AbstractListView;
+import com.hbsoft.ssm.view.AbstractSearchListView;
 import com.hbsoft.ssm.view.detail.EditGoodsView;
 
 /**
@@ -15,8 +20,10 @@ import com.hbsoft.ssm.view.detail.EditGoodsView;
  * @author Phan Hong Phuc
  * 
  */
-public class ListGoodsView extends AbstractListView<Goods> {
+public class ListGoodsView extends AbstractSearchListView<Goods> {
     private static final long serialVersionUID = -8034885109793508234L;
+
+    private JTextField txtGoodNameCriteria;
 
     @Override
     protected void initialPresentationView(List<DetailDataModel> listDataModel) {
@@ -37,5 +44,19 @@ public class ListGoodsView extends AbstractListView<Goods> {
     @Override
     protected Class<? extends AbstractDetailView<Goods>> getDetailViewClass() {
         return EditGoodsView.class;
+    }
+
+    @Override
+    protected JPanel createSearchPanel() {
+        JPanel panel = new JPanel();
+        txtGoodNameCriteria = new JTextField();
+        panel.add(txtGoodNameCriteria);
+        return panel;
+    }
+
+    @Override
+    protected void clearCriteria() {
+        // TODO Auto-generated method stub
+
     }
 }

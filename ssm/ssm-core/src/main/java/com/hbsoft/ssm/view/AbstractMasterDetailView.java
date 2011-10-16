@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -78,7 +79,10 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
         protected List<E> loadData() {
             Method getChildListMethod = Solution3sClassUtils.getGetterMethod(getMasterClass(), getChildFieldName());
             try {
-                return (List<E>) getChildListMethod.invoke(entity);
+                List<E> childEntitiesList = (List<E>) getChildListMethod.invoke(entity);
+                List<E> copyChildEntitiesList = new ArrayList<E>(childEntitiesList);
+                Collections.copy(copyChildEntitiesList, childEntitiesList);
+                return copyChildEntitiesList;
             } catch (Exception e) {
                 logger.error(e.getCause());
                 logger.error(e.getMessage());
