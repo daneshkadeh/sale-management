@@ -1,5 +1,6 @@
 package com.s3s.ssm.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -18,9 +19,9 @@ public interface HibernateBaseDao<T> {
 
     public void saveOrUpdate(T entity);
 
-    public void saveOrUpdateAll(List<T> list);
+    public void saveOrUpdateAll(Collection<T> list);
 
-    public T findById(Integer id);
+    public T findById(Long id);
 
     public List<T> findAll();
 
@@ -29,4 +30,6 @@ public interface HibernateBaseDao<T> {
     public List<T> findByCriteria(DetachedCriteria criteria, int firstResult, int maxResults);
 
     public List<T> findByCriteria(DetachedCriteria dc);
+
+    void deleteAll(Collection<T> entities);
 }

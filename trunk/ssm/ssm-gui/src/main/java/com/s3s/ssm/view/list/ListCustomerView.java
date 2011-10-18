@@ -13,7 +13,7 @@ public class ListCustomerView extends AbstractListView<Customer> {
     private static final long serialVersionUID = -8565742036667887785L;
 
     @Override
-    protected void initialPresentationView(List<DetailDataModel> listDataModel) {
+    protected void initialPresentationView(List<DetailDataModel> listDataModel, List<String> summaryFieldNames) {
         listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXT_BOX));
     }
@@ -27,5 +27,4 @@ public class ListCustomerView extends AbstractListView<Customer> {
     protected Class<? extends AbstractDetailView<Customer>> getDetailViewClass() {
         return EditCustomerView.class;
     }
-
 }

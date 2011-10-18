@@ -15,29 +15,40 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     CustomerDaoImpl customerDao;
 
+    @Override
     public void save(Customer customer) {
         customerDao.save(customer);
     }
 
+    @Override
     public void update(Customer customer) {
         customerDao.update(customer);
     }
 
+    @Override
     public void delete(Customer customer) {
         customerDao.delete(customer);
 
     }
 
-    public Customer findById(Integer id) {
+    public Customer findById(Long id) {
         return customerDao.findById(id);
     }
 
+    @Override
     public List<Customer> findAll() {
         return customerDao.findAll();
     }
 
+    @Override
     public List<Customer> findLikeName(String name) {
         return customerDao.findLikeName(name);
+    }
+
+    @Override
+    public Customer findById(Integer id) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

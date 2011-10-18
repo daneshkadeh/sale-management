@@ -2,6 +2,7 @@ package com.s3s.ssm.dao.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -35,7 +36,7 @@ public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends Hibern
         return clazz;
     }
 
-    public HibernateBaseDaoImpl(Class objectClazz) {
+    public HibernateBaseDaoImpl(Class<T> objectClazz) {
         this.clazz = objectClazz;
     }
 
@@ -57,11 +58,15 @@ public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends Hibern
     @Override
     public void delete(AbstractBaseIdObject entity) {
         getHibernateTemplate().delete(entity);
-
     }
 
     @Override
-    public void saveOrUpdateAll(List<T> list) {
+    public void deleteAll(Collection<T> entities) {
+        getHibernateTemplate().deleteAll(entities);
+    }
+
+    @Override
+    public void saveOrUpdateAll(Collection<T> list) {
         getHibernateTemplate().saveOrUpdateAll(list);
     }
 
@@ -71,10 +76,10 @@ public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends Hibern
     }
 
     @Override
-    public T findById(Integer id) {
-        List list = getHibernateTemplate().find("from " + getEntityClass().getSimpleName() + " where id=?", id);
+    public T findById(Long id) {
+        List<T> list = getHibernateTemplate().find("from " + getEntityClass().getSimpleName() + " where id=?", id);
         if (CollectionUtils.isNotEmpty(list)) {
-            return (T) list.get(0);
+            return list.get(0);
         }
         return null;
     }

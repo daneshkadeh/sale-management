@@ -20,7 +20,7 @@ import com.s3s.ssm.view.detail.EditDetailInvoiceView;
 public class ListDetailInvoiceView extends AbstractCommonListView<DetailInvoice> {
 
     @Override
-    protected void initialPresentationView(List<DetailDataModel> listDataModel) {
+    protected void initialPresentationView(List<DetailDataModel> listDataModel, List<String> summaryFieldNames) {
         listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("goodsId", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("goodsName", FieldTypeEnum.TEXT_BOX));

@@ -30,7 +30,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
         AbstractDetailView<T> {
     private static final long serialVersionUID = 5571051971772731048L;
 
-    private Log logger = LogFactory.getLog(AbstractMasterDetailView.class);
+    private final Log logger = LogFactory.getLog(AbstractMasterDetailView.class);
 
     private List<E> detailEntities = new ArrayList<E>();
 
@@ -62,6 +62,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
      */
     protected abstract String getChildFieldName();
 
+    @Override
     protected void initComponents() throws Exception {
         super.initComponents();
         add(new ChildListView(), "grow");
@@ -69,11 +70,6 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
 
     private class ChildListView extends AbstractListView<E> {
         private static final long serialVersionUID = -8455234397691564647L;
-
-        @Override
-        protected void initialPresentationView(List<DetailDataModel> listDataModel) {
-            initialListDetailPresentationView(listDataModel);
-        }
 
         @Override
         protected List<E> loadData() {
@@ -99,11 +95,17 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
         protected Class<? extends AbstractDetailView<E>> getDetailViewClass() {
             return getChildDetailViewClass();
         }
+
+        @Override
+        protected void initialPresentationView(List<DetailDataModel> listDataModel, List<String> summaryFieldNames) {
+            initialListDetailPresentationView(listDataModel);
+        }
     }
 
     /**
      * Update detailEntities with master injected.
      */
+    @Override
     protected void saveOrUpdate(T masterEntity) {
         saveOrUpdate(masterEntity, detailEntities);
     };

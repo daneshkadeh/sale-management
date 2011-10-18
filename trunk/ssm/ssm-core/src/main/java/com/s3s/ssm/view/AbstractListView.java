@@ -30,11 +30,15 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXTable;
@@ -70,6 +74,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     // This model is used by sub classes.
     protected final List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
+    protected final List<String> summaryFieldNames = new ArrayList<String>();
 
     private Action addAction;
     private Action editAction;
@@ -81,17 +86,17 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     public AbstractListView(Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
         this.parentId = parentId;
         this.parentClass = parentClass;
-        initialPresentationView(listDataModel);
+        initialPresentationView(listDataModel, summaryFieldNames);
 
         addAction = new AddAction();
         editAction = new EditAction();
         setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[grow, fill]0[]"));
 
-        addBindings();
+        addKeyBindings();
         addComponents();
     }
 
-    protected void addBindings() {
+    protected void addKeyBindings() {
         // Key binding
         InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
 
@@ -108,16 +113,18 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * List fields need to show on the view.
      * 
      * @param listDataModel
+     * @param summaryFieldNames
+     *            the fields want to show sum values in footer. They must be Number type.
      */
-    protected abstract void initialPresentationView(List<DetailDataModel> listDataModel);
+    protected abstract void
+            initialPresentationView(List<DetailDataModel> listDataModel, List<String> summaryFieldNames);
 
     /**
      * 
-     * @return all data should be shown on the view.
+     * @return all data shown on the view.
      */
     protected List<T> loadData() {
-        // TODO: all data must be get on this AbstractListView
-        return new ArrayList<T>();
+        return getDaoHelper().getDao(getEntityClass()).findAll();
     }
 
     protected void addComponents() {
@@ -128,7 +135,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         tblListEntities
                 .addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, HIGHLIGHT_ROW_COLOR, null));
 
-        tblListEntities.setModel(createTableModel());
+        final AdvanceTableModel mainTableModel = createTableModel();
+        tblListEntities.setModel(mainTableModel);
 
         // Hide the entity column by set width = 0
         tblListEntities.getColumnModel().getColumn(0).setMinWidth(0);
@@ -151,14 +159,98 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             }
         });
 
-        JScrollPane jScrollPane = new JScrollPane(tblListEntities);
-        this.add(jScrollPane, "grow");
+        // //////////////// Create footer table
+        TableModel footerModel = new AbstractTableModel() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Object getValueAt(int rowIndex, int columnIndex) {
+                if (columnIndex == 0) {
+                    return null;
+                }
+                DetailDataModel detailDataModel = listDataModel.get(columnIndex - 1); // decrease 1 because the hidden
+                                                                                      // entity column
+                String fieldName = detailDataModel.getFieldName();
+                // Check exists summaryFieldName is fieldName or not.
+                for (String sfName : summaryFieldNames) {
+                    if (fieldName.equals(sfName)) {
+                        Class<?> fieldClass = getClassOfField(fieldName);
+                        if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
+                            // TODO care the particular type of sum (Floating point or Integer)
+                            int sum = 0;
+                            for (int i = 0; i < mainTableModel.getRowCount(); i++) {
+                                sum = sum + (Integer) mainTableModel.getValueAt(i, columnIndex);
+                            }
+                            return sum;
+                        }
+
+                        if (ClassUtils.isAssignable(fieldClass, Double.class)) {
+                            // TODO care the particular type of sum (Floating point or Integer)
+                            Double sum = 0d;
+                            for (int i = 0; i < mainTableModel.getRowCount(); i++) {
+                                sum = sum + (Double) mainTableModel.getValueAt(i, columnIndex);
+                            }
+                            return sum;
+                        }
+
+                        throw new RuntimeException("Just support sum for Double and Integer type");
+
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            public int getRowCount() {
+                return 1;
+            }
+
+            @Override
+            public int getColumnCount() {
+                return mainTableModel.getColumnCount();
+            }
+
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                if (columnIndex == 0) {
+                    return getEntityClass();
+                }
+                return getClassOfField(listDataModel.get(columnIndex - 1).getFieldName());
+            }
+
+        };
+
+        JTable footerTable = new JTable(footerModel, tblListEntities.getColumnModel()) {
+
+            /**
+             * {@inheritDoc} Sync column between 2 table when resize the column.
+             */
+            @Override
+            public void columnMarginChanged(ChangeEvent event) {
+                final TableColumnModel eventModel = (DefaultTableColumnModel) event.getSource();
+                final TableColumnModel thisModel = getColumnModel();
+                final int columnCount = eventModel.getColumnCount();
+
+                for (int i = 0; i < columnCount; i++) {
+                    thisModel.getColumn(i).setWidth(eventModel.getColumn(i).getWidth());
+                }
+                repaint();
+            }
+        };
+        footerTable.setTableHeader(null); // Remove table header.
+        tblListEntities.getColumnModel().addColumnModelListener(footerTable);
+
+        JScrollPane mainScrollpane = new JScrollPane(tblListEntities);
+        JScrollPane footerScrollpane = new JScrollPane(footerTable);
+
+        this.add(mainScrollpane, "grow");
+        this.add(footerScrollpane, "grow");
 
         JPanel pnlButton = createButtonPanel(tblListEntities);
         this.add(pnlButton);
     }
 
-    private TableModel createTableModel() {
+    private AdvanceTableModel createTableModel() {
         entities = loadData();
         return new AdvanceTableModel();
     }
@@ -185,6 +277,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     for (int i : selectedRows) {
                         int rowModelIndex = tblListEntities.convertRowIndexToModel(i);
                         entities.remove(rowModelIndex);
+                        ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
                     }
                 }
             }
