@@ -14,36 +14,24 @@ import com.s3s.ssm.service.LoginConfigService;
 
 @Service("loginConfigService")
 public class LoginConfigServiceImpl implements LoginConfigService {
-	
-	@Autowired
+
+    @Autowired
     LoginConfigDaoImpl loginConfigDaoImpl;
-	
-	public void save(LoginConfig loginConfig) {
-		// TODO Auto-generated method stub
-		loginConfigDaoImpl.save(loginConfig);
-	}
 
-	public void update(LoginConfig loginConfig) {
-		loginConfigDaoImpl.update(loginConfig);
-	}
+    public LoginConfig findById(Long id) {
+        return loginConfigDaoImpl.findById(id);
+    }
 
-	public void delete(LoginConfig loginConfig) {
-		loginConfigDaoImpl.delete(loginConfig);
-	}
+    @Override
+    public void save(String appName, AppConfigurationEntry entry) {
+        LoginConfig loginConfig = new LoginConfig();
+        loginConfig.setAppName(appName);
+        loginConfig.setLoginModuleClass(entry.getLoginModuleName());
+        loginConfig.setControlFlag(controlFlagString(entry.getControlFlag()));
+        loginConfigDaoImpl.save(loginConfig);
+    }
 
-	public LoginConfig findById(Integer id) {
-		return loginConfigDaoImpl.findById(id);
-	}
-
-	public void save(String appName, AppConfigurationEntry entry) {
-		LoginConfig loginConfig = new LoginConfig();
-		loginConfig.setAppName(appName);
-		loginConfig.setLoginModuleClass(entry.getLoginModuleName());
-		loginConfig.setControlFlag(controlFlagString(entry.getControlFlag()));
-		loginConfigDaoImpl.save(loginConfig);
-	}
-
-	private String controlFlagString(LoginModuleControlFlag flag) {
+    private String controlFlagString(LoginModuleControlFlag flag) {
         if (LoginModuleControlFlag.REQUIRED.equals(flag)) {
             return "REQUIRED";
         } else if (LoginModuleControlFlag.REQUISITE.equals(flag)) {
@@ -56,8 +44,9 @@ public class LoginConfigServiceImpl implements LoginConfigService {
 
     }
 
-	public List<LoginConfig> findByAppName(String appName) {
-		// TODO Auto-generated method stub
-		return loginConfigDaoImpl.findByAppName(appName);
-	}
+    @Override
+    public List<LoginConfig> findByAppName(String appName) {
+        // TODO Auto-generated method stub
+        return loginConfigDaoImpl.findByAppName(appName);
+    }
 }

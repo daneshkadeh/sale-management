@@ -7,7 +7,6 @@ import com.s3s.ssm.entity.DetailInvoice;
 import com.s3s.ssm.entity.Invoice;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.FieldTypeEnum;
-import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.view.AbstractDetailView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
 
@@ -59,10 +58,10 @@ public class EditMasterInvoiceView extends AbstractMasterDetailView<Invoice, Det
 
     @Override
     protected void saveOrUpdate(Invoice invoice, List<DetailInvoice> listDetailInvoice) {
-        ConfigProvider.getInstance().getInvoiceService().save(invoice);
+        // ConfigProvider.getInstance().getInvoiceService().save(invoice);
         for (DetailInvoice detailInvoice : listDetailInvoice) {
             detailInvoice.setInvoice(invoice);
-            ConfigProvider.getInstance().getDetailInvoiceService().save(detailInvoice);
+            // ConfigProvider.getInstance().getDetailInvoiceService().save(detailInvoice);
         }
     }
 

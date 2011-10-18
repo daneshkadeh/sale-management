@@ -30,7 +30,7 @@ public class ListGoodsView extends AbstractSearchListView<Goods> {
     private JTextField txtGoodNameCriteria;
 
     @Override
-    protected void initialPresentationView(List<DetailDataModel> listDataModel) {
+    protected void initialPresentationView(List<DetailDataModel> listDataModel, List<String> summaryFieldNames) {
         listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("priceBeforeTax", FieldTypeEnum.TEXT_BOX));
@@ -38,6 +38,8 @@ public class ListGoodsView extends AbstractSearchListView<Goods> {
         listDataModel.add(new DetailDataModel("priceAfterTax", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("addQuantity", FieldTypeEnum.TEXT_BOX));
         listDataModel.add(new DetailDataModel("curQuantity", FieldTypeEnum.TEXT_BOX));
+        summaryFieldNames.add("tax");
+        summaryFieldNames.add("curQuantity");
     }
 
     @Override

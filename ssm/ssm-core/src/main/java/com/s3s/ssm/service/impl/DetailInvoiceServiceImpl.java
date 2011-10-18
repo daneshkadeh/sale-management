@@ -1,38 +1,9 @@
 package com.s3s.ssm.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.s3s.ssm.dao.impl.DetailInvoiceDaoImpl;
-import com.s3s.ssm.entity.DetailInvoice;
 import com.s3s.ssm.service.DetailInvoiceService;
 
 @Service("detailInvoiceService")
 public class DetailInvoiceServiceImpl implements DetailInvoiceService {
-
-    @Autowired
-    DetailInvoiceDaoImpl detailInvoiceDao;
-
-    public void save(DetailInvoice detailInvoice) {
-        detailInvoiceDao.save(detailInvoice);
-    }
-
-    public void saveOrUpdate(List<DetailInvoice> listDetailInvoice) {
-        detailInvoiceDao.saveOrUpdateAll(listDetailInvoice);
-    }
-
-    public void update(DetailInvoice detailInvoice) {
-        detailInvoiceDao.update(detailInvoice);
-    }
-
-    public void delete(DetailInvoice detailInvoice) {
-        detailInvoiceDao.delete(detailInvoice);
-    }
-
-    public DetailInvoice findById(Integer id) {
-        return detailInvoiceDao.findById(id);
-    }
-
 }
