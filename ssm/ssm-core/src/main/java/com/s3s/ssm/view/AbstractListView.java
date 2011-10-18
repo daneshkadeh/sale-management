@@ -90,7 +90,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         addAction = new AddAction();
         editAction = new EditAction();
-        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[grow, fill]0[]"));
+        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[grow, fill]5[]0[]"));
 
         addKeyBindings();
         addComponents();
@@ -139,6 +139,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         tblListEntities.setModel(mainTableModel);
 
         // Hide the entity column by set width = 0
+        tblListEntities.getColumnExt(0).setVisible(false);
+        tblListEntities.getColumnExt(0).setVisible(false);
         tblListEntities.getColumnModel().getColumn(0).setMinWidth(0);
         tblListEntities.getColumnModel().getColumn(0).setMaxWidth(0);
 
@@ -176,7 +178,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     if (fieldName.equals(sfName)) {
                         Class<?> fieldClass = getClassOfField(fieldName);
                         if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
-                            // TODO care the particular type of sum (Floating point or Integer)
                             int sum = 0;
                             for (int i = 0; i < mainTableModel.getRowCount(); i++) {
                                 sum = sum + (Integer) mainTableModel.getValueAt(i, columnIndex);
@@ -185,7 +186,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                         }
 
                         if (ClassUtils.isAssignable(fieldClass, Double.class)) {
-                            // TODO care the particular type of sum (Floating point or Integer)
                             Double sum = 0d;
                             for (int i = 0; i < mainTableModel.getRowCount(); i++) {
                                 sum = sum + (Double) mainTableModel.getValueAt(i, columnIndex);
@@ -220,10 +220,13 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         };
 
-        JTable footerTable = new JTable(footerModel, tblListEntities.getColumnModel()) {
+        JXTable footerTable = new JXTable(footerModel, tblListEntities.getColumnModel()) {
+            private static final long serialVersionUID = -7685932666381447654L;
 
             /**
-             * {@inheritDoc} Sync column between 2 table when resize the column.
+             * Sync column between 2 table when resize the column.
+             * <p>
+             * {@inheritDoc}
              */
             @Override
             public void columnMarginChanged(ChangeEvent event) {
@@ -238,6 +241,11 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             }
         };
         footerTable.setTableHeader(null); // Remove table header.
+        // Visible 1 row in footer table.
+        footerTable.setPreferredScrollableViewportSize(new Dimension(
+                footerTable.getPreferredScrollableViewportSize().width, footerTable.getRowHeight()));
+        footerTable.setEnabled(false);
+
         tblListEntities.getColumnModel().addColumnModelListener(footerTable);
 
         JScrollPane mainScrollpane = new JScrollPane(tblListEntities);
@@ -506,6 +514,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     private class AddAction extends AbstractAction {
+        private static final long serialVersionUID = 3455983492968974921L;
+
         @Override
         public void actionPerformed(ActionEvent e) {
             showDetailView(null);
@@ -513,6 +523,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     private class EditAction extends AbstractAction {
+        private static final long serialVersionUID = -7091407169970088286L;
 
         @Override
         public void actionPerformed(ActionEvent e) {
