@@ -109,6 +109,8 @@
 	<beansbinding.version>1.2.1</beansbinding.version>
 	<jasperreport.version>4.1.1</jasperreport.version>
 	<glazedlists.version>1.8.0</glazedlists.version>
+	<jodatime.version>2.0</jodatime.version>
+	<jodatime-hibernate.version>1.3</jodatime-hibernate.version>
    </properties>   
    
 	<dependencyManagement>
@@ -293,6 +295,19 @@
 		<artifactId>jasperreports</artifactId>		
 		<version>${jasperreport.version}</version>
 	</dependency>
+	
+	<!-- Joda time -->
+	<dependency>
+		<groupId>joda-time</groupId>
+		<artifactId>joda-time</artifactId>
+		<version>${jodatime.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>joda-time</groupId>
+		<artifactId>joda-time-hibernate</artifactId>
+		<version>${jodatime-hibernate.version}</version>
+	</dependency>
+	
   </dependencies>
   </dependencyManagement>
 </project>

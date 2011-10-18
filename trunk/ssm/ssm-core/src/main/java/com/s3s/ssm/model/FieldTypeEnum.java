@@ -1,5 +1,5 @@
 package com.s3s.ssm.model;
 
 public enum FieldTypeEnum {
-    TEXT_BOX, COMBO_BOX, MULTI_SELECT_BOX, PASSWORD;
+    TEXT_BOX, COMBO_BOX, MULTI_SELECT_BOX, PASSWORD, CHECK_BOX, DATE;
 }

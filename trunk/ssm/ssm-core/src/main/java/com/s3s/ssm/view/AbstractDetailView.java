@@ -34,6 +34,8 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jdesktop.swingx.JXDatePicker;
+import org.joda.time.DateTime;
 import org.springframework.util.StringUtils;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
@@ -162,6 +164,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 ((JComboBox) dataField).setSelectedItem(value);
                 break;
             case MULTI_SELECT_BOX:
+                // TODO HPP
                 List refDataList = refDataModel.getRefDataListMap().get(dataModel.getReferenceDataId());
                 dataField = new MultiSelectionBox(refDataList, new ArrayList());
                 pnlEdit.add(lblLabel, "top");
@@ -170,6 +173,13 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 // ((MultiSelectionBox) dataField)
 
                 break;
+            case DATE:
+                DateTime date = (DateTime) value;
+                dataField = new JXDatePicker();
+                if (date != null) {
+                    ((JXDatePicker) dataField).setDate(date.toDate());
+                }
+
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
