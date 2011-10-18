@@ -34,10 +34,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,6 +66,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
     private JXTable tblListEntities;
+    private JXTable tblFooter;
 
     private Class<? extends AbstractBaseIdObject> parentClass;
     private Long parentId;
@@ -90,7 +91,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         addAction = new AddAction();
         editAction = new EditAction();
-        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[grow, fill]5[]0[]"));
+        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[grow, fill]2[]0[]"));
 
         addKeyBindings();
         addComponents();
@@ -139,8 +140,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         tblListEntities.setModel(mainTableModel);
 
         // Hide the entity column by set width = 0
-        tblListEntities.getColumnExt(0).setVisible(false);
-        tblListEntities.getColumnExt(0).setVisible(false);
         tblListEntities.getColumnModel().getColumn(0).setMinWidth(0);
         tblListEntities.getColumnModel().getColumn(0).setMaxWidth(0);
 
@@ -160,67 +159,13 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 }
             }
         });
+        JScrollPane mainScrollpane = new JScrollPane(tblListEntities);
+        this.add(mainScrollpane, "grow");
 
         // //////////////// Create footer table
-        TableModel footerModel = new AbstractTableModel() {
-            private static final long serialVersionUID = 1L;
+        FooterTableModel footerModel = new FooterTableModel(mainTableModel);
 
-            @Override
-            public Object getValueAt(int rowIndex, int columnIndex) {
-                if (columnIndex == 0) {
-                    return null;
-                }
-                DetailDataModel detailDataModel = listDataModel.get(columnIndex - 1); // decrease 1 because the hidden
-                                                                                      // entity column
-                String fieldName = detailDataModel.getFieldName();
-                // Check exists summaryFieldName is fieldName or not.
-                for (String sfName : summaryFieldNames) {
-                    if (fieldName.equals(sfName)) {
-                        Class<?> fieldClass = getClassOfField(fieldName);
-                        if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
-                            int sum = 0;
-                            for (int i = 0; i < mainTableModel.getRowCount(); i++) {
-                                sum = sum + (Integer) mainTableModel.getValueAt(i, columnIndex);
-                            }
-                            return sum;
-                        }
-
-                        if (ClassUtils.isAssignable(fieldClass, Double.class)) {
-                            Double sum = 0d;
-                            for (int i = 0; i < mainTableModel.getRowCount(); i++) {
-                                sum = sum + (Double) mainTableModel.getValueAt(i, columnIndex);
-                            }
-                            return sum;
-                        }
-
-                        throw new RuntimeException("Just support sum for Double and Integer type");
-
-                    }
-                }
-                return null;
-            }
-
-            @Override
-            public int getRowCount() {
-                return 1;
-            }
-
-            @Override
-            public int getColumnCount() {
-                return mainTableModel.getColumnCount();
-            }
-
-            @Override
-            public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 0) {
-                    return getEntityClass();
-                }
-                return getClassOfField(listDataModel.get(columnIndex - 1).getFieldName());
-            }
-
-        };
-
-        JXTable footerTable = new JXTable(footerModel, tblListEntities.getColumnModel()) {
+        tblFooter = new JXTable(footerModel, tblListEntities.getColumnModel()) {
             private static final long serialVersionUID = -7685932666381447654L;
 
             /**
@@ -240,19 +185,20 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 repaint();
             }
         };
-        footerTable.setTableHeader(null); // Remove table header.
+        tblFooter.setTableHeader(null); // Remove table header.
         // Visible 1 row in footer table.
-        footerTable.setPreferredScrollableViewportSize(new Dimension(
-                footerTable.getPreferredScrollableViewportSize().width, footerTable.getRowHeight()));
-        footerTable.setEnabled(false);
+        tblFooter.setPreferredScrollableViewportSize(new Dimension(
+                tblFooter.getPreferredScrollableViewportSize().width, tblFooter.getRowHeight()));
+        tblFooter.setEnabled(false);
+        tblFooter.setShowGrid(false);
 
-        tblListEntities.getColumnModel().addColumnModelListener(footerTable);
+        tblListEntities.getColumnModel().addColumnModelListener(tblFooter);
 
-        JScrollPane mainScrollpane = new JScrollPane(tblListEntities);
-        JScrollPane footerScrollpane = new JScrollPane(footerTable);
+        JScrollPane footerScrollpane = new JScrollPane(tblFooter);
 
-        this.add(mainScrollpane, "grow");
-        this.add(footerScrollpane, "grow");
+        if (CollectionUtils.isNotEmpty(summaryFieldNames)) {
+            this.add(footerScrollpane, "grow");
+        }
 
         JPanel pnlButton = createButtonPanel(tblListEntities);
         this.add(pnlButton);
@@ -474,6 +420,69 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         }
     }
 
+    private class FooterTableModel extends AbstractTableModel {
+        private static final long serialVersionUID = 1L;
+        private final AdvanceTableModel mainTableModel;
+
+        public FooterTableModel(AdvanceTableModel mainTableModel) {
+            this.mainTableModel = mainTableModel;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            if (columnIndex == 0) {
+                return null;
+            }
+            DetailDataModel detailDataModel = listDataModel.get(columnIndex - 1); // decrease 1 because the hidden
+                                                                                  // entity column
+            String fieldName = detailDataModel.getFieldName();
+            // Check exists summaryFieldName is fieldName or not.
+            for (String sfName : summaryFieldNames) {
+                if (fieldName.equals(sfName)) {
+                    Class<?> fieldClass = getClassOfField(fieldName);
+                    if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
+                        int sum = 0;
+                        for (int i = 0; i < mainTableModel.getRowCount(); i++) {
+                            sum = sum + (Integer) mainTableModel.getValueAt(i, columnIndex);
+                        }
+                        return sum;
+                    }
+
+                    if (ClassUtils.isAssignable(fieldClass, Double.class)) {
+                        Double sum = 0d;
+                        for (int i = 0; i < mainTableModel.getRowCount(); i++) {
+                            sum = sum + (Double) mainTableModel.getValueAt(i, columnIndex);
+                        }
+                        return sum;
+                    }
+
+                    throw new RuntimeException("Just support sum for Double and Integer type");
+
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public int getRowCount() {
+            return 1;
+        }
+
+        @Override
+        public int getColumnCount() {
+            return mainTableModel.getColumnCount();
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            if (columnIndex == 0) {
+                return getEntityClass();
+            }
+            return getClassOfField(listDataModel.get(columnIndex - 1).getFieldName());
+        }
+
+    }
+
     /**
      * Entity was saved on AbstractDetailView and sent to AbstractListView to refresh data.
      * 
@@ -489,7 +498,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         }
 
         // fireTableDataChanged to rerender the table.
-        ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
+        ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
+        ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
 
         // After fireTableDataChanged() the selection is lost. We need to reselect it programmatically.
         tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
@@ -510,7 +520,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         entities.removeAll(entities);
         entities.addAll(loadData());
         // fireTableDataChanged to rerender the table.
-        ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
+        ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
+        ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
     }
 
     private class AddAction extends AbstractAction {
