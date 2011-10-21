@@ -3,6 +3,7 @@ package com.s3s.ssm.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.stereotype.Repository;
 
@@ -39,7 +40,7 @@ public class DaoHelperImpl implements DaoHelper {
         if (dao == null) {
             try {
                 dao = (HibernateBaseDao<T>) ConfigProvider.getInstance().getApplicationContext()
-                        .getBean(clazz.getSimpleName() + "DaoImpl");
+                        .getBean(StringUtils.uncapitalize(clazz.getSimpleName()) + "Dao");
             } catch (BeansException e) {
                 dao = (HibernateBaseDao<T>) ConfigProvider.getInstance().getApplicationContext()
                         .getBean("defaultBaseDao");
