@@ -31,13 +31,13 @@ public class ListGoodsView extends AbstractSearchListView<Goods> {
 
     @Override
     protected void initialPresentationView(List<DetailDataModel> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("priceBeforeTax", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("tax", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("priceAfterTax", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("addQuantity", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("curQuantity", FieldTypeEnum.TEXT_BOX));
+        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("priceBeforeTax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("tax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("priceAfterTax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("addQuantity", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("curQuantity", FieldTypeEnum.TEXTBOX));
         summaryFieldNames.add("tax");
         summaryFieldNames.add("curQuantity");
     }

@@ -42,6 +42,7 @@ import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.MultiSelectionBox;
@@ -125,8 +126,9 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
             Method getMethod = entity.getClass().getMethod("get" + StringUtils.capitalize(dataModel.getFieldName()));
             Object value = getMethod.invoke(entity);
+            ReferenceData referenceData = refDataModel.getRefDataListMap().get(dataModel.getReferenceDataId());
             switch (dataModel.getFieldType()) {
-            case TEXT_BOX:
+            case TEXTBOX:
                 Class<?> propertyReturnType = getPropertyReturnType(entity, dataModel);
                 if (ClassUtils.isAssignable(propertyReturnType, Number.class)) {
                     NumberFormatter numFormatter = new NumberFormatter();
@@ -153,11 +155,13 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
                 ((JTextField) dataField).setText(ObjectUtils.toString(value));
                 break;
-            case COMBO_BOX:
+            case DROPDOWN:
                 // get the referenceDataList from ReferenceDataModel using referenceDataId of column.
                 // TODO: getRenderer to render data using class of DataList
-                dataField = new JComboBox(new DefaultComboBoxModel(refDataModel.getRefDataListMap()
-                        .get(dataModel.getReferenceDataId()).toArray()));
+                dataField = new JComboBox(new DefaultComboBoxModel(referenceData.getRefDataList().toArray()));
+                if (referenceData.getListCellRenderer() != null) {
+                    ((JComboBox) dataField).setRenderer(referenceData.getListCellRenderer());
+                }
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
 
@@ -165,8 +169,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 break;
             case MULTI_SELECT_BOX:
                 // TODO HPP
-                List refDataList = refDataModel.getRefDataListMap().get(dataModel.getReferenceDataId());
-                dataField = new MultiSelectionBox(refDataList, new ArrayList());
+                List<?> refDataList = referenceData.getRefDataList();
+                dataField = new MultiSelectionBox(refDataList, new ArrayList<>());
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
 
@@ -247,13 +251,13 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
                 try {
                     Class<?> paramClass = getPropertyReturnType(entity, dataModel);
-                    if (dataModel.getFieldType() == FieldTypeEnum.TEXT_BOX) {
+                    if (dataModel.getFieldType() == FieldTypeEnum.TEXTBOX) {
                         JFormattedTextField txtField = (JFormattedTextField) component;
                         method.invoke(entity, paramClass.cast(txtField.getValue()));
                     } else if (dataModel.getFieldType() == FieldTypeEnum.PASSWORD) {
                         JPasswordField pwdField = (JPasswordField) component;
                         method.invoke(entity, pwdField.getText());
-                    } else if (dataModel.getFieldType() == FieldTypeEnum.COMBO_BOX) {
+                    } else if (dataModel.getFieldType() == FieldTypeEnum.DROPDOWN) {
                         JComboBox comboBox = (JComboBox) component;
                         method.invoke(entity, paramClass.cast(comboBox.getSelectedItem()));
                     } else if (dataModel.getFieldType() == FieldTypeEnum.MULTI_SELECT_BOX) {

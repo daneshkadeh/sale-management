@@ -231,6 +231,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     for (int i : selectedRows) {
                         int rowModelIndex = tblListEntities.convertRowIndexToModel(i);
                         entities.remove(rowModelIndex);
+                        // TODO remove in DB
                         ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
                     }
                 }
