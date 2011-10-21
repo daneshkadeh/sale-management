@@ -23,15 +23,15 @@ public class EditInvoiceView extends AbstractDetailView<Invoice> {
 
     @Override
     public void initialPresentationView(List<DetailDataModel> listDataModel, Invoice invoice) {
-        DetailDataModel createdDateField = new DetailDataModel("createdDate", FieldTypeEnum.TEXT_BOX);
+        DetailDataModel createdDateField = new DetailDataModel("createdDate", FieldTypeEnum.TEXTBOX);
         createdDateField.setEditable(false);
         listDataModel.add(createdDateField);
         invoice.setCreatedDate(new Date());
 
-        listDataModel.add(new DetailDataModel("customerId", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("totalBeforeTax", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("taxTotal", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("totalAfterTax", FieldTypeEnum.TEXT_BOX));
+        listDataModel.add(new DetailDataModel("customerId", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("totalBeforeTax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("taxTotal", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("totalAfterTax", FieldTypeEnum.TEXTBOX));
     }
 
 }

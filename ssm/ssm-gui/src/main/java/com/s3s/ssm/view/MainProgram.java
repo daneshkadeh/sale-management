@@ -46,6 +46,7 @@ public class MainProgram {
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's GUI.
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 createAndShowGUI();
             }
@@ -92,6 +93,7 @@ public class MainProgram {
         customerMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, ActionEvent.CTRL_MASK));
         customerMenuItem.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 ListCustomerView listCustomerView = new ListCustomerView();
                 listCustomerView.setVisible(true);
@@ -105,6 +107,7 @@ public class MainProgram {
         productMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         productMenuItem.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 // Create and set up the content pane.
                 ListGoodsView listGoodsView = new ListGoodsView();
@@ -121,6 +124,7 @@ public class MainProgram {
         invoiceMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK));
         invoiceMenuItem.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 // Create and set up the content pane.
                 ListInvoiceView listInvoiceView = new ListInvoiceView();
@@ -134,6 +138,7 @@ public class MainProgram {
         JMenuItem exitMenuItem = new JMenuItem(ControlConfigUtils.getString("JMenu.File.Exit"));
         exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
         exitMenuItem.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
             }
@@ -141,6 +146,7 @@ public class MainProgram {
         // test
         JMenuItem loginItem = new JMenuItem("Login");
         loginItem.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 LoginDialog loginDialog = new LoginDialog(frame);
                 loginDialog.setVisible(true);

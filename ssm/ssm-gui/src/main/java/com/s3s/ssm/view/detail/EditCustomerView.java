@@ -19,7 +19,7 @@ public class EditCustomerView extends AbstractDetailView<Customer> {
 
     @Override
     public void initialPresentationView(List<DetailDataModel> listDataModel, Customer customer) {
-        listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXT_BOX));
+        listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXTBOX));
         // DetailDataModel testModel = new DetailDataModel("testField", FieldTypeEnum.MULTI_SELECT_BOX);
         // testModel.setReferenceDataId(REF_TEST_MODEL);
         // listDataModel.add(testModel);
@@ -34,6 +34,6 @@ public class EditCustomerView extends AbstractDetailView<Customer> {
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, Customer entity) {
         super.setReferenceDataModel(refDataModel, entity);
         List<String> refDataList = Arrays.asList("Role1", "Role2", "Role3", "Role4", "Role5", "Role6");
-        refDataModel.putRefDataList(REF_TEST_MODEL, refDataList);
+        refDataModel.putRefDataList(REF_TEST_MODEL, refDataModel.new ReferenceData(refDataList));
     }
 }

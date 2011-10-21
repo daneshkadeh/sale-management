@@ -20,15 +20,15 @@ public class ListInvoiceView extends AbstractListView<Invoice> {
 
     @Override
     protected void initialPresentationView(List<DetailDataModel> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
+        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXTBOX));
 
-        DetailDataModel createdDateField = new DetailDataModel("createdDate", FieldTypeEnum.TEXT_BOX);
+        DetailDataModel createdDateField = new DetailDataModel("createdDate", FieldTypeEnum.TEXTBOX);
         listDataModel.add(createdDateField);
 
-        listDataModel.add(new DetailDataModel("customerId", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("totalBeforeTax", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("taxTotal", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("totalAfterTax", FieldTypeEnum.TEXT_BOX));
+        listDataModel.add(new DetailDataModel("customerId", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("totalBeforeTax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("taxTotal", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("totalAfterTax", FieldTypeEnum.TEXTBOX));
     }
 
     @Override

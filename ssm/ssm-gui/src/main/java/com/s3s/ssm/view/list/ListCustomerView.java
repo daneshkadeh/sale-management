@@ -14,8 +14,8 @@ public class ListCustomerView extends AbstractListView<Customer> {
 
     @Override
     protected void initialPresentationView(List<DetailDataModel> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXT_BOX));
-        listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXT_BOX));
+        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXTBOX));
     }
 
     @Override
