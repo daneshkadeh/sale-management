@@ -15,8 +15,14 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
     		</props>
     	</property>
     	
-    	<property name="packagesToScan" value="com.s3s.ssm.entity"></property>
-    	
+    	<property name="packagesToScan">
+	    	<list>
+					<value>com.s3s.ssm.entity</value>
+					<value>com.s3s.ssm.entity.param</value>
+					<value>com.s3s.ssm.entity.contact</value>
+					<value>com.s3s.ssm.entity.bi</value>
+			</list>
+    	</property>
 		<!-- property name="annotatedClasses">
 			<list>
 				<value>com.s3s.ssm.entity.Customer</value>

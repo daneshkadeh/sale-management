@@ -15,7 +15,7 @@ import javax.swing.ListCellRenderer;
  * 
  */
 public class ReferenceDataModel {
-    private final Map<String, ReferenceData> refDataListMap = new HashMap<>();
+    private final Map<String, ReferenceData> refDataListMap = new HashMap<String, ReferenceDataModel.ReferenceData>();
 
     public void putRefDataList(String refId, ReferenceData refData) {
         refDataListMap.put(refId, refData);

@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 
-import com.s3s.ssm.entity.AbstractBaseIdObject;
-
 public interface HibernateBaseDao<T> {
 
     public void setEntityClass(Class<T> clazz);
@@ -25,7 +23,7 @@ public interface HibernateBaseDao<T> {
 
     public List<T> findAll();
 
-    public DetachedCriteria getCriteria(Class<? extends AbstractBaseIdObject> clazz);
+    public DetachedCriteria getCriteria();
 
     public List<T> findByCriteria(DetachedCriteria criteria, int firstResult, int maxResults);
 

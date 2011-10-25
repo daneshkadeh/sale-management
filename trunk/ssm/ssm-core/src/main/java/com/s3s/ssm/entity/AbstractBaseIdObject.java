@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 /**
  * This class for object with id primary key.
@@ -26,6 +27,11 @@ public abstract class AbstractBaseIdObject {
     @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return id;
+    }
+
+    @Transient
+    public Boolean isPersisted() {
+        return (id != null) && id > -1;
     }
 
 }
