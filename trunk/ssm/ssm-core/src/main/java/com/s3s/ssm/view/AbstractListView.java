@@ -71,11 +71,11 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private Class<? extends AbstractBaseIdObject> parentClass;
     private Long parentId;
 
-    protected List<T> entities = new ArrayList<T>();
+    protected List<T> entities = new ArrayList<>();
 
     // This model is used by sub classes.
-    protected final List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
-    protected final List<String> summaryFieldNames = new ArrayList<String>();
+    protected final List<DetailDataModel> listDataModel = new ArrayList<>();
+    protected final List<String> summaryFieldNames = new ArrayList<>();
 
     private Action addAction;
     private Action editAction;

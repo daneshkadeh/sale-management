@@ -40,7 +40,6 @@ import org.springframework.util.StringUtils;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.Solution3sClassUtils;
@@ -61,8 +60,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     // TODO HPP consider to remove this reference. We should fire event to listView instead of keep a reference.
     protected AbstractListView<T> listView;
 
-    protected List<DetailDataModel> listDataModel = new ArrayList<DetailDataModel>();
-    protected Map<DetailDataModel, JComponent> mapFields = new HashMap<DetailDataModel, JComponent>();
+    protected List<DetailDataModel> listDataModel = new ArrayList<>();
+    protected Map<DetailDataModel, JComponent> mapFields = new HashMap<>();
 
     private JButton btnOK;
     private JButton btnCancel;
@@ -70,7 +69,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
     private final ReferenceDataModel refDataModel = new ReferenceDataModel();
 
-    private final Integer JPASSWORDFIELD_SIZE = 20;
+    private final static int DEFAULT_TEXTFIELD_COLUMN = 20;
 
     /**
      * Initialize the detail view.
@@ -117,7 +116,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
         add(createButtonPanel());
 
-        JPanel pnlEdit = new JPanel(new MigLayout("wrap 2", "[][fill, grow]"));
+        JPanel pnlEdit = new JPanel(new MigLayout("wrap 2", "[][fill]"));
         for (DetailDataModel dataModel : listDataModel) {
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + dataModel.getFieldName());
@@ -140,6 +139,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     dataField = new JFormattedTextField("");
                 }
                 ((JFormattedTextField) dataField).setEditable(dataModel.isEditable());
+                ((JFormattedTextField) dataField).setColumns(DEFAULT_TEXTFIELD_COLUMN);
                 dataField.setEnabled(dataModel.isEnable());
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
@@ -147,7 +147,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 ((JFormattedTextField) dataField).setValue(value);
                 break;
             case PASSWORD:
-                dataField = new JPasswordField(JPASSWORDFIELD_SIZE);
+                dataField = new JPasswordField(DEFAULT_TEXTFIELD_COLUMN);
                 ((JPasswordField) dataField).setEditable(dataModel.isEditable());
                 dataField.setEnabled(dataModel.isEnable());
                 pnlEdit.add(lblLabel);
@@ -157,20 +157,17 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 break;
             case DROPDOWN:
                 // get the referenceDataList from ReferenceDataModel using referenceDataId of column.
-                // TODO: getRenderer to render data using class of DataList
-                dataField = new JComboBox(new DefaultComboBoxModel(referenceData.getRefDataList().toArray()));
+                dataField = new JComboBox<>(new DefaultComboBoxModel<>(referenceData.getRefDataList().toArray()));
                 if (referenceData.getListCellRenderer() != null) {
-                    ((JComboBox) dataField).setRenderer(referenceData.getListCellRenderer());
+                    ((JComboBox<?>) dataField).setRenderer(referenceData.getListCellRenderer());
                 }
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
-
-                ((JComboBox) dataField).setSelectedItem(value);
+                ((JComboBox<?>) dataField).setSelectedItem(value);
                 break;
             case MULTI_SELECT_BOX:
                 // TODO HPP
-                List<?> refDataList = referenceData.getRefDataList();
-                dataField = new MultiSelectionBox(refDataList, new ArrayList<>());
+                dataField = new MultiSelectionBox(referenceData.getRefDataList(), new ArrayList<>());
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
 
@@ -183,7 +180,12 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 if (date != null) {
                     ((JXDatePicker) dataField).setDate(date.toDate());
                 }
-
+                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(dataField);
+                break;
+            // case RADIO_BUTTON:
+            // // TODO HPP
+            // break;
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
@@ -251,19 +253,30 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
                 try {
                     Class<?> paramClass = getPropertyReturnType(entity, dataModel);
-                    if (dataModel.getFieldType() == FieldTypeEnum.TEXTBOX) {
+                    switch (dataModel.getFieldType()) {
+                    case TEXTBOX:
                         JFormattedTextField txtField = (JFormattedTextField) component;
                         method.invoke(entity, paramClass.cast(txtField.getValue()));
-                    } else if (dataModel.getFieldType() == FieldTypeEnum.PASSWORD) {
+                        break;
+                    case PASSWORD:
                         JPasswordField pwdField = (JPasswordField) component;
                         method.invoke(entity, pwdField.getText());
-                    } else if (dataModel.getFieldType() == FieldTypeEnum.DROPDOWN) {
-                        JComboBox comboBox = (JComboBox) component;
+                        break;
+                    case CHECKBOX:
+
+                        break;
+                    case DATE:
+                        JXDatePicker dateField = (JXDatePicker) component;
+                        method.invoke(entity, new DateTime(dateField.getDate()));
+                        break;
+                    case DROPDOWN:
+                        JComboBox<?> comboBox = (JComboBox<?>) component;
                         method.invoke(entity, paramClass.cast(comboBox.getSelectedItem()));
-                    } else if (dataModel.getFieldType() == FieldTypeEnum.MULTI_SELECT_BOX) {
+                        break;
+                    case MULTI_SELECT_BOX:
                         MultiSelectionBox multiBox = (MultiSelectionBox) component;
-                        List unselected = multiBox.getSourceValues();
-                        List selected = multiBox.getDestinationValues();
+                        // List<?> unselected = multiBox.getSourceValues();
+                        List<?> selected = multiBox.getDestinationValues();
                         method.invoke(entity, selected);
                         // List<>
 
@@ -271,7 +284,12 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                         // for each item in listData of entity, remove, then set selected into entity. (prevent
                         // hibernate mapping issue).
 
-                    } else {
+                        break;
+                    case RADIO_BUTTON:
+
+                        break;
+
+                    default:
                         throw new RuntimeException("Do not support FieldTypeEnum " + dataModel.getFieldType());
                     }
                 } catch (Exception e) {
@@ -318,5 +336,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     }
 
     protected void btnCancelActionPerformed(ActionEvent evt) {
+        // TODO HPP find another way to close dialog.
+        SwingUtilities.getRoot(AbstractDetailView.this).setVisible(false);
     }
 }
