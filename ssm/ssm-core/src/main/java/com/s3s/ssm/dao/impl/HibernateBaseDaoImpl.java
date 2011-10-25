@@ -3,6 +3,7 @@ package com.s3s.ssm.dao.impl;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -12,11 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import com.s3s.ssm.context.ContextProvider;
 import com.s3s.ssm.dao.HibernateBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.entity.AbstractIdOLObject;
 
 public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSupport implements
         HibernateBaseDao<T> {
+    @Autowired
+    ContextProvider contextProvider;
+
     private Class<T> clazz;
 
     public HibernateBaseDaoImpl() {
@@ -46,33 +52,54 @@ public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends Hibern
     }
 
     @Override
-    public void save(AbstractBaseIdObject entity) {
+    public void save(T entity) {
+        addCommonFields(entity);
         getHibernateTemplate().save(entity);
     }
 
     @Override
-    public void update(AbstractBaseIdObject entity) {
+    public void update(T entity) {
+        addCommonFields(entity);
         getHibernateTemplate().update(entity);
     }
 
     @Override
-    public void delete(AbstractBaseIdObject entity) {
+    public void delete(T entity) {
         getHibernateTemplate().delete(entity);
     }
 
     @Override
     public void deleteAll(Collection<T> entities) {
-        getHibernateTemplate().deleteAll(entities);
+        if (CollectionUtils.isNotEmpty(entities)) {
+            getHibernateTemplate().deleteAll(entities);
+        }
     }
 
     @Override
     public void saveOrUpdateAll(Collection<T> list) {
+        for (T entity : list) {
+            addCommonFields(entity);
+        }
         getHibernateTemplate().saveOrUpdateAll(list);
     }
 
     @Override
     public void saveOrUpdate(T entity) {
+        addCommonFields(entity);
         getHibernateTemplate().saveOrUpdate(entity);
+    }
+
+    private void addCommonFields(T entity) {
+        if (entity instanceof AbstractIdOLObject) {
+            AbstractIdOLObject olObject = (AbstractIdOLObject) entity;
+            Date currentDate = new Date();
+            if (!olObject.isPersisted()) {
+                olObject.setUserInserted(contextProvider.getCurrentUser());
+                olObject.setDateInserted(currentDate);
+            }
+            olObject.setDateLastUpdate(currentDate);
+            olObject.setUserLastUpdate(contextProvider.getCurrentUser());
+        }
     }
 
     @Override
@@ -91,8 +118,8 @@ public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends Hibern
     }
 
     @Override
-    public DetachedCriteria getCriteria(Class<? extends AbstractBaseIdObject> clazz) {
-        return DetachedCriteria.forClass(clazz);
+    public DetachedCriteria getCriteria() {
+        return DetachedCriteria.forClass(getEntityClass());
     }
 
     /**

@@ -44,7 +44,7 @@ public class ListGoodsView extends AbstractSearchListView<Goods> {
 
     @Override
     protected List<Goods> loadData() {
-        DetachedCriteria dc = getDaoHelper().getDao(Goods.class).getCriteria(getEntityClass());
+        DetachedCriteria dc = getDaoHelper().getDao(Goods.class).getCriteria();
         dc.add(Restrictions.like("name", txtGoodNameCriteria.getText(), MatchMode.ANYWHERE));
         return getDaoHelper().getDao(Goods.class).findByCriteria(dc);
     }
