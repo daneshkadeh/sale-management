@@ -1,8 +1,24 @@
+  -- GOODS, SERVICE (maintainance), COMPONENT, VOUCHER
+CREATE TABLE `s_product_type` (
+  `id` int(11) NOT NULL auto_increment,
+  `code` varchar(32) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `product_family_type` varchar(32) NOT NULL,
+  `usr_log_i` varchar(32) NOT NULL,
+  `dte_log_i` date NOT NULL,
+  `usr_log_lu` varchar(32) NOT NULL,
+  `dte_log_lu` date NOT NULL,
+  `version` int(11) NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `idx_product_type_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+
 CREATE TABLE `s_product` (
   `id` int(11) NOT NULL auto_increment,
   `producttype_id`  int(11),
-  `product_code` varchar(32) collate utf8_bin,
-  `product_name` varchar(128) collate utf8_bin,
+  `code` varchar(32),
+  `name` varchar(128) collate utf8_bin,
   `manufacturer_id` int(11),
   `model` varchar(32) collate utf8_bin,
   `description` varchar(128) collate utf8_bin,
@@ -13,7 +29,7 @@ CREATE TABLE `s_product` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_product_code` (`product_code`)
+  KEY `idx_product_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
  -- collected from list linked uom
@@ -85,7 +101,7 @@ CREATE TABLE `s_item_price` (
 
 CREATE TABLE `s_uom_category` (
   `id` int(11) NOT NULL auto_increment,
-  `uom_category_code` varchar(32) NOT NULL,
+  `code` varchar(32) NOT NULL,
   `uom_category_name` varchar(128) NOT NULL collate utf8_bin,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` date NOT NULL,
@@ -98,7 +114,7 @@ CREATE TABLE `s_uom_category` (
 CREATE TABLE `s_unit_of_measure` (
   `id` int(11) NOT NULL auto_increment,
   `uom_category_id` int(11) NOT NULL,
-  `uom_code` varchar(32) NOT NULL collate utf8_bin,
+  `code` varchar(32) NOT NULL,
   `uom_name` varchar(128) NOT NULL collate utf8_bin,
   `is_base_measure` tinyint(4) NOT NULL default '0',
   `usr_log_i` varchar(32) NOT NULL,
@@ -107,26 +123,26 @@ CREATE TABLE `s_unit_of_measure` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_uom_code` (`uom_code`)
+  KEY `idx_uom_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 CREATE TABLE `s_manufacturer` (
   `id` int(11) NOT NULL auto_increment,
-  `manu_code` varchar(128) NOT NULL collate utf8_bin,
-  `manu_name` varchar(128) NOT NULL collate utf8_bin,
+  `code` varchar(32) NOT NULL,
+  `name` varchar(128) NOT NULL collate utf8_bin,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` date NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_manu_code` (`manu_code`)
+  KEY `idx_manu_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 
 CREATE TABLE `s_bank_account` (
   `id` int(11) NOT NULL auto_increment,
-  `bank_code` varchar(32) NOT NULL collate utf8_bin,
+  `code` varchar(32) NOT NULL,
   `bank_name` varchar(128) collate utf8_bin,
   `account_number` varchar(32) NOT NULL,
   `account_name` varchar(32),
@@ -136,13 +152,13 @@ CREATE TABLE `s_bank_account` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_bank_code` (`bank_code`)
+  KEY `idx_bank_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 
 CREATE TABLE `s_supplier` (
   `id` int(11) NOT NULL auto_increment,
-  `supplier_code` varchar(32) NOT NULL collate utf8_bin,
+  `code` varchar(32) NOT NULL,
   `supplier_name` varchar(128) NOT NULL collate utf8_bin,
   `main_contact_id` int(11),
   `phone_number` varchar(32),
@@ -157,13 +173,13 @@ CREATE TABLE `s_supplier` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_supplier_code` (`supplier_code`),
+  KEY `idx_supplier_code` (`code`),
   KEY `idx_main_contact_id` (`main_contact_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 CREATE TABLE `s_sales_contract` (
   `id` int(11) NOT NULL auto_increment,
-  `salescon_code` varchar(32) NOT NULL,
+  `code` varchar(32) NOT NULL,
   `supplier_id` int(11) NOT NULL,
   `date_contract` date NOT NULL,
   `money_before_tax` double NOT NULL default '0',
@@ -175,7 +191,7 @@ CREATE TABLE `s_sales_contract` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_salescon_code` (`salescon_code`),
+  KEY `idx_salescon_code` (`code`),
   KEY `idx_supplier_id` (`supplier_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
@@ -197,7 +213,7 @@ CREATE TABLE `s_detail_sales_contract` (
 
 CREATE TABLE `s_store` (
   `id` int(11) NOT NULL auto_increment,
-  `store_code` varchar(32) NOT NULL collate utf8_bin,
+  `code` varchar(32) NOT NULL,
   `store_name` varchar(128) NOT NULL collate utf8_bin,
   `address` varchar(256) NOT NULL,
   `stored_address` varchar(256) NOT NULL,
@@ -209,7 +225,7 @@ CREATE TABLE `s_store` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_store_code` (`store_code`),
+  KEY `idx_store_code` (`code`),
   KEY `idx_store_name` (`store_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
@@ -294,7 +310,7 @@ CREATE TABLE `s_detail_check_store` (
 
 CREATE TABLE `s_exchange_store_form` (
   `id` int(11) NOT NULL auto_increment,
-  `exchange_store_code` varchar(32) NOT NULL,
+  `code` varchar(32) NOT NULL,
   `from_store_id` int(11) NOT NULL,
   `to_store_id` int(11) NOT NULL,
   `from_user` varchar(32) NOT NULL,
@@ -310,7 +326,7 @@ CREATE TABLE `s_exchange_store_form` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_exchange_store_code` (`exchange_store_code`),
+  KEY `idx_exchange_store_code` (`code`),
   KEY `idx_from_store_id` (`from_store_id`),
   KEY `idx_to_store_id` (`to_store_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
@@ -332,7 +348,7 @@ CREATE TABLE `s_detail_exchange_store` (
 
 CREATE TABLE `s_import_product_form` (
   `id` int(11) NOT NULL auto_increment,
-  `importproduct_code` varchar(32) NOT NULL,
+  `code` varchar(32) NOT NULL,
   `created_date` date NOT NULL,
   `store_id` int(11) NOT NULL,
   `salescon_id` int(11),
@@ -342,7 +358,7 @@ CREATE TABLE `s_import_product_form` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_importproduct_code` (`importproduct_code`),
+  KEY `idx_importproduct_code` (`code`),
   KEY `idx_store_id` (`store_id`),
   KEY `idx_salescon_id` (`salescon_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
@@ -361,24 +377,10 @@ CREATE TABLE `s_detail_import_product` (
   KEY `idx_item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
-  -- GOODS, SERVICE (maintainance), COMPONENT, VOUCHER
-CREATE TABLE `s_product_type` (
-  `id` int(11) NOT NULL auto_increment,
-  `product_type_code` varchar(32) NOT NULL,
-  `product_family_type` varchar(32) NOT NULL,
-  `usr_log_i` varchar(32) NOT NULL,
-  `dte_log_i` date NOT NULL,
-  `usr_log_lu` varchar(32) NOT NULL,
-  `dte_log_lu` date NOT NULL,
-  `version` int(11) NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `idx_product_type_code` (`product_type_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
-
 -- s_package extends from s_product
 CREATE TABLE `s_package` (
   `id` int(11) NOT NULL auto_increment,
-  `package_code` varchar(32) NOT NULL collate utf8_bin,
+  `code` varchar(32) NOT NULL,
   `package_name` varchar(32) NOT NULL collate utf8_bin,
   `total_price` double NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
@@ -387,7 +389,7 @@ CREATE TABLE `s_package` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_package_code` (`package_code`),
+  KEY `idx_package_code` (`code`),
   KEY `idx_package_name` (`package_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
@@ -535,7 +537,7 @@ CREATE TABLE `s_payment_contact` (
  -- CUSTOMER (B2B, B2C), SUPPLIER, SUPPORTEE
 CREATE TABLE `s_contact_type` (
   `id` int(11) NOT NULL auto_increment,
-  `contact_type_code` varchar(32) NOT NULL,
+  `code` varchar(32) NOT NULL,
   `description` varchar(128) NOT NULL collate utf8_bin,
   `contact_family_type` varchar(32) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
@@ -544,7 +546,7 @@ CREATE TABLE `s_contact_type` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_contact_type_code` (`contact_type_code`),
+  KEY `idx_contact_type_code` (`code`),
   KEY `idx_contact_family_type` (`contact_family_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
@@ -565,7 +567,7 @@ CREATE TABLE `s_contact_debt` (
  -- ON, OFF
 CREATE TABLE `s_coupon` (
   `id` int(11) NOT NULL auto_increment,
-  `coupon_code` varchar(32) NOT NULL collate utf8_bin,
+  `code` varchar(32) NOT NULL,
   `coupon_name` varchar(32) NOT NULL collate utf8_bin,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
@@ -576,7 +578,7 @@ CREATE TABLE `s_coupon` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_coupon_code` (`coupon_code`)
+  KEY `idx_coupon_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
  -- ON, OFF
@@ -708,7 +710,7 @@ CREATE TABLE `s_warning_board` (
 
 CREATE TABLE `s_received_money_form` (
   `id` int(11) NOT NULL auto_increment,
-  `related_code` varchar(32) NOT NULL,
+  `code` varchar(32) NOT NULL,
   `receive_type` varchar(32) NOT NULL,
   `responsible_user` varchar(32) NOT NULL,
   `money` int(11) NOT NULL,
@@ -721,7 +723,7 @@ CREATE TABLE `s_received_money_form` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_related_code` (`related_code`)
+  KEY `idx_related_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 -- status: EMAIL, IMPORT_PRODUCT
@@ -730,7 +732,7 @@ CREATE TABLE `s_paid_money_form` (
   `contact_id` int(11),
   `invoice_id` int(11),
   `importstore_id` int(11),
-  `related_code` varchar(32) NOT NULL,
+  `code` varchar(32) NOT NULL,
   `paid_type` varchar(32) NOT NULL, 
   `responsible_user` varchar(32) NOT NULL,
   `money` int(11) NOT NULL,
@@ -743,7 +745,7 @@ CREATE TABLE `s_paid_money_form` (
   `dte_log_lu` date NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `idx_related_code` (`related_code`),
+  KEY `idx_related_code` (`code`),
   KEY `idx_contact_id` (`contact_id`),
   KEY `idx_invoice_id` (`invoice_id`),
   KEY `idx_importstore_id` (`importstore_id`)
