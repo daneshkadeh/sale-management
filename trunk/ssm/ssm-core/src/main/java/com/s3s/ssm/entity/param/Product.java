@@ -19,6 +19,7 @@ public class Product extends AbstractCodeOLObject {
     private ProductType type;
     private String model;
     private String description;
+    private UnitOfMeasure mainUom;
 
     private Long uploadFileId;
 
@@ -79,6 +80,16 @@ public class Product extends AbstractCodeOLObject {
 
     public void setUploadFileId(Long uploadFileId) {
         this.uploadFileId = uploadFileId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "main_uom_id", nullable = false)
+    public UnitOfMeasure getMainUom() {
+        return mainUom;
+    }
+
+    public void setMainUom(UnitOfMeasure mainUom) {
+        this.mainUom = mainUom;
     }
 
 }
