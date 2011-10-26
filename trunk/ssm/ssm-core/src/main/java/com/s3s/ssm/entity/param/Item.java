@@ -22,6 +22,7 @@ public class Item extends AbstractIdOLObject {
     private Product product;
     private String sumUomName;
     private Double baseSellPrice;
+    private String currency;
     private List<UnitOfMeasure> listUom = new ArrayList<>();
 
     // @ManyToOne(fetch = FetchType.LAZY)
@@ -53,6 +54,16 @@ public class Item extends AbstractIdOLObject {
 
     public void setBaseSellPrice(Double baseSellPrice) {
         this.baseSellPrice = baseSellPrice;
+    }
+
+    @Column(name = "currency", nullable = false, length = 3)
+    @NotNull
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
