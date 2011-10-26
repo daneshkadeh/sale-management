@@ -53,8 +53,8 @@ CREATE TABLE `s_item` (
 CREATE TABLE `s_good` (
   `id` int(11) NOT NULL auto_increment,
   `item_id` int(11) NOT NULL,
-  `barcode` varchar(32) NOT NULL,
-  `first_maintain_date` datetime NOT NULL,
+  `barcode` varchar(32),
+  `first_maintain_date` datetime,
   `second_maintain_date` datetime,
   `store_id` int(11) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
@@ -220,10 +220,11 @@ CREATE TABLE `s_store` (
   `id` int(11) NOT NULL auto_increment,
   `code` varchar(32) NOT NULL,
   `store_name` varchar(128) NOT NULL collate utf8_bin,
-  `address` varchar(256) NOT NULL,
-  `stored_address` varchar(256) NOT NULL,
-  `import_address` varchar(256) NOT NULL,
-  `export_address` varchar(256) NOT NULL,
+  `manager_id` int(11) NOT NULL,
+  `address` varchar(256) NOT NULL collate utf8_bin,
+  `stored_address` varchar(256) NOT NULL collate utf8_bin,
+  `import_address` varchar(256) NOT NULL collate utf8_bin,
+  `export_address` varchar(256) NOT NULL collate utf8_bin,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
@@ -561,6 +562,32 @@ CREATE TABLE `s_contact_type` (
   KEY `idx_contact_family_type` (`contact_family_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
+CREATE TABLE `s_contact` (
+  `id` int(11) NOT NULL auto_increment,
+  `code` varchar(32) NOT NULL,
+  `full_name` varchar(128) NOT NULL collate utf8_bin,
+  `contact_type_id` int(11) NOT NULL,
+  `address` varchar(256) collate utf8_bin,
+  `phone` varchar(32) collate utf8_bin,
+  `fix_phone` varchar(32) collate utf8_bin,
+  `fax` varchar(32) collate utf8_bin,
+  `email` varchar(64) collate utf8_bin,
+  `tax_code` varchar(32) collate utf8_bin,
+  `bank_account_id` int(11),
+  `maximum_day_debt` int(11) NOT NULL,
+  `usr_log_i` varchar(32) NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `idx_contact_type_code` (`code`),
+  KEY `idx_contact_full_name` (`full_name`),
+  KEY `idx_contact_phone` (`phone`),
+  KEY `idx_contact_fix_phone` (`fix_phone`),
+  KEY `idx_contact_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
 CREATE TABLE `s_contact_debt` (
   `id` int(11) NOT NULL auto_increment,
   `contact_id` int(11) NOT NULL,
@@ -780,8 +807,8 @@ CREATE TABLE IF NOT EXISTS `s_upload_file` (
   KEY `idx_diskfile` (`diskfile`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
-CREATE TABLE IF NOT EXISTS `t_currency` (
-  `currency_id` int(11) NOT NULL auto_increment,
+CREATE TABLE IF NOT EXISTS `s_currency` (
+  `id` int(11) NOT NULL auto_increment,
   `title` varchar(32) collate utf8_bin NOT NULL default '',
   `code` varchar(3) collate utf8_bin NOT NULL default '',
   `symbol_left` varchar(12) collate utf8_bin NOT NULL,
@@ -794,5 +821,22 @@ CREATE TABLE IF NOT EXISTS `t_currency` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`currency_id`)
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `s_operator` (
+  `id` int(11) NOT NULL auto_increment,
+  `login` varchar(32) collate utf8_bin NOT NULL default '',
+  `password` varchar(32) collate utf8_bin NOT NULL default '',
+  `full_name` varchar(256) collate utf8_bin NOT NULL default '',
+  `email` varchar(64) collate utf8_bin NOT NULL default '',
+  `phone` varchar(32) collate utf8_bin NOT NULL default '',
+  `address` varchar(256) collate utf8_bin NOT NULL default '',
+  `active` int(1) NOT NULL,
+  `usr_log_i` varchar(32) NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
