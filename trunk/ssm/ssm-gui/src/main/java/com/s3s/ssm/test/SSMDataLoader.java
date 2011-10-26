@@ -106,7 +106,8 @@ public class SSMDataLoader {
 
         UnitOfMeasure pair = new UnitOfMeasure();
         pair.setCode(UOM_PAIR);
-        pair.setName("Đôi"); // error UTF-8 here. Please careful for production
+        // pair.setName(""); // error UTF-8 here. Please careful for production
+        pair.setName("Doi");
         pair.setUomCategory(category);
         pair.setIsBaseMeasure(false);
         daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(pair);
