@@ -15,7 +15,7 @@ public class ProductType extends AbstractCodeOLObject {
     private ProductFamilyType productFamilyType;
     private String name;
 
-    @Column(name = "product_family_type", nullable = false)
+    @Column(name = "product_family_type", nullable = false, length = 32)
     @NotNull
     @Enumerated(EnumType.STRING)
     public ProductFamilyType getProductFamilyType() {

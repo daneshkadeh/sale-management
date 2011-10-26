@@ -143,11 +143,22 @@ CREATE TABLE `s_manufacturer` (
   KEY `idx_manu_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
-
-CREATE TABLE `s_bank_account` (
+CREATE TABLE `s_bank` (
   `id` int(11) NOT NULL auto_increment,
   `code` varchar(32) NOT NULL,
   `bank_name` varchar(128) collate utf8_bin,
+  `usr_log_i` varchar(32) NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `idx_bank_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE TABLE `s_bank_account` (
+  `id` int(11) NOT NULL auto_increment,
+  `bank_id` int(11) NOT NULL,
   `account_number` varchar(32) NOT NULL,
   `account_name` varchar(32),
   `usr_log_i` varchar(32) NOT NULL,
@@ -156,7 +167,7 @@ CREATE TABLE `s_bank_account` (
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  KEY `idx_bank_code` (`code`)
+  KEY `idx_account_number` (`account_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 
@@ -169,8 +180,8 @@ CREATE TABLE `s_supplier` (
   `fix_phone_number` varchar(32),
   `fax_number` varchar(32),
   `email` varchar(32),
-  `bankaccount_id` int(11),
-  `note` varchar(128),
+  `bank_account_id` int(11),
+  `note` varchar(256),
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
@@ -574,7 +585,7 @@ CREATE TABLE `s_contact` (
   `email` varchar(64) collate utf8_bin,
   `tax_code` varchar(32) collate utf8_bin,
   `bank_account_id` int(11),
-  `maximum_day_debt` int(11) NOT NULL,
+  `maximum_day_debt` int(11) NOT NULL default '0',
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
@@ -829,9 +840,9 @@ CREATE TABLE IF NOT EXISTS `s_operator` (
   `login` varchar(32) collate utf8_bin NOT NULL default '',
   `password` varchar(32) collate utf8_bin NOT NULL default '',
   `full_name` varchar(256) collate utf8_bin NOT NULL default '',
-  `email` varchar(64) collate utf8_bin NOT NULL default '',
-  `phone` varchar(32) collate utf8_bin NOT NULL default '',
-  `address` varchar(256) collate utf8_bin NOT NULL default '',
+  `email` varchar(64) collate utf8_bin,
+  `phone` varchar(32) collate utf8_bin,
+  `address` varchar(256) collate utf8_bin,
   `active` int(1) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
