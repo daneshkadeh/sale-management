@@ -23,6 +23,7 @@ CREATE TABLE `s_product` (
   `model` varchar(32) collate utf8_bin,
   `description` varchar(128) collate utf8_bin,
   `uploadfile_id` int(11),
+  `main_uom_id` int(11),
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
