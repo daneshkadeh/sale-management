@@ -9,10 +9,10 @@ CREATE TABLE `s_product_type` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_product_type_code` (`code`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
+CREATE UNIQUE INDEX ui_product_type_code ON s_product_type (code);
 
 CREATE TABLE `s_product` (
   `id` int(11) NOT NULL auto_increment,
@@ -29,9 +29,10 @@ CREATE TABLE `s_product` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_product_code` (`code`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_product_code ON s_product(code);
 
  -- collected from list linked uom
 CREATE TABLE `s_item` (
@@ -45,9 +46,10 @@ CREATE TABLE `s_item` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_item_product` (`product_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE INDEX idx_product_id ON s_item(product_id);
 
 -- Good is a idenfied item (eg. 1 t-shirt is a good)
 CREATE TABLE `s_good` (
@@ -62,9 +64,11 @@ CREATE TABLE `s_good` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_good_item` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_barcode ON s_good(barcode);
+CREATE INDEX idx_item_id ON s_good(item_id);
 
 CREATE TABLE `at_item_uom` (
   `item_id` int(11) NOT NULL,
@@ -75,7 +79,7 @@ CREATE TABLE `at_item_uom` (
 CREATE TABLE `s_item_origin_price` (
   `id` int(11) NOT NULL auto_increment,
   `item_id` int(11) NOT NULL,
-  `suppier_id` int(11) NOT NULL,
+  `supplier_id` int(11) NOT NULL,
   `original_price` double NOT NULL default '0',
   `currency` varchar(3) collate utf8_bin NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
@@ -83,10 +87,11 @@ CREATE TABLE `s_item_origin_price` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_origin_price_item` (`item_id`),
-  KEY `idx_origin_price_supplier` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE INDEX idx_item_id ON s_item_origin_price(item_id);
+CREATE UNIQUE INDEX ui_item_supplier ON s_item_origin_price(item_id, supplier_id);
 
 CREATE TABLE `s_item_price` (
   `id` int(11) NOT NULL auto_increment,
@@ -99,9 +104,11 @@ CREATE TABLE `s_item_price` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_price_item` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE INDEX idx_item_id ON s_item_price(item_id);
+CREATE UNIQUE INDEX ui_item_contacttype_id ON s_item_price(item_id, contacttype_id);
 
 CREATE TABLE `s_uom_category` (
   `id` int(11) NOT NULL auto_increment,
@@ -115,6 +122,8 @@ CREATE TABLE `s_uom_category` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
+CREATE UNIQUE INDEX ui_uom_category_code ON s_uom_category(code);
+
 CREATE TABLE `s_unit_of_measure` (
   `id` int(11) NOT NULL auto_increment,
   `uom_category_id` int(11) NOT NULL,
@@ -126,9 +135,9 @@ CREATE TABLE `s_unit_of_measure` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_uom_code` (`code`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+CREATE UNIQUE INDEX ui_uom_code ON s_unit_of_measure(code);
 
 CREATE TABLE `s_manufacturer` (
   `id` int(11) NOT NULL auto_increment,
@@ -139,9 +148,10 @@ CREATE TABLE `s_manufacturer` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_manu_code` (`code`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_manufacturer_code ON s_manufacturer(code);
 
 CREATE TABLE `s_bank` (
   `id` int(11) NOT NULL auto_increment,
@@ -152,9 +162,10 @@ CREATE TABLE `s_bank` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_bank_code` (`code`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_bank_code ON s_bank(code);
 
 CREATE TABLE `s_bank_account` (
   `id` int(11) NOT NULL auto_increment,
@@ -166,10 +177,10 @@ CREATE TABLE `s_bank_account` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_account_number` (`account_number`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
+CREATE UNIQUE INDEX ui_bank_account ON s_bank_account(bank_id, account_number);
 
 CREATE TABLE `s_supplier` (
   `id` int(11) NOT NULL auto_increment,
@@ -187,11 +198,12 @@ CREATE TABLE `s_supplier` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_supplier_code` (`code`),
-  KEY `idx_main_contact_id` (`main_contact_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
+CREATE UNIQUE INDEX ui_supplier_code ON s_supplier(code);
+
+-- status: OPEN, PROCESSING, CLOSED, CANCELLED.
 CREATE TABLE `s_sales_contract` (
   `id` int(11) NOT NULL auto_increment,
   `code` varchar(32) NOT NULL,
@@ -201,15 +213,17 @@ CREATE TABLE `s_sales_contract` (
   `money_of_tax` double NOT NULL default '0',
   `money_after_tax` double NOT NULL default '0',
   `currency` varchar(3) collate utf8_bin NOT NULL,
+  `status` varchar(16) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_salescon_code` (`code`),
-  KEY `idx_supplier_id` (`supplier_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_sales_contract_code ON s_sales_contract(code);
+CREATE INDEX idx_supplier_id ON s_sales_contract(supplier_id);
 
 CREATE TABLE `s_detail_sales_contract` (
   `id` int(11) NOT NULL auto_increment,
@@ -217,15 +231,17 @@ CREATE TABLE `s_detail_sales_contract` (
   `item_id` int(11) NOT NULL,
   `amount` int(11) NOT NULL,
   `unit_price` double NOT NULL default '0',
+  `currency` varchar(3) collate utf8_bin NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_salescon_id` (`salescon_id`),
-  KEY `idx_item_id` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE INDEX idx_salescon_id ON s_detail_sales_contract(salescon_id);
+CREATE UNIQUE INDEX idx_salescon_item ON s_detail_sales_contract(salescon_id, item_id);
 
 CREATE TABLE `s_store` (
   `id` int(11) NOT NULL auto_increment,
@@ -241,10 +257,10 @@ CREATE TABLE `s_store` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_store_code` (`code`),
-  KEY `idx_store_name` (`store_name`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_store_code ON s_store(code);
 
 CREATE TABLE `s_detail_store` (
   `id` int(11) NOT NULL auto_increment,
@@ -257,10 +273,11 @@ CREATE TABLE `s_detail_store` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_store_id` (`store_id`),
-  KEY `idx_item_id` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE INDEX idx_store_id ON s_detail_store(store_id);
+CREATE UNIQUE INDEX ui_store_item ON s_detail_store(store_id, item_id);
 
 CREATE TABLE `s_session_store` (
   `id` int(11) NOT NULL auto_increment,
@@ -268,16 +285,20 @@ CREATE TABLE `s_session_store` (
   `start_date` datetime NOT NULL,
   `end_date` datetime NOT NULL,
   `refer_month` int(11) NOT NULL,
+  `refer_quarter` int(11) NOT NULL,
+  `refer_year` int(11) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_store_id` (`store_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
-CREATE TABLE `s_session_detail_store` (
+CREATE INDEX idx_store_id ON s_session_store(store_id);
+CREATE INDEX idx_store_year ON s_session_store(store_id, refer_year);
+
+CREATE TABLE `s_detail_session_store` (
   `id` int(11) NOT NULL auto_increment,
   `sess_store_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
@@ -288,25 +309,29 @@ CREATE TABLE `s_session_detail_store` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_sess_store_id` (`sess_store_id`),
-  KEY `idx_item_id` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
+CREATE INDEX idx_sess_store_id ON s_detail_session_store(sess_store_id);
+CREATE UNIQUE INDEX ui_sess_store_item ON s_detail_session_store(sess_store_id, item_id);
 
+-- status: OPEN, VALIDATED, CANCELLED.
 CREATE TABLE `s_check_store` (
   `id` int(11) NOT NULL auto_increment,
   `store_id` int(11) NOT NULL,
   `datetime_check` datetime NOT NULL,
   `responsible_user` varchar(32) NOT NULL,
+  `status` varchar(16) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_store_id` (`store_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE INDEX idx_store_id ON s_check_store(store_id);
+CREATE UNIQUE INDEX ui_store_date ON s_check_store(store_id, datetime_check);
 
 CREATE TABLE `s_detail_check_store` (
   `id` int(11) NOT NULL auto_increment,
@@ -320,10 +345,11 @@ CREATE TABLE `s_detail_check_store` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_checkstore_id` (`checkstore_id`),
-  KEY `idx_item_id` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE INDEX idx_checkstore_id ON s_detail_check_store(checkstore_id);
+CREATE UNIQUE INDEX ui_checkstore_item ON s_detail_check_store(checkstore_id, item_id);
 
 CREATE TABLE `s_exchange_store_form` (
   `id` int(11) NOT NULL auto_increment,
@@ -342,11 +368,12 @@ CREATE TABLE `s_exchange_store_form` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_exchange_store_code` (`code`),
-  KEY `idx_from_store_id` (`from_store_id`),
-  KEY `idx_to_store_id` (`to_store_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_code ON s_exchange_store_form(code);
+CREATE INDEX idx_from_store_id ON s_exchange_store_form(from_store_id);
+CREATE INDEX idx_to_store_id ON s_exchange_store_form(to_store_id);
 
 CREATE TABLE `s_detail_exchange_store` (
   `id` int(11) NOT NULL auto_increment,
@@ -358,10 +385,11 @@ CREATE TABLE `s_detail_exchange_store` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_exchangestore_id` (`exchangestore_id`),
-  KEY `idx_item_id` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_exchangestore_item ON s_detail_exchange_store(exchangestore_id,item_id);
+CREATE INDEX ui_exchangestore_id ON s_detail_exchange_store(exchangestore_id);
 
 CREATE TABLE `s_import_product_form` (
   `id` int(11) NOT NULL auto_increment,
@@ -374,14 +402,16 @@ CREATE TABLE `s_import_product_form` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_importproduct_code` (`code`),
-  KEY `idx_store_id` (`store_id`),
-  KEY `idx_salescon_id` (`salescon_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_code ON s_import_product_form(code);
+CREATE INDEX idx_salescon_id ON s_import_product_form(salescon_id);
+CREATE INDEX idx_salescon_store ON s_import_product_form(salescon_id, store_id);
 
 CREATE TABLE `s_detail_import_product` (
   `id` int(11) NOT NULL auto_increment,
+  `import_product_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
   `import_amount` int(11) NOT NULL,
   `remaining_amount` int(11) NOT NULL,
@@ -390,9 +420,11 @@ CREATE TABLE `s_detail_import_product` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_item_id` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_import_item ON s_detail_import_product(import_product_id, item_id);
+CREATE INDEX idx_import_product_id ON s_detail_import_product(import_product_id);
 
 -- s_package extends from s_product
 CREATE TABLE `s_package` (
@@ -406,10 +438,10 @@ CREATE TABLE `s_package` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_package_code` (`code`),
-  KEY `idx_package_name` (`package_name`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_code ON s_package(code);
 
 CREATE TABLE `s_package_line` (
   `id` int(11) NOT NULL auto_increment,
@@ -424,19 +456,22 @@ CREATE TABLE `s_package_line` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_package_id` (`package_id`),
-  KEY `idx_item_id` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
--- if status is RESERVED, sellable_amount of store will be decrease
--- OPEN, RESERVED, CLOSED, CANCELLED.
--- NO_PAYMENT, DEPOSIT, BALANCED
+CREATE UNIQUE INDEX ui_package_item ON s_package_line(package_id, item_id);
+CREATE INDEX idx_package_id ON s_package_line(package_id);
+
+-- if status is RESERVED, sellable_amount of store will be decreased
+-- status: OPEN, RESERVED, CLOSED, CANCELLED, ABANDONED.
+-- invoice_type: SALES, MAINTAINANCE
+-- payment_status: NO_PAYMENT, DEPOSIT, BALANCED.
 CREATE TABLE `s_invoice` (
   `id` int(11) NOT NULL auto_increment,
   `invoice_number` varchar(32) NOT NULL,
+  `invoice_type` varchar(32) NOT NULL,
   `contact_id` int(11) NOT NULL,
-  `created_date` varchar(32) NOT NULL,
+  `created_date` datetime NOT NULL,
   `money_before_tax` double NOT NULL default '0',
   `money_of_tax` double NOT NULL default '0',
   `money_after_tax` double NOT NULL default '0',
@@ -448,10 +483,11 @@ CREATE TABLE `s_invoice` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_invoice_number` (`invoice_number`),
-  KEY `idx_contact_id` (`contact_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_invoice_number ON s_invoice(invoice_number);
+CREATE INDEX idx_contact_id ON s_invoice(contact_id);
 
 CREATE TABLE `s_detail_invoice` (
   `id` int(11) NOT NULL auto_increment,
@@ -469,10 +505,11 @@ CREATE TABLE `s_detail_invoice` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_invoice_id` (`invoice_id`),
-  KEY `idx_item_id` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_invoice_item ON s_detail_invoice(invoice_id, item_id);
+CREATE INDEX idx_invoice_id ON s_detail_invoice(invoice_id);
 
 CREATE TABLE `s_export_store_form` (
   `id` int(11) NOT NULL auto_increment,
@@ -486,11 +523,12 @@ CREATE TABLE `s_export_store_form` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_invoice_id` (`invoice_id`),
-  KEY `idx_store_id` (`store_id`),
-  KEY `idx_contact_id` (`contact_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE INDEX ui_invoice_store ON s_export_store_form(invoice_id, store_id);
+CREATE INDEX idx_invoice_id ON s_export_store_form(invoice_id);
+CREATE INDEX idx_contact_id ON s_export_store_form(contact_id);
 
 CREATE TABLE `s_detail_export_store` (
   `id` int(11) NOT NULL auto_increment,
@@ -503,17 +541,36 @@ CREATE TABLE `s_detail_export_store` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_exportstore_id` (`exportstore_id`),
-  KEY `idx_item_id` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
+CREATE UNIQUE INDEX ui_export_item ON s_detail_export_store(exportstore_id, item_id);
+CREATE INDEX idx_exportstore_id ON s_detail_export_store(exportstore_id);
+
 -- should have shipment_type table
+CREATE TABLE `s_shipment_type` (
+  `id` int(11) NOT NULL auto_increment,
+  `code` varchar(32) NOT NULL,
+  `name` varchar(32) collate utf8_bin NOT NULL,
+  `base_price` int(11) NOT NULL,
+  `currency` varchar(3) collate utf8_bin NOT NULL,
+  `active` int(1) NOT NULL,
+  `usr_log_i` varchar(32) NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_code ON s_shipment_type(code);
+
  -- UN_SENT, SENDING, RECEIVED
 CREATE TABLE `s_shipment` (
   `id` int(11) NOT NULL auto_increment,
+  `shipment_type_id` int(11) NOT NULL,
   `exportstore_id` int(11) NOT NULL,
-  `price` int(11) NOT NULL,
+  `money` int(11) NOT NULL,
   `currency` varchar(3) collate utf8_bin NOT NULL,
   `status` varchar(32) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
@@ -521,25 +578,28 @@ CREATE TABLE `s_shipment` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_exportstore` (`exportstore_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
- -- OPEN, PAID, CANCELLED
+CREATE INDEX idx_exportstore_id ON s_shipment(exportstore_id);
+
+ -- status: OPEN, PAID, CANCELLED. payement_mean: CASH, VISA, CREDIT CARD
 CREATE TABLE `s_payment_invoice` (
   `id` int(11) NOT NULL auto_increment,
   `invoice_id` int(11) NOT NULL,
   `money` double NOT NULL default '0',
   `currency` varchar(3) collate utf8_bin NOT NULL,
   `status` varchar(32) NOT NULL,
+  `payment_mean` varchar(16) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_invoice_id` (`invoice_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE INDEX idx_invoice_id ON s_payment_invoice(invoice_id);
 
  -- OPEN, PAID, CANCELLED
 CREATE TABLE `s_payment_contact` (
@@ -548,14 +608,16 @@ CREATE TABLE `s_payment_contact` (
   `money` double NOT NULL default '0',
   `currency` varchar(3) collate utf8_bin NOT NULL,
   `status` varchar(32) NOT NULL,
+  `payment_mean` varchar(16) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_contact_id` (`contact_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE INDEX idx_contact_id ON s_payment_contact(contact_id);
 
  -- CUSTOMER (B2B, B2C), SUPPLIER, SUPPORTEE
 CREATE TABLE `s_contact_type` (
@@ -568,10 +630,10 @@ CREATE TABLE `s_contact_type` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_contact_type_code` (`code`),
-  KEY `idx_contact_family_type` (`contact_family_type`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_code ON s_contact_type(code);
 
 CREATE TABLE `s_contact` (
   `id` int(11) NOT NULL auto_increment,
@@ -591,28 +653,26 @@ CREATE TABLE `s_contact` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_contact_type_code` (`code`),
-  KEY `idx_contact_full_name` (`full_name`),
-  KEY `idx_contact_phone` (`phone`),
-  KEY `idx_contact_fix_phone` (`fix_phone`),
-  KEY `idx_contact_email` (`email`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_code ON s_contact(code);
 
 CREATE TABLE `s_contact_debt` (
   `id` int(11) NOT NULL auto_increment,
   `contact_id` int(11) NOT NULL,
-  `debt_amount` int(11) NOT NULL,
-  `money_type` varchar(32) NOT NULL,
+  `debt_money` int(11) NOT NULL,
   `currency` varchar(3) collate utf8_bin NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_contact_id` (`contact_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_contact_currency ON s_contact_debt(contact_id, currency);
+CREATE INDEX idx_contact_id ON s_contact_debt(contact_id);
 
  -- ON, OFF
 CREATE TABLE `s_coupon` (
@@ -627,15 +687,17 @@ CREATE TABLE `s_coupon` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_coupon_code` (`code`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_code ON s_coupon(code);
 
  -- ON, OFF
 CREATE TABLE `s_coupon_item` (
   `id` int(11) NOT NULL auto_increment,
   `coupon_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
+  `contacttype_id` int(11) NOT NULL,
   `base_price` int(11) NOT NULL,
   `coupon_price` int(11) NOT NULL,
   `currency` varchar(3) collate utf8_bin NOT NULL,
@@ -645,10 +707,12 @@ CREATE TABLE `s_coupon_item` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_coupon_id` (`coupon_id`),
-  KEY `idx_item` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_coupon_item ON s_coupon_item(coupon_id, item_id, contacttype_id);
+CREATE INDEX idx_coupon_id ON s_coupon_item(coupon_id);
+CREATE INDEX idx_item_id ON s_coupon_item(item_id);
 
 CREATE TABLE `s_warranty_form` (
   `id` int(11) NOT NULL auto_increment,
@@ -662,10 +726,10 @@ CREATE TABLE `s_warranty_form` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_good_id` (`good_id`),
-  KEY `idx_contact_id` (`contact_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_good_id ON s_warranty_form(good_id);
 
 CREATE TABLE `s_detail_warranty` (
   `id` int(11) NOT NULL auto_increment,
@@ -677,10 +741,12 @@ CREATE TABLE `s_detail_warranty` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_warranty_id` (`warranty_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
+CREATE INDEX idx_warranty_id ON s_detail_warranty(warranty_id);
+
+-- TODO: Is this table required? Could we use table invoice to sell SERVICE product.  (invoiceType = MAINTAINANCE)
 CREATE TABLE `s_maintainance_form` (
   `id` int(11) NOT NULL auto_increment,
   `maintainance_date` datetime NOT NULL,
@@ -729,14 +795,17 @@ CREATE TABLE `s_support_form` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_contact_id` (`contact_id`),
-  KEY `idx_supplier_id` (`supplier_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE INDEX idx_supplier_id ON s_support_form(supplier_id);
+CREATE INDEX idx_contact_id ON s_support_form(contact_id);
+CREATE INDEX idx_end_date ON s_support_form(end_date); -- TODO: is date index effective?
 
   -- for reference, not count into sales
 CREATE TABLE `s_detail_support_form` (
   `id` int(11) NOT NULL auto_increment,
+  `support_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
   `amount` int(11) NOT NULL,
   `unit_price` double NOT NULL,
@@ -747,9 +816,11 @@ CREATE TABLE `s_detail_support_form` (
   `usr_log_lu` varchar(32) NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_item_id` (`item_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE INDEX idx_support_id ON s_detail_support_form(support_id);
+CREATE INDEX idx_item_id ON s_detail_support_form(item_id);
 
 CREATE TABLE `s_warning_board` (
   `id` int(11) NOT NULL auto_increment,
@@ -851,3 +922,4 @@ CREATE TABLE IF NOT EXISTS `s_operator` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+CREATE UNIQUE INDEX ui_login ON s_operator(login);
