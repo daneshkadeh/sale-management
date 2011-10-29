@@ -1,7 +1,9 @@
 package com.s3s.ssm.view.detail;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.s3s.ssm.entity.Customer;
 import com.s3s.ssm.model.DetailDataModel;
@@ -33,7 +35,11 @@ public class EditCustomerView extends AbstractDetailView<Customer> {
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, Customer entity) {
         super.setReferenceDataModel(refDataModel, entity);
-        List<String> refDataList = Arrays.asList("Role1", "Role2", "Role3", "Role4", "Role5", "Role6");
-        refDataModel.putRefDataList(REF_TEST_MODEL, refDataModel.new ReferenceData(refDataList));
+        List<String> values = Arrays.asList("Role1", "Role2", "Role3", "Role4", "Role5", "Role6");
+        Map<String, String> map = new HashMap<>();
+        for (String val : values) {
+            map.put(val, val);
+        }
+        refDataModel.putRefDataList(REF_TEST_MODEL, refDataModel.new ReferenceData<>(map));
     }
 }

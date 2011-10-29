@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -44,7 +43,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.component.MultiSelectionBox;
+import com.s3s.ssm.view.component.S3sMultiSelectionBox;
 
 /**
  * @author Pham Cong Bang
@@ -157,17 +156,15 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 break;
             case DROPDOWN:
                 // get the referenceDataList from ReferenceDataModel using referenceDataId of column.
-                dataField = new JComboBox<>(new DefaultComboBoxModel<>(referenceData.getRefDataList().toArray()));
-                if (referenceData.getListCellRenderer() != null) {
-                    ((JComboBox<?>) dataField).setRenderer(referenceData.getListCellRenderer());
-                }
+                dataField = new JComboBox<>(referenceData.getValues().toArray());
+                ((JComboBox<?>) dataField).setRenderer(referenceData.getRenderer());
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
                 ((JComboBox<?>) dataField).setSelectedItem(value);
                 break;
             case MULTI_SELECT_BOX:
                 // TODO HPP
-                dataField = new MultiSelectionBox(referenceData.getRefDataList(), new ArrayList<>());
+                dataField = new S3sMultiSelectionBox<>(referenceData.getValues(), new ArrayList<>());
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
 
@@ -274,7 +271,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                         method.invoke(entity, paramClass.cast(comboBox.getSelectedItem()));
                         break;
                     case MULTI_SELECT_BOX:
-                        MultiSelectionBox multiBox = (MultiSelectionBox) component;
+                        S3sMultiSelectionBox multiBox = (S3sMultiSelectionBox) component;
                         // List<?> unselected = multiBox.getSourceValues();
                         List<?> selected = multiBox.getDestinationValues();
                         method.invoke(entity, selected);
