@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 
 /**
  * This optimistic locking object has userInserted, dateInserted, userLastUpdate, dateLastUpdate
@@ -17,8 +18,9 @@ public abstract class AbstractIdOLObject extends AbstractBaseIdObject {
     private Date dateInserted;
     private String userLastUpdate;
     private Date dateLastUpdate;
+    private Long version;
 
-    @Column(name = "usr_log_i", nullable = false)
+    @Column(name = "usr_log_i")
     public String getUserInserted() {
         return userInserted;
     }
@@ -28,7 +30,7 @@ public abstract class AbstractIdOLObject extends AbstractBaseIdObject {
         this.userInserted = userInserted;
     }
 
-    @Column(name = "dte_log_i", nullable = false)
+    @Column(name = "dte_log_i")
     public Date getDateInserted() {
         return dateInserted;
     }
@@ -38,7 +40,7 @@ public abstract class AbstractIdOLObject extends AbstractBaseIdObject {
         this.dateInserted = dateInserted;
     }
 
-    @Column(name = "usr_log_lu", nullable = false)
+    @Column(name = "usr_log_lu")
     public String getUserLastUpdate() {
         return userLastUpdate;
     }
@@ -48,7 +50,7 @@ public abstract class AbstractIdOLObject extends AbstractBaseIdObject {
         this.userLastUpdate = userLastUpdate;
     }
 
-    @Column(name = "dte_log_lu", nullable = false)
+    @Column(name = "dte_log_lu")
     public Date getDateLastUpdate() {
         return dateLastUpdate;
     }
@@ -56,6 +58,22 @@ public abstract class AbstractIdOLObject extends AbstractBaseIdObject {
     @Deprecated
     public void setDateLastUpdate(Date dateLastUpdate) {
         this.dateLastUpdate = dateLastUpdate;
+    }
+
+    @Column(name = "version")
+    @Version
+    public Long getVersion() {
+        return version;
+    }
+
+    /**
+     * Only used by Hibernate.
+     * 
+     * @param version
+     */
+    @Deprecated
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
 }

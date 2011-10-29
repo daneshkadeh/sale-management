@@ -1,7 +1,9 @@
 package com.s3s.ssm.test;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,6 +19,7 @@ import com.s3s.ssm.entity.contact.BankAccount;
 import com.s3s.ssm.entity.contact.Contact;
 import com.s3s.ssm.entity.contact.ContactFamilyType;
 import com.s3s.ssm.entity.contact.ContactType;
+import com.s3s.ssm.entity.param.CurrencyEnum;
 import com.s3s.ssm.entity.param.Good;
 import com.s3s.ssm.entity.param.Item;
 import com.s3s.ssm.entity.param.Manufacturer;
@@ -28,6 +31,10 @@ import com.s3s.ssm.entity.param.Store;
 import com.s3s.ssm.entity.param.Supplier;
 import com.s3s.ssm.entity.param.UnitOfMeasure;
 import com.s3s.ssm.entity.param.UomCategory;
+import com.s3s.ssm.entity.sales.DetailSalesContract;
+import com.s3s.ssm.entity.sales.ItemOriginPrice;
+import com.s3s.ssm.entity.sales.ItemPrice;
+import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
 
@@ -74,6 +81,11 @@ public class SSMDataLoader {
     }
 
     private static void cleanDatabase(DaoHelper daoHelper) {
+        daoHelper.getDao(ItemPrice.class).deleteAll(daoHelper.getDao(ItemPrice.class).findAll());
+        daoHelper.getDao(ItemOriginPrice.class).deleteAll(daoHelper.getDao(ItemOriginPrice.class).findAll());
+        daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());
+        daoHelper.getDao(SalesContract.class).deleteAll(daoHelper.getDao(SalesContract.class).findAll());
+
         daoHelper.getDao(Good.class).deleteAll(daoHelper.getDao(Good.class).findAll());
         daoHelper.getDao(Item.class).deleteAll(daoHelper.getDao(Item.class).findAll());
 
@@ -123,6 +135,54 @@ public class SSMDataLoader {
         List<Supplier> listSupplier = initSupplier(daoHelper, listContact, listBankAccount);
         List<Store> listStore = initStore(daoHelper, listOperator);
         List<Good> listGoods = initGood(daoHelper, listStore, listItem);
+        Set<ItemPrice> listItemPrices = initItemPrice(daoHelper, listItem, listContact);
+        List<ItemOriginPrice> listItemOriginPrices = initItemOriginPrice(daoHelper, listItem, listSupplier);
+        List<SalesContract> listSalesContracts = initSalesContracts(daoHelper, listSupplier, listItem);
+    }
+
+    private static Set<ItemPrice> initItemPrice(DaoHelper daoHelper, List<Item> listItem, List<Contact> listContact) {
+        ItemPrice itemPrice = new ItemPrice();
+        itemPrice.setContactType(listContact.get(0).getContactType());
+        itemPrice.setSellPrice(100.0);
+        itemPrice.setCurrency(CurrencyEnum.VND);
+        // itemPrice.setItem(listItem.get(0));
+        // daoHelper.getDao(ItemPrice.class).saveOrUpdate(itemPrice);
+        listItem.get(0).addItemPrice(itemPrice);
+        daoHelper.getDao(Item.class).saveOrUpdate(listItem.get(0));
+        return listItem.get(0).getListItemPrices();
+    }
+
+    private static List<ItemOriginPrice> initItemOriginPrice(DaoHelper daoHelper, List<Item> listItem,
+            List<Supplier> listSupplier) {
+        ItemOriginPrice originPrice = new ItemOriginPrice();
+        originPrice.setItem(listItem.get(0));
+        originPrice.setOriginalPrice(90.0);
+        originPrice.setCurrency(CurrencyEnum.VND);
+        originPrice.setSupplier(listSupplier.get(0));
+        daoHelper.getDao(ItemOriginPrice.class).saveOrUpdate(originPrice);
+        return Arrays.asList(originPrice);
+    }
+
+    private static List<SalesContract> initSalesContracts(DaoHelper daoHelper, List<Supplier> listSuppliers,
+            List<Item> listItem) {
+        SalesContract salesContract = new SalesContract();
+        salesContract.setCode("CO123456");
+        salesContract.setSupplier(listSuppliers.get(0));
+        salesContract.setDateContract(new Date());
+        salesContract.setMoneyBeforeTax(1000.0);
+        salesContract.setMoneyOfTax(10.0);
+        salesContract.setMoneyAfterTax(990.0);
+        salesContract.setCurrency(CurrencyEnum.VND);
+
+        DetailSalesContract detail = new DetailSalesContract();
+        detail.setItem(listItem.get(0));
+        detail.setAmount(5L);
+        detail.setUnitPrice(100.0);
+        detail.setCurrency(CurrencyEnum.VND);
+        salesContract.addDetailSalesContract(detail);
+
+        daoHelper.getDao(SalesContract.class).saveOrUpdate(salesContract);
+        return Arrays.asList(salesContract);
     }
 
     private static List<Good> initGood(DaoHelper daoHelper, List<Store> listStore, List<Item> listItem) {
@@ -239,7 +299,7 @@ public class SSMDataLoader {
         item.setBaseSellPrice(10000.0);
         item.setListUom(listUom);
         item.setSumUomName("size 39");
-        item.setCurrency("VND");
+        item.setCurrency(CurrencyEnum.VND);
         daoHelper.getDao(Item.class).saveOrUpdate(item);
 
         return Arrays.asList(item);
