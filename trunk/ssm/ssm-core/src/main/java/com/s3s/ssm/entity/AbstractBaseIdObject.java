@@ -2,6 +2,8 @@ package com.s3s.ssm.entity;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,7 +17,9 @@ import javax.persistence.Transient;
  */
 
 @MappedSuperclass
-public abstract class AbstractBaseIdObject {
+public abstract class AbstractBaseIdObject implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Long id;
 
     public void setId(Long id) {

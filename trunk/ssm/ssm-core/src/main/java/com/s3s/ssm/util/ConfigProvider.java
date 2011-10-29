@@ -4,6 +4,7 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.s3s.ssm.context.ContextProvider;
 import com.s3s.ssm.service.CustomerService;
 import com.s3s.ssm.service.DetailInvoiceService;
 import com.s3s.ssm.service.GoodsService;
@@ -67,5 +68,9 @@ public class ConfigProvider {
 
     public DaoHelper getDaoHelper() {
         return (DaoHelper) appContext.getBean("daoHelper");
+    }
+
+    public ContextProvider getContextProvider() {
+        return (ContextProvider) appContext.getBean("contextProvider");
     }
 }

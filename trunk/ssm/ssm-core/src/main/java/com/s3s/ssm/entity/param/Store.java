@@ -70,7 +70,7 @@ public class Store extends AbstractCodeOLObject {
         this.exportAddress = exportAddress;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "manager_id", nullable = false)
     public Operator getManager() {
         return manager;

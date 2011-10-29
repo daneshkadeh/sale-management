@@ -3,7 +3,6 @@ package com.s3s.ssm.dao.impl;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -16,7 +15,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.s3s.ssm.context.ContextProvider;
 import com.s3s.ssm.dao.HibernateBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
-import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.interceptor.OptimisticLockingInterceptor;
 
 public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSupport implements
         HibernateBaseDao<T> {
@@ -52,14 +51,20 @@ public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends Hibern
     }
 
     @Override
+    protected HibernateTemplate createHibernateTemplate(SessionFactory sessionFactory) {
+        OptimisticLockingInterceptor interceptor = new OptimisticLockingInterceptor();
+
+        sessionFactory.openSession(interceptor);
+        return super.createHibernateTemplate(sessionFactory);
+    }
+
+    @Override
     public void save(T entity) {
-        addCommonFields(entity);
         getHibernateTemplate().save(entity);
     }
 
     @Override
     public void update(T entity) {
-        addCommonFields(entity);
         getHibernateTemplate().update(entity);
     }
 
@@ -77,29 +82,12 @@ public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends Hibern
 
     @Override
     public void saveOrUpdateAll(Collection<T> list) {
-        for (T entity : list) {
-            addCommonFields(entity);
-        }
         getHibernateTemplate().saveOrUpdateAll(list);
     }
 
     @Override
     public void saveOrUpdate(T entity) {
-        addCommonFields(entity);
         getHibernateTemplate().saveOrUpdate(entity);
-    }
-
-    private void addCommonFields(T entity) {
-        if (entity instanceof AbstractIdOLObject) {
-            AbstractIdOLObject olObject = (AbstractIdOLObject) entity;
-            Date currentDate = new Date();
-            if (!olObject.isPersisted()) {
-                olObject.setUserInserted(contextProvider.getCurrentUser());
-                olObject.setDateInserted(currentDate);
-            }
-            olObject.setDateLastUpdate(currentDate);
-            olObject.setUserLastUpdate(contextProvider.getCurrentUser());
-        }
     }
 
     @Override
