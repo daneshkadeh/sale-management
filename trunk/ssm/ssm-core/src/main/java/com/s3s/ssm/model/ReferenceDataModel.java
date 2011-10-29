@@ -1,11 +1,13 @@
 package com.s3s.ssm.model;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 /**
@@ -15,64 +17,64 @@ import javax.swing.ListCellRenderer;
  * 
  */
 public class ReferenceDataModel {
-    private final Map<String, ReferenceData> refDataListMap = new HashMap<String, ReferenceDataModel.ReferenceData>();
+    private final Map<String, ReferenceData<?>> refDataListMap = new HashMap<>();
 
-    public void putRefDataList(String refId, ReferenceData refData) {
+    public void putRefDataList(String refId, ReferenceData<?> refData) {
         refDataListMap.put(refId, refData);
     }
 
-    public Map<String, ReferenceData> getRefDataListMap() {
+    public Map<String, ReferenceData<?>> getRefDataListMap() {
         return refDataListMap;
     }
 
     /**
-     * The reference data include the list of values and the renderer for those values.<br/>
+     * The reference data include the list of values and the renderer of those.
      * 
      * @author Phan Hong Phuc
-     * 
+     * @param <T>
+     *            the data type of <code>values</code>
      */
-    public class ReferenceData {
-        private List<?> refDataList = new ArrayList<>();
-        private ListCellRenderer<Object> listCellRenderer;
+    public class ReferenceData<T> {
+        private List<T> values = new ArrayList<>();
+        private ListCellRenderer<T> renderer;
 
         /**
-         * Init reference data with a list of values. Renderer for the values is {@link DefaultListCellRenderer}.
+         * Init reference data with a list of values and the renderer.
          * 
          * @param refDataList
          *            list of values
          */
-        public ReferenceData(List<?> refDataList) {
-            super();
-            this.setRefDataList(refDataList);
+        public ReferenceData(List<T> values, ListCellRenderer<T> renderer) {
+            this.values = values;
+            this.renderer = renderer;
+
         }
 
         /**
-         * Init reference data with a list of values. Renderer for the values is <code>renderer</code>.
+         * Init reference data with a map of value-label. The default renderer is created, it's simply just render a
+         * string for each value base on the map.
          * 
-         * @param refDataList
-         *            list of values
-         * @param renderer
-         *            the renderer
+         * @param value2Label
+         *            the map: value - the label rendering for that value.
          */
-        public ReferenceData(List<?> refDataList, ListCellRenderer<Object> renderer) {
-            this.setRefDataList(refDataList);
-            this.setListCellRenderer(renderer);
+        public ReferenceData(final Map<T, String> value2Label) {
+            this.values = new ArrayList<>(value2Label.keySet());
+            renderer = new ListCellRenderer<T>() {
+                @Override
+                public Component getListCellRendererComponent(JList<? extends T> list, T value, int index,
+                        boolean isSelected, boolean cellHasFocus) {
+                    JLabel label = new JLabel(value2Label.get(value));
+                    return label;
+                }
+            };
         }
 
-        public ListCellRenderer<Object> getListCellRenderer() {
-            return listCellRenderer;
+        public ListCellRenderer<T> getRenderer() {
+            return renderer;
         }
 
-        public void setListCellRenderer(ListCellRenderer<Object> listCellRenderer) {
-            this.listCellRenderer = listCellRenderer;
-        }
-
-        public List<?> getRefDataList() {
-            return refDataList;
-        }
-
-        public void setRefDataList(List<?> refDataList) {
-            this.refDataList = refDataList;
+        public List<T> getValues() {
+            return values;
         }
     }
 }

@@ -24,6 +24,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.view.component.S3sImageChooser;
 import com.s3s.ssm.view.list.ListCustomerView;
 import com.s3s.ssm.view.list.ListGoodsView;
 import com.s3s.ssm.view.list.ListInvoiceView;
@@ -78,6 +79,8 @@ public class MainProgram {
         JMenuBar menuBar = createMenuBar(frame);
 
         frame.setJMenuBar(menuBar);
+        frame.getContentPane().add(new S3sImageChooser());
+
         frame.pack();
         frame.setVisible(true);
     }
