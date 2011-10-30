@@ -11,7 +11,7 @@ import javax.swing.JList;
 
 import com.s3s.ssm.entity.Goods;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractDetailView;
 
@@ -30,15 +30,13 @@ public class EditGoodsView extends AbstractDetailView<Goods> {
     }
 
     @Override
-    public void initialPresentationView(List<DetailDataModel> listDataModel, Goods goods) {
-        listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("priceBeforeTax", FieldTypeEnum.TEXTBOX));
-        DetailDataModel taxDataModel = new DetailDataModel("tax", FieldTypeEnum.DROPDOWN);
-        taxDataModel.setReferenceDataId(TAX_REF_ID);
-        listDataModel.add(taxDataModel);
-        listDataModel.add(new DetailDataModel("priceAfterTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("addQuantity", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("curQuantity", FieldTypeEnum.TEXTBOX));
+    public void initialPresentationView(DetailDataModel detailDataModel, Goods goods) {
+        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("priceBeforeTax", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("tax", FieldTypeEnum.DROPDOWN).referenceDataId(TAX_REF_ID);
+        detailDataModel.addAttribute("priceAfterTax", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("addQuantity", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("curQuantity", FieldTypeEnum.TEXTBOX);
     }
 
     @Override

@@ -1,11 +1,10 @@
 package com.s3s.ssm.view.detail;
 
 import java.util.Date;
-import java.util.List;
 
 import com.s3s.ssm.entity.Invoice;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
 
 /**
@@ -22,16 +21,14 @@ public class EditInvoiceView extends AbstractDetailView<Invoice> {
     }
 
     @Override
-    public void initialPresentationView(List<DetailDataModel> listDataModel, Invoice invoice) {
-        DetailDataModel createdDateField = new DetailDataModel("createdDate", FieldTypeEnum.TEXTBOX);
-        createdDateField.setEditable(false);
-        listDataModel.add(createdDateField);
+    public void initialPresentationView(DetailDataModel detailDataModel, Invoice invoice) {
         invoice.setCreatedDate(new Date());
 
-        listDataModel.add(new DetailDataModel("customerId", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("totalBeforeTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("taxTotal", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("totalAfterTax", FieldTypeEnum.TEXTBOX));
+        detailDataModel.addAttribute("createdDate", FieldTypeEnum.TEXTBOX).editable(false);
+        detailDataModel.addAttribute("customerId", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("totalBeforeTax", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("taxTotal", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("totalAfterTax", FieldTypeEnum.TEXTBOX);
     }
 
 }

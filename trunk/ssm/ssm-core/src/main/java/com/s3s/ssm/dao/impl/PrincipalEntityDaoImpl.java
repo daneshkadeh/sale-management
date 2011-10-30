@@ -10,7 +10,7 @@ import com.s3s.ssm.entity.PrincipalEntity;
 @Repository("principalEntityDao")
 public class PrincipalEntityDaoImpl extends HibernateBaseDaoImpl<PrincipalEntity> {
     public PrincipalEntity findByName(String name) {
-        List<PrincipalEntity> list = getHibernateTemplate().find("from PrincipalEntity where name = ?",name);
+        List<PrincipalEntity> list = getHibernateTemplate().find("from PrincipalEntity where name = ?", name);
         if (CollectionUtils.isNotEmpty(list)) {
             return (PrincipalEntity) list.get(0);
         }

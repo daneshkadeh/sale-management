@@ -15,49 +15,50 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "tbl_auth_permission")
 public class PermissionEntity extends AbstractBaseIdObject {
-	private String name;
-	private String permissionClass;
-	private String actions;
-	
-	private Set<PrincipalEntity> principals = new HashSet<PrincipalEntity>();
+    private String name;
+    private String permissionClass;
+    private String actions;
 
-	@Column(name = "name", nullable = false)
+    private Set<PrincipalEntity> principals = new HashSet<PrincipalEntity>();
+
+    @Column(name = "name", nullable = false)
     @NotNull
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@Column(name = "permissionClass", nullable = false)
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Column(name = "permissionClass", nullable = false)
     @NotNull
-	public String getPermissionClass() {
-		return permissionClass;
-	}
+    public String getPermissionClass() {
+        return permissionClass;
+    }
 
-	public void setPermissionClass(String permissionClass) {
-		this.permissionClass = permissionClass;
-	}
+    public void setPermissionClass(String permissionClass) {
+        this.permissionClass = permissionClass;
+    }
 
-	@Column(name = "actions", nullable = false)
+    @Column(name = "actions", nullable = false)
     @NotNull
-	public String getActions() {
-		return actions;
-	}
+    public String getActions() {
+        return actions;
+    }
 
-	public void setActions(String actions) {
-		this.actions = actions;
-	}
-	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "tbl_auth_principal_permission", joinColumns = {@JoinColumn(name="permission_id")}, inverseJoinColumns = {@JoinColumn(name="principal_id")})
-	public Set<PrincipalEntity> getPrincipals() {
-		return principals;
-	}
+    public void setActions(String actions) {
+        this.actions = actions;
+    }
 
-	public void setPrincipals(Set<PrincipalEntity> principals) {
-		this.principals = principals;
-	}
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "tbl_auth_principal_permission", joinColumns = { @JoinColumn(name = "permission_id") }, inverseJoinColumns = { @JoinColumn(name = "principal_id") })
+    public
+            Set<PrincipalEntity> getPrincipals() {
+        return principals;
+    }
+
+    public void setPrincipals(Set<PrincipalEntity> principals) {
+        this.principals = principals;
+    }
 }

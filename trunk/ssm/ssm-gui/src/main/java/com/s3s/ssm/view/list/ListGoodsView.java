@@ -12,8 +12,8 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import com.s3s.ssm.entity.Goods;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.FieldTypeEnum;
+import com.s3s.ssm.model.DetailAttribute;
+import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
 import com.s3s.ssm.view.AbstractSearchListView;
 import com.s3s.ssm.view.detail.EditGoodsView;
@@ -30,14 +30,14 @@ public class ListGoodsView extends AbstractSearchListView<Goods> {
     private JTextField txtGoodNameCriteria;
 
     @Override
-    protected void initialPresentationView(List<DetailDataModel> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailDataModel("id", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("priceBeforeTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("tax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("priceAfterTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("addQuantity", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("curQuantity", FieldTypeEnum.TEXTBOX));
+    protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
+        listDataModel.add(new DetailAttribute("id", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("priceBeforeTax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("tax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("priceAfterTax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("addQuantity", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("curQuantity", FieldTypeEnum.TEXTBOX));
         summaryFieldNames.add("tax");
         summaryFieldNames.add("curQuantity");
     }

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.Customer;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractDetailView;
 
@@ -20,9 +20,10 @@ public class EditCustomerView extends AbstractDetailView<Customer> {
     }
 
     @Override
-    public void initialPresentationView(List<DetailDataModel> listDataModel, Customer customer) {
-        listDataModel.add(new DetailDataModel("name", FieldTypeEnum.TEXTBOX));
-        // DetailDataModel testModel = new DetailDataModel("testField", FieldTypeEnum.MULTI_SELECT_BOX);
+    public void initialPresentationView(DetailDataModel detailDataModel, Customer customer) {
+        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
+        // DetailDataModel testModel = new DetailDataModel("testField",
+        // FieldTypeEnum.MULTI_SELECT_BOX);
         // testModel.setReferenceDataId(REF_TEST_MODEL);
         // listDataModel.add(testModel);
     }

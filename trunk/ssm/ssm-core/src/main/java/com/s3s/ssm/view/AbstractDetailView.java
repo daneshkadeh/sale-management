@@ -38,6 +38,7 @@ import org.joda.time.DateTime;
 import org.springframework.util.StringUtils;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
@@ -56,11 +57,12 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
     private final Log logger = LogFactory.getLog(AbstractDetailView.class);
 
-    // TODO HPP consider to remove this reference. We should fire event to listView instead of keep a reference.
+    // TODO HPP consider to remove this reference. We should fire event to
+    // listView instead of keep a reference.
     protected AbstractListView<T> listView;
 
-    protected List<DetailDataModel> listDataModel = new ArrayList<>();
-    protected Map<DetailDataModel, JComponent> mapFields = new HashMap<>();
+    protected DetailDataModel detailDataModel = new DetailDataModel();
+    protected Map<DetailAttribute, JComponent> mapFields = new HashMap<>();
 
     private JButton btnOK;
     private JButton btnCancel;
@@ -78,7 +80,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
      */
     public AbstractDetailView(T entity) {
         this.entity = entity;
-        initialPresentationView(listDataModel, entity);
+        initialPresentationView(detailDataModel, entity);
         setReferenceDataModel(refDataModel, entity);
         try {
             initComponents();
@@ -98,7 +100,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         return (Class<T>) Solution3sClassUtils.getArgumentClass(getClass());
     }
 
-    public abstract void initialPresentationView(List<DetailDataModel> listDataModel, T entity);
+    public abstract void initialPresentationView(DetailDataModel detailDataModel, T entity);
 
     /**
      * Set data for ComboBox, MultiSelectBox.
@@ -116,18 +118,18 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         add(createButtonPanel());
 
         JPanel pnlEdit = new JPanel(new MigLayout("wrap 2", "[][fill]"));
-        for (DetailDataModel dataModel : listDataModel) {
+        for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
-                    + dataModel.getFieldName());
+                    + attribute.getName());
             JLabel lblLabel = new JLabel(label);
             JComponent dataField;
 
-            Method getMethod = entity.getClass().getMethod("get" + StringUtils.capitalize(dataModel.getFieldName()));
+            Method getMethod = entity.getClass().getMethod("get" + StringUtils.capitalize(attribute.getName()));
             Object value = getMethod.invoke(entity);
-            ReferenceData referenceData = refDataModel.getRefDataListMap().get(dataModel.getReferenceDataId());
-            switch (dataModel.getFieldType()) {
+            ReferenceData referenceData = refDataModel.getRefDataListMap().get(attribute.getReferenceDataId());
+            switch (attribute.getType()) {
             case TEXTBOX:
-                Class<?> propertyReturnType = getPropertyReturnType(entity, dataModel);
+                Class<?> propertyReturnType = getPropertyReturnType(entity, attribute);
                 if (ClassUtils.isAssignable(propertyReturnType, Number.class)) {
                     NumberFormatter numFormatter = new NumberFormatter();
                     numFormatter.setValueClass(propertyReturnType);
@@ -137,9 +139,9 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     // The format type is String
                     dataField = new JFormattedTextField("");
                 }
-                ((JFormattedTextField) dataField).setEditable(dataModel.isEditable());
+                ((JFormattedTextField) dataField).setEditable(attribute.isEditable());
                 ((JFormattedTextField) dataField).setColumns(DEFAULT_TEXTFIELD_COLUMN);
-                dataField.setEnabled(dataModel.isEnable());
+                dataField.setEnabled(attribute.isEnable());
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
 
@@ -147,15 +149,16 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 break;
             case PASSWORD:
                 dataField = new JPasswordField(DEFAULT_TEXTFIELD_COLUMN);
-                ((JPasswordField) dataField).setEditable(dataModel.isEditable());
-                dataField.setEnabled(dataModel.isEnable());
+                ((JPasswordField) dataField).setEditable(attribute.isEditable());
+                dataField.setEnabled(attribute.isEnable());
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
 
                 ((JTextField) dataField).setText(ObjectUtils.toString(value));
                 break;
             case DROPDOWN:
-                // get the referenceDataList from ReferenceDataModel using referenceDataId of column.
+                // get the referenceDataList from ReferenceDataModel using
+                // referenceDataId of column.
                 dataField = new JComboBox<>(referenceData.getValues().toArray());
                 ((JComboBox<?>) dataField).setRenderer(referenceData.getRenderer());
                 pnlEdit.add(lblLabel);
@@ -186,7 +189,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
-            mapFields.put(dataModel, dataField);
+            mapFields.put(attribute, dataField);
         }
 
         btnOK = new JButton("OK");
@@ -241,16 +244,16 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
     protected Set<ConstraintViolation<T>> bindAndValidate(T entity) {
         for (Method method : entity.getClass().getMethods()) {
-            DetailDataModel dataModel = getDataModelFromSetMethod(method.getName());
-            if (dataModel != null) {
-                JComponent component = mapFields.get(dataModel);
-                if (!dataModel.isEditable()) {
+            DetailAttribute attribute = getAttributeModelFromSetMethod(method.getName());
+            if (attribute != null) {
+                JComponent component = mapFields.get(attribute);
+                if (!attribute.isEditable()) {
                     continue;
                 }
 
                 try {
-                    Class<?> paramClass = getPropertyReturnType(entity, dataModel);
-                    switch (dataModel.getFieldType()) {
+                    Class<?> paramClass = getPropertyReturnType(entity, attribute);
+                    switch (attribute.getType()) {
                     case TEXTBOX:
                         JFormattedTextField txtField = (JFormattedTextField) component;
                         method.invoke(entity, paramClass.cast(txtField.getValue()));
@@ -278,7 +281,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                         // List<>
 
                         // TODO: set selected value into entity
-                        // for each item in listData of entity, remove, then set selected into entity. (prevent
+                        // for each item in listData of entity, remove, then set
+                        // selected into entity. (prevent
                         // hibernate mapping issue).
 
                         break;
@@ -287,7 +291,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                         break;
 
                     default:
-                        throw new RuntimeException("Do not support FieldTypeEnum " + dataModel.getFieldType());
+                        throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());
                     }
                 } catch (Exception e) {
                     logger.error("Technical error.", e);
@@ -305,17 +309,17 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     }
 
     /**
-     * Get type of property from dataModel and getter of entity. The getter must follow convention get+FieldName. TODO:
-     * This returnType could be set directly to DetailDataModel?
+     * Get type of property from attributeModel and getter of entity. The getter must follow convention get+FieldName.
+     * TODO: This returnType could be set directly to DetailDataModel?
      * 
      * @param entity
-     * @param dataModel
+     * @param attribute
      * @return
      * @throws NoSuchMethodException
      */
-    private Class<?> getPropertyReturnType(T entity, DetailDataModel dataModel) {
+    private Class<?> getPropertyReturnType(T entity, DetailAttribute attribute) {
         try {
-            Method getMethod = entity.getClass().getMethod("get" + StringUtils.capitalize(dataModel.getFieldName()));
+            Method getMethod = entity.getClass().getMethod("get" + StringUtils.capitalize(attribute.getName()));
             Class<?> paramClass = getMethod.getReturnType();
             return paramClass;
         } catch (NoSuchMethodException e) {
@@ -323,10 +327,10 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         }
     }
 
-    private DetailDataModel getDataModelFromSetMethod(String setMethodName) {
-        for (DetailDataModel dataModel : listDataModel) {
-            if (setMethodName.equals("set" + StringUtils.capitalize(dataModel.getFieldName()))) {
-                return dataModel;
+    private DetailAttribute getAttributeModelFromSetMethod(String setMethodName) {
+        for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
+            if (setMethodName.equals("set" + StringUtils.capitalize(attribute.getName()))) {
+                return attribute;
             }
         }
         return null;

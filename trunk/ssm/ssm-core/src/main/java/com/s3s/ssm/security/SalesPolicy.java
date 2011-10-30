@@ -20,8 +20,9 @@ import java.util.Set;
 
 /**
  * The policy of Sales project
+ * 
  * @author Hoang Le
- *
+ * 
  */
 public class SalesPolicy extends Policy {
 
