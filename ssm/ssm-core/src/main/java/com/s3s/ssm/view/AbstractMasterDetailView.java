@@ -11,7 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
-import com.s3s.ssm.model.DetailDataModel;
+import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.util.Solution3sClassUtils;
 
 /**
@@ -46,7 +46,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
     /**
      * Init presentation of list detail objects.
      */
-    protected abstract void initialListDetailPresentationView(List<DetailDataModel> listDataModel);
+    protected abstract void initialListDetailPresentationView(List<DetailAttribute> listDataModel);
 
     /**
      * Get detail view class of child entity.
@@ -97,7 +97,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
         }
 
         @Override
-        protected void initialPresentationView(List<DetailDataModel> listDataModel, List<String> summaryFieldNames) {
+        protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
             initialListDetailPresentationView(listDataModel);
         }
     }

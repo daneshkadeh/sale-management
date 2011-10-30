@@ -5,8 +5,9 @@ import java.util.List;
 
 import com.s3s.ssm.entity.DetailInvoice;
 import com.s3s.ssm.entity.Invoice;
+import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
 
@@ -29,30 +30,27 @@ public class EditMasterInvoiceView extends AbstractMasterDetailView<Invoice, Det
     }
 
     @Override
-    public void initialPresentationView(List<DetailDataModel> listDataModel, Invoice invoice) {
-        DetailDataModel createdDateField = new DetailDataModel("createdDate", FieldTypeEnum.TEXTBOX);
-        createdDateField.setEditable(false);
-        listDataModel.add(createdDateField);
+    public void initialPresentationView(DetailDataModel detailDataModel, Invoice invoice) {
         invoice.setCreatedDate(new Date());
-
-        listDataModel.add(new DetailDataModel("customerId", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("totalBeforeTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("taxTotal", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("totalAfterTax", FieldTypeEnum.TEXTBOX));
+        detailDataModel.addAttribute("createdDate", FieldTypeEnum.TEXTBOX).editable(false);
+        detailDataModel.addAttribute("customerId", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("totalBeforeTax", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("taxTotal", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("totalAfterTax", FieldTypeEnum.TEXTBOX);
     }
 
     @Override
-    protected void initialListDetailPresentationView(List<DetailDataModel> listDataModel) {
-        listDataModel.add(new DetailDataModel("goodsId", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("goodsName", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("quantity", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("priceBeforeTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("tax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("priceAfterTax", FieldTypeEnum.TEXTBOX));
+    protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
+        listDataModel.add(new DetailAttribute("goodsId", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("goodsName", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("quantity", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("priceBeforeTax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("tax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("priceAfterTax", FieldTypeEnum.TEXTBOX));
 
-        listDataModel.add(new DetailDataModel("moneyBeforeTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("moneyOfTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("moneyAfterTax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("moneyBeforeTax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("moneyOfTax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("moneyAfterTax", FieldTypeEnum.TEXTBOX));
 
     }
 

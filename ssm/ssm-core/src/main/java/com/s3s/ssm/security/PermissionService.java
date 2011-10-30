@@ -1,6 +1,5 @@
 package com.s3s.ssm.security;
 
-import java.security.BasicPermission;
 import java.security.Permission;
 import java.security.Principal;
 import java.security.UnresolvedPermission;
@@ -40,18 +39,18 @@ public class PermissionService {
         permissionEntityService.save(permissionEntity);
         // add permission to principal
         PrincipalEntity principalEntity = principalEntityService.findByName(principal.getName());
-        if(principalEntity == null) {
-        	principalEntity = new PrincipalEntity(principal);
-        	principalEntityService.save(principalEntity);
+        if (principalEntity == null) {
+            principalEntity = new PrincipalEntity(principal);
+            principalEntityService.save(principalEntity);
         }
         principalEntity.getPermissions().add(permissionEntity);
         principalEntityService.update(principalEntity);
     }
-    
+
     public static void addPermissionSet(BasePrincipal principal, Set<ActionsPermission> permissionSet) {
-    	for (ActionsPermission permission : permissionSet) {
-    		addPermission(principal, permission);
-    	}
+        for (ActionsPermission permission : permissionSet) {
+            addPermission(principal, permission);
+        }
     }
 
     public static List<Permission> findPermissions(Set<Principal> principalSet) {

@@ -18,7 +18,7 @@ import com.s3s.ssm.util.ConfigProvider;
 public class LoginConfiguration extends Configuration {
     static private LoginConfiguration dbConfig;
     private LoginConfigService loginConfigService = ConfigProvider.getInstance().getLoginConfigService();
-    
+
     static public void init() {
         dbConfig = new LoginConfiguration();
         Configuration.setConfiguration(dbConfig);
@@ -44,21 +44,19 @@ public class LoginConfiguration extends Configuration {
         String controlFlagValue;
         AppConfigurationEntry.LoginModuleControlFlag controlFlag;
         HashMap<String, ?> options;
-        
+
         List<LoginConfig> loginConfigList = loginConfigService.findByAppName(appName);
-        
+
         for (LoginConfig loginConfig : loginConfigList) {
-        	loginModuleClass = loginConfig.getLoginModuleClass();
-        	controlFlagValue = loginConfig.getControlFlag();
-        	controlFlag = resolveControlFlag(controlFlagValue);
-        	options = new HashMap();
-        	AppConfigurationEntry entry = new AppConfigurationEntry(loginModuleClass, controlFlag, options);
+            loginModuleClass = loginConfig.getLoginModuleClass();
+            controlFlagValue = loginConfig.getControlFlag();
+            controlFlag = resolveControlFlag(controlFlagValue);
+            options = new HashMap();
+            AppConfigurationEntry entry = new AppConfigurationEntry(loginModuleClass, controlFlag, options);
             entries.add(entry);
-		}
+        }
         return (AppConfigurationEntry[]) entries.toArray(new AppConfigurationEntry[entries.size()]);
-        
-        
-        
+
     }
 
     @Override

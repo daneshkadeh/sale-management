@@ -1,11 +1,9 @@
 package com.s3s.ssm.view.detail;
 
-import java.util.List;
-
 import com.s3s.ssm.entity.DetailInvoice;
 import com.s3s.ssm.entity.Invoice;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
 
 public class EditDetailInvoiceView extends AbstractDetailView<DetailInvoice> {
@@ -16,20 +14,22 @@ public class EditDetailInvoiceView extends AbstractDetailView<DetailInvoice> {
     }
 
     @Override
-    public void initialPresentationView(List<DetailDataModel> listDataModel, DetailInvoice detailInvoice) {
-        listDataModel.add(new DetailDataModel("goodsId", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("goodsName", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("quantity", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("priceBeforeTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("tax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("priceAfterTax", FieldTypeEnum.TEXTBOX));
+    public void initialPresentationView(DetailDataModel detailDataModel, DetailInvoice detailInvoice) {
+        detailDataModel.addAttribute("goodsId", FieldTypeEnum.TEXTBOX).enable(true);
+        detailDataModel.addAttribute("goodsName", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("quantity", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("priceBeforeTax", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("tax", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("priceAfterTax", FieldTypeEnum.TEXTBOX);
 
-        listDataModel.add(new DetailDataModel("moneyBeforeTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("moneyOfTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailDataModel("moneyAfterTax", FieldTypeEnum.TEXTBOX));
+        detailDataModel.addAttribute("moneyBeforeTax", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("moneyOfTax", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("moneyAfterTax", FieldTypeEnum.TEXTBOX);
 
-        // listDataModel.add(new DetailDataModel("invoiceId", FieldTypeEnum.TEXT_BOX));
-        // TODO: work-around to pass onBindAndValidate. InvoiceId will be set later.
+        // listDataModel.add(new DetailDataModel("invoiceId",
+        // FieldTypeEnum.TEXT_BOX));
+        // TODO: work-around to pass onBindAndValidate. InvoiceId will be set
+        // later.
         detailInvoice.setInvoice(new Invoice());
 
     }

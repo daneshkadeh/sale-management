@@ -47,7 +47,7 @@ import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
-import com.s3s.ssm.model.DetailDataModel;
+import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
@@ -74,7 +74,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     protected List<T> entities = new ArrayList<>();
 
     // This model is used by sub classes.
-    protected final List<DetailDataModel> listDataModel = new ArrayList<>();
+    protected final List<DetailAttribute> listDataModel = new ArrayList<>();
     protected final List<String> summaryFieldNames = new ArrayList<>();
 
     private Action addAction;
@@ -118,7 +118,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      *            the fields want to show sum values in footer. They must be Number type.
      */
     protected abstract void
-            initialPresentationView(List<DetailDataModel> listDataModel, List<String> summaryFieldNames);
+            initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames);
 
     /**
      * 
@@ -355,8 +355,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 return entity;
             }
 
-            DetailDataModel dataModel = listDataModel.get(columnIndex - 1);
-            Method method = Solution3sClassUtils.getGetterMethod(getEntityClass(), dataModel.getFieldName());
+            DetailAttribute dataModel = listDataModel.get(columnIndex - 1);
+            Method method = Solution3sClassUtils.getGetterMethod(getEntityClass(), dataModel.getName());
             try {
                 return method.invoke(entity);
             } catch (IllegalAccessException e) {
@@ -379,14 +379,14 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 return "";
             }
             return ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
-                    + listDataModel.get(column - 1).getFieldName());
+                    + listDataModel.get(column - 1).getName());
         }
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             T entity = currentEntities.get(rowIndex);
-            DetailDataModel dataModel = listDataModel.get(columnIndex);
-            Method method = Solution3sClassUtils.getSetterMethod(getEntityClass(), dataModel.getFieldName());
+            DetailAttribute dataModel = listDataModel.get(columnIndex);
+            Method method = Solution3sClassUtils.getSetterMethod(getEntityClass(), dataModel.getName());
             try {
                 method.invoke(entity, aValue);
             } catch (IllegalArgumentException e) {
@@ -407,7 +407,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             if (columnIndex == 0) {
                 return getEntityClass();
             }
-            return getClassOfField(listDataModel.get(columnIndex - 1).getFieldName());
+            return getClassOfField(listDataModel.get(columnIndex - 1).getName());
         }
 
         private List<T> getVisibleEntities() {
@@ -434,9 +434,9 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             if (columnIndex == 0) {
                 return null;
             }
-            DetailDataModel detailDataModel = listDataModel.get(columnIndex - 1); // decrease 1 because the hidden
+            DetailAttribute detailDataModel = listDataModel.get(columnIndex - 1); // decrease 1 because the hidden
                                                                                   // entity column
-            String fieldName = detailDataModel.getFieldName();
+            String fieldName = detailDataModel.getName();
             // Check exists summaryFieldName is fieldName or not.
             for (String sfName : summaryFieldNames) {
                 if (fieldName.equals(sfName)) {
@@ -479,7 +479,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             if (columnIndex == 0) {
                 return getEntityClass();
             }
-            return getClassOfField(listDataModel.get(columnIndex - 1).getFieldName());
+            return getClassOfField(listDataModel.get(columnIndex - 1).getName());
         }
 
     }
