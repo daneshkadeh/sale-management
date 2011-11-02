@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.s3s.ssm.entity.Customer;
 
 @Repository("customerDao")
-public class CustomerDaoImpl extends HibernateBaseDaoImpl<Customer> {
+public class CustomerDaoImpl extends BaseDaoImpl<Customer> {
 
     public List<Customer> findLikeName(String name) {
         DetachedCriteria dc = getCriteria();

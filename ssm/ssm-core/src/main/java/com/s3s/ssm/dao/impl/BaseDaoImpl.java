@@ -13,18 +13,17 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.s3s.ssm.context.ContextProvider;
-import com.s3s.ssm.dao.HibernateBaseDao;
+import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.interceptor.OptimisticLockingInterceptor;
 
-public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSupport implements
-        HibernateBaseDao<T> {
+public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSupport implements IBaseDao<T> {
     @Autowired
     ContextProvider contextProvider;
 
     private Class<T> clazz;
 
-    public HibernateBaseDaoImpl() {
+    public BaseDaoImpl() {
         clazz = getEntityClass();
     }
 
@@ -41,7 +40,7 @@ public class HibernateBaseDaoImpl<T extends AbstractBaseIdObject> extends Hibern
         return clazz;
     }
 
-    public HibernateBaseDaoImpl(Class<T> objectClazz) {
+    public BaseDaoImpl(Class<T> objectClazz) {
         this.clazz = objectClazz;
     }
 

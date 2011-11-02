@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.stereotype.Repository;
 
-import com.s3s.ssm.dao.HibernateBaseDao;
+import com.s3s.ssm.dao.IBaseDao;
 
 /**
  * This class help to get DAO from an entity class. Support working with entity.
@@ -17,7 +17,7 @@ import com.s3s.ssm.dao.HibernateBaseDao;
  */
 @Repository("daoHelper")
 public class DaoHelperImpl implements DaoHelper {
-    private final Map<Class<?>, HibernateBaseDao<?>> mapDAOs = new HashMap<Class<?>, HibernateBaseDao<?>>();
+    private final Map<Class<?>, IBaseDao<?>> mapDAOs = new HashMap<Class<?>, IBaseDao<?>>();
 
     public DaoHelperImpl() {
         initDAOs();
@@ -35,14 +35,14 @@ public class DaoHelperImpl implements DaoHelper {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> HibernateBaseDao<T> getDao(Class<T> clazz) {
-        HibernateBaseDao<T> dao = (HibernateBaseDao<T>) mapDAOs.get(clazz);
+    public <T> IBaseDao<T> getDao(Class<T> clazz) {
+        IBaseDao<T> dao = (IBaseDao<T>) mapDAOs.get(clazz);
         if (dao == null) {
             try {
-                dao = (HibernateBaseDao<T>) ConfigProvider.getInstance().getApplicationContext()
+                dao = (IBaseDao<T>) ConfigProvider.getInstance().getApplicationContext()
                         .getBean(StringUtils.uncapitalize(clazz.getSimpleName()) + "Dao");
             } catch (BeansException e) {
-                dao = (HibernateBaseDao<T>) ConfigProvider.getInstance().getApplicationContext()
+                dao = (IBaseDao<T>) ConfigProvider.getInstance().getApplicationContext()
                         .getBean("defaultBaseDao");
             }
             mapDAOs.put(clazz, dao);

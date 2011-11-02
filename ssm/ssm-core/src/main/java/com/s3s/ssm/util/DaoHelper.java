@@ -1,6 +1,6 @@
 package com.s3s.ssm.util;
 
-import com.s3s.ssm.dao.HibernateBaseDao;
+import com.s3s.ssm.dao.IBaseDao;
 
 /**
  * 
@@ -8,5 +8,5 @@ import com.s3s.ssm.dao.HibernateBaseDao;
  * 
  */
 public interface DaoHelper {
-    public <T> HibernateBaseDao<T> getDao(Class<T> clazz);
+    public <T> IBaseDao<T> getDao(Class<T> clazz);
 }
