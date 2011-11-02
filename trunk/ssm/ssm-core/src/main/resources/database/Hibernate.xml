@@ -26,6 +26,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 					<value>com.s3s.ssm.entity.contact</value>
 					<value>com.s3s.ssm.entity.sales</value>
 					<value>com.s3s.ssm.entity.bi</value>
+					<value>com.s3s.ssm.entity.store</value>
 			</list>
     	</property>
 		<!-- property name="annotatedClasses">

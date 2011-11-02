@@ -73,7 +73,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     private final static int DEFAULT_TEXTFIELD_COLUMN = 20;
 
     /**
-     * Initialize the detail view.
+     * Initialize the detail view. TODO: concrete classes should not override this constructor.
      * 
      * @param entity
      *            the entity of detail view.
