@@ -17,7 +17,7 @@ public class UnitOfMeasure extends AbstractCodeOLObject {
     private String name;
     private Boolean isBaseMeasure = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "uom_category_id", nullable = false)
     public UomCategory getUomCategory() {
         return uomCategory;

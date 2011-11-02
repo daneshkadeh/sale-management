@@ -34,6 +34,9 @@ import com.s3s.ssm.view.component.S3sRadioButtonsGroup;
 import com.s3s.ssm.view.list.ListCustomerView;
 import com.s3s.ssm.view.list.ListGoodsView;
 import com.s3s.ssm.view.list.ListInvoiceView;
+import com.s3s.ssm.view.list.param.ListManufacturerView;
+import com.s3s.ssm.view.list.param.ListUnitOfMeasureView;
+import com.s3s.ssm.view.list.param.ListUomCategoryView;
 import com.s3s.ssm.view.security.LoginDialog;
 
 public class MainProgram {
@@ -122,6 +125,48 @@ public class MainProgram {
             }
         });
 
+        JMenuItem manufacturerMenuItem = new JMenuItem(ControlConfigUtils.getString("JMenu.File.Manufacturer"));
+        manufacturerMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
+        manufacturerMenuItem.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListManufacturerView listManufacturerView = new ListManufacturerView();
+                listManufacturerView.setVisible(true);
+                frame.setContentPane(listManufacturerView);
+                frame.repaint();
+                frame.pack();
+            }
+        });
+
+        JMenuItem uomCategoryMenuItem = new JMenuItem(ControlConfigUtils.getString("JMenu.File.UomCategory"));
+        uomCategoryMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        uomCategoryMenuItem.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListUomCategoryView listUomCategoryView = new ListUomCategoryView();
+                listUomCategoryView.setVisible(true);
+                frame.setContentPane(listUomCategoryView);
+                frame.repaint();
+                frame.pack();
+            }
+        });
+
+        JMenuItem unitOfMeasureMenuItem = new JMenuItem(ControlConfigUtils.getString("JMenu.File.UnitOfMeasure"));
+        unitOfMeasureMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        unitOfMeasureMenuItem.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListUnitOfMeasureView listUnitOfMeasureView = new ListUnitOfMeasureView();
+                listUnitOfMeasureView.setVisible(true);
+                frame.setContentPane(listUnitOfMeasureView);
+                frame.repaint();
+                frame.pack();
+            }
+        });
+
         JMenuItem productMenuItem = new JMenuItem(ControlConfigUtils.getString("JMenu.File.Product"));
         productMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         productMenuItem.addActionListener(new ActionListener() {
@@ -175,6 +220,9 @@ public class MainProgram {
         fileMenu.add(userMenuItem);
         fileMenu.add(customerMenuItem);
         fileMenu.add(productMenuItem);
+        fileMenu.add(manufacturerMenuItem);
+        fileMenu.add(uomCategoryMenuItem);
+        fileMenu.add(unitOfMeasureMenuItem);
         fileMenu.addSeparator();
         fileMenu.add(statisticMenuItem);
         fileMenu.add(invoiceMenuItem);

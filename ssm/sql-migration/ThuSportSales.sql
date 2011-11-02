@@ -303,7 +303,7 @@ CREATE TABLE `s_detail_session_store` (
   `sess_store_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
   `begin_amount` int(11) NOT NULL,
-  `end_amount` int(11) NOT NULL,
+  `end_amount` int(11),
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
@@ -319,7 +319,8 @@ CREATE UNIQUE INDEX ui_sess_store_item ON s_detail_session_store(sess_store_id, 
 CREATE TABLE `s_check_store` (
   `id` int(11) NOT NULL auto_increment,
   `store_id` int(11) NOT NULL,
-  `datetime_check` datetime NOT NULL,
+  `date_start_check` datetime NOT NULL,
+  `date_end_check` datetime,
   `responsible_user` varchar(32) NOT NULL,
   `status` varchar(16) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
@@ -331,15 +332,15 @@ CREATE TABLE `s_check_store` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 CREATE INDEX idx_store_id ON s_check_store(store_id);
-CREATE UNIQUE INDEX ui_store_date ON s_check_store(store_id, datetime_check);
+CREATE UNIQUE INDEX ui_store_date ON s_check_store(store_id, date_start_check);
 
 CREATE TABLE `s_detail_check_store` (
   `id` int(11) NOT NULL auto_increment,
   `checkstore_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
-  `removed_amount` int(11) NOT NULL,
-  `removed_type` varchar(32) NOT NULL,
-  `remark` varchar(256) NOT NULL,
+  `change_amount` int(11) NOT NULL,
+  `change_type` varchar(32) NOT NULL,
+  `remark` varchar(256),
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,

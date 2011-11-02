@@ -38,4 +38,9 @@ public abstract class AbstractBaseIdObject implements Serializable {
         return (id != null) && id > -1;
     }
 
+    @Transient
+    @Override
+    public String toString() {
+        return String.valueOf(getId());
+    }
 }

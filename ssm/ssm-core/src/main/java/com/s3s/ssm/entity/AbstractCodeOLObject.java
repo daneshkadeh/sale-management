@@ -2,6 +2,7 @@ package com.s3s.ssm.entity;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -22,5 +23,11 @@ public abstract class AbstractCodeOLObject extends AbstractIdOLObject {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Transient
+    @Override
+    public String toString() {
+        return getCode();
     }
 }
