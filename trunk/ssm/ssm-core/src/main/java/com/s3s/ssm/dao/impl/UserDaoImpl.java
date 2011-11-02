@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.s3s.ssm.entity.User;
 
 @Repository("userDao")
-public class UserDaoImpl extends HibernateBaseDaoImpl<User> {
+public class UserDaoImpl extends BaseDaoImpl<User> {
     public User findByUsername(String username) {
         List<User> users = getHibernateTemplate().find("from User where username = ?", username);
         if (CollectionUtils.isNotEmpty(users)) {

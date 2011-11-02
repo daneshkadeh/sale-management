@@ -11,6 +11,6 @@ import com.s3s.ssm.entity.AbstractBaseIdObject;
  * 
  */
 @Repository("defaultBaseDao")
-public class DefaultBaseDaoImpl extends HibernateBaseDaoImpl<AbstractBaseIdObject> {
+public class DefaultBaseDaoImpl extends BaseDaoImpl<AbstractBaseIdObject> {
 
 }
