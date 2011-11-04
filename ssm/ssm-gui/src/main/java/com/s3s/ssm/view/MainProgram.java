@@ -14,10 +14,17 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -97,11 +104,65 @@ public class MainProgram {
     }
 
     private static void addComponentsToTest(Container contentPane) {
-        contentPane.setLayout(new MigLayout("wrap 2"));
-        contentPane.add(new JLabel("Image component"), "top");
-        contentPane.add(new S3sImageChooser());
-        contentPane.add(new JLabel("Radio button group"), "top");
-        contentPane.add(new S3sRadioButtonsGroup<>(Arrays.asList("Table", "Chair", "Ruler")));
+
+        // Just demo. In production we should not init we user still not request open the view.
+        final ListCustomerView customerListView = new ListCustomerView();
+        final ListGoodsView goodListView = new ListGoodsView();
+        final JPanel componentPanel = createDemoComponentPanel();
+        final JScrollPane scrollPane = new JScrollPane(componentPanel);
+        final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setRightComponent(scrollPane);
+
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Sale management");
+        DefaultMutableTreeNode userEntry = new DefaultMutableTreeNode("Customer");
+        DefaultMutableTreeNode goodEntry = new DefaultMutableTreeNode("Good");
+        DefaultMutableTreeNode demoEntry = new DefaultMutableTreeNode("Component demo");
+        rootNode.add(userEntry);
+        rootNode.add(goodEntry);
+        rootNode.add(demoEntry);
+        final JTree treeMenu = new JTree(rootNode);
+        treeMenu.addTreeSelectionListener(new TreeSelectionListener() {
+
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                // Returns the last path element of the selection.
+                // This method is useful only when the selection model allows a single selection.
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeMenu.getLastSelectedPathComponent();
+
+                if (node == null) {
+                    // Nothing is selected.
+                    return;
+                }
+
+                String nodeInfo = (String) node.getUserObject();
+                if (nodeInfo.equals("Customer")) {
+                    // splitPane.setRightComponent(customerListView);
+                    scrollPane.setViewportView(customerListView);
+                } else if (nodeInfo.equals("Good")) {
+                    // splitPane.setRightComponent(goodListView);
+                    scrollPane.setViewportView(goodListView);
+                } else if (nodeInfo.equals("Component demo")) {
+                    scrollPane.setViewportView(componentPanel);
+                }
+
+            }
+        });
+
+        JScrollPane treeMenuScrollPane = new JScrollPane(treeMenu);
+
+        splitPane.setLeftComponent(treeMenuScrollPane);
+
+        contentPane.add(splitPane);
+    }
+
+    private static JPanel createDemoComponentPanel() {
+        JPanel componentPanel = new JPanel(new MigLayout("wrap 2"));
+        componentPanel.add(new JLabel("Image component"), "top");
+        componentPanel.add(new S3sImageChooser());
+        componentPanel.add(new JLabel("Radio button group"), "top");
+        componentPanel.add(new S3sRadioButtonsGroup<>(Arrays.asList("Table", "Chair", "Ruler")));
+        return componentPanel;
     }
 
     private static JMenuBar createMenuBar(final JFrame frame) {
