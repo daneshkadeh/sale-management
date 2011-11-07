@@ -26,10 +26,10 @@
 		<artifactId>swingx</artifactId>
     </dependency>
 	<!-- GlazedList -->
-	<dependency>
+	<!--dependency>
 		<groupId> net.java.dev.glazedlists</groupId>
 		<artifactId>glazedlists_java15</artifactId>
-	</dependency>
+	</dependency -->
 	
 	<!-- Apache common -->
 	<dependency>

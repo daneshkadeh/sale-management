@@ -2,33 +2,33 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-    
+
 	<!-- Hibernate session factory -->
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-    	<property name="dataSource">
-    		<ref bean="dataSource"/>
-    	</property>
-    	<property name="hibernateProperties">
-    		<props>
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+		<property name="hibernateProperties">
+			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
-    		</props>
-    	</property>
-    	
-    	<property name="entityInterceptor">
-            <bean class="com.s3s.ssm.interceptor.OptimisticLockingInterceptor"/>
-        </property>
+			</props>
+		</property>
 
-    	<property name="packagesToScan">
-	    	<list>
-					<value>com.s3s.ssm.entity</value>
-					<value>com.s3s.ssm.entity.param</value>
-					<value>com.s3s.ssm.entity.contact</value>
-					<value>com.s3s.ssm.entity.sales</value>
-					<value>com.s3s.ssm.entity.bi</value>
-					<value>com.s3s.ssm.entity.store</value>
+		<property name="entityInterceptor">
+			<bean class="com.s3s.ssm.interceptor.OptimisticLockingInterceptor"/>
+		</property>
+
+		<property name="packagesToScan">
+			<list>
+				<value>com.s3s.ssm.entity</value>
+				<value>com.s3s.ssm.entity.param</value>
+				<value>com.s3s.ssm.entity.contact</value>
+				<value>com.s3s.ssm.entity.sales</value>
+				<value>com.s3s.ssm.entity.bi</value>
+				<value>com.s3s.ssm.entity.store</value>
 			</list>
-    	</property>
+		</property>
 		<!-- property name="annotatedClasses">
 			<list>
 				<value>com.s3s.ssm.entity.Customer</value>
@@ -36,10 +36,25 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 				<value>com.s3s.ssm.entity.Invoice</value>
 				<value>com.s3s.ssm.entity.DetailInvoice</value>
 			</list>
-		</property -->
+		</property
+			-->
+	</bean>
+	
+	<bean id="defaultBaseDao" class="com.s3s.ssm.dao.impl.DefaultBaseDaoImpl" scope="prototype"/>
+
+	<!-- AOP to open the session in service -->
+	<bean id="transactionalPointcut" class="org.springframework.aop.support.annotation.AnnotationMatchingPointcut">
+		<constructor-arg type="java.lang.Class" value="org.springframework.transaction.annotation.Transactional"/>
+	</bean>
+	<bean id="openSessionInServiceInterceptor" class="com.s3s.ssm.interceptor.OpenSessionInServiceInterceptor">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="openSessionInServiceAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+        <property name="advice" ref="openSessionInServiceInterceptor" />
+        <property name="pointcut" ref="transactionalPointcut" />
+        <!-- session must be opened at the beginning and closed at the end -->
+        <!-- property name="order" value="-2147483648" /-->
     </bean>
-    
-    <bean id="defaultBaseDao" class="com.s3s.ssm.dao.impl.DefaultBaseDaoImpl" scope="prototype">
-    </bean>
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
 
 </beans>    

@@ -18,6 +18,7 @@ import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.interceptor.OptimisticLockingInterceptor;
 
 public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSupport implements IBaseDao<T> {
+
     @Autowired
     ContextProvider contextProvider;
 
