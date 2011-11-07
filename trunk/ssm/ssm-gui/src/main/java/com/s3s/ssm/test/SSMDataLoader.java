@@ -35,6 +35,7 @@ import com.s3s.ssm.entity.sales.DetailSalesContract;
 import com.s3s.ssm.entity.sales.ItemOriginPrice;
 import com.s3s.ssm.entity.sales.ItemPrice;
 import com.s3s.ssm.entity.sales.SalesContract;
+import com.s3s.ssm.service.ItemService;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
 
@@ -60,14 +61,19 @@ public class SSMDataLoader {
         s_logger.info("Starting data loader SSM...");
         ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
         ConfigProvider configProvider = ConfigProvider.getInstance();
-
         DaoHelper daoHelper = configProvider.getDaoHelper();
+
         try {
             s_logger.info("Cleaning data SSM");
             cleanDatabase(daoHelper);
 
             s_logger.info("Initializing data SSM");
             initDatabase(daoHelper);
+
+            // TODO test lazy load implementation. Remove later.
+            ItemService itemService = (ItemService) appContext.getBean("itemService");
+            String code = itemService.getProductCodeOfItem();
+            // ///////// End test /////////////////////
 
             s_logger.info("Testing data SSM");
             testInsertedData(daoHelper);

@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.dao.impl.CustomerDaoImpl;
 import com.s3s.ssm.entity.Customer;
 import com.s3s.ssm.service.CustomerService;
 
+@Transactional
 @Service("customerService")
 public class CustomerServiceImpl implements CustomerService {
 
