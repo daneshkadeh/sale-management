@@ -86,6 +86,7 @@
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	<spring.version>2.5.6</spring.version>
 	<cglib.version>2.2</cglib.version>
+	<aspectj.version>1.5.2</aspectj.version>
 	
 	<mysql.version>5.1.9</mysql.version>
 	<persistence-api.version>1.0</persistence-api.version>
@@ -148,6 +149,18 @@
 		<version>${cglib.version}</version>
 	</dependency>
     
+	<dependency>
+		<groupId>aspectj</groupId>
+		<artifactId>aspectjrt</artifactId>
+		<version>${aspectj.version}</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>aspectj</groupId>
+		<artifactId>aspectjtools</artifactId>
+		<version>${aspectj.version}</version>
+	</dependency>
+	
      <!-- MySQL database driver -->
 	<dependency>
 		<groupId>mysql</groupId>
