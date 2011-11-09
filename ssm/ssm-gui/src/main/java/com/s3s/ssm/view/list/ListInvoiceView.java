@@ -2,7 +2,7 @@ package com.s3s.ssm.view.list;
 
 import java.util.List;
 
-import com.s3s.ssm.entity.Invoice;
+import com.s3s.ssm.entity.InvoiceTest;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
@@ -15,7 +15,7 @@ import com.s3s.ssm.view.detail.EditMasterInvoiceView;
  * @author phamcongbang
  * 
  */
-public class ListInvoiceView extends AbstractListView<Invoice> {
+public class ListInvoiceView extends AbstractListView<InvoiceTest> {
     private static final long serialVersionUID = -9117198848678726047L;
 
     @Override
@@ -32,7 +32,7 @@ public class ListInvoiceView extends AbstractListView<Invoice> {
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<Invoice>> getDetailViewClass() {
+    protected Class<? extends AbstractDetailView<InvoiceTest>> getDetailViewClass() {
         return EditMasterInvoiceView.class;
     }
 

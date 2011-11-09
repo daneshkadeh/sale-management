@@ -6,12 +6,12 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.s3s.ssm.entity.Customer;
+import com.s3s.ssm.entity.CustomerTest;
 
 @Repository("customerDao")
-public class CustomerDaoImpl extends BaseDaoImpl<Customer> {
+public class CustomerDaoImpl extends BaseDaoImpl<CustomerTest> {
 
-    public List<Customer> findLikeName(String name) {
+    public List<CustomerTest> findLikeName(String name) {
         DetachedCriteria dc = getCriteria();
         dc.add(Restrictions.like("name", name));
         return findByCriteria(dc);

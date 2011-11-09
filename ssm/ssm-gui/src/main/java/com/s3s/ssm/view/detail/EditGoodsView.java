@@ -9,28 +9,28 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import com.s3s.ssm.entity.Goods;
+import com.s3s.ssm.entity.GoodsTest;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractDetailView;
 
 /**
- * The detail screen of {@link Goods} entity.
+ * The detail screen of {@link GoodsTest} entity.
  * 
  * @author Phan Hong Phuc
  * 
  */
-public class EditGoodsView extends AbstractDetailView<Goods> {
+public class EditGoodsView extends AbstractDetailView<GoodsTest> {
     private static final long serialVersionUID = 8247461633468843994L;
     private static final String TAX_REF_ID = "0";
 
-    public EditGoodsView(Goods entity) {
+    public EditGoodsView(GoodsTest entity) {
         super(entity);
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, Goods goods) {
+    public void initialPresentationView(DetailDataModel detailDataModel, GoodsTest goods) {
         detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("priceBeforeTax", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("tax", FieldTypeEnum.DROPDOWN).referenceDataId(TAX_REF_ID);
@@ -40,7 +40,7 @@ public class EditGoodsView extends AbstractDetailView<Goods> {
     }
 
     @Override
-    protected void setReferenceDataModel(ReferenceDataModel refDataModel, Goods entity) {
+    protected void setReferenceDataModel(ReferenceDataModel refDataModel, GoodsTest entity) {
         super.setReferenceDataModel(refDataModel, entity);
         List<Double> taxRefs = Arrays.asList(1.0, 2.0, 3.0);
         DefaultListCellRenderer listCellRenderer = new DefaultListCellRenderer() {

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.dao.impl.CustomerDaoImpl;
-import com.s3s.ssm.entity.Customer;
+import com.s3s.ssm.entity.CustomerTest;
 import com.s3s.ssm.service.CustomerService;
 
 @Transactional
@@ -18,37 +18,37 @@ public class CustomerServiceImpl implements CustomerService {
     CustomerDaoImpl customerDao;
 
     @Override
-    public void save(Customer customer) {
+    public void save(CustomerTest customer) {
         customerDao.save(customer);
     }
 
     @Override
-    public void update(Customer customer) {
+    public void update(CustomerTest customer) {
         customerDao.update(customer);
     }
 
     @Override
-    public void delete(Customer customer) {
+    public void delete(CustomerTest customer) {
         customerDao.delete(customer);
 
     }
 
-    public Customer findById(Long id) {
+    public CustomerTest findById(Long id) {
         return customerDao.findById(id);
     }
 
     @Override
-    public List<Customer> findAll() {
+    public List<CustomerTest> findAll() {
         return customerDao.findAll();
     }
 
     @Override
-    public List<Customer> findLikeName(String name) {
+    public List<CustomerTest> findLikeName(String name) {
         return customerDao.findLikeName(name);
     }
 
     @Override
-    public Customer findById(Integer id) {
+    public CustomerTest findById(Integer id) {
         // TODO Auto-generated method stub
         return null;
     }
