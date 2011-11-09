@@ -25,7 +25,7 @@ public class ConfigProvider {
         return configProvider;
     }
 
-    public ConfigProvider() {
+    private ConfigProvider() {
         DOMConfigurator.configure("src/main/resources/log4j.xml");
         appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
     }
