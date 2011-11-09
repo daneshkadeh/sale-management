@@ -58,6 +58,16 @@
 		<artifactId>cglib</artifactId>
 	</dependency>
     
+	<dependency>
+		<groupId>aspectj</groupId>
+		<artifactId>aspectjrt</artifactId>
+	</dependency>
+	
+	<dependency>
+		<groupId>aspectj</groupId>
+		<artifactId>aspectjtools</artifactId>
+	</dependency>
+	
      <!-- MySQL database driver -->
 	<dependency>
 		<groupId>mysql</groupId>
