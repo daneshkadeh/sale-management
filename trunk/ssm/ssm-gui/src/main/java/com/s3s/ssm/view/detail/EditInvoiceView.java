@@ -2,7 +2,7 @@ package com.s3s.ssm.view.detail;
 
 import java.util.Date;
 
-import com.s3s.ssm.entity.Invoice;
+import com.s3s.ssm.entity.InvoiceTest;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
@@ -14,14 +14,14 @@ import com.s3s.ssm.view.AbstractDetailView;
  * 
  */
 @Deprecated
-public class EditInvoiceView extends AbstractDetailView<Invoice> {
+public class EditInvoiceView extends AbstractDetailView<InvoiceTest> {
 
-    public EditInvoiceView(Invoice entity) {
+    public EditInvoiceView(InvoiceTest entity) {
         super(entity);
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, Invoice invoice) {
+    public void initialPresentationView(DetailDataModel detailDataModel, InvoiceTest invoice) {
         invoice.setCreatedDate(new Date());
 
         detailDataModel.addAttribute("createdDate", FieldTypeEnum.TEXTBOX).editable(false);

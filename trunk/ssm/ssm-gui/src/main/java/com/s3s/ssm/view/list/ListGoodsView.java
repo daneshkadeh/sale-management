@@ -11,7 +11,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
-import com.s3s.ssm.entity.Goods;
+import com.s3s.ssm.entity.GoodsTest;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
@@ -19,12 +19,12 @@ import com.s3s.ssm.view.AbstractSearchListView;
 import com.s3s.ssm.view.detail.EditGoodsView;
 
 /**
- * The common list screen of {@link Goods} entity.
+ * The common list screen of {@link GoodsTest} entity.
  * 
  * @author Phan Hong Phuc
  * 
  */
-public class ListGoodsView extends AbstractSearchListView<Goods> {
+public class ListGoodsView extends AbstractSearchListView<GoodsTest> {
     private static final long serialVersionUID = -8034885109793508234L;
 
     private JTextField txtGoodNameCriteria;
@@ -43,14 +43,14 @@ public class ListGoodsView extends AbstractSearchListView<Goods> {
     }
 
     @Override
-    protected List<Goods> loadData() {
-        DetachedCriteria dc = getDaoHelper().getDao(Goods.class).getCriteria();
+    protected List<GoodsTest> loadData() {
+        DetachedCriteria dc = getDaoHelper().getDao(GoodsTest.class).getCriteria();
         dc.add(Restrictions.like("name", txtGoodNameCriteria.getText(), MatchMode.ANYWHERE));
-        return getDaoHelper().getDao(Goods.class).findByCriteria(dc);
+        return getDaoHelper().getDao(GoodsTest.class).findByCriteria(dc);
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<Goods>> getDetailViewClass() {
+    protected Class<? extends AbstractDetailView<GoodsTest>> getDetailViewClass() {
         return EditGoodsView.class;
     }
 

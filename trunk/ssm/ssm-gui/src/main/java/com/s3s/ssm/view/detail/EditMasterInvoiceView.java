@@ -3,8 +3,8 @@ package com.s3s.ssm.view.detail;
 import java.util.Date;
 import java.util.List;
 
-import com.s3s.ssm.entity.DetailInvoice;
-import com.s3s.ssm.entity.Invoice;
+import com.s3s.ssm.entity.DetailInvoiceTest;
+import com.s3s.ssm.entity.InvoiceTest;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
@@ -17,7 +17,7 @@ import com.s3s.ssm.view.AbstractMasterDetailView;
  * @author phamcongbang
  * 
  */
-public class EditMasterInvoiceView extends AbstractMasterDetailView<Invoice, DetailInvoice> {
+public class EditMasterInvoiceView extends AbstractMasterDetailView<InvoiceTest, DetailInvoiceTest> {
     private static final long serialVersionUID = -8901891656724849010L;
 
     /**
@@ -25,12 +25,12 @@ public class EditMasterInvoiceView extends AbstractMasterDetailView<Invoice, Det
      * 
      * @param entity
      */
-    public EditMasterInvoiceView(Invoice entity) {
+    public EditMasterInvoiceView(InvoiceTest entity) {
         super(entity);
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, Invoice invoice) {
+    public void initialPresentationView(DetailDataModel detailDataModel, InvoiceTest invoice) {
         invoice.setCreatedDate(new Date());
         detailDataModel.addAttribute("createdDate", FieldTypeEnum.TEXTBOX).editable(false);
         detailDataModel.addAttribute("customerId", FieldTypeEnum.TEXTBOX);
@@ -55,9 +55,9 @@ public class EditMasterInvoiceView extends AbstractMasterDetailView<Invoice, Det
     }
 
     @Override
-    protected void saveOrUpdate(Invoice invoice, List<DetailInvoice> listDetailInvoice) {
+    protected void saveOrUpdate(InvoiceTest invoice, List<DetailInvoiceTest> listDetailInvoice) {
         // ConfigProvider.getInstance().getInvoiceService().save(invoice);
-        for (DetailInvoice detailInvoice : listDetailInvoice) {
+        for (DetailInvoiceTest detailInvoice : listDetailInvoice) {
             detailInvoice.setInvoice(invoice);
             // ConfigProvider.getInstance().getDetailInvoiceService().save(detailInvoice);
         }
@@ -69,7 +69,7 @@ public class EditMasterInvoiceView extends AbstractMasterDetailView<Invoice, Det
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<DetailInvoice>> getChildDetailViewClass() {
+    protected Class<? extends AbstractDetailView<DetailInvoiceTest>> getChildDetailViewClass() {
         return EditDetailInvoiceView.class;
     }
 }

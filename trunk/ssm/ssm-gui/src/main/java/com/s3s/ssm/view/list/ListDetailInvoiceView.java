@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import com.s3s.ssm.entity.DetailInvoice;
+import com.s3s.ssm.entity.DetailInvoiceTest;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
@@ -17,7 +17,7 @@ import com.s3s.ssm.view.AbstractDetailView;
 import com.s3s.ssm.view.detail.EditDetailInvoiceView;
 
 @Deprecated
-public class ListDetailInvoiceView extends AbstractCommonListView<DetailInvoice> {
+public class ListDetailInvoiceView extends AbstractCommonListView<DetailInvoiceTest> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
@@ -50,12 +50,12 @@ public class ListDetailInvoiceView extends AbstractCommonListView<DetailInvoice>
     }
 
     @Override
-    protected List<DetailInvoice> loadData() {
+    protected List<DetailInvoiceTest> loadData() {
         return super.loadData();
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<DetailInvoice>> getDetailViewClass() {
+    protected Class<? extends AbstractDetailView<DetailInvoiceTest>> getDetailViewClass() {
         // TODO Auto-generated method stub
         return EditDetailInvoiceView.class;
     }

@@ -2,18 +2,18 @@ package com.s3s.ssm.service;
 
 import java.util.List;
 
-import com.s3s.ssm.entity.Customer;
+import com.s3s.ssm.entity.CustomerTest;
 
 public interface CustomerService {
-    void save(Customer customer);
+    void save(CustomerTest customer);
 
-    void update(Customer customer);
+    void update(CustomerTest customer);
 
-    void delete(Customer customer);
+    void delete(CustomerTest customer);
 
-    Customer findById(Integer id);
+    CustomerTest findById(Integer id);
 
-    List<Customer> findAll();
+    List<CustomerTest> findAll();
 
-    List<Customer> findLikeName(String name);
+    List<CustomerTest> findLikeName(String name);
 }
