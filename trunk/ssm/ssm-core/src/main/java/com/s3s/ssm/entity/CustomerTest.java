@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_customer")
-public class Customer extends AbstractBaseIdObject {
+public class CustomerTest extends AbstractBaseIdObject {
     private String name;
 
     public void setName(String name) {

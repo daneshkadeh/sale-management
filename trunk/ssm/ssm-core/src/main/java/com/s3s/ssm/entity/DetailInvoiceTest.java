@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_detail_invoice")
-public class DetailInvoice extends AbstractBaseIdObject {
+public class DetailInvoiceTest extends AbstractBaseIdObject {
     private Integer goodsId;
     private String goodsName;
     private Integer quantity;
@@ -19,7 +19,7 @@ public class DetailInvoice extends AbstractBaseIdObject {
     private Double moneyBeforeTax;
     private Double moneyOfTax;
     private Double moneyAfterTax;
-    private Invoice invoice;
+    private InvoiceTest invoice;
 
     public void setGoodsId(Integer goodsId) {
         this.goodsId = goodsId;
@@ -113,11 +113,11 @@ public class DetailInvoice extends AbstractBaseIdObject {
 
     @ManyToOne
     @JoinColumn(name = "invoice_id", nullable = false)
-    public Invoice getInvoice() {
+    public InvoiceTest getInvoice() {
         return invoice;
     }
 
-    public void setInvoice(Invoice invoice) {
+    public void setInvoice(InvoiceTest invoice) {
         this.invoice = invoice;
     }
 
