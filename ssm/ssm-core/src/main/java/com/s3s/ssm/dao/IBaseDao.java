@@ -7,27 +7,29 @@ import org.hibernate.criterion.DetachedCriteria;
 
 public interface IBaseDao<T> {
 
-    public void setEntityClass(Class<T> clazz);
+    void setEntityClass(Class<T> clazz);
 
-    public void save(T entity);
+    T save(T entity);
 
-    public void update(T entity);
+    T update(T entity);
 
-    public void delete(T entity);
+    void delete(T entity);
 
-    public void saveOrUpdate(T entity);
+    T saveOrUpdate(T entity);
 
-    public void saveOrUpdateAll(Collection<T> list);
+    Collection<T> saveOrUpdateAll(Collection<T> list);
 
-    public T findById(Long id);
+    T findById(Long id);
 
-    public List<T> findAll();
+    List<T> findAll();
 
-    public DetachedCriteria getCriteria();
+    DetachedCriteria getCriteria();
 
-    public List<T> findByCriteria(DetachedCriteria criteria, int firstResult, int maxResults);
+    List<T> findByCriteria(DetachedCriteria criteria, int firstResult, int maxResults);
 
-    public List<T> findByCriteria(DetachedCriteria dc);
+    List<T> findByCriteria(DetachedCriteria dc);
 
     void deleteAll(Collection<T> entities);
+
+    void flush();
 }

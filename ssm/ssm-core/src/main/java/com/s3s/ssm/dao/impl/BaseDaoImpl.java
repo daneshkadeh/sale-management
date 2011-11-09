@@ -33,6 +33,7 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
         this.clazz = clazz;
     }
 
+    @SuppressWarnings("unchecked")
     protected Class<T> getEntityClass() {
         if (clazz == null) {
             Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -59,13 +60,15 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
     }
 
     @Override
-    public void save(T entity) {
+    public T save(T entity) {
         getHibernateTemplate().save(entity);
+        return entity;
     }
 
     @Override
-    public void update(T entity) {
+    public T update(T entity) {
         getHibernateTemplate().update(entity);
+        return entity;
     }
 
     @Override
@@ -81,22 +84,21 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
     }
 
     @Override
-    public void saveOrUpdateAll(Collection<T> list) {
+    public Collection<T> saveOrUpdateAll(Collection<T> list) {
         getHibernateTemplate().saveOrUpdateAll(list);
+        return list;
     }
 
     @Override
-    public void saveOrUpdate(T entity) {
+    public T saveOrUpdate(T entity) {
         getHibernateTemplate().saveOrUpdate(entity);
+        return entity;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T findById(Long id) {
-        List<T> list = getHibernateTemplate().find("from " + getEntityClass().getSimpleName() + " where id=?", id);
-        if (CollectionUtils.isNotEmpty(list)) {
-            return list.get(0);
-        }
-        return null;
+        return (T) getHibernateTemplate().get(getEntityClass(), id);
     }
 
     @Override
@@ -127,6 +129,14 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
     @Override
     public List<T> findByCriteria(DetachedCriteria criteria) {
         return getHibernateTemplate().findByCriteria(criteria);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void flush() {
+        getHibernateTemplate().flush();
     }
 
 }
