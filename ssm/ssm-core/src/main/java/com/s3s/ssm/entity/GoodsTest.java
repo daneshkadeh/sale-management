@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_goods")
-public class Goods extends AbstractBaseIdObject {
+public class GoodsTest extends AbstractBaseIdObject {
     private String name;
     private Double priceBeforeTax;
     private Double tax;

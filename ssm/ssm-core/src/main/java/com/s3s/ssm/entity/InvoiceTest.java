@@ -13,13 +13,13 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_invoice")
-public class Invoice extends AbstractBaseIdObject {
+public class InvoiceTest extends AbstractBaseIdObject {
     private Date createdDate;
     private Integer customerId;
     private Double totalBeforeTax;
     private Double taxTotal;
     private Double totalAfterTax;
-    private List<DetailInvoice> detailInvoices;
+    private List<DetailInvoiceTest> detailInvoices;
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
@@ -72,11 +72,11 @@ public class Invoice extends AbstractBaseIdObject {
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "invoice", fetch = FetchType.EAGER)
-    public List<DetailInvoice> getDetailInvoices() {
+    public List<DetailInvoiceTest> getDetailInvoices() {
         return detailInvoices;
     }
 
-    public void setDetailInvoices(List<DetailInvoice> detailInvoices) {
+    public void setDetailInvoices(List<DetailInvoiceTest> detailInvoices) {
         this.detailInvoices = detailInvoices;
     }
 
