@@ -13,20 +13,21 @@ import com.s3s.ssm.entity.param.Item;
 
 @Entity
 @Table(name = "s_detail_exchange_store")
-public class DetailExchangeStore extends AbstractIdOLObject {
-    private ExchangeStoreForm exchangeStoreForm;
+public class DetailExportStore extends AbstractIdOLObject {
+    private ExportStoreForm exportStoreForm;
     private Item item;
     private Integer amount;
+    private DetailExportStoreStatus status;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "exchangestore_id", nullable = false)
+    @JoinColumn(name = "exportstore_id", nullable = false)
     @NotNull
-    public ExchangeStoreForm getExchangeStoreForm() {
-        return exchangeStoreForm;
+    public ExportStoreForm getExportStoreForm() {
+        return exportStoreForm;
     }
 
-    public void setExchangeStoreForm(ExchangeStoreForm exchangeStoreForm) {
-        this.exchangeStoreForm = exchangeStoreForm;
+    public void setExportStoreForm(ExportStoreForm exportStoreForm) {
+        this.exportStoreForm = exportStoreForm;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)

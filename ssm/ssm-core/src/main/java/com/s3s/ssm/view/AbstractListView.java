@@ -125,6 +125,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * @return all data shown on the view.
      */
     protected List<T> loadData() {
+        // DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
+        // getDaoHelper().getDao(getEntityClass()).findByCriteria(dc, 1, 50);
         return getDaoHelper().getDao(getEntityClass()).findAll();
     }
 
