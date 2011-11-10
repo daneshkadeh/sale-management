@@ -1,4 +1,4 @@
-package com.s3s.ssm.view.component;
+﻿package com.s3s.ssm.view.component;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -23,9 +23,9 @@ import net.miginfocom.swing.MigLayout;
 public class S3sSaleTargetComp extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private static final String[] MONTHS = { "Th�ng 1", "Th�ng 2", "Th�ng 3",
-			"Th�ng 4", "Th�ng 5", "Th�ng 6", "Th�ng 7", "Th�ng 8", "Th�ng 9",
-			"Th�ng 10", "Th�ng 11", "Th�ng 12" };
+	private static final String[] MONTHS = { "Tháng 1", "Tháng 2", "Tháng 3",
+			"Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9",
+			"Tháng 10", "Tháng 11", "Tháng 12" };
 	private Date date;
 	JButton btnPre;
 	JButton btnBack = new JButton(">");
