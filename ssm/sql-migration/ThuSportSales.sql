@@ -585,28 +585,27 @@ CREATE TABLE `s_shipment` (
 
 CREATE INDEX idx_exportstore_id ON s_shipment(exportstore_id);
 
- -- status: OPEN, PAID, CANCELLED. payement_mean: CASH, VISA, CREDIT CARD
-CREATE TABLE `s_payment_invoice` (
+CREATE TABLE `s_payment_type` (
+  `id` int(11) NOT NULL auto_increment,
+  `code` varchar(32) NOT NULL,
+  `name` varchar(128) collate utf8_bin NOT NULL,
+  `content_type` varchar(32) NOT NULL,
+  `is_received` int(1) NOT NULL,
+  `usr_log_i` varchar(32) NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+
+ -- status: OPEN, CLOSED, CANCELLED. payement_mean: CASH, VISA, CREDIT CARD
+CREATE TABLE `s_payment` (
   `id` int(11) NOT NULL auto_increment,
   `invoice_id` int(11) NOT NULL,
-  `money` double NOT NULL default '0',
-  `currency` varchar(3) collate utf8_bin NOT NULL,
-  `status` varchar(32) NOT NULL,
-  `payment_mean` varchar(16) NOT NULL,
-  `usr_log_i` varchar(32) NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
-
-CREATE INDEX idx_invoice_id ON s_payment_invoice(invoice_id);
-
- -- OPEN, PAID, CANCELLED
-CREATE TABLE `s_payment_contact` (
-  `id` int(11) NOT NULL auto_increment,
   `contact_id` int(11) NOT NULL,
+  `payment_type_id` int(11) NOT NULL,
   `money` double NOT NULL default '0',
   `currency` varchar(3) collate utf8_bin NOT NULL,
   `status` varchar(32) NOT NULL,
@@ -619,7 +618,8 @@ CREATE TABLE `s_payment_contact` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
-CREATE INDEX idx_contact_id ON s_payment_contact(contact_id);
+CREATE INDEX idx_invoice_id ON s_payment(invoice_id);
+CREATE INDEX idx_contact_id ON s_payment(contact_id);
 
  -- CUSTOMER (B2B, B2C), SUPPLIER, SUPPORTEE
 CREATE TABLE `s_contact_type` (
