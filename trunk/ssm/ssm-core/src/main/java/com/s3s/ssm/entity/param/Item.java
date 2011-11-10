@@ -33,7 +33,7 @@ public class Item extends AbstractIdOLObject {
     private Set<ItemPrice> listItemPrices = new HashSet<>();
 
     // @ManyToOne
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", nullable = false)
     public Product getProduct() {
         return product;
@@ -75,7 +75,7 @@ public class Item extends AbstractIdOLObject {
     }
 
     // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
     @JoinTable(name = "at_item_uom", joinColumns = { @JoinColumn(name = "item_id") }, inverseJoinColumns = { @JoinColumn(name = "uom_id") })
     public
             List<UnitOfMeasure> getListUom() {
@@ -87,7 +87,7 @@ public class Item extends AbstractIdOLObject {
     }
 
     // @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "item")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "item")
     public Set<ItemPrice> getListItemPrices() {
         return listItemPrices;
     }

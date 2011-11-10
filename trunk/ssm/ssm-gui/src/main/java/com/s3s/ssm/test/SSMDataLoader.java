@@ -19,6 +19,8 @@ import com.s3s.ssm.entity.contact.BankAccount;
 import com.s3s.ssm.entity.contact.Contact;
 import com.s3s.ssm.entity.contact.ContactFamilyType;
 import com.s3s.ssm.entity.contact.ContactType;
+import com.s3s.ssm.entity.finance.Payment;
+import com.s3s.ssm.entity.finance.PaymentType;
 import com.s3s.ssm.entity.param.CurrencyEnum;
 import com.s3s.ssm.entity.param.Good;
 import com.s3s.ssm.entity.param.Item;
@@ -31,10 +33,16 @@ import com.s3s.ssm.entity.param.Store;
 import com.s3s.ssm.entity.param.Supplier;
 import com.s3s.ssm.entity.param.UnitOfMeasure;
 import com.s3s.ssm.entity.param.UomCategory;
+import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.DetailSalesContract;
+import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.sales.ItemOriginPrice;
 import com.s3s.ssm.entity.sales.ItemPrice;
 import com.s3s.ssm.entity.sales.SalesContract;
+import com.s3s.ssm.entity.store.DetailExportStore;
+import com.s3s.ssm.entity.store.DetailImportProduct;
+import com.s3s.ssm.entity.store.ExportStoreForm;
+import com.s3s.ssm.entity.store.ImportProductForm;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
 
@@ -45,6 +53,7 @@ import com.s3s.ssm.util.DaoHelper;
  * @author phamcongbang
  * 
  */
+
 public class SSMDataLoader {
     public static Log s_logger = LogFactory.getLog(SSMDataLoader.class);
     private static final String NIKE_MANUFACTURER = "NIKE";
@@ -81,6 +90,21 @@ public class SSMDataLoader {
     }
 
     private static void cleanDatabase(DaoHelper daoHelper) {
+        daoHelper.getDao(Payment.class).deleteAll(daoHelper.getDao(Payment.class).findAll());
+        daoHelper.getDao(PaymentType.class).deleteAll(daoHelper.getDao(PaymentType.class).findAll());
+
+        daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());
+        daoHelper.getDao(SalesContract.class).deleteAll(daoHelper.getDao(SalesContract.class).findAll());
+
+        daoHelper.getDao(DetailExportStore.class).deleteAll(daoHelper.getDao(DetailExportStore.class).findAll());
+        daoHelper.getDao(ExportStoreForm.class).deleteAll(daoHelper.getDao(ExportStoreForm.class).findAll());
+
+        daoHelper.getDao(DetailImportProduct.class).deleteAll(daoHelper.getDao(DetailImportProduct.class).findAll());
+        daoHelper.getDao(ImportProductForm.class).deleteAll(daoHelper.getDao(ImportProductForm.class).findAll());
+
+        daoHelper.getDao(DetailInvoice.class).deleteAll(daoHelper.getDao(DetailInvoice.class).findAll());
+        daoHelper.getDao(Invoice.class).deleteAll(daoHelper.getDao(Invoice.class).findAll());
+
         daoHelper.getDao(ItemPrice.class).deleteAll(daoHelper.getDao(ItemPrice.class).findAll());
         daoHelper.getDao(ItemOriginPrice.class).deleteAll(daoHelper.getDao(ItemOriginPrice.class).findAll());
         daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());

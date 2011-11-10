@@ -12,7 +12,7 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.param.Item;
 
 @Entity
-@Table(name = "s_detail_exchange_store")
+@Table(name = "s_detail_export_store")
 public class DetailExportStore extends AbstractIdOLObject {
     private ExportStoreForm exportStoreForm;
     private Item item;

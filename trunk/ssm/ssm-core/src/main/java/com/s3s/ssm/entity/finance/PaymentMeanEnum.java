@@ -1,4 +1,4 @@
-package com.s3s.ssm.entity.param;
+package com.s3s.ssm.entity.finance;
 
 /**
  * CASH: the payment is paid by cash. </br> DEBT_TRANSFER: the payment is paid by moving money to debt account of
@@ -8,5 +8,5 @@ package com.s3s.ssm.entity.param;
  * 
  */
 public enum PaymentMeanEnum {
-    CASH, BANK_TRANSFER, VISA, CREDIT_CARD, DEBT_TRANSFER
+    CASH, BANK_TRANSFER, VISA, CREDIT_CARD, DEBT_TRANSFER, VOUCHER
 }
