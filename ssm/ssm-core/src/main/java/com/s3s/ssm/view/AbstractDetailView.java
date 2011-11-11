@@ -141,6 +141,9 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 }
                 ((JFormattedTextField) dataField).setEditable(attribute.isEditable());
                 ((JFormattedTextField) dataField).setColumns(DEFAULT_TEXTFIELD_COLUMN);
+                // ((JFormattedTextField) dataField).setInputVerifier(new NotEmptyValidator((Window) SwingUtilities
+                // .getRoot(this), dataField, "The field must be not empty."));
+
                 dataField.setEnabled(attribute.isEnable());
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
