@@ -22,8 +22,9 @@ public class Payment extends AbstractIdOLObject {
     private Contact contact;
     private PaymentType paymentType;
     private Double money;
-    private CurrencyEnum currency;
+    private CurrencyEnum currency = CurrencyEnum.getDefaultCurrency();
     private PaymentMeanEnum paymentMean;
+    private PaymentStatus status = PaymentStatus.OPEN;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "invoice_id")
@@ -85,5 +86,16 @@ public class Payment extends AbstractIdOLObject {
 
     public void setPaymentMean(PaymentMeanEnum paymentMean) {
         this.paymentMean = paymentMean;
+    }
+
+    @Column(name = "status", nullable = false)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    public PaymentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PaymentStatus status) {
+        this.status = status;
     }
 }

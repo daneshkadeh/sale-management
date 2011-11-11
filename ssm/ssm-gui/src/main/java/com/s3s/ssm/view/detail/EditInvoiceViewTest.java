@@ -14,9 +14,9 @@ import com.s3s.ssm.view.AbstractDetailView;
  * 
  */
 @Deprecated
-public class EditInvoiceView extends AbstractDetailView<InvoiceTest> {
+public class EditInvoiceViewTest extends AbstractDetailView<InvoiceTest> {
 
-    public EditInvoiceView(InvoiceTest entity) {
+    public EditInvoiceViewTest(InvoiceTest entity) {
         super(entity);
     }
 

@@ -20,6 +20,9 @@ import com.s3s.ssm.entity.contact.Contact;
 import com.s3s.ssm.entity.contact.ContactFamilyType;
 import com.s3s.ssm.entity.contact.ContactType;
 import com.s3s.ssm.entity.finance.Payment;
+import com.s3s.ssm.entity.finance.PaymentContentType;
+import com.s3s.ssm.entity.finance.PaymentMeanEnum;
+import com.s3s.ssm.entity.finance.PaymentStatus;
 import com.s3s.ssm.entity.finance.PaymentType;
 import com.s3s.ssm.entity.param.CurrencyEnum;
 import com.s3s.ssm.entity.param.Good;
@@ -36,6 +39,9 @@ import com.s3s.ssm.entity.param.UomCategory;
 import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.DetailSalesContract;
 import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.sales.InvoicePaymentStatus;
+import com.s3s.ssm.entity.sales.InvoiceStatus;
+import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.entity.sales.ItemOriginPrice;
 import com.s3s.ssm.entity.sales.ItemPrice;
 import com.s3s.ssm.entity.sales.SalesContract;
@@ -162,6 +168,87 @@ public class SSMDataLoader {
         Set<ItemPrice> listItemPrices = initItemPrice(daoHelper, listItem, listContact);
         List<ItemOriginPrice> listItemOriginPrices = initItemOriginPrice(daoHelper, listItem, listSupplier);
         List<SalesContract> listSalesContracts = initSalesContracts(daoHelper, listSupplier, listItem);
+        List<Invoice> listInvoice = initInvoice(daoHelper, listItem, listContact);
+        List<Payment> listPayments = initPayment(daoHelper, listInvoice, listContact);
+    }
+
+    private static List<Payment> initPayment(DaoHelper daoHelper, List<Invoice> listInvoice, List<Contact> listContact) {
+        PaymentType paymentType = new PaymentType();
+        paymentType.setCode("SELL_PRODUCT");
+        paymentType.setName("Sell product");
+        paymentType.setContentType(PaymentContentType.RECEIVE_SELL);
+        paymentType.setIsReceived(true);
+        daoHelper.getDao(PaymentType.class).saveOrUpdate(paymentType);
+
+        Payment payment = new Payment();
+        payment.setPaymentType(paymentType);
+        payment.setPaymentMean(PaymentMeanEnum.CASH);
+        payment.setContact(listContact.get(0));
+        payment.setInvoice(listInvoice.get(0));
+        payment.setMoney(10000.0);
+        payment.setStatus(PaymentStatus.CLOSED);
+        daoHelper.getDao(Payment.class).saveOrUpdate(payment);
+        return Arrays.asList(payment);
+    }
+
+    /**
+     * create 2 invoices "0000001" without contact and "0000002" with contact.
+     */
+    private static List<Invoice> initInvoice(DaoHelper daoHelper, List<Item> listItem, List<Contact> listContact) {
+        Invoice invoice1 = new Invoice();
+        invoice1.setContact(null);
+        invoice1.setInvoiceNumber("0000001");
+        invoice1.setCreatedDate(new Date());
+        invoice1.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
+        invoice1.setStatus(InvoiceStatus.OPEN);
+        invoice1.setType(InvoiceType.SALES);
+        invoice1.setMoneyBeforeTax(10000.0);
+        invoice1.setMoneyOfTax(0.0);
+        invoice1.setMoneyAfterTax(10000.0);
+        daoHelper.getDao(Invoice.class).saveOrUpdate(invoice1);
+
+        DetailInvoice detailInvoice = new DetailInvoice();
+        detailInvoice.setInvoice(invoice1);
+        detailInvoice.setItem(listItem.get(0));
+        detailInvoice.setAmount(2);
+        detailInvoice.setPriceBeforeTax(5000.0);
+        detailInvoice.setPriceAfterTax(5000.0);
+        detailInvoice.setMoneyBeforeTax(10000.0);
+        detailInvoice.setMoneyAfterTax(10000.0);
+        daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice);
+
+        Invoice invoice2 = new Invoice();
+        invoice2.setContact(listContact.get(0));
+        invoice2.setInvoiceNumber("0000002");
+        invoice2.setCreatedDate(new Date());
+        invoice2.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
+        invoice2.setStatus(InvoiceStatus.OPEN);
+        invoice2.setType(InvoiceType.SALES);
+        invoice2.setMoneyBeforeTax(22000.0);
+        invoice2.setMoneyOfTax(0.0);
+        invoice2.setMoneyAfterTax(22000.0);
+        daoHelper.getDao(Invoice.class).saveOrUpdate(invoice2);
+
+        DetailInvoice detailInvoice2 = new DetailInvoice();
+        detailInvoice2.setInvoice(invoice2);
+        detailInvoice2.setItem(listItem.get(0));
+        detailInvoice2.setAmount(2);
+        detailInvoice2.setPriceBeforeTax(6000.0);
+        detailInvoice2.setPriceAfterTax(6000.0);
+        detailInvoice2.setMoneyBeforeTax(12000.0);
+        detailInvoice2.setMoneyAfterTax(12000.0);
+        daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice2);
+
+        DetailInvoice detailInvoice3 = new DetailInvoice();
+        detailInvoice3.setInvoice(invoice2);
+        detailInvoice3.setItem(listItem.get(0));
+        detailInvoice3.setAmount(2);
+        detailInvoice3.setPriceBeforeTax(5000.0);
+        detailInvoice3.setPriceAfterTax(5000.0);
+        detailInvoice3.setMoneyBeforeTax(10000.0);
+        detailInvoice3.setMoneyAfterTax(10000.0);
+        daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice3);
+        return Arrays.asList(invoice1, invoice2);
     }
 
     private static Set<ItemPrice> initItemPrice(DaoHelper daoHelper, List<Item> listItem, List<Contact> listContact) {

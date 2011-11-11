@@ -11,11 +11,11 @@ import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractDetailView;
 
-public class EditCustomerView extends AbstractDetailView<CustomerTest> {
+public class EditCustomerViewTest extends AbstractDetailView<CustomerTest> {
     private static final long serialVersionUID = 2202186074068854009L;
     private static final String REF_TEST_MODEL = "0";
 
-    public EditCustomerView(CustomerTest entity) {
+    public EditCustomerViewTest(CustomerTest entity) {
         super(entity);
     }
 

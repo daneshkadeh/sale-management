@@ -502,6 +502,8 @@ CREATE TABLE `s_detail_invoice` (
   `money_of_tax` double NOT NULL default '0',
   `money_after_tax` double NOT NULL default '0',
   `currency` varchar(3) collate utf8_bin NOT NULL,
+  `status` varchar(32) NOT NULL,
+  `detail_invoice_type` varchar(32) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
@@ -510,7 +512,7 @@ CREATE TABLE `s_detail_invoice` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
-CREATE UNIQUE INDEX ui_invoice_item ON s_detail_invoice(invoice_id, item_id);
+CREATE INDEX idx_invoice_item ON s_detail_invoice(invoice_id, item_id);
 CREATE INDEX idx_invoice_id ON s_detail_invoice(invoice_id);
 
 CREATE TABLE `s_export_store_form` (
@@ -600,11 +602,11 @@ CREATE TABLE `s_payment_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 
- -- status: OPEN, CLOSED, CANCELLED. payement_mean: CASH, VISA, CREDIT CARD
+ -- status: OPEN, CLOSED, CANCELLED. payement_mean: CASH, VISA, CREDIT CARD, VOUCHER, BANK
 CREATE TABLE `s_payment` (
   `id` int(11) NOT NULL auto_increment,
-  `invoice_id` int(11) NOT NULL,
-  `contact_id` int(11) NOT NULL,
+  `invoice_id` int(11),
+  `contact_id` int(11),
   `payment_type_id` int(11) NOT NULL,
   `money` double NOT NULL default '0',
   `currency` varchar(3) collate utf8_bin NOT NULL,

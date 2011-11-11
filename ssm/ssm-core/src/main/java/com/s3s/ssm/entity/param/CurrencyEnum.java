@@ -9,5 +9,8 @@ package com.s3s.ssm.entity.param;
  * 
  */
 public enum CurrencyEnum {
-    VND, USD, EUR, AUD, SGD, JPY, CNY
+    VND, USD, EUR, AUD, SGD, JPY, CNY;
+    public static CurrencyEnum getDefaultCurrency() {
+        return VND;
+    }
 }

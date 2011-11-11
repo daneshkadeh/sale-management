@@ -46,9 +46,9 @@ import com.s3s.ssm.view.list.param.ListUnitOfMeasureView;
 import com.s3s.ssm.view.list.param.ListUomCategoryView;
 import com.s3s.ssm.view.security.LoginDialog;
 
-public class MainProgram {
+public class MainProgramTest {
     private static final Dimension WINDOW_MIN_SIZE = new Dimension(400, 300);
-    public static Log s_logger = LogFactory.getLog(MainProgram.class);
+    public static Log s_logger = LogFactory.getLog(MainProgramTest.class);
     private static final String MESSSAGE_FILE = "i18n/messages";
 
     public static void main(String[] args) {

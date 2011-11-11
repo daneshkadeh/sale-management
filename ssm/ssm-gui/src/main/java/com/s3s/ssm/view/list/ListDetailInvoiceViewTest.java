@@ -14,10 +14,10 @@ import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.AbstractCommonListView;
 import com.s3s.ssm.view.AbstractDetailView;
-import com.s3s.ssm.view.detail.EditDetailInvoiceView;
+import com.s3s.ssm.view.detail.EditDetailInvoiceViewTest;
 
 @Deprecated
-public class ListDetailInvoiceView extends AbstractCommonListView<DetailInvoiceTest> {
+public class ListDetailInvoiceViewTest extends AbstractCommonListView<DetailInvoiceTest> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
@@ -57,7 +57,7 @@ public class ListDetailInvoiceView extends AbstractCommonListView<DetailInvoiceT
     @Override
     protected Class<? extends AbstractDetailView<DetailInvoiceTest>> getDetailViewClass() {
         // TODO Auto-generated method stub
-        return EditDetailInvoiceView.class;
+        return EditDetailInvoiceViewTest.class;
     }
 
 }

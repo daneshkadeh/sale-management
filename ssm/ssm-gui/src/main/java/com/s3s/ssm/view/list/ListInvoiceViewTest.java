@@ -7,7 +7,7 @@ import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
 import com.s3s.ssm.view.AbstractListView;
-import com.s3s.ssm.view.detail.EditMasterInvoiceView;
+import com.s3s.ssm.view.detail.EditMasterInvoiceViewTest;
 
 /**
  * Show list of invoices.
@@ -15,7 +15,7 @@ import com.s3s.ssm.view.detail.EditMasterInvoiceView;
  * @author phamcongbang
  * 
  */
-public class ListInvoiceView extends AbstractListView<InvoiceTest> {
+public class ListInvoiceViewTest extends AbstractListView<InvoiceTest> {
     private static final long serialVersionUID = -9117198848678726047L;
 
     @Override
@@ -33,7 +33,7 @@ public class ListInvoiceView extends AbstractListView<InvoiceTest> {
 
     @Override
     protected Class<? extends AbstractDetailView<InvoiceTest>> getDetailViewClass() {
-        return EditMasterInvoiceView.class;
+        return EditMasterInvoiceViewTest.class;
     }
 
 }

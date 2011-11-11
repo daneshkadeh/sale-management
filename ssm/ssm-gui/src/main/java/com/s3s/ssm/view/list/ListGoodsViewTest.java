@@ -16,7 +16,7 @@ import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
 import com.s3s.ssm.view.AbstractSearchListView;
-import com.s3s.ssm.view.detail.EditGoodsView;
+import com.s3s.ssm.view.detail.EditGoodsViewTest;
 
 /**
  * The common list screen of {@link GoodsTest} entity.
@@ -24,7 +24,7 @@ import com.s3s.ssm.view.detail.EditGoodsView;
  * @author Phan Hong Phuc
  * 
  */
-public class ListGoodsView extends AbstractSearchListView<GoodsTest> {
+public class ListGoodsViewTest extends AbstractSearchListView<GoodsTest> {
     private static final long serialVersionUID = -8034885109793508234L;
 
     private JTextField txtGoodNameCriteria;
@@ -51,7 +51,7 @@ public class ListGoodsView extends AbstractSearchListView<GoodsTest> {
 
     @Override
     protected Class<? extends AbstractDetailView<GoodsTest>> getDetailViewClass() {
-        return EditGoodsView.class;
+        return EditGoodsViewTest.class;
     }
 
     @Override
