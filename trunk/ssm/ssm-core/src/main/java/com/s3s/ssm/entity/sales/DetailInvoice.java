@@ -21,12 +21,14 @@ public class DetailInvoice extends AbstractIdOLObject {
     private Item item;
     private Integer amount;
     private Double priceBeforeTax;
-    private Double priceOfTax;
+    private Double priceOfTax = 0.0;
     private Double priceAfterTax;
     private Double moneyBeforeTax;
-    private Double moneyOfTax;
+    private Double moneyOfTax = 0.0;
     private Double moneyAfterTax;
-    private CurrencyEnum currency;
+    private CurrencyEnum currency = CurrencyEnum.getDefaultCurrency();
+    private DetailInvoiceType type = DetailInvoiceType.SALES;
+    private DetailInvoiceStatus status = DetailInvoiceStatus.OPEN;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "invoice_id", nullable = false)
@@ -129,6 +131,28 @@ public class DetailInvoice extends AbstractIdOLObject {
 
     public void setCurrency(CurrencyEnum currency) {
         this.currency = currency;
+    }
+
+    @Column(name = "detail_invoice_type", nullable = false)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    public DetailInvoiceType getType() {
+        return type;
+    }
+
+    public void setType(DetailInvoiceType type) {
+        this.type = type;
+    }
+
+    @Column(name = "status", nullable = false)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    public DetailInvoiceStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(DetailInvoiceStatus status) {
+        this.status = status;
     }
 
 }

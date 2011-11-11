@@ -1,7 +1,10 @@
 package com.s3s.ssm.entity.sales;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -24,11 +28,12 @@ public class Invoice extends AbstractIdOLObject {
     private Contact contact;
     private Date createdDate;
     private Double moneyBeforeTax;
-    private Double moneyOfTax;
+    private Double moneyOfTax = 0.0;
     private Double moneyAfterTax;
-    private CurrencyEnum currency;
-    private InvoiceStatus status;
-    private InvoicePaymentStatus paymentStatus;
+    private CurrencyEnum currency = CurrencyEnum.getDefaultCurrency();
+    private InvoiceStatus status = InvoiceStatus.OPEN;
+    private InvoicePaymentStatus paymentStatus = InvoicePaymentStatus.NO_PAYMENT;
+    private Set<DetailInvoice> listDetailInvoices = new HashSet<>();
 
     @Column(name = "invoice_number", nullable = false, length = 32)
     @NotNull
@@ -36,6 +41,9 @@ public class Invoice extends AbstractIdOLObject {
         return invoiceNumber;
     }
 
+    /**
+     * InvoiceNumber is generated from a sequence table in database. (or built from invoiceId)
+     */
     public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
     }
@@ -133,4 +141,14 @@ public class Invoice extends AbstractIdOLObject {
     public void setPaymentStatus(InvoicePaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "invoice")
+    public Set<DetailInvoice> getListDetailInvoices() {
+        return listDetailInvoices;
+    }
+
+    public void setListDetailInvoices(Set<DetailInvoice> listDetailInvoices) {
+        this.listDetailInvoices = listDetailInvoices;
+    }
+
 }

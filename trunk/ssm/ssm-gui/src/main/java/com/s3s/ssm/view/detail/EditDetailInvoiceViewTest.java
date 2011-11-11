@@ -6,10 +6,10 @@ import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
 
-public class EditDetailInvoiceView extends AbstractDetailView<DetailInvoiceTest> {
+public class EditDetailInvoiceViewTest extends AbstractDetailView<DetailInvoiceTest> {
     private static final long serialVersionUID = 4336242795515386078L;
 
-    public EditDetailInvoiceView(DetailInvoiceTest entity) {
+    public EditDetailInvoiceViewTest(DetailInvoiceTest entity) {
         super(entity);
     }
 

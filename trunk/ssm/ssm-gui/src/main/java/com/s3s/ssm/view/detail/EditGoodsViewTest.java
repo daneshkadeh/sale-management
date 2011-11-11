@@ -21,11 +21,11 @@ import com.s3s.ssm.view.AbstractDetailView;
  * @author Phan Hong Phuc
  * 
  */
-public class EditGoodsView extends AbstractDetailView<GoodsTest> {
+public class EditGoodsViewTest extends AbstractDetailView<GoodsTest> {
     private static final long serialVersionUID = 8247461633468843994L;
     private static final String TAX_REF_ID = "0";
 
-    public EditGoodsView(GoodsTest entity) {
+    public EditGoodsViewTest(GoodsTest entity) {
         super(entity);
     }
 

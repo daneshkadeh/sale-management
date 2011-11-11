@@ -7,9 +7,9 @@ import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
 import com.s3s.ssm.view.AbstractListView;
-import com.s3s.ssm.view.detail.EditCustomerView;
+import com.s3s.ssm.view.detail.EditCustomerViewTest;
 
-public class ListCustomerView extends AbstractListView<CustomerTest> {
+public class ListCustomerViewTest extends AbstractListView<CustomerTest> {
     private static final long serialVersionUID = -8565742036667887785L;
 
     @Override
@@ -25,6 +25,6 @@ public class ListCustomerView extends AbstractListView<CustomerTest> {
 
     @Override
     protected Class<? extends AbstractDetailView<CustomerTest>> getDetailViewClass() {
-        return EditCustomerView.class;
+        return EditCustomerViewTest.class;
     }
 }

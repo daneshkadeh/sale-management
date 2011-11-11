@@ -17,7 +17,7 @@ import com.s3s.ssm.view.AbstractMasterDetailView;
  * @author phamcongbang
  * 
  */
-public class EditMasterInvoiceView extends AbstractMasterDetailView<InvoiceTest, DetailInvoiceTest> {
+public class EditMasterInvoiceViewTest extends AbstractMasterDetailView<InvoiceTest, DetailInvoiceTest> {
     private static final long serialVersionUID = -8901891656724849010L;
 
     /**
@@ -25,7 +25,7 @@ public class EditMasterInvoiceView extends AbstractMasterDetailView<InvoiceTest,
      * 
      * @param entity
      */
-    public EditMasterInvoiceView(InvoiceTest entity) {
+    public EditMasterInvoiceViewTest(InvoiceTest entity) {
         super(entity);
     }
 
@@ -70,6 +70,6 @@ public class EditMasterInvoiceView extends AbstractMasterDetailView<InvoiceTest,
 
     @Override
     protected Class<? extends AbstractDetailView<DetailInvoiceTest>> getChildDetailViewClass() {
-        return EditDetailInvoiceView.class;
+        return EditDetailInvoiceViewTest.class;
     }
 }
