@@ -262,6 +262,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             if (entity == null) {
                 entity = entityClass.newInstance();
             }
+
+            // TODO This call requires sub class override Constructor method! It's not good.
             AbstractDetailView<T> detailView = detailViewClass.getConstructor(entityClass).newInstance(entity);
 
             // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).
@@ -277,8 +279,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             dialog.setModalityType(ModalityType.APPLICATION_MODAL);
             dialog.setVisible(true);
         } catch (Exception ex) {
-            logger.error(ex.getCause());
-            logger.error(ex.getMessage());
+            logger.error(ex.getMessage(), ex);
             throw new RuntimeException("There are problems when init the detail view.");
         }
     }

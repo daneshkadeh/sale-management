@@ -80,6 +80,22 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
      */
     public AbstractDetailView(T entity) {
         this.entity = entity;
+        contructView(entity);
+    }
+
+    // public AbstractDetailView() {
+    // if (entity == null) {
+    // try {
+    // entity = getEntityClass().newInstance();
+    // } catch (Exception e) {
+    // throw new RuntimeException(e);
+    // }
+    //
+    // }
+    // contructView(entity);
+    // }
+
+    private void contructView(T entity) {
         initialPresentationView(detailDataModel, entity);
         setReferenceDataModel(refDataModel, entity);
         try {

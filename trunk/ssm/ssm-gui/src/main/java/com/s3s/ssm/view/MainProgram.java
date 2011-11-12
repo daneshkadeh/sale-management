@@ -42,6 +42,7 @@ import com.s3s.ssm.view.list.ListCustomerViewTest;
 import com.s3s.ssm.view.list.ListGoodsViewTest;
 import com.s3s.ssm.view.list.ListInvoiceViewTest;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
+import com.s3s.ssm.view.list.param.ListProductView;
 import com.s3s.ssm.view.list.param.ListUnitOfMeasureView;
 import com.s3s.ssm.view.list.param.ListUomCategoryView;
 import com.s3s.ssm.view.security.LoginDialog;
@@ -107,9 +108,10 @@ public class MainProgram {
 
     private static void addComponentsToTest(Container contentPane) {
 
-        // Just demo. In production we should not init we user still not request open the view.
+        // Just demo. In production we should not init when user still does not request open the view.
         final ListCustomerViewTest customerListView = new ListCustomerViewTest();
         final ListGoodsViewTest goodListView = new ListGoodsViewTest();
+        final ListProductView productListView = new ListProductView();
         final JPanel componentPanel = createDemoComponentPanel();
         final JScrollPane scrollPane = new JScrollPane(componentPanel);
         final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
@@ -119,10 +121,12 @@ public class MainProgram {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Sale management");
         DefaultMutableTreeNode userEntry = new DefaultMutableTreeNode("Customer");
         DefaultMutableTreeNode goodEntry = new DefaultMutableTreeNode("Good");
+        DefaultMutableTreeNode productEntry = new DefaultMutableTreeNode("Product");
         DefaultMutableTreeNode demoEntry = new DefaultMutableTreeNode("Component demo");
         rootNode.add(userEntry);
         rootNode.add(goodEntry);
         rootNode.add(demoEntry);
+        rootNode.add(productEntry);
         final JTree treeMenu = new JTree(rootNode);
         treeMenu.addTreeSelectionListener(new TreeSelectionListener() {
 
@@ -146,6 +150,8 @@ public class MainProgram {
                     scrollPane.setViewportView(goodListView);
                 } else if (nodeInfo.equals("Component demo")) {
                     scrollPane.setViewportView(componentPanel);
+                } else if (nodeInfo.equals("Product")) {
+                    scrollPane.setViewportView(productListView);
                 }
 
             }
