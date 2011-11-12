@@ -1,5 +1,6 @@
 package com.s3s.ssm.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class InvoiceTest extends AbstractBaseIdObject {
     private Double totalBeforeTax;
     private Double taxTotal;
     private Double totalAfterTax;
-    private List<DetailInvoiceTest> detailInvoices;
+    private List<DetailInvoiceTest> detailInvoices = new ArrayList<>();
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
