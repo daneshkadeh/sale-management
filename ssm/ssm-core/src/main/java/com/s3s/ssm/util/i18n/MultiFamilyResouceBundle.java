@@ -12,8 +12,8 @@ public class MultiFamilyResouceBundle {
 
     /**
      * Load and store the resouces for each family according to the current locale. Note that the order of the resource
-     * in the list is counted for deciding the priority. The later the resouce is added into the list, the higher is its
-     * priority.
+     * in the list is counted for deciding the priority. The later the resource is added into the list, the higher is
+     * its priority.
      * 
      * The message of FW is only loaded first.
      * 
@@ -57,6 +57,7 @@ public class MultiFamilyResouceBundle {
             }
         }
 
+        // finally, could not find out any message, return key.
         return key;
     }
 }

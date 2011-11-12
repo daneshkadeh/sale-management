@@ -49,7 +49,9 @@ import com.s3s.ssm.view.security.LoginDialog;
 public class MainProgram {
     private static final Dimension WINDOW_MIN_SIZE = new Dimension(400, 300);
     public static Log s_logger = LogFactory.getLog(MainProgram.class);
-    private static final String MESSSAGE_FILE = "i18n/messages";
+    private static final String[] MESSSAGE_FILES = new String[] { "i18n/messages", "i18n/param_messages",
+            "i18n/finance_messages", "i18n/sales_messages", "i18n/shipment_messages", "i18n/contact_messages",
+            "i18n/store_messages", "i18n/supplychain_messages", "i18n/bi_messages" };
 
     public static void main(String[] args) {
         // Not find solution to get class path from ssm-core.
@@ -59,7 +61,7 @@ public class MainProgram {
         ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
         ConfigProvider configProvider = ConfigProvider.getInstance();
         ControlConfigUtils.init();
-        ControlConfigUtils.setLabelMessageBundle(Locale.FRENCH, MESSSAGE_FILE);
+        ControlConfigUtils.setLabelMessageBundle(Locale.FRENCH, MESSSAGE_FILES);
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's GUI.
         SwingUtilities.invokeLater(new Runnable() {
