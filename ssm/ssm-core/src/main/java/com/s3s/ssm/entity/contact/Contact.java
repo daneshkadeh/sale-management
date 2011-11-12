@@ -1,9 +1,15 @@
 package com.s3s.ssm.entity.contact;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -22,6 +28,7 @@ public class Contact extends AbstractCodeOLObject {
     private String taxCode;
     private BankAccount bankAccount;
     private Long maximumDayDebt;
+    private Set<ContactShop> listShops = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "contact_type_id", nullable = false)
@@ -114,6 +121,15 @@ public class Contact extends AbstractCodeOLObject {
 
     public void setMaximumDayDebt(Long maximumDayDebt) {
         this.maximumDayDebt = maximumDayDebt;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "contact")
+    public Set<ContactShop> getListShops() {
+        return listShops;
+    }
+
+    public void setListShops(Set<ContactShop> listShops) {
+        this.listShops = listShops;
     }
 
 }

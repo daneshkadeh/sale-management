@@ -73,7 +73,6 @@ public class Product extends AbstractCodeOLObject {
     }
 
     @Column(name = "uploadfile_id", length = 128)
-    @NotNull
     public Long getUploadFileId() {
         return uploadFileId;
     }

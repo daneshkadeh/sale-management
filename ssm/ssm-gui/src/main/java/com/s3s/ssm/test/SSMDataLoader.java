@@ -18,14 +18,15 @@ import com.s3s.ssm.entity.contact.Bank;
 import com.s3s.ssm.entity.contact.BankAccount;
 import com.s3s.ssm.entity.contact.Contact;
 import com.s3s.ssm.entity.contact.ContactFamilyType;
+import com.s3s.ssm.entity.contact.ContactShop;
 import com.s3s.ssm.entity.contact.ContactType;
 import com.s3s.ssm.entity.finance.Payment;
 import com.s3s.ssm.entity.finance.PaymentContentType;
 import com.s3s.ssm.entity.finance.PaymentMeanEnum;
 import com.s3s.ssm.entity.finance.PaymentStatus;
 import com.s3s.ssm.entity.finance.PaymentType;
-import com.s3s.ssm.entity.param.CurrencyEnum;
 import com.s3s.ssm.entity.param.Article;
+import com.s3s.ssm.entity.param.CurrencyEnum;
 import com.s3s.ssm.entity.param.Item;
 import com.s3s.ssm.entity.param.Manufacturer;
 import com.s3s.ssm.entity.param.Operator;
@@ -367,6 +368,16 @@ public class SSMDataLoader {
         contact.setMaximumDayDebt(100L);
 
         daoHelper.getDao(Contact.class).saveOrUpdate(contact);
+
+        ContactShop shop = new ContactShop();
+        shop.setCode("GIAY_SO_1");
+        shop.setName("Cua hang giay so 1");
+        shop.setContact(contact);
+        shop.setAddress("123 Bui vien");
+        shop.setFixPhone("0909000000");
+        shop.setRemark("Mo cua 8h-21h");
+        daoHelper.getDao(ContactShop.class).saveOrUpdate(shop);
+
         return Arrays.asList(contact);
     }
 

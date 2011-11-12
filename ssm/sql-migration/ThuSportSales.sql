@@ -662,6 +662,28 @@ CREATE TABLE `s_contact` (
 
 CREATE UNIQUE INDEX ui_code ON s_contact(code);
 
+CREATE TABLE `s_contact_shop` (
+  `id` int(11) NOT NULL auto_increment,
+  `code` varchar(32) NOT NULL,
+  `name` varchar(128) NOT NULL collate utf8_bin,
+  `contact_id` int(11) NOT NULL,
+  `address` varchar(256) collate utf8_bin,
+  `phone` varchar(32) collate utf8_bin,
+  `fix_phone` varchar(32) collate utf8_bin,
+  `fax` varchar(32) collate utf8_bin,
+  `email` varchar(64) collate utf8_bin,
+  `remark` varchar(256) collate utf8_bin,
+  `usr_log_i` varchar(32) NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE UNIQUE INDEX ui_code ON s_contact_shop(code);
+CREATE INDEX idx_contact_id ON s_contact_shop(contact_id);
+
 CREATE TABLE `s_contact_debt` (
   `id` int(11) NOT NULL auto_increment,
   `contact_id` int(11) NOT NULL,

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -20,6 +21,14 @@ public class ReferenceDataModel {
     private final Map<String, ReferenceData<?>> refDataListMap = new HashMap<>();
 
     public void putRefDataList(String refId, ReferenceData<?> refData) {
+        refDataListMap.put(refId, refData);
+    }
+
+    public void putRefDataList(String refId, List<?> values, ListCellRenderer<?> renderer) {
+        if (renderer == null) {
+            renderer = new DefaultListCellRenderer();
+        }
+        ReferenceData refData = new ReferenceData(values, renderer);
         refDataListMap.put(refId, refData);
     }
 
