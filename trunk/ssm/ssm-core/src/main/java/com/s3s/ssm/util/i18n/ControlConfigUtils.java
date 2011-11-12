@@ -241,20 +241,21 @@ public class ControlConfigUtils {
         String result = key;
         try {
             String text = s_messages.getString(key);
-            // text = StringControl.completeString(text, mesgPara);
+            if (text == null) {
+                return null;
+            }
+
             text = completeString(text, mesgPara);
 
             result = text;
-            if (text != null) {
-                int pos = findSeparator(text, TOOLTIP_CHAR);
-                if (pos >= 0) {
-                    result = text.substring(0, pos);
-                }
-                result = deleteSingleChar(result, MNEMONIC_CHAR);
-                result = result.replaceAll("" + TOOLTIP_CHAR + TOOLTIP_CHAR, "" + TOOLTIP_CHAR);
-                result = result.replaceAll("" + MNEMONIC_CHAR + MNEMONIC_CHAR, "" + MNEMONIC_CHAR);
-
+            int pos = findSeparator(text, TOOLTIP_CHAR);
+            if (pos >= 0) {
+                result = text.substring(0, pos);
             }
+            result = deleteSingleChar(result, MNEMONIC_CHAR);
+            result = result.replaceAll("" + TOOLTIP_CHAR + TOOLTIP_CHAR, "" + TOOLTIP_CHAR);
+            result = result.replaceAll("" + MNEMONIC_CHAR + MNEMONIC_CHAR, "" + MNEMONIC_CHAR);
+
         } catch (Exception ex) {
             // nothing
         }

@@ -3,6 +3,7 @@ package com.s3s.ssm.util.i18n;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
@@ -53,12 +54,13 @@ public class Utf8ResourceBundle {
         protected Object handleGetObject(String key) {
             String value = (String) bundle.handleGetObject(key);
             try {
-                return new String(value.getBytes("ISO-8859-1"), "UTF-8");
+                if (value != null) {
+                    return new String(value.getBytes("ISO-8859-1"), "UTF-8");
+                }
+                throw new MissingResourceException("Could not find out key", "string", key);
             } catch (UnsupportedEncodingException e) {
-                // Shouldn't fail - but should we still add logging message?
-                return null;
+                throw new MissingResourceException("Could not find out key", "string", key);
             }
         }
-
     }
 }
