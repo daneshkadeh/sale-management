@@ -25,7 +25,7 @@ import com.s3s.ssm.entity.finance.PaymentMeanEnum;
 import com.s3s.ssm.entity.finance.PaymentStatus;
 import com.s3s.ssm.entity.finance.PaymentType;
 import com.s3s.ssm.entity.param.CurrencyEnum;
-import com.s3s.ssm.entity.param.Good;
+import com.s3s.ssm.entity.param.Article;
 import com.s3s.ssm.entity.param.Item;
 import com.s3s.ssm.entity.param.Manufacturer;
 import com.s3s.ssm.entity.param.Operator;
@@ -116,7 +116,7 @@ public class SSMDataLoader {
         daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());
         daoHelper.getDao(SalesContract.class).deleteAll(daoHelper.getDao(SalesContract.class).findAll());
 
-        daoHelper.getDao(Good.class).deleteAll(daoHelper.getDao(Good.class).findAll());
+        daoHelper.getDao(Article.class).deleteAll(daoHelper.getDao(Article.class).findAll());
         daoHelper.getDao(Item.class).deleteAll(daoHelper.getDao(Item.class).findAll());
 
         daoHelper.getDao(Product.class).deleteAll(daoHelper.getDao(Product.class).findAll());
@@ -164,7 +164,7 @@ public class SSMDataLoader {
         List<Contact> listContact = initContact(daoHelper, listBankAccount);
         List<Supplier> listSupplier = initSupplier(daoHelper, listContact, listBankAccount);
         List<Store> listStore = initStore(daoHelper, listOperator);
-        List<Good> listGoods = initGood(daoHelper, listStore, listItem);
+        List<Article> listGoods = initGood(daoHelper, listStore, listItem);
         Set<ItemPrice> listItemPrices = initItemPrice(daoHelper, listItem, listContact);
         List<ItemOriginPrice> listItemOriginPrices = initItemOriginPrice(daoHelper, listItem, listSupplier);
         List<SalesContract> listSalesContracts = initSalesContracts(daoHelper, listSupplier, listItem);
@@ -296,13 +296,13 @@ public class SSMDataLoader {
         return Arrays.asList(salesContract);
     }
 
-    private static List<Good> initGood(DaoHelper daoHelper, List<Store> listStore, List<Item> listItem) {
-        Good good = new Good();
+    private static List<Article> initGood(DaoHelper daoHelper, List<Store> listStore, List<Item> listItem) {
+        Article good = new Article();
         good.setBarcode("12345678910");
         good.setItem(listItem.get(0));
         good.setStore(listStore.get(0));
         good.setFirstMaintainDate(DateTime.now().plusMonths(6).toDate());
-        daoHelper.getDao(Good.class).saveOrUpdate(good);
+        daoHelper.getDao(Article.class).saveOrUpdate(good);
         return Arrays.asList(good);
     }
 

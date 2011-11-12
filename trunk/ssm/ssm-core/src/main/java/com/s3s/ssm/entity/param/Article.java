@@ -12,8 +12,8 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 
 @Entity
-@Table(name = "s_good")
-public class Good extends AbstractIdOLObject {
+@Table(name = "s_article")
+public class Article extends AbstractIdOLObject {
     private Item item;
     private String barcode;
     private Date firstMaintainDate;
