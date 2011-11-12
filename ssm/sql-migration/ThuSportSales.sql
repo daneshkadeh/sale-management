@@ -51,8 +51,8 @@ CREATE TABLE `s_item` (
 
 CREATE INDEX idx_product_id ON s_item(product_id);
 
--- Good is a idenfied item (eg. 1 t-shirt is a good)
-CREATE TABLE `s_good` (
+-- Article is a idenfied item (eg. 1 t-shirt is a article)
+CREATE TABLE `s_article` (
   `id` int(11) NOT NULL auto_increment,
   `item_id` int(11) NOT NULL,
   `barcode` varchar(32),
@@ -67,8 +67,8 @@ CREATE TABLE `s_good` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
-CREATE UNIQUE INDEX ui_barcode ON s_good(barcode);
-CREATE INDEX idx_item_id ON s_good(item_id);
+CREATE UNIQUE INDEX ui_barcode ON s_article(barcode);
+CREATE INDEX idx_item_id ON s_article(item_id);
 
 CREATE TABLE `at_item_uom` (
   `item_id` int(11) NOT NULL,
@@ -720,7 +720,7 @@ CREATE INDEX idx_item_id ON s_coupon_item(item_id);
 
 CREATE TABLE `s_warranty_form` (
   `id` int(11) NOT NULL auto_increment,
-  `good_id` int(11) NOT NULL,
+  `article_id` int(11) NOT NULL,
   `contact_id` int(11) NOT NULL,
   `number_of_month` int(11) NOT NULL,
   `start_date` datetime NOT NULL,
@@ -733,7 +733,7 @@ CREATE TABLE `s_warranty_form` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
-CREATE UNIQUE INDEX ui_good_id ON s_warranty_form(good_id);
+CREATE UNIQUE INDEX ui_article_id ON s_warranty_form(article_id);
 
 CREATE TABLE `s_detail_warranty` (
   `id` int(11) NOT NULL auto_increment,
