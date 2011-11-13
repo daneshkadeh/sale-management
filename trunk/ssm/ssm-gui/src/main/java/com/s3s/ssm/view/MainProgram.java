@@ -37,10 +37,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.S3sImageChooser;
+import com.s3s.ssm.view.component.S3sPagingSelector;
 import com.s3s.ssm.view.component.S3sRadioButtonsGroup;
 import com.s3s.ssm.view.list.ListCustomerViewTest;
 import com.s3s.ssm.view.list.ListGoodsViewTest;
 import com.s3s.ssm.view.list.ListInvoiceViewTest;
+import com.s3s.ssm.view.list.contact.ListBankView;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
 import com.s3s.ssm.view.list.param.ListUnitOfMeasureView;
 import com.s3s.ssm.view.list.param.ListUomCategoryView;
@@ -112,6 +114,41 @@ public class MainProgram {
         splitPane.setOneTouchExpandable(true);
         splitPane.setRightComponent(scrollPane);
 
+        final JTree treeMenu = createTreeMenu();
+        treeMenu.addTreeSelectionListener(new TreeSelectionListener() {
+            // The views of program which should not init at the begin when start program -> performance.
+            private ListBankView listBankView;
+
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                // Returns the last path element of the selection.
+                // This method is useful only when the selection model allows a single selection.
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeMenu.getLastSelectedPathComponent();
+
+                if (node == null) {
+                    // Nothing is selected.
+                    return;
+                }
+
+                String nodeInfo = (String) node.getUserObject();
+                if (nodeInfo.equals("Bank")) {
+                    if (listBankView == null) {
+                        listBankView = new ListBankView();
+                    }
+                    scrollPane.setViewportView(listBankView);
+                }
+
+            }
+        });
+
+        JScrollPane treeMenuScrollPane = new JScrollPane(treeMenu);
+
+        splitPane.setLeftComponent(treeMenuScrollPane);
+
+        contentPane.add(splitPane);
+    }
+
+    private static JTree createTreeMenu() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Sale management");
 
         // User management
@@ -151,7 +188,7 @@ public class MainProgram {
         root.add(bankEntry);
 
         // Currency management
-        DefaultMutableTreeNode currencyManagementEntry = new DefaultMutableTreeNode("Bank");
+        DefaultMutableTreeNode currencyManagementEntry = new DefaultMutableTreeNode("Currency management");
         DefaultMutableTreeNode currenciesNode = new DefaultMutableTreeNode("Currencies");
         DefaultMutableTreeNode exchangeRateNode = new DefaultMutableTreeNode("Exchange rate");
         root.add(currencyManagementEntry);
@@ -265,31 +302,7 @@ public class MainProgram {
         reportEntry.add(thongKeDoanhThuChiPhiNode);
 
         final JTree treeMenu = new JTree(root);
-        treeMenu.addTreeSelectionListener(new TreeSelectionListener() {
-
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                // Returns the last path element of the selection.
-                // This method is useful only when the selection model allows a single selection.
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeMenu.getLastSelectedPathComponent();
-
-                if (node == null) {
-                    // Nothing is selected.
-                    return;
-                }
-
-                String nodeInfo = (String) node.getUserObject();
-                if (nodeInfo.equals("Customer")) {
-                }
-
-            }
-        });
-
-        JScrollPane treeMenuScrollPane = new JScrollPane(treeMenu);
-
-        splitPane.setLeftComponent(treeMenuScrollPane);
-
-        contentPane.add(splitPane);
+        return treeMenu;
     }
 
     private static JPanel createDemoComponentPanel() {
@@ -298,6 +311,8 @@ public class MainProgram {
         componentPanel.add(new S3sImageChooser());
         componentPanel.add(new JLabel("Radio button group"), "top");
         componentPanel.add(new S3sRadioButtonsGroup<>(Arrays.asList("Table", "Chair", "Ruler")));
+        componentPanel.add(new JLabel("Paging selector"), "top");
+        componentPanel.add(new S3sPagingSelector(10));
         return componentPanel;
     }
 
