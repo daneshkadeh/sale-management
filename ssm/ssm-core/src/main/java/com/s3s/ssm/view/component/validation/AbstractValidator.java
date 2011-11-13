@@ -105,8 +105,7 @@ public abstract class AbstractValidator extends InputVerifier implements KeyList
             popup.setLocationRelativeTo(c);
             point = popup.getLocation();
             cDim = c.getSize();
-            // popup.setLocation(point.x - (int) cDim.getWidth() / 2, point.y + (int) cDim.getHeight() / 2);
-            popup.setLocation(20, 20);
+            popup.setLocation(point.x - (int) cDim.getWidth() / 2, point.y + (int) cDim.getHeight() / 2);
             popup.pack();
             popup.setVisible(true);
             return false;

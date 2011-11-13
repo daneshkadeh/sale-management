@@ -298,9 +298,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     /**
      * Model support for table can be hide rows. The supported methods:</br> <code>hideRows()</code> and
      * <code>showAllRows()</code>
-     * 
-     * @author Phan Hong Phuc
-     * 
      */
     public class AdvanceTableModel extends AbstractTableModel {
         private static final long serialVersionUID = -4720974982417224609L;
@@ -523,7 +520,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     protected void refreshData() {
         entities.removeAll(entities);
         entities.addAll(loadData());
-        // fireTableDataChanged to rerender the table.
+        // fireTableDataChanged to re-render the table.
         ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
         ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
     }
