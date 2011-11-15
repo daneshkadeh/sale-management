@@ -43,7 +43,7 @@ public class ListGoodsViewTest extends AbstractSearchListView<GoodsTest> {
     }
 
     @Override
-    protected List<GoodsTest> loadData(int pageNumber) {
+    protected List<GoodsTest> loadData() {
         DetachedCriteria dc = getDaoHelper().getDao(GoodsTest.class).getCriteria();
         dc.add(Restrictions.like("name", txtGoodNameCriteria.getText(), MatchMode.ANYWHERE));
         return getDaoHelper().getDao(GoodsTest.class).findByCriteria(dc);

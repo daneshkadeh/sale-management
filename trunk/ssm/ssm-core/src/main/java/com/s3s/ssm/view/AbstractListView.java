@@ -41,40 +41,25 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.criterion.DetachedCriteria;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 
-import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.component.S3sPageChangeListener;
-import com.s3s.ssm.view.component.S3sPagingNavigator;
 
 /**
  * This is an abstract view for list entities.
- * 
- * <p>
- * 
- * The list supports break page function with the follow methods:</br>
- * <ul>
- * <li> {@link #loadData(int)}
- * <li>{@link #getPageSize()}
- * </ul>
- * Note: when the data in current page is added or removed, the page size is not keep constantly. It's just
- * re-adjustment when we change the pageNumber.
  * 
  * @author phamcongbang
  * @author Phan Hong Phuc
  * 
  * @param <T>
  */
-public abstract class AbstractListView<T extends AbstractBaseIdObject> extends AbstractView implements
-        S3sPageChangeListener {
+public abstract class AbstractListView<T extends AbstractBaseIdObject> extends AbstractView {
     private static final long serialVersionUID = -1311942671249671111L;
     private static final String ADD_ACTION_KEY = "addAction";
     private static final Color HIGHLIGHT_ROW_COLOR = new Color(97, 111, 231);
@@ -83,7 +68,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     private JXTable tblListEntities;
     private JXTable tblFooter;
-    private S3sPagingNavigator pagingNavigator;
 
     private Class<? extends AbstractBaseIdObject> parentClass;
     private Long parentId;
@@ -138,16 +122,10 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames);
 
     /**
-     * Load the data for the particular page which having pageNumber currently.
-     * 
-     * @param pageNumber
-     *            the number of page, range from 1 to number of row in database.
      * @return all data shown on the view.
      */
-    protected List<T> loadData(int pageNumber) {
-        int firstIndex = (pageNumber - 1) * getPageSize();
-        DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
-        return getDaoHelper().getDao(getEntityClass()).findByCriteria(dc, firstIndex, getPageSize());
+    protected List<T> loadData() {
+        return getDaoHelper().getDao(getEntityClass()).findAll();
     }
 
     /**
@@ -160,9 +138,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     protected void addComponents() {
-        // ///////////////////// Paging navigator ///////////////////////////////
-        pagingNavigator = new S3sPagingNavigator(calculateTotalPages());
-        pagingNavigator.addPageChangeListener(this);
 
         // ///////////////// Init main table ////////////////////////////////
         tblListEntities = new JXTable();
@@ -236,28 +211,13 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             this.add(footerScrollpane, "grow");
         }
 
-        this.add(pagingNavigator);
         // //////////////////// Button panel /////////////////////////////////
         JPanel pnlButton = createButtonPanel(tblListEntities);
         this.add(pnlButton);
     }
 
-    private int calculateTotalPages() {
-        int numOfAllRows = getNumberOfAllRows();
-        return (numOfAllRows % DEFAULT_PAGE_SIZE == 0) ? (numOfAllRows / DEFAULT_PAGE_SIZE) : (numOfAllRows
-                / DEFAULT_PAGE_SIZE + 1);
-    }
-
-    /**
-     * Get number of all of rows existing in database.
-     */
-    private int getNumberOfAllRows() {
-        IBaseDao<T> dao = getDaoHelper().getDao(getEntityClass());
-        return dao.findCountByCriteria(dao.getCriteria());
-    }
-
     private AdvanceTableModel createTableModel() {
-        entities = loadData(pagingNavigator.getCurrentPage());
+        entities = loadData();
         return new AdvanceTableModel();
     }
 
@@ -569,7 +529,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     protected void refreshData() {
         entities.removeAll(entities);
-        entities.addAll(loadData(pagingNavigator.getCurrentPage()));
+        entities.addAll(loadData());
         // fireTableDataChanged to re-render the table.
         ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
         ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
@@ -593,13 +553,4 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         }
 
     }
-
-    @Override
-    public void doPageChanged(ChangeEvent e) {
-        S3sPagingNavigator pagingNavigator = (S3sPagingNavigator) e.getSource();
-        // Re-calculate the total pages and set to the pagingNavigator.
-        pagingNavigator.setTotalPage(calculateTotalPages());
-        refreshData();
-    }
-
 }
