@@ -46,4 +46,8 @@ public class BankAccount extends AbstractIdOLObject {
         this.accountName = accountName;
     }
 
+    @Override
+    public String toString() {
+        return getBank() != null ? getBank().getCode() + " - " + getAccountNumber() : null;
+    }
 }

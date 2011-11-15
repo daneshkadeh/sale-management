@@ -310,7 +310,7 @@ public class SSMDataLoader {
     private static List<BankAccount> initBankAccount(DaoHelper daoHelper) {
         Bank bank = new Bank();
         bank.setCode("ACB");
-        bank.setBankName("Ngan hang thuong mai co phan A Chau");
+        bank.setName("Ngan hang thuong mai co phan A Chau");
         daoHelper.getDao(Bank.class).save(bank);
 
         BankAccount bankAccount = new BankAccount();
@@ -367,17 +367,19 @@ public class SSMDataLoader {
         contact.setBankAccount(listBankAccounts.get(1));
         contact.setMaximumDayDebt(100L);
 
-        daoHelper.getDao(Contact.class).saveOrUpdate(contact);
+        // daoHelper.getDao(Contact.class).saveOrUpdate(contact);
 
         ContactShop shop = new ContactShop();
         shop.setCode("GIAY_SO_1");
         shop.setName("Cua hang giay so 1");
-        shop.setContact(contact);
+        // shop.setContact(contact);
         shop.setAddress("123 Bui vien");
         shop.setFixPhone("0909000000");
         shop.setRemark("Mo cua 8h-21h");
-        daoHelper.getDao(ContactShop.class).saveOrUpdate(shop);
+        // daoHelper.getDao(ContactShop.class).saveOrUpdate(shop);
 
+        contact.addShop(shop);
+        daoHelper.getDao(Contact.class).saveOrUpdate(contact);
         return Arrays.asList(contact);
     }
 

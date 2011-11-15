@@ -43,6 +43,7 @@ import com.s3s.ssm.view.list.ListCustomerViewTest;
 import com.s3s.ssm.view.list.ListGoodsViewTest;
 import com.s3s.ssm.view.list.ListInvoiceViewTest;
 import com.s3s.ssm.view.list.contact.ListBankView;
+import com.s3s.ssm.view.list.contact.ListContactView;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
 import com.s3s.ssm.view.list.param.ListUnitOfMeasureView;
 import com.s3s.ssm.view.list.param.ListUomCategoryView;
@@ -118,6 +119,7 @@ public class MainProgram {
         treeMenu.addTreeSelectionListener(new TreeSelectionListener() {
             // The views of program which should not init at the begin when start program -> performance.
             private ListBankView listBankView;
+            private ListContactView listContactView;
 
             @Override
             public void valueChanged(TreeSelectionEvent e) {
@@ -136,6 +138,11 @@ public class MainProgram {
                         listBankView = new ListBankView();
                     }
                     scrollPane.setViewportView(listBankView);
+                } else if (nodeInfo.equals("Customer")) {
+                    if (listContactView == null) {
+                        listContactView = new ListContactView();
+                    }
+                    scrollPane.setViewportView(listContactView);
                 }
 
             }

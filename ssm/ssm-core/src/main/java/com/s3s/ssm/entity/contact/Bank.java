@@ -12,11 +12,11 @@ public class Bank extends AbstractCodeOLObject {
     private String bankName;
 
     @Column(name = "bank_name", length = 128)
-    public String getBankName() {
+    public String getName() {
         return bankName;
     }
 
-    public void setBankName(String bankName) {
+    public void setName(String bankName) {
         this.bankName = bankName;
     }
 }
