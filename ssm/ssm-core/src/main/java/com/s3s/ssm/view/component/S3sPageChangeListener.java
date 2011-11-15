@@ -23,7 +23,7 @@ import javax.swing.event.ChangeEvent;
 /**
  * The listener interface for receiving the page number changed.
  * 
- * @see S3sPagingSelector
+ * @see S3sPagingNavigator
  * @author Phan Hong Phuc
  * @since Nov 13, 2011
  * 

@@ -6,11 +6,18 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.util.Assert;
 
 import com.s3s.ssm.context.ContextProvider;
 import com.s3s.ssm.dao.IBaseDao;
@@ -112,13 +119,6 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
         return DetachedCriteria.forClass(getEntityClass());
     }
 
-    /**
-     * 
-     * {@inheritDoc}
-     * <p>
-     * A delegation of {@link HibernateTemplate#findByCriteria(DetachedCriteria, int, int)}.
-     * 
-     */
     @SuppressWarnings("unchecked")
     @Override
     public List<T> findByCriteria(DetachedCriteria criteria, int firstResult, int maxResults) {
@@ -129,6 +129,32 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
     @Override
     public List<T> findByCriteria(DetachedCriteria criteria) {
         return getHibernateTemplate().findByCriteria(criteria);
+    }
+
+    /**
+     * Counts the number of results of a search.
+     * 
+     * @param criteria
+     *            The criteria for the query.
+     * @return The number of results of the query.
+     * @throws DataAccessException
+     */
+    @Override
+    public int findCountByCriteria(final DetachedCriteria criteria) throws DataAccessException {
+
+        Assert.notNull(criteria, "DetachedCriteria must not be null");
+        Object result = getHibernateTemplate().executeWithNativeSession(new HibernateCallback() {
+            @Override
+            public Object doInHibernate(Session session) throws HibernateException {
+                Criteria executableCriteria = criteria.getExecutableCriteria(session);
+                executableCriteria.setProjection(Projections.rowCount());
+                return executableCriteria.uniqueResult();
+            }
+        });
+        if (result == null) {
+            result = 0;
+        }
+        return (Integer) result;
     }
 
     /**

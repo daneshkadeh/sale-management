@@ -19,11 +19,6 @@ public class ListCustomerViewTest extends AbstractListView<CustomerTest> {
     }
 
     @Override
-    protected List<CustomerTest> loadData() {
-        return getDaoHelper().getDao(CustomerTest.class).findAll();
-    }
-
-    @Override
     protected Class<? extends AbstractDetailView<CustomerTest>> getDetailViewClass() {
         return EditCustomerViewTest.class;
     }

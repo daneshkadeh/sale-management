@@ -26,6 +26,7 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -40,7 +41,7 @@ import javax.swing.text.DocumentFilter;
  * @since Nov 13, 2011
  * 
  */
-public class S3sPagingSelector extends JPanel {
+public class S3sPagingNavigator extends JPanel {
     private static final long serialVersionUID = -8782466982711611127L;
     private JButton btnBegining;
     private JButton btnBack;
@@ -58,7 +59,7 @@ public class S3sPagingSelector extends JPanel {
      * @param totalPage
      *            number total of pages.
      */
-    public S3sPagingSelector(int totalPage) {
+    public S3sPagingNavigator(int totalPage) {
         this(totalPage, 1);
     }
 
@@ -70,7 +71,7 @@ public class S3sPagingSelector extends JPanel {
      * @param currentPage
      *            the current page number.
      */
-    public S3sPagingSelector(int totalPage, int currentPage) {
+    public S3sPagingNavigator(int totalPage, int currentPage) {
         checkTotalPage(totalPage);
         checkCurrentPage(totalPage, currentPage);
 
@@ -89,7 +90,7 @@ public class S3sPagingSelector extends JPanel {
         btnEnding.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setCurrentPage(S3sPagingSelector.this.totalPage);
+                setCurrentPage(S3sPagingNavigator.this.totalPage);
             }
         });
 
@@ -112,6 +113,7 @@ public class S3sPagingSelector extends JPanel {
         this.totalPage = totalPage;
         txtCurrentPageNumber = new JFormattedTextField(NumberFormat.getIntegerInstance());
         txtCurrentPageNumber.setColumns(3);
+        txtCurrentPageNumber.setHorizontalAlignment(JTextField.RIGHT);
         ((AbstractDocument) txtCurrentPageNumber.getDocument()).setDocumentFilter(new PositiveNumberFilter());
         lblTotalPageNumber = new JLabel();
         setCurrentPage(currentPage);
@@ -137,6 +139,12 @@ public class S3sPagingSelector extends JPanel {
         }
     }
 
+    /**
+     * Set the current page.
+     * 
+     * @param currentPage
+     *            the currentPage.
+     */
     public void setCurrentPage(int currentPage) {
         checkCurrentPage(totalPage, currentPage);
         boolean isBeginning = (currentPage == 1);
@@ -149,16 +157,27 @@ public class S3sPagingSelector extends JPanel {
         firePageChangeListener();
     }
 
+    /**
+     * Re-set the total page.
+     * 
+     * @param totalPage
+     *            the total page.
+     */
     public void setTotalPage(int totalPage) {
         checkTotalPage(totalPage);
+        if (totalPage < getCurrentPage()) {
+            throw new IllegalArgumentException("The total page can't not less than currentPage");
+        }
+
         this.totalPage = totalPage;
         lblTotalPageNumber.setText("/" + totalPage);
-        // Reset the current page if the total page < current page.
-        if (totalPage < getCurrentPage()) {
-            setCurrentPage(1);
-        }
     }
 
+    /**
+     * Get the current page.
+     * 
+     * @return the current page.
+     */
     public int getCurrentPage() {
         return (int) (txtCurrentPageNumber.getValue() == null ? 1 : txtCurrentPageNumber.getValue());
     }

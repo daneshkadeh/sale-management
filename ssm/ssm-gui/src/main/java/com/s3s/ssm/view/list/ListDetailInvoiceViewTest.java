@@ -50,11 +50,6 @@ public class ListDetailInvoiceViewTest extends AbstractCommonListView<DetailInvo
     }
 
     @Override
-    protected List<DetailInvoiceTest> loadData() {
-        return super.loadData();
-    }
-
-    @Override
     protected Class<? extends AbstractDetailView<DetailInvoiceTest>> getDetailViewClass() {
         // TODO Auto-generated method stub
         return EditDetailInvoiceViewTest.class;

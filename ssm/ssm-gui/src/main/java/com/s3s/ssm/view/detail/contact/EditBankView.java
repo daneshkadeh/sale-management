@@ -2,6 +2,7 @@ package com.s3s.ssm.view.detail.contact;
 
 import com.s3s.ssm.entity.contact.Bank;
 import com.s3s.ssm.model.DetailDataModel;
+import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
 
 public class EditBankView extends AbstractDetailView<Bank> {
@@ -9,12 +10,12 @@ public class EditBankView extends AbstractDetailView<Bank> {
 
     public EditBankView(Bank entity) {
         super(entity);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Bank entity) {
-        // TODO Auto-generated method stub
+        detailDataModel.addAttribute("bankName", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
 
     }
 
