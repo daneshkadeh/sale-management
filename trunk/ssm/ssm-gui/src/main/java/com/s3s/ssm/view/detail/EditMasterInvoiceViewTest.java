@@ -61,6 +61,7 @@ public class EditMasterInvoiceViewTest extends AbstractMasterDetailView<InvoiceT
             detailInvoice.setInvoice(invoice);
             // ConfigProvider.getInstance().getDetailInvoiceService().save(detailInvoice);
         }
+        getDaoHelper().getDao(InvoiceTest.class).saveOrUpdate(invoice);
     }
 
     @Override

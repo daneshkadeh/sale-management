@@ -14,8 +14,9 @@ public class ListBankView extends AbstractListView<Bank> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("bankName", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("code", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
+
     }
 
     @Override

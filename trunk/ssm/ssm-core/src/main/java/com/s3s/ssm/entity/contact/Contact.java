@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
@@ -114,6 +115,45 @@ public class Contact extends AbstractCodeOLObject {
         this.bankAccount = bankAccount;
     }
 
+    @Transient
+    public Bank getBank() {
+        return bankAccount != null ? bankAccount.getBank() : null;
+    }
+
+    @Transient
+    public void setBank(Bank bank) {
+        if (bankAccount == null) {
+            bankAccount = new BankAccount();
+        }
+        bankAccount.setBank(bank);
+    }
+
+    @Transient
+    public String getAccountNumber() {
+        return bankAccount != null ? bankAccount.getAccountNumber() : null;
+    }
+
+    @Transient
+    public void setAccountNumber(String accountNumber) {
+        if (bankAccount == null) {
+            bankAccount = new BankAccount();
+        }
+        bankAccount.setAccountNumber(accountNumber);
+    }
+
+    @Transient
+    public String getAccountName() {
+        return bankAccount != null ? bankAccount.getAccountName() : null;
+    }
+
+    @Transient
+    public void setAccountName(String accountName) {
+        if (bankAccount == null) {
+            bankAccount = new BankAccount();
+        }
+        bankAccount.setAccountName(accountName);
+    }
+
     @Column(name = "maximum_day_debt")
     public Long getMaximumDayDebt() {
         return maximumDayDebt;
@@ -132,4 +172,8 @@ public class Contact extends AbstractCodeOLObject {
         this.listShops = listShops;
     }
 
+    public void addShop(ContactShop contactShop) {
+        contactShop.setContact(this);
+        listShops.add(contactShop);
+    }
 }
