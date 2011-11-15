@@ -37,7 +37,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.S3sImageChooser;
-import com.s3s.ssm.view.component.S3sPagingSelector;
+import com.s3s.ssm.view.component.S3sPagingNavigator;
 import com.s3s.ssm.view.component.S3sRadioButtonsGroup;
 import com.s3s.ssm.view.list.ListCustomerViewTest;
 import com.s3s.ssm.view.list.ListGoodsViewTest;
@@ -312,7 +312,7 @@ public class MainProgram {
         componentPanel.add(new JLabel("Radio button group"), "top");
         componentPanel.add(new S3sRadioButtonsGroup<>(Arrays.asList("Table", "Chair", "Ruler")));
         componentPanel.add(new JLabel("Paging selector"), "top");
-        componentPanel.add(new S3sPagingSelector(10));
+        componentPanel.add(new S3sPagingNavigator(10));
         return componentPanel;
     }
 

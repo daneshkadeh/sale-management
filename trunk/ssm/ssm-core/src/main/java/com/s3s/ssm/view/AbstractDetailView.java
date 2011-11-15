@@ -45,6 +45,7 @@ import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.S3sMultiSelectionBox;
+import com.s3s.ssm.view.component.validation.NotEmptyValidator;
 
 /**
  * @author Pham Cong Bang
@@ -157,8 +158,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 }
                 ((JFormattedTextField) dataField).setEditable(attribute.isEditable());
                 ((JFormattedTextField) dataField).setColumns(DEFAULT_TEXTFIELD_COLUMN);
-                // ((JFormattedTextField) dataField).setInputVerifier(new NotEmptyValidator((Window) SwingUtilities
-                // .getRoot(this), dataField, "The field must be not empty."));
+                ((JFormattedTextField) dataField).setInputVerifier(new NotEmptyValidator(SwingUtilities
+                        .getWindowAncestor(this), dataField, "The field must be not empty."));
 
                 dataField.setEnabled(attribute.isEnable());
                 pnlEdit.add(lblLabel);
@@ -293,7 +294,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                         method.invoke(entity, paramClass.cast(comboBox.getSelectedItem()));
                         break;
                     case MULTI_SELECT_BOX:
-                        S3sMultiSelectionBox multiBox = (S3sMultiSelectionBox) component;
+                        S3sMultiSelectionBox<?> multiBox = (S3sMultiSelectionBox<?>) component;
                         // List<?> unselected = multiBox.getSourceValues();
                         List<?> selected = multiBox.getDestinationValues();
                         method.invoke(entity, selected);
