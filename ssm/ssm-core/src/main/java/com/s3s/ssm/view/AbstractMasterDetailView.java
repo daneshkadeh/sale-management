@@ -72,7 +72,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
         private static final long serialVersionUID = -8455234397691564647L;
 
         @Override
-        protected List<E> loadData() {
+        protected List<E> loadData(int pageNumber) {
             Method getChildListMethod = Solution3sClassUtils.getGetterMethod(getMasterClass(), getChildFieldName());
             try {
                 // List<E> childEntitiesList = (List<E>) getChildListMethod.invoke(entity);
