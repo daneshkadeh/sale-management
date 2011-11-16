@@ -41,25 +41,40 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.criterion.DetachedCriteria;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 
+import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.view.component.S3sPageChangeListener;
+import com.s3s.ssm.view.component.S3sPagingNavigator;
 
 /**
  * This is an abstract view for list entities.
+ * 
+ * <p>
+ * 
+ * The list supports break page function with the follow methods:</br>
+ * <ul>
+ * <li> {@link #loadData(int)}
+ * <li>{@link #getPageSize()}
+ * </ul>
+ * Note: when the data in current page is added or removed, the page size is not keep constantly. It's just
+ * re-adjustment when we change the pageNumber.
  * 
  * @author phamcongbang
  * @author Phan Hong Phuc
  * 
  * @param <T>
  */
-public abstract class AbstractListView<T extends AbstractBaseIdObject> extends AbstractView {
+public abstract class AbstractListView<T extends AbstractBaseIdObject> extends AbstractView implements
+        S3sPageChangeListener {
     private static final long serialVersionUID = -1311942671249671111L;
     private static final String ADD_ACTION_KEY = "addAction";
     private static final Color HIGHLIGHT_ROW_COLOR = new Color(97, 111, 231);
@@ -68,6 +83,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     private JXTable tblListEntities;
     private JXTable tblFooter;
+    private S3sPagingNavigator pagingNavigator;
 
     private Class<? extends AbstractBaseIdObject> parentClass;
     private Long parentId;
@@ -122,10 +138,16 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames);
 
     /**
+     * Load the data for the particular page which having pageNumber currently.
+     * 
+     * @param pageNumber
+     *            the number of page, range from 1 to number of row in database.
      * @return all data shown on the view.
      */
-    protected List<T> loadData() {
-        return getDaoHelper().getDao(getEntityClass()).findAll();
+    protected List<T> loadData(int pageNumber) {
+        int firstIndex = (pageNumber - 1) * getPageSize();
+        DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
+        return getDaoHelper().getDao(getEntityClass()).findByCriteria(dc, firstIndex, getPageSize());
     }
 
     /**
@@ -138,6 +160,9 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     protected void addComponents() {
+        // ///////////////////// Paging navigator ///////////////////////////////
+        pagingNavigator = new S3sPagingNavigator(calculateTotalPages());
+        pagingNavigator.addPageChangeListener(this);
 
         // ///////////////// Init main table ////////////////////////////////
         tblListEntities = new JXTable();
@@ -211,13 +236,29 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             this.add(footerScrollpane, "grow");
         }
 
+        this.add(pagingNavigator);
         // //////////////////// Button panel /////////////////////////////////
         JPanel pnlButton = createButtonPanel(tblListEntities);
         this.add(pnlButton);
     }
 
+    private int calculateTotalPages() {
+        int numOfAllRows = getNumberOfAllRows();
+        int totalPages = (numOfAllRows % DEFAULT_PAGE_SIZE == 0) ? (numOfAllRows / DEFAULT_PAGE_SIZE) : (numOfAllRows
+                / DEFAULT_PAGE_SIZE + 1);
+        return (totalPages == 0) ? 1 : totalPages; // totalPages must begin from 1.
+    }
+
+    /**
+     * Get number of all of rows existing in database.
+     */
+    private int getNumberOfAllRows() {
+        IBaseDao<T> dao = getDaoHelper().getDao(getEntityClass());
+        return dao.findCountByCriteria(dao.getCriteria());
+    }
+
     private AdvanceTableModel createTableModel() {
-        entities = loadData();
+        entities = loadData(pagingNavigator.getCurrentPage());
         return new AdvanceTableModel();
     }
 
@@ -240,12 +281,16 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                         JOptionPane.WARNING_MESSAGE);
                 if (option == JOptionPane.YES_OPTION) {
                     int[] selectedRows = tblListEntities.getSelectedRows();
+                    List<T> removedEntities = new ArrayList<>(selectedRows.length);
                     for (int i : selectedRows) {
                         int rowModelIndex = tblListEntities.convertRowIndexToModel(i);
-                        entities.remove(rowModelIndex);
-                        // TODO remove in DB
-                        ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
+                        removedEntities.add(entities.get(rowModelIndex));
                     }
+                    // Remove row in database
+                    getDaoHelper().getDao(getEntityClass()).deleteAll(removedEntities);
+                    // Remove row in view
+                    entities.removeAll(removedEntities);
+                    ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
                 }
             }
         });
@@ -360,9 +405,9 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         public Object getValueAt(int rowIndex, int columnIndex) {
             T entity = currentEntities.get(rowIndex);
 
-            // The hide extra column contain the entity
+            // The hide extra column contain the entity ID
             if (columnIndex == 0) {
-                return entity;
+                return entity.getId();
             }
 
             DetailAttribute dataModel = listDataModel.get(columnIndex - 1);
@@ -523,13 +568,13 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     "Warning", JOptionPane.OK_OPTION, JOptionPane.WARNING_MESSAGE);
         } else {
             int rowModel = tblListEntities.convertRowIndexToModel(selectedRow);
-            showDetailView((T) tblListEntities.getModel().getValueAt(rowModel, 0));
+            showDetailView(entities.get(rowModel));
         }
     }
 
     protected void refreshData() {
         entities.removeAll(entities);
-        entities.addAll(loadData());
+        entities.addAll(loadData(pagingNavigator.getCurrentPage()));
         // fireTableDataChanged to re-render the table.
         ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
         ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
@@ -553,4 +598,13 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         }
 
     }
+
+    @Override
+    public void doPageChanged(ChangeEvent e) {
+        S3sPagingNavigator pagingNavigator = (S3sPagingNavigator) e.getSource();
+        // Re-calculate the total pages and set to the pagingNavigator.
+        pagingNavigator.setTotalPage(calculateTotalPages());
+        refreshData();
+    }
+
 }
