@@ -74,6 +74,20 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     private final static int DEFAULT_TEXTFIELD_COLUMN = 20;
 
     /**
+     * The default constructor, init the detail view with new entity.
+     */
+    public AbstractDetailView() {
+        try {
+            T entity = getEntityClass().newInstance();
+            contructView(entity);
+        } catch (InstantiationException | IllegalAccessException e) {
+            logger.error("There is a problem when init the detail view");
+            throw new RuntimeException(e.getCause());
+        }
+
+    }
+
+    /**
      * Initialize the detail view. TODO: concrete classes should not override this constructor.
      * 
      * @param entity
