@@ -19,7 +19,7 @@ import net.miginfocom.swing.MigLayout;
  * @param <T>
  *            the data type of value for each radio button
  */
-public class S3sRadioButtonsGroup<T> extends JPanel {
+public class RadioButtonsGroup<T> extends JPanel {
     private static final long serialVersionUID = 6365217325772644824L;
     private Map<JRadioButton, T> radioBtn2Value;
 
@@ -28,7 +28,7 @@ public class S3sRadioButtonsGroup<T> extends JPanel {
      * 
      * @param values
      */
-    public S3sRadioButtonsGroup(List<T> values) {
+    public RadioButtonsGroup(List<T> values) {
         this(values, null);
     }
 
@@ -39,7 +39,7 @@ public class S3sRadioButtonsGroup<T> extends JPanel {
      * @param selectedValue
      *            the value is selected.
      */
-    public S3sRadioButtonsGroup(List<T> values, T selectedValue) {
+    public RadioButtonsGroup(List<T> values, T selectedValue) {
         Map<T, String> value2Label = new HashMap<>(values.size());
         for (T val : values) {
             value2Label.put(val, val.toString());
@@ -47,7 +47,7 @@ public class S3sRadioButtonsGroup<T> extends JPanel {
         initComponent(value2Label, selectedValue);
     }
 
-    public S3sRadioButtonsGroup(Map<T, String> value2Label) {
+    public RadioButtonsGroup(Map<T, String> value2Label) {
         this(value2Label, null);
     }
 
@@ -56,7 +56,7 @@ public class S3sRadioButtonsGroup<T> extends JPanel {
      * @param value2Label
      * @param selectedValue
      */
-    public S3sRadioButtonsGroup(Map<T, String> value2Label, T selectedValue) {
+    public RadioButtonsGroup(Map<T, String> value2Label, T selectedValue) {
         initComponent(value2Label, selectedValue);
     }
 

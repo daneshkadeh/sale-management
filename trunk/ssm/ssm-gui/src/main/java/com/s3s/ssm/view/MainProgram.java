@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Locale;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -17,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -36,8 +38,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.component.S3sImageChooser;
-import com.s3s.ssm.view.component.S3sRadioButtonsGroup;
+import com.s3s.ssm.view.component.BankDomainToggleButton;
+import com.s3s.ssm.view.component.ImageChooser;
+import com.s3s.ssm.view.component.RadioButtonsGroup;
+import com.s3s.ssm.view.component.UserDomainToggleButton;
 import com.s3s.ssm.view.list.ListCustomerViewTest;
 import com.s3s.ssm.view.list.ListGoodsViewTest;
 import com.s3s.ssm.view.list.ListInvoiceViewTest;
@@ -109,10 +113,10 @@ public class MainProgram {
 
     private static void addComponents(Container contentPane) {
         final JPanel componentPanel = createDemoComponentPanel();
-        final JScrollPane scrollPane = new JScrollPane(componentPanel);
+        final JScrollPane contentViewScrollPane = new JScrollPane(componentPanel);
         final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
         splitPane.setOneTouchExpandable(true);
-        splitPane.setRightComponent(scrollPane);
+        splitPane.setRightComponent(contentViewScrollPane);
 
         final JTree treeMenu = createTreeMenu();
         treeMenu.addTreeSelectionListener(new TreeSelectionListener() {
@@ -136,22 +140,45 @@ public class MainProgram {
                     if (listBankView == null) {
                         listBankView = new ListBankView();
                     }
-                    scrollPane.setViewportView(listBankView);
+                    contentViewScrollPane.setViewportView(listBankView);
                 } else if (nodeInfo.equals("Customer")) {
                     if (listContactView == null) {
                         listContactView = new ListContactView();
                     }
-                    scrollPane.setViewportView(listContactView);
+                    contentViewScrollPane.setViewportView(listContactView);
                 }
 
             }
         });
-
         JScrollPane treeMenuScrollPane = new JScrollPane(treeMenu);
-
-        splitPane.setLeftComponent(treeMenuScrollPane);
+        JSplitPane leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        leftSplitPane.setTopComponent(treeMenuScrollPane);
+        leftSplitPane.setBottomComponent(createLeftBottomPane(treeMenuScrollPane, contentViewScrollPane));
+        splitPane.setLeftComponent(leftSplitPane);
 
         contentPane.add(splitPane);
+    }
+
+    private static JPanel createLeftBottomPane(JScrollPane treeMenuScrollPane, JScrollPane contentViewScrollPane) {
+        JPanel panel = new JPanel(new MigLayout("wrap, gap 0 0 0 0, insets 0 0 0 0", "grow"));
+
+        ButtonGroup buttonGroup = new ButtonGroup();
+
+        UserDomainToggleButton userDomain = new UserDomainToggleButton("User management", null, treeMenuScrollPane,
+                contentViewScrollPane);
+        BankDomainToggleButton bankDomain = new BankDomainToggleButton("Bank", null, treeMenuScrollPane,
+                contentViewScrollPane);
+        JToggleButton tbtnManufacturer = new JToggleButton("Manufacturer management");
+
+        buttonGroup.add(tbtnManufacturer);
+        buttonGroup.add(bankDomain);
+        buttonGroup.add(userDomain);
+
+        panel.add(tbtnManufacturer, "grow");
+        panel.add(bankDomain, "grow");
+        panel.add(userDomain, "grow");
+
+        return panel;
     }
 
     private static JTree createTreeMenu() {
@@ -314,9 +341,9 @@ public class MainProgram {
     private static JPanel createDemoComponentPanel() {
         JPanel componentPanel = new JPanel(new MigLayout("wrap 2"));
         componentPanel.add(new JLabel("Image component"), "top");
-        componentPanel.add(new S3sImageChooser());
+        componentPanel.add(new ImageChooser());
         componentPanel.add(new JLabel("Radio button group"), "top");
-        componentPanel.add(new S3sRadioButtonsGroup<>(Arrays.asList("Table", "Chair", "Ruler")));
+        componentPanel.add(new RadioButtonsGroup<>(Arrays.asList("Table", "Chair", "Ruler")));
         return componentPanel;
     }
 

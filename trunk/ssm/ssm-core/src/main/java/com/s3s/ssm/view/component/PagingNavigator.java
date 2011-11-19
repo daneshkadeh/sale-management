@@ -35,13 +35,13 @@ import javax.swing.text.DocumentFilter;
 
 /**
  * The component support select the back, next, beginning and ending page also allowing to fill the selected page
- * number. It's fire the event for {@link S3sPageChangeListener} when the current page number is changed.
+ * number. It's fire the event for {@link IPageChangeListener} when the current page number is changed.
  * 
  * @author Phan Hong Phuc
  * @since Nov 13, 2011
  * 
  */
-public class S3sPagingNavigator extends JPanel {
+public class PagingNavigator extends JPanel {
     private static final long serialVersionUID = -8782466982711611127L;
     private JButton btnBegining;
     private JButton btnBack;
@@ -51,7 +51,7 @@ public class S3sPagingNavigator extends JPanel {
     private int totalPage = 1;
     private JFormattedTextField txtCurrentPageNumber;
 
-    private List<S3sPageChangeListener> pageChangeListeners = new ArrayList<>();
+    private List<IPageChangeListener> pageChangeListeners = new ArrayList<>();
 
     /**
      * Init the component with number of total pages and the default current page is 1.
@@ -59,7 +59,7 @@ public class S3sPagingNavigator extends JPanel {
      * @param totalPage
      *            number total of pages.
      */
-    public S3sPagingNavigator(int totalPage) {
+    public PagingNavigator(int totalPage) {
         this(totalPage, 1);
     }
 
@@ -71,7 +71,7 @@ public class S3sPagingNavigator extends JPanel {
      * @param currentPage
      *            the current page number.
      */
-    public S3sPagingNavigator(int totalPage, int currentPage) {
+    public PagingNavigator(int totalPage, int currentPage) {
         checkTotalPage(totalPage);
         checkCurrentPage(totalPage, currentPage);
 
@@ -90,7 +90,7 @@ public class S3sPagingNavigator extends JPanel {
         btnEnding.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setCurrentPage(S3sPagingNavigator.this.totalPage);
+                setCurrentPage(PagingNavigator.this.totalPage);
             }
         });
 
@@ -192,16 +192,16 @@ public class S3sPagingNavigator extends JPanel {
 
     private void firePageChangeListener() {
         ChangeEvent e = new ChangeEvent(this);
-        for (S3sPageChangeListener pl : pageChangeListeners) {
+        for (IPageChangeListener pl : pageChangeListeners) {
             pl.doPageChanged(e);
         }
     }
 
-    public void addPageChangeListener(S3sPageChangeListener listener) {
+    public void addPageChangeListener(IPageChangeListener listener) {
         pageChangeListeners.add(listener);
     }
 
-    public void removePageChangeListener(S3sPageChangeListener listener) {
+    public void removePageChangeListener(IPageChangeListener listener) {
         pageChangeListeners.remove(listener);
     }
 
@@ -213,6 +213,7 @@ public class S3sPagingNavigator extends JPanel {
         @Override
         public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
                 throws BadLocationException {
+            // TODO
             System.err.println("String: " + string);
             super.insertString(fb, offset, string, attr);
         }
@@ -223,6 +224,7 @@ public class S3sPagingNavigator extends JPanel {
         @Override
         public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
                 throws BadLocationException {
+            // TODO
             System.err.println("String: " + text);
             super.replace(fb, offset, length, text, attrs);
         }

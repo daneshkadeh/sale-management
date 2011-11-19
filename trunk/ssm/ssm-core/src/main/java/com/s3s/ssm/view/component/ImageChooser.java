@@ -34,7 +34,7 @@ import org.jdesktop.swingx.JXHyperlink;
  * 
  * @author Phan Hong Phuc
  */
-public class S3sImageChooser extends JPanel {
+public class ImageChooser extends JPanel {
 
     private static final long serialVersionUID = -262102422715201322L;
 
@@ -49,11 +49,11 @@ public class S3sImageChooser extends JPanel {
     private JButton btnRemoveImg;
     private byte[] imageData;
 
-    public S3sImageChooser() {
+    public ImageChooser() {
         this(null);
     }
 
-    public S3sImageChooser(byte[] imageData) {
+    public ImageChooser(byte[] imageData) {
         this.imageData = imageData;
 
         setLayout(new MigLayout("insets 0 0 0 0", "[shrink][]"));
@@ -115,7 +115,7 @@ public class S3sImageChooser extends JPanel {
             FileFilter imgFileFilter = new FileNameExtensionFilter("Images", IMAGE_EXTENSION);
             JFileChooser imgFileChooser = new JFileChooser();
             imgFileChooser.setFileFilter(imgFileFilter);
-            int option = imgFileChooser.showOpenDialog(SwingUtilities.getRootPane(S3sImageChooser.this));
+            int option = imgFileChooser.showOpenDialog(SwingUtilities.getRootPane(ImageChooser.this));
             if (option == JFileChooser.APPROVE_OPTION) {
                 File f = imgFileChooser.getSelectedFile();
                 try {
@@ -128,10 +128,10 @@ public class S3sImageChooser extends JPanel {
                     ImageIcon imgIcon = new ImageIcon(image);
                     imgLabel.setIcon(imgIcon);
                     hyperLinkBrowseImg.setText(CHANGE_IMG_TXT);
-                    S3sImageChooser.this.add(imgLabel, "cell 0 0");
-                    S3sImageChooser.this.add(btnRemoveImg, "cell 1 0");
-                    S3sImageChooser.this.repaint();
-                    S3sImageChooser.this.revalidate();
+                    ImageChooser.this.add(imgLabel, "cell 0 0");
+                    ImageChooser.this.add(btnRemoveImg, "cell 1 0");
+                    ImageChooser.this.repaint();
+                    ImageChooser.this.revalidate();
                 } catch (IOException e1) {
                     // TODO HPP
                     e1.printStackTrace();
@@ -153,10 +153,10 @@ public class S3sImageChooser extends JPanel {
 
                 imgLabel.setIcon(null);
                 hyperLinkBrowseImg.setText(ADD_IMAGE_TXT);
-                S3sImageChooser.this.remove(imgLabel);
-                S3sImageChooser.this.remove(btnRemoveImg);
-                SwingUtilities.getRoot(S3sImageChooser.this).repaint();
-                SwingUtilities.getRoot(S3sImageChooser.this).revalidate();
+                ImageChooser.this.remove(imgLabel);
+                ImageChooser.this.remove(btnRemoveImg);
+                SwingUtilities.getRoot(ImageChooser.this).repaint();
+                SwingUtilities.getRoot(ImageChooser.this).revalidate();
             }
         }
     }
