@@ -52,8 +52,8 @@ import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.component.S3sPageChangeListener;
-import com.s3s.ssm.view.component.S3sPagingNavigator;
+import com.s3s.ssm.view.component.IPageChangeListener;
+import com.s3s.ssm.view.component.PagingNavigator;
 
 /**
  * This is an abstract view for list entities.
@@ -74,7 +74,8 @@ import com.s3s.ssm.view.component.S3sPagingNavigator;
  * @param <T>
  */
 public abstract class AbstractListView<T extends AbstractBaseIdObject> extends AbstractView implements
-        S3sPageChangeListener {
+        IPageChangeListener, IViewLazyLoadable {
+
     private static final long serialVersionUID = -1311942671249671111L;
     private static final String ADD_ACTION_KEY = "addAction";
     private static final Color HIGHLIGHT_ROW_COLOR = new Color(97, 111, 231);
@@ -83,7 +84,11 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     private JXTable tblListEntities;
     private JXTable tblFooter;
-    private S3sPagingNavigator pagingNavigator;
+    private PagingNavigator pagingNavigator;
+
+    // TODO use this flag temporarily to prevent init the view more than one time. --> Need to use the Proxy object
+    // instead.
+    private boolean isInitialized = false;
 
     private Class<? extends AbstractBaseIdObject> parentClass;
     private Long parentId;
@@ -104,14 +109,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     public AbstractListView(Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
         this.parentId = parentId;
         this.parentClass = parentClass;
-        initialPresentationView(listDataModel, summaryFieldNames);
-
-        addAction = new AddAction();
-        editAction = new EditAction();
-        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[grow, fill]2[]0[][]"));
-
-        addKeyBindings();
-        addComponents();
+        // loadView(); --> should lazy load
     }
 
     protected void addKeyBindings() {
@@ -161,7 +159,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     protected void addComponents() {
         // ///////////////////// Paging navigator ///////////////////////////////
-        pagingNavigator = new S3sPagingNavigator(calculateTotalPages());
+        pagingNavigator = new PagingNavigator(calculateTotalPages());
         pagingNavigator.addPageChangeListener(this);
 
         // ///////////////// Init main table ////////////////////////////////
@@ -323,10 +321,11 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
             // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).
             detailView.setListView(AbstractListView.this);
+            JScrollPane scrollPane = new JScrollPane(detailView);
 
             Window parentContainer = (Window) SwingUtilities.getRoot(AbstractListView.this);
             JDialog dialog = new JDialog(parentContainer);
-            dialog.setContentPane(detailView);
+            dialog.setContentPane(scrollPane);
             Dimension preferredSize = detailView.getPreferredSize();
             Dimension dialogSize = new Dimension(preferredSize.width + 20, preferredSize.height + 40);
             dialog.setMinimumSize(dialogSize);
@@ -601,10 +600,26 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     @Override
     public void doPageChanged(ChangeEvent e) {
-        S3sPagingNavigator pagingNavigator = (S3sPagingNavigator) e.getSource();
+        PagingNavigator pagingNavigator = (PagingNavigator) e.getSource();
         // Re-calculate the total pages and set to the pagingNavigator.
         pagingNavigator.setTotalPage(calculateTotalPages());
         refreshData();
+    }
+
+    @Override
+    public void loadView() {
+        if (isInitialized) {
+            return;
+        }
+        isInitialized = true;
+        initialPresentationView(listDataModel, summaryFieldNames);
+
+        addAction = new AddAction();
+        editAction = new EditAction();
+        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[grow, fill]2[]0[][]"));
+
+        addKeyBindings();
+        addComponents();
     }
 
 }

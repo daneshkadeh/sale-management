@@ -36,8 +36,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.component.S3sImageChooser;
-import com.s3s.ssm.view.component.S3sRadioButtonsGroup;
+import com.s3s.ssm.view.component.ImageChooser;
+import com.s3s.ssm.view.component.RadioButtonsGroup;
 import com.s3s.ssm.view.list.ListCustomerViewTest;
 import com.s3s.ssm.view.list.ListGoodsViewTest;
 import com.s3s.ssm.view.list.ListInvoiceViewTest;
@@ -161,9 +161,9 @@ public class MainProgramTest {
     private static JPanel createDemoComponentPanel() {
         JPanel componentPanel = new JPanel(new MigLayout("wrap 2"));
         componentPanel.add(new JLabel("Image component"), "top");
-        componentPanel.add(new S3sImageChooser());
+        componentPanel.add(new ImageChooser());
         componentPanel.add(new JLabel("Radio button group"), "top");
-        componentPanel.add(new S3sRadioButtonsGroup<>(Arrays.asList("Table", "Chair", "Ruler")));
+        componentPanel.add(new RadioButtonsGroup<>(Arrays.asList("Table", "Chair", "Ruler")));
         return componentPanel;
     }
 

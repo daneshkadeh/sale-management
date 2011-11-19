@@ -23,12 +23,12 @@ import javax.swing.event.ChangeEvent;
 /**
  * The listener interface for receiving the page number changed.
  * 
- * @see S3sPagingNavigator
+ * @see PagingNavigator
  * @author Phan Hong Phuc
  * @since Nov 13, 2011
  * 
  */
-public interface S3sPageChangeListener extends EventListener {
+public interface IPageChangeListener extends EventListener {
     /**
      * Invoke when the page number is changed.
      */

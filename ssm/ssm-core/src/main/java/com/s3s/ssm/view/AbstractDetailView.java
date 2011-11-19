@@ -44,7 +44,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.component.S3sMultiSelectionBox;
+import com.s3s.ssm.view.component.MultiSelectionBox;
 import com.s3s.ssm.view.component.validation.NotEmptyValidator;
 
 /**
@@ -201,7 +201,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 break;
             case MULTI_SELECT_BOX:
                 // TODO HPP
-                dataField = new S3sMultiSelectionBox<>(referenceData.getValues(), new ArrayList<>());
+                dataField = new MultiSelectionBox<>(referenceData.getValues(), new ArrayList<>());
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
 
@@ -308,7 +308,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                         method.invoke(entity, paramClass.cast(comboBox.getSelectedItem()));
                         break;
                     case MULTI_SELECT_BOX:
-                        S3sMultiSelectionBox<?> multiBox = (S3sMultiSelectionBox<?>) component;
+                        MultiSelectionBox<?> multiBox = (MultiSelectionBox<?>) component;
                         // List<?> unselected = multiBox.getSourceValues();
                         List<?> selected = multiBox.getDestinationValues();
                         method.invoke(entity, selected);

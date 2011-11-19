@@ -27,7 +27,7 @@ import net.miginfocom.swing.MigLayout;
  * 
  * @author Phan Hong Phuc
  */
-public class S3sMultiSelectionBox<T> extends JPanel {
+public class MultiSelectionBox<T> extends JPanel {
     private static final long serialVersionUID = 1L;
 
     // Subcomponents
@@ -52,7 +52,7 @@ public class S3sMultiSelectionBox<T> extends JPanel {
      * @param sources
      * @param destinations
      */
-    public S3sMultiSelectionBox(List<T> sources, List<T> destinations) {
+    public MultiSelectionBox(List<T> sources, List<T> destinations) {
         this(sources, destinations, null);
     }
 
@@ -63,7 +63,7 @@ public class S3sMultiSelectionBox<T> extends JPanel {
      * @param destinations
      * @param cellRenderer
      */
-    public S3sMultiSelectionBox(List<T> sources, List<T> destinations, ListCellRenderer<T> cellRenderer) {
+    public MultiSelectionBox(List<T> sources, List<T> destinations, ListCellRenderer<T> cellRenderer) {
         super();
         this.sources = sources;
         this.destinations = destinations;

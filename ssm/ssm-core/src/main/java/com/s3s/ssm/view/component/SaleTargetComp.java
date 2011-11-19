@@ -18,7 +18,7 @@ import net.miginfocom.swing.MigLayout;
  * @author Thanh Hoang
  * 
  */
-public class S3sSaleTargetComp extends JPanel {
+public class SaleTargetComp extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private static final String[] MONTHS = { "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
@@ -28,11 +28,11 @@ public class S3sSaleTargetComp extends JPanel {
     JButton btnBack = new JButton(">");
     JTextField txtYear;
 
-    public S3sSaleTargetComp() {
+    public SaleTargetComp() {
         this(new Date());
     }
 
-    public S3sSaleTargetComp(Date date) {
+    public SaleTargetComp(Date date) {
         this.date = date;
         initComponent();
     }
