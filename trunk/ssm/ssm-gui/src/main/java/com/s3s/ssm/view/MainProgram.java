@@ -18,7 +18,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JToggleButton;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -38,10 +37,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.component.BankDomainToggleButton;
+import com.s3s.ssm.view.component.BankDomain;
 import com.s3s.ssm.view.component.ImageChooser;
+import com.s3s.ssm.view.component.ManufacturerDomain;
 import com.s3s.ssm.view.component.RadioButtonsGroup;
-import com.s3s.ssm.view.component.UserDomainToggleButton;
+import com.s3s.ssm.view.component.UserDomain;
 import com.s3s.ssm.view.list.ListCustomerViewTest;
 import com.s3s.ssm.view.list.ListGoodsViewTest;
 import com.s3s.ssm.view.list.ListInvoiceViewTest;
@@ -159,22 +159,20 @@ public class MainProgram {
         contentPane.add(splitPane);
     }
 
-    private static JPanel createLeftBottomPane(JScrollPane treeMenuScrollPane, JScrollPane contentViewScrollPane) {
+    private static JPanel createLeftBottomPane(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         JPanel panel = new JPanel(new MigLayout("wrap, gap 0 0 0 0, insets 0 0 0 0", "grow"));
 
         ButtonGroup buttonGroup = new ButtonGroup();
 
-        UserDomainToggleButton userDomain = new UserDomainToggleButton("User management", null, treeMenuScrollPane,
-                contentViewScrollPane);
-        BankDomainToggleButton bankDomain = new BankDomainToggleButton("Bank", null, treeMenuScrollPane,
-                contentViewScrollPane);
-        JToggleButton tbtnManufacturer = new JToggleButton("Manufacturer management");
+        UserDomain userDomain = new UserDomain(treeScrollPane, contentScrollPane);
+        BankDomain bankDomain = new BankDomain(treeScrollPane, contentScrollPane);
+        ManufacturerDomain manufacturerDomain = new ManufacturerDomain(treeScrollPane, contentScrollPane);
 
-        buttonGroup.add(tbtnManufacturer);
+        buttonGroup.add(manufacturerDomain);
         buttonGroup.add(bankDomain);
         buttonGroup.add(userDomain);
 
-        panel.add(tbtnManufacturer, "grow");
+        panel.add(manufacturerDomain, "grow");
         panel.add(bankDomain, "grow");
         panel.add(userDomain, "grow");
 

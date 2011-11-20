@@ -1,5 +1,5 @@
 /*
- * S3sDomainToggleButton
+ * DomainToggleButton
  * 
  * Project: SSM
  * 
@@ -19,7 +19,6 @@ package com.s3s.ssm.view.component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.Icon;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 
@@ -30,16 +29,15 @@ import javax.swing.JToggleButton;
  * @since Nov 19, 2011
  * 
  */
-public abstract class DomainToggleButton extends JToggleButton {
+public abstract class AbstractDomain extends JToggleButton {
     private static final long serialVersionUID = -3288047545897833014L;
 
     private JScrollPane treeScrollPane;
     private JScrollPane contentScrollPane;
     private TreeView treeView;
 
-    public DomainToggleButton(String label, Icon icon, JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
-        // TODO should remove param label and icon -> it needs to set by child class.
-        super(label, icon);
+    public AbstractDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
+        super();
         this.treeScrollPane = treeScrollPane;
         this.contentScrollPane = contentScrollPane;
         addItemListener(new ItemListener() {
@@ -52,8 +50,8 @@ public abstract class DomainToggleButton extends JToggleButton {
                         treeView = getTreeView();
                     }
 
-                    DomainToggleButton.this.treeScrollPane.setViewportView(treeView);
-                    DomainToggleButton.this.contentScrollPane.setViewportView(treeView.getCurrentView());
+                    AbstractDomain.this.treeScrollPane.setViewportView(treeView);
+                    AbstractDomain.this.contentScrollPane.setViewportView(treeView.getCurrentView());
                 }
             }
         });

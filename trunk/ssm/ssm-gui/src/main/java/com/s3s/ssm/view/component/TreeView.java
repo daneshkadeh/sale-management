@@ -25,12 +25,13 @@ import javax.swing.event.TreeSelectionListener;
 import com.s3s.ssm.view.IViewLazyLoadable;
 
 /**
+ * The tree view.
  * 
  * @author Phan Hong Phuc
  * @since Nov 19, 2011
  * 
  */
-public class TreeView extends JTree {
+public class TreeView extends JTree implements TreeSelectionListener {
     private static final long serialVersionUID = -3487864445665189571L;
     private JScrollPane contentScrollPane;
     private JPanel currentView;
@@ -38,29 +39,25 @@ public class TreeView extends JTree {
     public TreeView(JScrollPane contentScrollPane) {
         super();
         this.contentScrollPane = contentScrollPane;
-        addTreeSelectionListener(new TreeSelectionListener() {
+        addTreeSelectionListener(this);
+    }
 
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                // Returns the last path element of the selection.
-                // This method is useful only when the selection model allows a single selection.
-                TreeNodeWithView node = (TreeNodeWithView) getLastSelectedPathComponent();
-                if (node == null) {
-                    // Nothing is selected.
-                    return;
-                }
+    @Override
+    public void valueChanged(TreeSelectionEvent e) {
+        TreeNodeWithView node = (TreeNodeWithView) getLastSelectedPathComponent();
+        if (node == null) {
+            return;
+        }
 
-                JPanel viewOfNode = node.getView();
-                if (viewOfNode == null) {
-                    return;
-                }
-                if (viewOfNode instanceof IViewLazyLoadable) {
-                    ((IViewLazyLoadable) viewOfNode).loadView();
-                }
-                TreeView.this.contentScrollPane.setViewportView(viewOfNode);
-                currentView = viewOfNode;
-            }
-        });
+        JPanel viewOfNode = node.getView();
+        if (viewOfNode == null) {
+            return;
+        }
+        if (viewOfNode instanceof IViewLazyLoadable) {
+            ((IViewLazyLoadable) viewOfNode).loadView();
+        }
+        contentScrollPane.setViewportView(viewOfNode);
+        currentView = viewOfNode;
     }
 
     /**

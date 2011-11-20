@@ -1,5 +1,5 @@
 /*
- * BankDomainToggleButton
+ * ManufacturerDomain
  * 
  * Project: SSM
  * 
@@ -16,22 +16,22 @@
 
 package com.s3s.ssm.view.component;
 
-import javax.swing.Icon;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultTreeModel;
 
-import com.s3s.ssm.view.list.contact.ListBankView;
+import com.s3s.ssm.view.list.param.ListManufacturerView;
 
 /**
  * @author Phan Hong Phuc
  * @since Nov 20, 2011
  * 
  */
-public class BankDomainToggleButton extends DomainToggleButton {
+public class ManufacturerDomain extends AbstractDomain {
+    private static final long serialVersionUID = 2688633156370098361L;
 
-    public BankDomainToggleButton(String label, Icon icon, JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
-        super(label, icon, treeScrollPane, contentScrollPane);
-        // TODO Auto-generated constructor stub
+    public ManufacturerDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
+        super(treeScrollPane, contentScrollPane);
+        setText("Manufacturer");
     }
 
     /**
@@ -39,9 +39,8 @@ public class BankDomainToggleButton extends DomainToggleButton {
      */
     @Override
     protected void constructTreeView(TreeView treeView) {
-        TreeNodeWithView root = new TreeNodeWithView("Bank", new ListBankView());
+        TreeNodeWithView root = new TreeNodeWithView("Manufacturers", new ListManufacturerView());
         treeView.setModel(new DefaultTreeModel(root));
-
     }
 
 }

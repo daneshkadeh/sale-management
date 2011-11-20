@@ -16,7 +16,6 @@
 
 package com.s3s.ssm.view.component;
 
-import javax.swing.Icon;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -27,7 +26,7 @@ import com.s3s.ssm.view.list.contact.ListContactView;
  * @since Nov 20, 2011
  * 
  */
-public class UserDomainToggleButton extends DomainToggleButton {
+public class UserDomain extends AbstractDomain {
 
     /**
      * @param label
@@ -35,8 +34,9 @@ public class UserDomainToggleButton extends DomainToggleButton {
      * @param treeScrollPane
      * @param viewScrollPane
      */
-    public UserDomainToggleButton(String label, Icon icon, JScrollPane treeScrollPane, JScrollPane viewScrollPane) {
-        super(label, icon, treeScrollPane, viewScrollPane);
+    public UserDomain(JScrollPane treeScrollPane, JScrollPane viewScrollPane) {
+        super(treeScrollPane, viewScrollPane);
+        setText("User Management");
     }
 
     /**
