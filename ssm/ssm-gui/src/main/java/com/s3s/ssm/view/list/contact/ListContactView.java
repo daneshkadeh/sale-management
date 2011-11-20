@@ -10,6 +10,7 @@ import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.contact.EditContactView;
 
 public class ListContactView extends AbstractListView<Contact> {
+    private static final long serialVersionUID = -5575359338516534903L;
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
