@@ -23,13 +23,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 
 /**
- * The toggle button with the particular tree which displayed on the left of main screen.
+ * The domain button with the particular tree which displayed on the left of main screen.
  * 
  * @author Phan Hong Phuc
  * @since Nov 19, 2011
  * 
  */
-public abstract class AbstractDomain extends JToggleButton {
+public abstract class AbstractDomain extends JToggleButton implements ItemListener {
     private static final long serialVersionUID = -3288047545897833014L;
 
     private JScrollPane treeScrollPane;
@@ -40,21 +40,20 @@ public abstract class AbstractDomain extends JToggleButton {
         super();
         this.treeScrollPane = treeScrollPane;
         this.contentScrollPane = contentScrollPane;
-        addItemListener(new ItemListener() {
+        addItemListener(this);
+    }
 
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                int state = e.getStateChange();
-                if (state == ItemEvent.SELECTED) {
-                    if (treeView == null) {
-                        treeView = getTreeView();
-                    }
-
-                    AbstractDomain.this.treeScrollPane.setViewportView(treeView);
-                    AbstractDomain.this.contentScrollPane.setViewportView(treeView.getCurrentView());
-                }
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        int state = e.getStateChange();
+        if (state == ItemEvent.SELECTED) {
+            if (treeView == null) {
+                treeView = getTreeView();
             }
-        });
+
+            treeScrollPane.setViewportView(treeView);
+            contentScrollPane.setViewportView(treeView.getCurrentView());
+        }
     }
 
     private TreeView getTreeView() {
