@@ -2,6 +2,7 @@ package com.s3s.ssm.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +46,6 @@ import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.MultiSelectionBox;
-import com.s3s.ssm.view.component.validation.NotEmptyValidator;
 
 /**
  * @author Pham Cong Bang
@@ -172,8 +172,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 }
                 ((JFormattedTextField) dataField).setEditable(attribute.isEditable());
                 ((JFormattedTextField) dataField).setColumns(DEFAULT_TEXTFIELD_COLUMN);
-                ((JFormattedTextField) dataField).setInputVerifier(new NotEmptyValidator(SwingUtilities
-                        .getWindowAncestor(this), dataField, "The field must be not empty."));
+                // ((JFormattedTextField) dataField).setInputVerifier(new NotEmptyValidator(SwingUtilities
+                // .getWindowAncestor(this), dataField, "The field must be not empty."));
 
                 dataField.setEnabled(attribute.isEnable());
                 pnlEdit.add(lblLabel);
@@ -277,61 +277,58 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     }
 
     protected Set<ConstraintViolation<T>> bindAndValidate(T entity) {
-        for (Method method : entity.getClass().getMethods()) {
-            DetailAttribute attribute = getAttributeModelFromSetMethod(method.getName());
-            if (attribute != null) {
-                JComponent component = mapFields.get(attribute);
-                if (!attribute.isEditable()) {
+        try {
+            for (Method method : entity.getClass().getMethods()) {
+                DetailAttribute attribute = getAttributeModelFromSetMethod(method.getName());
+                if (attribute == null || !attribute.isEditable()) {
                     continue;
                 }
+                JComponent component = mapFields.get(attribute);
+                Class<?> paramClass = getPropertyReturnType(entity, attribute);
+                switch (attribute.getType()) {
+                case TEXTBOX:
+                    JFormattedTextField txtField = (JFormattedTextField) component;
+                    method.invoke(entity, paramClass.cast(txtField.getValue()));
+                    break;
+                case PASSWORD:
+                    JPasswordField pwdField = (JPasswordField) component;
+                    method.invoke(entity, pwdField.getText());
+                    break;
+                case CHECKBOX:
 
-                try {
-                    Class<?> paramClass = getPropertyReturnType(entity, attribute);
-                    switch (attribute.getType()) {
-                    case TEXTBOX:
-                        JFormattedTextField txtField = (JFormattedTextField) component;
-                        method.invoke(entity, paramClass.cast(txtField.getValue()));
-                        break;
-                    case PASSWORD:
-                        JPasswordField pwdField = (JPasswordField) component;
-                        method.invoke(entity, pwdField.getText());
-                        break;
-                    case CHECKBOX:
+                    break;
+                case DATE:
+                    JXDatePicker dateField = (JXDatePicker) component;
+                    method.invoke(entity, new DateTime(dateField.getDate()));
+                    break;
+                case DROPDOWN:
+                    JComboBox<?> comboBox = (JComboBox<?>) component;
+                    method.invoke(entity, paramClass.cast(comboBox.getSelectedItem()));
+                    break;
+                case MULTI_SELECT_BOX:
+                    MultiSelectionBox<?> multiBox = (MultiSelectionBox<?>) component;
+                    // List<?> unselected = multiBox.getSourceValues();
+                    List<?> selected = multiBox.getDestinationValues();
+                    method.invoke(entity, selected);
+                    // List<>
 
-                        break;
-                    case DATE:
-                        JXDatePicker dateField = (JXDatePicker) component;
-                        method.invoke(entity, new DateTime(dateField.getDate()));
-                        break;
-                    case DROPDOWN:
-                        JComboBox<?> comboBox = (JComboBox<?>) component;
-                        method.invoke(entity, paramClass.cast(comboBox.getSelectedItem()));
-                        break;
-                    case MULTI_SELECT_BOX:
-                        MultiSelectionBox<?> multiBox = (MultiSelectionBox<?>) component;
-                        // List<?> unselected = multiBox.getSourceValues();
-                        List<?> selected = multiBox.getDestinationValues();
-                        method.invoke(entity, selected);
-                        // List<>
+                    // TODO: set selected value into entity
+                    // for each item in listData of entity, remove, then set
+                    // selected into entity. (prevent
+                    // hibernate mapping issue).
 
-                        // TODO: set selected value into entity
-                        // for each item in listData of entity, remove, then set
-                        // selected into entity. (prevent
-                        // hibernate mapping issue).
+                    break;
+                case RADIO_BUTTON:
 
-                        break;
-                    case RADIO_BUTTON:
+                    break;
 
-                        break;
-
-                    default:
-                        throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());
-                    }
-                } catch (Exception e) {
-                    logger.error("Technical error.", e);
-                    throw new RuntimeException(e);
+                default:
+                    throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());
                 }
             }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            logger.error(e.getCause());
+            throw new RuntimeException("Problem happens when bindAndValidate detailView:" + e.getMessage());
         }
 
         // TODO: must validate object before saving
@@ -371,7 +368,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     }
 
     protected void btnCancelActionPerformed(ActionEvent evt) {
-        // TODO HPP find another way to close dialog.
+        // TODO find another way to close dialog.
         SwingUtilities.getRoot(AbstractDetailView.this).setVisible(false);
     }
 }
