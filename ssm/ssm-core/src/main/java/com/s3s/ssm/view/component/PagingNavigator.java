@@ -227,8 +227,7 @@ public class PagingNavigator extends JPanel {
         @Override
         public boolean verify(JComponent input) {
             JFormattedTextField currentPageNumberField = (JFormattedTextField) input;
-            validateCurrentPageInput(currentPageNumberField);
-            return false;
+            return validateCurrentPageInput(currentPageNumberField);
         }
     }
 
