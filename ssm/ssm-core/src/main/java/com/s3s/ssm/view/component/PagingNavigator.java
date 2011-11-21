@@ -16,22 +16,24 @@
 
 package com.s3s.ssm.view.component;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.NumberFormat;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.InputVerifier;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
+import javax.swing.text.NumberFormatter;
 
 /**
  * The component support select the back, next, beginning and ending page also allowing to fill the selected page
@@ -70,6 +72,10 @@ public class PagingNavigator extends JPanel {
      *            number total of pages.
      * @param currentPage
      *            the current page number.
+     */
+    /**
+     * @param totalPage
+     * @param currentPage
      */
     public PagingNavigator(int totalPage, int currentPage) {
         checkTotalPage(totalPage);
@@ -111,10 +117,22 @@ public class PagingNavigator extends JPanel {
         });
 
         this.totalPage = totalPage;
-        txtCurrentPageNumber = new JFormattedTextField(NumberFormat.getIntegerInstance());
+        NumberFormatter numFormatter = new NumberFormatter();
+        numFormatter.setValueClass(Integer.class);
+        txtCurrentPageNumber = new JFormattedTextField(numFormatter);
         txtCurrentPageNumber.setColumns(3);
+        txtCurrentPageNumber.setInputVerifier(new InRangeVerifier());
         txtCurrentPageNumber.setHorizontalAlignment(JTextField.RIGHT);
-        ((AbstractDocument) txtCurrentPageNumber.getDocument()).setDocumentFilter(new PositiveNumberFilter());
+        txtCurrentPageNumber.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    validateCurrentPageInput(txtCurrentPageNumber);
+                }
+            }
+
+        });
+
         lblTotalPageNumber = new JLabel();
         setCurrentPage(currentPage);
         setTotalPage(totalPage);
@@ -205,30 +223,31 @@ public class PagingNavigator extends JPanel {
         pageChangeListeners.remove(listener);
     }
 
-    public class PositiveNumberFilter extends DocumentFilter {
-
-        /**
-         * {@inheritDoc}
-         */
+    public class InRangeVerifier extends InputVerifier {
         @Override
-        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
-                throws BadLocationException {
-            // TODO
-            System.err.println("String: " + string);
-            super.insertString(fb, offset, string, attr);
+        public boolean verify(JComponent input) {
+            JFormattedTextField currentPageNumberField = (JFormattedTextField) input;
+            validateCurrentPageInput(currentPageNumberField);
+            return false;
         }
+    }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
-                throws BadLocationException {
-            // TODO
-            System.err.println("String: " + text);
-            super.replace(fb, offset, length, text, attrs);
+    private boolean validateCurrentPageInput(JFormattedTextField currentPageNumberField) {
+        try {
+            currentPageNumberField.commitEdit();
+            int value = (int) currentPageNumberField.getValue();
+            if ((value >= 1) && (value <= totalPage)) {
+                setCurrentPage(value);
+                currentPageNumberField.setBackground(Color.WHITE);
+                return true;
+            } else {
+                currentPageNumberField.setBackground(Color.PINK);
+                return false;
+            }
+        } catch (ParseException e) {
+            currentPageNumberField.setBackground(Color.PINK);
         }
-
+        return false;
     }
 
 }
