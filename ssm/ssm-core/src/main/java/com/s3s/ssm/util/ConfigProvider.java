@@ -9,10 +9,6 @@ import com.s3s.ssm.service.CustomerService;
 import com.s3s.ssm.service.DetailInvoiceService;
 import com.s3s.ssm.service.GoodsService;
 import com.s3s.ssm.service.InvoiceService;
-import com.s3s.ssm.service.LoginConfigService;
-import com.s3s.ssm.service.PermissionEntityService;
-import com.s3s.ssm.service.PrincipalEntityService;
-import com.s3s.ssm.service.UserService;
 
 public class ConfigProvider {
     private static ConfigProvider configProvider;
