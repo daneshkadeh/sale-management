@@ -50,22 +50,6 @@ public class ConfigProvider {
         return (DetailInvoiceService) appContext.getBean("detailInvoiceService");
     }
 
-    public LoginConfigService getLoginConfigService() {
-        return (LoginConfigService) appContext.getBean("loginConfigService");
-    }
-
-    public UserService getUserService() {
-        return (UserService) appContext.getBean("userService");
-    }
-
-    public PermissionEntityService getPermissionEntityService() {
-        return (PermissionEntityService) appContext.getBean("permissionEntityService");
-    }
-
-    public PrincipalEntityService getPrincipalEntityService() {
-        return (PrincipalEntityService) appContext.getBean("principalEntityService");
-    }
-
     public DaoHelper getDaoHelper() {
         return (DaoHelper) appContext.getBean("daoHelper");
     }
