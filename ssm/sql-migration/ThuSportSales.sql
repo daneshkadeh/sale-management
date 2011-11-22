@@ -1,3 +1,119 @@
+  -- SECURITY TABLE
+CREATE TABLE `acl_class` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `class` varchar(500) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `unique_uk_2` (`class`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+
+CREATE TABLE `acl_entry` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `acl_object_identity` bigint(20) NOT NULL,
+  `ace_order` int(11) NOT NULL,
+  `sid` bigint(20) NOT NULL,
+  `mask` int(11) NOT NULL,
+  `granting` tinyint(1) NOT NULL,
+  `audit_success` tinyint(1) NOT NULL,
+  `audit_failure` tinyint(1) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `unique_uk_4` (`acl_object_identity`,`ace_order`),
+  KEY `foreign_fk_5` (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
+
+CREATE TABLE `acl_object_identity` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `object_id_class` bigint(20) NOT NULL,
+  `object_id_identity` bigint(20) NOT NULL,
+  `parent_object` bigint(20) default NULL,
+  `owner_sid` bigint(20) default NULL,
+  `entries_inheriting` tinyint(1) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `unique_uk_3` (`object_id_class`,`object_id_identity`),
+  KEY `foreign_fk_1` (`parent_object`),
+  KEY `foreign_fk_3` (`owner_sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+CREATE TABLE `acl_sid` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `principal` tinyint(1) NOT NULL,
+  `sid` varchar(100) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `unique_uk_1` (`sid`,`principal`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+CREATE TABLE `at_item_uom` (
+  `item_id` int(11) NOT NULL,
+  `uom_id` int(11) NOT NULL,
+  PRIMARY KEY  (`item_id`,`uom_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `au_role` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(32) collate utf8_bin NOT NULL,
+  `isEnable` tinyint(1) NOT NULL default '1',
+  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+
+
+CREATE TABLE `au_user` (
+  `id` int(11) NOT NULL auto_increment,
+  `username` varchar(32) collate utf8_bin NOT NULL,
+  `password` varchar(128) collate utf8_bin default NULL,
+  `isAccountNonExpired` tinyint(1) NOT NULL default '1',
+  `isAccountNonLocked` tinyint(1) NOT NULL default '1',
+  `isCredentialsNonExpired` tinyint(1) NOT NULL default '1',
+  `isEnabled` tinyint(1) NOT NULL default '1',
+  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+
+
+CREATE TABLE `au_user_role` (
+  `id_user` int(11) NOT NULL,
+  `id_role` int(11) NOT NULL,
+  PRIMARY KEY  (`id_user`,`id_role`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `groups` (
+  `id` bigint(20) unsigned NOT NULL auto_increment,
+  `group_name` varchar(50) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+CREATE TABLE `group_authorities` (
+  `group_id` bigint(20) unsigned NOT NULL,
+  `authority` varchar(50) NOT NULL,
+  KEY `group_id` (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `group_members` (
+  `id` bigint(20) unsigned NOT NULL auto_increment,
+  `username` varchar(50) NOT NULL,
+  `group_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `group_id` (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE `persistent_logins` (
+  `username` varchar(64) NOT NULL,
+  `series` varchar(64) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `last_used` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`series`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
   -- GOODS, SERVICE (maintainance), COMPONENT, VOUCHER
 CREATE TABLE `s_product_type` (
   `id` int(11) NOT NULL auto_increment,
