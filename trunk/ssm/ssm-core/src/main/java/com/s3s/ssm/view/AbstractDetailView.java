@@ -39,6 +39,8 @@ import org.joda.time.DateTime;
 import org.springframework.util.StringUtils;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.ReferenceDataModel;
@@ -53,7 +55,7 @@ import com.s3s.ssm.view.component.MultiSelectionBox;
  * 
  * @param <T>
  */
-public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends AbstractView {
+public abstract class AbstractDetailView<T extends AbstractCodeOLObject> extends AbstractView {
     private static final long serialVersionUID = 1L;
 
     private final Log logger = LogFactory.getLog(AbstractDetailView.class);
