@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
@@ -35,7 +36,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
  * 
  * @param <T>
  */
-public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> extends AbstractListView<T> {
+public abstract class AbstractCommonListView<T extends AbstractCodeOLObject> extends AbstractListView<T> {
     private static final long serialVersionUID = -7157596822400727053L;
     JFrame detailFrame = new JFrame();
 

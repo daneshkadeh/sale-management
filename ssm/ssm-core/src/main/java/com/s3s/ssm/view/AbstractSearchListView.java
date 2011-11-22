@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 /**
  * The list view with the search panel.
@@ -16,7 +17,7 @@ import com.s3s.ssm.entity.AbstractBaseIdObject;
  * 
  * @param <T>
  */
-public abstract class AbstractSearchListView<T extends AbstractBaseIdObject> extends AbstractListView<T> {
+public abstract class AbstractSearchListView<T extends AbstractCodeOLObject> extends AbstractListView<T> {
     private static final long serialVersionUID = -2256837250215615557L;
 
     protected abstract JPanel createSearchPanel();
