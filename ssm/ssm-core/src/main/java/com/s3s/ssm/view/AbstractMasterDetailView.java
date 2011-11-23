@@ -11,7 +11,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
-import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.util.Solution3sClassUtils;
 
@@ -27,7 +26,7 @@ import com.s3s.ssm.util.Solution3sClassUtils;
  * @param <E>
  *            child entity type
  */
-public abstract class AbstractMasterDetailView<T extends AbstractCodeOLObject, E extends AbstractCodeOLObject> extends
+public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E extends AbstractBaseIdObject> extends
         AbstractDetailView<T> {
     private static final long serialVersionUID = 5571051971772731048L;
 

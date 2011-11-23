@@ -9,6 +9,10 @@ import com.s3s.ssm.service.CustomerService;
 import com.s3s.ssm.service.DetailInvoiceService;
 import com.s3s.ssm.service.GoodsService;
 import com.s3s.ssm.service.InvoiceService;
+import com.s3s.ssm.service.LoginConfigService;
+import com.s3s.ssm.service.PermissionEntityService;
+import com.s3s.ssm.service.PrincipalEntityService;
+import com.s3s.ssm.service.UserService;
 
 public class ConfigProvider {
     private static ConfigProvider configProvider;
@@ -44,6 +48,22 @@ public class ConfigProvider {
 
     public DetailInvoiceService getDetailInvoiceService() {
         return (DetailInvoiceService) appContext.getBean("detailInvoiceService");
+    }
+
+    public LoginConfigService getLoginConfigService() {
+        return (LoginConfigService) appContext.getBean("loginConfigService");
+    }
+
+    public UserService getUserService() {
+        return (UserService) appContext.getBean("userService");
+    }
+
+    public PermissionEntityService getPermissionEntityService() {
+        return (PermissionEntityService) appContext.getBean("permissionEntityService");
+    }
+
+    public PrincipalEntityService getPrincipalEntityService() {
+        return (PrincipalEntityService) appContext.getBean("principalEntityService");
     }
 
     public DaoHelper getDaoHelper() {
