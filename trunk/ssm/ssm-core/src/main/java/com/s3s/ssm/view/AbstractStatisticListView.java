@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
-import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
@@ -22,7 +21,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
  * 
  * @param <T>
  */
-public abstract class AbstractStatisticListView<T extends AbstractCodeOLObject> extends AbstractListView<T> {
+public abstract class AbstractStatisticListView<T extends AbstractBaseIdObject> extends AbstractListView<T> {
     private static final long serialVersionUID = -1081095962690319904L;
 
     @Override
