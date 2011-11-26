@@ -18,14 +18,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -37,16 +33,20 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.component.BankDomain;
 import com.s3s.ssm.view.component.ImageChooser;
-import com.s3s.ssm.view.component.ManufacturerDomain;
 import com.s3s.ssm.view.component.RadioButtonsGroup;
-import com.s3s.ssm.view.component.UserDomain;
+import com.s3s.ssm.view.domain.BuyManagementDomain;
+import com.s3s.ssm.view.domain.ContactManagementDomain;
+import com.s3s.ssm.view.domain.FinanceManagementDomain;
+import com.s3s.ssm.view.domain.InventoryManagementDomain;
+import com.s3s.ssm.view.domain.ReportDomain;
+import com.s3s.ssm.view.domain.ResourceManagementDomain;
+import com.s3s.ssm.view.domain.SalesManagementDomain;
+import com.s3s.ssm.view.domain.SupplyChainDomain;
+import com.s3s.ssm.view.domain.SystemManagementDomain;
 import com.s3s.ssm.view.list.ListCustomerViewTest;
 import com.s3s.ssm.view.list.ListGoodsViewTest;
 import com.s3s.ssm.view.list.ListInvoiceViewTest;
-import com.s3s.ssm.view.list.contact.ListBankView;
-import com.s3s.ssm.view.list.contact.ListContactView;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
 import com.s3s.ssm.view.list.param.ListUnitOfMeasureView;
 import com.s3s.ssm.view.list.param.ListUomCategoryView;
@@ -118,41 +118,13 @@ public class MainProgram {
         splitPane.setOneTouchExpandable(true);
         splitPane.setRightComponent(contentViewScrollPane);
 
-        final JTree treeMenu = createTreeMenu();
-        treeMenu.addTreeSelectionListener(new TreeSelectionListener() {
-            // The views of program which should not init at the begin when start program -> performance.
-            private ListBankView listBankView;
-            private ListContactView listContactView;
-
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                // Returns the last path element of the selection.
-                // This method is useful only when the selection model allows a single selection.
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeMenu.getLastSelectedPathComponent();
-
-                if (node == null) {
-                    // Nothing is selected.
-                    return;
-                }
-
-                String nodeInfo = (String) node.getUserObject();
-                if (nodeInfo.equals("Bank")) {
-                    if (listBankView == null) {
-                        listBankView = new ListBankView();
-                    }
-                    contentViewScrollPane.setViewportView(listBankView);
-                } else if (nodeInfo.equals("Customer")) {
-                    if (listContactView == null) {
-                        listContactView = new ListContactView();
-                    }
-                    contentViewScrollPane.setViewportView(listContactView);
-                }
-
-            }
-        });
-        JScrollPane treeMenuScrollPane = new JScrollPane(treeMenu);
+        JScrollPane treeMenuScrollPane = new JScrollPane();
         JSplitPane leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+
         leftSplitPane.setTopComponent(treeMenuScrollPane);
+
+        // TODO: Hard-code - The list buttons should be in the bottom of the screen.
+        leftSplitPane.setDividerLocation(470);
         leftSplitPane.setBottomComponent(createLeftBottomPane(treeMenuScrollPane, contentViewScrollPane));
         splitPane.setLeftComponent(leftSplitPane);
 
@@ -164,176 +136,36 @@ public class MainProgram {
 
         ButtonGroup buttonGroup = new ButtonGroup();
 
-        UserDomain userDomain = new UserDomain(treeScrollPane, contentScrollPane);
-        BankDomain bankDomain = new BankDomain(treeScrollPane, contentScrollPane);
-        ManufacturerDomain manufacturerDomain = new ManufacturerDomain(treeScrollPane, contentScrollPane);
+        SystemManagementDomain systemDomain = new SystemManagementDomain(treeScrollPane, contentScrollPane);
+        BuyManagementDomain buyDomain = new BuyManagementDomain(treeScrollPane, contentScrollPane);
+        SalesManagementDomain salesDomain = new SalesManagementDomain(treeScrollPane, contentScrollPane);
+        InventoryManagementDomain inventoryDomain = new InventoryManagementDomain(treeScrollPane, contentScrollPane);
+        ContactManagementDomain contactDomain = new ContactManagementDomain(treeScrollPane, contentScrollPane);
+        FinanceManagementDomain financeDomain = new FinanceManagementDomain(treeScrollPane, contentScrollPane);
+        SupplyChainDomain supplyChainDomain = new SupplyChainDomain(treeScrollPane, contentScrollPane);
+        ResourceManagementDomain resourceDomain = new ResourceManagementDomain(treeScrollPane, contentScrollPane);
+        ReportDomain reportDomain = new ReportDomain(treeScrollPane, contentScrollPane);
 
-        buttonGroup.add(manufacturerDomain);
-        buttonGroup.add(bankDomain);
-        buttonGroup.add(userDomain);
+        buttonGroup.add(systemDomain);
+        buttonGroup.add(buyDomain);
+        buttonGroup.add(salesDomain);
+        buttonGroup.add(inventoryDomain);
+        buttonGroup.add(contactDomain);
+        buttonGroup.add(financeDomain);
+        buttonGroup.add(supplyChainDomain);
+        buttonGroup.add(resourceDomain);
+        buttonGroup.add(reportDomain);
 
-        panel.add(manufacturerDomain, "grow");
-        panel.add(bankDomain, "grow");
-        panel.add(userDomain, "grow");
-
+        panel.add(systemDomain, "grow");
+        panel.add(buyDomain, "grow");
+        panel.add(salesDomain, "grow");
+        panel.add(inventoryDomain, "grow");
+        panel.add(contactDomain, "grow");
+        panel.add(financeDomain, "grow");
+        panel.add(supplyChainDomain, "grow");
+        panel.add(resourceDomain, "grow");
+        panel.add(reportDomain, "grow");
         return panel;
-    }
-
-    private static JTree createTreeMenu() {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Sale management");
-
-        // User management
-        DefaultMutableTreeNode userManagementEntry = new DefaultMutableTreeNode("User management");
-        DefaultMutableTreeNode userNode = new DefaultMutableTreeNode("User");
-        DefaultMutableTreeNode profilesNode = new DefaultMutableTreeNode("Profiles");
-        DefaultMutableTreeNode exceptionPrivilegeNode = new DefaultMutableTreeNode("Profiles");
-        root.add(userManagementEntry);
-        userManagementEntry.add(userNode);
-        userManagementEntry.add(profilesNode);
-        userManagementEntry.add(exceptionPrivilegeNode);
-
-        // Manufacturer management
-        DefaultMutableTreeNode mfManagementEntry = new DefaultMutableTreeNode("Manufacturer management");
-        root.add(mfManagementEntry);
-
-        // Supplier
-        DefaultMutableTreeNode supplierEntry = new DefaultMutableTreeNode("Supplier");
-        root.add(supplierEntry);
-
-        // Product management
-        DefaultMutableTreeNode productManagementEntry = new DefaultMutableTreeNode("Product management");
-        DefaultMutableTreeNode uomCategoryNode = new DefaultMutableTreeNode("Unit-Of-Material Category");
-        DefaultMutableTreeNode uomNode = new DefaultMutableTreeNode("Unit-Of-Material");
-        DefaultMutableTreeNode productGroupNode = new DefaultMutableTreeNode("Product group");
-        DefaultMutableTreeNode productNode = new DefaultMutableTreeNode("Product");
-        DefaultMutableTreeNode taxGroupNode = new DefaultMutableTreeNode("Tax group");
-        root.add(productManagementEntry);
-        productManagementEntry.add(uomCategoryNode);
-        productManagementEntry.add(uomNode);
-        productManagementEntry.add(productGroupNode);
-        productManagementEntry.add(productNode);
-        productManagementEntry.add(taxGroupNode);
-
-        // Bank
-        DefaultMutableTreeNode bankEntry = new DefaultMutableTreeNode("Bank");
-        root.add(bankEntry);
-
-        // Currency management
-        DefaultMutableTreeNode currencyManagementEntry = new DefaultMutableTreeNode("Currency management");
-        DefaultMutableTreeNode currenciesNode = new DefaultMutableTreeNode("Currencies");
-        DefaultMutableTreeNode exchangeRateNode = new DefaultMutableTreeNode("Exchange rate");
-        root.add(currencyManagementEntry);
-        currencyManagementEntry.add(currenciesNode);
-        currencyManagementEntry.add(exchangeRateNode);
-
-        // Sales contract
-        DefaultMutableTreeNode saleContractEntry = new DefaultMutableTreeNode("Sales contract");
-        DefaultMutableTreeNode buyContractNode = new DefaultMutableTreeNode("Hợp đồng mua hàng");
-        DefaultMutableTreeNode ttManageNode = new DefaultMutableTreeNode("Quản lý TT");
-        DefaultMutableTreeNode lcManageNode = new DefaultMutableTreeNode("Quản lý LC");
-        DefaultMutableTreeNode declareContractNode = new DefaultMutableTreeNode("Quản lý tờ khai");
-        root.add(saleContractEntry);
-        saleContractEntry.add(buyContractNode);
-        saleContractEntry.add(ttManageNode);
-        saleContractEntry.add(lcManageNode);
-        saleContractEntry.add(declareContractNode);
-
-        // Inventory management
-        DefaultMutableTreeNode inventoryManagementEntry = new DefaultMutableTreeNode("Inventory management");
-        DefaultMutableTreeNode tonKhoNode = new DefaultMutableTreeNode("Tồn kho");
-        DefaultMutableTreeNode chuyenKhoNode = new DefaultMutableTreeNode("Chuyển kho");
-        DefaultMutableTreeNode phieuXuatKhoNode = new DefaultMutableTreeNode("Phiếu xuất kho");
-        DefaultMutableTreeNode phieuNhapKhoNode = new DefaultMutableTreeNode("Phiếu nhập kho");
-        root.add(inventoryManagementEntry);
-        inventoryManagementEntry.add(tonKhoNode);
-        inventoryManagementEntry.add(chuyenKhoNode);
-        inventoryManagementEntry.add(phieuXuatKhoNode);
-        inventoryManagementEntry.add(phieuNhapKhoNode);
-
-        // Financial management
-        DefaultMutableTreeNode fMEntry = new DefaultMutableTreeNode("Financial management");
-        DefaultMutableTreeNode receiveFMEntry = new DefaultMutableTreeNode("Receivable financial management");
-        DefaultMutableTreeNode thuKemToaHangNode = new DefaultMutableTreeNode("Thu kèm toa hàng");
-        DefaultMutableTreeNode thuTienHangNode = new DefaultMutableTreeNode("Thu tiền hàng");
-        DefaultMutableTreeNode muonTienNode = new DefaultMutableTreeNode("Mượn tiền");
-        DefaultMutableTreeNode otherReceiveNode = new DefaultMutableTreeNode("Khoản thu khác");
-        DefaultMutableTreeNode payFMEntry = new DefaultMutableTreeNode("Payable financial management");
-        DefaultMutableTreeNode tamUngKHNode = new DefaultMutableTreeNode("Tạm ứng khách hàng");
-        DefaultMutableTreeNode chiMuaHangNode = new DefaultMutableTreeNode("Chi mua hàng");
-        DefaultMutableTreeNode choVayTienNode = new DefaultMutableTreeNode("Cho vay tiền");
-        DefaultMutableTreeNode chiPhiKhacNode = new DefaultMutableTreeNode("Chi phí khác");
-        root.add(fMEntry);
-        fMEntry.add(receiveFMEntry);
-        fMEntry.add(payFMEntry);
-        receiveFMEntry.add(thuKemToaHangNode);
-        receiveFMEntry.add(thuTienHangNode);
-        receiveFMEntry.add(muonTienNode);
-        receiveFMEntry.add(otherReceiveNode);
-        payFMEntry.add(tamUngKHNode);
-        payFMEntry.add(chiMuaHangNode);
-        payFMEntry.add(choVayTienNode);
-        payFMEntry.add(chiPhiKhacNode);
-
-        // Quản lý công nợ
-        DefaultMutableTreeNode quanLyCongNoEntry = new DefaultMutableTreeNode("Quản lý công nợ");
-        DefaultMutableTreeNode congNoKHNode = new DefaultMutableTreeNode("Công nợ khách hàng");
-        DefaultMutableTreeNode congNoNCCKhacNode = new DefaultMutableTreeNode("Công nợ nhà cung cấp");
-        root.add(quanLyCongNoEntry);
-        quanLyCongNoEntry.add(congNoKHNode);
-        quanLyCongNoEntry.add(congNoNCCKhacNode);
-
-        // CRM Contact management
-        DefaultMutableTreeNode contactMagementEntry = new DefaultMutableTreeNode("CRM contact management");
-        DefaultMutableTreeNode customerGroupNode = new DefaultMutableTreeNode("Customer group");
-        DefaultMutableTreeNode customerNode = new DefaultMutableTreeNode("Customer");
-        DefaultMutableTreeNode supplierNode = new DefaultMutableTreeNode("Supplier");
-        DefaultMutableTreeNode nguoiDuocTaiTroNode = new DefaultMutableTreeNode("Người được tài trợ");
-        root.add(contactMagementEntry);
-        contactMagementEntry.add(customerGroupNode);
-        contactMagementEntry.add(customerNode);
-        contactMagementEntry.add(supplierNode);
-        contactMagementEntry.add(nguoiDuocTaiTroNode);
-
-        // Supply chain management
-        DefaultMutableTreeNode supplyChainMangamentEntry = new DefaultMutableTreeNode("Supply chain management");
-        DefaultMutableTreeNode materialNode = new DefaultMutableTreeNode("Material");
-        DefaultMutableTreeNode materialPriceNode = new DefaultMutableTreeNode("Material price");
-        DefaultMutableTreeNode materialEndProductExchangeNode = new DefaultMutableTreeNode("Material product exchange");
-        DefaultMutableTreeNode endProductNode = new DefaultMutableTreeNode("End-product");
-        DefaultMutableTreeNode endProductPriceNode = new DefaultMutableTreeNode("End-product price");
-        root.add(supplyChainMangamentEntry);
-        supplyChainMangamentEntry.add(materialNode);
-        supplyChainMangamentEntry.add(materialPriceNode);
-        supplyChainMangamentEntry.add(materialEndProductExchangeNode);
-        supplyChainMangamentEntry.add(endProductNode);
-        supplyChainMangamentEntry.add(endProductPriceNode);
-
-        // HRM Resource management
-        DefaultMutableTreeNode resourceManagementEntry = new DefaultMutableTreeNode("HRM Resource management");
-        DefaultMutableTreeNode employeeNode = new DefaultMutableTreeNode("Employee");
-        DefaultMutableTreeNode deviceMaterial = new DefaultMutableTreeNode("Device, material");
-        root.add(resourceManagementEntry);
-        resourceManagementEntry.add(employeeNode);
-        resourceManagementEntry.add(deviceMaterial);
-
-        // Report
-        DefaultMutableTreeNode reportEntry = new DefaultMutableTreeNode("Report");
-        DefaultMutableTreeNode baoDongKichCauNode = new DefaultMutableTreeNode("Báo động kích cầu");
-        DefaultMutableTreeNode baoDongHetHangNode = new DefaultMutableTreeNode("Báo động hết hàng");
-        DefaultMutableTreeNode hangBanChayNode = new DefaultMutableTreeNode("Hàng bán chạy");
-        DefaultMutableTreeNode hangTonQuaLauNode = new DefaultMutableTreeNode("Hàng tồn quá lâu");
-        DefaultMutableTreeNode thongKeHangBanNode = new DefaultMutableTreeNode("Thống kê hàng bán");
-        DefaultMutableTreeNode thongKeDoanhThuChiPhiNode = new DefaultMutableTreeNode("Thống kê doanh thu - chi phí");
-        root.add(reportEntry);
-        reportEntry.add(baoDongKichCauNode);
-        reportEntry.add(baoDongHetHangNode);
-        reportEntry.add(hangBanChayNode);
-        reportEntry.add(hangTonQuaLauNode);
-        reportEntry.add(thongKeHangBanNode);
-        reportEntry.add(thongKeDoanhThuChiPhiNode);
-
-        final JTree treeMenu = new JTree(root);
-        return treeMenu;
     }
 
     private static JPanel createDemoComponentPanel() {
