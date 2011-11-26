@@ -49,14 +49,15 @@ public class EditContactView extends AbstractMasterDetailView<Contact, ContactSh
 
     @Override
     protected void saveOrUpdate(Contact masterEntity, List<ContactShop> detailEntities) {
-        // TODO: not work, it's just crazy, detailEntities is always empty.
-        for (ContactShop contactShop : detailEntities) {
-            masterEntity.addShop(contactShop);
-        }
+        super.saveOrUpdate(masterEntity, detailEntities);
 
         // TODO: check bankAccount not updated and do not update in database.
         getDaoHelper().getDao(BankAccount.class).saveOrUpdate(masterEntity.getBankAccount());
-        getDaoHelper().getDao(Contact.class).saveOrUpdate(masterEntity);
+    }
+
+    @Override
+    protected void addDetailIntoMaster(Contact masterEntity, ContactShop detailEntity) {
+        masterEntity.addShop(detailEntity);
     }
 
     @Override

@@ -38,9 +38,9 @@ public class EditDetailInvoiceViewTest extends AbstractDetailView<DetailInvoiceT
     protected void saveOrUpdate(DetailInvoiceTest entity2) {
         // Do nothing. Wait for saveOrUpdate by EditMasterInvoiceView
         // Set a fake id if add a new entity, pretend the entity is saved.
-        if (entity2.getId() == null) {
-            entity2.setId(-1L);
-        }
+        // if (entity2.getId() == null) {
+        // entity2.setId(-1L);
+        // }
     }
 
 }

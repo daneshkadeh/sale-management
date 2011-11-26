@@ -81,4 +81,9 @@ public class InvoiceTest extends AbstractBaseIdObject {
         this.detailInvoices = detailInvoices;
     }
 
+    public void addDetailInvoice(DetailInvoiceTest detailInvoice) {
+        detailInvoice.setInvoice(this);
+        this.getDetailInvoices().add(detailInvoice);
+    }
+
 }

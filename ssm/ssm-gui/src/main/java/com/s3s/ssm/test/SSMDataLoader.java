@@ -17,6 +17,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.s3s.ssm.entity.contact.Bank;
 import com.s3s.ssm.entity.contact.BankAccount;
 import com.s3s.ssm.entity.contact.Contact;
+import com.s3s.ssm.entity.contact.ContactDebt;
 import com.s3s.ssm.entity.contact.ContactFamilyType;
 import com.s3s.ssm.entity.contact.ContactShop;
 import com.s3s.ssm.entity.contact.ContactType;
@@ -128,6 +129,7 @@ public class SSMDataLoader {
         daoHelper.getDao(UomCategory.class).deleteAll(daoHelper.getDao(UomCategory.class).findAll());
 
         daoHelper.getDao(Supplier.class).deleteAll(daoHelper.getDao(Supplier.class).findAll());
+        daoHelper.getDao(ContactDebt.class).deleteAll(daoHelper.getDao(ContactDebt.class).findAll());
         daoHelper.getDao(Contact.class).deleteAll(daoHelper.getDao(Contact.class).findAll());
         daoHelper.getDao(ContactType.class).deleteAll(daoHelper.getDao(ContactType.class).findAll());
         daoHelper.getDao(BankAccount.class).deleteAll(daoHelper.getDao(BankAccount.class).findAll());
@@ -163,6 +165,7 @@ public class SSMDataLoader {
         List<BankAccount> listBankAccount = initBankAccount(daoHelper);
         List<Operator> listOperator = initOperator(daoHelper);
         List<Contact> listContact = initContact(daoHelper, listBankAccount);
+        List<ContactDebt> listContactDebt = initContactDebt(daoHelper, listContact);
         List<Supplier> listSupplier = initSupplier(daoHelper, listContact, listBankAccount);
         List<Store> listStore = initStore(daoHelper, listOperator);
         List<Article> listGoods = initGood(daoHelper, listStore, listItem);
@@ -171,6 +174,15 @@ public class SSMDataLoader {
         List<SalesContract> listSalesContracts = initSalesContracts(daoHelper, listSupplier, listItem);
         List<Invoice> listInvoice = initInvoice(daoHelper, listItem, listContact);
         List<Payment> listPayments = initPayment(daoHelper, listInvoice, listContact);
+    }
+
+    private static List<ContactDebt> initContactDebt(DaoHelper daoHelper, List<Contact> listContact) {
+        ContactDebt contactDebt = new ContactDebt();
+        contactDebt.setContact(listContact.get(0));
+        contactDebt.setDebtMoney(1000000.0);
+        contactDebt.setCurrency(CurrencyEnum.VND);
+        daoHelper.getDao(ContactDebt.class).saveOrUpdate(contactDebt);
+        return Arrays.asList(contactDebt);
     }
 
     private static List<Payment> initPayment(DaoHelper daoHelper, List<Invoice> listInvoice, List<Contact> listContact) {
@@ -333,7 +345,7 @@ public class SSMDataLoader {
         store.setExportAddress(ADDRESS);
         store.setImportAddress(ADDRESS);
         store.setName("Kho 05");
-        store.setManager(listOperator.get(0));
+        store.setManagerCode(listOperator.get(0).getLogin());
         daoHelper.getDao(Store.class).saveOrUpdate(store);
         return Arrays.asList(store);
     }
