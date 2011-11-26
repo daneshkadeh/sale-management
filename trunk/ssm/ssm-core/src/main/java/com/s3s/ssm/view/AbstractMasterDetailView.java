@@ -86,6 +86,11 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
             }
         };
 
+        public void notifyFromDetailView(E entity, boolean isNew) {
+            super.notifyFromDetailView(entity, isNew);
+            detailEntities.add(entity);
+        };
+
         @Override
         protected Class<E> getEntityClass() {
             return getDetailClass();
@@ -110,7 +115,21 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
         saveOrUpdate(masterEntity, detailEntities);
     };
 
-    protected abstract void saveOrUpdate(T masterEntity, List<E> detailEntities);
+    protected void saveOrUpdate(T masterEntity, List<E> detailEntities) {
+        for (E detail : detailEntities) {
+            if (detail.isPersisted()) {
+                getDaoHelper().getDao(getDetailClass()).saveOrUpdate(detail);
+            } else {
+                addDetailIntoMaster(masterEntity, detail);
+            }
+        }
+        getDaoHelper().getDao(getMasterClass()).saveOrUpdate(masterEntity);
+    }
+
+    protected void addDetailIntoMaster(T masterEntity, E detailEntity) {
+        // add detail entity into master entity
+
+    }
 
     protected Class<T> getMasterClass() {
         Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];

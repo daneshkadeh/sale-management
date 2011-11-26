@@ -54,14 +54,18 @@ public class EditMasterInvoiceViewTest extends AbstractMasterDetailView<InvoiceT
 
     }
 
+    // @Override
+    // protected void saveOrUpdate(InvoiceTest invoice, List<DetailInvoiceTest> listDetailInvoice) {
+    // // ConfigProvider.getInstance().getInvoiceService().save(invoice);
+    // for (DetailInvoiceTest detailInvoice : listDetailInvoice) {
+    // detailInvoice.setInvoice(invoice);
+    // // ConfigProvider.getInstance().getDetailInvoiceService().save(detailInvoice);
+    // }
+    // getDaoHelper().getDao(InvoiceTest.class).saveOrUpdate(invoice);
+    // }
     @Override
-    protected void saveOrUpdate(InvoiceTest invoice, List<DetailInvoiceTest> listDetailInvoice) {
-        // ConfigProvider.getInstance().getInvoiceService().save(invoice);
-        for (DetailInvoiceTest detailInvoice : listDetailInvoice) {
-            detailInvoice.setInvoice(invoice);
-            // ConfigProvider.getInstance().getDetailInvoiceService().save(detailInvoice);
-        }
-        getDaoHelper().getDao(InvoiceTest.class).saveOrUpdate(invoice);
+    protected void addDetailIntoMaster(InvoiceTest masterEntity, DetailInvoiceTest detailEntity) {
+        masterEntity.addDetailInvoice(detailEntity);
     }
 
     @Override

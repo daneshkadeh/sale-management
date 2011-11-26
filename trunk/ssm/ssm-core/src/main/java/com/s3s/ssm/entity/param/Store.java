@@ -2,9 +2,6 @@ package com.s3s.ssm.entity.param;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -18,7 +15,7 @@ public class Store extends AbstractCodeOLObject {
     private String storedAddress;
     private String importAddress;
     private String exportAddress;
-    private Operator manager;
+    private String managerCode;
 
     @Column(name = "store_name", nullable = false, length = 128)
     @NotNull
@@ -70,13 +67,14 @@ public class Store extends AbstractCodeOLObject {
         this.exportAddress = exportAddress;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "manager_id", nullable = false)
-    public Operator getManager() {
-        return manager;
+    // login name of the manager in system
+    @Column(name = "manager_code", length = 32)
+    public String getManagerCode() {
+        return managerCode;
     }
 
-    public void setManager(Operator manager) {
-        this.manager = manager;
+    public void setManagerCode(String managerCode) {
+        this.managerCode = managerCode;
     }
+
 }

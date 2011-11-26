@@ -13,7 +13,7 @@ public class EditContactShopView extends AbstractDetailView<ContactShop> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ContactShop entity) {
-        detailDataModel.addAttribute("contact", FieldTypeEnum.TEXTBOX).editable(false);
+        // detailDataModel.addAttribute("contact", FieldTypeEnum.TEXTBOX).editable(false);
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("address", FieldTypeEnum.TEXTBOX);
@@ -27,9 +27,10 @@ public class EditContactShopView extends AbstractDetailView<ContactShop> {
     @Override
     protected void saveOrUpdate(ContactShop entity) {
         // Fake id
-        if (entity.getId() == null) {
-            entity.setId(-1L);
-        }
+        // TODO: How to put this entity to the listContactShop in EditContactView?
+        // if (entity.getId() == null) {
+        // entity.setId(-1L);
+        // }
     }
 
 }

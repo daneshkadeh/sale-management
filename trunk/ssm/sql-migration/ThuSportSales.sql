@@ -247,7 +247,7 @@ CREATE TABLE `s_store` (
   `id` int(11) NOT NULL auto_increment,
   `code` varchar(32) NOT NULL,
   `store_name` varchar(128) NOT NULL collate utf8_bin,
-  `manager_id` int(11) NOT NULL,
+  `manager_code` varchar(32) NOT NULL,
   `address` varchar(256) NOT NULL collate utf8_bin,
   `stored_address` varchar(256) NOT NULL collate utf8_bin,
   `import_address` varchar(256) NOT NULL collate utf8_bin,
@@ -427,13 +427,11 @@ CREATE TABLE `s_detail_import_product` (
 CREATE UNIQUE INDEX ui_import_item ON s_detail_import_product(import_product_id, item_id);
 CREATE INDEX idx_import_product_id ON s_detail_import_product(import_product_id);
 
--- s_package extends from s_product
 CREATE TABLE `s_package` (
   `id` int(11) NOT NULL auto_increment,
   `code` varchar(32) NOT NULL,
-  `package_name` varchar(32) NOT NULL collate utf8_bin,
-  `total_price` double NOT NULL,
-  `currency` varchar(3) collate utf8_bin NOT NULL,
+  `name` varchar(128) NOT NULL collate utf8_bin,
+  `total_expected_item_amount` int(11) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
@@ -448,10 +446,10 @@ CREATE TABLE `s_package_line` (
   `id` int(11) NOT NULL auto_increment,
   `package_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `unit_price` double NOT NULL,
-  `total_price` double NOT NULL,
-  `currency` varchar(3) collate utf8_bin NOT NULL,
+  `parentpackline_id` int(11),
+  `min_item_amount` int(11) NOT NULL,
+  `max_item_amount` int(11) NOT NULL,
+  `optional` int(1) NOT NULL default '1';
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
@@ -462,6 +460,23 @@ CREATE TABLE `s_package_line` (
 
 CREATE UNIQUE INDEX ui_package_item ON s_package_line(package_id, item_id);
 CREATE INDEX idx_package_id ON s_package_line(package_id);
+
+
+CREATE TABLE `s_package_line_item_price` (
+  `id` int(11) NOT NULL auto_increment,
+  `package_line_id` int(11) NOT NULL,
+  `contact_type_id` int(11) NOT NULL,
+  `sell_item_price` double NOT NULL,
+  `currency` varchar(3) NOT NULL,
+  `discount_percent` int(11) NOT NULL,
+  `usr_log_i` varchar(32) NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
 
 -- if status is RESERVED, sellable_amount of store will be decreased
 -- status: OPEN, RESERVED, CLOSED, CANCELLED, ABANDONED.
@@ -687,7 +702,7 @@ CREATE INDEX idx_contact_id ON s_contact_shop(contact_id);
 CREATE TABLE `s_contact_debt` (
   `id` int(11) NOT NULL auto_increment,
   `contact_id` int(11) NOT NULL,
-  `debt_money` int(11) NOT NULL,
+  `debt_money` double NOT NULL,
   `currency` varchar(3) collate utf8_bin NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,

@@ -4,21 +4,29 @@ import java.util.List;
 
 import com.s3s.ssm.entity.param.Supplier;
 import com.s3s.ssm.model.DetailAttribute;
+import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
 import com.s3s.ssm.view.AbstractListView;
+import com.s3s.ssm.view.detail.param.EditSupplierView;
 
 public class ListSupplierView extends AbstractListView<Supplier> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        // TODO Auto-generated method stub
-
+        listDataModel.add(new DetailAttribute("code", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("mainContact", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("phoneNumber", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("fixPhoneNumber", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("faxNumber", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("email", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("bankAccount", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("note", FieldTypeEnum.TEXTBOX));
     }
 
     @Override
     protected Class<? extends AbstractDetailView<Supplier>> getDetailViewClass() {
-        // TODO Auto-generated method stub
-        return null;
+        return EditSupplierView.class;
     }
 
 }

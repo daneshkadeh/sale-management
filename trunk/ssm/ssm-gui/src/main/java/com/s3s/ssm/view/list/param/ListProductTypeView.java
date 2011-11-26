@@ -16,6 +16,7 @@ public class ListProductTypeView extends AbstractListView<ProductType> {
         listDataModel.add(new DetailAttribute("id", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("code", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("productFamilyType", FieldTypeEnum.TEXTBOX));
     }
 
     @Override
