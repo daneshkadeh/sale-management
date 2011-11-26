@@ -118,21 +118,18 @@ public class MainProgram {
         splitPane.setOneTouchExpandable(true);
         splitPane.setRightComponent(contentViewScrollPane);
 
-        JScrollPane treeMenuScrollPane = new JScrollPane();
-        JSplitPane leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-
+        JScrollPane treeMenuScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JSplitPane leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
+        leftSplitPane.setBottomComponent(createLeftBottomPane(treeMenuScrollPane, contentViewScrollPane));
         leftSplitPane.setTopComponent(treeMenuScrollPane);
 
-        // TODO: Hard-code - The list buttons should be in the bottom of the screen.
-        leftSplitPane.setDividerLocation(470);
-        leftSplitPane.setBottomComponent(createLeftBottomPane(treeMenuScrollPane, contentViewScrollPane));
         splitPane.setLeftComponent(leftSplitPane);
-
         contentPane.add(splitPane);
     }
 
     private static JPanel createLeftBottomPane(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
-        JPanel panel = new JPanel(new MigLayout("wrap, gap 0 0 0 0, insets 0 0 0 0", "grow"));
+        JPanel panel = new JPanel(new MigLayout("wrap, gap 0, ins 0, fill", "grow"));
 
         ButtonGroup buttonGroup = new ButtonGroup();
 
@@ -165,6 +162,8 @@ public class MainProgram {
         panel.add(supplyChainDomain, "grow");
         panel.add(resourceDomain, "grow");
         panel.add(reportDomain, "grow");
+
+        systemDomain.doClick();
         return panel;
     }
 
