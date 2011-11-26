@@ -146,12 +146,13 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         // Layout the screen
         setLayout(new MigLayout("wrap", "fill, grow"));
 
-        add(createButtonPanel());
-
         JPanel pnlEdit = new JPanel(new MigLayout("wrap 2", "[][fill]"));
         for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + attribute.getName());
+            if (attribute.isMandatory()) {
+                label += " (*)";
+            }
             JLabel lblLabel = new JLabel(label);
             JComponent dataField;
 
@@ -226,6 +227,13 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             mapFields.put(attribute, dataField);
         }
 
+        JPanel pnlButton = createButtonPanel();
+        pnlEdit.add(pnlButton, "span, center, grow");
+
+        add(pnlEdit, "grow");
+    }
+
+    private JPanel createButtonPanel() {
         btnOK = new JButton("OK");
         btnOK.addActionListener(new ActionListener() {
             @Override
@@ -245,14 +253,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         JPanel pnlButton = new JPanel();
         pnlButton.add(btnOK);
         pnlButton.add(btnCancel);
-        pnlEdit.add(pnlButton, "span, center, grow");
-
-        add(pnlEdit, "grow");
-    }
-
-    private JPanel createButtonPanel() {
-        // TODO hpp: move btnOK and Cancel to here, add other button.
-        return new JPanel();
+        return pnlButton;
     }
 
     protected void btnOKActionPerformed(ActionEvent evt) {

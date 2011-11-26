@@ -7,6 +7,7 @@ public class DetailAttribute {
     private FieldTypeEnum type;
     private boolean isEditable = true;
     private boolean isEnable = true;
+    private boolean isMandatory = false;
     private String referenceDataId;
 
     public DetailAttribute(String name, FieldTypeEnum type) {
@@ -52,6 +53,15 @@ public class DetailAttribute {
 
     public String getReferenceDataId() {
         return referenceDataId;
+    }
+
+    public boolean isMandatory() {
+        return isMandatory;
+    }
+
+    public DetailAttribute setMandatory(boolean isMandatory) {
+        this.isMandatory = isMandatory;
+        return this;
     }
 
 }
