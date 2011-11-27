@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 
 import com.s3s.ssm.entity.DetailInvoiceTest;
 import com.s3s.ssm.model.DetailAttribute;
@@ -35,8 +35,8 @@ public class ListDetailInvoiceViewTest extends AbstractCommonListView<DetailInvo
     }
 
     @Override
-    protected JPanel createButtonPanel(JTable table) {
-        JPanel pnlButton = new JPanel();
+    protected JToolBar createButtonToolBar(JTable table) {
+        JToolBar pnlButton = new JToolBar();
         JButton btnInsertRow = new JButton(ControlConfigUtils.getString("ListView.Common.Button.InsertRow"));
         btnInsertRow.addActionListener(new ActionListener() {
             @Override

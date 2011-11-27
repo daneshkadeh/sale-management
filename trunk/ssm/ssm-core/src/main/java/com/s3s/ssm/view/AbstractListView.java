@@ -24,9 +24,9 @@ import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -158,13 +158,17 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     protected void addComponents() {
+        // //////////////////// Button panel /////////////////////////////////
+        JToolBar pnlButton = createButtonToolBar(tblListEntities);
+        this.add(pnlButton);
+
         // ///////////////////// Paging navigator ///////////////////////////////
         pagingNavigator = new PagingNavigator(calculateTotalPages());
         pagingNavigator.addPageChangeListener(this);
 
         // ///////////////// Init main table ////////////////////////////////
         tblListEntities = new JXTable();
-
+        tblListEntities.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tblListEntities.addHighlighter(HighlighterFactory.createSimpleStriping());
         // Highlight the row when mouse over.
         tblListEntities
@@ -235,9 +239,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         }
 
         this.add(pagingNavigator);
-        // //////////////////// Button panel /////////////////////////////////
-        JPanel pnlButton = createButtonPanel(tblListEntities);
-        this.add(pnlButton);
     }
 
     private int calculateTotalPages() {
@@ -265,8 +266,9 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * 
      * @return the panel containing the buttons.
      */
-    protected JPanel createButtonPanel(JTable table) {
-        JPanel buttonPanel = new JPanel();
+    protected JToolBar createButtonToolBar(JTable table) {
+        JToolBar buttonPanel = new JToolBar();
+        buttonPanel.setRollover(true);
         JButton btnAdd = new JButton("Add");
         btnAdd.addActionListener(addAction);
 
@@ -616,7 +618,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         addAction = new AddAction();
         editAction = new EditAction();
-        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[grow, fill]2[]0[][]"));
+        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[grow, fill]2[][]"));
 
         addKeyBindings();
         addComponents();

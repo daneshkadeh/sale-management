@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
@@ -40,8 +41,8 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
     JFrame detailFrame = new JFrame();
 
     @Override
-    protected JPanel createButtonPanel(final JTable table) {
-        JPanel pnlButton = new JPanel();
+    protected JToolBar createButtonToolBar(final JTable table) {
+        JToolBar pnlButton = new JToolBar();
 
         JButton btnDisplayAll = new JButton(ControlConfigUtils.getString("ListView.Common.Button.DisplayAll"));
         btnDisplayAll.addActionListener(new ActionListener() {
