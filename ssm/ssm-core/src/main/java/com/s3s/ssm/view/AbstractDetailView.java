@@ -2,7 +2,6 @@ package com.s3s.ssm.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXDatePicker;
 import org.joda.time.DateTime;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.StringUtils;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
@@ -68,22 +68,42 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     private JButton btnOK;
     private JButton btnCancel;
     protected T entity;
+    protected BeanWrapperImpl beanWrapper;
 
     private final ReferenceDataModel refDataModel = new ReferenceDataModel();
 
     private final static int DEFAULT_TEXTFIELD_COLUMN = 20;
 
+    // /**
+    // * The default constructor, init the detail view with new entity. TODO: Suspended for not confusing.
+    // */
+    // public AbstractDetailView() {
+    // try {
+    // T entity = getEntityClass().newInstance();
+    // loadForCreate(entity);
+    // contructView(entity);
+    // } catch (InstantiationException | IllegalAccessException e) {
+    // logger.error("There is a problem when init the detail view");
+    // throw new RuntimeException(e.getCause());
+    // }
+    //
+    // }
+
     /**
-     * The default constructor, init the detail view with new entity.
+     * Append default attributes for entity.
+     * 
+     * @param entity
      */
-    public AbstractDetailView() {
-        try {
-            T entity = getEntityClass().newInstance();
-            contructView(entity);
-        } catch (InstantiationException | IllegalAccessException e) {
-            logger.error("There is a problem when init the detail view");
-            throw new RuntimeException(e.getCause());
-        }
+    protected void loadForCreate(T entity) {
+
+    }
+
+    /**
+     * Append missing attributes for entity.
+     * 
+     * @param entity
+     */
+    protected void loadForEdit(T entity) {
 
     }
 
@@ -95,22 +115,12 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
      */
     public AbstractDetailView(T entity) {
         this.entity = entity;
+        loadForEdit(entity);
         contructView(entity);
     }
 
-    // public AbstractDetailView() {
-    // if (entity == null) {
-    // try {
-    // entity = getEntityClass().newInstance();
-    // } catch (Exception e) {
-    // throw new RuntimeException(e);
-    // }
-    //
-    // }
-    // contructView(entity);
-    // }
-
     private void contructView(T entity) {
+        beanWrapper = new BeanWrapperImpl(entity);
         initialPresentationView(detailDataModel, entity);
         setReferenceDataModel(refDataModel, entity);
         try {
@@ -156,12 +166,12 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             JLabel lblLabel = new JLabel(label);
             JComponent dataField;
 
-            Method getMethod = entity.getClass().getMethod("get" + StringUtils.capitalize(attribute.getName()));
-            Object value = getMethod.invoke(entity);
+            Object value = beanWrapper.getPropertyValue(attribute.getName());
             ReferenceData referenceData = refDataModel.getRefDataListMap().get(attribute.getReferenceDataId());
             switch (attribute.getType()) {
             case TEXTBOX:
-                Class<?> propertyReturnType = getPropertyReturnType(entity, attribute);
+                // Class<?> propertyReturnType = getPropertyReturnType(entity, attribute);
+                Class<?> propertyReturnType = beanWrapper.getPropertyType(attribute.getName());
                 if (ClassUtils.isAssignable(propertyReturnType, Number.class)) {
                     NumberFormatter numFormatter = new NumberFormatter();
                     numFormatter.setValueClass(propertyReturnType);
@@ -279,38 +289,34 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
     protected Set<ConstraintViolation<T>> bindAndValidate(T entity) {
         try {
-            for (Method method : entity.getClass().getMethods()) {
-                DetailAttribute attribute = getAttributeModelFromSetMethod(method.getName());
-                if (attribute == null || !attribute.isEditable()) {
-                    continue;
-                }
+            for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
                 JComponent component = mapFields.get(attribute);
-                Class<?> paramClass = getPropertyReturnType(entity, attribute);
+                Class<?> paramClass = beanWrapper.getPropertyType(attribute.getName());
                 switch (attribute.getType()) {
                 case TEXTBOX:
                     JFormattedTextField txtField = (JFormattedTextField) component;
-                    method.invoke(entity, paramClass.cast(txtField.getValue()));
+                    beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(txtField.getValue()));
                     break;
                 case PASSWORD:
                     JPasswordField pwdField = (JPasswordField) component;
-                    method.invoke(entity, pwdField.getText());
+                    beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(pwdField.getText()));
                     break;
                 case CHECKBOX:
 
                     break;
                 case DATE:
                     JXDatePicker dateField = (JXDatePicker) component;
-                    method.invoke(entity, new DateTime(dateField.getDate()));
+                    beanWrapper.setPropertyValue(attribute.getName(), new DateTime(dateField.getDate()));
                     break;
                 case DROPDOWN:
                     JComboBox<?> comboBox = (JComboBox<?>) component;
-                    method.invoke(entity, paramClass.cast(comboBox.getSelectedItem()));
+                    beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(comboBox.getSelectedItem()));
                     break;
                 case MULTI_SELECT_BOX:
                     MultiSelectionBox<?> multiBox = (MultiSelectionBox<?>) component;
                     // List<?> unselected = multiBox.getSourceValues();
                     List<?> selected = multiBox.getDestinationValues();
-                    method.invoke(entity, selected);
+                    beanWrapper.setPropertyValue(attribute.getName(), selected);
                     // List<>
 
                     // TODO: set selected value into entity
@@ -327,7 +333,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());
                 }
             }
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        } catch (IllegalArgumentException e) {
             logger.error(e.getCause());
             throw new RuntimeException("Problem happens when bindAndValidate detailView:" + e.getMessage());
         }
@@ -357,15 +363,6 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e.getMessage());
         }
-    }
-
-    private DetailAttribute getAttributeModelFromSetMethod(String setMethodName) {
-        for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
-            if (setMethodName.equals("set" + StringUtils.capitalize(attribute.getName()))) {
-                return attribute;
-            }
-        }
-        return null;
     }
 
     protected void btnCancelActionPerformed(ActionEvent evt) {
