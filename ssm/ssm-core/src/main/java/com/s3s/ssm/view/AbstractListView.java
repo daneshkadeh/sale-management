@@ -137,10 +137,10 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames);
 
     /**
-     * Load the data for the particular page which having pageNumber currently.
+     * Load the data for the particular page which having current pageNumber.
      * 
      * @param pageNumber
-     *            the number of page, range from 1 to number of row in database.
+     *            the number of the page, range from 1 to number of row in database.
      * @return all data shown on the view.
      */
     protected List<T> loadData(int pageNumber) {
@@ -270,6 +270,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     protected JToolBar createButtonToolBar(JTable table) {
         JToolBar buttonToolbar = new JToolBar();
         buttonToolbar.setRollover(true);
+        buttonToolbar.setFloatable(false);
         JButton btnAdd = new JButton("Add");
         btnAdd.addActionListener(addAction);
 
