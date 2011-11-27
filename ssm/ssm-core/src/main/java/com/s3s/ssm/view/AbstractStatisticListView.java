@@ -1,8 +1,8 @@
 package com.s3s.ssm.view;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
@@ -25,8 +25,8 @@ public abstract class AbstractStatisticListView<T extends AbstractBaseIdObject> 
     private static final long serialVersionUID = -1081095962690319904L;
 
     @Override
-    protected JPanel createButtonPanel(JTable table) {
-        JPanel pnlButton = new JPanel();
+    protected JToolBar createButtonToolBar(JTable table) {
+        JToolBar pnlButton = new JToolBar();
         JButton btnPrint = new JButton(ControlConfigUtils.getString("ListView.Statistic.Button.Print"));
         JButton btnOpenExcel = new JButton(ControlConfigUtils.getString("ListView.Statistic.Button.OpenExcel"));
         JButton btnCancel = new JButton(ControlConfigUtils.getString("ListView.Statistic.Button.Cancel"));
