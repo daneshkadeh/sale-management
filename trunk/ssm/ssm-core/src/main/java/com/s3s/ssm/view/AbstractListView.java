@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.Box;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -267,8 +268,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * @return the panel containing the buttons.
      */
     protected JToolBar createButtonToolBar(JTable table) {
-        JToolBar buttonPanel = new JToolBar();
-        buttonPanel.setRollover(true);
+        JToolBar buttonToolbar = new JToolBar();
+        buttonToolbar.setRollover(true);
         JButton btnAdd = new JButton("Add");
         btnAdd.addActionListener(addAction);
 
@@ -298,10 +299,20 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         JButton btnEdit = new JButton("Edit");
         btnEdit.addActionListener(editAction);
 
-        buttonPanel.add(btnEdit);
-        buttonPanel.add(btnDelete);
-        buttonPanel.add(btnAdd);
-        return buttonPanel;
+        JButton btnRefresh = new JButton("Refresh");
+        btnRefresh.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshData();
+            }
+        });
+
+        buttonToolbar.add(btnEdit);
+        buttonToolbar.add(btnDelete);
+        buttonToolbar.add(btnAdd);
+        buttonToolbar.add(Box.createHorizontalGlue());
+        buttonToolbar.add(btnRefresh);
+        return buttonToolbar;
     }
 
     /**
@@ -622,6 +633,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         addKeyBindings();
         addComponents();
+        // setBackground(Color.BLUE);
     }
 
 }
