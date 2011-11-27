@@ -20,8 +20,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -83,17 +81,17 @@ public class MainProgram {
      */
     private static void createAndShowGUI() {
         // Set System L&F
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
+        // try {
+        // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // } catch (ClassNotFoundException e) {
+        // e.printStackTrace();
+        // } catch (InstantiationException e) {
+        // e.printStackTrace();
+        // } catch (IllegalAccessException e) {
+        // e.printStackTrace();
+        // } catch (UnsupportedLookAndFeelException e) {
+        // e.printStackTrace();
+        // }
 
         // Create and set up the window.
         final JFrame frame = new JFrame("Sales Management");
