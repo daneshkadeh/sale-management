@@ -65,9 +65,18 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
     @Override
     protected void initComponents() throws Exception {
         super.initComponents();
-        add(new ChildListView(), "grow");
+        ChildListView childListView = new ChildListView();
+
+        // Load list view immediately. This view not too large in MasterDetailView.
+        childListView.loadView();
+        add(childListView, "grow");
     }
 
+    /**
+     * TODO: The ChildListView must be have smaller size than normal list view (about 7 rows) so that it does not cover the
+     * screen.
+     * 
+     */
     private class ChildListView extends AbstractListView<E> {
         private static final long serialVersionUID = -8455234397691564647L;
 
@@ -75,9 +84,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
         protected List<E> loadData(int pageNumber) {
             Method getChildListMethod = Solution3sClassUtils.getGetterMethod(getMasterClass(), getChildFieldName());
             try {
-                // List<E> childEntitiesList = (List<E>) getChildListMethod.invoke(entity);
                 List<E> copyChildEntitiesList = new ArrayList<E>((Collection<E>) getChildListMethod.invoke(entity));
-                // Collections.copy(copyChildEntitiesList, childEntitiesList);
                 return copyChildEntitiesList;
             } catch (Exception e) {
                 logger.error(e.getCause());
