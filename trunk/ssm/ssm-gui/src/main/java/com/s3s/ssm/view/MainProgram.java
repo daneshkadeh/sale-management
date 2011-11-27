@@ -125,6 +125,7 @@ public class MainProgram {
         leftSplitPane.setTopComponent(treeMenuScrollPane);
 
         splitPane.setLeftComponent(leftSplitPane);
+        splitPane.setLastDividerLocation(splitPane.getLastDividerLocation());
         contentPane.add(splitPane);
     }
 
