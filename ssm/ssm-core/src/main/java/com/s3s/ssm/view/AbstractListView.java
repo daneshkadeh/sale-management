@@ -341,8 +341,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             JDialog dialog = new JDialog(parentContainer);
             dialog.setContentPane(scrollPane);
             Dimension preferredSize = detailView.getPreferredSize();
-            Dimension dialogSize = new Dimension(preferredSize.width + 20, preferredSize.height + 40);
-            dialog.setMinimumSize(dialogSize);
+            Dimension dialogSize = new Dimension(preferredSize.width + 25, preferredSize.height + 45);
+            dialog.setSize(dialogSize);
             dialog.setLocationRelativeTo(parentContainer); // Display the dialog in the center.
             dialog.setModalityType(ModalityType.APPLICATION_MODAL);
             dialog.setVisible(true);
