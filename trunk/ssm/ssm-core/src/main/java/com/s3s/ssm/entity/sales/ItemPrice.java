@@ -25,7 +25,6 @@ public class ItemPrice extends AbstractIdOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", nullable = false)
-    @NotNull
     public Item getItem() {
         return item;
     }

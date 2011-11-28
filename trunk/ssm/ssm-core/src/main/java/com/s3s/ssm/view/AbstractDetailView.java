@@ -3,7 +3,6 @@ package com.s3s.ssm.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -211,8 +210,9 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 ((JComboBox<?>) dataField).setSelectedItem(value);
                 break;
             case MULTI_SELECT_BOX:
-                // TODO HPP
-                dataField = new MultiSelectionBox<>(referenceData.getValues(), new ArrayList<>());
+                // TODO: This not work currently, please use EditItemView to test it.
+                dataField = new MultiSelectionBox<>(referenceData.getValues(), (List<?>) value);
+                // dataField.set
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
 

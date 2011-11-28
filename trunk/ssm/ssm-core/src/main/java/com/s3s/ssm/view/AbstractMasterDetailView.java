@@ -16,7 +16,8 @@ import com.s3s.ssm.util.Solution3sClassUtils;
 
 /**
  * This view is used for a master entity and its detail entities.</br> Example: An invoice and list detail invoice. User
- * can input directly invoice and detail invoice information on this screen.
+ * can input directly invoice and detail invoice information on this screen. </br> Defect: still not bindAndValidate
+ * detail entity correctly, master entity is still null befor bindAndValidate.
  * 
  * @author phamcongbang
  * @author Phan Hong Phuc
@@ -73,8 +74,8 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
     }
 
     /**
-     * TODO: The ChildListView must be have smaller size than normal list view (about 7 rows) so that it does not cover the
-     * screen.
+     * TODO: The ChildListView must be have smaller size than normal list view (about 7 rows) so that it does not cover
+     * the screen.
      * 
      */
     private class ChildListView extends AbstractListView<E> {
@@ -133,10 +134,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
         getDaoHelper().getDao(getMasterClass()).saveOrUpdate(masterEntity);
     }
 
-    protected void addDetailIntoMaster(T masterEntity, E detailEntity) {
-        // add detail entity into master entity
-
-    }
+    protected abstract void addDetailIntoMaster(T masterEntity, E detailEntity);
 
     protected Class<T> getMasterClass() {
         Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];

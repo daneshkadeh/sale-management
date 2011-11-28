@@ -5,9 +5,9 @@ import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
 
-public class EditContactShopView extends AbstractDetailView<ContactShop> {
+public class EditContactShopVirtualView extends AbstractDetailView<ContactShop> {
 
-    public EditContactShopView(ContactShop entity) {
+    public EditContactShopVirtualView(ContactShop entity) {
         super(entity);
     }
 

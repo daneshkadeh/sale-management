@@ -43,8 +43,7 @@ public class Item extends AbstractIdOLObject {
         this.product = product;
     }
 
-    @Column(name = "sum_uom_name", nullable = false, length = 128)
-    @NotNull
+    @Column(name = "sum_uom_name", length = 128)
     public String getSumUomName() {
         return sumUomName;
     }
