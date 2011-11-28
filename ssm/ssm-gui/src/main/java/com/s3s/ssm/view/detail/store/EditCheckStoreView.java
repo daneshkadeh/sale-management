@@ -46,4 +46,10 @@ public class EditCheckStoreView extends AbstractMasterDetailView<CheckStore, Det
 
     }
 
+    @Override
+    protected void addDetailIntoMaster(CheckStore masterEntity, DetailCheckStore detailEntity) {
+        // TODO Auto-generated method stub
+
+    }
+
 }
