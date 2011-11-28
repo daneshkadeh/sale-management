@@ -46,4 +46,10 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
 
     }
 
+    @Override
+    protected void addDetailIntoMaster(Invoice masterEntity, DetailInvoice detailEntity) {
+        // TODO Auto-generated method stub
+
+    }
+
 }

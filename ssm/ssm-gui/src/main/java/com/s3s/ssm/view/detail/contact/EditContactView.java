@@ -39,7 +39,7 @@ public class EditContactView extends AbstractMasterDetailView<Contact, ContactSh
 
     @Override
     protected Class<? extends AbstractDetailView<ContactShop>> getChildDetailViewClass() {
-        return EditContactShopView.class;
+        return EditContactShopVirtualView.class;
     }
 
     @Override
