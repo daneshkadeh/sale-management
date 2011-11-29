@@ -30,7 +30,8 @@ import org.apache.poi.util.IOUtils;
 import org.jdesktop.swingx.JXHyperlink;
 
 /**
- * Image chooser component.
+ * Image chooser component. TODO: Should we scale image before saving to reduce the size of image to improve speed of
+ * application?
  * 
  * @author Phan Hong Phuc
  */
@@ -74,7 +75,7 @@ public class ImageChooser extends JPanel {
                 InputStream in = new ByteArrayInputStream(imageData);
                 BufferedImage image = ImageIO.read(in);
 
-                ImageIcon imgIcon = new ImageIcon(image);
+                ImageIcon imgIcon = new ImageIcon(getScaledImage(image, IMG_WIDTH, IMG_HEIGHT));
                 imgLabel.setIcon(imgIcon);
                 hyperLinkBrowseImg.setText(CHANGE_IMG_TXT);
                 add(imgLabel, "cell 0 0");

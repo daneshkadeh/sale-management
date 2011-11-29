@@ -926,6 +926,11 @@ CREATE TABLE IF NOT EXISTS `s_upload_file` (
   `filesize` int(11) NOT NULL default '0',
   `file_type` varchar(128) NOT NULL default '',
   `content` longblob NOT NULL,
+  `usr_log_i` varchar(32) NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `idx_diskfile` (`diskfile`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
