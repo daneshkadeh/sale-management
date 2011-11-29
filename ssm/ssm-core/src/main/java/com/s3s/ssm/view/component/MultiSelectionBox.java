@@ -3,6 +3,8 @@ package com.s3s.ssm.view.component;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,9 +74,29 @@ public class MultiSelectionBox<T> extends JPanel {
     }
 
     private void initComponents() {
-        setLayout(new MigLayout("gap 10, insets 0 0 0 0", "[48%, grow,fill][center][48%,grow,fill]", "[grow,center]"));
+        setLayout(new MigLayout("gap 10, ins 0", "[grow,fill][center][grow,fill]", "[center]"));
+        // /////// Init 2 JList ///////////
         lstSource = createJList(sources, cellRenderer);
         lstDest = createJList(destinations, cellRenderer);
+        // Move the selected element when double click to it.
+        lstSource.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    move(lstSource, lstDest, false);
+                }
+            }
+        });
+        lstDest.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    move(lstDest, lstSource, false);
+                }
+            }
+        });
+
+        // ////////// Init the buttons /////////////
         btnDeselectSingle = new JButton("<");
         btnDeselectSingle.addActionListener(new ActionListener() {
 

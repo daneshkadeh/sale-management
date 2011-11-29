@@ -182,6 +182,9 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         tblListEntities.getColumnModel().getColumn(0).setMinWidth(0);
         tblListEntities.getColumnModel().getColumn(0).setMaxWidth(0);
 
+        // /////// Hack at here: when number of column
+        tblListEntities.setVisibleColumnCount(0);
+
         tblListEntities.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tblListEntities.setColumnControlVisible(true);
 
@@ -198,8 +201,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 }
             }
         });
-        JScrollPane mainScrollpane = new JScrollPane(tblListEntities);
-        this.add(mainScrollpane, "grow");
 
         // //////////////// Create footer table //////////////////////////////
         FooterTableModel footerModel = new FooterTableModel(mainTableModel);
@@ -226,17 +227,21 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         };
         tblFooter.setTableHeader(null); // Remove table header.
         // Visible 1 row in footer table.
-        tblFooter.setPreferredScrollableViewportSize(new Dimension(
-                tblFooter.getPreferredScrollableViewportSize().width, tblFooter.getRowHeight()));
+        // tblFooter.setPreferredScrollableViewportSize(new Dimension(
+        // tblFooter.getPreferredScrollableViewportSize().width, tblFooter.getRowHeight()));
+        tblFooter.setVisibleRowCount(1);
         tblFooter.setEnabled(false);
         tblFooter.setShowGrid(false);
 
         tblListEntities.getColumnModel().addColumnModelListener(tblFooter);
 
+        JScrollPane mainScrollpane = new JScrollPane(tblListEntities);
+        tblListEntities.packAll(); // resize all column fit to their contents
+        this.add(mainScrollpane);
         JScrollPane footerScrollpane = new JScrollPane(tblFooter);
 
         if (CollectionUtils.isNotEmpty(summaryFieldNames)) {
-            this.add(footerScrollpane, "grow");
+            this.add(footerScrollpane);
         }
 
         this.add(pagingNavigator);
@@ -630,7 +635,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         addAction = new AddAction();
         editAction = new EditAction();
-        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[grow, fill]2[][]"));
+        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[]2[][]"));
 
         addKeyBindings();
         addComponents();
