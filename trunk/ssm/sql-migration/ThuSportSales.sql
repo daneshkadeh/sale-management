@@ -449,7 +449,7 @@ CREATE TABLE `s_package_line` (
   `parentpackline_id` int(11),
   `min_item_amount` int(11) NOT NULL,
   `max_item_amount` int(11) NOT NULL,
-  `optional` int(1) NOT NULL default '1';
+  `optional` int(1) NOT NULL default '1',
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
