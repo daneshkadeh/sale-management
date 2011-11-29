@@ -20,8 +20,7 @@ public class Product extends AbstractCodeOLObject {
     private String model;
     private String description;
     private UnitOfMeasure mainUom;
-
-    private Long uploadFileId;
+    private UploadFile uploadFile;
 
     @Column(name = "name", nullable = false, length = 128)
     @NotNull
@@ -72,15 +71,6 @@ public class Product extends AbstractCodeOLObject {
         this.type = type;
     }
 
-    @Column(name = "uploadfile_id", length = 128)
-    public Long getUploadFileId() {
-        return uploadFileId;
-    }
-
-    public void setUploadFileId(Long uploadFileId) {
-        this.uploadFileId = uploadFileId;
-    }
-
     @ManyToOne
     @JoinColumn(name = "main_uom_id", nullable = false)
     public UnitOfMeasure getMainUom() {
@@ -89,6 +79,16 @@ public class Product extends AbstractCodeOLObject {
 
     public void setMainUom(UnitOfMeasure mainUom) {
         this.mainUom = mainUom;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "uploadfile_id")
+    public UploadFile getUploadFile() {
+        return uploadFile;
+    }
+
+    public void setUploadFile(UploadFile uploadFile) {
+        this.uploadFile = uploadFile;
     }
 
 }

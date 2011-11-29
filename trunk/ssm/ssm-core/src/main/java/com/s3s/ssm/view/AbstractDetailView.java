@@ -46,6 +46,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.view.component.ImageChooser;
 import com.s3s.ssm.view.component.MultiSelectionBox;
 
 /**
@@ -232,6 +233,12 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             // case RADIO_BUTTON:
             // // TODO HPP
             // break;
+            case IMAGE:
+                byte[] bytes = (byte[]) value;
+                dataField = new ImageChooser(bytes);
+                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(dataField);
+                break;
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
@@ -329,7 +336,10 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 case RADIO_BUTTON:
 
                     break;
-
+                case IMAGE:
+                    ImageChooser imageField = (ImageChooser) component;
+                    beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(imageField.getImageData()));
+                    break;
                 default:
                     throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());
                 }
