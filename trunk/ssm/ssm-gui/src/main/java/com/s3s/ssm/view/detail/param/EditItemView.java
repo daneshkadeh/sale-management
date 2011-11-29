@@ -7,6 +7,7 @@ import org.eclipse.core.internal.runtime.Product;
 
 import com.s3s.ssm.entity.param.CurrencyEnum;
 import com.s3s.ssm.entity.param.Item;
+import com.s3s.ssm.entity.param.UnitOfMeasure;
 import com.s3s.ssm.entity.sales.ItemPrice;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
@@ -46,8 +47,8 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
         super.setReferenceDataModel(refDataModel, entity);
         refDataModel.putRefDataList(REF_PRODUCT_ID, getDaoHelper().getDao(Product.class).findAll(), null);
         refDataModel.putRefDataList(REF_CURRENCY_ID, Arrays.asList(CurrencyEnum.values()), null);
-        // refDataModel.putRefDataList(REF_UOM_ID, getDaoHelper().getDao(UnitOfMeasure.class).findAll(), null);
-        refDataModel.putRefDataList(REF_UOM_ID, Arrays.asList("0", "1", "2"), null);
+        refDataModel.putRefDataList(REF_UOM_ID, getDaoHelper().getDao(UnitOfMeasure.class).findAll(), null);
+        // refDataModel.putRefDataList(REF_UOM_ID, Arrays.asList("0", "1", "2"), null);
     }
 
     @Override

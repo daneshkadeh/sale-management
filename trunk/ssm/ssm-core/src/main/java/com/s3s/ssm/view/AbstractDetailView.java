@@ -3,6 +3,7 @@ package com.s3s.ssm.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import javax.validation.ValidatorFactory;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.logging.Log;
@@ -151,11 +153,12 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, T entity) {
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected void initComponents() throws Exception {
         // Layout the screen
-        setLayout(new MigLayout("wrap", "fill, grow"));
+        setLayout(new MigLayout("wrap, fill"));
 
-        JPanel pnlEdit = new JPanel(new MigLayout("wrap 2", "[][fill]"));
+        JPanel pnlEdit = new JPanel(new MigLayout("wrap 2", "[][fill, grow]"));
         for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + attribute.getName());
@@ -210,13 +213,11 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 ((JComboBox<?>) dataField).setSelectedItem(value);
                 break;
             case MULTI_SELECT_BOX:
-                // TODO: This not work currently, please use EditItemView to test it.
-                dataField = new MultiSelectionBox<>(referenceData.getValues(), (List<?>) value);
-                // dataField.set
+                List desValues = (List) value;
+                List scrValues = new ArrayList<>(ListUtils.removeAll(referenceData.getValues(), desValues));
+                dataField = new MultiSelectionBox<>(scrValues, desValues, referenceData.getRenderer());
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
-
-                // ((MultiSelectionBox) dataField)
 
                 break;
             case DATE:

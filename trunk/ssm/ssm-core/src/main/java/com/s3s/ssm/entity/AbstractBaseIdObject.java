@@ -43,4 +43,25 @@ public abstract class AbstractBaseIdObject implements Serializable {
     public String toString() {
         return String.valueOf(getId());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        // TODO just temporary solution -> fix later
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof AbstractBaseIdObject) {
+            AbstractBaseIdObject baseIdObject = (AbstractBaseIdObject) obj;
+            if (this.id != null && this.id.equals(baseIdObject.getId())) {
+                return true;
+            }
+        }
+
+        return super.equals(obj);
+    }
+
 }
