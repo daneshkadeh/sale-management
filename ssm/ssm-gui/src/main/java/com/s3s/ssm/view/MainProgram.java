@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -59,8 +60,10 @@ public class MainProgram {
     private static final String[] MESSSAGE_FILES = new String[] { "i18n/messages", "i18n/param_messages",
             "i18n/finance_messages", "i18n/sales_messages", "i18n/shipment_messages", "i18n/contact_messages",
             "i18n/store_messages", "i18n/supplychain_messages", "i18n/bi_messages" };
+    private static JFrame frame;
 
     public static void main(String[] args) {
+
         // Not find solution to get class path from ssm-core.
         // String classpath = MainProgram.class.getClassLoader().get
         DOMConfigurator.configure("src/main/resources/log4j.xml");
@@ -74,7 +77,13 @@ public class MainProgram {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                createAndShowGUI();
+                try {
+                    createAndShowGUI();
+                } catch (Exception e) {
+                    JOptionPane.showInputDialog(frame, "Unexpect error is happened. Please try again", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    s_logger.error(e.getCause());
+                }
             }
         });
     }
@@ -98,7 +107,7 @@ public class MainProgram {
         }
 
         // Create and set up the window.
-        final JFrame frame = new JFrame("Sales Management");
+        frame = new JFrame("Sales Management");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(WINDOW_MIN_SIZE);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
