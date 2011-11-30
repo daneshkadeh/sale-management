@@ -110,7 +110,14 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     public AbstractListView(Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
         this.parentId = parentId;
         this.parentClass = parentClass;
-        // loadView(); --> should lazy load
+        initialPresentationView(listDataModel, summaryFieldNames);
+
+        addAction = new AddAction();
+        editAction = new EditAction();
+        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[]2[][]"));
+
+        addKeyBindings();
+        addComponents();
     }
 
     protected void addKeyBindings() {
@@ -144,6 +151,9 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * @return all data shown on the view.
      */
     protected List<T> loadData(int pageNumber) {
+        if (!isInitialized) {
+            return new ArrayList<T>();
+        }
         int firstIndex = (pageNumber - 1) * getPageSize();
         DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
         return getDaoHelper().getDao(getEntityClass()).findByCriteria(dc, firstIndex, getPageSize());
@@ -627,19 +637,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     @Override
     public void loadView() {
-        if (isInitialized) {
-            return;
-        }
         isInitialized = true;
-        initialPresentationView(listDataModel, summaryFieldNames);
-
-        addAction = new AddAction();
-        editAction = new EditAction();
-        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[]2[][]"));
-
-        addKeyBindings();
-        addComponents();
-        // setBackground(Color.BLUE);
+        refreshData();
     }
 
 }

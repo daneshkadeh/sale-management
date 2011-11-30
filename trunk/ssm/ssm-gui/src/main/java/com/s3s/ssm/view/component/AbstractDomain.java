@@ -41,6 +41,7 @@ public abstract class AbstractDomain extends JToggleButton implements ItemListen
         super();
         this.treeScrollPane = treeScrollPane;
         this.contentScrollPane = contentScrollPane;
+        treeView = getTreeView();
         setCursor(new Cursor(Cursor.HAND_CURSOR));
         setHorizontalAlignment(LEFT);
         addItemListener(this);
@@ -50,10 +51,6 @@ public abstract class AbstractDomain extends JToggleButton implements ItemListen
     public void itemStateChanged(ItemEvent e) {
         int state = e.getStateChange();
         if (state == ItemEvent.SELECTED) {
-            if (treeView == null) {
-                treeView = getTreeView();
-            }
-
             treeScrollPane.setViewportView(treeView);
             contentScrollPane.setViewportView(treeView.getCurrentView());
         }
