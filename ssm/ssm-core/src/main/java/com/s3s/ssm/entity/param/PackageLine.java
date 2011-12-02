@@ -13,7 +13,7 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
 @Entity
 @Table(name = "s_package_line")
 public class PackageLine extends AbstractIdOLObject {
-    private Package pack;
+    private SPackage pack;
     private PackageLine parentPackageLine;
     private Item item;
     private Boolean optional;
@@ -23,16 +23,16 @@ public class PackageLine extends AbstractIdOLObject {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "package_id", nullable = false)
     @NotNull
-    public Package getPackage() {
+    public SPackage getPackage() {
         return pack;
     }
 
-    public void setPackage(Package pack) {
+    public void setPackage(SPackage pack) {
         this.pack = pack;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "package_line_id")
+    @JoinColumn(name = "parentpackline_id")
     public PackageLine getParentPackageLine() {
         return parentPackageLine;
     }

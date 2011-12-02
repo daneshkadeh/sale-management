@@ -1,5 +1,93 @@
 package com.s3s.ssm.entity.param;
 
-public class Advantage {
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+
+import com.s3s.ssm.entity.AbstractCodeOLObject;
+
+@Entity
+@Table(name = "s_advantage")
+public class Advantage extends AbstractCodeOLObject {
+    private String name;
+    private Integer discountPercent = 0;
+    private Set<SPackage> listBuyPackage = new HashSet<>();
+    private Set<Item> listBuyItem = new HashSet<>();
+    private Set<SPackage> listGiftPackage = new HashSet<>();
+    private Set<Item> listGiftItem = new HashSet<>();
+
+    @Column(name = "name", length = 128)
+    @NotNull
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Column(name = "discount_percent")
+    @NotNull
+    @Max(100)
+    public Integer getDiscountPercent() {
+        return discountPercent;
+    }
+
+    public void setDiscountPercent(Integer discountPercent) {
+        this.discountPercent = discountPercent;
+    }
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(name = "at_advantage_buypackage", joinColumns = { @JoinColumn(name = "advantage_id") }, inverseJoinColumns = { @JoinColumn(name = "package_id") })
+    public
+            Set<SPackage> getListBuyPackage() {
+        return listBuyPackage;
+    }
+
+    public void setListBuyPackage(Set<SPackage> listBuyPackage) {
+        this.listBuyPackage = listBuyPackage;
+    }
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(name = "at_advantage_buyitem", joinColumns = { @JoinColumn(name = "advantage_id") }, inverseJoinColumns = { @JoinColumn(name = "item_id") })
+    public
+            Set<Item> getListBuyItem() {
+        return listBuyItem;
+    }
+
+    public void setListBuyItem(Set<Item> listBuyItem) {
+        this.listBuyItem = listBuyItem;
+    }
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(name = "at_advantage_giftpackage", joinColumns = { @JoinColumn(name = "advantage_id") }, inverseJoinColumns = { @JoinColumn(name = "package_id") })
+    public
+            Set<SPackage> getListGiftPackage() {
+        return listGiftPackage;
+    }
+
+    public void setListGiftPackage(Set<SPackage> listGiftPackage) {
+        this.listGiftPackage = listGiftPackage;
+    }
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(name = "at_advantage_giftitem", joinColumns = { @JoinColumn(name = "advantage_id") }, inverseJoinColumns = { @JoinColumn(name = "item_id") })
+    public
+            Set<Item> getListGiftItem() {
+        return listGiftItem;
+    }
+
+    public void setListGiftItem(Set<Item> listGiftItem) {
+        this.listGiftItem = listGiftItem;
+    }
 }

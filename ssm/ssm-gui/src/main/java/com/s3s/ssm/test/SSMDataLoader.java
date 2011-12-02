@@ -26,14 +26,17 @@ import com.s3s.ssm.entity.finance.PaymentContentType;
 import com.s3s.ssm.entity.finance.PaymentMeanEnum;
 import com.s3s.ssm.entity.finance.PaymentStatus;
 import com.s3s.ssm.entity.finance.PaymentType;
+import com.s3s.ssm.entity.param.Advantage;
 import com.s3s.ssm.entity.param.Article;
 import com.s3s.ssm.entity.param.CurrencyEnum;
 import com.s3s.ssm.entity.param.Item;
 import com.s3s.ssm.entity.param.Manufacturer;
 import com.s3s.ssm.entity.param.Operator;
+import com.s3s.ssm.entity.param.PackageLine;
 import com.s3s.ssm.entity.param.Product;
 import com.s3s.ssm.entity.param.ProductFamilyType;
 import com.s3s.ssm.entity.param.ProductType;
+import com.s3s.ssm.entity.param.SPackage;
 import com.s3s.ssm.entity.param.Store;
 import com.s3s.ssm.entity.param.Supplier;
 import com.s3s.ssm.entity.param.UnitOfMeasure;
@@ -119,8 +122,11 @@ public class SSMDataLoader {
         daoHelper.getDao(SalesContract.class).deleteAll(daoHelper.getDao(SalesContract.class).findAll());
 
         daoHelper.getDao(Article.class).deleteAll(daoHelper.getDao(Article.class).findAll());
+        daoHelper.getDao(Advantage.class).deleteAll(daoHelper.getDao(Advantage.class).findAll());
         daoHelper.getDao(Item.class).deleteAll(daoHelper.getDao(Item.class).findAll());
 
+        daoHelper.getDao(PackageLine.class).deleteAll(daoHelper.getDao(PackageLine.class).findAll());
+        daoHelper.getDao(SPackage.class).deleteAll(daoHelper.getDao(SPackage.class).findAll());
         daoHelper.getDao(Product.class).deleteAll(daoHelper.getDao(Product.class).findAll());
         daoHelper.getDao(Manufacturer.class).deleteAll(daoHelper.getDao(Manufacturer.class).findAll());
         daoHelper.getDao(ProductType.class).deleteAll(daoHelper.getDao(ProductType.class).findAll());
@@ -161,7 +167,8 @@ public class SSMDataLoader {
         List<Product> products = initProduct(daoHelper);
 
         List<Item> listItem = initItem(daoHelper, listUom, products);
-
+        List<SPackage> listPackage = initPackage(daoHelper, listItem);
+        List<Advantage> listAdvantage = initAdvantage(daoHelper, listItem, listPackage);
         List<BankAccount> listBankAccount = initBankAccount(daoHelper);
         List<Operator> listOperator = initOperator(daoHelper);
         List<Contact> listContact = initContact(daoHelper, listBankAccount);
@@ -174,6 +181,36 @@ public class SSMDataLoader {
         List<SalesContract> listSalesContracts = initSalesContracts(daoHelper, listSupplier, listItem);
         List<Invoice> listInvoice = initInvoice(daoHelper, listItem, listContact);
         List<Payment> listPayments = initPayment(daoHelper, listInvoice, listContact);
+    }
+
+    private static List<Advantage> initAdvantage(DaoHelper daoHelper, List<Item> listItem, List<SPackage> listPackage) {
+        Advantage advantage = new Advantage();
+        advantage.setCode("KHUYENMAI_2011");
+        advantage.setName("Khuyen mai mua dong 2011");
+        advantage.setDiscountPercent(0);
+        advantage.getListBuyPackage().add(listPackage.get(0));
+        advantage.getListGiftItem().add(listItem.get(0));
+        daoHelper.getDao(Advantage.class).saveOrUpdate(advantage);
+        return Arrays.asList(advantage);
+    }
+
+    private static List<SPackage> initPackage(DaoHelper daoHelper, List<Item> listItem) {
+        SPackage pack = new SPackage();
+        pack.setCode("Group_12_BLX");
+        pack.setName("Goi 12 san pham BLX");
+        pack.setMinTotalItemAmount(12);
+        pack.setMaxTotalItemAmount(12);
+
+        daoHelper.getDao(SPackage.class).saveOrUpdate(pack);
+
+        PackageLine line = new PackageLine();
+        line.setItem(listItem.get(0));
+        line.setMinItemAmount(12);
+        line.setMaxItemAmount(12);
+        line.setOptional(false);
+        line.setPackage(pack);
+        daoHelper.getDao(PackageLine.class).saveOrUpdate(line);
+        return Arrays.asList(pack);
     }
 
     private static List<ContactDebt> initContactDebt(DaoHelper daoHelper, List<Contact> listContact) {
@@ -460,6 +497,29 @@ public class SSMDataLoader {
         daoHelper.getDao(Product.class).saveOrUpdate(product);
 
         return Arrays.asList(product);
+    }
+
+    protected static void init100Product(DaoHelper daoHelper) {
+        DetachedCriteria uomDC = daoHelper.getDao(UnitOfMeasure.class).getCriteria();
+        uomDC.add(Restrictions.eq("code", UOM_PAIR));
+
+        ProductType type = daoHelper.getDao(ProductType.class).findAll().get(0);
+
+        Manufacturer manufacturer = daoHelper.getDao(Manufacturer.class).findAll().get(0);
+        UnitOfMeasure unitOfMeasure = daoHelper.getDao(UnitOfMeasure.class).findByCriteria(uomDC).get(0);
+
+        for (int i = 0; i < 200; i++) {
+            Product product = new Product();
+            product.setCode(PRODUCT_GIAY_NAM + i);
+            product.setName("Giay nam " + i);
+            product.setDescription("Giay nam choi tennis");
+            product.setModel("Model100" + i);
+
+            product.setMainUom(unitOfMeasure);
+            product.setType(type);
+            product.setManufacturer(manufacturer);
+            daoHelper.getDao(Product.class).saveOrUpdate(product);
+        }
     }
 
     private static List<ProductType> initProductType(DaoHelper daoHelper) {

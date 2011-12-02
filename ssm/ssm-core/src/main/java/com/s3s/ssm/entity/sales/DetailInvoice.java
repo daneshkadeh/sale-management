@@ -13,12 +13,14 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.param.CurrencyEnum;
 import com.s3s.ssm.entity.param.Item;
+import com.s3s.ssm.entity.param.PackageLine;
 
 @Entity
 @Table(name = "s_detail_invoice")
 public class DetailInvoice extends AbstractIdOLObject {
     private Invoice invoice;
     private Item item;
+    private PackageLine packageLine;
     private Integer amount;
     private Double priceBeforeTax;
     private Double priceOfTax = 0.0;
@@ -50,6 +52,16 @@ public class DetailInvoice extends AbstractIdOLObject {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "packageline_id")
+    public PackageLine getPackageLine() {
+        return packageLine;
+    }
+
+    public void setPackageLine(PackageLine packageLine) {
+        this.packageLine = packageLine;
     }
 
     @Column(name = "amount", nullable = false)

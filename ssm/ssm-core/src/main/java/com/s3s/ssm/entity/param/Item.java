@@ -74,7 +74,7 @@ public class Item extends AbstractIdOLObject {
     }
 
     // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(name = "at_item_uom", joinColumns = { @JoinColumn(name = "item_id") }, inverseJoinColumns = { @JoinColumn(name = "uom_id") })
     public
             List<UnitOfMeasure> getListUom() {
