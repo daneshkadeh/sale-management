@@ -431,7 +431,8 @@ CREATE TABLE `s_package` (
   `id` int(11) NOT NULL auto_increment,
   `code` varchar(32) NOT NULL,
   `name` varchar(128) NOT NULL collate utf8_bin,
-  `total_expected_item_amount` int(11) NOT NULL,
+  `min_total_item_amount` int(11) NOT NULL,
+  `max_total_item_amount` int(11) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
@@ -458,9 +459,8 @@ CREATE TABLE `s_package_line` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
-CREATE UNIQUE INDEX ui_package_item ON s_package_line(package_id, item_id);
+CREATE INDEX ui_package_item ON s_package_line(package_id, item_id);
 CREATE INDEX idx_package_id ON s_package_line(package_id);
-
 
 CREATE TABLE `s_package_line_item_price` (
   `id` int(11) NOT NULL auto_increment,
@@ -477,6 +477,42 @@ CREATE TABLE `s_package_line_item_price` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
+CREATE TABLE `s_advantage` (
+  `id` int(11) NOT NULL auto_increment,
+  `code` varchar(32) NOT NULL,
+  `name` varchar(128) NOT NULL collate utf8_bin,
+  `discount_percent` int(11) NOT NULL default '0',
+  `usr_log_i` varchar(32) NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE TABLE `at_advantage_buypackage` (
+  `advantage_id` int(11) NOT NULL,
+  `package_id` int(11) NOT NULL,
+  PRIMARY KEY  (`advantage_id`,`package_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE TABLE `at_advantage_buyitem` (
+  `advantage_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  PRIMARY KEY  (`advantage_id`,`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE TABLE `at_advantage_giftpackage` (
+  `advantage_id` int(11) NOT NULL,
+  `package_id` int(11) NOT NULL,
+  PRIMARY KEY  (`advantage_id`,`package_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE TABLE `at_advantage_giftitem` (
+  `advantage_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  PRIMARY KEY  (`advantage_id`,`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 -- if status is RESERVED, sellable_amount of store will be decreased
 -- status: OPEN, RESERVED, CLOSED, CANCELLED, ABANDONED.
@@ -508,7 +544,8 @@ CREATE INDEX idx_contact_id ON s_invoice(contact_id);
 CREATE TABLE `s_detail_invoice` (
   `id` int(11) NOT NULL auto_increment,
   `invoice_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL,
+  `packageline_id` int(11),
+  `item_id` int(11),
   `amount` int(11) NOT NULL,
   `price_before_tax` double NOT NULL default '0',
   `price_of_tax` double NOT NULL default '0',
@@ -925,7 +962,7 @@ CREATE TABLE IF NOT EXISTS `s_upload_file` (
   `folder` varchar(128) NOT NULL default '',
   `filesize` int(11) NOT NULL default '0',
   `file_type` varchar(128) NOT NULL default '',
-  `content` longblob NOT NULL,
+  `content` longblob,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
