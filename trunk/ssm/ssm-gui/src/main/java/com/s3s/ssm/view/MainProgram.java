@@ -50,8 +50,6 @@ import com.s3s.ssm.view.list.ListCustomerViewTest;
 import com.s3s.ssm.view.list.ListGoodsViewTest;
 import com.s3s.ssm.view.list.ListInvoiceViewTest;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
-import com.s3s.ssm.view.list.param.ListUnitOfMeasureView;
-import com.s3s.ssm.view.list.param.ListUomCategoryView;
 import com.s3s.ssm.view.security.LoginDialog;
 
 public class MainProgram {
@@ -203,6 +201,7 @@ public class MainProgram {
             public void actionPerformed(ActionEvent e) {
                 ListCustomerViewTest listCustomerView = new ListCustomerViewTest();
                 listCustomerView.setVisible(true);
+                listCustomerView.loadView();
                 frame.setContentPane(listCustomerView);
                 frame.repaint();
                 frame.pack();
@@ -217,35 +216,8 @@ public class MainProgram {
             public void actionPerformed(ActionEvent e) {
                 ListManufacturerView listManufacturerView = new ListManufacturerView();
                 listManufacturerView.setVisible(true);
+                listManufacturerView.loadView();
                 frame.setContentPane(listManufacturerView);
-                frame.repaint();
-                frame.pack();
-            }
-        });
-
-        JMenuItem uomCategoryMenuItem = new JMenuItem(ControlConfigUtils.getString("JMenu.File.UomCategory"));
-        uomCategoryMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
-        uomCategoryMenuItem.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ListUomCategoryView listUomCategoryView = new ListUomCategoryView();
-                listUomCategoryView.setVisible(true);
-                frame.setContentPane(listUomCategoryView);
-                frame.repaint();
-                frame.pack();
-            }
-        });
-
-        JMenuItem unitOfMeasureMenuItem = new JMenuItem(ControlConfigUtils.getString("JMenu.File.UnitOfMeasure"));
-        unitOfMeasureMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-        unitOfMeasureMenuItem.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ListUnitOfMeasureView listUnitOfMeasureView = new ListUnitOfMeasureView();
-                listUnitOfMeasureView.setVisible(true);
-                frame.setContentPane(listUnitOfMeasureView);
                 frame.repaint();
                 frame.pack();
             }
@@ -260,6 +232,7 @@ public class MainProgram {
                 // Create and set up the content pane.
                 ListGoodsViewTest listGoodsView = new ListGoodsViewTest();
                 listGoodsView.setVisible(true);
+                listGoodsView.loadView();
                 frame.setContentPane(listGoodsView);
                 frame.repaint();
                 frame.pack();
@@ -277,6 +250,7 @@ public class MainProgram {
                 // Create and set up the content pane.
                 ListInvoiceViewTest listInvoiceView = new ListInvoiceViewTest();
                 listInvoiceView.setVisible(true);
+                listInvoiceView.loadView();
                 frame.setContentPane(listInvoiceView);
                 frame.repaint();
                 frame.pack();
@@ -305,8 +279,6 @@ public class MainProgram {
         fileMenu.add(customerMenuItem);
         fileMenu.add(productMenuItem);
         fileMenu.add(manufacturerMenuItem);
-        fileMenu.add(uomCategoryMenuItem);
-        fileMenu.add(unitOfMeasureMenuItem);
         fileMenu.addSeparator();
         fileMenu.add(statisticMenuItem);
         fileMenu.add(invoiceMenuItem);
