@@ -29,7 +29,7 @@ public class EditSupplierView extends AbstractDetailView<Supplier> {
         detailDataModel.addAttribute("bankAccount.bank", FieldTypeEnum.DROPDOWN).referenceDataId(REF_BANK);
         detailDataModel.addAttribute("bankAccount.accountNumber", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("bankAccount.accountName", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("note", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("note", FieldTypeEnum.RICH_TEXTBOX);
     }
 
     @Override
