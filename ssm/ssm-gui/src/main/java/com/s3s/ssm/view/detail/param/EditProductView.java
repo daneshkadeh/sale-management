@@ -27,7 +27,7 @@ public class EditProductView extends AbstractDetailView<Product> {
         detailDataModel.addAttribute("type", FieldTypeEnum.DROPDOWN).referenceDataId(TYPE_REF_ID);
         detailDataModel.addAttribute("manufacturer", FieldTypeEnum.DROPDOWN).referenceDataId(MANU_REF_ID);
         detailDataModel.addAttribute("model", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("description", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("description", FieldTypeEnum.RICH_TEXTBOX);
         detailDataModel.addAttribute("mainUom", FieldTypeEnum.DROPDOWN).referenceDataId(UOM_REF_ID);
         detailDataModel.addAttribute("uploadFile.data", FieldTypeEnum.IMAGE);
     }

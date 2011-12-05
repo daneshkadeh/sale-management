@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.text.NumberFormatter;
@@ -32,12 +33,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXDatePicker;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.util.StringUtils;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.model.DetailAttribute;
@@ -55,6 +56,7 @@ import com.s3s.ssm.view.component.MultiSelectionBox;
  * 
  * @param <T>
  */
+
 public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends AbstractView {
     private static final long serialVersionUID = 1L;
 
@@ -75,6 +77,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     private final ReferenceDataModel refDataModel = new ReferenceDataModel();
 
     private final static int DEFAULT_TEXTFIELD_COLUMN = 20;
+    private final static int DEFAULT_RICH_TEXT_ROWS = 4;
 
     // /**
     // * The default constructor, init the detail view with new entity. TODO: Suspended for not confusing.
@@ -195,6 +198,16 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
                 ((JFormattedTextField) dataField).setValue(value);
                 break;
+            case RICH_TEXTBOX:
+                dataField = new JTextArea(DEFAULT_RICH_TEXT_ROWS, DEFAULT_TEXTFIELD_COLUMN);
+                ((JTextArea) dataField).setLineWrap(true);
+                ((JTextArea) dataField).setWrapStyleWord(true);
+                ((JTextArea) dataField).setEditable(true);
+
+                ((JTextArea) dataField).setText(StringUtils.trimToEmpty(String.valueOf(value)));
+                pnlEdit.add(lblLabel);
+                pnlEdit.add(dataField);
+                break;
             case PASSWORD:
                 dataField = new JPasswordField(DEFAULT_TEXTFIELD_COLUMN);
                 ((JPasswordField) dataField).setEditable(attribute.isEditable());
@@ -304,6 +317,11 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 case TEXTBOX:
                     JFormattedTextField txtField = (JFormattedTextField) component;
                     beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(txtField.getValue()));
+                    break;
+                case RICH_TEXTBOX:
+                    JTextArea rtxtField = (JTextArea) component;
+                    beanWrapper.setPropertyValue(attribute.getName(),
+                            paramClass.cast(StringUtils.trimToEmpty(rtxtField.getText())));
                     break;
                 case PASSWORD:
                     JPasswordField pwdField = (JPasswordField) component;
