@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -39,14 +37,19 @@ import javax.swing.table.TableColumnModel;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
@@ -80,7 +83,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private static final long serialVersionUID = -1311942671249671111L;
     private static final String ADD_ACTION_KEY = "addAction";
     private static final Color HIGHLIGHT_ROW_COLOR = new Color(97, 111, 231);
-    private static final int DEFAULT_PAGE_SIZE = 3;
+    private static final int DEFAULT_PAGE_SIZE = 10;
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
     private JXTable tblListEntities;
@@ -89,7 +92,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     // TODO use this flag temporarily to prevent init the view more than one time. --> Need to use the Proxy object
     // instead.
-    private boolean isInitialized = false;
+    public boolean isInitialized = false;
 
     private Class<? extends AbstractBaseIdObject> parentClass;
     private Long parentId;
@@ -102,6 +105,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     private Action addAction;
     private Action editAction;
+
+    private BeanWrapper beanWrapper;
 
     public AbstractListView() {
         this(null, null);
@@ -155,7 +160,19 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             return new ArrayList<T>();
         }
         int firstIndex = (pageNumber - 1) * getPageSize();
+
+        // Load necessary properties if they are lazing.
         DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
+        for (DetailAttribute attribute : listDataModel) {
+            String pathName = attribute.getName();
+            if (pathName.contains(".")) {
+                // Not fetching the ending properties => remove it from the pathName
+                String[] paths = StringUtils.split(pathName, '.');
+                paths = (String[]) ArrayUtils.remove(paths, paths.length - 1);
+                dc.setFetchMode(StringUtils.join(paths), FetchMode.JOIN);
+            }
+        }
+
         return getDaoHelper().getDao(getEntityClass()).findByCriteria(dc, firstIndex, getPageSize());
     }
 
@@ -246,7 +263,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         tblListEntities.getColumnModel().addColumnModelListener(tblFooter);
 
         JScrollPane mainScrollpane = new JScrollPane(tblListEntities);
-        tblListEntities.packAll(); // resize all column fit to their contents
+        // mainScrollpane.getViewport().setBackground(Color.WHITE);
+
         this.add(mainScrollpane);
         JScrollPane footerScrollpane = new JScrollPane(tblFooter);
 
@@ -370,7 +388,12 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     protected abstract Class<? extends AbstractDetailView<T>> getDetailViewClass();
 
     private Class<?> getClassOfField(String fieldName) {
-        return Solution3sClassUtils.getGetterMethod(getEntityClass(), fieldName).getReturnType();
+        String[] paths = StringUtils.split(fieldName, '.');
+        Class<?> clazz = getEntityClass(); // original class is class of current entity.
+        for (String path : paths) {
+            clazz = Solution3sClassUtils.getGetterMethod(clazz, path).getReturnType();
+        }
+        return clazz;
     }
 
     @SuppressWarnings("unchecked")
@@ -432,23 +455,14 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             T entity = currentEntities.get(rowIndex);
-
+            beanWrapper = new BeanWrapperImpl(entity);
             // The hide extra column contain the entity ID
             if (columnIndex == 0) {
                 return entity.getId();
             }
 
             DetailAttribute dataModel = listDataModel.get(columnIndex - 1);
-            Method method = Solution3sClassUtils.getGetterMethod(getEntityClass(), dataModel.getName());
-            try {
-                return method.invoke(entity);
-            } catch (IllegalAccessException e) {
-                logger.error(e.getMessage());
-                throw new RuntimeException();
-            } catch (InvocationTargetException e) {
-                logger.error(e.getMessage());
-                throw new RuntimeException();
-            }
+            return beanWrapper.getPropertyValue(dataModel.getName());
         }
 
         @Override
@@ -468,21 +482,9 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             T entity = currentEntities.get(rowIndex);
+            beanWrapper = new BeanWrapperImpl(entity);
             DetailAttribute dataModel = listDataModel.get(columnIndex);
-            Method method = Solution3sClassUtils.getSetterMethod(getEntityClass(), dataModel.getName());
-            try {
-                method.invoke(entity, aValue);
-            } catch (IllegalArgumentException e) {
-                logger.error(e.getMessage());
-                throw new RuntimeException();
-            } catch (IllegalAccessException e) {
-                logger.error(e.getMessage());
-                throw new RuntimeException();
-            } catch (InvocationTargetException e) {
-                logger.error(e.getMessage());
-                throw new RuntimeException();
-            }
-
+            beanWrapper.setPropertyValue(dataModel.getName(), aValue);
         }
 
         @Override
@@ -606,6 +608,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         // fireTableDataChanged to re-render the table.
         ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
         ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
+
+        tblListEntities.packAll(); // resize all column fit to their contents
     }
 
     private class AddAction extends AbstractAction {
@@ -637,8 +641,10 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     @Override
     public void loadView() {
-        isInitialized = true;
-        refreshData();
+        if (!isInitialized) {
+            isInitialized = true;
+            refreshData();
+        }
     }
 
 }

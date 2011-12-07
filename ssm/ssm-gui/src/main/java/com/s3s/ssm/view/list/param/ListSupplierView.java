@@ -10,6 +10,7 @@ import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.param.EditSupplierView;
 
 public class ListSupplierView extends AbstractListView<Supplier> {
+    private static final long serialVersionUID = -1414670444682843015L;
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
@@ -20,7 +21,7 @@ public class ListSupplierView extends AbstractListView<Supplier> {
         listDataModel.add(new DetailAttribute("fixPhoneNumber", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("faxNumber", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("email", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("bankAccount", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("bankAccount.accountName", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("note", FieldTypeEnum.TEXTBOX));
     }
 

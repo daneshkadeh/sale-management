@@ -2,7 +2,6 @@ package com.s3s.ssm.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +37,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXDatePicker;
 import org.joda.time.DateTime;
+import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
@@ -72,7 +72,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     private JButton btnOK;
     private JButton btnCancel;
     protected T entity;
-    protected BeanWrapperImpl beanWrapper;
+    protected BeanWrapper beanWrapper;
 
     private final ReferenceDataModel refDataModel = new ReferenceDataModel();
 
@@ -128,13 +128,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         beanWrapper = new BeanWrapperImpl(entity);
         initialPresentationView(detailDataModel, entity);
         setReferenceDataModel(refDataModel, entity);
-        try {
-            initComponents();
-        } catch (Exception e) {
-            logger.error(e.getCause());
-            logger.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
+        initComponents();
     }
 
     public void setListView(AbstractListView<T> view) {
@@ -158,7 +152,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    protected void initComponents() throws Exception {
+    protected void initComponents() {
         // Layout the screen
         setLayout(new MigLayout("wrap, fill"));
 
@@ -294,7 +288,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             saveOrUpdate(entity);
             listView.notifyFromDetailView(entity, isNew);
             // TODO HPP find another way to close dialog.
-            SwingUtilities.getRoot(AbstractDetailView.this).setVisible(false);
+            SwingUtilities.getRoot(this).setVisible(false);
         } else {
             for (ConstraintViolation<T> violation : validateResult) {
                 logger.error(violation.getMessage());
@@ -375,27 +369,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         return validator.validate(entity);
     }
 
-    /**
-     * Get type of property from attributeModel and getter of entity. The getter must follow convention get+FieldName.
-     * TODO: This returnType could be set directly to DetailDataModel?
-     * 
-     * @param entity
-     * @param attribute
-     * @return
-     * @throws NoSuchMethodException
-     */
-    private Class<?> getPropertyReturnType(T entity, DetailAttribute attribute) {
-        try {
-            Method getMethod = entity.getClass().getMethod("get" + StringUtils.capitalize(attribute.getName()));
-            Class<?> paramClass = getMethod.getReturnType();
-            return paramClass;
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
     protected void btnCancelActionPerformed(ActionEvent evt) {
-        // TODO find another way to close dialog.
-        SwingUtilities.getRoot(AbstractDetailView.this).setVisible(false);
+        SwingUtilities.getRoot(this).setVisible(false);
     }
 }
