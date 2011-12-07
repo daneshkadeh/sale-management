@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -75,13 +74,7 @@ public class MainProgram {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                try {
-                    createAndShowGUI();
-                } catch (Exception e) {
-                    JOptionPane.showInputDialog(frame, "Unexpect error is happened. Please try again", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    s_logger.error(e.getCause());
-                }
+                createAndShowGUI();
             }
         });
     }
