@@ -64,7 +64,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
     protected abstract String getChildFieldName();
 
     @Override
-    protected void initComponents() throws Exception {
+    protected void initComponents() {
         super.initComponents();
         ChildListView childListView = new ChildListView();
 
@@ -94,6 +94,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
             }
         };
 
+        @Override
         public void notifyFromDetailView(E entity, boolean isNew) {
             super.notifyFromDetailView(entity, isNew);
             detailEntities.add(entity);
