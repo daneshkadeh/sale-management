@@ -8,6 +8,9 @@ import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.component.TreeNodeWithView;
 import com.s3s.ssm.view.component.TreeView;
 import com.s3s.ssm.view.list.contact.ListBankView;
+import com.s3s.ssm.view.list.param.ListBasicInformationView;
+import com.s3s.ssm.view.list.param.ListCurrencyView;
+import com.s3s.ssm.view.list.param.ListExchangeRateView;
 import com.s3s.ssm.view.list.param.ListItemView;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
 import com.s3s.ssm.view.list.param.ListProductTypeView;
@@ -71,7 +74,10 @@ public class SystemManagementDomain extends AbstractDomain {
 
         TreeNodeWithView itemNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Item"),
                 new ListItemView());
-
+        //Basic Information Management
+        TreeNodeWithView basicInformationEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.BasicInformation"),
+                new ListBasicInformationView());
+        systemEntry.add(basicInformationEntry);
         // TODO: ListTaxGroupView
         TreeNodeWithView taxGroupNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.TaxGroup"));
         systemEntry.add(productManagementEntry);
@@ -92,10 +98,10 @@ public class SystemManagementDomain extends AbstractDomain {
         TreeNodeWithView currencyManagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.CurrencyManagement"));
         TreeNodeWithView currenciesNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.System.CurrencyManagement.Currencies"));
+                ControlConfigUtils.getString("JTree.System.CurrencyManagement.Currencies"), new ListCurrencyView());
 
         TreeNodeWithView exchangeRateNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.System.CurrencyManagement.ExchangeRate"));
+                ControlConfigUtils.getString("JTree.System.CurrencyManagement.ExchangeRate"), new ListExchangeRateView());
         systemEntry.add(currencyManagementEntry);
         currencyManagementEntry.add(currenciesNode);
         currencyManagementEntry.add(exchangeRateNode);

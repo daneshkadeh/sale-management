@@ -10,4 +10,8 @@ public interface ContextProvider {
     public String getCurrentUser();
 
     public Long getCurrentPOS();
+    
+    public Float getCurrencyRate();
+    
+    public String getPaymentMethod();
 }

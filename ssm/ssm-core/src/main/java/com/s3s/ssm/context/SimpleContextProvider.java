@@ -21,4 +21,16 @@ public class SimpleContextProvider implements ContextProvider {
         return 1L;
     }
 
+	@Override
+	public Float getCurrencyRate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPaymentMethod() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

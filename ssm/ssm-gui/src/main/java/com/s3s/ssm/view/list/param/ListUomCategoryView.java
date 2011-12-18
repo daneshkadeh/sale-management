@@ -13,7 +13,6 @@ public class ListUomCategoryView extends AbstractListView<UomCategory> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("id", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("code", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
 

@@ -3,6 +3,7 @@ package com.s3s.ssm.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.view.component.FileChooser;
 import com.s3s.ssm.view.component.ImageChooser;
 import com.s3s.ssm.view.component.MultiSelectionBox;
 
@@ -229,10 +231,10 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
                 break;
             case DATE:
-                DateTime date = (DateTime) value;
+                Date date = (Date) value;
                 dataField = new JXDatePicker();
                 if (date != null) {
-                    ((JXDatePicker) dataField).setDate(date.toDate());
+                    ((JXDatePicker) dataField).setDate(date);
                 }
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
@@ -244,6 +246,12 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 byte[] bytes = (byte[]) value;
                 dataField = new ImageChooser(bytes);
                 pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(dataField);
+                break;
+            case FILE_CHOOSER:
+            	String filePath = (String) value;
+            	dataField = new FileChooser(filePath);
+            	pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
                 break;
             default:
@@ -326,7 +334,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     break;
                 case DATE:
                     JXDatePicker dateField = (JXDatePicker) component;
-                    beanWrapper.setPropertyValue(attribute.getName(), new DateTime(dateField.getDate()));
+                    beanWrapper.setPropertyValue(attribute.getName(), dateField.getDate());
                     break;
                 case DROPDOWN:
                     JComboBox<?> comboBox = (JComboBox<?>) component;
@@ -351,6 +359,10 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 case IMAGE:
                     ImageChooser imageField = (ImageChooser) component;
                     beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(imageField.getImageData()));
+                    break;
+                case FILE_CHOOSER:
+                    FileChooser fileField = (FileChooser) component;
+                    beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(fileField.getFilePath()));
                     break;
                 default:
                     throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());
