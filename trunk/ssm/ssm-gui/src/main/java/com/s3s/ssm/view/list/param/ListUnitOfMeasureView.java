@@ -13,9 +13,9 @@ public class ListUnitOfMeasureView extends AbstractListView<UnitOfMeasure> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("uomCategory", FieldTypeEnum.DROPDOWN));
         listDataModel.add(new DetailAttribute("code", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("uomCategory", FieldTypeEnum.DROPDOWN));
         listDataModel.add(new DetailAttribute("isBaseMeasure", FieldTypeEnum.DROPDOWN));
     }
 

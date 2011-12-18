@@ -64,7 +64,9 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
     protected abstract String getChildFieldName();
 
     @Override
+
     protected void initComponents() {
+
         super.initComponents();
         ChildListView childListView = new ChildListView();
 
