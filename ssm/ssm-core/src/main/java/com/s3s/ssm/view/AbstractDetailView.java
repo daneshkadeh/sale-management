@@ -3,7 +3,6 @@ package com.s3s.ssm.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -231,10 +230,10 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
                 break;
             case DATE:
-                Date date = (Date) value;
+                DateTime date = (DateTime) value;
                 dataField = new JXDatePicker();
                 if (date != null) {
-                    ((JXDatePicker) dataField).setDate(date);
+                    ((JXDatePicker) dataField).setDate(date.toDate());
                 }
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
@@ -334,7 +333,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     break;
                 case DATE:
                     JXDatePicker dateField = (JXDatePicker) component;
-                    beanWrapper.setPropertyValue(attribute.getName(), dateField.getDate());
+                    beanWrapper.setPropertyValue(attribute.getName(), new DateTime(dateField.getDate()));
                     break;
                 case DROPDOWN:
                     JComboBox<?> comboBox = (JComboBox<?>) component;
