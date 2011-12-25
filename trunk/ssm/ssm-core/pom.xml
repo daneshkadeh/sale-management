@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  
-  
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+
 	<parent>
 		<groupId>com.s3s</groupId>
 		<artifactId>ssm</artifactId>
@@ -16,180 +16,199 @@
 	<description>
 		Module core of super sales management.
 	</description>
-  
-  <repositories>
-	    <repository>
-	      <id>Jasper repository</id>
-	      <url>http://jasperreports.sourceforge.net/maven2/</url>
-	    </repository>
-    </repositories>
-  
-  <dependencies>
-	<!-- Apache common -->
-  	<dependency>
-		<groupId>commons-collections</groupId>
-		<artifactId>commons-collections</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>commons-beanutils</groupId>
-		<artifactId>commons-beanutils</artifactId>
-	</dependency>	
-	<dependency>
-		<groupId>commons-lang</groupId>
-		<artifactId>commons-lang</artifactId>
-	</dependency>
-  
-    <!-- TestNG testing framework -->
-    <dependency>
-		 <groupId>org.testng</groupId>
-		 <artifactId>testng</artifactId>
-		 <scope>test</scope>
-	</dependency>
-    
-    <!-- Spring framework -->
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring</artifactId>
-	</dependency>
-    
-    <!-- Spring AOP dependency -->
-    <dependency>
-    	<groupId>cglib</groupId>
-		<artifactId>cglib</artifactId>
-	</dependency>
-    
-	<dependency>
-		<groupId>aspectj</groupId>
-		<artifactId>aspectjrt</artifactId>
-	</dependency>
-	
-	<dependency>
-		<groupId>aspectj</groupId>
-		<artifactId>aspectjtools</artifactId>
-	</dependency>
-	
-     <!-- MySQL database driver -->
-	<dependency>
-		<groupId>mysql</groupId>
-		<artifactId>mysql-connector-java</artifactId>
-	</dependency>
 
-	<!-- Hibernate library dependecy -->
-	<dependency>  
-        <groupId>javax.persistence</groupId>  
-        <artifactId>persistence-api</artifactId>  
-    </dependency> 
-	<dependency>
-		<groupId>org.hibernate</groupId>
-		<artifactId>hibernate-core</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>org.hibernate</groupId>
-		<artifactId>hibernate-annotations</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>org.hibernate</groupId>
-		<artifactId>hibernate-commons-annotations</artifactId>
-	</dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-validator</artifactId>
-    </dependency>
-    
-    <dependency>
-      <groupId>javassist</groupId>
-      <artifactId>javassist</artifactId>
-   </dependency>
+	<repositories>
+		<repository>
+			<id>Jasper repository</id>
+			<url>http://jasperreports.sourceforge.net/maven2/</url>
+		</repository>
+		<repository>
+			<url>http://oss.sonatype.org/content/repositories/sourceforge-releases</url>
+			<id>sonatype-mirror</id>
+			<layout>default</layout>
+			<name>Repository for library including ehcache recent ones</name>
+		</repository>
+	</repositories>
 
-   <!-- log4j dependency -->
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-    </dependency>
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-log4j12</artifactId>
-	</dependency>	
-	<dependency>
-		<groupId>apache</groupId>
-		<artifactId>log4j-datedFileAppender</artifactId>		
-    </dependency>
-	
-	<dependency>
-		<groupId>dom4j</groupId>
-		<artifactId>dom4j</artifactId>
-	</dependency>
-	
-	<dependency>
-		<groupId>commons-logging</groupId>
-		<artifactId>commons-logging</artifactId>
-	</dependency>
-	
-	<dependency>
-		<groupId>commons-collections</groupId>
-		<artifactId>commons-collections</artifactId>
-	</dependency>
-	
-	<dependency>
-		<groupId>antlr</groupId>
-		<artifactId>antlr</artifactId>
-	</dependency>
-	
-	<!-- Swingx -->
-	<dependency>
-            <groupId>org.swinglabs</groupId>
-            <artifactId>swingx</artifactId>
-    </dependency>
-	
-	<!-- MigLayout -->
-    <dependency>
-		<groupId>com.miglayout</groupId>
-		<artifactId>miglayout</artifactId>	  
-		<classifier>swing</classifier>
-    </dependency>
-	
-	<!-- Beansbinding -->
-	<dependency>
-		<groupId>org.jdesktop</groupId>
-		<artifactId>beansbinding</artifactId>
-	</dependency>
-	
-	<!-- GlazedList -->
-	<!--dependency>
-		<groupId> net.java.dev.glazedlists</groupId>
-		<artifactId>glazedlists_java15</artifactId>
-	</dependency-->
-	
-	<!-- Jasper report -->
-	<dependency>
-		<groupId>net.sf.jasperreports</groupId>
-		<artifactId>jasperreports</artifactId>
-	</dependency>
-		
-	<!-- Joda time -->
-	<dependency>
-		<groupId>joda-time</groupId>
-		<artifactId>joda-time</artifactId>
-	</dependency>
-	
-	
-	<!-- TODO move to parent if JXL still used in the future -->
-	<dependency>
-		<groupId>net.sourceforge.jexcelapi</groupId>
-		<artifactId>jxl</artifactId>
-		<version>2.6.10</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>joda-time</groupId>
-		<artifactId>joda-time-hibernate</artifactId>
-		<version>${jodatime-hibernate.version}</version>
-	</dependency>
-	
-  </dependencies>
+	<dependencies>
+		<!-- Apache common -->
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+
+		<!-- TestNG testing framework -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Spring framework -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring</artifactId>
+		</dependency>
+
+		<!-- Spring AOP dependency -->
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+		</dependency>
+
+		<!-- MySQL database driver -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<!-- Hibernate library dependecy -->
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+		</dependency>
+
+		<!-- log4j dependency -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>apache</groupId>
+			<artifactId>log4j-datedFileAppender</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>antlr</groupId>
+			<artifactId>antlr</artifactId>
+		</dependency>
+
+		<!-- Swingx -->
+		<dependency>
+			<groupId>org.swinglabs</groupId>
+			<artifactId>swingx</artifactId>
+		</dependency>
+
+		<!-- MigLayout -->
+		<dependency>
+			<groupId>com.miglayout</groupId>
+			<artifactId>miglayout</artifactId>
+			<classifier>swing</classifier>
+		</dependency>
+
+		<!-- Beansbinding -->
+		<dependency>
+			<groupId>org.jdesktop</groupId>
+			<artifactId>beansbinding</artifactId>
+		</dependency>
+
+		<!-- GlazedList -->
+		<!--dependency> <groupId> net.java.dev.glazedlists</groupId> <artifactId>glazedlists_java15</artifactId> 
+			</dependency -->
+
+		<!-- Jasper report -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+		</dependency>
+
+		<!-- Joda time -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+
+
+		<!-- TODO move to parent if JXL still used in the future -->
+		<dependency>
+			<groupId>net.sourceforge.jexcelapi</groupId>
+			<artifactId>jxl</artifactId>
+			<version>2.6.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time-hibernate</artifactId>
+			<version>${jodatime-hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>2.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-acl</artifactId>
+			<version>2.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>2.5.0</version>
+			<type>pom</type>
+		</dependency>
+	</dependencies>
 </project>

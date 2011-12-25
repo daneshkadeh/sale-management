@@ -355,7 +355,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * @param entity
      *            the entity which the detail view display for. If <code>null</code>, new entity is displayed.
      */
-    private void showDetailView(T entity) {
+    protected void showDetailView(T entity) {
         Class<? extends AbstractDetailView<T>> detailViewClass = getDetailViewClass();
         Class<T> entityClass = getEntityClass();
         try {
