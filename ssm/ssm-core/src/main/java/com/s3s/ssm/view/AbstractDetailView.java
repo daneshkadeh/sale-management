@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
@@ -253,6 +254,12 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             	pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
                 break;
+            case CHECKBOX:
+                Boolean isSelected = (Boolean)value;
+                dataField = new JCheckBox("", isSelected);
+                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(dataField);
+                break;
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
@@ -266,7 +273,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     }
 
     private JPanel createButtonPanel() {
-        btnOK = new JButton("OK");
+        btnOK = new JButton(ControlConfigUtils.getString("default.button.save"));
         btnOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -274,7 +281,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             }
         });
 
-        btnCancel = new JButton("Cancel");
+        btnCancel = new JButton(ControlConfigUtils.getString("default.button.cancel"));
         btnCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -329,7 +336,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(pwdField.getText()));
                     break;
                 case CHECKBOX:
-
+                    JCheckBox chkField = (JCheckBox) component;
+                    beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(chkField.isSelected()));
                     break;
                 case DATE:
                     JXDatePicker dateField = (JXDatePicker) component;
