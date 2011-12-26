@@ -217,7 +217,7 @@ public class ACLPanel extends AbstractView {
         boolean viewWrite = false;
         boolean viewDelete = false;
 
-        ObjectIdentity oid = new ObjectIdentityImpl(ACLResources.class, cellRow - distance);
+        ObjectIdentity oid = new ObjectIdentityImpl(ACLResourceEnum.class, cellRow - distance);
         MutableAcl mutableAcl;
 
         try {
@@ -381,18 +381,20 @@ public class ACLPanel extends AbstractView {
     @Transactional
     private void saveOrUpdateACL() {
         String strRole = txtRole.getText();
-        // UOM Category
-        ObjectIdentity uomCateOid = new ObjectIdentityImpl(ACLResources.class, ACLResources.UOM_CATEGORY);
-        mutableAclService.deleteAcl(uomCateOid, strRole, true);
-        MutableAcl uomCateMutableAcl;
-        try {
-            uomCateMutableAcl = (MutableAcl) mutableAclService.readAclById(uomCateOid);
-        } catch (NotFoundException e) {
-            uomCateMutableAcl = (MutableAcl) mutableAclService.createAcl(uomCateOid);
+        for (ACLResourceEnum resource : ACLResourceEnum.values()) {
+            ObjectIdentity uomCateOid = new ObjectIdentityImpl(ACLResourceEnum.class, resource.getOrder());
+            mutableAclService.deleteAcl(uomCateOid, strRole, true);
+            MutableAcl uomCateMutableAcl;
+            try {
+                uomCateMutableAcl = (MutableAcl) mutableAclService.readAclById(uomCateOid);
+            } catch (NotFoundException e) {
+                uomCateMutableAcl = (MutableAcl) mutableAclService.createAcl(uomCateOid);
+            }
+            role = new PrincipalSid(txtRole.getText());
+            updateMutableAcl(resource.getOrder(), uomCateMutableAcl);
+            mutableAclService.updateAcl(uomCateMutableAcl);
         }
-        role = new PrincipalSid(txtRole.getText());
-        updateMutableAcl(ACLResources.UOM_CATEGORY, uomCateMutableAcl);
-        mutableAclService.updateAcl(uomCateMutableAcl);
+        
     }
 
     public void setListView(AbstractListView<Role> listView) {

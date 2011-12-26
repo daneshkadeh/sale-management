@@ -18,6 +18,8 @@ import com.s3s.ssm.view.list.param.ListProductView;
 import com.s3s.ssm.view.list.param.ListSupplierView;
 import com.s3s.ssm.view.list.param.ListUnitOfMeasureView;
 import com.s3s.ssm.view.list.param.ListUomCategoryView;
+import com.s3s.ssm.view.list.security.ListRoleView;
+import com.s3s.ssm.view.list.security.ListUserView;
 
 /**
  * Define master object in the system: user, product, supplier.
@@ -38,9 +40,9 @@ public class SystemManagementDomain extends AbstractDomain {
         // User management
         TreeNodeWithView userManagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.UserManagement"));
-        TreeNodeWithView userNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.UserManagement.User"));
+        TreeNodeWithView userNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.UserManagement.User"), new ListUserView());
         TreeNodeWithView profilesNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.UserManagement.Profiles"));
+                ControlConfigUtils.getString("JTree.UserManagement.Profiles"), new ListRoleView());
         TreeNodeWithView exceptionPrivilegeNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.UserManagement.ExceptionPrivilege"));
         systemEntry.add(userManagementEntry);
