@@ -121,6 +121,9 @@
 	<!--glazedlists.version>1.8.0</glazedlists.version-->
 	<jodatime.version>2.0</jodatime.version>
 	<jodatime-hibernate.version>1.3</jodatime-hibernate.version>
+	
+	<testng.version>5.12.1</testng.version>
+    <easymock.version>2.5.2</easymock.version>
    </properties>   
    
 	<dependencyManagement>
@@ -342,6 +345,34 @@
 		<version>${jodatime-hibernate.version}</version>
 	</dependency>
 	
+         <!-- for testing -->
+	 <dependency>
+		<groupId>org.testng</groupId>
+		<artifactId>testng</artifactId>
+		<version>${testng.version}</version>
+		<scope>test</scope>
+		<exclusions>
+		   <exclusion>
+			  <groupId>junit</groupId>
+			  <artifactId>junit</artifactId>
+		   </exclusion>
+		</exclusions>
+	 </dependency>
+	 <dependency>
+		<groupId>org.easymock</groupId>
+		<artifactId>easymock</artifactId>
+		<version>${easymock.version}</version>
+		<type>jar</type>
+		<scope>test</scope>
+	 </dependency>
+	 <dependency>
+		<groupId>org.easymock</groupId>
+		<artifactId>easymockclassextension</artifactId>
+		<version>${easymock.version}</version>
+		<type>jar</type>
+		<scope>test</scope>
+	 </dependency>
+
   </dependencies>
   </dependencyManagement>
 </project>
