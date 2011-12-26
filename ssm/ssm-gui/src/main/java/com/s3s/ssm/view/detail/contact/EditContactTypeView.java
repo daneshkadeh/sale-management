@@ -2,8 +2,8 @@ package com.s3s.ssm.view.detail.contact;
 
 import java.util.Arrays;
 
-import com.s3s.ssm.entity.contact.ContactFamilyType;
-import com.s3s.ssm.entity.contact.ContactType;
+import com.s3s.ssm.entity.config.ContactFamilyType;
+import com.s3s.ssm.entity.config.ContactType;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;

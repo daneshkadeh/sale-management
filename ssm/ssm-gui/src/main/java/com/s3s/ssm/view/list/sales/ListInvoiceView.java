@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.model.DetailAttribute;
+import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;
 import com.s3s.ssm.view.AbstractListView;
 
@@ -11,7 +12,7 @@ public class ListInvoiceView extends AbstractListView<Invoice> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        // TODO Auto-generated method stub
+        listDataModel.add(new DetailAttribute("invoiceNumber", FieldTypeEnum.TEXTBOX));
 
     }
 

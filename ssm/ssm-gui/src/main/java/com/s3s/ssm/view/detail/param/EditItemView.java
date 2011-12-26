@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.eclipse.core.internal.runtime.Product;
 
-import com.s3s.ssm.entity.param.CurrencyEnum;
-import com.s3s.ssm.entity.param.Item;
-import com.s3s.ssm.entity.param.UnitOfMeasure;
+import com.s3s.ssm.entity.catalog.Item;
+import com.s3s.ssm.entity.config.CurrencyEnum;
+import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.sales.ItemPrice;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;

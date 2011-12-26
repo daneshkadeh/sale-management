@@ -1,6 +1,6 @@
 package com.s3s.ssm.view.detail.param;
 
-import com.s3s.ssm.entity.param.Manufacturer;
+import com.s3s.ssm.entity.catalog.Manufacturer;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;

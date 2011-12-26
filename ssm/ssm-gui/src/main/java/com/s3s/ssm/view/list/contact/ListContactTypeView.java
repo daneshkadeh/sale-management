@@ -2,7 +2,7 @@ package com.s3s.ssm.view.list.contact;
 
 import java.util.List;
 
-import com.s3s.ssm.entity.contact.ContactType;
+import com.s3s.ssm.entity.config.ContactType;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;

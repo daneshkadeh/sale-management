@@ -2,8 +2,8 @@ package com.s3s.ssm.view.detail.param;
 
 import java.util.Arrays;
 
-import com.s3s.ssm.entity.contact.ContactType;
-import com.s3s.ssm.entity.param.CurrencyEnum;
+import com.s3s.ssm.entity.config.ContactType;
+import com.s3s.ssm.entity.config.CurrencyEnum;
 import com.s3s.ssm.entity.sales.ItemPrice;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;

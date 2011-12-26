@@ -2,9 +2,9 @@ package com.s3s.ssm.view.detail.param;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.s3s.ssm.entity.contact.Bank;
-import com.s3s.ssm.entity.contact.BankAccount;
-import com.s3s.ssm.entity.param.Supplier;
+import com.s3s.ssm.entity.config.Bank;
+import com.s3s.ssm.entity.config.BankAccount;
+import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;

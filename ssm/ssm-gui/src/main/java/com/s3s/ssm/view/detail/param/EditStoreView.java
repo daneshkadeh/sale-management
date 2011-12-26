@@ -3,7 +3,7 @@ package com.s3s.ssm.view.detail.param;
 import java.util.Arrays;
 import java.util.List;
 
-import com.s3s.ssm.entity.param.Store;
+import com.s3s.ssm.entity.catalog.Store;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
