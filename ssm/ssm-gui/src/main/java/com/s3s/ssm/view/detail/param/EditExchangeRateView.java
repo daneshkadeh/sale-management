@@ -1,7 +1,7 @@
 package com.s3s.ssm.view.detail.param;
 
-import com.s3s.ssm.entity.param.Currency;
-import com.s3s.ssm.entity.param.ExchangeRate;
+import com.s3s.ssm.entity.config.ExchangeRate;
+import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
@@ -24,6 +24,6 @@ public class EditExchangeRateView extends AbstractDetailView<ExchangeRate> {
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, ExchangeRate entity) {
         super.setReferenceDataModel(refDataModel, entity);
-        refDataModel.putRefDataList(CURRENCY_REF_ID, getDaoHelper().getDao(Currency.class).findAll(), null);
+        refDataModel.putRefDataList(CURRENCY_REF_ID, getDaoHelper().getDao(SCurrency.class).findAll(), null);
     }
 }
