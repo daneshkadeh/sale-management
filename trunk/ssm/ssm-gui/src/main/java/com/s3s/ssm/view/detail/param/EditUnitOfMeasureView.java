@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
 
-import com.s3s.ssm.entity.param.UnitOfMeasure;
-import com.s3s.ssm.entity.param.UomCategory;
+import com.s3s.ssm.entity.config.UnitOfMeasure;
+import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;

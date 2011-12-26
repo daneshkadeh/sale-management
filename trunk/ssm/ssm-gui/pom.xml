@@ -19,7 +19,18 @@
   <dependencies>
 	<dependency>
 		<groupId>com.s3s</groupId>
-		<artifactId>ssm-core</artifactId>
+		<artifactId>ssm-sales</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-shipment</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-supplychain</artifactId>
+		<version>${ssm.version}</version>
 	</dependency>
 	<dependency>
 		<groupId>org.swinglabs</groupId>

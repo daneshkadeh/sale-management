@@ -57,7 +57,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring</artifactId>
 		</dependency>
-
+	
 		<!-- Spring AOP dependency -->
 		<dependency>
 			<groupId>cglib</groupId>

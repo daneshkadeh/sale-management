@@ -2,11 +2,11 @@ package com.s3s.ssm.view.detail.contact;
 
 import java.util.List;
 
-import com.s3s.ssm.entity.contact.Bank;
-import com.s3s.ssm.entity.contact.BankAccount;
+import com.s3s.ssm.entity.config.Bank;
+import com.s3s.ssm.entity.config.BankAccount;
+import com.s3s.ssm.entity.config.ContactType;
 import com.s3s.ssm.entity.contact.Contact;
 import com.s3s.ssm.entity.contact.ContactShop;
-import com.s3s.ssm.entity.contact.ContactType;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;

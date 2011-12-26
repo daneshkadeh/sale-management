@@ -1,22 +1,20 @@
 package com.s3s.ssm.view.list.security;
 
+import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.Window;
-import java.awt.Dialog.ModalityType;
 import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import com.s3s.ssm.entity.param.UnitOfMeasure;
 import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.AbstractDetailView;
 import com.s3s.ssm.view.AbstractListView;
-import com.s3s.ssm.view.detail.param.EditUnitOfMeasureView;
 import com.s3s.ssm.view.detail.security.EditRoleView;
 import com.s3s.ssm.view.security.ACLPanel;
 

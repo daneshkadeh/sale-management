@@ -29,7 +29,9 @@
 		<property name="packagesToScan">
 			<list>
 				<value>com.s3s.ssm.entity</value>
-				<value>com.s3s.ssm.entity.param</value>
+				<value>com.s3s.ssm.entity.operator</value>
+				<value>com.s3s.ssm.entity.config</value>
+				<value>com.s3s.ssm.entity.catalog</value>
 				<value>com.s3s.ssm.entity.contact</value>
 				<value>com.s3s.ssm.entity.sales</value>
 				<value>com.s3s.ssm.entity.bi</value>

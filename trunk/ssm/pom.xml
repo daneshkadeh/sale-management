@@ -27,7 +27,7 @@
 			<enabled>false</enabled>
 		</snapshots>
 	</repository>
-  
+	
 	<!-- Java.net -->
 	<repository>
 		<snapshots>
@@ -78,6 +78,15 @@
   
    <modules>
       <module>ssm-core</module>
+      <module>ssm-operator</module>
+	  <module>ssm-config</module>
+      <module>ssm-catalog</module>
+	  <module>ssm-contact</module>
+      <module>ssm-shipment</module>
+	  <module>ssm-finance</module>
+      <module>ssm-store</module>
+	  <module>ssm-supplychain</module>
+	  <module>ssm-sales</module>
       <module>ssm-gui</module>
    </modules>
    
@@ -142,6 +151,18 @@
 		<version>${spring.version}</version>
 	</dependency>
     
+	<dependency>
+		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-core</artifactId>
+		<version>2.0.4</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-acl</artifactId>
+		<version>2.0.4</version>
+	</dependency>
+
     <!-- Spring AOP dependency -->
     <dependency>
     	<groupId>cglib</groupId>

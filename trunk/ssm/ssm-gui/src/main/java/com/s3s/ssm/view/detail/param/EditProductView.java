@@ -1,10 +1,10 @@
 package com.s3s.ssm.view.detail.param;
 
-import com.s3s.ssm.entity.param.Manufacturer;
-import com.s3s.ssm.entity.param.Product;
-import com.s3s.ssm.entity.param.ProductType;
-import com.s3s.ssm.entity.param.UnitOfMeasure;
-import com.s3s.ssm.entity.param.UploadFile;
+import com.s3s.ssm.entity.catalog.Manufacturer;
+import com.s3s.ssm.entity.catalog.Product;
+import com.s3s.ssm.entity.catalog.ProductType;
+import com.s3s.ssm.entity.config.UnitOfMeasure;
+import com.s3s.ssm.entity.config.UploadFile;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
@@ -27,7 +27,7 @@ public class EditProductView extends AbstractDetailView<Product> {
         detailDataModel.addAttribute("type", FieldTypeEnum.DROPDOWN).referenceDataId(TYPE_REF_ID);
         detailDataModel.addAttribute("manufacturer", FieldTypeEnum.DROPDOWN).referenceDataId(MANU_REF_ID);
         detailDataModel.addAttribute("model", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("description", FieldTypeEnum.RICH_TEXTBOX);
+        detailDataModel.addAttribute("description", FieldTypeEnum.RICH_TEXTBOX).editable(true);
         detailDataModel.addAttribute("mainUom", FieldTypeEnum.DROPDOWN).referenceDataId(UOM_REF_ID);
         detailDataModel.addAttribute("uploadFile.data", FieldTypeEnum.IMAGE);
     }

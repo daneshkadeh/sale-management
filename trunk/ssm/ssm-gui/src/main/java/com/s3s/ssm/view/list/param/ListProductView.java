@@ -2,7 +2,7 @@ package com.s3s.ssm.view.list.param;
 
 import java.util.List;
 
-import com.s3s.ssm.entity.param.Product;
+import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractDetailView;

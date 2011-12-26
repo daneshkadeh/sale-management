@@ -2,8 +2,8 @@ package com.s3s.ssm.view.detail.param;
 
 import java.util.Arrays;
 
-import com.s3s.ssm.entity.param.ProductFamilyType;
-import com.s3s.ssm.entity.param.ProductType;
+import com.s3s.ssm.entity.catalog.ProductFamilyType;
+import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
