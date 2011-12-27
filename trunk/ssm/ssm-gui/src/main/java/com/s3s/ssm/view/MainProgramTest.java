@@ -41,9 +41,9 @@ import com.s3s.ssm.view.component.RadioButtonsGroup;
 import com.s3s.ssm.view.list.ListCustomerViewTest;
 import com.s3s.ssm.view.list.ListGoodsViewTest;
 import com.s3s.ssm.view.list.ListInvoiceViewTest;
+import com.s3s.ssm.view.list.config.ListUnitOfMeasureView;
+import com.s3s.ssm.view.list.config.ListUomCategoryView;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
-import com.s3s.ssm.view.list.param.ListUnitOfMeasureView;
-import com.s3s.ssm.view.list.param.ListUomCategoryView;
 import com.s3s.ssm.view.security.LoginDialog;
 
 public class MainProgramTest {
