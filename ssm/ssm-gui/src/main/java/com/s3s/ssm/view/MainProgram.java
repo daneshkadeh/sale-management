@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -33,8 +32,6 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.s3s.ssm.security.ACLResourceEnum;
-import com.s3s.ssm.security.CustomPermission;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.ImageChooser;
@@ -58,9 +55,10 @@ import com.s3s.ssm.view.security.LoginDialog;
 public class MainProgram {
     private static final Dimension WINDOW_MIN_SIZE = new Dimension(400, 300);
     public static Log s_logger = LogFactory.getLog(MainProgram.class);
-    private static final String[] MESSSAGE_FILES = new String[] { "i18n/messages", "i18n/param_messages",
-            "i18n/finance_messages", "i18n/sales_messages", "i18n/shipment_messages", "i18n/contact_messages",
-            "i18n/store_messages", "i18n/supplychain_messages", "i18n/bi_messages", "i18n/ui_messages" };
+    private static final String[] MESSSAGE_FILES = new String[] { "i18n/messages", "i18n/config_messages",
+            "i18n/catalog_messages", "i18n/finance_messages", "i18n/sales_messages", "i18n/shipment_messages",
+            "i18n/contact_messages", "i18n/store_messages", "i18n/supplychain_messages", "i18n/operator_messages",
+            "i18n/bi_messages", "i18n/ui_messages" };
     private static JFrame frame;
 
     public static void main(String[] args) {
@@ -111,7 +109,7 @@ public class MainProgram {
         frame.setJMenuBar(menuBar);
 
         Container contentPane = frame.getContentPane();
-        //login
+        // login
         LoginDialog loginDialog = new LoginDialog(frame);
         loginDialog.setVisible(true);
         if (loginDialog.isLogin()) {
@@ -207,7 +205,7 @@ public class MainProgram {
                 frame.pack();
             }
         });
-        
+
         JMenuItem customerMenuItem = new JMenuItem(ControlConfigUtils.getString("JMenu.File.Customer"));
         customerMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, ActionEvent.CTRL_MASK));
         customerMenuItem.addActionListener(new ActionListener() {
