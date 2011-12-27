@@ -49,9 +49,10 @@ import com.s3s.ssm.view.security.LoginDialog;
 public class MainProgramTest {
     private static final Dimension WINDOW_MIN_SIZE = new Dimension(400, 300);
     public static Log s_logger = LogFactory.getLog(MainProgramTest.class);
-    private static final String[] MESSSAGE_FILES = new String[] { "i18n/messages", "i18n/param_messages",
-            "i18n/finance_messages", "i18n/sales_messages", "i18n/shipment_messages", "i18n/contact_messages",
-            "i18n/store_messages", "i18n/supplychain_messages", "i18n/bi_messages" };
+    private static final String[] MESSSAGE_FILES = new String[] { "i18n/messages", "i18n/config_messages",
+            "i18n/catalog_messages", "i18n/finance_messages", "i18n/sales_messages", "i18n/shipment_messages",
+            "i18n/contact_messages", "i18n/store_messages", "i18n/supplychain_messages", "i18n/operator_messages",
+            "i18n/bi_messages", "i18n/ui_messages" };
 
     public static void main(String[] args) {
         // Not find solution to get class path from ssm-core.
