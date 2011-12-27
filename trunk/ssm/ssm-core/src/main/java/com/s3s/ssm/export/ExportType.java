@@ -1,4 +1,4 @@
-package com.s3s.ssm.exportdata;
+package com.s3s.ssm.export;
 
 public interface ExportType {
     String EXCEL = "xls";
