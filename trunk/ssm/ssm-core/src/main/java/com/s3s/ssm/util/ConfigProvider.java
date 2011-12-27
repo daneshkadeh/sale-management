@@ -3,8 +3,10 @@ package com.s3s.ssm.util;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.security.AuthenticationManager;
 
 import com.s3s.ssm.context.ContextProvider;
+import com.s3s.ssm.security.CustomJdbcMutableAclService;
 import com.s3s.ssm.service.CustomerService;
 import com.s3s.ssm.service.DetailInvoiceService;
 import com.s3s.ssm.service.GoodsService;
@@ -13,6 +15,7 @@ import com.s3s.ssm.service.InvoiceService;
 public class ConfigProvider {
     private static ConfigProvider configProvider;
     private static ApplicationContext appContext;
+    private static ApplicationContext authContext;
 
     public static ConfigProvider getInstance() {
         if (configProvider == null) {
@@ -24,10 +27,16 @@ public class ConfigProvider {
     private ConfigProvider() {
         DOMConfigurator.configure("src/main/resources/log4j.xml");
         appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
+        authContext = new ClassPathXmlApplicationContext(new String[] { "security/auth-context.xml",
+                "security/acl-context.xml" });
     }
 
     public ApplicationContext getApplicationContext() {
         return appContext;
+    }
+
+    public ApplicationContext getAuthenticationContext() {
+        return authContext;
     }
 
     public CustomerService getCustomerSerice() {
@@ -48,6 +57,14 @@ public class ConfigProvider {
 
     public DaoHelper getDaoHelper() {
         return (DaoHelper) appContext.getBean("daoHelper");
+    }
+
+    public AuthenticationManager getAuthenticationManager() {
+        return (AuthenticationManager) authContext.getBean("authenticationManager");
+    }
+
+    public CustomJdbcMutableAclService getMutableAclService() {
+        return (CustomJdbcMutableAclService) authContext.getBean("aclService");
     }
 
     public ContextProvider getContextProvider() {
