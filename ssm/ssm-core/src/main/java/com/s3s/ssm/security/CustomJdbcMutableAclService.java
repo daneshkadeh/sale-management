@@ -1,4 +1,4 @@
-package com.s3s.ssm.view.security;
+package com.s3s.ssm.security;
 
 import javax.sql.DataSource;
 

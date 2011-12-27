@@ -137,9 +137,7 @@ public class User extends AbstractIdOLObject implements Serializable, UserDetail
     @Transient
     @Override
     public GrantedAuthority[] getAuthorities() {
-        // TODO return an array 
-        System.out.println("roles size" + roles.size());
-        return (GrantedAuthority[]) roles.toArray(new GrantedAuthority[roles.size()]);
+        return (Role[]) roles.toArray(new Role[roles.size()]);
     }
 
 }
