@@ -22,7 +22,6 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.config.CurrencyEnum;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
-import com.s3s.ssm.entity.sales.ItemPrice;
 
 @Entity
 @Table(name = "s_item")
