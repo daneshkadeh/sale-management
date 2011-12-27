@@ -6,9 +6,10 @@
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.4.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-	<import resource="../database/DataSource.xml"/>
+	<import resource="../database/DataSource.xml" />
 
-	<bean id="aclService" class="com.s3s.ssm.view.security.CustomJdbcMutableAclService">
+	<bean id="aclService" class="com.s3s.ssm.security.CustomJdbcMutableAclService"
+		name="aclService">
 		<constructor-arg ref="dataSource" />
 		<constructor-arg ref="lookupStrategy" />
 		<constructor-arg ref="aclCache" />
@@ -17,8 +18,7 @@
 	</bean>
 
 	<!-- Declare a lookup strategy -->
-	<bean id="lookupStrategy"
-		class="org.springframework.security.acls.jdbc.BasicLookupStrategy">
+	<bean id="lookupStrategy" class="com.s3s.ssm.security.CustomLookupStrategy">
 		<constructor-arg ref="dataSource" />
 		<constructor-arg ref="aclCache" />
 		<constructor-arg ref="aclAuthzStrategy" />
@@ -31,7 +31,8 @@
 		<constructor-arg>
 			<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
 				<property name="cacheManager">
-					<bean id = "ehCacheManagerFactoryBean" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
+					<bean id="ehCacheManagerFactoryBean"
+						class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
 				</property>
 				<property name="cacheName" value="aclCache" />
 			</bean>
@@ -72,5 +73,5 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	
- </beans>
+
+</beans>

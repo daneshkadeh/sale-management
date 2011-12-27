@@ -8,13 +8,14 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.security.GrantedAuthority;
+import org.springframework.security.acls.sid.Sid;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
 @Table(name = "au_role")
 public class Role extends AbstractCodeOLObject implements Serializable,
-		GrantedAuthority {
+		GrantedAuthority, Sid {
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private Boolean isEnable = true;
@@ -54,8 +55,15 @@ public class Role extends AbstractCodeOLObject implements Serializable,
 	@Transient
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(o instanceof Role) {
+		    Role role = (Role)o;
+		    if(((Role) o).getName().equals(this.name)) {
+		        return 0;
+		    } else {
+		        return 1;
+		    }
+		}
+		throw new IllegalArgumentException();
 	}
 	
 	@Transient
@@ -63,5 +71,4 @@ public class Role extends AbstractCodeOLObject implements Serializable,
     public String toString() {
         return name;
     }
-	
 }

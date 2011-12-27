@@ -26,6 +26,7 @@ import org.springframework.security.BadCredentialsException;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
 
+import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 /**
  * 
@@ -103,9 +104,7 @@ public class LoginDialog extends JDialog {
 
     private void login() {
         // login before set authorize
-        auContext = getAuContext();
-        AuthenticationManager authenticationManager = (AuthenticationManager) BeanFactoryUtils.beanOfType(auContext,
-                AuthenticationManager.class);
+        AuthenticationManager authenticationManager = ConfigProvider.getInstance().getAuthenticationManager();
         // set token
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
         // login
@@ -115,7 +114,6 @@ public class LoginDialog extends JDialog {
             SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
             isLogin = true;
         } catch (BadCredentialsException e) {
-        
             JOptionPane.showMessageDialog(this, ControlConfigUtils.getString("default.login.invalid.message"), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

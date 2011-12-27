@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -50,10 +51,19 @@ import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.security.acls.MutableAcl;
+import org.springframework.security.acls.NotFoundException;
+import org.springframework.security.acls.objectidentity.ObjectIdentity;
+import org.springframework.security.acls.objectidentity.ObjectIdentityImpl;
+import org.springframework.security.context.SecurityContextHolder;
 
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.model.DetailAttribute;
+import com.s3s.ssm.security.ACLResourceEnum;
+import com.s3s.ssm.security.CustomJdbcMutableAclService;
+import com.s3s.ssm.security.CustomPermission;
+import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.IPageChangeListener;
@@ -89,6 +99,10 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private JXTable tblListEntities;
     private JXTable tblFooter;
     private PagingNavigator pagingNavigator;
+    //button toolbar
+    private JButton btnAdd;
+    private JButton btnDelete;
+    private JButton btnEdit;
 
     // TODO use this flag temporarily to prevent init the view more than one time. --> Need to use the Proxy object
     // instead.
@@ -107,14 +121,25 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private Action editAction;
 
     private BeanWrapper beanWrapper;
+    // the service is used to get access rule
+    private Set<CustomPermission> permissionSet;
 
     public AbstractListView() {
         this(null, null);
     }
+    
+    private Set<CustomPermission> getPermissionOfCurrentUser() {
+        ACLResourceEnum aclResource = getAClResource();
+        //get permissions of current user
+        return ConfigProvider.getInstance().getContextProvider().getPermissions(aclResource);
+        
+    }
 
     public AbstractListView(Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
+        
         this.parentId = parentId;
         this.parentClass = parentClass;
+        this.permissionSet = getPermissionOfCurrentUser();
         initialPresentationView(listDataModel, summaryFieldNames);
 
         addAction = new AddAction();
@@ -123,6 +148,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         addKeyBindings();
         addComponents();
+        setAccessRule();
     }
 
     protected void addKeyBindings() {
@@ -216,19 +242,20 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         tblListEntities.setColumnControlVisible(true);
 
         // Show edit view when double on a such row.
-        tblListEntities.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    // JXTable target = (JXTable)e.getSource();
-                    // int row = target.getSelectedRow();
-                    // int column = target.getSelectedColumn();
-                    // // do some action
-                    performEditAction();
+        if(permissionSet.contains(CustomPermission.ADMINISTRATION)||permissionSet.contains(CustomPermission.READ)) {
+            tblListEntities.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        // JXTable target = (JXTable)e.getSource();
+                        // int row = target.getSelectedRow();
+                        // int column = target.getSelectedColumn();
+                        // // do some action
+                        performEditAction();
+                    }
                 }
-            }
-        });
-
+            });
+        }
         // //////////////// Create footer table //////////////////////////////
         FooterTableModel footerModel = new FooterTableModel(mainTableModel);
 
@@ -304,10 +331,10 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         JToolBar buttonToolbar = new JToolBar();
         buttonToolbar.setRollover(true);
         buttonToolbar.setFloatable(false);
-        JButton btnAdd = new JButton("Add");
+        btnAdd = new JButton(ControlConfigUtils.getString("default.button.create"));
         btnAdd.addActionListener(addAction);
 
-        JButton btnDelete = new JButton("Delete");
+        btnDelete = new JButton(ControlConfigUtils.getString("default.button.delete"));
         btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -329,8 +356,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 }
             }
         });
-
-        JButton btnEdit = new JButton("Edit");
+    
+        btnEdit = new JButton(ControlConfigUtils.getString("default.button.edit"));
         btnEdit.addActionListener(editAction);
 
         JButton btnRefresh = new JButton("Refresh");
@@ -630,7 +657,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         }
 
     }
-
+    
     @Override
     public void doPageChanged(ChangeEvent e) {
         PagingNavigator pagingNavigator = (PagingNavigator) e.getSource();
@@ -646,5 +673,26 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             refreshData();
         }
     }
+    //TODO Hoang this method must implement under subclass
+    protected  ACLResourceEnum getAClResource() {
+        return ACLResourceEnum.UOM_CATEGORY;
+    }
 
+    public Set<CustomPermission> getPermissionSet() {
+        return permissionSet;
+    }
+    
+    protected void setAccessRule() {
+        if(!permissionSet.contains(CustomPermission.ADMINISTRATION)) {
+            if(!permissionSet.contains(CustomPermission.CREATE)) {
+                btnAdd.setVisible(false);
+            }
+            if(!permissionSet.contains(CustomPermission.WRITE)) {
+                btnEdit.setVisible(false);
+            }
+            if(!permissionSet.contains(CustomPermission.DELETE)) {
+                btnDelete.setVisible(false);
+            }
+        }
+    }
 }

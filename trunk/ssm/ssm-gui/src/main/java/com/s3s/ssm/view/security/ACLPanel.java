@@ -36,6 +36,10 @@ import org.springframework.security.acls.sid.Sid;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.security.Role;
+import com.s3s.ssm.security.ACLResourceEnum;
+import com.s3s.ssm.security.CustomJdbcMutableAclService;
+import com.s3s.ssm.security.CustomPermission;
+import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.AbstractView;
@@ -47,24 +51,25 @@ public class ACLPanel extends AbstractView {
     private final String READ_LABEL = ControlConfigUtils.getString("label.Role.view.edit.accessRule.read");
     private final String WRITE_LABEL = ControlConfigUtils.getString("label.Role.view.edit.accessRule.write");
     private final String DELETE_LABEL = ControlConfigUtils.getString("label.Role.view.edit.accessRule.delete");
-    
+    private final String EXECUTE_LABEL = ControlConfigUtils.getString("label.Role.view.edit.accessRule.execute");
+
     private static final Integer ADMINISTRATION = 0;
     private static final Integer CREATE = 1;
     private static final Integer READ = 2;
     private static final Integer WRITE = 3;
     private static final Integer DELETE = 4;
-    
+    private static final Integer EXECUTE = 5;
+
     private CustomJdbcMutableAclService mutableAclService;
-    //get reference to fire event to ListRoleView
+    // get reference to fire event to ListRoleView
     private AbstractListView<Role> listView;
     private JTextField codeRole;
     private JTextField txtRole;
     private JCheckBox chkEnable;
     JPanel aclBoard;
     JPanel entityBoard;
-    
+
     private int[][] matrix;
-    static ApplicationContext aclContext;
     private Sid role;
     private Role entity;
     int distance = 2;
@@ -73,29 +78,20 @@ public class ACLPanel extends AbstractView {
      * Create the panel.
      */
     public ACLPanel(Role entity) {
-        matrix = new int[100][5];
-        aclContext = getAclContext();
-        if(entity == null) {
+        matrix = new int[100][6];
+        // aclContext = getAclContext();
+        if (entity == null) {
             this.entity = new Role();
         } else {
             this.entity = entity;
         }
-        
-        
+
         if (entity != null) {
             role = new PrincipalSid(entity.getName());
         }
 
-        mutableAclService = (CustomJdbcMutableAclService) BeanFactoryUtils.beanOfType(aclContext,
-                MutableAclService.class);
+        mutableAclService = (CustomJdbcMutableAclService) ConfigProvider.getInstance().getMutableAclService();
         initialPresentationView();
-    }
-
-    private static ApplicationContext getAclContext() {
-        if (aclContext == null) {
-            return (new ClassPathXmlApplicationContext("security/acl-context.xml"));
-        }
-        return aclContext;
     }
 
     private void initialPresentationView() {
@@ -106,12 +102,12 @@ public class ACLPanel extends AbstractView {
 
         JLabel lblCode = new JLabel(ControlConfigUtils.getString("label.Role.code"));
         entityBoard.add(lblCode);
-        
+
         codeRole = new JTextField();
         entityBoard.add(codeRole);
         codeRole.setText(entity.getCode());
         codeRole.setColumns(10);
-        
+
         JLabel lblRole = new JLabel(ControlConfigUtils.getString("label.Role.name"));
         entityBoard.add(lblRole);
 
@@ -128,39 +124,45 @@ public class ACLPanel extends AbstractView {
         chkEnable.setSelected(entity.getIsEnable());
         txtRole.setColumns(10);
 
-        aclBoard = new JPanel(new MigLayout("wrap 5"));
+        aclBoard = new JPanel(new MigLayout("wrap 7"));
 
         Border blackline = BorderFactory.createLineBorder(Color.gray);
-        TitledBorder title = BorderFactory.createTitledBorder(blackline, ControlConfigUtils.getString("label.Role.view.edit.accessRule"));
+        TitledBorder title = BorderFactory.createTitledBorder(blackline,
+                ControlConfigUtils.getString("label.Role.view.edit.accessRule"));
         title.setTitleJustification(TitledBorder.LEFT);
         aclBoard.setBorder(title);
         // set title for authorities
+        JLabel lblEmpty = new JLabel();
+        aclBoard.add(lblEmpty, "alignx center");
+        
         JLabel lblA = new JLabel(ADMIN_LABLE + SPACE);
-        aclBoard.add(lblA, "cell 1 1,alignx center");
+        aclBoard.add(lblA, "alignx center");
 
         JLabel lblC = new JLabel(CREATE_LABEL + SPACE);
-        aclBoard.add(lblC, "cell 2 1,alignx center");
+        aclBoard.add(lblC, "alignx center");
 
         JLabel lblR = new JLabel(READ_LABEL + SPACE);
-        aclBoard.add(lblR, "cell 3 1,alignx center");
+        aclBoard.add(lblR, "alignx center");
 
         JLabel lblW = new JLabel(WRITE_LABEL + SPACE);
-        aclBoard.add(lblW, "cell 4 1,alignx center");
+        aclBoard.add(lblW, "alignx center");
 
         JLabel lblD = new JLabel(DELETE_LABEL + SPACE);
-        aclBoard.add(lblD, "cell 5 1,alignx center");
+        aclBoard.add(lblD, "alignx center");
+
+        JLabel lblE = new JLabel(EXECUTE_LABEL + SPACE);
+        aclBoard.add(lblE, "alignx center");
+
         for (ACLResourceEnum resource : ACLResourceEnum.values()) {
             initialPresentationResource(resource.getMessage(), resource.getOrder() + distance);
         }
 
         add(entityBoard);
         add(aclBoard);
-        
+
         JButton btnSave = new JButton(ControlConfigUtils.getString("default.button.save"));
-//        add(btnSave);
-        
+
         JButton btnCancel = new JButton(ControlConfigUtils.getString("default.button.cancel"));
-//        add(btnCancel);
 
         btnSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -173,9 +175,9 @@ public class ACLPanel extends AbstractView {
             }
         });
         JPanel btnPanel = new JPanel(new MigLayout("wrap 2"));
-        btnPanel.add(btnSave);
-        btnPanel.add(btnCancel);
-        add(btnPanel, "alignx center");
+        btnPanel.add(btnSave, "alignx center");
+        btnPanel.add(btnCancel, "alignx center");
+        add(btnPanel, "span 2, growx");
     }
 
     private void setMatrix(int x, int y, ItemEvent e) {
@@ -194,19 +196,22 @@ public class ACLPanel extends AbstractView {
 
     private void updateMutableAcl(int row, MutableAcl mutableAcl) {
         if (matrix[row][ADMINISTRATION] == 1) {
-            mutableAcl.insertAce(0, BasePermission.ADMINISTRATION, role, true);
+            mutableAcl.insertAce(0, CustomPermission.ADMINISTRATION, role, true);
         }
         if (matrix[row][CREATE] == 1) {
-            mutableAcl.insertAce(0, BasePermission.CREATE, role, true);
+            mutableAcl.insertAce(0, CustomPermission.CREATE, role, true);
         }
         if (matrix[row][READ] == 1) {
-            mutableAcl.insertAce(0, BasePermission.READ, role, true);
+            mutableAcl.insertAce(0, CustomPermission.READ, role, true);
         }
         if (matrix[row][WRITE] == 1) {
-            mutableAcl.insertAce(0, BasePermission.WRITE, role, true);
+            mutableAcl.insertAce(0, CustomPermission.WRITE, role, true);
         }
         if (matrix[row][DELETE] == 1) {
-            mutableAcl.insertAce(0, BasePermission.DELETE, role, true);
+            mutableAcl.insertAce(0, CustomPermission.DELETE, role, true);
+        }
+        if (matrix[row][EXECUTE] == 1) {
+            mutableAcl.insertAce(0, CustomPermission.EXECUTE, role, true);
         }
     }
 
@@ -216,6 +221,7 @@ public class ACLPanel extends AbstractView {
         boolean viewRead = false;
         boolean viewWrite = false;
         boolean viewDelete = false;
+        boolean viewExecute = false;
 
         ObjectIdentity oid = new ObjectIdentityImpl(ACLResourceEnum.class, cellRow - distance);
         MutableAcl mutableAcl;
@@ -231,7 +237,7 @@ public class ACLPanel extends AbstractView {
             Sid[] sids = new Sid[1];
             sids[0] = role;
 
-            permissions[0] = BasePermission.ADMINISTRATION;
+            permissions[0] = CustomPermission.ADMINISTRATION;
             try {
                 viewAdmin = mutableAcl.isGranted(permissions, sids, false);
             } catch (NotFoundException e) {
@@ -240,51 +246,61 @@ public class ACLPanel extends AbstractView {
                 viewAdmin = false;
             }
 
-            permissions[0] = BasePermission.CREATE;
+            permissions[0] = CustomPermission.CREATE;
             try {
                 viewCreate = mutableAcl.isGranted(permissions, sids, false);
             } catch (NotFoundException e) {
                 viewCreate = false;
             } catch (UnloadedSidException e) {
-                viewAdmin = false;
+                viewCreate = false;
             }
 
-            permissions[0] = BasePermission.READ;
+            permissions[0] = CustomPermission.READ;
             try {
                 viewRead = mutableAcl.isGranted(permissions, sids, false);
             } catch (NotFoundException e) {
                 viewRead = false;
             } catch (UnloadedSidException e) {
-                viewAdmin = false;
+                viewRead = false;
             }
 
-            permissions[0] = BasePermission.WRITE;
+            permissions[0] = CustomPermission.WRITE;
             try {
                 viewWrite = mutableAcl.isGranted(permissions, sids, false);
             } catch (NotFoundException e) {
                 viewWrite = false;
             } catch (UnloadedSidException e) {
-                viewAdmin = false;
+                viewWrite = false;
             }
 
-            permissions[0] = BasePermission.DELETE;
+            permissions[0] = CustomPermission.DELETE;
             try {
                 viewDelete = mutableAcl.isGranted(permissions, sids, false);
             } catch (NotFoundException e) {
                 viewDelete = false;
             } catch (UnloadedSidException e) {
-                viewAdmin = false;
+                viewDelete = false;
+            }
+
+            permissions[0] = CustomPermission.EXECUTE;
+            try {
+                viewExecute = mutableAcl.isGranted(permissions, sids, false);
+            } catch (NotFoundException e) {
+                viewExecute = false;
+            } catch (UnloadedSidException e) {
+                viewExecute = false;
             }
         }
-        
-        JLabel lblUser = new JLabel(title);
-        aclBoard.add(lblUser, "cell 0 " + cellRow);
+
+        JLabel lblResource = new JLabel(title);
+        aclBoard.add(lblResource);
 
         JCheckBox chkUserAdmin;
         JCheckBox chkUserCreate;
         JCheckBox chkUserRead;
         JCheckBox chkUserWrite;
         JCheckBox chkUserDelete;
+        JCheckBox chkUserExecute;
 
         if (viewAdmin == true) {
             chkUserAdmin = new JCheckBox("", true);
@@ -317,7 +333,14 @@ public class ACLPanel extends AbstractView {
             chkUserDelete = new JCheckBox();
         }
 
-        aclBoard.add(chkUserAdmin, "cell 1 " + cellRow + ",alignx center");
+        if (viewExecute == true) {
+            chkUserExecute = new JCheckBox("", true);
+            matrix[cellRow - distance][5] = 1;
+        } else {
+            chkUserExecute = new JCheckBox();
+        }
+
+        aclBoard.add(chkUserAdmin, "alignx center");
         chkUserAdmin.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -325,7 +348,7 @@ public class ACLPanel extends AbstractView {
             }
         });
 
-        aclBoard.add(chkUserCreate, "cell 2 " + cellRow + ",alignx center");
+        aclBoard.add(chkUserCreate, "alignx center");
         chkUserCreate.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -333,7 +356,7 @@ public class ACLPanel extends AbstractView {
             }
         });
 
-        aclBoard.add(chkUserRead, "cell 3 " + cellRow + ",alignx center");
+        aclBoard.add(chkUserRead, "alignx center");
         chkUserRead.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -341,7 +364,7 @@ public class ACLPanel extends AbstractView {
             }
         });
 
-        aclBoard.add(chkUserWrite, "cell 4 " + cellRow + ",alignx center");
+        aclBoard.add(chkUserWrite, "alignx center");
         chkUserWrite.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -349,11 +372,19 @@ public class ACLPanel extends AbstractView {
             }
         });
 
-        aclBoard.add(chkUserDelete, "cell 5 " + cellRow + ",alignx center");
+        aclBoard.add(chkUserDelete, "alignx center");
         chkUserDelete.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 setMatrix(cellRow - distance, 4, e);
+            }
+        });
+
+        aclBoard.add(chkUserExecute, "alignx center");
+        chkUserExecute.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                setMatrix(cellRow - distance, 5, e);
             }
         });
     }
@@ -368,7 +399,7 @@ public class ACLPanel extends AbstractView {
     void btnSaveActionPerformed(ActionEvent evt) {
         saveOrUpdateACL();
         saveOrUpdate(entity);
-        //fire event to ListRoleView
+        // fire event to ListRoleView
         boolean isNew = (entity.getId() == null);
         listView.notifyFromDetailView(entity, isNew);
         SwingUtilities.getRoot(this).setVisible(false);
@@ -377,28 +408,29 @@ public class ACLPanel extends AbstractView {
     protected void btnCancelActionPerformed(ActionEvent evt) {
         SwingUtilities.getRoot(this).setVisible(false);
     }
-    
+
     @Transactional
     private void saveOrUpdateACL() {
         String strRole = txtRole.getText();
+        ObjectIdentity oid;
+        MutableAcl mutableAcl;
         for (ACLResourceEnum resource : ACLResourceEnum.values()) {
-            ObjectIdentity uomCateOid = new ObjectIdentityImpl(ACLResourceEnum.class, resource.getOrder());
-            mutableAclService.deleteAcl(uomCateOid, strRole, true);
-            MutableAcl uomCateMutableAcl;
+            oid = new ObjectIdentityImpl(ACLResourceEnum.class, resource.getOrder());
+            mutableAclService.deleteAcl(oid, strRole, true);
             try {
-                uomCateMutableAcl = (MutableAcl) mutableAclService.readAclById(uomCateOid);
+                mutableAcl = (MutableAcl) mutableAclService.readAclById(oid);
             } catch (NotFoundException e) {
-                uomCateMutableAcl = (MutableAcl) mutableAclService.createAcl(uomCateOid);
+                mutableAcl = (MutableAcl) mutableAclService.createAcl(oid);
             }
             role = new PrincipalSid(txtRole.getText());
-            updateMutableAcl(resource.getOrder(), uomCateMutableAcl);
-            mutableAclService.updateAcl(uomCateMutableAcl);
+            updateMutableAcl(resource.getOrder(), mutableAcl);
+            mutableAclService.updateAcl(mutableAcl);
         }
-        
+
     }
 
     public void setListView(AbstractListView<Role> listView) {
         this.listView = listView;
     }
-    
+
 }
