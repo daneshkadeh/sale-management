@@ -1,6 +1,12 @@
 package com.s3s.ssm.context;
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.springframework.stereotype.Service;
+
+import com.s3s.ssm.security.ACLResourceEnum;
+import com.s3s.ssm.security.CustomPermission;
 
 /**
  * This class is not implemented.
@@ -32,5 +38,14 @@ public class SimpleContextProvider implements ContextProvider {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<CustomPermission> getPermissions(ACLResourceEnum aclResource) {
+        // TODO Auto-generated method stub
+        return Collections.EMPTY_SET;
+    }
 
 }
