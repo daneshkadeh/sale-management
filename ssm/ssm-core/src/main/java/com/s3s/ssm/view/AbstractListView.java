@@ -10,6 +10,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import net.miginfocom.swing.MigLayout;
@@ -42,6 +46,7 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jdesktop.swingx.JXTable;
@@ -51,8 +56,18 @@ import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
+import com.lowagie.text.Cell;
+import com.lowagie.text.Row;
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.export.exporter.AbstractExporter;
+import com.s3s.ssm.export.exporter.DefaultExcelExporter;
+import com.s3s.ssm.export.exporter.DefaultPDFExporter;
+import com.s3s.ssm.export.exporter.ExportTypeEnum;
+import com.s3s.ssm.export.exporter.Exporter;
+import com.s3s.ssm.export.exporter.ExporterFactory;
+import com.s3s.ssm.export.exporter.ExporterNotFoundException;
+import com.s3s.ssm.export.exporter.ExportingException;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.security.CustomPermission;
@@ -91,11 +106,13 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     private JXTable tblListEntities;
     private JXTable tblFooter;
+    private AdvanceTableModel mainTableModel;
     private PagingNavigator pagingNavigator;
     // button toolbar
     private JButton btnAdd;
     private JButton btnDelete;
     private JButton btnEdit;
+    private JButton btnExport;
 
     // TODO use this flag temporarily to prevent init the view more than one time. --> Need to use the Proxy object
     // instead.
@@ -112,11 +129,14 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     private Action addAction;
     private Action editAction;
+    private Action exportAction;
 
     private BeanWrapper beanWrapper;
     // the service is used to get access rule
     private Set<CustomPermission> permissionSet;
-
+    //export factory
+    //TODO should get from service
+    ExporterFactory exporterFactory;
     public AbstractListView() {
         this(null, null);
     }
@@ -136,6 +156,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         addAction = new AddAction();
         editAction = new EditAction();
+        exportAction = new ExportAction();
+        
         setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[]2[][]"));
 
         addKeyBindings();
@@ -220,7 +242,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         tblListEntities
                 .addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, HIGHLIGHT_ROW_COLOR, null));
 
-        final AdvanceTableModel mainTableModel = createTableModel();
+        mainTableModel = createTableModel();
         tblListEntities.setModel(mainTableModel);
 
         // Hide the entity column by set width = 0
@@ -359,10 +381,14 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 refreshData();
             }
         });
-
+        
+        btnExport = new JButton(ControlConfigUtils.getString("default.button.export"));
+        btnExport.addActionListener(exportAction);
+        
         buttonToolbar.add(btnEdit);
         buttonToolbar.add(btnDelete);
         buttonToolbar.add(btnAdd);
+        buttonToolbar.add(btnExport);
         buttonToolbar.add(Box.createHorizontalGlue());
         buttonToolbar.add(btnRefresh);
         return buttonToolbar;
@@ -620,6 +646,23 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             showDetailView(entities.get(rowModel));
         }
     }
+    
+    private void performExportAction() {
+        
+            try {
+                FileOutputStream outputStream = new FileOutputStream("C:\\workbook.pdf");
+                DefaultPDFExporter exporterService = new DefaultPDFExporter();
+                exporterService.exportData(outputStream, tblListEntities, mainTableModel);
+                outputStream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (ExportingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+           
+    }
 
     protected void refreshData() {
         entities.removeAll(entities);
@@ -646,6 +689,15 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         @Override
         public void actionPerformed(ActionEvent e) {
             performEditAction();
+        }
+
+    }
+    
+    private class ExportAction extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            performExportAction();
         }
 
     }
