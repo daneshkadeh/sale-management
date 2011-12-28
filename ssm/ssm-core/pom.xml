@@ -57,7 +57,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring</artifactId>
 		</dependency>
-	
+
 		<!-- Spring AOP dependency -->
 		<dependency>
 			<groupId>cglib</groupId>
@@ -181,14 +181,6 @@
 			<artifactId>joda-time</artifactId>
 		</dependency>
 
-
-		<!-- TODO move to parent if JXL still used in the future -->
-		<dependency>
-			<groupId>net.sourceforge.jexcelapi</groupId>
-			<artifactId>jxl</artifactId>
-			<version>2.6.10</version>
-		</dependency>
-
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time-hibernate</artifactId>
@@ -209,6 +201,22 @@
 			<artifactId>ehcache</artifactId>
 			<version>2.5.0</version>
 			<type>pom</type>
+		</dependency>
+		<!-- Export library -->
+		<dependency>
+			<groupId>net.sourceforge.jexcelapi</groupId>
+			<artifactId>jxl</artifactId>
+			<version>2.6.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>2.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext-rtf</artifactId>
+			<version>2.1.5</version>
 		</dependency>
 	</dependencies>
 </project>
