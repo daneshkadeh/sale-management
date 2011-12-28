@@ -7,6 +7,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.component.TreeNodeWithView;
 import com.s3s.ssm.view.component.TreeView;
+import com.s3s.ssm.view.list.finance.ListPaymentTypeView;
 
 /**
  * All views relates to finance activity.
@@ -26,6 +27,8 @@ public class FinanceManagementDomain extends AbstractDomain {
         // Financial management -TODO: not add views
         TreeNodeWithView fMEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Finance.Management")); // "Financial management"
         TreeNodeWithView receiveFMEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Finance.Receivable")); // "Receivable financial management"
+        TreeNodeWithView loaiThanhToan = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.Finance.PaymentType"), new ListPaymentTypeView());
         TreeNodeWithView thuKemToaHangNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Finance.Receivable.PaymentWithInvoice")); // "Thu kem toa hang"
         TreeNodeWithView thuTienHangNode = new TreeNodeWithView(
@@ -43,7 +46,7 @@ public class FinanceManagementDomain extends AbstractDomain {
                 ControlConfigUtils.getString("JTree.Finance.Payable.LoanMoney"));// "Cho vay tien"
         TreeNodeWithView chiPhiKhacNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Finance.Payable.Other")); // "Chi phi khac"
-
+        fMEntry.add(loaiThanhToan);
         fMEntry.add(receiveFMEntry);
         fMEntry.add(payFMEntry);
         receiveFMEntry.add(thuKemToaHangNode);

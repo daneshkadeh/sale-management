@@ -249,13 +249,13 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 pnlEdit.add(dataField);
                 break;
             case FILE_CHOOSER:
-            	String filePath = (String) value;
-            	dataField = new FileChooser(filePath);
-            	pnlEdit.add(lblLabel, "top");
+                String filePath = (String) value;
+                dataField = new FileChooser(filePath);
+                pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
                 break;
             case CHECKBOX:
-                Boolean isSelected = (Boolean)value;
+                Boolean isSelected = value != null ? (Boolean) value : false;
                 dataField = new JCheckBox("", isSelected);
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
