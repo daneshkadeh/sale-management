@@ -20,20 +20,34 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.jdesktop.swingx.JXTable;
+
+import com.s3s.ssm.view.AbstractListView.AdvanceTableModel;
+
 /**
  * @author Le Thanh Hoang
- *
+ * 
  */
 public interface Exporter {
-    
-    void setExportFields(List fields);
-    List getExportFields();
-    void setLabels(Map labels);
-    Map getLabels();
-    void setFormatters(Map formatters);
-    Map getFormatters();
-    void setParameters(Map parameters);
-    Map getParameters();
-    
+
+    void setExportFields(List<String> fields);
+
+    List<String> getExportFields();
+
+    void setLabels(Map<String, String> labels);
+
+    Map<String, String> getLabels();
+
+    void setFormatters(Map<String, String> formatters);
+
+    Map<String, String> getFormatters();
+
+    void setParameters(Map<String, String> parameters);
+
+    Map<String, String> getParameters();
+
     void export(OutputStream outputStream, List data) throws ExportingException;
+
+    void export(OutputStream outputStream, JXTable jxTable, AdvanceTableModel tableModel) throws ExportingException;
+    // void export(OutputStream outputStream, JXTable jxTable, AdvanceTableModel tableModel) throws ExportingException;
 }

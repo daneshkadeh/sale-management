@@ -18,16 +18,14 @@ package com.s3s.ssm.export.exporter;
 
 /**
  * @author Le Thanh Hoang
- *
+ * 
  */
 public enum ExportTypeEnum {
-    PDF (".pdf"), 
-    EXCEL2003(".xls"),
-    EXCEL2007(".xlsx"),
-    CSV(".csv");
-    
-    String ending;
-    ExportTypeEnum(String ending) {
-        this.ending = ending;
+    PDF(".pdf"), EXCEL2003(".xls"), EXCEL2007(".xlsx"), CSV(".csv");
+
+    private String extension;;
+
+    ExportTypeEnum(String extension) {
+        this.extension = extension;
     }
 }

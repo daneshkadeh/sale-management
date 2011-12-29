@@ -17,9 +17,7 @@ import javax.swing.border.LineBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.security.Authentication;
 import org.springframework.security.AuthenticationManager;
 import org.springframework.security.BadCredentialsException;
@@ -28,10 +26,11 @@ import org.springframework.security.providers.UsernamePasswordAuthenticationToke
 
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
 /**
  * 
  * @author Le Thanh Hoang
- *
+ * 
  */
 public class LoginDialog extends JDialog {
     private JTextField tflUsername;
@@ -45,6 +44,7 @@ public class LoginDialog extends JDialog {
     private String username;
     private String password;
     static ApplicationContext auContext;
+
     public LoginDialog(Frame parent) {
         super(parent, ControlConfigUtils.getString("default.Login.title"), true);
         initComponents(parent);
@@ -58,20 +58,20 @@ public class LoginDialog extends JDialog {
         pflPassword = new JPasswordField(20);
         btnLogin = new JButton(ControlConfigUtils.getString("default.Login.button.ok"));
         btnCancel = new JButton(ControlConfigUtils.getString("default.Login.button.cancel"));
-        
+
         panel.add(lblUsername);
         panel.add(tflUsername);
         panel.add(lblPassword);
         panel.add(pflPassword);
         panel.setBorder(new LineBorder(Color.GRAY));
-        //add action
+        // add action
         btnLogin.addActionListener(new ActionListener() {
-            
+
             public void actionPerformed(ActionEvent event) {
                 btnOKActionPerformed(event);
             }
         });
-        
+
         btnCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 btnCancelActionPerformed(event);
@@ -114,16 +114,11 @@ public class LoginDialog extends JDialog {
             SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
             isLogin = true;
         } catch (BadCredentialsException e) {
-            JOptionPane.showMessageDialog(this, ControlConfigUtils.getString("default.login.invalid.message"), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ControlConfigUtils.getString("default.login.invalid.message"), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    private static ApplicationContext getAuContext() {
-        if(auContext == null) {
-            return new ClassPathXmlApplicationContext("security/auth-context.xml");
-        }
-        return auContext;
-    }
+
     protected void btnOKActionPerformed(ActionEvent evt) {
         username = tflUsername.getText();
         password = pflPassword.getText();
@@ -132,6 +127,7 @@ public class LoginDialog extends JDialog {
             dispose();
         }
     }
+
     protected void btnCancelActionPerformed(ActionEvent evt) {
         isLogin = false;
         dispose();
