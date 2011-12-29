@@ -28,18 +28,19 @@ import com.s3s.ssm.view.AbstractListView.AdvanceTableModel;
 
 /**
  * @author Le Thanh Hoang
- *
+ * 
  */
 public abstract class AbstractExporter implements Exporter {
-    List exportFields = new ArrayList<>();
-    Map labels = new HashMap<>();
-    Map formatters = new HashMap<>();
-    Map parameters = new HashMap<>();
+    protected List<String> exportFields = new ArrayList<String>();
+    protected Map<String, String> labels = new HashMap<String, String>();
+    protected Map<String, String> formatters = new HashMap<String, String>();
+    protected Map<String, String> parameters = new HashMap<String, String>();
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setExportFields(List fields) {
+    public void setExportFields(List<String> fields) {
         exportFields = fields;
     }
 
@@ -47,8 +48,7 @@ public abstract class AbstractExporter implements Exporter {
      * {@inheritDoc}
      */
     @Override
-    public List getExportFields() {
-        // TODO Auto-generated method stub
+    public List<String> getExportFields() {
         return exportFields;
     }
 
@@ -56,7 +56,7 @@ public abstract class AbstractExporter implements Exporter {
      * {@inheritDoc}
      */
     @Override
-    public void setLabels(Map labels) {
+    public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
@@ -64,7 +64,7 @@ public abstract class AbstractExporter implements Exporter {
      * {@inheritDoc}
      */
     @Override
-    public Map getLabels() {
+    public Map<String, String> getLabels() {
         return labels;
     }
 
@@ -72,7 +72,7 @@ public abstract class AbstractExporter implements Exporter {
      * {@inheritDoc}
      */
     @Override
-    public void setFormatters(Map formatters) {
+    public void setFormatters(Map<String, String> formatters) {
         this.formatters = formatters;
 
     }
@@ -81,7 +81,7 @@ public abstract class AbstractExporter implements Exporter {
      * {@inheritDoc}
      */
     @Override
-    public Map getFormatters() {
+    public Map<String, String> getFormatters() {
         return formatters;
     }
 
@@ -89,7 +89,7 @@ public abstract class AbstractExporter implements Exporter {
      * {@inheritDoc}
      */
     @Override
-    public void setParameters(Map parameters) {
+    public void setParameters(Map<String, String> parameters) {
         this.parameters = parameters;
 
     }
@@ -98,7 +98,7 @@ public abstract class AbstractExporter implements Exporter {
      * {@inheritDoc}
      */
     @Override
-    public Map getParameters() {
+    public Map<String, String> getParameters() {
         // TODO Auto-generated method stub
         return parameters;
     }
@@ -107,16 +107,21 @@ public abstract class AbstractExporter implements Exporter {
      * {@inheritDoc}
      */
     @Override
-    public void export(OutputStream outputStream, List data) throws ExportingException {
-        if(exportFields.size() > 0){
-//            exportData(outputStream, data, exportFields);
-        }
-        else {
-            //TODO implement class ExporterUtil
-            //exportData(outputStream, data, ExporterUtil.getFields(data.get(0)));
-        }
-
+    public void export(OutputStream outputStream, JXTable jxTable, AdvanceTableModel tableModel)
+            throws ExportingException {
+        exportData(outputStream, jxTable, tableModel);
     }
-//    protected abstract void exportData(OutputStream outputStream,List data,List exportFields);
-    protected abstract void exportData(OutputStream outputStream, JXTable jxTable, AdvanceTableModel tableModel) throws ExportingException;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void export(OutputStream outputStream, List data) throws ExportingException {
+        exportData(outputStream, data);
+    }
+
+    protected abstract void exportData(OutputStream outputStream, JXTable jxTable, AdvanceTableModel tableModel)
+            throws ExportingException;
+
+    protected abstract void exportData(OutputStream outputStream, List data) throws ExportingException;
 }

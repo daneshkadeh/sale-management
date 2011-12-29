@@ -1,6 +1,7 @@
 package com.s3s.ssm.view;
 
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.Event;
@@ -14,8 +15,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
@@ -35,7 +38,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import net.miginfocom.swing.MigLayout;
@@ -46,7 +48,6 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jdesktop.swingx.JXTable;
@@ -56,18 +57,14 @@ import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
-import com.lowagie.text.Cell;
-import com.lowagie.text.Row;
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
-import com.s3s.ssm.export.exporter.AbstractExporter;
-import com.s3s.ssm.export.exporter.DefaultExcelExporter;
-import com.s3s.ssm.export.exporter.DefaultPDFExporter;
-import com.s3s.ssm.export.exporter.ExportTypeEnum;
+import com.s3s.ssm.export.exporter.DefaultExporterFactory;
 import com.s3s.ssm.export.exporter.Exporter;
 import com.s3s.ssm.export.exporter.ExporterFactory;
 import com.s3s.ssm.export.exporter.ExporterNotFoundException;
 import com.s3s.ssm.export.exporter.ExportingException;
+import com.s3s.ssm.export.view.ExportDialog;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.security.CustomPermission;
@@ -102,6 +99,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private static final String ADD_ACTION_KEY = "addAction";
     private static final Color HIGHLIGHT_ROW_COLOR = new Color(97, 111, 231);
     private static final int DEFAULT_PAGE_SIZE = 10;
+    private static final String CHOOSER_DIALOG_TITLE = "Choose Directory";
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
     private JXTable tblListEntities;
@@ -134,9 +132,10 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private BeanWrapper beanWrapper;
     // the service is used to get access rule
     private Set<CustomPermission> permissionSet;
-    //export factory
-    //TODO should get from service
-    ExporterFactory exporterFactory;
+    // export factory
+    // TODO should get from service
+    ExporterFactory exporterFactory = new DefaultExporterFactory();
+
     public AbstractListView() {
         this(null, null);
     }
@@ -157,7 +156,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         addAction = new AddAction();
         editAction = new EditAction();
         exportAction = new ExportAction();
-        
+
         setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[]2[][]"));
 
         addKeyBindings();
@@ -256,6 +255,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         tblListEntities.setColumnControlVisible(true);
 
         // Show edit view when double on a such row.
+        // check permissions before showing detail view
         if (permissionSet.contains(CustomPermission.ADMINISTRATION) || permissionSet.contains(CustomPermission.READ)) {
             tblListEntities.addMouseListener(new MouseAdapter() {
                 @Override
@@ -381,10 +381,10 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 refreshData();
             }
         });
-        
+
         btnExport = new JButton(ControlConfigUtils.getString("default.button.export"));
         btnExport.addActionListener(exportAction);
-        
+
         buttonToolbar.add(btnEdit);
         buttonToolbar.add(btnDelete);
         buttonToolbar.add(btnAdd);
@@ -646,22 +646,57 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             showDetailView(entities.get(rowModel));
         }
     }
-    
+
     private void performExportAction() {
-        
-            try {
-                FileOutputStream outputStream = new FileOutputStream("C:\\workbook.pdf");
-                DefaultPDFExporter exporterService = new DefaultPDFExporter();
-                exporterService.exportData(outputStream, tblListEntities, mainTableModel);
+        try {
+            Window parentContainer = (Window) SwingUtilities.getRoot(AbstractListView.this);
+
+            ExportDialog exportDialog = new ExportDialog(parentContainer, Dialog.ModalityType.APPLICATION_MODAL);
+            exportDialog.setVisible(true);
+            if (exportDialog.APPROVE_OPTION == 1) {
+                FileOutputStream outputStream = new FileOutputStream(exportDialog.getSelectedFile());
+                // get field List
+                List<String> fieldList = new ArrayList<String>();
+                Map<String, String> labels = new HashMap<String, String>();
+                for (DetailAttribute detailAtribute : listDataModel) {
+                    String fieldName = detailAtribute.getName();
+                    fieldList.add(fieldName);
+                    labels.put(fieldName,
+                            ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "." + fieldName));
+                }
+                // get export list
+                List<T> exportData = null;
+                switch (exportDialog.getPageRange()) {
+                case ExportDialog.CUR_PAGE:
+                    exportData = entities;
+                    break;
+                case ExportDialog.ALL_PAGE:
+                    exportData = getDaoHelper().getDao(getEntityClass()).findAll();
+                    break;
+                case ExportDialog.RANGE_PAGE:
+                    // TODO get data depend on page range
+                    exportData = entities;
+                    break;
+                default:
+                    break;
+                }
+                Exporter exporter = exporterFactory.createExporter(exportDialog.getExportType(), fieldList, labels,
+                        null, null);
+                exporter.export(outputStream, exportData);
                 outputStream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (ExportingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-           
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ExportingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ExporterNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
     protected void refreshData() {
@@ -692,8 +727,9 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         }
 
     }
-    
+
     private class ExportAction extends AbstractAction {
+        private static final long serialVersionUID = 3365790306413388379L;
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -740,4 +776,5 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             }
         }
     }
+
 }
