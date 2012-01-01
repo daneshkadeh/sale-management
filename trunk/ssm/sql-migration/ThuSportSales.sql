@@ -166,9 +166,9 @@ INSERT INTO `au_role` (`id`, `code`, `name`, `isEnable`, `usr_log_i`, `dte_log_i
 --
 -- Table structure for table `au_user`
 --
-
 CREATE TABLE `au_user` (
   `id` int(11) NOT NULL auto_increment,
+  `code` varchar(32) collate utf8_bin NOT NULL,
   `username` varchar(32) collate utf8_bin NOT NULL,
   `password` varchar(128) collate utf8_bin default NULL,
   `isAccountNonExpired` tinyint(1) NOT NULL default '1',
@@ -187,10 +187,10 @@ CREATE TABLE `au_user` (
 -- Dumping data for table `au_user`
 --
 
-INSERT INTO `au_user` (`id`, `username`, `password`, `isAccountNonExpired`, `isAccountNonLocked`, `isCredentialsNonExpired`, `isEnabled`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(1, 'admin', 'admin', 1, 1, 1, 1, 'DEFAULT_USER', '2011-12-12 22:04:44', 'admin', '2011-12-26 15:17:54', 12),
-(2, 'user1', 'user1', 1, 1, 1, 0, 'DEFAULT_USER', '2011-12-12 22:22:55', 'DEFAULT_USER', '2011-12-24 20:06:48', 1),
-(3, 'user2', 'user2', 1, 1, 1, 1, 'admin', '2011-12-26 15:18:17', 'admin', '2011-12-26 15:18:17', 0);
+INSERT INTO `au_user` (`id`, `code`, `username`, `password`, `isAccountNonExpired`, `isAccountNonLocked`, `isCredentialsNonExpired`, `isEnabled`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
+(1, '1', 'admin', 'admin', 1, 1, 1, 1, 'DEFAULT_USER', '2011-12-12 22:04:44', 'admin', '2011-12-26 15:17:54', 12),
+(2, '2', 'user1', 'user1', 1, 1, 1, 0, 'DEFAULT_USER', '2011-12-12 22:22:55', 'DEFAULT_USER', '2011-12-24 20:06:48', 1),
+(3, '3', 'user2', 'user2', 1, 1, 1, 1, 'admin', '2011-12-26 15:18:17', 'admin', '2011-12-26 15:18:17', 0);
 
 -- --------------------------------------------------------
 
