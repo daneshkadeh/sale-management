@@ -48,6 +48,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
 import com.s3s.ssm.view.component.ImageChooser;
 import com.s3s.ssm.view.component.MultiSelectionBox;
@@ -260,6 +261,11 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
                 break;
+            case ENTITY_CHOOSER:
+                dataField = new EntityChooser<>(referenceData.getValues(), value);
+                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(dataField);
+                break;
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
@@ -370,6 +376,10 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 case FILE_CHOOSER:
                     FileChooser fileField = (FileChooser) component;
                     beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(fileField.getFilePath()));
+                    break;
+                case ENTITY_CHOOSER:
+                    EntityChooser entityField = (EntityChooser) component;
+                    beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(entityField.getSelectedEntity()));
                     break;
                 default:
                     throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());

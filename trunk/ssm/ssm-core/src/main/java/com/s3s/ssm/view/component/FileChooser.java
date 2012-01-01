@@ -18,6 +18,7 @@ import net.miginfocom.swing.MigLayout;
  * @author Le Thanh Hoang
  */
 public class FileChooser extends JPanel {
+    private static final long serialVersionUID = 224298802918909546L;
     private static final String CHOOSE_FILE_TXT = "...";
     private static final String CHOOSER_DIALOG_TITLE = "Choose Directory";
     private final static int DEFAULT_TEXTFIELD_COLUMN = 20;
