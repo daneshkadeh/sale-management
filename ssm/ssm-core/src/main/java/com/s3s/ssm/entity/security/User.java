@@ -2,10 +2,7 @@ package com.s3s.ssm.entity.security;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,19 +11,17 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.userdetails.UserDetails;
 
-import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
 @Table(name = "au_user")
-public class User extends AbstractIdOLObject implements Serializable, UserDetails {
+public class User extends AbstractCodeOLObject implements Serializable, UserDetails {
     private static final long serialVersionUID = 1L;
 
     private String username;
@@ -126,7 +121,8 @@ public class User extends AbstractIdOLObject implements Serializable, UserDetail
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "au_user_role", joinColumns = { @JoinColumn(name = "id_user") }, inverseJoinColumns = { @JoinColumn(name = "id_role") })
-    public List<Role> getRoles() {
+    public
+            List<Role> getRoles() {
         return roles;
     }
 
@@ -138,6 +134,12 @@ public class User extends AbstractIdOLObject implements Serializable, UserDetail
     @Override
     public GrantedAuthority[] getAuthorities() {
         return (Role[]) roles.toArray(new Role[roles.size()]);
+    }
+
+    @Transient
+    @Override
+    public String toString() {
+        return username;
     }
 
 }

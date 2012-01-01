@@ -216,6 +216,38 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     /**
+     * Load the data from a page to another page
+     * 
+     * @param firstPage
+     *            the first page
+     * @param lastPage
+     *            the last page
+     * 
+     * @return all data from first page to last page
+     */
+    protected List<T> loadData(int firstPage, int lastPage) {
+        if (!isInitialized || (firstPage > lastPage)) {
+            return new ArrayList<T>();
+        }
+        int firstIndex = (firstPage - 1) * getPageSize();
+        int recordTotal = (lastPage - firstPage) * getPageSize();
+
+        // Load necessary properties if they are lazing.
+        DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
+        for (DetailAttribute attribute : listDataModel) {
+            String pathName = attribute.getName();
+            if (pathName.contains(".")) {
+                // Not fetching the ending properties => remove it from the pathName
+                String[] paths = StringUtils.split(pathName, '.');
+                paths = (String[]) ArrayUtils.remove(paths, paths.length - 1);
+                dc.setFetchMode(StringUtils.join(paths), FetchMode.JOIN);
+            }
+        }
+
+        return getDaoHelper().getDao(getEntityClass()).findByCriteria(dc, firstIndex, recordTotal);
+    }
+
+    /**
      * Return the number of rows of each pages. It should be overrided if want change the page size.
      * 
      * @return the number rows of a page.
@@ -674,8 +706,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     exportData = getDaoHelper().getDao(getEntityClass()).findAll();
                     break;
                 case ExportDialog.RANGE_PAGE:
-                    // TODO get data depend on page range
-                    exportData = entities;
+                    exportData = loadData(ExportDialog.FIRST_PAGE, ExportDialog.LAST_PAGE);
                     break;
                 default:
                     break;
