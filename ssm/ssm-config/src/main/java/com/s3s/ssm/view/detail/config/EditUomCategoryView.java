@@ -15,8 +15,6 @@ public class EditUomCategoryView extends AbstractDetailView<UomCategory> {
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, UomCategory entity) {
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
-
+        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).setMandatory(true);
     }
-
 }

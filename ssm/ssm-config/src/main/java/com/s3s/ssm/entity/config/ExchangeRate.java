@@ -9,44 +9,43 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
 @Table(name = "s_exchange_rate")
 public class ExchangeRate extends AbstractCodeOLObject {
-	private DateTime updateDate = new DateTime();    //default is current date
-	private SCurrency currency;
-	private Integer rate;
-	
-	@Column(name = "update_date", nullable = false)
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
-	public DateTime getUpdateDate() {
-		return updateDate;
-	}
-	public void setUpdateDate(DateTime updateDate) {
-		this.updateDate = updateDate;
-	}
+    private static final long serialVersionUID = -9188655499937108343L;
+    private Date updateDate = new Date(); // default is current date
+    private SCurrency currency;
+    private Integer rate;
 
-	@ManyToOne
+    @Column(name = "update_date", nullable = false)
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    @ManyToOne
     @JoinColumn(name = "currency_id", nullable = false)
-	public SCurrency getCurrency() {
-		return currency;
-	}
+    public SCurrency getCurrency() {
+        return currency;
+    }
 
-	public void setCurrency(SCurrency currency) {
-		this.currency = currency;
-	}
-	@Column(name = "rate", nullable = false)
+    public void setCurrency(SCurrency currency) {
+        this.currency = currency;
+    }
+
+    @Column(name = "rate", nullable = false)
     @NotNull
-	public Integer getRate() {
-		return rate;
-	}
+    public Integer getRate() {
+        return rate;
+    }
 
-	public void setRate(Integer rate) {
-		this.rate = rate;
-	}
-	
+    public void setRate(Integer rate) {
+        this.rate = rate;
+    }
+
 }
