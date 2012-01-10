@@ -12,7 +12,6 @@ import javax.swing.SwingUtilities;
 import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.security.CustomPermission;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.AbstractDetailView;
 import com.s3s.ssm.view.AbstractListView;
@@ -44,7 +43,6 @@ public class ListRoleView extends AbstractListView<Role> {
         Window parentContainer = (Window) SwingUtilities.getRoot(this);
         JDialog dialog = new JDialog(parentContainer);
         dialog.setContentPane(scrollPane);
-        dialog.setContentPane(scrollPane);
         dialog.setTitle(ControlConfigUtils.getString("label.Role.view.edit.title"));
         Dimension preferredSize = aclPanel.getPreferredSize();
         Dimension dialogSize = new Dimension(preferredSize.width + 100, preferredSize.height + 100);
@@ -53,7 +51,5 @@ public class ListRoleView extends AbstractListView<Role> {
         dialog.setModalityType(ModalityType.APPLICATION_MODAL);
         dialog.setVisible(true);
     }
-    
-    
 
 }

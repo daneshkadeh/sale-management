@@ -5,34 +5,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.Iterator;
-
-import net.miginfocom.swing.MigLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import net.miginfocom.swing.MigLayout;
+
 import org.springframework.security.acls.MutableAcl;
-import org.springframework.security.acls.MutableAclService;
 import org.springframework.security.acls.NotFoundException;
 import org.springframework.security.acls.Permission;
 import org.springframework.security.acls.UnloadedSidException;
-import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.objectidentity.ObjectIdentity;
 import org.springframework.security.acls.objectidentity.ObjectIdentityImpl;
 import org.springframework.security.acls.sid.PrincipalSid;
 import org.springframework.security.acls.sid.Sid;
-
 import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.security.Role;
@@ -134,7 +127,7 @@ public class ACLPanel extends AbstractView {
         // set title for authorities
         JLabel lblEmpty = new JLabel();
         aclBoard.add(lblEmpty, "alignx center");
-        
+
         JLabel lblA = new JLabel(ADMIN_LABLE + SPACE);
         aclBoard.add(lblA, "alignx center");
 
@@ -154,7 +147,7 @@ public class ACLPanel extends AbstractView {
         aclBoard.add(lblE, "alignx center");
 
         for (ACLResourceEnum resource : ACLResourceEnum.values()) {
-            initialPresentationResource(resource.getMessage(), resource.getOrder() + distance);
+            initialPresentationResource(resource.getLabel(), resource.getOrder() + distance);
         }
 
         add(entityBoard);
