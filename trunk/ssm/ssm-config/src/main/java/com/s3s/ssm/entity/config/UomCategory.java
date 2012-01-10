@@ -36,4 +36,9 @@ public class UomCategory extends AbstractCodeOLObject {
         this.parentUomCategory = parentUomCategory;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }
