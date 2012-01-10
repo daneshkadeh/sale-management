@@ -86,7 +86,7 @@ public class SimpleContextProvider implements ContextProvider {
         User currUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Role> roleList = currUser.getRoles();
         for (Role role : roleList) {
-            //TODO Hoang must customize the code section below
+            // TODO Hoang must customize the code section below
             sids[0] = new PrincipalSid(role.getName());
             permissions[0] = CustomPermission.ADMINISTRATION;
             try {
@@ -103,56 +103,56 @@ public class SimpleContextProvider implements ContextProvider {
                 if (mutableAcl.isGranted(permissions, sids, false) == true) {
                     cusPermissionSet.add(CustomPermission.CREATE);
                 }
-            }catch (NotFoundException e) {
+            } catch (NotFoundException e) {
                 logger.info(e);
             } catch (UnloadedSidException e) {
                 logger.info(e);
             }
-            
+
             permissions[0] = CustomPermission.READ;
             try {
                 if (mutableAcl.isGranted(permissions, sids, false) == true) {
                     cusPermissionSet.add(CustomPermission.READ);
                 }
-            }catch (NotFoundException e) {
+            } catch (NotFoundException e) {
                 logger.info(e);
             } catch (UnloadedSidException e) {
                 logger.info(e);
             }
-            
+
             permissions[0] = CustomPermission.WRITE;
             try {
                 if (mutableAcl.isGranted(permissions, sids, false) == true) {
                     cusPermissionSet.add(CustomPermission.WRITE);
                 }
-            }catch (NotFoundException e) {
+            } catch (NotFoundException e) {
                 logger.info(e);
             } catch (UnloadedSidException e) {
                 logger.info(e);
             }
-            
+
             permissions[0] = CustomPermission.DELETE;
-            try{
+            try {
                 if (mutableAcl.isGranted(permissions, sids, false) == true) {
                     cusPermissionSet.add(CustomPermission.DELETE);
                 }
-            }catch (NotFoundException e) {
+            } catch (NotFoundException e) {
                 logger.info(e);
             } catch (UnloadedSidException e) {
                 logger.info(e);
             }
-            
+
             permissions[0] = CustomPermission.EXECUTE;
             try {
                 if (mutableAcl.isGranted(permissions, sids, false) == true) {
                     cusPermissionSet.add(CustomPermission.EXECUTE);
                 }
-            }catch (NotFoundException e) {
+            } catch (NotFoundException e) {
                 logger.info(e);
             } catch (UnloadedSidException e) {
                 logger.info(e);
             }
-            
+
         }
         return cusPermissionSet;
     }

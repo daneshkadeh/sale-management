@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.print.PrinterException;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -111,6 +112,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private JButton btnDelete;
     private JButton btnEdit;
     private JButton btnExport;
+    private JButton btnPrint;
 
     // TODO use this flag temporarily to prevent init the view more than one time. --> Need to use the Proxy object
     // instead.
@@ -128,6 +130,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private Action addAction;
     private Action editAction;
     private Action exportAction;
+    private Action printAction;
 
     private BeanWrapper beanWrapper;
     // the service is used to get access rule
@@ -141,7 +144,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     private Set<CustomPermission> getPermissionOfCurrentUser() {
-        ACLResourceEnum aclResource = getAClResource();
+        ACLResourceEnum aclResource = registerACLResource();
         // get permissions of current user
         return ConfigProvider.getInstance().getContextProvider().getPermissions(aclResource);
     }
@@ -156,6 +159,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         addAction = new AddAction();
         editAction = new EditAction();
         exportAction = new ExportAction();
+        printAction = new PrintAction();
 
         setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[]2[][]"));
 
@@ -417,10 +421,14 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         btnExport = new JButton(ControlConfigUtils.getString("default.button.export"));
         btnExport.addActionListener(exportAction);
 
+        btnPrint = new JButton(ControlConfigUtils.getString("default.button.print"));
+        btnPrint.addActionListener(printAction);
+
         buttonToolbar.add(btnEdit);
         buttonToolbar.add(btnDelete);
         buttonToolbar.add(btnAdd);
         buttonToolbar.add(btnExport);
+        buttonToolbar.add(btnPrint);
         buttonToolbar.add(Box.createHorizontalGlue());
         buttonToolbar.add(btnRefresh);
         return buttonToolbar;
@@ -730,6 +738,15 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     }
 
+    private void performPrintAction() {
+        try {
+            tblListEntities.print();
+        } catch (PrinterException e) {
+            logger.error(e.getMessage());
+            JOptionPane.showMessageDialog(this, "Having error when printing");
+        }
+    }
+
     protected void refreshData() {
         entities.removeAll(entities);
         entities.addAll(loadData(pagingNavigator.getCurrentPage()));
@@ -769,6 +786,16 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     }
 
+    private class PrintAction extends AbstractAction {
+        private static final long serialVersionUID = 3365790306413388379L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            performPrintAction();
+        }
+
+    }
+
     @Override
     public void doPageChanged(ChangeEvent e) {
         PagingNavigator pagingNavigator = (PagingNavigator) e.getSource();
@@ -786,8 +813,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     // TODO Hoang this method must implement under subclass
-    protected ACLResourceEnum getAClResource() {
-        return ACLResourceEnum.UOM_CATEGORY;
+    protected ACLResourceEnum registerACLResource() {
+        return ACLResourceEnum.BASIC_INFORMATION;
     }
 
     public Set<CustomPermission> getPermissionSet() {
