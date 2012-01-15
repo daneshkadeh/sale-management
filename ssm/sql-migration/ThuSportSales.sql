@@ -1347,13 +1347,17 @@ CREATE TABLE IF NOT EXISTS `s_currency` (
 
 CREATE TABLE IF NOT EXISTS `s_operator` (
   `id` int(11) NOT NULL auto_increment,
-  `login` varchar(32) collate utf8_bin NOT NULL default '',
-  `password` varchar(32) collate utf8_bin NOT NULL default '',
+  `code` varchar(32) collate utf8_bin NOT NULL,
+  `username` varchar(32) collate utf8_bin NOT NULL,
+  `password` varchar(128) collate utf8_bin default NULL,
+  `isAccountNonExpired` tinyint(1) NOT NULL default '1',
+  `isAccountNonLocked` tinyint(1) NOT NULL default '1',
+  `isCredentialsNonExpired` tinyint(1) NOT NULL default '1',
+  `isEnabled` tinyint(1) NOT NULL default '1',
   `full_name` varchar(256) collate utf8_bin NOT NULL default '',
   `email` varchar(64) collate utf8_bin,
   `phone` varchar(32) collate utf8_bin,
   `address` varchar(256) collate utf8_bin,
-  `active` int(1) NOT NULL,
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
@@ -1361,4 +1365,4 @@ CREATE TABLE IF NOT EXISTS `s_operator` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
-CREATE UNIQUE INDEX ui_login ON s_operator(login);
+CREATE UNIQUE INDEX ui_login ON s_operator(username);
