@@ -499,6 +499,7 @@ CREATE TABLE `s_manufacturer` (
   `id` int(11) NOT NULL auto_increment,
   `code` varchar(32) NOT NULL,
   `name` varchar(128) NOT NULL collate utf8_bin,
+  `symbol_id` int(11),
   `usr_log_i` varchar(32) NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) NOT NULL,
