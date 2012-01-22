@@ -14,6 +14,7 @@ import com.s3s.ssm.view.list.config.ListExchangeRateView;
 import com.s3s.ssm.view.list.config.ListUnitOfMeasureView;
 import com.s3s.ssm.view.list.config.ListUomCategoryView;
 import com.s3s.ssm.view.list.contact.ListSupplierView;
+import com.s3s.ssm.view.list.operator.ListStallView;
 import com.s3s.ssm.view.list.param.ListItemView;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
 import com.s3s.ssm.view.list.param.ListProductTypeView;
@@ -40,15 +41,19 @@ public class SystemManagementDomain extends AbstractDomain {
         // User management
         TreeNodeWithView userManagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.UserManagement"));
-        TreeNodeWithView userNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.UserManagement.User"), new ListUserView());
+        TreeNodeWithView userNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.UserManagement.User"),
+                new ListUserView());
         TreeNodeWithView profilesNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.UserManagement.Profiles"), new ListRoleView());
         TreeNodeWithView exceptionPrivilegeNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.UserManagement.ExceptionPrivilege"));
+        TreeNodeWithView operatorNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.UserManagement.Stall"), new ListStallView());
         systemEntry.add(userManagementEntry);
         userManagementEntry.add(userNode);
         userManagementEntry.add(profilesNode);
         userManagementEntry.add(exceptionPrivilegeNode);
+        userManagementEntry.add(operatorNode);
 
         // Manufacturer management
         TreeNodeWithView mfManagementEntry = new TreeNodeWithView(
@@ -76,9 +81,9 @@ public class SystemManagementDomain extends AbstractDomain {
 
         TreeNodeWithView itemNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Item"),
                 new ListItemView());
-        //Basic Information Management
-        TreeNodeWithView basicInformationEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.BasicInformation"),
-                new ListBasicInformationView());
+        // Basic Information Management
+        TreeNodeWithView basicInformationEntry = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.System.BasicInformation"), new ListBasicInformationView());
         systemEntry.add(basicInformationEntry);
         // TODO: ListTaxGroupView
         TreeNodeWithView taxGroupNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.TaxGroup"));
@@ -103,7 +108,8 @@ public class SystemManagementDomain extends AbstractDomain {
                 ControlConfigUtils.getString("JTree.System.CurrencyManagement.Currencies"), new ListCurrencyView());
 
         TreeNodeWithView exchangeRateNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.System.CurrencyManagement.ExchangeRate"), new ListExchangeRateView());
+                ControlConfigUtils.getString("JTree.System.CurrencyManagement.ExchangeRate"),
+                new ListExchangeRateView());
         systemEntry.add(currencyManagementEntry);
         currencyManagementEntry.add(currenciesNode);
         currencyManagementEntry.add(exchangeRateNode);

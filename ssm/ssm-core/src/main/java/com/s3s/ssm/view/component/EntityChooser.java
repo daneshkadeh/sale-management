@@ -17,9 +17,9 @@
 package com.s3s.ssm.view.component;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
-import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,12 +27,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -47,9 +47,6 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-
-import com.s3s.ssm.entity.security.Role;
-import com.s3s.ssm.util.ConfigProvider;
 
 /**
  * Entity chooser component.
@@ -66,7 +63,6 @@ public class EntityChooser<T> extends JPanel {
     private JButton chooseBtn;
     private List<T> entityList;
     private T entity;
-
     private BeanWrapper beanWrapper;
 
     public EntityChooser() {
@@ -110,18 +106,10 @@ public class EntityChooser<T> extends JPanel {
         add(chooseBtn);
     }
 
-    public static void main(String[] args) {
-        List<Role> roleList = ConfigProvider.getInstance().getDaoHelper().getDao(Role.class).findAll();
-        Frame frame = new JFrame("Sales Management");
-        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-        // login
-        JDialog jDialog = new JDialog(frame);
-        jDialog.setContentPane(new EntityChooser<>(roleList));
-        jDialog.setVisible(true);
-    }
-
     private void performChooseAction(ActionEvent e) {
         EntityDialog<T> entityDialog = new EntityDialog<T>(null, Dialog.ModalityType.APPLICATION_MODAL, entityList);
+        entityDialog.setLocationRelativeTo(SwingUtilities.getRootPane(EntityChooser.this)); // Display the dialog in the
+                                                                                            // center.
         entityDialog.setVisible(true);
         if (entityDialog.isPressedOK() == 1) {
             entity = entityDialog.getSelectedEntity();
@@ -219,6 +207,7 @@ public class EntityChooser<T> extends JPanel {
             JList<T> jList = new JList<T>(listModel);
             jList.setCellRenderer(renderer);
             jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            jList.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             // close the dialog when double click to it.
             jList.addMouseListener(new MouseAdapter() {
                 @Override

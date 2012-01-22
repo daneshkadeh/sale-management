@@ -6,7 +6,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
@@ -28,7 +27,6 @@ public class UnitOfMeasure extends AbstractCodeOLObject {
     }
 
     @Column(name = "uom_name", nullable = false, length = 128)
-    @NotNull
     public String getName() {
         return name;
     }
@@ -38,7 +36,6 @@ public class UnitOfMeasure extends AbstractCodeOLObject {
     }
 
     @Column(name = "is_base_measure", nullable = false)
-    @NotNull
     public Boolean getIsBaseMeasure() {
         return isBaseMeasure;
     }

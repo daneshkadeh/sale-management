@@ -3,6 +3,8 @@ package com.s3s.ssm.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +54,8 @@ import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
 import com.s3s.ssm.view.component.ImageChooser;
 import com.s3s.ssm.view.component.MultiSelectionBox;
+import com.s3s.ssm.view.component.SaleTargetComp;
+import com.s3s.ssm.view.component.SaleTargetModel;
 
 /**
  * @author Pham Cong Bang
@@ -224,7 +228,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 ((JComboBox<?>) dataField).setSelectedItem(value);
                 break;
             case MULTI_SELECT_BOX:
-                List desValues = (List) value;
+                List desValues = value != null ? (List) value : Collections.EMPTY_LIST;
                 List scrValues = new ArrayList<>(ListUtils.removeAll(referenceData.getValues(), desValues));
                 dataField = new MultiSelectionBox<>(scrValues, desValues, referenceData.getRenderer());
                 pnlEdit.add(lblLabel, "top");
@@ -263,6 +267,29 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 break;
             case ENTITY_CHOOSER:
                 dataField = new EntityChooser<>(referenceData.getValues(), value);
+                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(dataField);
+                break;
+            case SALE_TARGET:
+                Calendar now = Calendar.getInstance();
+                Integer curyear = now.get(Calendar.YEAR);
+                List<SaleTargetModel> saleTargetList = value != null ? (List<SaleTargetModel>) value
+                        : Collections.EMPTY_LIST;
+                if (saleTargetList.size() == 0) {
+                    saleTargetList = referenceData.getValues();
+                }
+                // add sale target of current year
+                boolean hasCurYear = false;
+                for (SaleTargetModel saleTargetModel : saleTargetList) {
+                    if (saleTargetModel.getYear().equals(curyear)) {
+                        hasCurYear = true;
+                        break;
+                    }
+                }
+                if (hasCurYear == false) {
+                    saleTargetList.addAll(referenceData.getValues());
+                }
+                dataField = new SaleTargetComp(curyear, saleTargetList);
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
                 break;
@@ -380,6 +407,11 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 case ENTITY_CHOOSER:
                     EntityChooser entityField = (EntityChooser) component;
                     beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(entityField.getSelectedEntity()));
+                    break;
+                case SALE_TARGET:
+                    SaleTargetComp saleTargetField = (SaleTargetComp) component;
+                    beanWrapper.setPropertyValue(attribute.getName(),
+                            paramClass.cast(saleTargetField.getSaleTargetList()));
                     break;
                 default:
                     throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());
