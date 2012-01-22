@@ -5,7 +5,7 @@ import java.util.List;
 
 public class DetailDataModel {
     public enum FieldTypeEnum {
-        TEXTBOX, RICH_TEXTBOX, DROPDOWN, MULTI_SELECT_BOX, PASSWORD, CHECKBOX, DATE, RADIO_BUTTON, IMAGE, FILE_CHOOSER, ENTITY_CHOOSER;
+        TEXTBOX, RICH_TEXTBOX, DROPDOWN, MULTI_SELECT_BOX, PASSWORD, CHECKBOX, DATE, RADIO_BUTTON, IMAGE, FILE_CHOOSER, ENTITY_CHOOSER, SALE_TARGET;
     }
 
     private List<DetailAttribute> detailAttributes = new ArrayList<>();

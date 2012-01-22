@@ -30,7 +30,6 @@ public class EditUserView extends AbstractDetailView<User> {
         detailDataModel.addAttribute("password", FieldTypeEnum.PASSWORD).setMandatory(true);
         detailDataModel.addAttribute("roles", FieldTypeEnum.MULTI_SELECT_BOX).referenceDataId(ROLE_REF_ID);
         detailDataModel.addAttribute("isEnabled", FieldTypeEnum.CHECKBOX);
-        // detailDataModel.addAttribute("roles", FieldTypeEnum.ENTITY_CHOOSER).referenceDataId(ROLE_REF_ID);
     }
 
     @Override
