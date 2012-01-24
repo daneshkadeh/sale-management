@@ -14,7 +14,6 @@ public class EditContactShopVirtualView extends AbstractDetailView<ContactShop> 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ContactShop entity) {
         // detailDataModel.addAttribute("contact", FieldTypeEnum.TEXTBOX).editable(false);
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("address", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);

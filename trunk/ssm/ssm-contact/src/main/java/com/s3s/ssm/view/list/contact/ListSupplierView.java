@@ -16,13 +16,12 @@ public class ListSupplierView extends AbstractListView<Supplier> {
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
         listDataModel.add(new DetailAttribute("code", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("mainContact", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("phoneNumber", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("fixPhoneNumber", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("faxNumber", FieldTypeEnum.TEXTBOX));
+        // listDataModel.add(new DetailAttribute("title", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("representer", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("sex", FieldTypeEnum.CHECKBOX));
+        listDataModel.add(new DetailAttribute("position", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("phone", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("email", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("bankAccount.accountName", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("note", FieldTypeEnum.TEXTBOX));
     }
 
     @Override

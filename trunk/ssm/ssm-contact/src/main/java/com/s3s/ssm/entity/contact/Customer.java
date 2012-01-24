@@ -1,3 +1,19 @@
+/*
+ * Customer
+ * 
+ * Project: SSM
+ * 
+ * Copyright 2010 by HBASoft
+ * Rue de la Bergère 7, 1217 Meyrin
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information
+ * of HBASoft. ("Confidential Information"). You
+ * shall not disclose such Confidential Information and shall
+ * use it only in accordance with the terms of the license
+ * agreements you entered into with HBASoft.
+ */
+
 package com.s3s.ssm.entity.contact;
 
 import java.util.HashSet;
@@ -10,48 +26,65 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.BankAccount;
-import com.s3s.ssm.entity.config.ContactType;
 
+/**
+ * @author Le Thanh Hoang
+ * 
+ */
 @Entity
-@Table(name = "s_contact")
-public class Contact extends AbstractCodeOLObject {
-    private ContactType contactType;
-    private String fullName;
-    private String address;
-    private String phone;
+@Table(name = "s_customer")
+@PrimaryKeyJoinColumn(name = "customer_id")
+public class Customer extends Partner {
     private String fixPhone;
+    private String mobilePhone;
     private String fax;
     private String email;
+    private String address;
     private String taxCode;
-    private BankAccount bankAccount;
-    private Long maximumDayDebt;
     private Set<ContactShop> listShops = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "contact_type_id", nullable = false)
-    public ContactType getContactType() {
-        return contactType;
+    private BankAccount bankAccount;
+
+    @Column(name = "fix_phone", length = 20)
+    public String getFixPhone() {
+        return fixPhone;
     }
 
-    public void setContactType(ContactType contactType) {
-        this.contactType = contactType;
+    public void setFixPhone(String fixPhone) {
+        this.fixPhone = fixPhone;
     }
 
-    @Column(name = "full_name", nullable = false, length = 128)
-    @NotNull
-    public String getFullName() {
-        return fullName;
+    @Column(name = "mobile_phone", length = 20)
+    public String getMobilePhone() {
+        return mobilePhone;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
+
+    @Column(name = "fax", length = 20)
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    @Column(name = "email", length = 100)
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Column(name = "address", length = 256)
@@ -63,43 +96,7 @@ public class Contact extends AbstractCodeOLObject {
         this.address = address;
     }
 
-    @Column(name = "phone", length = 32)
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    @Column(name = "fix_phone", length = 32)
-    public String getFixPhone() {
-        return fixPhone;
-    }
-
-    public void setFixPhone(String fixPhone) {
-        this.fixPhone = fixPhone;
-    }
-
-    @Column(name = "fax", length = 32)
-    public String getFax() {
-        return fax;
-    }
-
-    public void setFax(String fax) {
-        this.fax = fax;
-    }
-
-    @Column(name = "email", length = 64)
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Column(name = "tax_code", length = 32)
+    @Column(name = "tax_code", length = 50)
     public String getTaxCode() {
         return taxCode;
     }
@@ -118,6 +115,7 @@ public class Contact extends AbstractCodeOLObject {
         this.bankAccount = bankAccount;
     }
 
+    //
     @Transient
     public Bank getBank() {
         return bankAccount != null ? bankAccount.getBank() : null;
@@ -157,16 +155,7 @@ public class Contact extends AbstractCodeOLObject {
         bankAccount.setAccountName(accountName);
     }
 
-    @Column(name = "maximum_day_debt")
-    public Long getMaximumDayDebt() {
-        return maximumDayDebt;
-    }
-
-    public void setMaximumDayDebt(Long maximumDayDebt) {
-        this.maximumDayDebt = maximumDayDebt;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "contact")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "customer")
     public Set<ContactShop> getListShops() {
         return listShops;
     }
@@ -175,8 +164,8 @@ public class Contact extends AbstractCodeOLObject {
         this.listShops = listShops;
     }
 
-    public void addShop(ContactShop contactShop) {
-        contactShop.setContact(this);
-        listShops.add(contactShop);
-    }
+    // public void addShop(ContactShop contactShop) {
+    // contactShop.setContact(this);
+    // listShops.add(contactShop);
+    // }
 }

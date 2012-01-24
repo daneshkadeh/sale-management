@@ -12,7 +12,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 @Entity
 @Table(name = "s_contact_shop")
 public class ContactShop extends AbstractCodeOLObject {
-    private Contact contact;
+    private Customer customer;
     private String name;
     private String address;
     private String phone;
@@ -22,13 +22,13 @@ public class ContactShop extends AbstractCodeOLObject {
     private String remark;
 
     @ManyToOne
-    @JoinColumn(name = "contact_id", nullable = false)
-    public Contact getContact() {
-        return contact;
+    @JoinColumn(name = "customer_id", nullable = false)
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Column(name = "name", nullable = false, length = 128)
@@ -86,6 +86,7 @@ public class ContactShop extends AbstractCodeOLObject {
         this.email = email;
     }
 
+    @Column(name = "remark", length = 100)
     public String getRemark() {
         return remark;
     }

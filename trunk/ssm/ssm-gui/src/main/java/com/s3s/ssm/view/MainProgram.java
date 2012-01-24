@@ -48,8 +48,8 @@ import com.s3s.ssm.view.domain.SystemManagementDomain;
 import com.s3s.ssm.view.list.ListCustomerViewTest;
 import com.s3s.ssm.view.list.ListGoodsViewTest;
 import com.s3s.ssm.view.list.ListInvoiceViewTest;
+import com.s3s.ssm.view.list.operator.ListOperatorView;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
-import com.s3s.ssm.view.list.security.ListUserView;
 import com.s3s.ssm.view.security.LoginDialog;
 
 public class MainProgram {
@@ -198,9 +198,9 @@ public class MainProgram {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ListUserView listRoleView = new ListUserView();
-                listRoleView.setVisible(true);
-                frame.setContentPane(listRoleView);
+                ListOperatorView listOperatorView = new ListOperatorView();
+                listOperatorView.setVisible(true);
+                frame.setContentPane(listOperatorView);
                 frame.repaint();
                 frame.pack();
             }

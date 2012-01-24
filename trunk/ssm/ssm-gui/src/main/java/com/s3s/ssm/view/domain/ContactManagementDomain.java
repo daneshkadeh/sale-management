@@ -7,8 +7,9 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.component.TreeNodeWithView;
 import com.s3s.ssm.view.component.TreeView;
-import com.s3s.ssm.view.list.contact.ListContactTypeView;
-import com.s3s.ssm.view.list.contact.ListContactView;
+import com.s3s.ssm.view.list.contact.ListCustomerView;
+import com.s3s.ssm.view.list.contact.ListPartnerCategoryView;
+import com.s3s.ssm.view.list.contact.ListSupplierView;
 
 /**
  * All views of contact.
@@ -28,19 +29,18 @@ public class ContactManagementDomain extends AbstractDomain {
         // CRM Contact management
         TreeNodeWithView contactMagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Contact.Management")); // "CRM contact management"
-        TreeNodeWithView customerGroupNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.Contact.ContactGroup"), new ListContactTypeView()); // "Customer group"
         TreeNodeWithView customerNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Contact.Customer"),
-                new ListContactView()); // "Customer"
-
+                new ListCustomerView()); // "Customer"
+        TreeNodeWithView partnerCateNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.Contact.PartnerCategory"), new ListPartnerCategoryView()); // "Customer"
         TreeNodeWithView supplierNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.Contact.SupplierContact")); // "Supplier"
+                ControlConfigUtils.getString("JTree.Contact.SupplierContact"), new ListSupplierView()); // "Supplier"
         TreeNodeWithView nguoiDuocTaiTroNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Contact.SupportedContact")); // "Nguoi duoc tai tro"
 
-        contactMagementEntry.add(customerGroupNode);
         contactMagementEntry.add(customerNode);
         contactMagementEntry.add(supplierNode);
+        contactMagementEntry.add(partnerCateNode);
         contactMagementEntry.add(nguoiDuocTaiTroNode);
         treeView.setModel(new DefaultTreeModel(contactMagementEntry));
 
