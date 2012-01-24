@@ -56,6 +56,7 @@ import com.s3s.ssm.view.component.ImageChooser;
 import com.s3s.ssm.view.component.MultiSelectionBox;
 import com.s3s.ssm.view.component.SaleTargetComp;
 import com.s3s.ssm.view.component.SaleTargetModel;
+import com.s3s.ssm.view.component.SexRadio;
 
 /**
  * @author Pham Cong Bang
@@ -204,8 +205,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 ((JTextArea) dataField).setLineWrap(true);
                 ((JTextArea) dataField).setWrapStyleWord(true);
                 ((JTextArea) dataField).setEditable(true);
-
-                ((JTextArea) dataField).setText(StringUtils.trimToEmpty(String.valueOf(value)));
+                String txtValue = value != null ? StringUtils.trimToEmpty(String.valueOf(value)) : "";
+                ((JTextArea) dataField).setText(txtValue);
                 pnlEdit.add(lblLabel);
                 pnlEdit.add(dataField);
                 break;
@@ -290,6 +291,12 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     saleTargetList.addAll(referenceData.getValues());
                 }
                 dataField = new SaleTargetComp(curyear, saleTargetList);
+                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(dataField);
+                break;
+            case SEX_RADIO:
+                Integer sex = value != null ? (Integer) value : 1;
+                dataField = new SexRadio(sex);
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
                 break;
@@ -412,6 +419,11 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     SaleTargetComp saleTargetField = (SaleTargetComp) component;
                     beanWrapper.setPropertyValue(attribute.getName(),
                             paramClass.cast(saleTargetField.getSaleTargetList()));
+                    break;
+                case SEX_RADIO:
+                    SexRadio sexRadioField = (SexRadio) component;
+                    beanWrapper
+                            .setPropertyValue(attribute.getName(), paramClass.cast(sexRadioField.getSelectedValue()));
                     break;
                 default:
                     throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());
