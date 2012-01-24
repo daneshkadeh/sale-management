@@ -11,6 +11,11 @@ import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractDetailView;
 
+/**
+ * 
+ * @author Le Thanh Hoang
+ * 
+ */
 public class EditUnitOfMeasureView extends AbstractDetailView<UnitOfMeasure> {
 
     private static final String CATE_REF_ID = "1";
@@ -37,11 +42,12 @@ public class EditUnitOfMeasureView extends AbstractDetailView<UnitOfMeasure> {
 
     @Override
     protected void saveOrUpdate(UnitOfMeasure entity) {
+        // if the entity is basic, find the current entity is basic and make it not base measure
         if (entity.getIsBaseMeasure()) {
             List<UnitOfMeasure> uomList = getDaoHelper().getDao(UnitOfMeasure.class).findAll();
             uomList.remove(entity);
             for (UnitOfMeasure uom : uomList) {
-                if (uom.getIsBaseMeasure() == true) {
+                if (uom.getIsBaseMeasure() == true && uom.getUomCategory().equals(entity.getUomCategory())) {
                     uom.setIsBaseMeasure(false);
                     getDaoHelper().getDao(UnitOfMeasure.class).saveOrUpdate(uom);
                     break;

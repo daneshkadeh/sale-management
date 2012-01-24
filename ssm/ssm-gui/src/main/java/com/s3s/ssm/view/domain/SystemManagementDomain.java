@@ -13,14 +13,13 @@ import com.s3s.ssm.view.list.config.ListCurrencyView;
 import com.s3s.ssm.view.list.config.ListExchangeRateView;
 import com.s3s.ssm.view.list.config.ListUnitOfMeasureView;
 import com.s3s.ssm.view.list.config.ListUomCategoryView;
-import com.s3s.ssm.view.list.contact.ListSupplierView;
+import com.s3s.ssm.view.list.operator.ListOperatorView;
 import com.s3s.ssm.view.list.operator.ListStallView;
 import com.s3s.ssm.view.list.param.ListItemView;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
 import com.s3s.ssm.view.list.param.ListProductTypeView;
 import com.s3s.ssm.view.list.param.ListProductView;
 import com.s3s.ssm.view.list.security.ListRoleView;
-import com.s3s.ssm.view.list.security.ListUserView;
 
 /**
  * Define master object in the system: user, product, supplier.
@@ -42,7 +41,7 @@ public class SystemManagementDomain extends AbstractDomain {
         TreeNodeWithView userManagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.UserManagement"));
         TreeNodeWithView userNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.UserManagement.User"),
-                new ListUserView());
+                new ListOperatorView());
         TreeNodeWithView profilesNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.UserManagement.Profiles"), new ListRoleView());
         TreeNodeWithView exceptionPrivilegeNode = new TreeNodeWithView(
@@ -59,11 +58,6 @@ public class SystemManagementDomain extends AbstractDomain {
         TreeNodeWithView mfManagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.Manufacturer"), new ListManufacturerView());
         systemEntry.add(mfManagementEntry);
-
-        // Supplier
-        TreeNodeWithView supplierEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Supplier"),
-                new ListSupplierView());
-        systemEntry.add(supplierEntry);
 
         // Product management
         TreeNodeWithView productManagementEntry = new TreeNodeWithView(

@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -229,7 +230,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 ((JComboBox<?>) dataField).setSelectedItem(value);
                 break;
             case MULTI_SELECT_BOX:
-                List desValues = value != null ? (List) value : Collections.EMPTY_LIST;
+                List desValues = value != null ? new ArrayList((Set) value) : Collections.EMPTY_LIST;
                 List scrValues = new ArrayList<>(ListUtils.removeAll(referenceData.getValues(), desValues));
                 dataField = new MultiSelectionBox<>(scrValues, desValues, referenceData.getRenderer());
                 pnlEdit.add(lblLabel, "top");
@@ -274,7 +275,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             case SALE_TARGET:
                 Calendar now = Calendar.getInstance();
                 Integer curyear = now.get(Calendar.YEAR);
-                List<SaleTargetModel> saleTargetList = value != null ? (List<SaleTargetModel>) value
+                List<SaleTargetModel> saleTargetList = value != null ? new ArrayList<SaleTargetModel>((Set) value)
                         : Collections.EMPTY_LIST;
                 if (saleTargetList.size() == 0) {
                     saleTargetList = referenceData.getValues();
@@ -418,7 +419,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 case SALE_TARGET:
                     SaleTargetComp saleTargetField = (SaleTargetComp) component;
                     beanWrapper.setPropertyValue(attribute.getName(),
-                            paramClass.cast(saleTargetField.getSaleTargetList()));
+                            paramClass.cast(new HashSet<>(saleTargetField.getSaleTargetList())));
                     break;
                 case SEX_RADIO:
                     SexRadio sexRadioField = (SexRadio) component;

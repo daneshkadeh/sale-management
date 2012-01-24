@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -21,6 +23,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
 @Table(name = "au_user")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends AbstractCodeOLObject implements Serializable, UserDetails {
     private static final long serialVersionUID = 1L;
 

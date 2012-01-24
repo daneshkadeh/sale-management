@@ -22,9 +22,9 @@ import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
 
+import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.entity.operator.SaleTarget;
 import com.s3s.ssm.entity.operator.Stall;
-import com.s3s.ssm.entity.security.User;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
@@ -67,7 +67,7 @@ public class EditStallView extends AbstractDetailView<Stall> {
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, Stall entity) {
         super.setReferenceDataModel(refDataModel, entity);
-        List<User> userList = getDaoHelper().getDao(User.class).findAll();
+        List<Operator> userList = getDaoHelper().getDao(Operator.class).findAll();
         List<SaleTarget> defaultSaleTargetList = generateDefaulSaleTargetList(entity);
         refDataModel.putRefDataList(MANAGER_REF_ID, refDataModel.new ReferenceData(userList,
                 new DefaultListCellRenderer()));

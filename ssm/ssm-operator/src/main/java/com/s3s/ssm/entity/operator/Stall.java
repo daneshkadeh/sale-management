@@ -1,7 +1,7 @@
 package com.s3s.ssm.entity.operator;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,8 +23,8 @@ public class Stall extends AbstractCodeOLObject {
     private String name;
     private User manager;
     private Boolean isActive = true;
-    private List<User> staffs;
-    private List<SaleTarget> salesTarget = new ArrayList<SaleTarget>();
+    private Set<Operator> staffs = new HashSet<Operator>();
+    private Set<SaleTarget> salesTarget = new HashSet<SaleTarget>();
 
     @Column(name = "name", nullable = false, length = 50)
     public String getName() {
@@ -54,23 +54,23 @@ public class Stall extends AbstractCodeOLObject {
         this.isActive = isActive;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "o_stall_user", joinColumns = { @JoinColumn(name = "id_stall") }, inverseJoinColumns = { @JoinColumn(name = "id_user") })
     public
-            List<User> getStaffs() {
+            Set<Operator> getStaffs() {
         return staffs;
     }
 
-    public void setStaffs(List<User> staffs) {
+    public void setStaffs(Set<Operator> staffs) {
         this.staffs = staffs;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "stall", fetch = FetchType.LAZY)
-    public List<SaleTarget> getSalesTarget() {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "stall", fetch = FetchType.EAGER)
+    public Set<SaleTarget> getSalesTarget() {
         return salesTarget;
     }
 
-    public void setSalesTarget(List<SaleTarget> salesTarget) {
+    public void setSalesTarget(Set<SaleTarget> salesTarget) {
         this.salesTarget = salesTarget;
     }
 

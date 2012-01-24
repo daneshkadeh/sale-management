@@ -2,98 +2,82 @@ package com.s3s.ssm.entity.contact;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-
-import com.s3s.ssm.entity.AbstractCodeOLObject;
-import com.s3s.ssm.entity.config.BankAccount;
 
 @Entity
 @Table(name = "s_supplier")
-public class Supplier extends AbstractCodeOLObject {
-    private String name;
-    private Contact mainContact;
-    private String phoneNumber;
-    private String fixPhoneNumber;
-    private String faxNumber;
+@PrimaryKeyJoinColumn(name = "supplier_id")
+public class Supplier extends Partner {
+    private String representer;
+    private Integer sex;
+    private String position;
+    private String address;
+    private String phone;
+    private String fax;
     private String email;
-    private BankAccount bankAccount;
-    private String note;
 
-    @Column(name = "supplier_name", length = 128)
-    public String getName() {
-        return name;
+    @Column(name = "representer", length = 256)
+    public String getRepresenter() {
+        return representer;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRepresenter(String representer) {
+        this.representer = representer;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "main_contact_id")
-    public Contact getMainContact() {
-        return mainContact;
+    @Column(name = "sex", length = 1)
+    public Integer getSex() {
+        return sex;
     }
 
-    public void setMainContact(Contact mainContact) {
-        this.mainContact = mainContact;
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 
-    @Column(name = "phone_number", length = 32)
-    public String getPhoneNumber() {
-        return phoneNumber;
+    @Column(name = "position", length = 256)
+    public String getPosition() {
+        return position;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
-    @Column(name = "fix_phone_number", length = 32)
-    public String getFixPhoneNumber() {
-        return fixPhoneNumber;
+    @Column(name = "address", length = 256)
+    public String getAddress() {
+        return address;
     }
 
-    public void setFixPhoneNumber(String fixPhoneNumber) {
-        this.fixPhoneNumber = fixPhoneNumber;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    @Column(name = "fax_number", length = 32)
-    public String getFaxNumber() {
-        return faxNumber;
+    @Column(name = "phone", length = 20)
+    public String getPhone() {
+        return phone;
     }
 
-    public void setFaxNumber(String faxNumber) {
-        this.faxNumber = faxNumber;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
+    @Column(name = "fax", length = 20)
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    @Column(name = "email", length = 256)
     public String getEmail() {
         return email;
     }
 
-    @Column(name = "email", length = 64)
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bank_account_id")
-    public BankAccount getBankAccount() {
-        return bankAccount;
-    }
-
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
-    }
-
-    @Column(name = "note", length = 256)
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
     }
 
 }

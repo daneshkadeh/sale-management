@@ -2,44 +2,21 @@ package com.s3s.ssm.entity.operator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
-import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.security.User;
 
 @Entity
 @Table(name = "s_operator")
-public class Operator extends AbstractIdOLObject {
-    private String login;
-    private String password;
+@PrimaryKeyJoinColumn(name = "operator_id")
+public class Operator extends User {
     private String fullName;
     private String email;
     private String phone;
     private String address;
-    private Boolean active = false;
 
-    @Column(name = "login", nullable = false, length = 32)
-    @NotNull
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    @Column(name = "password", nullable = false, length = 32)
-    @NotNull
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Column(name = "full_name", nullable = false, length = 256)
-    @NotNull
+    @Column(name = "full_name", length = 256)
     public String getFullName() {
         return fullName;
     }
@@ -73,15 +50,5 @@ public class Operator extends AbstractIdOLObject {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    @Column(name = "active", nullable = false)
-    @NotNull
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 }
