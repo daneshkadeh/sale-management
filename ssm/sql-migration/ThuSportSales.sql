@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2012 at 01:23 AM
+-- Generation Time: Jan 25, 2012 at 02:07 AM
 -- Server version: 5.0.45
 -- PHP Version: 5.2.4
 
@@ -251,7 +251,7 @@ CREATE TABLE `au_role` (
 --
 
 INSERT INTO `au_role` (`id`, `code`, `name`, `isEnable`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(1, '1', 'ROLE_ADMIN', 1, 'DEFAULT_USER', '2011-12-01 11:17:56', 'admin', '2012-01-22 22:08:30', 69),
+(1, '1', 'ROLE_ADMIN', 1, 'DEFAULT_USER', '2011-12-01 11:17:56', 'admin', '2012-01-24 02:45:00', 70),
 (2, '2', 'ROLE_MANAGER', 1, 'DEFAULT_USER', '2011-12-01 11:40:13', 'admin', '2012-01-21 23:30:49', 16),
 (3, '3', 'ROLE_USER', 1, 'DEFAULT_USER', '2011-12-01 11:40:24', 'admin', '2012-01-22 22:08:30', 12),
 (4, '4', 'ROLE_DEVELOPER', 1, 'DEFAULT_USER', '2011-12-12 22:23:17', 'DEFAULT_USER', '2011-12-25 22:09:26', 1),
@@ -282,7 +282,7 @@ CREATE TABLE `au_user` (
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `au_user`
@@ -291,7 +291,8 @@ CREATE TABLE `au_user` (
 INSERT INTO `au_user` (`id`, `code`, `username`, `password`, `isAccountNonExpired`, `isAccountNonLocked`, `isCredentialsNonExpired`, `isEnabled`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
 (1, '1', 'admin', 'admin', 1, 1, 1, 1, 'DEFAULT_USER', '2011-12-12 22:04:44', 'admin', '2012-01-22 22:08:30', 19),
 (2, '2', 'user1', 'user1', 1, 1, 1, 0, 'DEFAULT_USER', '2011-12-12 22:22:55', 'admin', '2012-01-21 23:30:49', 6),
-(3, '3', 'user2', 'user2', 1, 1, 1, 1, 'admin', '2011-12-26 15:18:17', 'admin', '2011-12-26 15:18:17', 0);
+(3, '3', 'user2', 'user2', 1, 1, 1, 1, 'admin', '2011-12-26 15:18:17', 'admin', '2011-12-26 15:18:17', 0),
+(4, '4', 'user4', 'user4', 1, 1, 1, 1, 'admin', '2012-01-24 02:45:00', 'admin', '2012-01-24 02:45:00', 0);
 
 -- --------------------------------------------------------
 
@@ -313,7 +314,8 @@ INSERT INTO `au_user_role` (`id_user`, `id_role`) VALUES
 (1, 1),
 (1, 3),
 (2, 2),
-(3, 1);
+(3, 1),
+(4, 1);
 
 -- --------------------------------------------------------
 
@@ -598,55 +600,22 @@ CREATE TABLE `s_check_store` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `s_contact`
---
-
-CREATE TABLE `s_contact` (
-  `id` int(11) NOT NULL auto_increment,
-  `code` varchar(32) collate utf8_bin NOT NULL,
-  `full_name` varchar(128) collate utf8_bin NOT NULL,
-  `contact_type_id` int(11) NOT NULL,
-  `address` varchar(256) collate utf8_bin default NULL,
-  `phone` varchar(32) collate utf8_bin default NULL,
-  `fix_phone` varchar(32) collate utf8_bin default NULL,
-  `fax` varchar(32) collate utf8_bin default NULL,
-  `email` varchar(64) collate utf8_bin default NULL,
-  `tax_code` varchar(32) collate utf8_bin default NULL,
-  `bank_account_id` int(11) default NULL,
-  `maximum_day_debt` int(11) NOT NULL default '0',
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `ui_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_contact`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `s_contact_debt`
 --
 
 CREATE TABLE `s_contact_debt` (
   `id` int(11) NOT NULL auto_increment,
-  `contact_id` int(11) NOT NULL,
+  `partner_id` int(11) NOT NULL,
   `debt_money` double NOT NULL,
-  `currency` varchar(3) collate utf8_bin NOT NULL,
+  `currency_id` int(11) default NULL,
   `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `ui_contact_currency` (`contact_id`,`currency`),
-  KEY `idx_contact_id` (`contact_id`)
+  UNIQUE KEY `ui_contact_currency` (`partner_id`,`currency_id`),
+  KEY `idx_contact_id` (`partner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 --
@@ -664,7 +633,7 @@ CREATE TABLE `s_contact_shop` (
   `id` int(11) NOT NULL auto_increment,
   `code` varchar(32) collate utf8_bin NOT NULL,
   `name` varchar(128) collate utf8_bin NOT NULL,
-  `contact_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
   `address` varchar(256) collate utf8_bin default NULL,
   `phone` varchar(32) collate utf8_bin default NULL,
   `fix_phone` varchar(32) collate utf8_bin default NULL,
@@ -677,37 +646,11 @@ CREATE TABLE `s_contact_shop` (
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `ui_code` (`code`),
-  KEY `idx_contact_id` (`contact_id`)
+  KEY `idx_contact_id` (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `s_contact_shop`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_contact_type`
---
-
-CREATE TABLE `s_contact_type` (
-  `id` int(11) NOT NULL auto_increment,
-  `code` varchar(32) collate utf8_bin NOT NULL,
-  `description` varchar(128) collate utf8_bin NOT NULL,
-  `contact_family_type` varchar(32) collate utf8_bin NOT NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `ui_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_contact_type`
 --
 
 
@@ -796,6 +739,31 @@ CREATE TABLE `s_currency` (
 INSERT INTO `s_currency` (`id`, `code`, `name`, `symbol`, `active`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
 (1, '00001', 'VND', 'd', 1, 'DEFAULT_USER', '2011-12-14 22:51:15', 'DEFAULT_USER', '2011-12-14 22:54:23', 1),
 (2, '0002', 'USD', '$', 1, 'DEFAULT_USER', '2011-12-14 22:54:38', 'DEFAULT_USER', '2011-12-14 22:54:38', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `s_customer`
+--
+
+CREATE TABLE `s_customer` (
+  `customer_id` int(11) NOT NULL,
+  `fix_phone` varchar(20) default NULL,
+  `mobile_phone` varchar(20) default NULL,
+  `fax` varchar(20) default NULL,
+  `email` varchar(100) default NULL,
+  `address` varchar(256) default NULL,
+  `tax_code` varchar(50) default NULL,
+  `bank_account_id` int(11) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `s_customer`
+--
+
+INSERT INTO `s_customer` (`customer_id`, `fix_phone`, `mobile_phone`, `fax`, `email`, `address`, `tax_code`, `bank_account_id`) VALUES
+(3, '123456', '123456', '123456', '123456', '123456', '123456', NULL),
+(4, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1398,31 +1366,20 @@ CREATE TABLE `s_manufacturer` (
 --
 
 CREATE TABLE `s_operator` (
-  `id` int(11) NOT NULL auto_increment,
-  `code` varchar(32) collate utf8_bin NOT NULL,
-  `username` varchar(32) collate utf8_bin NOT NULL,
-  `password` varchar(128) collate utf8_bin default NULL,
-  `isAccountNonExpired` tinyint(1) NOT NULL default '1',
-  `isAccountNonLocked` tinyint(1) NOT NULL default '1',
-  `isCredentialsNonExpired` tinyint(1) NOT NULL default '1',
-  `isEnabled` tinyint(1) NOT NULL default '1',
+  `operator_id` int(11) NOT NULL,
   `full_name` varchar(256) collate utf8_bin NOT NULL default '',
   `email` varchar(64) collate utf8_bin default NULL,
   `phone` varchar(32) collate utf8_bin default NULL,
-  `address` varchar(256) collate utf8_bin default NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `ui_login` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+  `address` varchar(256) collate utf8_bin default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `s_operator`
 --
 
+INSERT INTO `s_operator` (`operator_id`, `full_name`, `email`, `phone`, `address`) VALUES
+(1, 'Le Thanh Hoang', NULL, NULL, NULL),
+(4, '', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1539,6 +1496,90 @@ CREATE TABLE `s_paid_money_form` (
 -- Dumping data for table `s_paid_money_form`
 --
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `s_partner`
+--
+
+CREATE TABLE `s_partner` (
+  `id` int(11) NOT NULL auto_increment,
+  `code` varchar(32) collate utf8_bin NOT NULL,
+  `name` varchar(128) collate utf8_bin NOT NULL,
+  `title` int(1) default NULL,
+  `comment` varchar(256) collate utf8_bin default NULL,
+  `website` varchar(256) collate utf8_bin default NULL,
+  `is_customer` int(1) default NULL,
+  `is_supplier` int(1) default NULL,
+  `is_employee` int(1) default NULL,
+  `debit_limit` double default NULL,
+  `unit_id` int(11) default NULL,
+  `is_active` int(1) default NULL,
+  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `ui_uom_category_code` (`code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `s_partner`
+--
+
+INSERT INTO `s_partner` (`id`, `code`, `name`, `title`, `comment`, `website`, `is_customer`, `is_supplier`, `is_employee`, `debit_limit`, `unit_id`, `is_active`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
+(1, '1', 'Cust1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2012-01-24 00:38:38', 'admin', '2012-01-24 00:38:38', 0),
+(2, '2', 'SUPPLIER1', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2012-01-24 12:59:59', 'admin', '2012-01-24 13:00:08', 2),
+(3, '3', 'Customer3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2012-01-24 16:58:01', 'admin', '2012-01-24 16:58:01', 0),
+(4, '4', 'CUSTOMER4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2012-01-24 17:12:23', 'admin', '2012-01-24 17:12:23', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `s_partner_category`
+--
+
+CREATE TABLE `s_partner_category` (
+  `id` int(11) NOT NULL auto_increment,
+  `code` varchar(32) collate utf8_bin NOT NULL,
+  `name` varchar(128) collate utf8_bin NOT NULL,
+  `parent_category_id` int(11) default NULL,
+  `is_active` int(1) default NULL,
+  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `s_partner_category`
+--
+
+INSERT INTO `s_partner_category` (`id`, `code`, `name`, `parent_category_id`, `is_active`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
+(1, '1', 'SUPPLIER', NULL, 1, 'admin', '2012-01-24 14:18:49', 'admin', '2012-01-24 17:12:23', 1),
+(2, '2', 'GOLD', 1, 1, 'admin', '2012-01-24 14:19:25', 'admin', '2012-01-24 14:19:25', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `s_partner_partner_category`
+--
+
+CREATE TABLE `s_partner_partner_category` (
+  `partner_id` int(11) NOT NULL,
+  `partner_category_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `s_partner_partner_category`
+--
+
+INSERT INTO `s_partner_partner_category` (`partner_id`, `partner_category_id`) VALUES
+(4, 1);
 
 -- --------------------------------------------------------
 
@@ -1829,29 +1870,22 @@ CREATE TABLE `s_store` (
 --
 
 CREATE TABLE `s_supplier` (
-  `id` int(11) NOT NULL auto_increment,
-  `code` varchar(32) collate utf8_bin NOT NULL,
-  `supplier_name` varchar(128) collate utf8_bin NOT NULL,
-  `main_contact_id` int(11) default NULL,
-  `phone_number` varchar(32) collate utf8_bin default NULL,
-  `fix_phone_number` varchar(32) collate utf8_bin default NULL,
-  `fax_number` varchar(32) collate utf8_bin default NULL,
-  `email` varchar(32) collate utf8_bin default NULL,
-  `bank_account_id` int(11) default NULL,
-  `note` varchar(256) collate utf8_bin default NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `ui_supplier_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+  `supplier_id` int(11) NOT NULL,
+  `representer` varchar(256) collate utf8_bin default NULL,
+  `sex` tinyint(1) NOT NULL,
+  `position` varchar(256) collate utf8_bin default NULL,
+  `address` varchar(256) collate utf8_bin default NULL,
+  `phone` varchar(20) collate utf8_bin default NULL,
+  `fax` varchar(20) collate utf8_bin default NULL,
+  `email` varchar(32) collate utf8_bin default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `s_supplier`
 --
 
+INSERT INTO `s_supplier` (`supplier_id`, `representer`, `sex`, `position`, `address`, `phone`, `fax`, `email`) VALUES
+(2, 'Thu Hien', 1, 'Giam doc', 'AAAAA', '123456', '1234556', NULL);
 
 -- --------------------------------------------------------
 
@@ -1902,12 +1936,14 @@ CREATE TABLE `s_unit_of_measure` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_uom_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `s_unit_of_measure`
 --
 
+INSERT INTO `s_unit_of_measure` (`id`, `uom_category_id`, `code`, `uom_name`, `is_base_measure`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
+(1, 1, '1', 'met', 0, 'admin', '2012-01-24 03:03:24', 'admin', '2012-01-24 03:03:24', 0);
 
 -- --------------------------------------------------------
 
@@ -1927,12 +1963,16 @@ CREATE TABLE `s_uom_category` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_uom_category_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `s_uom_category`
 --
 
+INSERT INTO `s_uom_category` (`id`, `code`, `name`, `parentUomCategory_id`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
+(1, '1', 'Chieu dai', NULL, 'admin', '2012-01-24 03:03:04', 'admin', '2012-01-24 03:03:04', 0),
+(2, 'm', 'mét', 1, 'admin', '2012-01-24 14:33:29', 'admin', '2012-01-24 14:33:29', 0),
+(3, 'mm', 'milimet', 1, 'admin', '2012-01-24 14:33:51', 'admin', '2012-01-24 14:33:51', 0);
 
 -- --------------------------------------------------------
 
