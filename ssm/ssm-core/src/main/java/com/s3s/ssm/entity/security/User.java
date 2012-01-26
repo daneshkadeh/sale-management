@@ -1,8 +1,8 @@
 package com.s3s.ssm.entity.security;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,7 +31,7 @@ public class User extends AbstractCodeOLObject implements Serializable, UserDeta
 
     private String password;
 
-    List<Role> roles = new ArrayList<Role>(0);
+    Set<Role> roles = new HashSet<Role>();
 
     private Boolean isAccountNonExpired = true;
 
@@ -122,14 +122,14 @@ public class User extends AbstractCodeOLObject implements Serializable, UserDeta
         return isEnabled;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(name = "au_user_role", joinColumns = { @JoinColumn(name = "id_user") }, inverseJoinColumns = { @JoinColumn(name = "id_role") })
     public
-            List<Role> getRoles() {
+            Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 

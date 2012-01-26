@@ -1,9 +1,12 @@
 package com.s3s.ssm.entity.security;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -18,6 +21,7 @@ public class Role extends AbstractCodeOLObject implements Serializable, GrantedA
     private static final long serialVersionUID = 1L;
     private String name;
     private Boolean isEnable = true;
+    private Set<User> users = new HashSet<User>();
 
     public Role() {
 
@@ -49,6 +53,15 @@ public class Role extends AbstractCodeOLObject implements Serializable, GrantedA
     @Override
     public String getAuthority() {
         return name;
+    }
+
+    @ManyToMany(mappedBy = "roles")
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     @Transient

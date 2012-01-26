@@ -15,7 +15,8 @@ public class EditBankView extends AbstractDetailView<Bank> {
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Bank entity) {
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).setMandatory(true);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).setMandatory(true);
+        detailDataModel.addAttribute("address", FieldTypeEnum.RICH_TEXTBOX);
     }
 
 }

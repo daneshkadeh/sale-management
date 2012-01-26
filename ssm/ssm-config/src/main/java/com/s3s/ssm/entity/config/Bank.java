@@ -3,7 +3,6 @@ package com.s3s.ssm.entity.config;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
@@ -11,15 +10,24 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 @Table(name = "s_bank")
 public class Bank extends AbstractCodeOLObject {
     private static final long serialVersionUID = -1834997390961013651L;
-    private String bankName;
+    private String name;
+    private String address;
 
-    @Column(name = "bank_name")
-    @Size(max = 128, message = "bank.length.error")
+    @Column(name = "bank_name", length = 128)
     public String getName() {
-        return bankName;
+        return name;
     }
 
-    public void setName(String bankName) {
-        this.bankName = bankName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Column(name = "address", length = 256)
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

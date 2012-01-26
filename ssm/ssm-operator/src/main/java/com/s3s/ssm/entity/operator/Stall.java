@@ -74,4 +74,7 @@ public class Stall extends AbstractCodeOLObject {
         this.salesTarget = salesTarget;
     }
 
+    public String toString() {
+        return name;
+    }
 }
