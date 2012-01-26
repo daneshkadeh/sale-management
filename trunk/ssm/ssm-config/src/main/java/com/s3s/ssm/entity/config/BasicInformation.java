@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.operator.Stall;
 
 @Entity
 @Table(name = "s_basic_information")
@@ -22,17 +23,20 @@ public class BasicInformation extends AbstractCodeOLObject {
     private String website;
     private String email;
     // information of bank
-    private String bankName;
-    private String bankAddress;
-    private String usdAcctNumber;
-    private String vndAcctNumber;
-    private String beneficeName;
+    private BankAccount usdBankAccount;
+    private BankAccount vndBankAccount;
+    // private String bankName;
+    // private String bankAddress;
+    // private String usdAcctNumber;
+    // private String vndAcctNumber;
+    // private String beneficeName;
     // general parameter
     private SCurrency defCurrency; // default currency
     private Integer defDetailInvNum; // number of rows on a invoice
     private Integer defPageRowNum; // number of rows on a page
     private String defPaymentMethod;
     // private Integer enableChangeInvDate; //0: not accept, 1: accept when inserting, 0: accept when creating
+    private Stall defStall;
     // rule of code generation
     private String orderInvCodeRule;
     private String salesInvCodeRule;
@@ -49,7 +53,7 @@ public class BasicInformation extends AbstractCodeOLObject {
     // the path backup data
     private String backupPath;
     // sold on credit
-    private Integer sellOnCredit;
+    private Integer sellOnCredit; // 0: cho phep ban am, 1: hoi neu ban am, 2: ko cho phep ban am
     // setting decimal format
     private Integer digitAfterCommaQuan = 5;
     private Integer digitAfterCommaPrice = 5;
@@ -139,49 +143,24 @@ public class BasicInformation extends AbstractCodeOLObject {
         this.email = email;
     }
 
-    @Column(name = "bank_name", length = 250)
-    public String getBankName() {
-        return bankName;
+    @ManyToOne
+    @JoinColumn(name = "usd_bank_acct_id")
+    public BankAccount getUsdBankAccount() {
+        return usdBankAccount;
     }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
+    public void setUsdBankAccount(BankAccount usdBankAccount) {
+        this.usdBankAccount = usdBankAccount;
     }
 
-    @Column(name = "bank_address", length = 250)
-    public String getBankAddress() {
-        return bankAddress;
+    @ManyToOne
+    @JoinColumn(name = "vnd_bank_acct_id")
+    public BankAccount getVndBankAccount() {
+        return vndBankAccount;
     }
 
-    public void setBankAddress(String bankAddress) {
-        this.bankAddress = bankAddress;
-    }
-
-    @Column(name = "usd_acct_number", length = 100)
-    public String getUsdAcctNumber() {
-        return usdAcctNumber;
-    }
-
-    public void setUsdAcctNumber(String usdAcctNumber) {
-        this.usdAcctNumber = usdAcctNumber;
-    }
-
-    @Column(name = "vnd_acct_number", length = 100)
-    public String getVndAcctNumber() {
-        return vndAcctNumber;
-    }
-
-    public void setVndAcctNumber(String vndAcctNumber) {
-        this.vndAcctNumber = vndAcctNumber;
-    }
-
-    @Column(name = "benefice_name", length = 100)
-    public String getBeneficeName() {
-        return beneficeName;
-    }
-
-    public void setBeneficeName(String beneficeName) {
-        this.beneficeName = beneficeName;
+    public void setVndBankAccount(BankAccount vndBankAccount) {
+        this.vndBankAccount = vndBankAccount;
     }
 
     @ManyToOne
@@ -219,6 +198,16 @@ public class BasicInformation extends AbstractCodeOLObject {
 
     public void setDefPaymentMethod(String defPaymentMethod) {
         this.defPaymentMethod = defPaymentMethod;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "def_stall_id")
+    public Stall getDefStall() {
+        return defStall;
+    }
+
+    public void setDefStall(Stall defStall) {
+        this.defStall = defStall;
     }
 
     @Column(name = "order_inv_code_rule", length = 50)
