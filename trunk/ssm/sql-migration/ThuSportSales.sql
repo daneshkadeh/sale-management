@@ -433,6 +433,7 @@ CREATE TABLE `s_bank` (
   `id` int(11) NOT NULL auto_increment,
   `code` varchar(32) collate utf8_bin NOT NULL,
   `bank_name` varchar(128) collate utf8_bin default NULL,
+  `address` varchar(128) collate utf8_bin default NULL,
   `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
