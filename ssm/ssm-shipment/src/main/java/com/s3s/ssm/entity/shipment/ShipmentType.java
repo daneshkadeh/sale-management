@@ -8,14 +8,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
-import com.s3s.ssm.entity.config.CurrencyEnum;
 
 @Entity
 @Table(name = "s_shipment_type")
 public class ShipmentType extends AbstractCodeOLObject {
     private String name;
     private Double basePrice;
-    private CurrencyEnum currency;
+    private String currency;
     private Boolean active;
 
     @Column(name = "name", nullable = false, length = 128)
@@ -41,11 +40,11 @@ public class ShipmentType extends AbstractCodeOLObject {
     @Column(name = "currency", nullable = false)
     @NotNull
     @Enumerated(EnumType.STRING)
-    public CurrencyEnum getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(CurrencyEnum currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

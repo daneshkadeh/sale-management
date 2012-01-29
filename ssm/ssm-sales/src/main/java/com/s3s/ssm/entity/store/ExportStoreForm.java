@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Store;
-import com.s3s.ssm.entity.contact.Contact;
+import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.sales.Invoice;
 
 @Entity
@@ -23,7 +23,7 @@ public class ExportStoreForm extends AbstractIdOLObject {
     private Invoice invoice;
     private Date createdDate;
     private Store store;
-    private Contact contact;
+    private Partner contact;
     private ExportStoreStatus status;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -61,11 +61,11 @@ public class ExportStoreForm extends AbstractIdOLObject {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id", nullable = false)
     @NotNull
-    public Contact getContact() {
+    public Partner getContact() {
         return contact;
     }
 
-    public void setContact(Contact contact) {
+    public void setContact(Partner contact) {
         this.contact = contact;
     }
 

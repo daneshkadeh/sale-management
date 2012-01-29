@@ -8,8 +8,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -20,7 +18,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
-import com.s3s.ssm.entity.config.CurrencyEnum;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 
 @Entity
@@ -29,7 +26,7 @@ public class Item extends AbstractIdOLObject {
     private Product product;
     private String sumUomName;
     private Double baseSellPrice;
-    private CurrencyEnum currency;
+    private String currency;
     private List<UnitOfMeasure> listUom = new ArrayList<>();
     private Set<ItemPrice> listItemPrices = new HashSet<>();
 
@@ -65,12 +62,11 @@ public class Item extends AbstractIdOLObject {
 
     @Column(name = "currency", nullable = false)
     @NotNull
-    @Enumerated(EnumType.STRING)
-    public CurrencyEnum getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(CurrencyEnum currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

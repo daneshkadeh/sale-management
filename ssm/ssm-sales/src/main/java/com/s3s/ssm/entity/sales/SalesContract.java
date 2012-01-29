@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
-import com.s3s.ssm.entity.config.CurrencyEnum;
 import com.s3s.ssm.entity.contact.Supplier;
 
 @Entity
@@ -28,7 +27,7 @@ public class SalesContract extends AbstractCodeOLObject {
     private Double moneyBeforeTax;
     private Double moneyOfTax;
     private Double moneyAfterTax;
-    private CurrencyEnum currency;
+    private String currency;
     private SalesContractStatus status = SalesContractStatus.OPEN;
     private Set<DetailSalesContract> detailSalesContracts = new HashSet<>();
 
@@ -83,13 +82,12 @@ public class SalesContract extends AbstractCodeOLObject {
     }
 
     @Column(name = "currency", nullable = false)
-    @Enumerated(EnumType.STRING)
     @NotNull
-    public CurrencyEnum getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(CurrencyEnum currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

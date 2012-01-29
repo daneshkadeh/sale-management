@@ -164,8 +164,8 @@ public class Customer extends Partner {
         this.listShops = listShops;
     }
 
-    // public void addShop(ContactShop contactShop) {
-    // contactShop.setContact(this);
-    // listShops.add(contactShop);
-    // }
+    public void addShop(ContactShop contactShop) {
+        contactShop.setCustomer(this);
+        listShops.add(contactShop);
+    }
 }

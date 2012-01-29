@@ -2,7 +2,6 @@ package com.s3s.ssm.context;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -38,7 +37,19 @@ public class SimpleContextProvider implements ContextProvider {
     @Override
     public String getCurrentUser() {
         String username;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Object principal = null;
+        try {
+            principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            // TODO: this default user is used to testing, code will be delete on production
+            if (principal == null) {
+                return "admin";
+            } else {
+                return "exceptionUser";
+            }
+        }
+
         if (principal instanceof UserDetails) {
             username = ((UserDetails) principal).getUsername();
         } else {
@@ -84,7 +95,7 @@ public class SimpleContextProvider implements ContextProvider {
         Sid[] sids = new Sid[1];
         // get currency user
         User currUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Role> roleList = currUser.getRoles();
+        Set<Role> roleList = currUser.getRoles();
         for (Role role : roleList) {
             // TODO Hoang must customize the code section below
             sids[0] = new PrincipalSid(role.getName());

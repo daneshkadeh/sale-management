@@ -4,6 +4,7 @@
   <projects>
     <project>ssm-catalog</project>
     <project>ssm-config</project>
+    <project>ssm-contact</project>
     <project>ssm-core</project>
     <project>ssm-operator</project>
   </projects>

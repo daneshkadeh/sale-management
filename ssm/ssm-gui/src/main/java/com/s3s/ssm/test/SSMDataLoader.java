@@ -1,7 +1,9 @@
 package com.s3s.ssm.test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,14 +29,13 @@ import com.s3s.ssm.entity.catalog.SPackage;
 import com.s3s.ssm.entity.catalog.Store;
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.BankAccount;
-import com.s3s.ssm.entity.config.ContactFamilyType;
-import com.s3s.ssm.entity.config.ContactType;
-import com.s3s.ssm.entity.config.CurrencyEnum;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.config.UomCategory;
-import com.s3s.ssm.entity.contact.Contact;
 import com.s3s.ssm.entity.contact.ContactDebt;
 import com.s3s.ssm.entity.contact.ContactShop;
+import com.s3s.ssm.entity.contact.Customer;
+import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.contact.PartnerCategory;
 import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.entity.finance.Payment;
 import com.s3s.ssm.entity.finance.PaymentContentType;
@@ -115,18 +116,17 @@ public class SSMDataLoader {
 
         daoHelper.getDao(DetailInvoice.class).deleteAll(daoHelper.getDao(DetailInvoice.class).findAll());
         daoHelper.getDao(Invoice.class).deleteAll(daoHelper.getDao(Invoice.class).findAll());
-
-        daoHelper.getDao(ItemPrice.class).deleteAll(daoHelper.getDao(ItemPrice.class).findAll());
-        daoHelper.getDao(ItemOriginPrice.class).deleteAll(daoHelper.getDao(ItemOriginPrice.class).findAll());
         daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());
         daoHelper.getDao(SalesContract.class).deleteAll(daoHelper.getDao(SalesContract.class).findAll());
 
         daoHelper.getDao(Article.class).deleteAll(daoHelper.getDao(Article.class).findAll());
         daoHelper.getDao(Advantage.class).deleteAll(daoHelper.getDao(Advantage.class).findAll());
-        daoHelper.getDao(Item.class).deleteAll(daoHelper.getDao(Item.class).findAll());
-
         daoHelper.getDao(PackageLine.class).deleteAll(daoHelper.getDao(PackageLine.class).findAll());
         daoHelper.getDao(SPackage.class).deleteAll(daoHelper.getDao(SPackage.class).findAll());
+
+        daoHelper.getDao(ItemPrice.class).deleteAll(daoHelper.getDao(ItemPrice.class).findAll());
+        daoHelper.getDao(ItemOriginPrice.class).deleteAll(daoHelper.getDao(ItemOriginPrice.class).findAll());
+        daoHelper.getDao(Item.class).deleteAll(daoHelper.getDao(Item.class).findAll());
         daoHelper.getDao(Product.class).deleteAll(daoHelper.getDao(Product.class).findAll());
         daoHelper.getDao(Manufacturer.class).deleteAll(daoHelper.getDao(Manufacturer.class).findAll());
         daoHelper.getDao(ProductType.class).deleteAll(daoHelper.getDao(ProductType.class).findAll());
@@ -136,8 +136,8 @@ public class SSMDataLoader {
 
         daoHelper.getDao(Supplier.class).deleteAll(daoHelper.getDao(Supplier.class).findAll());
         daoHelper.getDao(ContactDebt.class).deleteAll(daoHelper.getDao(ContactDebt.class).findAll());
-        daoHelper.getDao(Contact.class).deleteAll(daoHelper.getDao(Contact.class).findAll());
-        daoHelper.getDao(ContactType.class).deleteAll(daoHelper.getDao(ContactType.class).findAll());
+        daoHelper.getDao(Customer.class).deleteAll(daoHelper.getDao(Customer.class).findAll());
+        daoHelper.getDao(PartnerCategory.class).deleteAll(daoHelper.getDao(PartnerCategory.class).findAll());
         daoHelper.getDao(BankAccount.class).deleteAll(daoHelper.getDao(BankAccount.class).findAll());
         daoHelper.getDao(Bank.class).deleteAll(daoHelper.getDao(Bank.class).findAll());
         daoHelper.getDao(Store.class).deleteAll(daoHelper.getDao(Store.class).findAll());
@@ -171,7 +171,7 @@ public class SSMDataLoader {
         List<Advantage> listAdvantage = initAdvantage(daoHelper, listItem, listPackage);
         List<BankAccount> listBankAccount = initBankAccount(daoHelper);
         List<Operator> listOperator = initOperator(daoHelper);
-        List<Contact> listContact = initContact(daoHelper, listBankAccount);
+        List<Partner> listContact = initContact(daoHelper, listBankAccount);
         List<ContactDebt> listContactDebt = initContactDebt(daoHelper, listContact);
         List<Supplier> listSupplier = initSupplier(daoHelper, listContact, listBankAccount);
         List<Store> listStore = initStore(daoHelper, listOperator);
@@ -213,16 +213,16 @@ public class SSMDataLoader {
         return Arrays.asList(pack);
     }
 
-    private static List<ContactDebt> initContactDebt(DaoHelper daoHelper, List<Contact> listContact) {
+    private static List<ContactDebt> initContactDebt(DaoHelper daoHelper, List<Partner> listContact) {
         ContactDebt contactDebt = new ContactDebt();
-        contactDebt.setContact(listContact.get(0));
+        contactDebt.setPartner(listContact.get(0));
         contactDebt.setDebtMoney(1000000.0);
-        contactDebt.setCurrency(CurrencyEnum.VND);
+        contactDebt.setCurrency("VND");
         daoHelper.getDao(ContactDebt.class).saveOrUpdate(contactDebt);
         return Arrays.asList(contactDebt);
     }
 
-    private static List<Payment> initPayment(DaoHelper daoHelper, List<Invoice> listInvoice, List<Contact> listContact) {
+    private static List<Payment> initPayment(DaoHelper daoHelper, List<Invoice> listInvoice, List<Partner> listContact) {
         PaymentType paymentType = new PaymentType();
         paymentType.setCode("SELL_PRODUCT");
         paymentType.setName("Sell product");
@@ -244,7 +244,7 @@ public class SSMDataLoader {
     /**
      * create 2 invoices "0000001" without contact and "0000002" with contact.
      */
-    private static List<Invoice> initInvoice(DaoHelper daoHelper, List<Item> listItem, List<Contact> listContact) {
+    private static List<Invoice> initInvoice(DaoHelper daoHelper, List<Item> listItem, List<Partner> listContact) {
         Invoice invoice1 = new Invoice();
         invoice1.setContact(null);
         invoice1.setInvoiceNumber("0000001");
@@ -301,13 +301,14 @@ public class SSMDataLoader {
         return Arrays.asList(invoice1, invoice2);
     }
 
-    private static Set<ItemPrice> initItemPrice(DaoHelper daoHelper, List<Item> listItem, List<Contact> listContact) {
+    private static Set<ItemPrice> initItemPrice(DaoHelper daoHelper, List<Item> listItem, List<Partner> listContact) {
         ItemPrice itemPrice = new ItemPrice();
-        itemPrice.setContactType(listContact.get(0).getContactType());
+        List<PartnerCategory> listPartnerCate = new ArrayList<>(listContact.get(0).getPartnerCateSet());
+        itemPrice.setPartnerCategory(listPartnerCate.get(0));
         itemPrice.setSellPrice(100.0);
-        itemPrice.setCurrency(CurrencyEnum.VND);
-        // itemPrice.setItem(listItem.get(0));
-        // daoHelper.getDao(ItemPrice.class).saveOrUpdate(itemPrice);
+        itemPrice.setCurrency("VND");
+        itemPrice.setItem(listItem.get(0));
+        daoHelper.getDao(ItemPrice.class).saveOrUpdate(itemPrice);
         listItem.get(0).addItemPrice(itemPrice);
         daoHelper.getDao(Item.class).saveOrUpdate(listItem.get(0));
         return listItem.get(0).getListItemPrices();
@@ -318,7 +319,7 @@ public class SSMDataLoader {
         ItemOriginPrice originPrice = new ItemOriginPrice();
         originPrice.setItem(listItem.get(0));
         originPrice.setOriginalPrice(90.0);
-        originPrice.setCurrency(CurrencyEnum.VND);
+        originPrice.setCurrency("VND");
         originPrice.setSupplier(listSupplier.get(0));
         daoHelper.getDao(ItemOriginPrice.class).saveOrUpdate(originPrice);
         return Arrays.asList(originPrice);
@@ -333,13 +334,13 @@ public class SSMDataLoader {
         salesContract.setMoneyBeforeTax(1000.0);
         salesContract.setMoneyOfTax(10.0);
         salesContract.setMoneyAfterTax(990.0);
-        salesContract.setCurrency(CurrencyEnum.VND);
+        salesContract.setCurrency("VND");
 
         DetailSalesContract detail = new DetailSalesContract();
         detail.setItem(listItem.get(0));
         detail.setAmount(5L);
         detail.setUnitPrice(100.0);
-        detail.setCurrency(CurrencyEnum.VND);
+        detail.setCurrency("VND");
         salesContract.addDetailSalesContract(detail);
 
         daoHelper.getDao(SalesContract.class).saveOrUpdate(salesContract);
@@ -382,39 +383,44 @@ public class SSMDataLoader {
         store.setExportAddress(ADDRESS);
         store.setImportAddress(ADDRESS);
         store.setName("Kho 05");
-        store.setManagerCode(listOperator.get(0).getLogin());
+        store.setManagerCode("OPERATOR1");
         daoHelper.getDao(Store.class).saveOrUpdate(store);
         return Arrays.asList(store);
     }
 
-    private static List<Supplier> initSupplier(DaoHelper daoHelper, List<Contact> listContact,
+    private static List<Supplier> initSupplier(DaoHelper daoHelper, List<Partner> listContact,
             List<BankAccount> listBankAccount) {
         Supplier supplier = new Supplier();
         supplier.setCode("NIKE");
         supplier.setName("Nike company");
-        supplier.setPhoneNumber("0909825783");
-        supplier.setMainContact(listContact.get(0));
+        supplier.setSex(1); // TODO: why supplier has sex? I think Sex should only be applied on individual
+        // supplier.setPhoneNumber("0909825783");
+        // supplier.setMainContact(listContact.get(0));
 
-        supplier.setBankAccount(listBankAccount.get(0));
+        // supplier.setBankAccount(listBankAccount.get(0));
         daoHelper.getDao(Supplier.class).saveOrUpdate(supplier);
         return Arrays.asList(supplier);
     }
 
-    private static List<Contact> initContact(DaoHelper daoHelper, List<BankAccount> listBankAccounts) {
-        ContactType contactType = new ContactType();
+    private static List<Partner> initContact(DaoHelper daoHelper, List<BankAccount> listBankAccounts) {
+        PartnerCategory contactType = new PartnerCategory();
         contactType.setCode("B2B");
-        contactType.setContactFamilyType(ContactFamilyType.CUSTOMER);
-        contactType.setDescription("Ban si - Bussiness to bussiness");
-        daoHelper.getDao(ContactType.class).saveOrUpdate(contactType);
+        contactType.setName("B2B");
+        // contactType.setContactFamilyType(ContactFamilyType.CUSTOMER);
+        // contactType.setDescription("Ban si - Bussiness to bussiness");
+        daoHelper.getDao(PartnerCategory.class).saveOrUpdate(contactType);
 
-        Contact contact = new Contact();
+        Partner contact = new Customer();
         contact.setCode("CONTYBANLE123");
-        contact.setFullName("Cong ty ban le 123");
-        contact.setContactType(contactType);
-        contact.setEmail("banle123@solution3s.com");
+        contact.setName("Cong ty ban le 123");
+        // contact.setFullName("Cong ty ban le 123");
+        Set<PartnerCategory> partnerCateSet = new HashSet<PartnerCategory>();
+        partnerCateSet.add(contactType);
+        contact.setPartnerCateSet(partnerCateSet);
+        // contact.setEmail("banle123@solution3s.com");
 
-        contact.setBankAccount(listBankAccounts.get(1));
-        contact.setMaximumDayDebt(100L);
+        // contact.setBankAccount(listBankAccounts.get(1));
+        // contact.setMaximumDayDebt(100L);
 
         // daoHelper.getDao(Contact.class).saveOrUpdate(contact);
 
@@ -427,18 +433,20 @@ public class SSMDataLoader {
         shop.setRemark("Mo cua 8h-21h");
         // daoHelper.getDao(ContactShop.class).saveOrUpdate(shop);
 
-        contact.addShop(shop);
-        daoHelper.getDao(Contact.class).saveOrUpdate(contact);
+        ((Customer) contact).addShop(shop);
+        daoHelper.getDao(Partner.class).saveOrUpdate(contact);
         return Arrays.asList(contact);
     }
 
     private static List<Operator> initOperator(DaoHelper daoHelper) {
         Operator operator = new Operator();
-        operator.setLogin("testOperator");
+        // operator.setLogin("testOperator");
+        operator.setCode("testOperator"); // TODO: what is this?
+        operator.setUsername("testOperator");
         operator.setPassword("123456encrypted");
         operator.setEmail("test@solution3s.com");
         operator.setFullName("Test Operator");
-        operator.setActive(true);
+        // operator.setActive(true);
         daoHelper.getDao(Operator.class).saveOrUpdate(operator);
         return Arrays.asList(operator);
     }
@@ -472,7 +480,7 @@ public class SSMDataLoader {
         item.setBaseSellPrice(10000.0);
         item.setListUom(listUom);
         item.setSumUomName("size 39");
-        item.setCurrency(CurrencyEnum.VND);
+        item.setCurrency("VND");
         daoHelper.getDao(Item.class).saveOrUpdate(item);
 
         return Arrays.asList(item);

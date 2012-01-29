@@ -1,14 +1,13 @@
 package com.s3s.ssm.view.detail.param;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.internal.runtime.Product;
 
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.ItemPrice;
-import com.s3s.ssm.entity.config.CurrencyEnum;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
+import com.s3s.ssm.helper.CatalogHelper;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
@@ -46,14 +45,14 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, Item entity) {
         super.setReferenceDataModel(refDataModel, entity);
         refDataModel.putRefDataList(REF_PRODUCT_ID, getDaoHelper().getDao(Product.class).findAll(), null);
-        refDataModel.putRefDataList(REF_CURRENCY_ID, Arrays.asList(CurrencyEnum.values()), null);
+        refDataModel.putRefDataList(REF_CURRENCY_ID, CatalogHelper.getCurrenciesCode(getDaoHelper()), null);
         refDataModel.putRefDataList(REF_UOM_ID, getDaoHelper().getDao(UnitOfMeasure.class).findAll(), null);
         // refDataModel.putRefDataList(REF_UOM_ID, Arrays.asList("0", "1", "2"), null);
     }
 
     @Override
     protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
-        listDataModel.add(new DetailAttribute("contactType", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("partnerCategory", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("sellPrice", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("currency", FieldTypeEnum.TEXTBOX));
 

@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
-import com.s3s.ssm.entity.config.CurrencyEnum;
 
 @Entity
 @Table(name = "s_detail_invoice")
@@ -28,7 +27,7 @@ public class DetailInvoice extends AbstractIdOLObject {
     private Double moneyBeforeTax;
     private Double moneyOfTax = 0.0;
     private Double moneyAfterTax;
-    private CurrencyEnum currency = CurrencyEnum.getDefaultCurrency();
+    private String currency = "VND";
     private DetailInvoiceType type = DetailInvoiceType.SALES;
     private DetailInvoiceStatus status = DetailInvoiceStatus.OPEN;
 
@@ -136,12 +135,11 @@ public class DetailInvoice extends AbstractIdOLObject {
 
     @Column(name = "currency", nullable = false)
     @NotNull
-    @Enumerated(EnumType.STRING)
-    public CurrencyEnum getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(CurrencyEnum currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
