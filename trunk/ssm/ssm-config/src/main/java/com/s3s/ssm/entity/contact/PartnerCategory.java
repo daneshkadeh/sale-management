@@ -17,16 +17,13 @@
 package com.s3s.ssm.entity.contact;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -44,7 +41,8 @@ public class PartnerCategory extends AbstractCodeOLObject implements Serializabl
     private PartnerCategory parentCategory;// Parent Category
     private Boolean isActive = true;
     private Set<PartnerCategory> subPartnerCates = new HashSet<PartnerCategory>();
-    private List<Partner> partnerSet = new ArrayList<Partner>();
+
+    // private List<Partner> partnerSet = new ArrayList<Partner>();
 
     @Column(name = "name", length = 128)
     public String getName() {
@@ -74,14 +72,14 @@ public class PartnerCategory extends AbstractCodeOLObject implements Serializabl
         this.isActive = isActive;
     }
 
-    @ManyToMany(mappedBy = "partnerCateSet")
-    public List<Partner> getPartnerSet() {
-        return partnerSet;
-    }
-
-    public void setPartnerSet(List<Partner> partnerSet) {
-        this.partnerSet = partnerSet;
-    }
+    // @ManyToMany(mappedBy = "partnerCateSet")
+    // public List<Partner> getPartnerSet() {
+    // return partnerSet;
+    // }
+    //
+    // public void setPartnerSet(List<Partner> partnerSet) {
+    // this.partnerSet = partnerSet;
+    // }
 
     @OneToMany(mappedBy = "parentCategory")
     public Set<PartnerCategory> getSubPartnerCates() {

@@ -11,7 +11,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
-import com.s3s.ssm.entity.config.CurrencyEnum;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 
 @Entity
@@ -20,7 +19,7 @@ public class Shipment extends AbstractIdOLObject {
     private ShipmentType shipmentType;
     private ExportStoreForm exportStoreForm;
     private Double money;
-    private CurrencyEnum currency;
+    private String currency;
     private ShipmentStatus status;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -58,11 +57,11 @@ public class Shipment extends AbstractIdOLObject {
     @Column(name = "currency", nullable = false)
     @NotNull
     @Enumerated(EnumType.STRING)
-    public CurrencyEnum getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(CurrencyEnum currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

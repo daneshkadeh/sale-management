@@ -17,20 +17,19 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
-import com.s3s.ssm.entity.config.CurrencyEnum;
-import com.s3s.ssm.entity.contact.Contact;
+import com.s3s.ssm.entity.contact.Partner;
 
 @Entity
 @Table(name = "s_invoice")
 public class Invoice extends AbstractIdOLObject {
     private String invoiceNumber;
     private InvoiceType type;
-    private Contact contact;
+    private Partner contact;
     private Date createdDate;
     private Double moneyBeforeTax;
     private Double moneyOfTax = 0.0;
     private Double moneyAfterTax;
-    private CurrencyEnum currency = CurrencyEnum.getDefaultCurrency();
+    private String currency = "VND";
     private InvoiceStatus status = InvoiceStatus.OPEN;
     private InvoicePaymentStatus paymentStatus = InvoicePaymentStatus.NO_PAYMENT;
     private Set<DetailInvoice> listDetailInvoices = new HashSet<>();
@@ -61,11 +60,11 @@ public class Invoice extends AbstractIdOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id")
-    public Contact getContact() {
+    public Partner getContact() {
         return contact;
     }
 
-    public void setContact(Contact contact) {
+    public void setContact(Partner contact) {
         this.contact = contact;
     }
 
@@ -111,12 +110,11 @@ public class Invoice extends AbstractIdOLObject {
 
     @Column(name = "currency", nullable = false)
     @NotNull
-    @Enumerated(EnumType.STRING)
-    public CurrencyEnum getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(CurrencyEnum currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

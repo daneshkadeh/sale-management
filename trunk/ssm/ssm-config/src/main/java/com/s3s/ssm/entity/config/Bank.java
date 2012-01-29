@@ -11,7 +11,8 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 public class Bank extends AbstractCodeOLObject {
     private static final long serialVersionUID = -1834997390961013651L;
     private String name;
-    private String address;
+
+    // private String address;
 
     @Column(name = "bank_name", length = 128)
     public String getName() {
@@ -22,12 +23,12 @@ public class Bank extends AbstractCodeOLObject {
         this.name = name;
     }
 
-    @Column(name = "address", length = 256)
-    public String getAddress() {
-        return address;
-    }
+    // @Column(name = "address", length = 256)
+    // public String getAddress() {
+    // return address;
+    // }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    // public void setAddress(String address) {
+    // this.address = address;
+    // }
 }

@@ -154,11 +154,6 @@ CREATE TABLE `at_advantage_buyitem` (
   PRIMARY KEY  (`advantage_id`,`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---
--- Dumping data for table `at_advantage_buyitem`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -170,12 +165,6 @@ CREATE TABLE `at_advantage_buypackage` (
   `package_id` int(11) NOT NULL,
   PRIMARY KEY  (`advantage_id`,`package_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `at_advantage_buypackage`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -187,11 +176,6 @@ CREATE TABLE `at_advantage_giftitem` (
   `item_id` int(11) NOT NULL,
   PRIMARY KEY  (`advantage_id`,`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `at_advantage_giftitem`
---
-
 
 -- --------------------------------------------------------
 
@@ -205,11 +189,6 @@ CREATE TABLE `at_advantage_giftpackage` (
   PRIMARY KEY  (`advantage_id`,`package_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---
--- Dumping data for table `at_advantage_giftpackage`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -221,11 +200,6 @@ CREATE TABLE `at_item_uom` (
   `uom_id` int(11) NOT NULL,
   PRIMARY KEY  (`item_id`,`uom_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `at_item_uom`
---
-
 
 -- --------------------------------------------------------
 
@@ -426,11 +400,6 @@ CREATE TABLE `s_advantage` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_advantage`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -453,11 +422,6 @@ CREATE TABLE `s_article` (
   UNIQUE KEY `ui_barcode` (`barcode`),
   KEY `idx_item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_article`
---
-
 
 -- --------------------------------------------------------
 
@@ -502,11 +466,6 @@ CREATE TABLE `s_bank_account` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_bank_account` (`bank_id`,`account_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_bank_account`
---
-
 
 -- --------------------------------------------------------
 
@@ -592,11 +551,6 @@ CREATE TABLE `s_check_store` (
   KEY `idx_store_id` (`store_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_check_store`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -607,7 +561,7 @@ CREATE TABLE `s_contact_debt` (
   `id` int(11) NOT NULL auto_increment,
   `partner_id` int(11) NOT NULL,
   `debt_money` double NOT NULL,
-  `currency_id` int(11) default NULL,
+  `currency_id` varchar(3) default NULL,
   `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
@@ -617,11 +571,6 @@ CREATE TABLE `s_contact_debt` (
   UNIQUE KEY `ui_contact_currency` (`partner_id`,`currency_id`),
   KEY `idx_contact_id` (`partner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_contact_debt`
---
-
 
 -- --------------------------------------------------------
 
@@ -649,11 +598,6 @@ CREATE TABLE `s_contact_shop` (
   KEY `idx_contact_id` (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_contact_shop`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -675,12 +619,6 @@ CREATE TABLE `s_coupon` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_coupon`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -706,11 +644,6 @@ CREATE TABLE `s_coupon_item` (
   KEY `idx_coupon_id` (`coupon_id`),
   KEY `idx_item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_coupon_item`
---
-
 
 -- --------------------------------------------------------
 
@@ -788,11 +721,6 @@ CREATE TABLE `s_detail_check_store` (
   KEY `idx_checkstore_id` (`checkstore_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_detail_check_store`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -813,11 +741,6 @@ CREATE TABLE `s_detail_exchange_store` (
   UNIQUE KEY `ui_exchangestore_item` (`exchangestore_id`,`item_id`),
   KEY `ui_exchangestore_id` (`exchangestore_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_exchange_store`
---
-
 
 -- --------------------------------------------------------
 
@@ -840,12 +763,6 @@ CREATE TABLE `s_detail_export_store` (
   UNIQUE KEY `ui_export_item` (`exportstore_id`,`item_id`),
   KEY `idx_exportstore_id` (`exportstore_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_export_store`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -867,12 +784,6 @@ CREATE TABLE `s_detail_import_product` (
   UNIQUE KEY `ui_import_item` (`import_product_id`,`item_id`),
   KEY `idx_import_product_id` (`import_product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_import_product`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -904,11 +815,6 @@ CREATE TABLE `s_detail_invoice` (
   KEY `idx_invoice_id` (`invoice_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_detail_invoice`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -931,12 +837,6 @@ CREATE TABLE `s_detail_maintainance` (
   KEY `idx_maintainance_id` (`maintainance_id`),
   KEY `idx_item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_maintainance`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -959,12 +859,6 @@ CREATE TABLE `s_detail_sales_contract` (
   UNIQUE KEY `idx_salescon_item` (`salescon_id`,`item_id`),
   KEY `idx_salescon_id` (`salescon_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_sales_contract`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -987,11 +881,6 @@ CREATE TABLE `s_detail_session_store` (
   KEY `idx_sess_store_id` (`sess_store_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_detail_session_store`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1013,11 +902,6 @@ CREATE TABLE `s_detail_store` (
   UNIQUE KEY `ui_store_item` (`store_id`,`item_id`),
   KEY `idx_store_id` (`store_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_store`
---
-
 
 -- --------------------------------------------------------
 
@@ -1043,11 +927,6 @@ CREATE TABLE `s_detail_support_form` (
   KEY `idx_item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_detail_support_form`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1067,12 +946,6 @@ CREATE TABLE `s_detail_warranty` (
   PRIMARY KEY  (`id`),
   KEY `idx_warranty_id` (`warranty_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_warranty`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1129,12 +1002,6 @@ CREATE TABLE `s_exchange_store_form` (
   KEY `idx_from_store_id` (`from_store_id`),
   KEY `idx_to_store_id` (`to_store_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_exchange_store_form`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1158,12 +1025,6 @@ CREATE TABLE `s_export_store_form` (
   KEY `idx_invoice_id` (`invoice_id`),
   KEY `idx_contact_id` (`contact_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_export_store_form`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1186,11 +1047,6 @@ CREATE TABLE `s_import_product_form` (
   KEY `idx_salescon_id` (`salescon_id`),
   KEY `idx_salescon_store` (`salescon_id`,`store_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_import_product_form`
---
-
 
 -- --------------------------------------------------------
 
@@ -1219,12 +1075,6 @@ CREATE TABLE `s_invoice` (
   UNIQUE KEY `ui_invoice_number` (`invoice_number`),
   KEY `idx_contact_id` (`contact_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_invoice`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1245,12 +1095,6 @@ CREATE TABLE `s_item` (
   PRIMARY KEY  (`id`),
   KEY `idx_product_id` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_item`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1272,12 +1116,6 @@ CREATE TABLE `s_item_origin_price` (
   UNIQUE KEY `ui_item_supplier` (`item_id`,`supplier_id`),
   KEY `idx_item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_item_origin_price`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1299,11 +1137,6 @@ CREATE TABLE `s_item_price` (
   UNIQUE KEY `ui_item_contacttype_id` (`item_id`,`contacttype_id`),
   KEY `idx_item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_item_price`
---
-
 
 -- --------------------------------------------------------
 
@@ -1328,12 +1161,6 @@ CREATE TABLE `s_maintainance_form` (
   PRIMARY KEY  (`id`),
   KEY `idx_contact_id` (`contact_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_maintainance_form`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1353,12 +1180,6 @@ CREATE TABLE `s_manufacturer` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_manufacturer_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_manufacturer`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1402,11 +1223,6 @@ CREATE TABLE `s_package` (
   UNIQUE KEY `ui_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_package`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1431,10 +1247,6 @@ CREATE TABLE `s_package_line` (
   KEY `idx_package_id` (`package_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_package_line`
---
-
 
 -- --------------------------------------------------------
 
@@ -1456,11 +1268,6 @@ CREATE TABLE `s_package_line_item_price` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_package_line_item_price`
---
-
 
 -- --------------------------------------------------------
 
@@ -1491,11 +1298,6 @@ CREATE TABLE `s_paid_money_form` (
   KEY `idx_invoice_id` (`invoice_id`),
   KEY `idx_importstore_id` (`importstore_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_paid_money_form`
---
-
 
 -- --------------------------------------------------------
 
@@ -1555,14 +1357,6 @@ CREATE TABLE `s_partner_category` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
 
---
--- Dumping data for table `s_partner_category`
---
-
-INSERT INTO `s_partner_category` (`id`, `code`, `name`, `parent_category_id`, `is_active`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(1, '1', 'SUPPLIER', NULL, 1, 'admin', '2012-01-24 14:18:49', 'admin', '2012-01-24 17:12:23', 1),
-(2, '2', 'GOLD', 1, 1, 'admin', '2012-01-24 14:19:25', 'admin', '2012-01-24 14:19:25', 0);
-
 -- --------------------------------------------------------
 
 --
@@ -1573,13 +1367,6 @@ CREATE TABLE `s_partner_partner_category` (
   `partner_id` int(11) NOT NULL,
   `partner_category_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `s_partner_partner_category`
---
-
-INSERT INTO `s_partner_partner_category` (`partner_id`, `partner_category_id`) VALUES
-(4, 1);
 
 -- --------------------------------------------------------
 
@@ -1606,11 +1393,6 @@ CREATE TABLE `s_payment` (
   KEY `idx_contact_id` (`contact_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_payment`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1630,11 +1412,6 @@ CREATE TABLE `s_payment_type` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_payment_type`
---
-
 
 -- --------------------------------------------------------
 
@@ -1661,11 +1438,6 @@ CREATE TABLE `s_product` (
   UNIQUE KEY `ui_product_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_product`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1685,11 +1457,6 @@ CREATE TABLE `s_product_type` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_product_type_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_product_type`
---
-
 
 -- --------------------------------------------------------
 
@@ -1714,12 +1481,6 @@ CREATE TABLE `s_received_money_form` (
   PRIMARY KEY  (`id`),
   KEY `idx_related_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_received_money_form`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1746,11 +1507,6 @@ CREATE TABLE `s_sales_contract` (
   KEY `idx_supplier_id` (`supplier_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_sales_contract`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1775,11 +1531,6 @@ CREATE TABLE `s_session_store` (
   KEY `idx_store_year` (`store_id`,`refer_year`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_session_store`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1802,11 +1553,6 @@ CREATE TABLE `s_shipment` (
   KEY `idx_exportstore_id` (`exportstore_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_shipment`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1828,11 +1574,6 @@ CREATE TABLE `s_shipment_type` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_shipment_type`
---
-
 
 -- --------------------------------------------------------
 
@@ -1858,11 +1599,6 @@ CREATE TABLE `s_store` (
   UNIQUE KEY `ui_store_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_store`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1879,13 +1615,6 @@ CREATE TABLE `s_supplier` (
   `fax` varchar(20) collate utf8_bin default NULL,
   `email` varchar(32) collate utf8_bin default NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `s_supplier`
---
-
-INSERT INTO `s_supplier` (`supplier_id`, `representer`, `sex`, `position`, `address`, `phone`, `fax`, `email`) VALUES
-(2, 'Thu Hien', 1, 'Giam doc', 'AAAAA', '123456', '1234556', NULL);
 
 -- --------------------------------------------------------
 
@@ -1912,11 +1641,6 @@ CREATE TABLE `s_support_form` (
   KEY `idx_end_date` (`end_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_support_form`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1938,13 +1662,6 @@ CREATE TABLE `s_unit_of_measure` (
   UNIQUE KEY `ui_uom_code` (`code`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
 
---
--- Dumping data for table `s_unit_of_measure`
---
-
-INSERT INTO `s_unit_of_measure` (`id`, `uom_category_id`, `code`, `uom_name`, `is_base_measure`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(1, 1, '1', 'met', 0, 'admin', '2012-01-24 03:03:24', 'admin', '2012-01-24 03:03:24', 0);
-
 -- --------------------------------------------------------
 
 --
@@ -1964,15 +1681,6 @@ CREATE TABLE `s_uom_category` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_uom_category_code` (`code`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
-
---
--- Dumping data for table `s_uom_category`
---
-
-INSERT INTO `s_uom_category` (`id`, `code`, `name`, `parentUomCategory_id`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(1, '1', 'Chieu dai', NULL, 'admin', '2012-01-24 03:03:04', 'admin', '2012-01-24 03:03:04', 0),
-(2, 'm', 'mét', 1, 'admin', '2012-01-24 14:33:29', 'admin', '2012-01-24 14:33:29', 0),
-(3, 'mm', 'milimet', 1, 'admin', '2012-01-24 14:33:51', 'admin', '2012-01-24 14:33:51', 0);
 
 -- --------------------------------------------------------
 
@@ -1999,11 +1707,6 @@ CREATE TABLE `s_upload_file` (
   KEY `idx_diskfile` (`diskfile`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `s_upload_file`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -2019,10 +1722,6 @@ CREATE TABLE `s_warning_board` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_warning_board`
---
 
 
 -- --------------------------------------------------------
@@ -2046,15 +1745,6 @@ CREATE TABLE `s_warranty_form` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_article_id` (`article_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_warranty_form`
---
-
-
---
--- Constraints for dumped tables
---
 
 --
 -- Constraints for table `acl_entry`

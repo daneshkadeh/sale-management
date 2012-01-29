@@ -2,8 +2,6 @@ package com.s3s.ssm.entity.sales;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,7 +10,6 @@ import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
-import com.s3s.ssm.entity.config.CurrencyEnum;
 
 @Entity
 @Table(name = "s_detail_sales_contract")
@@ -21,7 +18,7 @@ public class DetailSalesContract extends AbstractIdOLObject {
     private Item item;
     private Long amount;
     private Double unitPrice;
-    private CurrencyEnum currency;
+    private String currency;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "salescon_id", nullable = false)
@@ -65,12 +62,11 @@ public class DetailSalesContract extends AbstractIdOLObject {
 
     @Column(name = "currency", nullable = false)
     @NotNull
-    @Enumerated(EnumType.STRING)
-    public CurrencyEnum getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(CurrencyEnum currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

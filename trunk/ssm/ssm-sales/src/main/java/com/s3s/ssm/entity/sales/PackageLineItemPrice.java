@@ -2,8 +2,6 @@ package com.s3s.ssm.entity.sales;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,16 +10,15 @@ import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.PackageLine;
-import com.s3s.ssm.entity.config.ContactType;
-import com.s3s.ssm.entity.config.CurrencyEnum;
+import com.s3s.ssm.entity.contact.PartnerCategory;
 
 @Entity
 @Table(name = "s_package_line_item_price")
 public class PackageLineItemPrice extends AbstractIdOLObject {
     private PackageLine packageLine;
-    private ContactType contactType;
+    private PartnerCategory partnerCategory;
     private Double sellItemPrice;
-    private CurrencyEnum currency;
+    private String currency;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "package_line_id", nullable = false)
@@ -37,12 +34,12 @@ public class PackageLineItemPrice extends AbstractIdOLObject {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_type_id", nullable = false)
     @NotNull
-    public ContactType getContactType() {
-        return contactType;
+    public PartnerCategory getPartnerCategory() {
+        return partnerCategory;
     }
 
-    public void setContactType(ContactType contactType) {
-        this.contactType = contactType;
+    public void setPartnerCategory(PartnerCategory contactType) {
+        this.partnerCategory = contactType;
     }
 
     @Column(name = "sell_price", nullable = false)
@@ -57,12 +54,11 @@ public class PackageLineItemPrice extends AbstractIdOLObject {
 
     @Column(name = "currency", nullable = false)
     @NotNull
-    @Enumerated(EnumType.STRING)
-    public CurrencyEnum getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(CurrencyEnum currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
