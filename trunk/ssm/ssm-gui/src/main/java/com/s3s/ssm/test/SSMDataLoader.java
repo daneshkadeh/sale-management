@@ -20,10 +20,14 @@ import com.s3s.ssm.entity.catalog.Advantage;
 import com.s3s.ssm.entity.catalog.Article;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.ItemPrice;
+import com.s3s.ssm.entity.catalog.ItemPropertyValue;
 import com.s3s.ssm.entity.catalog.Manufacturer;
 import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.catalog.ProductFamilyType;
+import com.s3s.ssm.entity.catalog.ProductProperty;
+import com.s3s.ssm.entity.catalog.ProductProperty.PropertyType;
+import com.s3s.ssm.entity.catalog.ProductPropertyElement;
 import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.entity.catalog.SPackage;
 import com.s3s.ssm.entity.catalog.Store;
@@ -131,6 +135,10 @@ public class SSMDataLoader {
         daoHelper.getDao(Manufacturer.class).deleteAll(daoHelper.getDao(Manufacturer.class).findAll());
         daoHelper.getDao(ProductType.class).deleteAll(daoHelper.getDao(ProductType.class).findAll());
 
+        daoHelper.getDao(ProductProperty.class).deleteAll(daoHelper.getDao(ProductProperty.class).findAll());
+        daoHelper.getDao(ProductPropertyElement.class).deleteAll(
+                daoHelper.getDao(ProductPropertyElement.class).findAll());
+
         daoHelper.getDao(UnitOfMeasure.class).deleteAll(daoHelper.getDao(UnitOfMeasure.class).findAll());
         daoHelper.getDao(UomCategory.class).deleteAll(daoHelper.getDao(UomCategory.class).findAll());
 
@@ -164,6 +172,10 @@ public class SSMDataLoader {
 
         initManufacturer(daoHelper);
         initProductType(daoHelper);
+
+        List<ProductProperty> properties = initProductProperty(daoHelper);
+        List<ProductPropertyElement> elements = initProductPropertyElements(daoHelper, properties);
+
         List<Product> products = initProduct(daoHelper);
 
         List<Item> listItem = initItem(daoHelper, listUom, products);
@@ -181,6 +193,35 @@ public class SSMDataLoader {
         List<SalesContract> listSalesContracts = initSalesContracts(daoHelper, listSupplier, listItem);
         List<Invoice> listInvoice = initInvoice(daoHelper, listItem, listContact);
         List<Payment> listPayments = initPayment(daoHelper, listInvoice, listContact);
+    }
+
+    private static List<ProductPropertyElement> initProductPropertyElements(DaoHelper daoHelper,
+            List<ProductProperty> properties) {
+        ProductPropertyElement element1 = new ProductPropertyElement();
+        element1.setProperty(properties.get(0));
+        element1.setValue("GREEN");
+
+        ProductPropertyElement element2 = new ProductPropertyElement();
+        element2.setProperty(properties.get(0));
+        element2.setValue("BLUE");
+        daoHelper.getDao(ProductPropertyElement.class).save(element1);
+        daoHelper.getDao(ProductPropertyElement.class).save(element2);
+        return Arrays.asList(element1, element2);
+    }
+
+    private static List<ProductProperty> initProductProperty(DaoHelper daoHelper) {
+        ProductProperty property1 = new ProductProperty();
+        property1.setCode("COLOR");
+        property1.setName("Mau sac");
+        property1.setType(PropertyType.SIMPLE);
+        daoHelper.getDao(ProductProperty.class).saveOrUpdate(property1);
+
+        ProductProperty property2 = new ProductProperty();
+        property2.setCode("SIZE");
+        property2.setName("Kich thuoc");
+        property2.setType(PropertyType.SIMPLE);
+        daoHelper.getDao(ProductProperty.class).saveOrUpdate(property2);
+        return Arrays.asList(property1, property2);
     }
 
     private static List<Advantage> initAdvantage(DaoHelper daoHelper, List<Item> listItem, List<SPackage> listPackage) {
@@ -481,6 +522,17 @@ public class SSMDataLoader {
         item.setListUom(listUom);
         item.setSumUomName("size 39");
         item.setCurrency("VND");
+
+        ItemPropertyValue propertyValue = new ItemPropertyValue();
+        List<ProductProperty> properties = new ArrayList<>(products.get(0).getProperties());
+        propertyValue.setProperty(properties.get(0));
+        DetachedCriteria elementDc = daoHelper.getDao(ProductPropertyElement.class).getCriteria();
+        elementDc.add(Restrictions.eq("property", properties.get(0)));
+        List<ProductPropertyElement> elements = daoHelper.getDao(ProductPropertyElement.class).findByCriteria(
+                elementDc, 0, 1);
+
+        propertyValue.setElement(elements.get(0));
+        item.addPropertyValue(propertyValue);
         daoHelper.getDao(Item.class).saveOrUpdate(item);
 
         return Arrays.asList(item);
@@ -502,6 +554,7 @@ public class SSMDataLoader {
 
         product.setType(type);
         product.setManufacturer(manufacturer);
+        product.addProperty(daoHelper.getDao(ProductProperty.class).findAll().get(0));
         daoHelper.getDao(Product.class).saveOrUpdate(product);
 
         return Arrays.asList(product);

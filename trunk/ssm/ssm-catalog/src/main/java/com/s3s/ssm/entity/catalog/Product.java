@@ -1,8 +1,15 @@
 package com.s3s.ssm.entity.catalog;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -23,6 +30,7 @@ public class Product extends AbstractCodeOLObject {
     private String description;
     private UnitOfMeasure mainUom;
     private UploadFile uploadFile;
+    private Set<ProductProperty> properties = new HashSet<>();
 
     @Column(name = "name", nullable = false, length = 128)
     @NotNull
@@ -91,6 +99,21 @@ public class Product extends AbstractCodeOLObject {
 
     public void setUploadFile(UploadFile uploadFile) {
         this.uploadFile = uploadFile;
+    }
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(name = "at_product_property", joinColumns = { @JoinColumn(name = "product_id") }, inverseJoinColumns = { @JoinColumn(name = "property_id") })
+    public
+            Set<ProductProperty> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Set<ProductProperty> properties) {
+        this.properties = properties;
+    }
+
+    public void addProperty(ProductProperty property) {
+        properties.add(property);
     }
 
 }

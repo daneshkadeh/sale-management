@@ -27,7 +27,8 @@ public class Item extends AbstractIdOLObject {
     private String sumUomName;
     private Double baseSellPrice;
     private String currency;
-    private List<UnitOfMeasure> listUom = new ArrayList<>();
+    private List<UnitOfMeasure> listUom = new ArrayList<>(); // TODO: this should be move to product?
+    private Set<ItemPropertyValue> listPropertyValue = new HashSet<>();
     private Set<ItemPrice> listItemPrices = new HashSet<>();
 
     // @ManyToOne
@@ -71,7 +72,7 @@ public class Item extends AbstractIdOLObject {
     }
 
     // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @JoinTable(name = "at_item_uom", joinColumns = { @JoinColumn(name = "item_id") }, inverseJoinColumns = { @JoinColumn(name = "uom_id") })
     public
             List<UnitOfMeasure> getListUom() {
@@ -80,6 +81,20 @@ public class Item extends AbstractIdOLObject {
 
     public void setListUom(List<UnitOfMeasure> listUom) {
         this.listUom = listUom;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "item")
+    public Set<ItemPropertyValue> getListPropertyValue() {
+        return listPropertyValue;
+    }
+
+    public void setListPropertyValue(Set<ItemPropertyValue> listPropertyValue) {
+        this.listPropertyValue = listPropertyValue;
+    }
+
+    public void addPropertyValue(ItemPropertyValue propertyValue) {
+        propertyValue.setItem(this);
+        listPropertyValue.add(propertyValue);
     }
 
     // @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
