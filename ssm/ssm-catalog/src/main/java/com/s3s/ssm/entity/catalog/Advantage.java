@@ -47,7 +47,7 @@ public class Advantage extends AbstractCodeOLObject {
         this.discountPercent = discountPercent;
     }
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @JoinTable(name = "at_advantage_buypackage", joinColumns = { @JoinColumn(name = "advantage_id") }, inverseJoinColumns = { @JoinColumn(name = "package_id") })
     public
             Set<SPackage> getListBuyPackage() {
@@ -58,7 +58,7 @@ public class Advantage extends AbstractCodeOLObject {
         this.listBuyPackage = listBuyPackage;
     }
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @JoinTable(name = "at_advantage_buyitem", joinColumns = { @JoinColumn(name = "advantage_id") }, inverseJoinColumns = { @JoinColumn(name = "item_id") })
     public
             Set<Item> getListBuyItem() {
@@ -69,7 +69,7 @@ public class Advantage extends AbstractCodeOLObject {
         this.listBuyItem = listBuyItem;
     }
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @JoinTable(name = "at_advantage_giftpackage", joinColumns = { @JoinColumn(name = "advantage_id") }, inverseJoinColumns = { @JoinColumn(name = "package_id") })
     public
             Set<SPackage> getListGiftPackage() {
@@ -80,7 +80,8 @@ public class Advantage extends AbstractCodeOLObject {
         this.listGiftPackage = listGiftPackage;
     }
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    // TODO: do not cascadeType.ALL for this attributes because all items will be deleted
+    @ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @JoinTable(name = "at_advantage_giftitem", joinColumns = { @JoinColumn(name = "advantage_id") }, inverseJoinColumns = { @JoinColumn(name = "item_id") })
     public
             Set<Item> getListGiftItem() {

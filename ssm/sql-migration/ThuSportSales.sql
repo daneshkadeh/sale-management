@@ -1416,6 +1416,53 @@ CREATE TABLE `s_payment_type` (
 
 -- --------------------------------------------------------
 
+CREATE TABLE `s_product_property` (
+  `id` int(11) NOT NULL auto_increment,
+  `code` varchar(32) collate utf8_bin default NULL,
+  `name` varchar(128) collate utf8_bin default NULL,
+  `property_type` varchar(32) collate utf8_bin default NULL,
+  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `ui_product_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+CREATE TABLE `s_productproperty_element` (
+  `id` int(11) NOT NULL auto_increment,
+  `property_id` int(11) NOT NULL,
+  `element_value` varchar(128) collate utf8_bin default NULL,
+  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+CREATE TABLE `s_itemproperty_value` (
+  `id` int(11) NOT NULL auto_increment,
+  `item_id` int(11) NOT NULL,
+  `property_id` int(11) NOT NULL,
+  `element_id` int(11) default NULL,
+  `element_value` varchar(128) collate utf8_bin default NULL,
+  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_i` datetime NOT NULL,
+  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
+  `dte_log_lu` datetime NOT NULL,
+  `version` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+CREATE TABLE `at_product_property` (
+  `product_id` int(11) NOT NULL,
+  `property_id` int(11) NOT NULL,
+  PRIMARY KEY  (`product_id`,`property_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ;
+
 --
 -- Table structure for table `s_product`
 --
