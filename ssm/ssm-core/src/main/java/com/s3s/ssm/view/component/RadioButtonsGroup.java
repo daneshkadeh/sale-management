@@ -1,3 +1,17 @@
+/*
+ * RadioButtonsGroup
+ * 
+ * Project: SSM
+ * 
+ * Copyright 2010 by HBASoft
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information
+ * of HBASoft. ("Confidential Information"). You
+ * shall not disclose such Confidential Information and shall
+ * use it only in accordance with the terms of the license
+ * agreements you entered into with HBASoft.
+ */
 package com.s3s.ssm.view.component;
 
 import java.util.HashMap;
@@ -61,7 +75,7 @@ public class RadioButtonsGroup<T> extends JPanel {
     }
 
     private void initComponent(Map<T, String> value2Label, T selectedValue) {
-        setLayout(new MigLayout("wrap, insets 0 0 0 0"));
+        setLayout(new MigLayout("wrap, ins 0"));
         radioBtn2Value = new HashMap<>(value2Label.size());
         ButtonGroup btnGroup = new ButtonGroup();
         for (Entry<T, String> val2Lbl : value2Label.entrySet()) {

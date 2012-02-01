@@ -4,7 +4,6 @@
  * Project: SSM
  * 
  * Copyright 2010 by HBASoft
- * Rue de la Bergère 7, 1217 Meyrin
  * All rights reserved.
  *
  * This software is the confidential and proprietary information

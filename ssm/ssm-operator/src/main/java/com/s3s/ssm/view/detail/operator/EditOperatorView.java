@@ -4,7 +4,6 @@
  * Project: SSM
  * 
  * Copyright 2010 by HBASoft
- * Rue de la Bergère 7, 1217 Meyrin
  * All rights reserved.
  *
  * This software is the confidential and proprietary information
@@ -54,7 +53,7 @@ public class EditOperatorView extends AbstractDetailView<Operator> {
         detailDataModel.addAttribute("fullName", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("address", FieldTypeEnum.RICH_TEXTBOX);
+        detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
         detailDataModel.addAttribute("roles", FieldTypeEnum.MULTI_SELECT_BOX).referenceDataId(ROLE_REF_ID);
         detailDataModel.addAttribute("isEnabled", FieldTypeEnum.CHECKBOX);
     }
