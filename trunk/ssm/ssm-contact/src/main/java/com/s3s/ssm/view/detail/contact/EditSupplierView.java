@@ -1,3 +1,17 @@
+/*
+ * EditSupplierView
+ * 
+ * Project: SSM
+ * 
+ * Copyright 2010 by HBASoft
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information
+ * of HBASoft. ("Confidential Information"). You
+ * shall not disclose such Confidential Information and shall
+ * use it only in accordance with the terms of the license
+ * agreements you entered into with HBASoft.
+ */
 package com.s3s.ssm.view.detail.contact;
 
 import com.s3s.ssm.entity.contact.Supplier;
@@ -19,12 +33,12 @@ public class EditSupplierView extends AbstractDetailView<Supplier> {
         detailDataModel.addAttribute("representer", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("sex", FieldTypeEnum.SEX_RADIO);
         detailDataModel.addAttribute("position", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("address", FieldTypeEnum.RICH_TEXTBOX);
+        detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
         detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX);
-        detailDataModel.addAttribute("comment", FieldTypeEnum.RICH_TEXTBOX);
+        detailDataModel.addAttribute("comment", FieldTypeEnum.TEXTAREA);
     }
 
 }

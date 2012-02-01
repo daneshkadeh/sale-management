@@ -1,3 +1,17 @@
+/*
+ * EditProductView
+ * 
+ * Project: SSM
+ * 
+ * Copyright 2010 by HBASoft
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information
+ * of HBASoft. ("Confidential Information"). You
+ * shall not disclose such Confidential Information and shall
+ * use it only in accordance with the terms of the license
+ * agreements you entered into with HBASoft.
+ */
 package com.s3s.ssm.view.detail.param;
 
 import com.s3s.ssm.entity.catalog.Manufacturer;
@@ -27,7 +41,7 @@ public class EditProductView extends AbstractDetailView<Product> {
         detailDataModel.addAttribute("type", FieldTypeEnum.DROPDOWN).referenceDataId(TYPE_REF_ID);
         detailDataModel.addAttribute("manufacturer", FieldTypeEnum.DROPDOWN).referenceDataId(MANU_REF_ID);
         detailDataModel.addAttribute("model", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("description", FieldTypeEnum.RICH_TEXTBOX).editable(true);
+        detailDataModel.addAttribute("description", FieldTypeEnum.TEXTAREA).editable(true);
         detailDataModel.addAttribute("mainUom", FieldTypeEnum.DROPDOWN).referenceDataId(UOM_REF_ID);
         detailDataModel.addAttribute("uploadFile.data", FieldTypeEnum.IMAGE);
     }

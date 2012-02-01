@@ -1,3 +1,17 @@
+/*
+ * EditCustomerView
+ * 
+ * Project: SSM
+ * 
+ * Copyright 2010 by HBASoft
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information
+ * of HBASoft. ("Confidential Information"). You
+ * shall not disclose such Confidential Information and shall
+ * use it only in accordance with the terms of the license
+ * agreements you entered into with HBASoft.
+ */
 package com.s3s.ssm.view.detail.contact;
 
 import java.util.List;
@@ -81,7 +95,7 @@ public class EditCustomerView extends AbstractMasterDetailView<Customer, Contact
         detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).setMandatory(true);
         detailDataModel.addAttribute("partnerCateSet", FieldTypeEnum.MULTI_SELECT_BOX).referenceDataId(
                 PARTNER_CATE_REF_ID);
-        detailDataModel.addAttribute("address", FieldTypeEnum.RICH_TEXTBOX);
+        detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
         detailDataModel.addAttribute("fixPhone", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("mobilePhone", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX);

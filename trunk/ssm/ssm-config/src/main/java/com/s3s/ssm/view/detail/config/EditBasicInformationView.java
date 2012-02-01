@@ -1,3 +1,17 @@
+/*
+ * EditBasicInformationView
+ * 
+ * Project: SSM
+ * 
+ * Copyright 2010 by HBASoft
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information
+ * of HBASoft. ("Confidential Information"). You
+ * shall not disclose such Confidential Information and shall
+ * use it only in accordance with the terms of the license
+ * agreements you entered into with HBASoft.
+ */
 package com.s3s.ssm.view.detail.config;
 
 import com.s3s.ssm.entity.config.Bank;
@@ -29,7 +43,7 @@ public class EditBasicInformationView extends AbstractDetailView<BasicInformatio
         detailDataModel.addAttribute("agent", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("position", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("logo.data", FieldTypeEnum.IMAGE);
-        detailDataModel.addAttribute("companyAddress", FieldTypeEnum.RICH_TEXTBOX);
+        detailDataModel.addAttribute("companyAddress", FieldTypeEnum.TEXTAREA);
         detailDataModel.addAttribute("tel", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("website", FieldTypeEnum.TEXTBOX);

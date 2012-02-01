@@ -1,3 +1,17 @@
+/*
+ * AbstractDetailView
+ * 
+ * Project: SSM
+ * 
+ * Copyright 2010 by HBASoft
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information
+ * of HBASoft. ("Confidential Information"). You
+ * shall not disclose such Confidential Information and shall
+ * use it only in accordance with the terms of the license
+ * agreements you entered into with HBASoft.
+ */
 package com.s3s.ssm.view;
 
 import java.awt.event.ActionEvent;
@@ -35,6 +49,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -165,8 +180,11 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         // Layout the screen
         setLayout(new MigLayout("wrap, fill"));
 
+        // if(detailDataModel.getTabList().isEmpty())
+
         JPanel pnlEdit = new JPanel(new MigLayout("wrap 2", "[][fill, grow]"));
-        for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
+        for (int i = 0; i < detailDataModel.getDetailAttributes().size(); i++) {
+            DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + attribute.getName());
             if (attribute.isMandatory()) {
@@ -201,7 +219,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
                 ((JFormattedTextField) dataField).setValue(value);
                 break;
-            case RICH_TEXTBOX:
+            case TEXTAREA:
                 dataField = new JTextArea(DEFAULT_RICH_TEXT_ROWS, DEFAULT_TEXTFIELD_COLUMN);
                 ((JTextArea) dataField).setLineWrap(true);
                 ((JTextArea) dataField).setWrapStyleWord(true);
@@ -262,7 +280,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 pnlEdit.add(dataField);
                 break;
             case CHECKBOX:
-                Boolean isSelected = value != null ? (Boolean) value : false;
+                Boolean isSelected = BooleanUtils.isTrue((Boolean) value);
                 dataField = new JCheckBox("", isSelected);
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
@@ -367,7 +385,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     JFormattedTextField txtField = (JFormattedTextField) component;
                     beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(txtField.getValue()));
                     break;
-                case RICH_TEXTBOX:
+                case TEXTAREA:
                     JTextArea rtxtField = (JTextArea) component;
                     beanWrapper.setPropertyValue(attribute.getName(),
                             paramClass.cast(StringUtils.trimToEmpty(rtxtField.getText())));

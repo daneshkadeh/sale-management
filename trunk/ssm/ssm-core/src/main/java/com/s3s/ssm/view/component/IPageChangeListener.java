@@ -1,17 +1,16 @@
 /*
- * PageChangeListener
+ * IPageChangeListener
  * 
  * Project: SSM
  * 
- * Copyright 2010 by S3SSoft
- * Rue de la Bergère 7, 1217 Meyrin
+ * Copyright 2010 by HBASoft
  * All rights reserved.
  *
  * This software is the confidential and proprietary information
- * of S3SSoft. ("Confidential Information"). You
+ * of HBASoft. ("Confidential Information"). You
  * shall not disclose such Confidential Information and shall
  * use it only in accordance with the terms of the license
- * agreements you entered into with S3SSoft.
+ * agreements you entered into with HBASoft.
  */
 
 package com.s3s.ssm.view.component;

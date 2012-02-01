@@ -1,11 +1,27 @@
+/*
+ * DetailDataModel
+ * 
+ * Project: SSM
+ * 
+ * Copyright 2010 by HBASoft
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information
+ * of HBASoft. ("Confidential Information"). You
+ * shall not disclose such Confidential Information and shall
+ * use it only in accordance with the terms of the license
+ * agreements you entered into with HBASoft.
+ */
 package com.s3s.ssm.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Icon;
+
 public class DetailDataModel {
     public enum FieldTypeEnum {
-        TEXTBOX, RICH_TEXTBOX, DROPDOWN, MULTI_SELECT_BOX, PASSWORD, CHECKBOX, DATE, RADIO_BUTTON, IMAGE, FILE_CHOOSER, ENTITY_CHOOSER, SALE_TARGET, SEX_RADIO;
+        TEXTBOX, TEXTAREA, DROPDOWN, MULTI_SELECT_BOX, PASSWORD, CHECKBOX, DATE, RADIO_BUTTON, IMAGE, FILE_CHOOSER, ENTITY_CHOOSER, SALE_TARGET, SEX_RADIO;
     }
 
     private List<DetailAttribute> detailAttributes = new ArrayList<>();
@@ -19,8 +35,10 @@ public class DetailDataModel {
     public class TabInfoData {
         private int index;
         private String name;
+        private String tooltip;
+        private Icon icon;
 
-        public TabInfoData(int index, String name) {
+        public TabInfoData(int index, String name, String tooltip, Icon icon) {
             this.index = index;
             this.name = name;
         }
@@ -41,6 +59,22 @@ public class DetailDataModel {
             this.name = name;
         }
 
+        public String getTooltip() {
+            return tooltip;
+        }
+
+        public void setTooltip(String tooltip) {
+            this.tooltip = tooltip;
+        }
+
+        public Icon getIcon() {
+            return icon;
+        }
+
+        public void setIcon(Icon icon) {
+            this.icon = icon;
+        }
+
     }
 
     public DetailAttribute addAttribute(String name, FieldTypeEnum fieldType) {
@@ -53,6 +87,10 @@ public class DetailDataModel {
         return detailAttributes;
     }
 
+    public List<TabInfoData> getTabList() {
+        return tabList;
+    }
+
     /**
      * Layout the tab.
      * 
@@ -60,8 +98,8 @@ public class DetailDataModel {
      *            the title of the tab.
      * @return
      */
-    public DetailDataModel tab(String name) {
-        tabList.add(new TabInfoData(detailAttributes.size(), name));
+    public DetailDataModel tab(String name, String tooltip, Icon icon) {
+        tabList.add(new TabInfoData(detailAttributes.size(), name, tooltip, icon));
         return this;
     }
 

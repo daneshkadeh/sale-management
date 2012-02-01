@@ -1,3 +1,17 @@
+/*
+ * AbstractListView
+ * 
+ * Project: SSM
+ * 
+ * Copyright 2010 by HBASoft
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information
+ * of HBASoft. ("Confidential Information"). You
+ * shall not disclose such Confidential Information and shall
+ * use it only in accordance with the terms of the license
+ * agreements you entered into with HBASoft.
+ */
 package com.s3s.ssm.view;
 
 import java.awt.Color;
@@ -23,12 +37,14 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
+import javax.swing.AbstractListModel;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Box;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -100,10 +116,13 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private static final String ADD_ACTION_KEY = "addAction";
     private static final Color HIGHLIGHT_ROW_COLOR = new Color(97, 111, 231);
     private static final int DEFAULT_PAGE_SIZE = 10;
+    public static final int DEFAULT_ROW_HEADER_WIDTH = 20;
+
     private static final String CHOOSER_DIALOG_TITLE = "Choose Directory";
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
     private JXTable tblListEntities;
+    private JList<Integer> rowHeader;
     private JXTable tblFooter;
     private AdvanceTableModel mainTableModel;
     private PagingNavigator pagingNavigator;
@@ -339,7 +358,26 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         tblListEntities.getColumnModel().addColumnModelListener(tblFooter);
 
+        // The rowHeader show the order number for the rows of the main table.
+        rowHeader = new JList<Integer>(new AbstractListModel<Integer>() {
+            private static final long serialVersionUID = -771503812711976068L;
+
+            @Override
+            public int getSize() {
+                return entities.size();
+            }
+
+            @Override
+            public Integer getElementAt(int index) {
+                return index + 1;
+            }
+        });
+
+        rowHeader.setCellRenderer(new RowHeaderRenderer(tblListEntities));
+        rowHeader.setFixedCellWidth(DEFAULT_ROW_HEADER_WIDTH);
+        rowHeader.setFixedCellHeight(tblListEntities.getRowHeight());
         JScrollPane mainScrollpane = new JScrollPane(tblListEntities);
+        mainScrollpane.setRowHeaderView(rowHeader);
         // mainScrollpane.getViewport().setBackground(Color.WHITE);
 
         this.add(mainScrollpane);
@@ -671,6 +709,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         // fireTableDataChanged to rerender the table.
         ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
         ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
+        rowHeader.repaint();
+        rowHeader.revalidate();
 
         // After fireTableDataChanged() the selection is lost. We need to reselect it programmatically.
         tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
@@ -753,6 +793,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         // fireTableDataChanged to re-render the table.
         ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
         ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
+        rowHeader.repaint();
+        rowHeader.revalidate();
 
         tblListEntities.packAll(); // resize all column fit to their contents
     }
