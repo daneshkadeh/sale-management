@@ -70,6 +70,7 @@ import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
 import com.s3s.ssm.view.component.ImageChooser;
 import com.s3s.ssm.view.component.MultiSelectionBox;
+import com.s3s.ssm.view.component.RadioButtonsGroup;
 import com.s3s.ssm.view.component.SaleTargetComp;
 import com.s3s.ssm.view.component.SaleTargetModel;
 import com.s3s.ssm.view.component.SexRadio;
@@ -179,7 +180,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     protected void initComponents() {
         // Layout the screen
         setLayout(new MigLayout("wrap, fill"));
-
+        
         // if(detailDataModel.getTabList().isEmpty())
 
         JPanel pnlEdit = new JPanel(new MigLayout("wrap 2", "[][fill, grow]"));
@@ -264,9 +265,11 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 pnlEdit.add(lblLabel, "top");
                 pnlEdit.add(dataField);
                 break;
-            // case RADIO_BUTTON:
-            // // TODO HPP
-            // break;
+            case RADIO_BUTTON_GROUP:
+                dataField = new RadioButtonsGroup<>(referenceData.getValue2LabelMap(), value);
+                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(dataField);
+                break;
             case IMAGE:
                 byte[] bytes = (byte[]) value;
                 dataField = new ImageChooser(bytes);
@@ -419,8 +422,9 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     // hibernate mapping issue).
 
                     break;
-                case RADIO_BUTTON:
-
+                case RADIO_BUTTON_GROUP:
+                    RadioButtonsGroup<?> radioBtnGroupField = (RadioButtonsGroup<?>) component;
+                    beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(radioBtnGroupField.getSelectedValue()));
                     break;
                 case IMAGE:
                     ImageChooser imageField = (ImageChooser) component;
