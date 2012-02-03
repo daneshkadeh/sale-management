@@ -60,6 +60,7 @@ public class ReferenceDataModel {
     public class ReferenceData<T> {
         private List<T> values = new ArrayList<>();
         private ListCellRenderer<T> renderer;
+        private Map<T, String> value2LabelMap;
 
         /**
          * Init reference data with a list of values and the renderer.
@@ -81,6 +82,7 @@ public class ReferenceDataModel {
          *            the map: value - the label rendering for that value.
          */
         public ReferenceData(final Map<T, String> value2Label) {
+            this.value2LabelMap = value2Label;                    
             this.values = new ArrayList<>(value2Label.keySet());
             renderer = new ListCellRenderer<T>() {
                 @Override
@@ -98,6 +100,10 @@ public class ReferenceDataModel {
 
         public List<T> getValues() {
             return values;
+        }
+        
+        public Map<T, String> getValue2LabelMap(){
+            return value2LabelMap;
         }
     }
 }
