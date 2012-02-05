@@ -26,7 +26,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.AbstractDetailView;
 
 public class EditSupplierView extends AbstractDetailView<Supplier> {
-
+    private static final long serialVersionUID = -8101155807024861715L;
     private static final String SEX_ID = "SEX_ID";
 
     public EditSupplierView(Supplier entity) {
@@ -42,10 +42,10 @@ public class EditSupplierView extends AbstractDetailView<Supplier> {
         detailDataModel.addAttribute("sex", FieldTypeEnum.RADIO_BUTTON_GROUP).referenceDataId(SEX_ID);
         detailDataModel.addAttribute("position", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
-        detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX);
+        detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX).wrap();
+        detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX).wrap();
+        detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX).wrap();
+        detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX).wrap();
         detailDataModel.addAttribute("comment", FieldTypeEnum.TEXTAREA);
     }
 

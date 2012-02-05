@@ -448,7 +448,7 @@ public class SSMDataLoader {
         Supplier supplier = new Supplier();
         supplier.setCode("NIKE");
         supplier.setName("Nike company");
-        supplier.setSex(1); // TODO: why supplier has sex? I think Sex should only be applied on individual
+        supplier.setSex(true); // TODO: why supplier has sex? I think Sex should only be applied on individual
         // supplier.setPhoneNumber("0909825783");
         // supplier.setMainContact(listContact.get(0));
 
