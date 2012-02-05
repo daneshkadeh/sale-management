@@ -75,7 +75,7 @@ public class RadioButtonsGroup<T> extends JPanel {
     }
 
     private void initComponent(Map<T, String> value2Label, T selectedValue) {
-        setLayout(new MigLayout("wrap, ins 0"));
+        setLayout(new MigLayout("ins 0"));
         radioBtn2Value = new HashMap<>(value2Label.size());
         ButtonGroup btnGroup = new ButtonGroup();
         for (Entry<T, String> val2Lbl : value2Label.entrySet()) {

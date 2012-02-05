@@ -185,7 +185,13 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         add(toolbar, "top");
         // if(detailDataModel.getTabList().isEmpty())
 
-        JPanel pnlEdit = new JPanel(new MigLayout("wrap 4, debug", "[][grow, fill]20[][grow, fill]"));
+        StringBuilder columnLayoutConstraint = new StringBuilder();
+        for (int i = 0; i < detailDataModel.getNumColumnDefault() - 1; i++) {
+            columnLayoutConstraint.append("[][grow, fill]20");
+        }
+        columnLayoutConstraint.append("[][grow, fill]");
+        JPanel pnlEdit = new JPanel(new MigLayout("wrap " + detailDataModel.getNumColumnDefault() * 2,
+                columnLayoutConstraint.toString()));
         for (int i = 0; i < detailDataModel.getDetailAttributes().size(); i++) {
             DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
@@ -260,7 +266,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 break;
             case RADIO_BUTTON_GROUP:
                 dataField = new RadioButtonsGroup<>(referenceData.getValue2LabelMap(), value);
-                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(lblLabel);
                 break;
             case IMAGE:
                 byte[] bytes = (byte[]) value;

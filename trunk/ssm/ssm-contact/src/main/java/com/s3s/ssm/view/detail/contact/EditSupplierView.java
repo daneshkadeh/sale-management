@@ -35,6 +35,7 @@ public class EditSupplierView extends AbstractDetailView<Supplier> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Supplier entity) {
+        detailDataModel.setNumColumnDefault(3);
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
         // detailDataModel.addAttribute("title", FieldTypeEnum.TEXTBOX);

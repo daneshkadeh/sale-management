@@ -25,7 +25,7 @@ public class DetailDataModel {
     }
 
     private List<DetailAttribute> detailAttributes = new ArrayList<>();
-
+    private int numColumnDefault = 2;
     private List<TabInfoData> tabList = new ArrayList<>();
 
     /**
@@ -101,6 +101,17 @@ public class DetailDataModel {
     public DetailDataModel tab(String name, String tooltip, Icon icon) {
         tabList.add(new TabInfoData(detailAttributes.size(), name, tooltip, icon));
         return this;
+    }
+
+    public int getNumColumnDefault() {
+        return numColumnDefault;
+    }
+
+    public void setNumColumnDefault(int numColumnDefault) {
+        if(numColumnDefault <= 0){
+            throw new RuntimeException("Num of column must greater than 0");
+        }
+        this.numColumnDefault = numColumnDefault;
     }
 
 }
