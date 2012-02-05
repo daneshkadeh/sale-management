@@ -25,7 +25,7 @@ public class DetailDataModel {
     }
 
     private List<DetailAttribute> detailAttributes = new ArrayList<>();
-    private int numColumnDefault = 2;
+    private int maxColumn = 2;
     private List<TabInfoData> tabList = new ArrayList<>();
 
     /**
@@ -103,15 +103,15 @@ public class DetailDataModel {
         return this;
     }
 
-    public int getNumColumnDefault() {
-        return numColumnDefault;
+    public int getMaxColumn() {
+        return maxColumn;
     }
 
-    public void setNumColumnDefault(int numColumnDefault) {
-        if(numColumnDefault <= 0){
+    public void setMaxColumn(int maxColumn) {
+        if(maxColumn <= 0){
             throw new RuntimeException("Num of column must greater than 0");
         }
-        this.numColumnDefault = numColumnDefault;
+        this.maxColumn = maxColumn;
     }
 
 }

@@ -24,7 +24,7 @@ public class DetailAttribute {
     private boolean isMandatory = false;
 
     /** The property for layout the attribute. The attribute after this attribute is rendered in new line or not. */
-    private boolean wrap = false;
+    private boolean endLine = false;
 
     private String referenceDataId;
 
@@ -83,13 +83,13 @@ public class DetailAttribute {
     }
 
     /** Wrap to new line. (The next attribute will be rendered in new line).*/
-    public DetailAttribute wrap() {
-        this.wrap = true;
+    public DetailAttribute endLine() {
+        this.endLine = true;
         return this;
     }
 
-    public boolean isWrap() {
-        return wrap;
+    public boolean isEndLine() {
+        return endLine;
     }
 
 }
