@@ -15,13 +15,18 @@
 
 package com.s3s.ssm.util.view;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
+
+import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 /**
  * Utility functions for manipulating the display of windows.
@@ -163,5 +168,62 @@ public class WindowUtils {
     public static int getScreenHeight() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         return screenSize.height;
+    }
+
+    /**
+     * Tell system to use native look and feel, as in previous releases. Metal (Java) LAF is the default otherwise.
+     */
+
+    public static void setNativeLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            System.out.println("Error setting native LAF: " + e);
+        }
+    }
+
+    public static void setJavaLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+            System.out.println("Error setting Java LAF: " + e);
+        }
+    }
+
+    public static void setMotifLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+        } catch (Exception e) {
+            System.out.println("Error setting Motif LAF: " + e);
+        }
+    }
+
+    /**
+     * A simplified way to see a JPanel or other Container. Pops up a JFrame with specified Container as the content
+     * pane.
+     */
+
+    public static JFrame openInJFrame(Container content, int width, int height, String title, Color bgColor) {
+        JFrame frame = new JFrame(title);
+        frame.setBackground(bgColor);
+        content.setBackground(bgColor);
+        frame.setSize(width, height);
+        frame.setContentPane(content);
+        frame.setVisible(true);
+        return (frame);
+    }
+
+    /** Uses Color.white as the background color. */
+
+    public static JFrame openInJFrame(Container content, int width, int height, String title) {
+        return (openInJFrame(content, width, height, title, Color.white));
+    }
+
+    /**
+     * Uses Color.white as the background color, and the name of the Container's class as the JFrame title.
+     */
+
+    public static JFrame openInJFrame(Container content, int width, int height) {
+        return (openInJFrame(content, width, height, content.getClass().getName(), Color.white));
     }
 }
