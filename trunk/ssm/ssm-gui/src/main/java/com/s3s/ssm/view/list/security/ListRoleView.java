@@ -23,7 +23,7 @@ import javax.swing.JScrollPane;
 import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.util.view.WindowUtils;
+import com.s3s.ssm.util.view.WindowUtilities;
 import com.s3s.ssm.view.AbstractDetailView;
 import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.security.EditRoleView;
@@ -51,8 +51,8 @@ public class ListRoleView extends AbstractListView<Role> {
         // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).
         JScrollPane scrollPane = new JScrollPane(aclPanel);
         Dimension preferredSize = aclPanel.getPreferredSize();
-        JFrame jFrame = WindowUtils.openInJFrame(scrollPane, preferredSize.width + 100, preferredSize.height + 100);
-        WindowUtils.centerOnScreen(jFrame);
+        JFrame jFrame = WindowUtilities.openInJFrame(scrollPane, preferredSize.width + 100, preferredSize.height + 100);
+        WindowUtilities.centerOnScreen(jFrame);
     }
 
 }
