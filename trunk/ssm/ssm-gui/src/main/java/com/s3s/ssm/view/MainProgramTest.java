@@ -290,7 +290,19 @@ public class MainProgramTest {
         loginItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LoginDialog loginDialog = new LoginDialog(frame);
+                LoginDialog loginDialog = new LoginDialog(frame, new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                    }
+                }, new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                    }
+                });
                 loginDialog.setVisible(true);
             }
         });

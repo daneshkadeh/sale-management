@@ -122,17 +122,28 @@ public class MainProgram {
 
         frame.setJMenuBar(menuBar);
 
-        Container contentPane = frame.getContentPane();
+        final Container contentPane = frame.getContentPane();
+
         // login
-        LoginDialog loginDialog = new LoginDialog(frame);
+        LoginDialog loginDialog = new LoginDialog(frame, new Runnable() {
+
+            @Override
+            public void run() {
+                addComponents(contentPane);
+                frame.pack();
+                frame.setVisible(true);
+            }
+        }, new Runnable() {
+
+            @Override
+            public void run() {
+                frame.dispose();
+
+            }
+        });
         loginDialog.setVisible(true);
-        if (loginDialog.isLogin()) {
-            addComponents(contentPane);
-            frame.pack();
-            frame.setVisible(true);
-        } else {
-            frame.dispose();
-        }
+        loginDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
     private static void addComponents(Container contentPane) {
@@ -297,7 +308,18 @@ public class MainProgram {
         loginItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LoginDialog loginDialog = new LoginDialog(frame);
+                LoginDialog loginDialog = new LoginDialog(frame, new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // Do nothing for test
+
+                    }
+                }, new Runnable() {
+                    public void run() {
+
+                    }
+                });
                 loginDialog.setVisible(true);
             }
         });
