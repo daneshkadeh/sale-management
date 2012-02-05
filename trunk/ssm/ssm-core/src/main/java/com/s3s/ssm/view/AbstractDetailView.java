@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.text.NumberFormatter;
 import javax.validation.Configuration;
@@ -73,7 +74,6 @@ import com.s3s.ssm.view.component.MultiSelectionBox;
 import com.s3s.ssm.view.component.RadioButtonsGroup;
 import com.s3s.ssm.view.component.SaleTargetComp;
 import com.s3s.ssm.view.component.SaleTargetModel;
-import com.s3s.ssm.view.component.SexRadio;
 
 /**
  * @author Pham Cong Bang
@@ -94,7 +94,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     protected DetailDataModel detailDataModel = new DetailDataModel();
     protected Map<DetailAttribute, JComponent> mapFields = new HashMap<>();
 
-    private JButton btnOK;
+    private JButton btnSave;
     private JButton btnCancel;
     protected T entity;
     protected BeanWrapper beanWrapper;
@@ -180,20 +180,22 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     protected void initComponents() {
         // Layout the screen
         setLayout(new MigLayout("wrap, fill"));
-        
+
+        JToolBar toolbar = createToolBar();
+        add(toolbar, "top");
         // if(detailDataModel.getTabList().isEmpty())
 
-        JPanel pnlEdit = new JPanel(new MigLayout("wrap 2", "[][fill, grow]"));
+        JPanel pnlEdit = new JPanel(new MigLayout("wrap 4, debug", "[][grow, fill]20[][grow, fill]"));
         for (int i = 0; i < detailDataModel.getDetailAttributes().size(); i++) {
             DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + attribute.getName());
+            String wrap = attribute.isWrap() ? "wrap" : "";
             if (attribute.isMandatory()) {
                 label += " (*)";
             }
             JLabel lblLabel = new JLabel(label);
             JComponent dataField;
-
             Object value = beanWrapper.getPropertyValue(attribute.getName());
             ReferenceData referenceData = refDataModel.getRefDataListMap().get(attribute.getReferenceDataId());
             switch (attribute.getType()) {
@@ -215,10 +217,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 // .getWindowAncestor(this), dataField, "The field must be not empty."));
 
                 dataField.setEnabled(attribute.isEnable());
-                pnlEdit.add(lblLabel);
-                pnlEdit.add(dataField);
-
                 ((JFormattedTextField) dataField).setValue(value);
+                pnlEdit.add(lblLabel);
                 break;
             case TEXTAREA:
                 dataField = new JTextArea(DEFAULT_RICH_TEXT_ROWS, DEFAULT_TEXTFIELD_COLUMN);
@@ -227,34 +227,28 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 ((JTextArea) dataField).setEditable(true);
                 String txtValue = value != null ? StringUtils.trimToEmpty(String.valueOf(value)) : "";
                 ((JTextArea) dataField).setText(txtValue);
-                pnlEdit.add(lblLabel);
-                pnlEdit.add(dataField);
+                pnlEdit.add(lblLabel, "top");
                 break;
             case PASSWORD:
                 dataField = new JPasswordField(DEFAULT_TEXTFIELD_COLUMN);
                 ((JPasswordField) dataField).setEditable(attribute.isEditable());
                 dataField.setEnabled(attribute.isEnable());
-                pnlEdit.add(lblLabel);
-                pnlEdit.add(dataField);
-
                 ((JTextField) dataField).setText(ObjectUtils.toString(value));
+                pnlEdit.add(lblLabel);
                 break;
             case DROPDOWN:
                 // get the referenceDataList from ReferenceDataModel using
                 // referenceDataId of column.
                 dataField = new JComboBox<>(referenceData.getValues().toArray());
                 ((JComboBox<?>) dataField).setRenderer(referenceData.getRenderer());
-                pnlEdit.add(lblLabel);
-                pnlEdit.add(dataField);
                 ((JComboBox<?>) dataField).setSelectedItem(value);
+                pnlEdit.add(lblLabel);
                 break;
             case MULTI_SELECT_BOX:
                 List desValues = value != null ? new ArrayList((Set) value) : Collections.EMPTY_LIST;
                 List scrValues = new ArrayList<>(ListUtils.removeAll(referenceData.getValues(), desValues));
                 dataField = new MultiSelectionBox<>(scrValues, desValues, referenceData.getRenderer());
                 pnlEdit.add(lblLabel, "top");
-                pnlEdit.add(dataField);
-
                 break;
             case DATE:
                 Date date = (Date) value;
@@ -263,35 +257,29 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     ((JXDatePicker) dataField).setDate(date);
                 }
                 pnlEdit.add(lblLabel, "top");
-                pnlEdit.add(dataField);
                 break;
             case RADIO_BUTTON_GROUP:
                 dataField = new RadioButtonsGroup<>(referenceData.getValue2LabelMap(), value);
                 pnlEdit.add(lblLabel, "top");
-                pnlEdit.add(dataField);
                 break;
             case IMAGE:
                 byte[] bytes = (byte[]) value;
                 dataField = new ImageChooser(bytes);
                 pnlEdit.add(lblLabel, "top");
-                pnlEdit.add(dataField);
                 break;
             case FILE_CHOOSER:
                 String filePath = (String) value;
                 dataField = new FileChooser(filePath);
                 pnlEdit.add(lblLabel, "top");
-                pnlEdit.add(dataField);
                 break;
             case CHECKBOX:
                 Boolean isSelected = BooleanUtils.isTrue((Boolean) value);
                 dataField = new JCheckBox("", isSelected);
-                pnlEdit.add(lblLabel, "top");
-                pnlEdit.add(dataField);
+                pnlEdit.add(lblLabel);
                 break;
             case ENTITY_CHOOSER:
                 dataField = new EntityChooser<>(referenceData.getValues(), value);
                 pnlEdit.add(lblLabel, "top");
-                pnlEdit.add(dataField);
                 break;
             case SALE_TARGET:
                 Calendar now = Calendar.getInstance();
@@ -314,29 +302,23 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 }
                 dataField = new SaleTargetComp(curyear, saleTargetList);
                 pnlEdit.add(lblLabel, "top");
-                pnlEdit.add(dataField);
-                break;
-            case SEX_RADIO:
-                Integer sex = value != null ? (Integer) value : 1;
-                dataField = new SexRadio(sex);
-                pnlEdit.add(lblLabel, "top");
-                pnlEdit.add(dataField);
                 break;
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
+            pnlEdit.add(dataField, wrap);
             mapFields.put(attribute, dataField);
         }
-
-        JPanel pnlButton = createButtonPanel();
-        pnlEdit.add(pnlButton, "span, center, grow");
 
         add(pnlEdit, "grow");
     }
 
-    private JPanel createButtonPanel() {
-        btnOK = new JButton(ControlConfigUtils.getString("default.button.save"));
-        btnOK.addActionListener(new ActionListener() {
+    private JToolBar createToolBar() {
+        JToolBar toolbar = new JToolBar();
+        toolbar.setRollover(true);
+        toolbar.setFloatable(false);
+        btnSave = new JButton(ControlConfigUtils.getString("default.button.save"));
+        btnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 btnOKActionPerformed(evt);
@@ -351,10 +333,9 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             }
         });
 
-        JPanel pnlButton = new JPanel();
-        pnlButton.add(btnOK);
-        pnlButton.add(btnCancel);
-        return pnlButton;
+        toolbar.add(btnSave);
+        toolbar.add(btnCancel);
+        return toolbar;
     }
 
     protected void btnOKActionPerformed(ActionEvent evt) {
@@ -424,7 +405,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     break;
                 case RADIO_BUTTON_GROUP:
                     RadioButtonsGroup<?> radioBtnGroupField = (RadioButtonsGroup<?>) component;
-                    beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(radioBtnGroupField.getSelectedValue()));
+                    beanWrapper.setPropertyValue(attribute.getName(),
+                            paramClass.cast(radioBtnGroupField.getSelectedValue()));
                     break;
                 case IMAGE:
                     ImageChooser imageField = (ImageChooser) component;
@@ -442,11 +424,6 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     SaleTargetComp saleTargetField = (SaleTargetComp) component;
                     beanWrapper.setPropertyValue(attribute.getName(),
                             paramClass.cast(new HashSet<>(saleTargetField.getSaleTargetList())));
-                    break;
-                case SEX_RADIO:
-                    SexRadio sexRadioField = (SexRadio) component;
-                    beanWrapper
-                            .setPropertyValue(attribute.getName(), paramClass.cast(sexRadioField.getSelectedValue()));
                     break;
                 default:
                     throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());

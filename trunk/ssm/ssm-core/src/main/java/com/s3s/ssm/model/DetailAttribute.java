@@ -22,6 +22,10 @@ public class DetailAttribute {
     private boolean isEditable = true;
     private boolean isEnable = true;
     private boolean isMandatory = false;
+
+    /** The property for layout the attribute. The attribute after this attribute is rendered in new line or not. */
+    private boolean wrap = false;
+
     private String referenceDataId;
 
     public DetailAttribute(String name, FieldTypeEnum type) {
@@ -76,6 +80,16 @@ public class DetailAttribute {
     public DetailAttribute setMandatory(boolean isMandatory) {
         this.isMandatory = isMandatory;
         return this;
+    }
+
+    /** Wrap to new line. (The next attribute will be rendered in new line).*/
+    public DetailAttribute wrap() {
+        this.wrap = true;
+        return this;
+    }
+
+    public boolean isWrap() {
+        return wrap;
     }
 
 }
