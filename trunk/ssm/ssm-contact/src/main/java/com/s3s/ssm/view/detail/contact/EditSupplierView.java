@@ -35,7 +35,7 @@ public class EditSupplierView extends AbstractDetailView<Supplier> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Supplier entity) {
-        detailDataModel.setNumColumnDefault(3);
+        detailDataModel.setMaxColumn(3);
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
         // detailDataModel.addAttribute("title", FieldTypeEnum.TEXTBOX);
@@ -43,10 +43,10 @@ public class EditSupplierView extends AbstractDetailView<Supplier> {
         detailDataModel.addAttribute("sex", FieldTypeEnum.RADIO_BUTTON_GROUP).referenceDataId(SEX_ID);
         detailDataModel.addAttribute("position", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
-        detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX).wrap();
-        detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX).wrap();
-        detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX).wrap();
-        detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX).wrap();
+        detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX).endLine();
+        detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX).endLine();
+        detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX).endLine();
+        detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX).endLine();
         detailDataModel.addAttribute("comment", FieldTypeEnum.TEXTAREA);
     }
 

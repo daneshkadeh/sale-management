@@ -186,17 +186,17 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         // if(detailDataModel.getTabList().isEmpty())
 
         StringBuilder columnLayoutConstraint = new StringBuilder();
-        for (int i = 0; i < detailDataModel.getNumColumnDefault() - 1; i++) {
+        for (int i = 0; i < detailDataModel.getMaxColumn() - 1; i++) {
             columnLayoutConstraint.append("[][grow, fill]20");
         }
         columnLayoutConstraint.append("[][grow, fill]");
-        JPanel pnlEdit = new JPanel(new MigLayout("wrap " + detailDataModel.getNumColumnDefault() * 2,
+        JPanel pnlEdit = new JPanel(new MigLayout("wrap " + detailDataModel.getMaxColumn() * 2,
                 columnLayoutConstraint.toString()));
         for (int i = 0; i < detailDataModel.getDetailAttributes().size(); i++) {
             DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + attribute.getName());
-            String wrap = attribute.isWrap() ? "wrap" : "";
+            String wrap = attribute.isEndLine() ? "wrap" : "";
             if (attribute.isMandatory()) {
                 label += " (*)";
             }
