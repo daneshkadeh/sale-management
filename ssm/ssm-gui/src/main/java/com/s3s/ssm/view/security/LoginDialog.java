@@ -21,7 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -46,7 +46,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
  * @author Le Thanh Hoang
  * 
  */
-public class LoginDialog extends JDialog {
+public class LoginDialog extends JFrame {
     private JTextField tflUsername;
     private JPasswordField pflPassword;
     private JLabel lblUsername;
@@ -55,12 +55,16 @@ public class LoginDialog extends JDialog {
     private JButton btnCancel;
     private Boolean isLogin = false;
 
+    private Runnable callbackSuccess;
+    private Runnable callbackFailed;
     private String username;
     private String password;
     static ApplicationContext auContext;
 
-    public LoginDialog(Frame parent) {
-        super(parent, ControlConfigUtils.getString("default.Login.title"), true);
+    public LoginDialog(JFrame parent, Runnable callbackSuccess, Runnable callbackFailed) {
+        super(ControlConfigUtils.getString("default.Login.title"));
+        this.callbackSuccess = callbackSuccess;
+        this.callbackFailed = callbackFailed;
         initComponents(parent);
     }
 
@@ -138,12 +142,16 @@ public class LoginDialog extends JDialog {
         password = pflPassword.getText();
         login();
         if (isLogin) {
+            callbackSuccess.run();
             dispose();
         }
     }
 
     protected void btnCancelActionPerformed(ActionEvent evt) {
         isLogin = false;
+        callbackFailed.run();
         dispose();
+        System.exit(0);
     }
+
 }
