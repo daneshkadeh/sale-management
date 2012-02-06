@@ -14,6 +14,7 @@
  */
 package com.s3s.ssm.entity.catalog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,6 +25,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
@@ -39,7 +41,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 public class ProductProperty extends AbstractCodeOLObject {
     private String name;
     private PropertyType type;
-    private List<ProductPropertyElement> elements;
+    private List<ProductPropertyElement> elements = new ArrayList<>();
 
     public enum PropertyType {
         LIST, SIMPLE
@@ -73,5 +75,11 @@ public class ProductProperty extends AbstractCodeOLObject {
 
     public void setElements(List<ProductPropertyElement> elements) {
         this.elements = elements;
+    }
+
+    @Transient
+    public void addElement(ProductPropertyElement element) {
+        element.setProperty(this);
+        elements.add(element);
     }
 }

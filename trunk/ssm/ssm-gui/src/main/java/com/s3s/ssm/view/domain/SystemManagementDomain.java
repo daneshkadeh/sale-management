@@ -31,6 +31,7 @@ import com.s3s.ssm.view.list.operator.ListOperatorView;
 import com.s3s.ssm.view.list.operator.ListStallView;
 import com.s3s.ssm.view.list.param.ListItemView;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
+import com.s3s.ssm.view.list.param.ListProductPropertyView;
 import com.s3s.ssm.view.list.param.ListProductTypeView;
 import com.s3s.ssm.view.list.param.ListProductView;
 import com.s3s.ssm.view.list.security.ListRoleView;
@@ -82,6 +83,9 @@ public class SystemManagementDomain extends AbstractDomain {
         TreeNodeWithView uomNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.UnitOfMeasure"),
                 new ListUnitOfMeasureView());
 
+        TreeNodeWithView productPropertyNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.System.ProductProperty"), new ListProductPropertyView());
+
         TreeNodeWithView productGroupNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.ProductGroup"), new ListProductTypeView());
         TreeNodeWithView productNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Product"),
@@ -98,6 +102,7 @@ public class SystemManagementDomain extends AbstractDomain {
         systemEntry.add(productManagementEntry);
         productManagementEntry.add(uomCategoryNode);
         productManagementEntry.add(uomNode);
+        productManagementEntry.add(productPropertyNode);
         productManagementEntry.add(productGroupNode);
         productManagementEntry.add(productNode);
         productManagementEntry.add(itemNode);
