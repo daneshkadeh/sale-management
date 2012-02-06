@@ -14,6 +14,7 @@
  */
 package com.s3s.ssm.view;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -26,19 +27,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.border.LineBorder;
 import javax.swing.text.NumberFormatter;
 import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
@@ -92,7 +94,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     protected AbstractListView<T> listView;
 
     protected DetailDataModel detailDataModel = new DetailDataModel();
-    protected Map<DetailAttribute, JComponent> mapFields = new HashMap<>();
+    protected Map<String, AttributeComponent> name2AttributeComponent = new HashMap<>();
 
     private JButton btnSave;
     private JButton btnCancel;
@@ -103,6 +105,47 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
     private final static int DEFAULT_TEXTFIELD_COLUMN = 20;
     private final static int DEFAULT_RICH_TEXT_ROWS = 4;
+    private JPanel errorPanel;
+
+    /**
+     * The class includes the components to render an attribute. Like label, component, errorIcon...
+     */
+    public class AttributeComponent {
+        private JLabel label;
+        private JComponent component;
+        private JLabel errorIcon;
+
+        public AttributeComponent(JLabel label, JComponent component, JLabel errorIcon) {
+            super();
+            this.label = label;
+            this.component = component;
+            this.errorIcon = errorIcon;
+        }
+
+        public JLabel getLabel() {
+            return label;
+        }
+
+        public void setLabel(JLabel label) {
+            this.label = label;
+        }
+
+        public JComponent getComponent() {
+            return component;
+        }
+
+        public void setComponent(JComponent component) {
+            this.component = component;
+        }
+
+        public JLabel getErrorIcon() {
+            return errorIcon;
+        }
+
+        public void setErrorIcon(JLabel errorIcon) {
+            this.errorIcon = errorIcon;
+        }
+    }
 
     // /**
     // * The default constructor, init the detail view with new entity. TODO: Suspended for not confusing.
@@ -179,18 +222,22 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected void initComponents() {
         // Layout the screen
-        setLayout(new MigLayout("wrap, fill"));
+        setLayout(new MigLayout("hidemode 2, wrap, fill"));
 
         JToolBar toolbar = createToolBar();
         add(toolbar, "top");
+
+        initErrorPanel();
+        add(errorPanel, "top, growx");
+
         // if(detailDataModel.getTabList().isEmpty())
 
         StringBuilder columnLayoutConstraint = new StringBuilder();
         for (int i = 0; i < detailDataModel.getMaxColumn() - 1; i++) {
-            columnLayoutConstraint.append("[][grow, fill]20");
+            columnLayoutConstraint.append("[][grow, fill][]20");
         }
-        columnLayoutConstraint.append("[][grow, fill]");
-        JPanel pnlEdit = new JPanel(new MigLayout("wrap " + detailDataModel.getMaxColumn() * 2,
+        columnLayoutConstraint.append("[][grow, fill][]");
+        JPanel pnlEdit = new JPanel(new MigLayout("hidemode 2, wrap " + detailDataModel.getMaxColumn() * 3,
                 columnLayoutConstraint.toString()));
         for (int i = 0; i < detailDataModel.getDetailAttributes().size(); i++) {
             DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
@@ -312,11 +359,24 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
-            pnlEdit.add(dataField, wrap);
-            mapFields.put(attribute, dataField);
+            pnlEdit.add(dataField);
+            JLabel errorIcon = new JLabel(new ImageIcon(getClass().getResource("/icons/errorIcon.gif")));
+            pnlEdit.add(errorIcon, wrap);
+            errorIcon.setVisible(false);
+            name2AttributeComponent.put(attribute.getName(), new AttributeComponent(lblLabel, dataField, errorIcon));
         }
 
         add(pnlEdit, "grow");
+    }
+
+    private void initErrorPanel() {
+        errorPanel = new JPanel();
+        errorPanel.setBorder(new LineBorder(Color.RED, 1, true));
+        JLabel errorLabel = new JLabel(ControlConfigUtils.getString("message.error"));
+        errorLabel.setIcon(new ImageIcon(getClass().getResource("/icons/errorIcon.gif")));
+        errorLabel.setForeground(Color.RED);
+        errorPanel.add(errorLabel);
+        errorPanel.setVisible(false);
     }
 
     private JToolBar createToolBar() {
@@ -353,10 +413,24 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             // TODO HPP find another way to close dialog.
             SwingUtilities.getRoot(this).setVisible(false);
         } else {
+            // Before show errors, clear all the errors existing on the screen.
+            for (AttributeComponent at : name2AttributeComponent.values()) {
+                at.getLabel().setForeground(Color.BLACK);
+                at.getErrorIcon().setVisible(false);
+            }
+
+            // Show the errors
+            errorPanel.setVisible(true);
             for (ConstraintViolation<T> violation : validateResult) {
+                AttributeComponent attributeComponent = name2AttributeComponent.get(violation.getPropertyPath()
+                        .toString());
+                JLabel label = attributeComponent.getLabel();
+                label.setForeground(Color.RED);
+                JLabel errorIcon = attributeComponent.getErrorIcon();
+                errorIcon.setToolTipText(violation.getMessage());
+                errorIcon.setVisible(true);
                 logger.error(violation.getMessage());
             }
-            JOptionPane.showMessageDialog(this, "Some fields are invalid!", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
@@ -368,7 +442,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     protected Set<ConstraintViolation<T>> bindAndValidate(T entity) {
         try {
             for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
-                JComponent component = mapFields.get(attribute);
+                JComponent component = name2AttributeComponent.get(attribute.getName()).getComponent();
                 Class<?> paramClass = beanWrapper.getPropertyType(attribute.getName());
                 switch (attribute.getType()) {
                 case TEXTBOX:

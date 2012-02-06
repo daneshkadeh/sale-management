@@ -30,6 +30,7 @@ import com.s3s.ssm.view.detail.security.EditRoleView;
 import com.s3s.ssm.view.security.ACLPanel;
 
 public class ListRoleView extends AbstractListView<Role> {
+    private static final long serialVersionUID = 7072683198560551663L;
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
