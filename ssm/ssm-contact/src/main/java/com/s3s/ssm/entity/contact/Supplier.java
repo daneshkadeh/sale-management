@@ -19,13 +19,15 @@ import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Email;
+
 @Entity
 @Table(name = "s_supplier")
 @PrimaryKeyJoinColumn(name = "supplier_id")
 public class Supplier extends Partner {
     private static final long serialVersionUID = 4797277568461280316L;
     private String representer;
-    private boolean sex;
+    private Boolean sex;
     private String position;
     private String address;
     private String phone;
@@ -42,11 +44,11 @@ public class Supplier extends Partner {
     }
 
     @Column(name = "sex", length = 1)
-    public boolean getSex() {
+    public Boolean getSex() {
         return sex;
     }
 
-    public void setSex(boolean sex) {
+    public void setSex(Boolean sex) {
         this.sex = sex;
     }
 
@@ -86,7 +88,8 @@ public class Supplier extends Partner {
         this.fax = fax;
     }
 
-    @Column(name = "email", length = 256)
+    @Column(name = "email")
+    @Email(message = "{Supplier.email.invalid}")
     public String getEmail() {
         return email;
     }
