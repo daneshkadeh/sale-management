@@ -69,6 +69,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
 import com.s3s.ssm.view.component.ImageChooser;
@@ -103,8 +104,6 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
 
     private final ReferenceDataModel refDataModel = new ReferenceDataModel();
 
-    private final static int DEFAULT_TEXTFIELD_COLUMN = 20;
-    private final static int DEFAULT_RICH_TEXT_ROWS = 4;
     private JPanel errorPanel;
 
     /**
@@ -265,7 +264,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     dataField = new JFormattedTextField("");
                 }
                 ((JFormattedTextField) dataField).setEditable(attribute.isEditable());
-                ((JFormattedTextField) dataField).setColumns(DEFAULT_TEXTFIELD_COLUMN);
+                ((JFormattedTextField) dataField).setColumns(UIConstants.DEFAULT_TEXTFIELD_COLUMN);
                 // ((JFormattedTextField) dataField).setInputVerifier(new NotEmptyValidator(SwingUtilities
                 // .getWindowAncestor(this), dataField, "The field must be not empty."));
 
@@ -274,7 +273,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 pnlEdit.add(lblLabel);
                 break;
             case TEXTAREA:
-                dataField = new JTextArea(DEFAULT_RICH_TEXT_ROWS, DEFAULT_TEXTFIELD_COLUMN);
+                dataField = new JTextArea(UIConstants.DEFAUL_TEXTAREA_ROWS, UIConstants.DEFAULT_TEXTFIELD_COLUMN);
                 ((JTextArea) dataField).setLineWrap(true);
                 ((JTextArea) dataField).setWrapStyleWord(true);
                 ((JTextArea) dataField).setEditable(true);
@@ -283,7 +282,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 pnlEdit.add(lblLabel, "top");
                 break;
             case PASSWORD:
-                dataField = new JPasswordField(DEFAULT_TEXTFIELD_COLUMN);
+                dataField = new JPasswordField(UIConstants.DEFAULT_TEXTFIELD_COLUMN);
                 ((JPasswordField) dataField).setEditable(attribute.isEditable());
                 dataField.setEnabled(attribute.isEnable());
                 ((JTextField) dataField).setText(ObjectUtils.toString(value));

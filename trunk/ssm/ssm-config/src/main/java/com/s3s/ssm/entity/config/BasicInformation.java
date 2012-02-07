@@ -39,11 +39,6 @@ public class BasicInformation extends AbstractCodeOLObject {
     // information of bank
     private BankAccount usdBankAccount;
     private BankAccount vndBankAccount;
-    // private String bankName;
-    // private String bankAddress;
-    // private String usdAcctNumber;
-    // private String vndAcctNumber;
-    // private String beneficeName;
     // general parameter
     private SCurrency defCurrency; // default currency
     private Integer defDetailInvNum; // number of rows on a invoice

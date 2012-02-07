@@ -55,7 +55,17 @@ public class UIConstants {
     /**
      * Suggested width for a <code>JTextField</code>
      */
-    public static final int SIMPLE_FIELD_WIDTH = 20;
+    public static final int DEFAULT_TEXTFIELD_COLUMN = 20;
+
+    /**
+     * Suggested width for a <code>JTextArea</code>
+     */
+    public final static int DEFAUL_TEXTAREA_ROWS = 4;
+
+    /**
+     * Suggested width for a fixed cell of the table
+     */
+    public final static int DEFAULT_ROW_HEADER_WIDTH = 20;
 
     /**
      * Suggested width for a <code>JTextField</code> storing a file path.

@@ -47,6 +47,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
+import com.s3s.ssm.util.view.UIConstants;
+
 /**
  * Entity chooser component.
  * 
@@ -55,7 +57,6 @@ import org.springframework.beans.BeanWrapperImpl;
  */
 public class EntityChooser<T> extends JPanel {
     private static final long serialVersionUID = 7757253525648364105L;
-    private static final String CHOOSE_ENTITY_TXT = "...";
     private static final int CODE_WIDTH = 10;
     private JTextField txtFldCode;
     private JLabel lblName;
@@ -98,7 +99,7 @@ public class EntityChooser<T> extends JPanel {
             }
         });
 
-        chooseBtn.setText(CHOOSE_ENTITY_TXT);
+        chooseBtn.setText(UIConstants.ELLIPSIS);
 
         add(txtFldCode);
         add(lblName);

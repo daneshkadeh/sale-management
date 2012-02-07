@@ -26,6 +26,8 @@ import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.s3s.ssm.util.view.UIConstants;
+
 /**
  * Dir chooser component.
  * 
@@ -33,7 +35,6 @@ import net.miginfocom.swing.MigLayout;
  */
 public class FileChooser extends JPanel {
     private static final long serialVersionUID = 224298802918909546L;
-    private static final String CHOOSE_FILE_TXT = "...";
     private static final String CHOOSER_DIALOG_TITLE = "Choose Directory";
     private final static int DEFAULT_TEXTFIELD_COLUMN = 20;
     private JTextField txtFldPath;
@@ -54,7 +55,7 @@ public class FileChooser extends JPanel {
             txtFldPath.setText(value);
         }
 
-        chooseBtn.setText(CHOOSE_FILE_TXT);
+        chooseBtn.setText(UIConstants.ELLIPSIS);
         add(txtFldPath, "cell 0 0");
 
         add(chooseBtn, "cell 1 0");
