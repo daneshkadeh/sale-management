@@ -88,6 +88,7 @@ import com.s3s.ssm.security.CustomPermission;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.PagingNavigator;
 
@@ -115,8 +116,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private static final long serialVersionUID = -1311942671249671111L;
     private static final String ADD_ACTION_KEY = "addAction";
     private static final Color HIGHLIGHT_ROW_COLOR = new Color(97, 111, 231);
+    // TODO It should get from the property "defPageRowNum" of BasicInformation in ssm-config
     private static final int DEFAULT_PAGE_SIZE = 10;
-    public static final int DEFAULT_ROW_HEADER_WIDTH = 20;
 
     private static final String CHOOSER_DIALOG_TITLE = "Choose Directory";
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
@@ -374,7 +375,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         });
 
         rowHeader.setCellRenderer(new RowHeaderRenderer(tblListEntities));
-        rowHeader.setFixedCellWidth(DEFAULT_ROW_HEADER_WIDTH);
+        rowHeader.setFixedCellWidth(UIConstants.DEFAULT_ROW_HEADER_WIDTH);
         rowHeader.setFixedCellHeight(tblListEntities.getRowHeight());
         JScrollPane mainScrollpane = new JScrollPane(tblListEntities);
         mainScrollpane.setRowHeaderView(rowHeader);
