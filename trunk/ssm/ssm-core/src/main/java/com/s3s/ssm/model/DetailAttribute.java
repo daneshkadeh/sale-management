@@ -15,6 +15,7 @@
 package com.s3s.ssm.model;
 
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.util.view.UIConstants;
 
 public class DetailAttribute {
     private String name;
@@ -25,6 +26,7 @@ public class DetailAttribute {
 
     /** The property for layout the attribute. The attribute after this attribute is rendered in new line or not. */
     private boolean newColumn = false;
+    private int width;
 
     private String referenceDataId;
 
@@ -82,7 +84,7 @@ public class DetailAttribute {
         return this;
     }
 
-    /** Wrap to new line. (The next attribute will be rendered in new line).*/
+    /** Add new column. (The next attribute will be rendered in new column). */
     public DetailAttribute newColumn() {
         this.newColumn = true;
         return this;
@@ -92,4 +94,19 @@ public class DetailAttribute {
         return newColumn;
     }
 
+    /**
+     * The width of field. The default value for {@link FieldTypeEnum#TEXTAREA}, {@link FieldTypeEnum#TEXTBOX} is
+     * {@link UIConstants#DEFAULT_TEXTFIELD_COLUMN}.
+     * 
+     * @param width
+     * @return
+     */
+    public DetailAttribute setWidth(int width) {
+        this.width = width;
+        return this;
+    }
+
+    public int getWidth() {
+        return width;
+    }
 }

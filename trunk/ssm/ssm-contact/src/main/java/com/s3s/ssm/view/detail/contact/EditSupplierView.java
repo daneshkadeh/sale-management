@@ -36,12 +36,12 @@ public class EditSupplierView extends AbstractDetailView<Supplier> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Supplier entity) {
-        detailDataModel
-                .tab("We are S3S", "Tab 1", new ImageIcon(EditSupplierView.class.getResource("/icons/user.png")));
+        detailDataModel.tab("We are S3S", "This is a tooltip",
+                new ImageIcon(EditSupplierView.class.getResource("/icons/user.png")));
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).setWidth(5).newColumn();
         detailDataModel.startGroup("Group 1");
-        detailDataModel.addAttribute("representer", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("representer", FieldTypeEnum.TEXTBOX).setWidth(40);
         detailDataModel.addAttribute("sex", FieldTypeEnum.RADIO_BUTTON_GROUP).referenceDataId(SEX_ID);
         detailDataModel.addAttribute("position", FieldTypeEnum.TEXTBOX);
         detailDataModel.endGroup();
@@ -50,7 +50,7 @@ public class EditSupplierView extends AbstractDetailView<Supplier> {
         detailDataModel.tab("We make it work!", "Tab 2", null);
         detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);
         detailDataModel.startGroup("Group 2");
-        detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX).newColumn();
+        detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX);
         detailDataModel.endGroup();
         detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX);
