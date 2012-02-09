@@ -44,6 +44,7 @@ import com.s3s.ssm.entity.config.UnitOfMeasure;
 @Table(name = "s_partner")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Partner extends AbstractCodeOLObject {
+    private static final long serialVersionUID = 1435468012252943876L;
     private String name;
     private Integer title; // Partner Form
     private String comment;// Notes
@@ -59,7 +60,7 @@ public abstract class Partner extends AbstractCodeOLObject {
 
     private Set<ContactDebt> contactDebtSet = new HashSet<ContactDebt>();
 
-    @Column(name = "name", length = 128)
+    @Column(name = "name", length = 128, nullable = false)
     public String getName() {
         return name;
     }
