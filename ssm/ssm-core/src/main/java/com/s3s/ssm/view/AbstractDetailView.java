@@ -64,6 +64,7 @@ import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXDatePicker;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.util.Assert;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.model.DetailAttribute;
@@ -248,7 +249,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     }
 
     private JTabbedPane createTabPane(List<TabInfoData> tabList, int numOfAttributes) {
-        assert tabList.get(0).getStartIndex() == 0 : "Tab must be added before attribute";
+        Assert.isTrue(tabList.get(0).getStartIndex() == 0, "Tab must be added before attribute");
         JTabbedPane tabPane = new JTabbedPane();
         for (int i = 0; i < tabList.size() - 1; i++) {
             TabInfoData tab = tabList.get(i);
@@ -262,21 +263,22 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     }
 
     private JPanel createFieldsPanel(int beginTabIndex, int endTabIndex) {
-        JPanel fieldsPanel = new JPanel(new MigLayout("ins 0, wrap, fill"));
+        JPanel fieldsPanel = new JPanel(new MigLayout("ins 0"));
         int i = beginTabIndex;
         for (GroupInfoData g : detailDataModel.getGroupList()) {
             if (g.getStartGroupIndex() >= beginTabIndex && g.getEndGroupIndex() <= endTabIndex) {
-                fieldsPanel.add(createSubPanel(i, g.getStartGroupIndex(), null), "grow");
-                fieldsPanel.add(createSubPanel(g.getStartGroupIndex(), g.getEndGroupIndex(), g.getName()));
+                addFields(fieldsPanel, i, g.getStartGroupIndex(), null);
+                addFields(fieldsPanel, g.getStartGroupIndex(), g.getEndGroupIndex(), g.getName());
                 i = g.getEndGroupIndex();
             }
         }
-        fieldsPanel.add(createSubPanel(i, endTabIndex, null), "grow");
+        addFields(fieldsPanel, i, endTabIndex, null);
         return fieldsPanel;
     }
 
     /**
      * 
+     * @param fieldsPanel
      * @param startIndex
      *            the inclusive index in detailDataModel.getDetailAttribute()
      * @param endIndex
@@ -286,20 +288,19 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
      * @return
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private JPanel createSubPanel(int startIndex, int endIndex, String name) {
-        StringBuilder columnLayoutConstraint = new StringBuilder();
-        for (int i = 0; i < 4; i++) {
-            columnLayoutConstraint.append("[][grow, fill][]");
-        }
-        JPanel pnlEdit = new JPanel(new MigLayout("ins 0, fill", columnLayoutConstraint.toString()));
-        if (name != null) {
+    private JPanel addFields(JPanel fieldsPanel, int startIndex, int endIndex, String name) {
+        JPanel pnlEdit = fieldsPanel;
+        if (name != null) { // in case of group of fields.
+            pnlEdit = new JPanel(new MigLayout("ins 0"));
+            fieldsPanel.add(pnlEdit, "newline, spanx");
             pnlEdit.setBorder(new TitledBorder(name));
         }
         for (int i = startIndex; i < endIndex; i++) {
             DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + attribute.getName());
-            String wrap = attribute.isNewColumn() ? "" : "wrap";
+            String newline = attribute.isNewColumn() ? "" : "newline, ";
+            int width = attribute.getWidth() == 0 ? UIConstants.DEFAULT_TEXTFIELD_COLUMN : attribute.getWidth();
             if (attribute.isMandatory()) {
                 label += " (*)";
             }
@@ -320,23 +321,23 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     dataField = new JFormattedTextField("");
                 }
                 ((JFormattedTextField) dataField).setEditable(attribute.isEditable());
-                ((JFormattedTextField) dataField).setColumns(UIConstants.DEFAULT_TEXTFIELD_COLUMN);
+                ((JFormattedTextField) dataField).setColumns(width);
 
                 dataField.setEnabled(attribute.isEnable());
                 ((JFormattedTextField) dataField).setValue(value);
-                pnlEdit.add(lblLabel);
+                pnlEdit.add(lblLabel, newline);
                 break;
             case TEXTAREA:
-                JTextArea ta = new JTextArea(UIConstants.DEFAUL_TEXTAREA_ROWS, UIConstants.DEFAULT_TEXTFIELD_COLUMN);
+                JTextArea ta = new JTextArea(UIConstants.DEFAUL_TEXTAREA_ROWS, width);
                 ta.setLineWrap(true);
                 ta.setEditable(true);
                 String txtValue = value != null ? StringUtils.trimToEmpty(String.valueOf(value)) : "";
                 ta.setText(txtValue);
                 dataField = new JScrollPane(ta);
-                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(lblLabel, newline + "top");
                 break;
             case PASSWORD:
-                dataField = new JPasswordField(UIConstants.DEFAULT_TEXTFIELD_COLUMN);
+                dataField = new JPasswordField(width);
                 ((JPasswordField) dataField).setEditable(attribute.isEditable());
                 dataField.setEnabled(attribute.isEnable());
                 ((JTextField) dataField).setText(ObjectUtils.toString(value));
@@ -348,13 +349,13 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 dataField = new JComboBox<>(referenceData.getValues().toArray());
                 ((JComboBox<?>) dataField).setRenderer(referenceData.getRenderer());
                 ((JComboBox<?>) dataField).setSelectedItem(value);
-                pnlEdit.add(lblLabel);
+                pnlEdit.add(lblLabel, newline);
                 break;
             case MULTI_SELECT_BOX:
                 List desValues = value != null ? new ArrayList((Set) value) : Collections.EMPTY_LIST;
                 List scrValues = new ArrayList<>(ListUtils.removeAll(referenceData.getValues(), desValues));
                 dataField = new MultiSelectionBox<>(scrValues, desValues, referenceData.getRenderer());
-                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(lblLabel, newline + "top");
                 break;
             case DATE:
                 Date date = (Date) value;
@@ -362,7 +363,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 if (date != null) {
                     ((JXDatePicker) dataField).setDate(date);
                 }
-                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(lblLabel, newline + "top");
                 break;
             case RADIO_BUTTON_GROUP:
                 dataField = new RadioButtonsGroup<>(referenceData.getValue2LabelMap(), value);
@@ -371,21 +372,21 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             case IMAGE:
                 byte[] bytes = (byte[]) value;
                 dataField = new ImageChooser(bytes);
-                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(lblLabel, newline + "top");
                 break;
             case FILE_CHOOSER:
                 String filePath = (String) value;
                 dataField = new FileChooser(filePath);
-                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(lblLabel, newline + "top");
                 break;
             case CHECKBOX:
                 Boolean isSelected = BooleanUtils.isTrue((Boolean) value);
                 dataField = new JCheckBox("", isSelected);
-                pnlEdit.add(lblLabel);
+                pnlEdit.add(lblLabel, newline);
                 break;
             case ENTITY_CHOOSER:
                 dataField = new EntityChooser<>(referenceData.getValues(), value);
-                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(lblLabel, newline + "top");
                 break;
             case SALE_TARGET:
                 Calendar now = Calendar.getInstance();
@@ -407,14 +408,14 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     saleTargetList.addAll(referenceData.getValues());
                 }
                 dataField = new SaleTargetComp(curyear, saleTargetList);
-                pnlEdit.add(lblLabel, "top");
+                pnlEdit.add(lblLabel, newline + "top");
                 break;
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
             pnlEdit.add(dataField);
             JLabel errorIcon = new JLabel(new ImageIcon(getClass().getResource("/icons/errorIcon.gif")));
-            pnlEdit.add(errorIcon, wrap);
+            pnlEdit.add(errorIcon);
             errorIcon.setVisible(false);
             name2AttributeComponent.put(attribute.getName(), new AttributeComponent(lblLabel, dataField, errorIcon));
         }

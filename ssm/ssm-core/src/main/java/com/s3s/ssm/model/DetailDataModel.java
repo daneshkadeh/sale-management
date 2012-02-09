@@ -21,7 +21,7 @@ import javax.swing.Icon;
 
 public class DetailDataModel {
     public enum FieldTypeEnum {
-        TEXTBOX, TEXTAREA, DROPDOWN, MULTI_SELECT_BOX, PASSWORD, CHECKBOX, DATE, RADIO_BUTTON_GROUP, IMAGE, FILE_CHOOSER, ENTITY_CHOOSER, SALE_TARGET, SEX_RADIO;
+        TEXTBOX, TEXTAREA, DROPDOWN, MULTI_SELECT_BOX, PASSWORD, CHECKBOX, DATE, RADIO_BUTTON_GROUP, IMAGE, FILE_CHOOSER, ENTITY_CHOOSER, SALE_TARGET;
     }
 
     private List<DetailAttribute> detailAttributes = new ArrayList<>();
