@@ -36,11 +36,14 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.text.NumberFormatter;
 import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
@@ -65,6 +68,8 @@ import org.springframework.beans.BeanWrapperImpl;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
+import com.s3s.ssm.model.DetailDataModel.GroupInfoData;
+import com.s3s.ssm.model.DetailDataModel.TabInfoData;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.Solution3sClassUtils;
@@ -218,31 +223,83 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, T entity) {
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected void initComponents() {
         // Layout the screen
-        setLayout(new MigLayout("hidemode 2, wrap, fill"));
+        setLayout(new MigLayout("hidemode 2, wrap, fillx"));
 
+        // Toolbar
         JToolBar toolbar = createToolBar();
         add(toolbar, "top");
 
+        // Error panel
         initErrorPanel();
         add(errorPanel, "top, growx");
 
-        // if(detailDataModel.getTabList().isEmpty())
-
-        StringBuilder columnLayoutConstraint = new StringBuilder();
-        for (int i = 0; i < detailDataModel.getMaxColumn() - 1; i++) {
-            columnLayoutConstraint.append("[][grow, fill][]20");
+        // Fields panel
+        List<TabInfoData> tabList = detailDataModel.getTabList();
+        int numOfAttributes = detailDataModel.getDetailAttributes().size();
+        if (CollectionUtils.isNotEmpty(tabList)) {
+            JTabbedPane tabPane = createTabPane(tabList, numOfAttributes);
+            add(tabPane, "grow");
+        } else {
+            JPanel fieldsPanel = createFieldsPanel(0, numOfAttributes);
+            add(fieldsPanel, "grow");
         }
-        columnLayoutConstraint.append("[][grow, fill][]");
-        JPanel pnlEdit = new JPanel(new MigLayout("hidemode 2, wrap " + detailDataModel.getMaxColumn() * 3,
-                columnLayoutConstraint.toString()));
-        for (int i = 0; i < detailDataModel.getDetailAttributes().size(); i++) {
+    }
+
+    private JTabbedPane createTabPane(List<TabInfoData> tabList, int numOfAttributes) {
+        assert tabList.get(0).getStartIndex() == 0 : "Tab must be added before attribute";
+        JTabbedPane tabPane = new JTabbedPane();
+        for (int i = 0; i < tabList.size() - 1; i++) {
+            TabInfoData tab = tabList.get(i);
+            JPanel pane = createFieldsPanel(tab.getStartIndex(), tabList.get(i + 1).getStartIndex());
+            tabPane.addTab(tab.getName(), tab.getIcon(), pane, tab.getTooltip());
+        }
+        TabInfoData endTab = tabList.get(tabList.size() - 1);
+        JPanel pane = createFieldsPanel(endTab.getStartIndex(), numOfAttributes);
+        tabPane.addTab(endTab.getName(), endTab.getIcon(), pane, endTab.getTooltip());
+        return tabPane;
+    }
+
+    private JPanel createFieldsPanel(int beginTabIndex, int endTabIndex) {
+        JPanel fieldsPanel = new JPanel(new MigLayout("ins 0, wrap, fill"));
+        int i = beginTabIndex;
+        for (GroupInfoData g : detailDataModel.getGroupList()) {
+            if (g.getStartGroupIndex() >= beginTabIndex && g.getEndGroupIndex() <= endTabIndex) {
+                fieldsPanel.add(createSubPanel(i, g.getStartGroupIndex(), null), "grow");
+                fieldsPanel.add(createSubPanel(g.getStartGroupIndex(), g.getEndGroupIndex(), g.getName()));
+                i = g.getEndGroupIndex();
+            }
+        }
+        fieldsPanel.add(createSubPanel(i, endTabIndex, null), "grow");
+        return fieldsPanel;
+    }
+
+    /**
+     * 
+     * @param startIndex
+     *            the inclusive index in detailDataModel.getDetailAttribute()
+     * @param endIndex
+     *            the exclusive index in detailDataModel.getDetailAttribute()
+     * @param name
+     *            the name of panel. If not null -> The panel render with title border.
+     * @return
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private JPanel createSubPanel(int startIndex, int endIndex, String name) {
+        StringBuilder columnLayoutConstraint = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            columnLayoutConstraint.append("[][grow, fill][]");
+        }
+        JPanel pnlEdit = new JPanel(new MigLayout("ins 0, fill", columnLayoutConstraint.toString()));
+        if (name != null) {
+            pnlEdit.setBorder(new TitledBorder(name));
+        }
+        for (int i = startIndex; i < endIndex; i++) {
             DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + attribute.getName());
-            String wrap = attribute.isEndLine() ? "wrap" : "";
+            String wrap = attribute.isNewColumn() ? "" : "wrap";
             if (attribute.isMandatory()) {
                 label += " (*)";
             }
@@ -252,7 +309,6 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             ReferenceData referenceData = refDataModel.getRefDataListMap().get(attribute.getReferenceDataId());
             switch (attribute.getType()) {
             case TEXTBOX:
-                // Class<?> propertyReturnType = getPropertyReturnType(entity, attribute);
                 Class<?> propertyReturnType = beanWrapper.getPropertyType(attribute.getName());
                 if (ClassUtils.isAssignable(propertyReturnType, Number.class)) {
                     NumberFormatter numFormatter = new NumberFormatter();
@@ -265,20 +321,18 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                 }
                 ((JFormattedTextField) dataField).setEditable(attribute.isEditable());
                 ((JFormattedTextField) dataField).setColumns(UIConstants.DEFAULT_TEXTFIELD_COLUMN);
-                // ((JFormattedTextField) dataField).setInputVerifier(new NotEmptyValidator(SwingUtilities
-                // .getWindowAncestor(this), dataField, "The field must be not empty."));
 
                 dataField.setEnabled(attribute.isEnable());
                 ((JFormattedTextField) dataField).setValue(value);
                 pnlEdit.add(lblLabel);
                 break;
             case TEXTAREA:
-                dataField = new JTextArea(UIConstants.DEFAUL_TEXTAREA_ROWS, UIConstants.DEFAULT_TEXTFIELD_COLUMN);
-                ((JTextArea) dataField).setLineWrap(true);
-                ((JTextArea) dataField).setWrapStyleWord(true);
-                ((JTextArea) dataField).setEditable(true);
+                JTextArea ta = new JTextArea(UIConstants.DEFAUL_TEXTAREA_ROWS, UIConstants.DEFAULT_TEXTFIELD_COLUMN);
+                ta.setLineWrap(true);
+                ta.setEditable(true);
                 String txtValue = value != null ? StringUtils.trimToEmpty(String.valueOf(value)) : "";
-                ((JTextArea) dataField).setText(txtValue);
+                ta.setText(txtValue);
+                dataField = new JScrollPane(ta);
                 pnlEdit.add(lblLabel, "top");
                 break;
             case PASSWORD:
@@ -364,8 +418,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             errorIcon.setVisible(false);
             name2AttributeComponent.put(attribute.getName(), new AttributeComponent(lblLabel, dataField, errorIcon));
         }
-
-        add(pnlEdit, "grow");
+        return pnlEdit;
     }
 
     private void initErrorPanel() {
@@ -449,7 +502,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
                     beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(txtField.getValue()));
                     break;
                 case TEXTAREA:
-                    JTextArea rtxtField = (JTextArea) component;
+                    JTextArea rtxtField = (JTextArea) ((JScrollPane) component).getViewport().getView();
                     beanWrapper.setPropertyValue(attribute.getName(),
                             paramClass.cast(StringUtils.trimToEmpty(rtxtField.getText())));
                     break;

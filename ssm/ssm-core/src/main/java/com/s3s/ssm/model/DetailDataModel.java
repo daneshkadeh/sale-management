@@ -19,19 +19,18 @@ import java.util.List;
 
 import javax.swing.Icon;
 
-import org.apache.commons.collections.CollectionUtils;
-
 public class DetailDataModel {
     public enum FieldTypeEnum {
         TEXTBOX, TEXTAREA, DROPDOWN, MULTI_SELECT_BOX, PASSWORD, CHECKBOX, DATE, RADIO_BUTTON_GROUP, IMAGE, FILE_CHOOSER, ENTITY_CHOOSER, SALE_TARGET, SEX_RADIO;
     }
 
     private List<DetailAttribute> detailAttributes = new ArrayList<>();
-    private int maxColumn = 2;
 
     // ///// Manage tabs /////////
-    private int currentTabIndex = -1;
     private List<TabInfoData> tabList = new ArrayList<>();
+
+    // //// Manage groups ////////
+    private List<GroupInfoData> groupList = new ArrayList<>();
 
     /**
      * Tab data structure store info of the tabs. Including the index of <code>detailAttributes</code> to start tab and
@@ -40,9 +39,7 @@ public class DetailDataModel {
     public class TabInfoData {
         /** The inclusive index of element in detailAttributes to start tab. */
         private int startIndex;
-        
-        /** The exclusive index of detailAttributes to end tab. */
-        private int endIndex;
+
         private String name;
         private String tooltip;
         private Icon icon;
@@ -78,14 +75,6 @@ public class DetailDataModel {
             this.icon = icon;
         }
 
-        public int getEndIndex() {
-            return endIndex;
-        }
-
-        public void setEndIndex(int endIndex) {
-            this.endIndex = endIndex;
-        }
-
         public int getStartIndex() {
             return startIndex;
         }
@@ -94,6 +83,43 @@ public class DetailDataModel {
             this.startIndex = startIndex;
         }
 
+    }
+
+    public class GroupInfoData {
+        /** The inclusive index of element in detailAttributes to start group. */
+        private int startGroupIndex;
+        /** The exclusive index of element in detailAttributes to end group. */
+        private int endGroupIndex;
+        private String name;
+
+        public GroupInfoData(int startGroupIndex, String name) {
+            this.startGroupIndex = startGroupIndex;
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getStartGroupIndex() {
+            return startGroupIndex;
+        }
+
+        public void setStartGroupIndex(int startGroupIndex) {
+            this.startGroupIndex = startGroupIndex;
+        }
+
+        public int getEndGroupIndex() {
+            return endGroupIndex;
+        }
+
+        public void setEndGroupIndex(int endGroupIndex) {
+            this.endGroupIndex = endGroupIndex;
+        }
     }
 
     public DetailAttribute addAttribute(String name, FieldTypeEnum fieldType) {
@@ -110,6 +136,10 @@ public class DetailDataModel {
         return tabList;
     }
 
+    public List<GroupInfoData> getGroupList() {
+        return groupList;
+    }
+
     /**
      * Layout the tab.
      * 
@@ -117,29 +147,15 @@ public class DetailDataModel {
      *            the title of the tab.
      * @return
      */
-    public void startTab(String name, String tooltip, Icon icon) {
-        tabList.add(new TabInfoData(detailAttributes.size() - 1, name, tooltip, icon));
-        currentTabIndex++;
+    public void tab(String name, String tooltip, Icon icon) {
+        tabList.add(new TabInfoData(detailAttributes.size(), name, tooltip, icon));
     }
 
-    public void endTab() {
-        if(currentTabIndex >= 0){
-            tabList.get(currentTabIndex).setEndIndex(detailAttributes.size());
-            currentTabIndex--;
-        } else {
-            throw new RuntimeException("Forget to startTab");
-        }
+    public void startGroup(String name) {
+        groupList.add(new GroupInfoData(detailAttributes.size(), name));
     }
 
-    public int getMaxColumn() {
-        return maxColumn;
+    public void endGroup() {
+        groupList.get(groupList.size() - 1).setEndGroupIndex(detailAttributes.size());
     }
-
-    public void setMaxColumn(int maxColumn) {
-        if (maxColumn <= 0) {
-            throw new RuntimeException("Num of column must greater than 0");
-        }
-        this.maxColumn = maxColumn;
-    }
-
 }

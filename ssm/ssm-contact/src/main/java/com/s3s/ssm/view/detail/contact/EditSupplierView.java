@@ -17,11 +17,12 @@ package com.s3s.ssm.view.detail.contact;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+
 import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.AbstractDetailView;
 
@@ -35,18 +36,24 @@ public class EditSupplierView extends AbstractDetailView<Supplier> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Supplier entity) {
-        detailDataModel.setMaxColumn(3);
+        detailDataModel
+                .tab("We are S3S", "Tab 1", new ImageIcon(EditSupplierView.class.getResource("/icons/user.png")));
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
-        // detailDataModel.addAttribute("title", FieldTypeEnum.TEXTBOX);
+        detailDataModel.startGroup("Group 1");
         detailDataModel.addAttribute("representer", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("sex", FieldTypeEnum.RADIO_BUTTON_GROUP).referenceDataId(SEX_ID);
         detailDataModel.addAttribute("position", FieldTypeEnum.TEXTBOX);
+        detailDataModel.endGroup();
         detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
-        detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX).endLine();
-        detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX).endLine();
-        detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX).endLine();
-        detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX).endLine();
+
+        detailDataModel.tab("We make it work!", "Tab 2", null);
+        detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);
+        detailDataModel.startGroup("Group 2");
+        detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX).newColumn();
+        detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX);
+        detailDataModel.endGroup();
+        detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX);
         detailDataModel.addAttribute("comment", FieldTypeEnum.TEXTAREA);
     }
 
@@ -59,6 +66,4 @@ public class EditSupplierView extends AbstractDetailView<Supplier> {
         refDataModel.putRefDataList(SEX_ID, refDataModel.new ReferenceData<>(sex2String));
     }
 
-    
-    
 }
