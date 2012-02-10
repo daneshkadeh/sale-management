@@ -18,9 +18,9 @@ import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.view.TreeNodeWithView;
+import com.s3s.ssm.view.TreeView;
 import com.s3s.ssm.view.component.AbstractDomain;
-import com.s3s.ssm.view.component.TreeNodeWithView;
-import com.s3s.ssm.view.component.TreeView;
 import com.s3s.ssm.view.list.sales.ListSalesContractView;
 
 /**

@@ -13,7 +13,7 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.view.component;
+package com.s3s.ssm.view;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,7 +21,6 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
-import com.s3s.ssm.view.IViewLazyLoadable;
 
 /**
  * The tree view.

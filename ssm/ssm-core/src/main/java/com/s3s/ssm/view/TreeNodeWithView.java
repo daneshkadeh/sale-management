@@ -13,7 +13,7 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.view.component;
+package com.s3s.ssm.view;
 
 import javax.swing.JPanel;
 import javax.swing.JTree;

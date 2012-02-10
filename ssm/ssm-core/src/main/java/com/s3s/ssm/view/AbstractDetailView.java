@@ -279,6 +279,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
     /**
      * 
      * @param fieldsPanel
+     *            the panel which fields add to.
      * @param startIndex
      *            the inclusive index in detailDataModel.getDetailAttribute()
      * @param endIndex

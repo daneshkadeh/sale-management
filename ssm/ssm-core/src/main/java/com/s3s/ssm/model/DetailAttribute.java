@@ -79,7 +79,7 @@ public class DetailAttribute {
         return isMandatory;
     }
 
-    public DetailAttribute setMandatory(boolean isMandatory) {
+    public DetailAttribute mandatory(boolean isMandatory) {
         this.isMandatory = isMandatory;
         return this;
     }
@@ -101,7 +101,7 @@ public class DetailAttribute {
      * @param width
      * @return
      */
-    public DetailAttribute setWidth(int width) {
+    public DetailAttribute width(int width) {
         this.width = width;
         return this;
     }

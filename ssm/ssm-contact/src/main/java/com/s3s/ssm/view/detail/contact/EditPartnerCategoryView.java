@@ -44,8 +44,8 @@ public class EditPartnerCategoryView extends AbstractDetailView<PartnerCategory>
      */
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, PartnerCategory entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).setMandatory(true);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).setMandatory(true);
+        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("parentCategory", FieldTypeEnum.DROPDOWN).referenceDataId(PARTNER_CATE_REF_ID);
         detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX);
     }

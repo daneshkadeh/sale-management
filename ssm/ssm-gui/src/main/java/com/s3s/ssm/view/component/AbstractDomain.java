@@ -22,6 +22,8 @@ import java.awt.event.ItemListener;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 
+import com.s3s.ssm.view.TreeView;
+
 /**
  * The domain button with the particular tree which displayed on the left of main screen.
  * 

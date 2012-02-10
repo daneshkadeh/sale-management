@@ -47,8 +47,8 @@ public class EditOperatorView extends AbstractDetailView<Operator> {
      */
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Operator entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).setMandatory(true);
-        detailDataModel.addAttribute("username", FieldTypeEnum.TEXTBOX).setMandatory(true);
+        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("username", FieldTypeEnum.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("password", FieldTypeEnum.PASSWORD);
         detailDataModel.addAttribute("fullName", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX);

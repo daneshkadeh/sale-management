@@ -91,8 +91,8 @@ public class EditCustomerView extends AbstractMasterDetailView<Customer, Contact
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Customer entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).setMandatory(true);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).setMandatory(true);
+        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("partnerCateSet", FieldTypeEnum.MULTI_SELECT_BOX).referenceDataId(
                 PARTNER_CATE_REF_ID);
         detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);

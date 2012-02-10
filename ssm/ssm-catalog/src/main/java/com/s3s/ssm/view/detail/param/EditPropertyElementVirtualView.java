@@ -13,7 +13,7 @@ public class EditPropertyElementVirtualView extends AbstractDetailView<ProductPr
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ProductPropertyElement entity) {
-        detailDataModel.addAttribute("value", FieldTypeEnum.TEXTBOX).setMandatory(true);
+        detailDataModel.addAttribute("value", FieldTypeEnum.TEXTBOX).mandatory(true);
     }
 
     @Override
