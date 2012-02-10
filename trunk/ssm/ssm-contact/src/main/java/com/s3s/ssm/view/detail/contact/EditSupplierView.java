@@ -39,9 +39,9 @@ public class EditSupplierView extends AbstractDetailView<Supplier> {
         detailDataModel.tab("We are S3S", "This is a tooltip",
                 new ImageIcon(EditSupplierView.class.getResource("/icons/user.png")));
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).setWidth(5).newColumn();
+        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).width(5).newColumn();
         detailDataModel.startGroup("Group 1");
-        detailDataModel.addAttribute("representer", FieldTypeEnum.TEXTBOX).setWidth(40);
+        detailDataModel.addAttribute("representer", FieldTypeEnum.TEXTBOX).width(40);
         detailDataModel.addAttribute("sex", FieldTypeEnum.RADIO_BUTTON_GROUP).referenceDataId(SEX_ID);
         detailDataModel.addAttribute("position", FieldTypeEnum.TEXTBOX);
         detailDataModel.endGroup();

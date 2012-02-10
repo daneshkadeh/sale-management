@@ -32,10 +32,10 @@ public class EditExchangeRateView extends AbstractDetailView<ExchangeRate> {
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ExchangeRate entity) {
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("updateDate", FieldTypeEnum.DATE).setMandatory(true);
+        detailDataModel.addAttribute("updateDate", FieldTypeEnum.DATE).mandatory(true);
         detailDataModel.addAttribute("currency", FieldTypeEnum.DROPDOWN).referenceDataId(CURRENCY_REF_ID)
-                .setMandatory(true);
-        detailDataModel.addAttribute("rate", FieldTypeEnum.TEXTBOX).setMandatory(true);
+                .mandatory(true);
+        detailDataModel.addAttribute("rate", FieldTypeEnum.TEXTBOX).mandatory(true);
     }
 
     @Override

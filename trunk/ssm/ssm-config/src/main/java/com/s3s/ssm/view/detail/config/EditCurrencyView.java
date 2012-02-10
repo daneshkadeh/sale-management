@@ -30,8 +30,8 @@ public class EditCurrencyView extends AbstractDetailView<SCurrency> {
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, SCurrency entity) {
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).setMandatory(true);
-        detailDataModel.addAttribute("symbol", FieldTypeEnum.TEXTBOX).setMandatory(true);
+        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("symbol", FieldTypeEnum.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX);
     }
 }

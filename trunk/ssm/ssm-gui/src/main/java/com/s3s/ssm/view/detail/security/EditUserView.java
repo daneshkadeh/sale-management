@@ -39,9 +39,9 @@ public class EditUserView extends AbstractDetailView<User> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, User entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).setMandatory(true);
-        detailDataModel.addAttribute("username", FieldTypeEnum.TEXTBOX).setMandatory(true);
-        detailDataModel.addAttribute("password", FieldTypeEnum.PASSWORD).setMandatory(true);
+        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("username", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("password", FieldTypeEnum.PASSWORD).mandatory(true);
         detailDataModel.addAttribute("roles", FieldTypeEnum.MULTI_SELECT_BOX).referenceDataId(ROLE_REF_ID);
         detailDataModel.addAttribute("isEnabled", FieldTypeEnum.CHECKBOX);
     }

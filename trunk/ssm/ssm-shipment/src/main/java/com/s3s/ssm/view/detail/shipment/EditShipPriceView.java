@@ -39,8 +39,8 @@ public class EditShipPriceView extends AbstractDetailView<ShipPrice> {
      */
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ShipPrice entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).setMandatory(true);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).setMandatory(true);
+        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
     }
 
 }

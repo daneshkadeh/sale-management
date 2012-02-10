@@ -47,8 +47,8 @@ public class EditShipDatePriceDetail extends AbstractDetailView<ShipDatePrice> {
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ShipDatePrice entity) {
         detailDataModel.addAttribute("shipPrice", FieldTypeEnum.DROPDOWN).referenceDataId(SHIPPRICE_REF_ID);
-        detailDataModel.addAttribute("updateDate", FieldTypeEnum.DATE).setMandatory(true);
-        detailDataModel.addAttribute("price", FieldTypeEnum.TEXTBOX).setMandatory(true);
+        detailDataModel.addAttribute("updateDate", FieldTypeEnum.DATE).mandatory(true);
+        detailDataModel.addAttribute("price", FieldTypeEnum.TEXTBOX).mandatory(true);
     }
 
     @Override

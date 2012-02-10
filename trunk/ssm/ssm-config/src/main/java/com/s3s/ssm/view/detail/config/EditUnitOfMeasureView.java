@@ -41,7 +41,7 @@ public class EditUnitOfMeasureView extends AbstractDetailView<UnitOfMeasure> {
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, UnitOfMeasure entity) {
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).setMandatory(true);
+        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("uomCategory", FieldTypeEnum.DROPDOWN).referenceDataId(CATE_REF_ID);
         detailDataModel.addAttribute("isBaseMeasure", FieldTypeEnum.CHECKBOX);
     }

@@ -44,10 +44,9 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ProductProperty entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).setMandatory(true);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).setMandatory(true);
-        detailDataModel.addAttribute("type", FieldTypeEnum.DROPDOWN).setMandatory(true)
-                .referenceDataId(REF_PROPERTY_TYPE);
+        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("type", FieldTypeEnum.DROPDOWN).mandatory(true).referenceDataId(REF_PROPERTY_TYPE);
     }
 
     @Override
