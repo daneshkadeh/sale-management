@@ -17,6 +17,12 @@ package com.s3s.ssm.view;
 
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+
+import net.miginfocom.swing.MigLayout;
+
+import org.springframework.util.Assert;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 
@@ -29,18 +35,30 @@ public abstract class AbstractMultiEditView<T extends AbstractBaseIdObject> exte
 
     public AbstractMultiEditView(T entity) {
         super(entity);
+        setLayout(new MigLayout("fill"));
         JScrollPane contentScrollPane = new JScrollPane();
-        TreeView treeView = new TreeView(contentScrollPane);
-        constructTreeView(treeView, entity);
+        TreeView treeView = initTreeView(entity, contentScrollPane);
         JSplitPane splitPane = new JSplitPane();
         splitPane.setLeftComponent(new JScrollPane(treeView));
         splitPane.setRightComponent(contentScrollPane);
         add(splitPane);
     }
 
+    private TreeView initTreeView(T entity, JScrollPane contentScrollPane) {
+        TreeView treeView = new TreeView(contentScrollPane);
+        TreeNodeWithView root = new TreeNodeWithView("");
+        treeView.setModel(new DefaultTreeModel(root));
+        treeView.setRootVisible(false);
+        constructTreeView(root, entity);
+        // Set selection on the first node
+        Assert.isTrue(root.getChildAt(0) != null, "There is no node in the tree");
+        treeView.setSelectionPath(new TreePath(((TreeNodeWithView) root.getChildAt(0)).getPath()));
+        return treeView;
+    }
+
     /**
-     * @param treeView
+     * @param root
      * @return
      */
-    protected abstract TreeView constructTreeView(TreeView treeView, T entity);
+    protected abstract void constructTreeView(TreeNodeWithView root, T entity);
 }

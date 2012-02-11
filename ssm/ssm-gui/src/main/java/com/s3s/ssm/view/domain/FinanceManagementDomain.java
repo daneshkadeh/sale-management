@@ -15,11 +15,9 @@
 package com.s3s.ssm.view.domain;
 
 import javax.swing.JScrollPane;
-import javax.swing.tree.DefaultTreeModel;
 
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
-import com.s3s.ssm.view.TreeView;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.list.finance.ListPaymentTypeView;
 
@@ -37,9 +35,8 @@ public class FinanceManagementDomain extends AbstractDomain {
     }
 
     @Override
-    protected void constructTreeView(TreeView treeView) {
+    protected void constructTreeView(TreeNodeWithView rootNode) {
         // Financial management -TODO: not add views
-        TreeNodeWithView fMEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Finance.Management")); // "Financial management"
         TreeNodeWithView receiveFMEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Finance.Receivable")); // "Receivable financial management"
         TreeNodeWithView loaiThanhToan = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Finance.PaymentType"), new ListPaymentTypeView());
@@ -60,9 +57,9 @@ public class FinanceManagementDomain extends AbstractDomain {
                 ControlConfigUtils.getString("JTree.Finance.Payable.LoanMoney"));// "Cho vay tien"
         TreeNodeWithView chiPhiKhacNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Finance.Payable.Other")); // "Chi phi khac"
-        fMEntry.add(loaiThanhToan);
-        fMEntry.add(receiveFMEntry);
-        fMEntry.add(payFMEntry);
+        rootNode.add(loaiThanhToan);
+        rootNode.add(receiveFMEntry);
+        rootNode.add(payFMEntry);
         receiveFMEntry.add(thuKemToaHangNode);
         receiveFMEntry.add(thuTienHangNode);
         receiveFMEntry.add(khachTraMuonTienNode);
@@ -79,11 +76,9 @@ public class FinanceManagementDomain extends AbstractDomain {
                 ControlConfigUtils.getString("JTree.Finance.Debtor.Customer")); // "Cong no khach hang"
         TreeNodeWithView congNoNCCKhacNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Finance.Debtor.Supplier")); // "Cong no nha cung cap"
-        fMEntry.add(quanLyCongNoEntry);
+        rootNode.add(quanLyCongNoEntry);
         quanLyCongNoEntry.add(congNoKHNode);
         quanLyCongNoEntry.add(congNoNCCKhacNode);
-
-        treeView.setModel(new DefaultTreeModel(fMEntry));
     }
 
 }

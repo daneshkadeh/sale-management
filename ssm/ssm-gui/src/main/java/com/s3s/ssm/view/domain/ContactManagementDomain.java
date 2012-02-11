@@ -15,11 +15,9 @@
 package com.s3s.ssm.view.domain;
 
 import javax.swing.JScrollPane;
-import javax.swing.tree.DefaultTreeModel;
 
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
-import com.s3s.ssm.view.TreeView;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.list.contact.ListCustomerView;
 import com.s3s.ssm.view.list.contact.ListPartnerCategoryView;
@@ -39,10 +37,8 @@ public class ContactManagementDomain extends AbstractDomain {
     }
 
     @Override
-    protected void constructTreeView(TreeView treeView) {
+    protected void constructTreeView(TreeNodeWithView rootNode) {
         // CRM Contact management
-        TreeNodeWithView contactMagementEntry = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.Contact.Management")); // "CRM contact management"
         TreeNodeWithView customerNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Contact.Customer"),
                 new ListCustomerView()); // "Customer"
         TreeNodeWithView partnerCateNode = new TreeNodeWithView(
@@ -52,11 +48,10 @@ public class ContactManagementDomain extends AbstractDomain {
         TreeNodeWithView nguoiDuocTaiTroNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Contact.SupportedContact")); // "Nguoi duoc tai tro"
 
-        contactMagementEntry.add(customerNode);
-        contactMagementEntry.add(supplierNode);
-        contactMagementEntry.add(partnerCateNode);
-        contactMagementEntry.add(nguoiDuocTaiTroNode);
-        treeView.setModel(new DefaultTreeModel(contactMagementEntry));
+        rootNode.add(customerNode);
+        rootNode.add(supplierNode);
+        rootNode.add(partnerCateNode);
+        rootNode.add(nguoiDuocTaiTroNode);
 
     }
 

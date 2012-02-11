@@ -15,11 +15,9 @@
 package com.s3s.ssm.view.domain;
 
 import javax.swing.JScrollPane;
-import javax.swing.tree.DefaultTreeModel;
 
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
-import com.s3s.ssm.view.TreeView;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.list.sales.ListInvoiceView;
 
@@ -37,16 +35,11 @@ public class SalesManagementDomain extends AbstractDomain {
     }
 
     @Override
-    protected void constructTreeView(TreeView treeView) {
-        // Sales management
-        TreeNodeWithView salesManagementEntry = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.SalesManagement"));
+    protected void constructTreeView(TreeNodeWithView rootNode) {
         TreeNodeWithView listInvoiceEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SalesManagement.Invoice"), new ListInvoiceView());
 
-        salesManagementEntry.add(listInvoiceEntry);
-
-        treeView.setModel(new DefaultTreeModel(salesManagementEntry));
+        rootNode.add(listInvoiceEntry);
     }
 
 }

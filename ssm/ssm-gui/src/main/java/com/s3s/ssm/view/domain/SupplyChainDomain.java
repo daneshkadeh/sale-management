@@ -15,11 +15,9 @@
 package com.s3s.ssm.view.domain;
 
 import javax.swing.JScrollPane;
-import javax.swing.tree.DefaultTreeModel;
 
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
-import com.s3s.ssm.view.TreeView;
 import com.s3s.ssm.view.component.AbstractDomain;
 
 /**
@@ -36,10 +34,8 @@ public class SupplyChainDomain extends AbstractDomain {
     }
 
     @Override
-    protected void constructTreeView(TreeView treeView) {
+    protected void constructTreeView(TreeNodeWithView rootNode) {
         // TODO: Supply chain management
-        TreeNodeWithView supplyChainMangamentEntry = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.SupplyChain.Management")); // "Supply chain management"
         TreeNodeWithView materialNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.SupplyChain.Material")); // "Material"
         TreeNodeWithView materialPriceNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SupplyChain.MaterialPrice")); // "Material price"
@@ -50,13 +46,11 @@ public class SupplyChainDomain extends AbstractDomain {
         TreeNodeWithView endProductPriceNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SupplyChain.EndProductPrice")); // "End-product price"
 
-        supplyChainMangamentEntry.add(materialNode);
-        supplyChainMangamentEntry.add(materialPriceNode);
-        supplyChainMangamentEntry.add(materialEndProductExchangeNode);
-        supplyChainMangamentEntry.add(endProductNode);
-        supplyChainMangamentEntry.add(endProductPriceNode);
-
-        treeView.setModel(new DefaultTreeModel(supplyChainMangamentEntry));
+        rootNode.add(materialNode);
+        rootNode.add(materialPriceNode);
+        rootNode.add(materialEndProductExchangeNode);
+        rootNode.add(endProductNode);
+        rootNode.add(endProductPriceNode);
     }
 
 }

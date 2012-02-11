@@ -15,11 +15,9 @@
 package com.s3s.ssm.view.domain;
 
 import javax.swing.JScrollPane;
-import javax.swing.tree.DefaultTreeModel;
 
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
-import com.s3s.ssm.view.TreeView;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.list.param.ListStoreView;
 import com.s3s.ssm.view.list.store.ListCheckStoreView;
@@ -41,9 +39,7 @@ public class InventoryManagementDomain extends AbstractDomain {
     }
 
     @Override
-    protected void constructTreeView(TreeView treeView) {
-        TreeNodeWithView inventoryManagementEntry = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.Store.InventoryManagement")); // "Quan ly kho"
+    protected void constructTreeView(TreeNodeWithView rootNode) {
         TreeNodeWithView tonKhoNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.Inventory"),
                 new ListStoreView()); // "Ton kho"
 
@@ -59,14 +55,11 @@ public class InventoryManagementDomain extends AbstractDomain {
         TreeNodeWithView phieuKiemKhoNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Store.CheckStoreForm"), new ListCheckStoreView()); // "Phieu nhap kho"
 
-        inventoryManagementEntry.add(tonKhoNode);
-        inventoryManagementEntry.add(chuyenKhoNode);
-        inventoryManagementEntry.add(phieuXuatKhoNode);
-        inventoryManagementEntry.add(phieuNhapKhoNode);
-        inventoryManagementEntry.add(phieuKiemKhoNode);
-
-        treeView.setModel(new DefaultTreeModel(inventoryManagementEntry));
-
+        rootNode.add(tonKhoNode);
+        rootNode.add(chuyenKhoNode);
+        rootNode.add(phieuXuatKhoNode);
+        rootNode.add(phieuNhapKhoNode);
+        rootNode.add(phieuKiemKhoNode);
     }
 
 }
