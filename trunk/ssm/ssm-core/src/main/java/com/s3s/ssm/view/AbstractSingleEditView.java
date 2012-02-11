@@ -85,6 +85,8 @@ import com.s3s.ssm.view.component.SaleTargetComp;
 import com.s3s.ssm.view.component.SaleTargetModel;
 
 /**
+ * The edit view with single view.
+ * 
  * @author Pham Cong Bang
  * @author Phan Hong Phuc
  * 
@@ -239,7 +241,18 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             JPanel fieldsPanel = createFieldsPanel(0, numOfAttributes);
             add(fieldsPanel, "grow");
         }
+
+        customizeComponents(name2AttributeComponent);
     }
+
+    /**
+     * Customize the components.
+     * 
+     * @param name2AttributeComponent
+     */
+    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent) {
+        // Template method
+    };
 
     private JTabbedPane createTabPane(List<TabInfoData> tabList, int numOfAttributes) {
         Assert.isTrue(tabList.get(0).getStartIndex() == 0, "Tab must be added before attribute");
@@ -456,7 +469,9 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         if (CollectionUtils.isEmpty(validateResult)) {
             boolean isNew = (entity.getId() == null);
             saveOrUpdate(entity);
-            listView.notifyFromDetailView(entity, isNew);
+            if (listView != null) {
+                listView.notifyFromDetailView(entity, isNew);
+            }
             // TODO HPP find another way to close dialog.
             SwingUtilities.getRoot(this).setVisible(false);
         } else {

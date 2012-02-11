@@ -14,10 +14,14 @@
  */
 package com.s3s.ssm.view.detail.contact;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JTextField;
 
 import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.model.DetailDataModel;
@@ -55,6 +59,20 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
         detailDataModel.endGroup();
         detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX);
         detailDataModel.addAttribute("comment", FieldTypeEnum.TEXTAREA);
+    }
+
+    @Override
+    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent) {
+        super.customizeComponents(name2AttributeComponent);
+        final JTextField email = (JTextField) name2AttributeComponent.get("email").getComponent();
+        JCheckBox cb = (JCheckBox) name2AttributeComponent.get("isActive").getComponent();
+        cb.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                email.setVisible(e.getStateChange() == ItemEvent.DESELECTED);
+            }
+        });
     }
 
     @Override
