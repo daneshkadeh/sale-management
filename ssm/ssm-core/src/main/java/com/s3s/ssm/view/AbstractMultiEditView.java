@@ -27,6 +27,8 @@ import org.springframework.util.Assert;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 
 /**
+ * The edit view with multi-view on the tree.
+ * 
  * @author Phan Hong Phuc
  * 
  */
