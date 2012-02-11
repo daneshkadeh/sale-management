@@ -21,7 +21,7 @@ import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
-import com.s3s.ssm.view.detail.contact.EditSupplierView;
+import com.s3s.ssm.view.detail.contact.EditMultiSupplierViewTest;
 
 public class ListSupplierView extends AbstractListView<Supplier> {
     private static final long serialVersionUID = -1414670444682843015L;
@@ -40,7 +40,7 @@ public class ListSupplierView extends AbstractListView<Supplier> {
 
     @Override
     protected Class<? extends AbstractEditView<Supplier>> getEditViewClass() {
-        return EditSupplierView.class;
+        return EditMultiSupplierViewTest.class;
     }
 
 }

@@ -15,11 +15,9 @@
 package com.s3s.ssm.view.domain;
 
 import javax.swing.JScrollPane;
-import javax.swing.tree.DefaultTreeModel;
 
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
-import com.s3s.ssm.view.TreeView;
 import com.s3s.ssm.view.component.AbstractDomain;
 
 /**
@@ -36,9 +34,7 @@ public class ReportDomain extends AbstractDomain {
     }
 
     @Override
-    protected void constructTreeView(TreeView treeView) {
-        // Report
-        TreeNodeWithView reportEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Report.Management")); // "Report"
+    protected void constructTreeView(TreeNodeWithView rootNode) {
         TreeNodeWithView baoDongKichCauNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Report.KichCau")); // "Bao dong kich cau"
         TreeNodeWithView baoDongHetHangNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Report.HetHang")); // "Bao dong het hang"
         TreeNodeWithView hangBanChayNode = new TreeNodeWithView(
@@ -50,14 +46,12 @@ public class ReportDomain extends AbstractDomain {
         TreeNodeWithView thongKeDoanhThuChiPhiNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Report.DoanhThuChiPhi")); // "Thong ke doanh thu - chi phi"
 
-        reportEntry.add(baoDongKichCauNode);
-        reportEntry.add(baoDongHetHangNode);
-        reportEntry.add(hangBanChayNode);
-        reportEntry.add(hangTonQuaLauNode);
-        reportEntry.add(thongKeHangBanNode);
-        reportEntry.add(thongKeDoanhThuChiPhiNode);
-
-        treeView.setModel(new DefaultTreeModel(reportEntry));
+        rootNode.add(baoDongKichCauNode);
+        rootNode.add(baoDongHetHangNode);
+        rootNode.add(hangBanChayNode);
+        rootNode.add(hangTonQuaLauNode);
+        rootNode.add(thongKeHangBanNode);
+        rootNode.add(thongKeDoanhThuChiPhiNode);
     }
 
 }

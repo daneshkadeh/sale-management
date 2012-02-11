@@ -479,7 +479,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * @param entity
      *            the entity which the detail view display for. If <code>null</code>, new entity is displayed.
      */
-    protected void showDetailView(T entity) {
+    protected void showEditView(T entity) {
         Class<? extends AbstractEditView<T>> detailViewClass = getEditViewClass();
         Class<T> entityClass = getEntityClass();
         try {
@@ -724,7 +724,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     "Warning", JOptionPane.OK_OPTION, JOptionPane.WARNING_MESSAGE);
         } else {
             int rowModel = tblListEntities.convertRowIndexToModel(selectedRow);
-            showDetailView(entities.get(rowModel));
+            showEditView(entities.get(rowModel));
         }
     }
 
@@ -805,7 +805,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            showDetailView(null);
+            showEditView(null);
         }
     }
 

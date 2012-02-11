@@ -21,7 +21,13 @@ import java.awt.event.ItemListener;
 
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
+import org.springframework.util.Assert;
+
+import com.s3s.ssm.view.AbstractMultiEditView;
+import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.TreeView;
 
 /**
@@ -42,7 +48,7 @@ public abstract class AbstractDomain extends JToggleButton implements ItemListen
         super();
         this.treeScrollPane = treeScrollPane;
         this.contentScrollPane = contentScrollPane;
-        treeView = getTreeView();
+        treeView = initTreeView(contentScrollPane);
         setCursor(new Cursor(Cursor.HAND_CURSOR));
         setHorizontalAlignment(LEFT);
         addItemListener(this);
@@ -57,11 +63,23 @@ public abstract class AbstractDomain extends JToggleButton implements ItemListen
         }
     }
 
-    private TreeView getTreeView() {
+    /**
+     * TODO this duplicate with {@link AbstractMultiEditView}. Consider to abstract the clazzes
+     * 
+     * @param contentScrollPane
+     * @return
+     */
+    private TreeView initTreeView(JScrollPane contentScrollPane) {
         TreeView treeView = new TreeView(contentScrollPane);
-        constructTreeView(treeView);
+        TreeNodeWithView root = new TreeNodeWithView("");
+        treeView.setModel(new DefaultTreeModel(root));
+        treeView.setRootVisible(false);
+        constructTreeView(root);
+        // Set selection on the first node
+        Assert.isTrue(root.getChildAt(0) != null, "There is no node in the tree");
+        treeView.setSelectionPath(new TreePath(((TreeNodeWithView) root.getChildAt(0)).getPath()));
         return treeView;
     }
 
-    protected abstract void constructTreeView(TreeView treeView);
+    protected abstract void constructTreeView(TreeNodeWithView rootNode);
 }
