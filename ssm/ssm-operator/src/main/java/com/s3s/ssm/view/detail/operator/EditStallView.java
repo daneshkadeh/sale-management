@@ -27,13 +27,13 @@ import com.s3s.ssm.entity.operator.Stall;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
 /**
  * @author Le Thanh Hoang
  * 
  */
-public class EditStallView extends AbstractDetailView<Stall> {
+public class EditStallView extends AbstractSingleEditView<Stall> {
     /**
      * 
      */

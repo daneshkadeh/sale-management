@@ -19,7 +19,7 @@ import java.util.List;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 
 public class ListInvoiceView extends AbstractListView<Invoice> {
@@ -31,7 +31,7 @@ public class ListInvoiceView extends AbstractListView<Invoice> {
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<Invoice>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<Invoice>> getEditViewClass() {
         // TODO Auto-generated method stub
         return null;
     }

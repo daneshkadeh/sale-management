@@ -127,12 +127,12 @@ public abstract class AbstractCommonListView<T extends AbstractBaseIdObject> ext
         return pnlButton;
     }
 
-    protected AbstractDetailView<T> getDetailView() {
+    protected AbstractSingleEditView<T> getDetailView() {
         return null;
     }
 
     protected void openDetailView() {
-        AbstractDetailView detailView = getDetailView();
+        AbstractSingleEditView detailView = getDetailView();
         if (detailView != null) {
             detailView.setEnabled(true);
             detailView.setListView(this);

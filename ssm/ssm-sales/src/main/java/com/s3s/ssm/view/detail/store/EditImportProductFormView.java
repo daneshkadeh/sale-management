@@ -16,9 +16,9 @@ package com.s3s.ssm.view.detail.store;
 
 import com.s3s.ssm.entity.store.ImportProductForm;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditImportProductFormView extends AbstractDetailView<ImportProductForm> {
+public class EditImportProductFormView extends AbstractSingleEditView<ImportProductForm> {
 
     public EditImportProductFormView(ImportProductForm entity) {
         super(entity);

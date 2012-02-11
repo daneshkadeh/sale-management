@@ -23,14 +23,14 @@ import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
 /**
  * 
  * @author Le Thanh Hoang
  * 
  */
-public class EditUnitOfMeasureView extends AbstractDetailView<UnitOfMeasure> {
+public class EditUnitOfMeasureView extends AbstractSingleEditView<UnitOfMeasure> {
 
     private static final String CATE_REF_ID = "1";
 

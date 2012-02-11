@@ -23,13 +23,13 @@ import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
 /**
  * @author Le Thanh Hoang
  * 
  */
-public class EditRoleView extends AbstractDetailView<Role> {
+public class EditRoleView extends AbstractSingleEditView<Role> {
     private static final long serialVersionUID = 1L;
     private static final String BOOL_REF_ID = "1";
     

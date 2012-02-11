@@ -42,7 +42,7 @@ import com.s3s.ssm.util.Solution3sClassUtils;
  *            child entity type
  */
 public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E extends AbstractBaseIdObject> extends
-        AbstractDetailView<T> {
+        AbstractSingleEditView<T> {
     private static final long serialVersionUID = 5571051971772731048L;
 
     private final Log logger = LogFactory.getLog(AbstractMasterDetailView.class);
@@ -68,7 +68,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
      * 
      * @return
      */
-    protected abstract Class<? extends AbstractDetailView<E>> getChildDetailViewClass();
+    protected abstract Class<? extends AbstractEditView<E>> getChildDetailViewClass();
 
     /**
      * Get the field name of child property.
@@ -122,7 +122,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
         }
 
         @Override
-        protected Class<? extends AbstractDetailView<E>> getDetailViewClass() {
+        protected Class<? extends AbstractEditView<E>> getEditViewClass() {
             return getChildDetailViewClass();
         }
 

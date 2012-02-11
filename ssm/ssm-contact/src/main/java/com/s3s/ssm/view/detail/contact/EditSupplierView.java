@@ -24,9 +24,9 @@ import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditSupplierView extends AbstractDetailView<Supplier> {
+public class EditSupplierView extends AbstractSingleEditView<Supplier> {
     private static final long serialVersionUID = -8101155807024861715L;
     private static final String SEX_ID = "SEX_ID";
 

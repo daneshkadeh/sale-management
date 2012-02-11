@@ -22,9 +22,9 @@ import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditUomCategoryView extends AbstractDetailView<UomCategory> {
+public class EditUomCategoryView extends AbstractSingleEditView<UomCategory> {
     private static final long serialVersionUID = 1L;
     private static final String CATE_REF_ID = "1";
 

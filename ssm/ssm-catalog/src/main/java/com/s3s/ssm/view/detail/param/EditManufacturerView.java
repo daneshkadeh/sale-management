@@ -18,9 +18,9 @@ import com.s3s.ssm.entity.catalog.Manufacturer;
 import com.s3s.ssm.entity.config.UploadFile;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditManufacturerView extends AbstractDetailView<Manufacturer> {
+public class EditManufacturerView extends AbstractSingleEditView<Manufacturer> {
     private static final long serialVersionUID = 1L;
 
     public EditManufacturerView(Manufacturer entity) {

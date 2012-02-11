@@ -17,7 +17,7 @@ package com.s3s.ssm.view.detail.store;
 import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
 /*
  * EditStoreView
@@ -39,7 +39,7 @@ import com.s3s.ssm.view.AbstractDetailView;
  * @author Chanhchua
  * 
  */
-public class EditStoreView extends AbstractDetailView<Store> {
+public class EditStoreView extends AbstractSingleEditView<Store> {
 
     /**
      * @param entity

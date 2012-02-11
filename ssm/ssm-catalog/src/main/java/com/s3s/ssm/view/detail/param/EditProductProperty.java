@@ -10,7 +10,7 @@ import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
 
 public class EditProductProperty extends AbstractMasterDetailView<ProductProperty, ProductPropertyElement> {
@@ -28,7 +28,7 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<ProductPropertyElement>> getChildDetailViewClass() {
+    protected Class<? extends AbstractEditView<ProductPropertyElement>> getChildDetailViewClass() {
         return EditPropertyElementVirtualView.class;
     }
 

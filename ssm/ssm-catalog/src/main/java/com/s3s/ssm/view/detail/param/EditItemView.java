@@ -26,7 +26,7 @@ import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
 
 /**
@@ -73,7 +73,7 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<ItemPrice>> getChildDetailViewClass() {
+    protected Class<? extends AbstractEditView<ItemPrice>> getChildDetailViewClass() {
         return EditItemPriceVirtualView.class;
     }
 

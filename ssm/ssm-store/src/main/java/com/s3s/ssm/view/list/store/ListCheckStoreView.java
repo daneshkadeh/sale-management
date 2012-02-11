@@ -18,7 +18,7 @@ import java.util.List;
 
 import com.s3s.ssm.entity.store.CheckStore;
 import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 
 public class ListCheckStoreView extends AbstractListView<CheckStore> {
@@ -30,7 +30,7 @@ public class ListCheckStoreView extends AbstractListView<CheckStore> {
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<CheckStore>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<CheckStore>> getEditViewClass() {
         // TODO Auto-generated method stub
         return null;
     }

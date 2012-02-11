@@ -20,7 +20,7 @@ import com.s3s.ssm.entity.store.CheckStore;
 import com.s3s.ssm.entity.store.DetailCheckStore;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
 
 public class EditCheckStoreView extends AbstractMasterDetailView<CheckStore, DetailCheckStore> {
@@ -37,7 +37,7 @@ public class EditCheckStoreView extends AbstractMasterDetailView<CheckStore, Det
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<DetailCheckStore>> getChildDetailViewClass() {
+    protected Class<? extends AbstractEditView<DetailCheckStore>> getChildDetailViewClass() {
         // TODO Auto-generated method stub
         return null;
     }

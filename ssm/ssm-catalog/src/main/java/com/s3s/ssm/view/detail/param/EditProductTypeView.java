@@ -21,9 +21,9 @@ import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditProductTypeView extends AbstractDetailView<ProductType> {
+public class EditProductTypeView extends AbstractSingleEditView<ProductType> {
 
     private static final String REF_PRODUCT_FAMILY = "0";
 

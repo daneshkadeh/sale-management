@@ -27,7 +27,7 @@ import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
 
 public class EditCustomerView extends AbstractMasterDetailView<Customer, ContactShop> {
@@ -67,7 +67,7 @@ public class EditCustomerView extends AbstractMasterDetailView<Customer, Contact
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<ContactShop>> getChildDetailViewClass() {
+    protected Class<? extends AbstractEditView<ContactShop>> getChildDetailViewClass() {
         return EditContactShopVirtualView.class;
     }
 

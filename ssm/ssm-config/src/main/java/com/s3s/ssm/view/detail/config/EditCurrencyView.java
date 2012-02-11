@@ -17,9 +17,9 @@ package com.s3s.ssm.view.detail.config;
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditCurrencyView extends AbstractDetailView<SCurrency> {
+public class EditCurrencyView extends AbstractSingleEditView<SCurrency> {
     private static final long serialVersionUID = 1L;
     private static final String BOOL_REF_ID = "1";
 

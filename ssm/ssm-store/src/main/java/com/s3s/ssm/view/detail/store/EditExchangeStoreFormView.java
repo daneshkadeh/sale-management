@@ -20,7 +20,7 @@ import com.s3s.ssm.entity.store.DetailExchangeStore;
 import com.s3s.ssm.entity.store.ExchangeStoreForm;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
 
 public class EditExchangeStoreFormView extends AbstractMasterDetailView<ExchangeStoreForm, DetailExchangeStore> {
@@ -37,7 +37,7 @@ public class EditExchangeStoreFormView extends AbstractMasterDetailView<Exchange
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<DetailExchangeStore>> getChildDetailViewClass() {
+    protected Class<? extends AbstractEditView<DetailExchangeStore>> getChildDetailViewClass() {
         // TODO Auto-generated method stub
         return null;
     }

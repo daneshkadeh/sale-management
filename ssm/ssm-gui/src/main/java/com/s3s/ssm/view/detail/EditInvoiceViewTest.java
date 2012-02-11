@@ -19,7 +19,7 @@ import java.util.Date;
 import com.s3s.ssm.entity.InvoiceTest;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
 /**
  * This class is not used.
@@ -28,7 +28,7 @@ import com.s3s.ssm.view.AbstractDetailView;
  * 
  */
 @Deprecated
-public class EditInvoiceViewTest extends AbstractDetailView<InvoiceTest> {
+public class EditInvoiceViewTest extends AbstractSingleEditView<InvoiceTest> {
 
     public EditInvoiceViewTest(InvoiceTest entity) {
         super(entity);

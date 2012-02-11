@@ -27,7 +27,7 @@ import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.AbstractCommonListView;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.detail.EditDetailInvoiceViewTest;
 
 @Deprecated
@@ -64,7 +64,7 @@ public class ListDetailInvoiceViewTest extends AbstractCommonListView<DetailInvo
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<DetailInvoiceTest>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<DetailInvoiceTest>> getEditViewClass() {
         // TODO Auto-generated method stub
         return EditDetailInvoiceViewTest.class;
     }

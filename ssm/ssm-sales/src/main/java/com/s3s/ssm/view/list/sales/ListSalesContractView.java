@@ -18,7 +18,7 @@ import java.util.List;
 
 import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 
 public class ListSalesContractView extends AbstractListView<SalesContract> {
@@ -30,7 +30,7 @@ public class ListSalesContractView extends AbstractListView<SalesContract> {
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<SalesContract>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<SalesContract>> getEditViewClass() {
         // TODO Auto-generated method stub
         return null;
     }

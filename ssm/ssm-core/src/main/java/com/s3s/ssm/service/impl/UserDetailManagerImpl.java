@@ -22,8 +22,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.security.User;

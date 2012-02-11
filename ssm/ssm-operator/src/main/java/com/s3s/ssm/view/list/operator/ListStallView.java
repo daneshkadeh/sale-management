@@ -20,7 +20,7 @@ import java.util.List;
 import com.s3s.ssm.entity.operator.Stall;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.operator.EditStallView;
 
@@ -48,7 +48,7 @@ public class ListStallView extends AbstractListView<Stall> {
      * {@inheritDoc}
      */
     @Override
-    protected Class<? extends AbstractDetailView<Stall>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<Stall>> getEditViewClass() {
         return EditStallView.class;
     }
 

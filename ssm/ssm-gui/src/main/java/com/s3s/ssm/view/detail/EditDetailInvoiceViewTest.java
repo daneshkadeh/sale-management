@@ -18,9 +18,9 @@ import com.s3s.ssm.entity.DetailInvoiceTest;
 import com.s3s.ssm.entity.InvoiceTest;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditDetailInvoiceViewTest extends AbstractDetailView<DetailInvoiceTest> {
+public class EditDetailInvoiceViewTest extends AbstractSingleEditView<DetailInvoiceTest> {
     private static final long serialVersionUID = 4336242795515386078L;
 
     public EditDetailInvoiceViewTest(DetailInvoiceTest entity) {
