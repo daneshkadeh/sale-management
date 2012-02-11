@@ -23,13 +23,13 @@ import com.s3s.ssm.entity.contact.PartnerCategory;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
 /**
  * @author Le Thanh Hoang
  * 
  */
-public class EditPartnerCategoryView extends AbstractDetailView<PartnerCategory> {
+public class EditPartnerCategoryView extends AbstractSingleEditView<PartnerCategory> {
     private static final String PARTNER_CATE_REF_ID = "1";
 
     /**

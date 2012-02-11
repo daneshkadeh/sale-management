@@ -21,7 +21,7 @@ import java.util.List;
 import com.s3s.ssm.entity.shipment.ShipPrice;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.shipment.EditShipPriceView;
 
@@ -44,7 +44,7 @@ public class ListShipPriceView extends AbstractListView<ShipPrice> {
      * {@inheritDoc}
      */
     @Override
-    protected Class<? extends AbstractDetailView<ShipPrice>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<ShipPrice>> getEditViewClass() {
         return EditShipPriceView.class;
     }
 

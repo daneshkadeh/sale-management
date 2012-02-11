@@ -20,9 +20,9 @@ import com.s3s.ssm.helper.CatalogHelper;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditItemPriceVirtualView extends AbstractDetailView<ItemPrice> {
+public class EditItemPriceVirtualView extends AbstractSingleEditView<ItemPrice> {
     private static final String REF_CONTACT_TYPE = "REF_CONTACT_TYPE";
     private static final String REF_CURRENCY_ID = "REF_CURRENCY_ID";
 

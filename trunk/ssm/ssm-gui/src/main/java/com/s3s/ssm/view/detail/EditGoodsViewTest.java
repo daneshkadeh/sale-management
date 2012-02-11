@@ -27,7 +27,7 @@ import com.s3s.ssm.entity.GoodsTest;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
 /**
  * The detail screen of {@link GoodsTest} entity.
@@ -35,7 +35,7 @@ import com.s3s.ssm.view.AbstractDetailView;
  * @author Phan Hong Phuc
  * 
  */
-public class EditGoodsViewTest extends AbstractDetailView<GoodsTest> {
+public class EditGoodsViewTest extends AbstractSingleEditView<GoodsTest> {
     private static final long serialVersionUID = 8247461633468843994L;
     private static final String TAX_REF_ID = "0";
 

@@ -19,13 +19,13 @@ package com.s3s.ssm.view.detail.shipment;
 import com.s3s.ssm.entity.shipment.ShipPrice;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
 /**
  * @author Le Thanh Hoang
  * 
  */
-public class EditShipPriceView extends AbstractDetailView<ShipPrice> {
+public class EditShipPriceView extends AbstractSingleEditView<ShipPrice> {
 
     /**
      * @param entity

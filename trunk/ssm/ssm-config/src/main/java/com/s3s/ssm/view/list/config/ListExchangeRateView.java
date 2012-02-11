@@ -20,7 +20,7 @@ import com.s3s.ssm.entity.config.ExchangeRate;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.security.ACLResourceEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.config.EditExchangeRateView;
 
@@ -35,7 +35,7 @@ public class ListExchangeRateView extends AbstractListView<ExchangeRate> {
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<ExchangeRate>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<ExchangeRate>> getEditViewClass() {
         return EditExchangeRateView.class;
     }
 

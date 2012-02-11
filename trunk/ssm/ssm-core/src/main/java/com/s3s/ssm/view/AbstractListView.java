@@ -480,7 +480,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      *            the entity which the detail view display for. If <code>null</code>, new entity is displayed.
      */
     protected void showDetailView(T entity) {
-        Class<? extends AbstractDetailView<T>> detailViewClass = getDetailViewClass();
+        Class<? extends AbstractEditView<T>> detailViewClass = getEditViewClass();
         Class<T> entityClass = getEntityClass();
         try {
             if (entity == null) {
@@ -488,7 +488,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             }
 
             // TODO This call requires sub class override Constructor method! It's not good.
-            AbstractDetailView<T> detailView = detailViewClass.getConstructor(entityClass).newInstance(entity);
+            AbstractEditView<T> detailView = detailViewClass.getConstructor(entityClass).newInstance(entity);
 
             // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).
             detailView.setListView(AbstractListView.this);
@@ -509,7 +509,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         }
     }
 
-    protected abstract Class<? extends AbstractDetailView<T>> getDetailViewClass();
+    protected abstract Class<? extends AbstractEditView<T>> getEditViewClass();
 
     private Class<?> getClassOfField(String fieldName) {
         String[] paths = StringUtils.split(fieldName, '.');

@@ -22,7 +22,7 @@ import com.s3s.ssm.entity.InvoiceTest;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
 
 /**
@@ -88,7 +88,7 @@ public class EditMasterInvoiceViewTest extends AbstractMasterDetailView<InvoiceT
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<DetailInvoiceTest>> getChildDetailViewClass() {
+    protected Class<? extends AbstractEditView<DetailInvoiceTest>> getChildDetailViewClass() {
         return EditDetailInvoiceViewTest.class;
     }
 }

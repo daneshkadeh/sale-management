@@ -20,7 +20,7 @@ import com.s3s.ssm.entity.sales.DetailSalesContract;
 import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
 
 public class EditSalesContractView extends AbstractMasterDetailView<SalesContract, DetailSalesContract> {
@@ -37,7 +37,7 @@ public class EditSalesContractView extends AbstractMasterDetailView<SalesContrac
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<DetailSalesContract>> getChildDetailViewClass() {
+    protected Class<? extends AbstractEditView<DetailSalesContract>> getChildDetailViewClass() {
         // TODO Auto-generated method stub
         return null;
     }

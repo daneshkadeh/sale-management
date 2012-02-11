@@ -18,7 +18,7 @@ import java.util.List;
 
 import com.s3s.ssm.entity.store.ExchangeStoreForm;
 import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 
 public class ListExchangeStoreFormView extends AbstractListView<ExchangeStoreForm> {
@@ -30,7 +30,7 @@ public class ListExchangeStoreFormView extends AbstractListView<ExchangeStoreFor
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<ExchangeStoreForm>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<ExchangeStoreForm>> getEditViewClass() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -20,7 +20,7 @@ import java.util.List;
 import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.store.EditStoreView;
 
@@ -48,7 +48,7 @@ public class ListStoreView extends AbstractListView<Store> {
      * {@inheritDoc}
      */
     @Override
-    protected Class<? extends AbstractDetailView<Store>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<Store>> getEditViewClass() {
         return EditStoreView.class;
     }
 

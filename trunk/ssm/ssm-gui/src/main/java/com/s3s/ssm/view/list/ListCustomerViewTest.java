@@ -19,8 +19,7 @@ import java.util.List;
 import com.s3s.ssm.entity.CustomerTest;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.security.ACLResourceEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.EditCustomerViewTest;
 
@@ -34,7 +33,7 @@ public class ListCustomerViewTest extends AbstractListView<CustomerTest> {
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<CustomerTest>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<CustomerTest>> getEditViewClass() {
         return EditCustomerViewTest.class;
     }
 }

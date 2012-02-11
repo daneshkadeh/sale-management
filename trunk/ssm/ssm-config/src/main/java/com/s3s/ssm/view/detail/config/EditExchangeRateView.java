@@ -19,9 +19,9 @@ import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditExchangeRateView extends AbstractDetailView<ExchangeRate> {
+public class EditExchangeRateView extends AbstractSingleEditView<ExchangeRate> {
     private static final long serialVersionUID = 1L;
     private static final String CURRENCY_REF_ID = "1";
 

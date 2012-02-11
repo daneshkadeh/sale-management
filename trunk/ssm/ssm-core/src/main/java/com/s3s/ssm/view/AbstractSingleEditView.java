@@ -91,14 +91,10 @@ import com.s3s.ssm.view.component.SaleTargetModel;
  * @param <T>
  */
 
-public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends AbstractView {
+public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> extends AbstractEditView<T> {
     private static final long serialVersionUID = 1L;
 
-    private final Log logger = LogFactory.getLog(AbstractDetailView.class);
-
-    // TODO HPP consider to remove this reference. We should fire event to
-    // listView instead of keep a reference.
-    protected AbstractListView<T> listView;
+    private final Log logger = LogFactory.getLog(AbstractSingleEditView.class);
 
     protected DetailDataModel detailDataModel = new DetailDataModel();
     protected Map<String, AttributeComponent> name2AttributeComponent = new HashMap<>();
@@ -191,7 +187,8 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
      * @param entity
      *            the entity of detail view.
      */
-    public AbstractDetailView(T entity) {
+    public AbstractSingleEditView(T entity) {
+        super(entity);
         this.entity = entity;
         loadForEdit(entity);
         contructView(entity);
@@ -202,10 +199,6 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
         initialPresentationView(detailDataModel, entity);
         setReferenceDataModel(refDataModel, entity);
         initComponents();
-    }
-
-    public void setListView(AbstractListView<T> view) {
-        this.listView = view;
     }
 
     @SuppressWarnings("unchecked")
@@ -300,7 +293,7 @@ public abstract class AbstractDetailView<T extends AbstractBaseIdObject> extends
             DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + attribute.getName());
-            String newline = attribute.isNewColumn() ? "" : "newline, ";
+            String newline = attribute.isNewColumn() ? "gapleft 20, " : "newline, ";
             int width = attribute.getWidth() == 0 ? UIConstants.DEFAULT_TEXTFIELD_COLUMN : attribute.getWidth();
             if (attribute.isMandatory()) {
                 label += " (*)";

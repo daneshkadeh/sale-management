@@ -28,7 +28,7 @@ import org.hibernate.criterion.Restrictions;
 import com.s3s.ssm.entity.GoodsTest;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractSearchListView;
 import com.s3s.ssm.view.detail.EditGoodsViewTest;
 
@@ -64,7 +64,7 @@ public class ListGoodsViewTest extends AbstractSearchListView<GoodsTest> {
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<GoodsTest>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<GoodsTest>> getEditViewClass() {
         return EditGoodsViewTest.class;
     }
 

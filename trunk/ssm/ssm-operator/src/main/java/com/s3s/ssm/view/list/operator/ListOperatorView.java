@@ -20,7 +20,7 @@ import java.util.List;
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.operator.EditOperatorView;
 
@@ -44,7 +44,7 @@ public class ListOperatorView extends AbstractListView<Operator> {
      * {@inheritDoc}
      */
     @Override
-    protected Class<? extends AbstractDetailView<Operator>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<Operator>> getEditViewClass() {
         return EditOperatorView.class;
     }
 

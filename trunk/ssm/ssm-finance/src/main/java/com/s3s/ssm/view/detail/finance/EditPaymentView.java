@@ -16,9 +16,9 @@ package com.s3s.ssm.view.detail.finance;
 
 import com.s3s.ssm.entity.finance.Payment;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditPaymentView extends AbstractDetailView<Payment> {
+public class EditPaymentView extends AbstractSingleEditView<Payment> {
 
     public EditPaymentView(Payment entity) {
         super(entity);

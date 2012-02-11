@@ -19,7 +19,7 @@ import java.util.List;
 import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.param.EditProductTypeView;
 
@@ -34,7 +34,7 @@ public class ListProductTypeView extends AbstractListView<ProductType> {
     }
 
     @Override
-    protected Class<? extends AbstractDetailView<ProductType>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<ProductType>> getEditViewClass() {
         return EditProductTypeView.class;
     }
 

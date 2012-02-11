@@ -3,9 +3,9 @@ package com.s3s.ssm.view.detail.param;
 import com.s3s.ssm.entity.catalog.ProductPropertyElement;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditPropertyElementVirtualView extends AbstractDetailView<ProductPropertyElement> {
+public class EditPropertyElementVirtualView extends AbstractSingleEditView<ProductPropertyElement> {
 
     public EditPropertyElementVirtualView(ProductPropertyElement entity) {
         super(entity);

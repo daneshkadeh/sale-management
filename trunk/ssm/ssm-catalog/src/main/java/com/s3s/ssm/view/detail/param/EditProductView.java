@@ -22,9 +22,9 @@ import com.s3s.ssm.entity.config.UploadFile;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditProductView extends AbstractDetailView<Product> {
+public class EditProductView extends AbstractSingleEditView<Product> {
 
     private static final String TYPE_REF_ID = "1";
     private static final String MANU_REF_ID = "2";

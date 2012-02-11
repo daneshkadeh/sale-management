@@ -17,7 +17,6 @@ package com.s3s.ssm.entity.config;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;

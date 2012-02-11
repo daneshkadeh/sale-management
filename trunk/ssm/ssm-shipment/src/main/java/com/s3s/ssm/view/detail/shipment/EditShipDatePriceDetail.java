@@ -25,13 +25,13 @@ import com.s3s.ssm.entity.shipment.ShipPrice;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
 /**
  * @author Le Thanh Hoang
  * 
  */
-public class EditShipDatePriceDetail extends AbstractDetailView<ShipDatePrice> {
+public class EditShipDatePriceDetail extends AbstractSingleEditView<ShipDatePrice> {
     private static final String SHIPPRICE_REF_ID = "1";
 
     /**

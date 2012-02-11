@@ -23,9 +23,9 @@ import com.s3s.ssm.entity.operator.Stall;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditBasicInformationView extends AbstractDetailView<BasicInformation> {
+public class EditBasicInformationView extends AbstractSingleEditView<BasicInformation> {
     private static final long serialVersionUID = 1L;
     private static final String CURRENCY_REF_ID = "0";
     private static final String BANK_REF_ID = "1";

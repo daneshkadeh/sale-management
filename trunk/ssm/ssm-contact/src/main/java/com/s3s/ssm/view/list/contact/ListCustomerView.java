@@ -20,7 +20,7 @@ import java.util.List;
 import com.s3s.ssm.entity.contact.Customer;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
-import com.s3s.ssm.view.AbstractDetailView;
+import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.contact.EditCustomerView;
 
@@ -43,7 +43,7 @@ public class ListCustomerView extends AbstractListView<Customer> {
      * {@inheritDoc}
      */
     @Override
-    protected Class<? extends AbstractDetailView<Customer>> getDetailViewClass() {
+    protected Class<? extends AbstractEditView<Customer>> getEditViewClass() {
         return EditCustomerView.class;
     }
 
