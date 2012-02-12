@@ -21,6 +21,8 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
 
+import com.s3s.ssm.view.annotations.Validation;
+
 @Entity
 @Table(name = "s_supplier")
 @PrimaryKeyJoinColumn(name = "supplier_id")
@@ -96,6 +98,21 @@ public class Supplier extends Partner {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Validation
+    public boolean validateTest1() {
+        return false;
+    }
+
+    @Validation
+    public boolean validateTest2() {
+        return false;
+    }
+
+    @Validation
+    public boolean validateTest3() {
+        return true;
     }
 
 }
