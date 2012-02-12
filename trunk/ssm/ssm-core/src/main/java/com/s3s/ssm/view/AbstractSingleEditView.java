@@ -197,7 +197,11 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
      *            the entity of detail view.
      */
     public AbstractSingleEditView(T entity) {
-        super(entity);
+        this(entity, null, null);
+    }
+
+    public AbstractSingleEditView(T entity, Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
+        super(entity, parentId, parentClass);
         this.entity = entity;
         loadForEdit(entity);
         contructView(entity);
@@ -501,7 +505,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             }
 
             // Show the errors
-            if(errorMessages.isEmpty()){
+            if (errorMessages.isEmpty()) {
                 errorLabel.setText(ControlConfigUtils.getString("message.error"));
             } else {
                 StringBuilder messages = new StringBuilder();
