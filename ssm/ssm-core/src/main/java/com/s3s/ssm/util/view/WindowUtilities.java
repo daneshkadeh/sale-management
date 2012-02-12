@@ -226,4 +226,18 @@ public class WindowUtilities {
     public static JFrame openInJFrame(Container content, int width, int height) {
         return (openInJFrame(content, width, height, content.getClass().getName(), Color.white));
     }
+
+    /**
+     * @return Screen size minus the taskbar size.
+     */
+    public static Dimension getFullScreenSize() {
+        Rectangle maxBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        return new Dimension(maxBounds.width, maxBounds.height);
+    }
+
+    public static int getTaskbarHeight() {
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        Rectangle maxBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        return (dim.height - maxBounds.height);
+    }
 }

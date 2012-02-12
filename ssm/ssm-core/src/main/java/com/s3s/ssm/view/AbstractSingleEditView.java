@@ -383,7 +383,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 if (date != null) {
                     ((JXDatePicker) dataField).setDate(date);
                 }
-                pnlEdit.add(lblLabel, newline + "top");
+                pnlEdit.add(lblLabel, newline);
                 break;
             case RADIO_BUTTON_GROUP:
                 dataField = new RadioButtonsGroup<>(referenceData.getValue2LabelMap(), value);
