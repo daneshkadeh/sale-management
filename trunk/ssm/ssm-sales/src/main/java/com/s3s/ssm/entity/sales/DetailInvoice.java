@@ -35,19 +35,18 @@ public class DetailInvoice extends AbstractIdOLObject {
     private Item item;
     private PackageLine packageLine;
     private Integer amount;
-    private Double priceBeforeTax;
+    private Double priceBeforeTax = 0.0;
     private Double priceOfTax = 0.0;
-    private Double priceAfterTax;
-    private Double moneyBeforeTax;
+    private Double priceAfterTax = 0.0;
+    private Double moneyBeforeTax = 0.0;
     private Double moneyOfTax = 0.0;
-    private Double moneyAfterTax;
+    private Double moneyAfterTax = 0.0;
     private String currency = "VND";
     private DetailInvoiceType type = DetailInvoiceType.SALES;
     private DetailInvoiceStatus status = DetailInvoiceStatus.OPEN;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "invoice_id", nullable = false)
-    @NotNull
+    @JoinColumn(name = "invoice_id")
     public Invoice getInvoice() {
         return invoice;
     }

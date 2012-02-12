@@ -16,6 +16,7 @@ package com.s3s.ssm.model;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,11 @@ public class ReferenceDataModel {
         }
         ReferenceData refData = new ReferenceData(values, renderer);
         refDataListMap.put(refId, refData);
+    }
+
+    public void putRefDataList(String refId, Object[] values) {
+        List<?> listValue = Arrays.asList(values);
+        putRefDataList(refId, listValue, null);
     }
 
     public Map<String, ReferenceData<?>> getRefDataListMap() {
@@ -82,7 +88,7 @@ public class ReferenceDataModel {
          *            the map: value - the label rendering for that value.
          */
         public ReferenceData(final Map<T, String> value2Label) {
-            this.value2LabelMap = value2Label;                    
+            this.value2LabelMap = value2Label;
             this.values = new ArrayList<>(value2Label.keySet());
             renderer = new ListCellRenderer<T>() {
                 @Override
@@ -101,8 +107,8 @@ public class ReferenceDataModel {
         public List<T> getValues() {
             return values;
         }
-        
-        public Map<T, String> getValue2LabelMap(){
+
+        public Map<T, String> getValue2LabelMap() {
             return value2LabelMap;
         }
     }

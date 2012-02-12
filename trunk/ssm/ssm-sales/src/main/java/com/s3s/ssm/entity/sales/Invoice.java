@@ -40,9 +40,9 @@ public class Invoice extends AbstractIdOLObject {
     private InvoiceType type;
     private Partner contact;
     private Date createdDate;
-    private Double moneyBeforeTax;
+    private Double moneyBeforeTax = 0.0;
     private Double moneyOfTax = 0.0;
-    private Double moneyAfterTax;
+    private Double moneyAfterTax = 0.0;
     private String currency = "VND";
     private InvoiceStatus status = InvoiceStatus.OPEN;
     private InvoicePaymentStatus paymentStatus = InvoicePaymentStatus.NO_PAYMENT;
@@ -161,6 +161,11 @@ public class Invoice extends AbstractIdOLObject {
 
     public void setListDetailInvoices(Set<DetailInvoice> listDetailInvoices) {
         this.listDetailInvoices = listDetailInvoices;
+    }
+
+    public void addDetailInvoice(DetailInvoice detailInvoice) {
+        detailInvoice.setInvoice(this);
+        listDetailInvoices.add(detailInvoice);
     }
 
 }

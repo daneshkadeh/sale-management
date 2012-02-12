@@ -21,19 +21,26 @@ import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
+import com.s3s.ssm.view.detail.sales.EditInvoiceView;
 
 public class ListInvoiceView extends AbstractListView<Invoice> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
         listDataModel.add(new DetailAttribute("invoiceNumber", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("type", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("contact", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("createdDate", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("moneyAfterTax", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("invoiceNumber", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("status", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("paymentStatus", FieldTypeEnum.TEXTBOX));
 
     }
 
     @Override
     protected Class<? extends AbstractEditView<Invoice>> getEditViewClass() {
-        // TODO Auto-generated method stub
-        return null;
+        return EditInvoiceView.class;
     }
 
 }
