@@ -78,11 +78,10 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
     protected abstract String getChildFieldName();
 
     @Override
-
     protected void initComponents() {
 
         super.initComponents();
-        ChildListView childListView = new ChildListView();
+        ChildListView childListView = new ChildListView(entity.getId(), entity.getClass());
 
         // Load list view immediately. This view not too large in MasterDetailView.
         childListView.loadView();
@@ -96,6 +95,10 @@ public abstract class AbstractMasterDetailView<T extends AbstractBaseIdObject, E
      */
     private class ChildListView extends AbstractListView<E> {
         private static final long serialVersionUID = -8455234397691564647L;
+
+        public ChildListView(Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
+            super(parentId, parentClass);
+        }
 
         @Override
         protected List<E> loadData(int pageNumber) {

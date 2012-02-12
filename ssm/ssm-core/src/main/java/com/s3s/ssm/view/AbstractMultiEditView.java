@@ -36,6 +36,10 @@ public abstract class AbstractMultiEditView<T extends AbstractBaseIdObject> exte
     private static final long serialVersionUID = 5168377500300996678L;
 
     public AbstractMultiEditView(T entity) {
+        this(entity, null, null);
+    }
+
+    public AbstractMultiEditView(T entity, Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
         super(entity);
         setLayout(new MigLayout("fill"));
         JScrollPane contentScrollPane = new JScrollPane();

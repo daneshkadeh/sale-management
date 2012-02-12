@@ -489,7 +489,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
             // TODO This call requires sub class override Constructor method! It's not good.
             AbstractEditView<T> detailView = detailViewClass.getConstructor(entityClass).newInstance(entity);
-
+            detailView.setParent(parentId, parentClass);
             // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).
             detailView.setListView(AbstractListView.this);
             JScrollPane scrollPane = new JScrollPane(detailView);
