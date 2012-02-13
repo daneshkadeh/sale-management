@@ -24,41 +24,35 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 @Entity
 @Table(name = "s_currency")
 public class SCurrency extends AbstractCodeOLObject {
-	private String name;
-	private String symbol;
-	private Boolean isActive = true;
-	
-	@Column(name = "name", length = 128)
+    private String name;
+    private String symbol;
+    private Boolean isActive = true;
+
+    @Column(name = "name", length = 128)
     @NotNull
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	@Column(name = "symbol", length = 10)
-	public String getSymbol() {
-		return symbol;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
-	}
-	@Column(name = "active")
-	public Boolean getIsActive() {
-		return isActive;
-	}
+    @Column(name = "symbol", length = 10)
+    public String getSymbol() {
+        return symbol;
+    }
 
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
-	}
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
 
-	@Override
-	public String toString() {
-		return name;
-	}
-	
-	
+    @Column(name = "active")
+    public Boolean getIsActive() {
+        return isActive;
+    }
 
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 }

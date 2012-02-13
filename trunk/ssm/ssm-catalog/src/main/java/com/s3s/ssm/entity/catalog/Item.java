@@ -40,7 +40,7 @@ public class Item extends AbstractIdOLObject {
     private Product product;
     private String sumUomName;
     private Double baseSellPrice;
-    private String currency;
+    private String currency = "VND";
     private List<UnitOfMeasure> listUom = new ArrayList<>(); // TODO: this should be move to product?
     private Set<ItemPropertyValue> listPropertyValue = new HashSet<>();
     private Set<ItemPrice> listItemPrices = new HashSet<>();

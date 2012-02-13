@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -372,7 +373,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 pnlEdit.add(lblLabel, newline);
                 break;
             case MULTI_SELECT_BOX:
-                List desValues = value != null ? new ArrayList((Set) value) : Collections.EMPTY_LIST;
+                List desValues = value != null ? new ArrayList((Collection<?>) value) : Collections.EMPTY_LIST;
                 List scrValues = new ArrayList<>(ListUtils.removeAll(referenceData.getValues(), desValues));
                 dataField = new MultiSelectionBox<>(scrValues, desValues, referenceData.getRenderer());
                 pnlEdit.add(lblLabel, newline + "top");
