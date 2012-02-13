@@ -89,7 +89,7 @@ public class SSMDataLoader {
     private static final String NIKE_MANUFACTURER = "NIKE";
     private static final String PRODUCT_TYPE_SHOES = "SHOES";
     private static final String PRODUCT_GIAY_NAM = "GIAY_NAM";
-    private static final String UOM_PAIR = "PAIR";
+    private static final String UOM_KG = "KG";
     private static final String ADDRESS = "64/7 Ngo Chi Quoc";
 
     public static void main(String[] args) {
@@ -508,25 +508,25 @@ public class SSMDataLoader {
 
     private static List<UnitOfMeasure> initUOM(DaoHelper daoHelper) {
         UomCategory category = new UomCategory();
-        category.setCode("SIZE");
-        category.setName("Size");
+        category.setCode("Weight");
+        category.setName("Can nang");
         daoHelper.getDao(UomCategory.class).saveOrUpdate(category);
 
-        UnitOfMeasure pair = new UnitOfMeasure();
-        pair.setCode(UOM_PAIR);
+        UnitOfMeasure kg = new UnitOfMeasure();
+        kg.setCode(UOM_KG);
         // pair.setName(""); // TODO: error UTF-8 here. Please careful for production
-        pair.setName("Doi");
-        pair.setUomCategory(category);
-        pair.setIsBaseMeasure(false);
-        daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(pair);
+        kg.setName("Kilogam");
+        kg.setUomCategory(category);
+        kg.setIsBaseMeasure(false);
+        daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(kg);
 
-        UnitOfMeasure size39 = new UnitOfMeasure();
-        size39.setCode("39");
-        size39.setName("39");
-        size39.setUomCategory(category);
-        size39.setIsBaseMeasure(false);
-        daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(size39);
-        return Arrays.asList(pair, size39);
+        UnitOfMeasure gam = new UnitOfMeasure();
+        gam.setCode("G");
+        gam.setName("gam");
+        gam.setUomCategory(category);
+        gam.setIsBaseMeasure(false);
+        daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(gam);
+        return Arrays.asList(kg, gam);
     }
 
     private static List<Item> initItem(DaoHelper daoHelper, List<UnitOfMeasure> listUom, List<Product> products) {
@@ -560,7 +560,7 @@ public class SSMDataLoader {
         product.setModel("Model100");
 
         DetachedCriteria uomDC = daoHelper.getDao(UnitOfMeasure.class).getCriteria();
-        uomDC.add(Restrictions.eq("code", UOM_PAIR));
+        uomDC.add(Restrictions.eq("code", UOM_KG));
         product.setMainUom(daoHelper.getDao(UnitOfMeasure.class).findByCriteria(uomDC).get(0));
         ProductType type = daoHelper.getDao(ProductType.class).findAll().get(0);
 
@@ -576,7 +576,7 @@ public class SSMDataLoader {
 
     protected static void init100Product(DaoHelper daoHelper) {
         DetachedCriteria uomDC = daoHelper.getDao(UnitOfMeasure.class).getCriteria();
-        uomDC.add(Restrictions.eq("code", UOM_PAIR));
+        uomDC.add(Restrictions.eq("code", UOM_KG));
 
         ProductType type = daoHelper.getDao(ProductType.class).findAll().get(0);
 

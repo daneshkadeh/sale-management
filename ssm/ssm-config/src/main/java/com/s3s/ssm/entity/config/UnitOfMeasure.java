@@ -23,6 +23,10 @@ import javax.persistence.Table;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
+/**
+ * UnitOfMeasure is used to measure the quantity of product. Eg. Kilogam, gam, met, centimet, cap, doi, cai, bich
+ * 
+ */
 @Entity
 @Table(name = "s_unit_of_measure")
 public class UnitOfMeasure extends AbstractCodeOLObject {

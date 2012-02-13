@@ -21,9 +21,8 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
-
 /**
- * The tree view with the node is {@link TreeNodeWithView}. 
+ * The tree view with the node is {@link TreeNodeWithView}.
  * 
  * @author Phan Hong Phuc
  * @since Nov 19, 2011
@@ -36,7 +35,9 @@ public class TreeView extends JTree implements TreeSelectionListener {
 
     /**
      * Init the treeView with the contentScrollPane.
-     * @param contentScrollPane the scrollPane contains the view of {@link TreeNodeWithView}.
+     * 
+     * @param contentScrollPane
+     *            the scrollPane contains the view of {@link TreeNodeWithView}.
      */
     public TreeView(JScrollPane contentScrollPane) {
         super();
