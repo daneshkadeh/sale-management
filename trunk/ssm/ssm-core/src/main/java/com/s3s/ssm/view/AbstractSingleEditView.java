@@ -492,6 +492,14 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 if (listView != null) {
                     listView.notifyFromDetailView(entity, isNew);
                 }
+                
+                // Clear all the error on the screen
+                for (AttributeComponent at : name2AttributeComponent.values()) {
+                    at.getLabel().setForeground(Color.BLACK);
+                    at.getErrorIcon().setVisible(false);
+                }
+                
+                // Show information save success.
                 notifyPanel.setNotifyKind(NotifyKind.INFORMATION);
                 notifyPanel.setMessage(ControlConfigUtils.getString("edit.message.saveSuccess"));
                 notifyPanel.setVisible(true);

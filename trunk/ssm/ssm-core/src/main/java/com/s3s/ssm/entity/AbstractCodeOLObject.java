@@ -17,7 +17,8 @@ package com.s3s.ssm.entity;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Entity with code 32 characters
@@ -27,10 +28,11 @@ import javax.validation.constraints.NotNull;
  */
 @MappedSuperclass
 public abstract class AbstractCodeOLObject extends AbstractIdOLObject {
+    private static final long serialVersionUID = -6181674957253464888L;
     private String code;
 
     @Column(name = "code", nullable = false, length = 32)
-    @NotNull
+    @NotBlank
     public String getCode() {
         return code;
     }
