@@ -118,7 +118,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private static final String ADD_ACTION_KEY = "addAction";
     private static final Color HIGHLIGHT_ROW_COLOR = new Color(97, 111, 231);
     // TODO It should get from the property "defPageRowNum" of BasicInformation in ssm-config
-    private static final int DEFAULT_PAGE_SIZE = 10;
+    private static final int DEFAULT_PAGE_SIZE = 25;
 
     private static final String CHOOSER_DIALOG_TITLE = "Choose Directory";
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
@@ -273,7 +273,17 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     /**
-     * Return the number of rows of each pages. It should be overrided if want change the page size.
+     * Return the number of rows visibled. The default return value is {@link #getPageSize()}. It should be overrided.
+     * 
+     * @return a number of visible rows.
+     */
+    protected int getVisibleRowCount() {
+        return getPageSize();
+    }
+
+    /**
+     * Return the number of rows of each pages. The default return value is {@link #DEFAULT_PAGE_SIZE} It should be
+     * overrided.
      * 
      * @return the number rows of a page.
      */
@@ -308,6 +318,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         // /////// Hack at here: when number of column
         tblListEntities.setVisibleColumnCount(0);
 
+        tblListEntities.setVisibleRowCount(getVisibleRowCount());
         tblListEntities.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tblListEntities.setColumnControlVisible(true);
 

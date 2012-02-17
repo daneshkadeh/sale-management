@@ -19,7 +19,6 @@ import java.awt.event.ItemListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 
@@ -27,6 +26,8 @@ import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.ImageConstants;
+import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
@@ -40,8 +41,7 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Supplier entity) {
-        detailDataModel.tab("We are S3S", "This is a tooltip",
-                new ImageIcon(EditSupplierView.class.getResource("/icons/user.png")));
+        detailDataModel.tab("We are S3S", "This is a tooltip", ImageUtils.getImageIcon(ImageConstants.USER_ICON));
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).width(5).newColumn();
         detailDataModel.startGroup("Group 1");

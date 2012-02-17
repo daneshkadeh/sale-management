@@ -33,13 +33,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
@@ -48,7 +48,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.NumberFormatter;
 import javax.validation.Configuration;
@@ -79,9 +78,12 @@ import com.s3s.ssm.model.DetailDataModel.GroupInfoData;
 import com.s3s.ssm.model.DetailDataModel.TabInfoData;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
+import com.s3s.ssm.util.ImageConstants;
+import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.NotifyPanel.NotifyKind;
 import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
 import com.s3s.ssm.view.component.ImageChooser;
@@ -114,9 +116,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
     private final ReferenceDataModel refDataModel = new ReferenceDataModel();
 
-    private JPanel errorPanel;
-    private JLabel errorLabel;
-    private List<String> errorMessages = new ArrayList<>();
+    private NotifyPanel notifyPanel;
 
     /**
      * The class includes the components to render an attribute. Like label, component, errorIcon...
@@ -239,9 +239,10 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         JToolBar toolbar = createToolBar();
         add(toolbar, "top");
 
-        // Error panel
-        initErrorPanel();
-        add(errorPanel, "top, growx");
+        // Information panel
+        notifyPanel = new NotifyPanel();
+        notifyPanel.setVisible(false);
+        add(notifyPanel, "top, growx");
 
         // Fields panel
         List<TabInfoData> tabList = detailDataModel.getTabList();
@@ -435,22 +436,12 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 throw new RuntimeException("FieldType does not supported!");
             }
             pnlEdit.add(dataField);
-            JLabel errorIcon = new JLabel(new ImageIcon(getClass().getResource("/icons/errorIcon.gif")));
+            JLabel errorIcon = new JLabel(ImageUtils.getImageIcon(ImageConstants.ERROR_ICON));
             pnlEdit.add(errorIcon);
             errorIcon.setVisible(false);
             name2AttributeComponent.put(attribute.getName(), new AttributeComponent(lblLabel, dataField, errorIcon));
         }
         return pnlEdit;
-    }
-
-    private void initErrorPanel() {
-        errorPanel = new JPanel();
-        errorPanel.setBorder(new LineBorder(Color.RED, 1, true));
-        errorLabel = new JLabel();
-        errorLabel.setIcon(new ImageIcon(getClass().getResource("/icons/errorIcon.gif")));
-        errorLabel.setForeground(Color.RED);
-        errorPanel.add(errorLabel);
-        errorPanel.setVisible(false);
     }
 
     private JToolBar createToolBar() {
@@ -461,7 +452,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         btnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                btnOKActionPerformed(evt);
+                btnSaveActionPerformed(evt);
             }
         });
 
@@ -488,16 +479,29 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         return metrics.charWidth('m');
     }
 
-    protected void btnOKActionPerformed(ActionEvent evt) {
+    protected void btnSaveActionPerformed(ActionEvent evt) {
+        doSave();
+    }
+
+    private boolean doSave() {
         Set<ConstraintViolation<T>> validateResult = bindAndValidate(entity);
-        if (CollectionUtils.isEmpty(validateResult) && CollectionUtils.isEmpty(errorMessages)) {
-            boolean isNew = (entity.getId() == null);
-            saveOrUpdate(entity);
-            if (listView != null) {
-                listView.notifyFromDetailView(entity, isNew);
+        if (CollectionUtils.isEmpty(validateResult) && StringUtils.isBlank(notifyPanel.getMessage())) {
+            try {
+                boolean isNew = (entity.getId() == null);
+                saveOrUpdate(entity);
+                if (listView != null) {
+                    listView.notifyFromDetailView(entity, isNew);
+                }
+                notifyPanel.setNotifyKind(NotifyKind.INFORMATION);
+                notifyPanel.setMessage(ControlConfigUtils.getString("edit.message.saveSuccess"));
+                notifyPanel.setVisible(true);
+                return true;
+            } catch (Exception e) {
+                notifyPanel.setNotifyKind(NotifyKind.ERROR);
+                notifyPanel.setMessage(e.getCause().toString());
+                notifyPanel.setVisible(true);
+                return false;
             }
-            // TODO HPP find another way to close dialog.
-            SwingUtilities.getRoot(this).setVisible(false);
         } else {
             // Before show errors, clear all the errors existing on the screen.
             for (AttributeComponent at : name2AttributeComponent.values()) {
@@ -505,19 +509,12 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 at.getErrorIcon().setVisible(false);
             }
 
+            notifyPanel.setNotifyKind(NotifyKind.ERROR);
             // Show the errors
-            if (errorMessages.isEmpty()) {
-                errorLabel.setText(ControlConfigUtils.getString("message.error"));
-            } else {
-                StringBuilder messages = new StringBuilder();
-                messages.append("<html>");
-                for (String m : errorMessages) {
-                    messages.append(m + "<br>");
-                }
-                messages.append("</html>");
-                errorLabel.setText(messages.toString());
+            if (StringUtils.isBlank(notifyPanel.getMessage())) {
+                notifyPanel.setMessage(ControlConfigUtils.getString("message.error"));
             }
-            errorPanel.setVisible(true);
+            notifyPanel.setVisible(true);
             for (ConstraintViolation<T> violation : validateResult) {
                 AttributeComponent attributeComponent = name2AttributeComponent.get(violation.getPropertyPath()
                         .toString());
@@ -528,8 +525,8 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 errorIcon.setVisible(true);
                 logger.error(violation.getMessage());
             }
+            return false;
         }
-
     }
 
     protected void saveOrUpdate(T entity) {
@@ -539,24 +536,22 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     protected Set<ConstraintViolation<T>> bindAndValidate(T entity) {
         for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
             JComponent component = name2AttributeComponent.get(attribute.getName()).getComponent();
-            Class<?> paramClass = beanWrapper.getPropertyType(attribute.getName());
             switch (attribute.getType()) {
             case TEXTBOX:
                 JFormattedTextField txtField = (JFormattedTextField) component;
-                beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(txtField.getValue()));
+                beanWrapper.setPropertyValue(attribute.getName(), txtField.getValue());
                 break;
             case TEXTAREA:
                 JTextArea rtxtField = (JTextArea) ((JScrollPane) component).getViewport().getView();
-                beanWrapper.setPropertyValue(attribute.getName(),
-                        paramClass.cast(StringUtils.trimToEmpty(rtxtField.getText())));
+                beanWrapper.setPropertyValue(attribute.getName(), StringUtils.trimToEmpty(rtxtField.getText()));
                 break;
             case PASSWORD:
                 JPasswordField pwdField = (JPasswordField) component;
-                beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(pwdField.getText()));
+                beanWrapper.setPropertyValue(attribute.getName(), pwdField.getText());
                 break;
             case CHECKBOX:
                 JCheckBox chkField = (JCheckBox) component;
-                beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(chkField.isSelected()));
+                beanWrapper.setPropertyValue(attribute.getName(), chkField.isSelected());
                 break;
             case DATE:
                 JXDatePicker dateField = (JXDatePicker) component;
@@ -564,7 +559,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 break;
             case DROPDOWN:
                 JComboBox<?> comboBox = (JComboBox<?>) component;
-                beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(comboBox.getSelectedItem()));
+                beanWrapper.setPropertyValue(attribute.getName(), comboBox.getSelectedItem());
                 break;
             case MULTI_SELECT_BOX:
                 MultiSelectionBox<?> multiBox = (MultiSelectionBox<?>) component;
@@ -581,25 +576,23 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 break;
             case RADIO_BUTTON_GROUP:
                 RadioButtonsGroup<?> radioBtnGroupField = (RadioButtonsGroup<?>) component;
-                beanWrapper.setPropertyValue(attribute.getName(),
-                        paramClass.cast(radioBtnGroupField.getSelectedValue()));
+                beanWrapper.setPropertyValue(attribute.getName(), radioBtnGroupField.getSelectedValue());
                 break;
             case IMAGE:
                 ImageChooser imageField = (ImageChooser) component;
-                beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(imageField.getImageData()));
+                beanWrapper.setPropertyValue(attribute.getName(), imageField.getImageData());
                 break;
             case FILE_CHOOSER:
                 FileChooser fileField = (FileChooser) component;
-                beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(fileField.getFilePath()));
+                beanWrapper.setPropertyValue(attribute.getName(), fileField.getFilePath());
                 break;
             case ENTITY_CHOOSER:
                 EntityChooser<?> entityField = (EntityChooser<?>) component;
-                beanWrapper.setPropertyValue(attribute.getName(), paramClass.cast(entityField.getSelectedEntity()));
+                beanWrapper.setPropertyValue(attribute.getName(), entityField.getSelectedEntity());
                 break;
             case SALE_TARGET:
                 SaleTargetComp<?> saleTargetField = (SaleTargetComp<?>) component;
-                beanWrapper.setPropertyValue(attribute.getName(),
-                        paramClass.cast(new HashSet<>(saleTargetField.getSaleTargetList())));
+                beanWrapper.setPropertyValue(attribute.getName(), new HashSet<>(saleTargetField.getSaleTargetList()));
                 break;
             default:
                 throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());
@@ -616,7 +609,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     }
 
     /**
-     * Validate the methods of entity which is marked {@link com.s3s.ssm.view.annotations.Validation}.
+     * Validate the methods of entity which are marked {@link com.s3s.ssm.view.annotations.Validation}.
      * 
      * @param entity
      * @throws IllegalAccessException
@@ -625,15 +618,15 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     private void validateMethods(T entity) {
         try {
             // Clear all existing message before validate.
-            errorMessages.clear();
+            notifyPanel.clearMessage();
             for (Method m : entity.getClass().getMethods()) {
                 for (Annotation a : m.getAnnotations()) {
                     if (ClassUtils.isAssignable(a.annotationType(), com.s3s.ssm.view.annotations.Validation.class)) {
                         boolean isSuccess;
                         isSuccess = (boolean) m.invoke(entity);
                         if (!isSuccess) {
-                            errorMessages.add(ControlConfigUtils.getString("error." + getEntityClass().getSimpleName()
-                                    + "." + m.getName()));
+                            notifyPanel.addMessage(ControlConfigUtils.getString("error."
+                                    + getEntityClass().getSimpleName() + "." + m.getName()));
                         }
                     }
                 }
@@ -644,6 +637,88 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     }
 
     protected void btnCancelActionPerformed(ActionEvent evt) {
-        SwingUtilities.getRoot(this).setVisible(false);
+        if (isDirty()) {
+            int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(this),
+                    ControlConfigUtils.getString("edit.warning.cancel.message"),
+                    ControlConfigUtils.getString("edit.warning.cancel.title"), JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.WARNING_MESSAGE, null);
+            if (option == JOptionPane.YES_OPTION) {
+                doSave();
+                SwingUtilities.getRoot(this).setVisible(false);
+            } else if (option == JOptionPane.NO_OPTION) {
+                SwingUtilities.getRoot(this).setVisible(false);
+            }
+        } else {
+            SwingUtilities.getRoot(this).setVisible(false);
+        }
+    }
+
+    protected boolean isDirty() {
+        for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
+            JComponent component = name2AttributeComponent.get(attribute.getName()).getComponent();
+            Object oldValue = beanWrapper.getPropertyValue(attribute.getName());
+            Object newValue = null;
+            switch (attribute.getType()) {
+            case TEXTBOX:
+                JFormattedTextField txtField = (JFormattedTextField) component;
+                newValue = txtField.getValue();
+                break;
+            case TEXTAREA:
+                JTextArea rtxtField = (JTextArea) ((JScrollPane) component).getViewport().getView();
+                newValue = StringUtils.trimToEmpty(rtxtField.getText());
+                break;
+            case PASSWORD:
+                JPasswordField pwdField = (JPasswordField) component;
+                newValue = pwdField.getText();
+                break;
+            case CHECKBOX:
+                JCheckBox chkField = (JCheckBox) component;
+                newValue = chkField.isSelected();
+                break;
+            case DATE:
+                JXDatePicker dateField = (JXDatePicker) component;
+                newValue = dateField.getDate();
+                break;
+            case DROPDOWN:
+                JComboBox<?> comboBox = (JComboBox<?>) component;
+                newValue = comboBox.getSelectedItem();
+                break;
+            case MULTI_SELECT_BOX:
+                MultiSelectionBox<?> multiBox = (MultiSelectionBox<?>) component;
+                List<?> selected = multiBox.getDestinationValues();
+
+                // TODO Phuc: test this case
+                newValue = selected;
+                break;
+            case RADIO_BUTTON_GROUP:
+                RadioButtonsGroup<?> radioBtnGroupField = (RadioButtonsGroup<?>) component;
+                newValue = radioBtnGroupField.getSelectedValue();
+                break;
+            case IMAGE:
+                ImageChooser imageField = (ImageChooser) component;
+                newValue = imageField.getImageData();
+                break;
+            case FILE_CHOOSER:
+                FileChooser fileField = (FileChooser) component;
+                // TODO Hoang: do this component check dirty?
+                newValue = fileField.getFilePath();
+                break;
+            case ENTITY_CHOOSER:
+                EntityChooser<?> entityField = (EntityChooser<?>) component;
+                newValue = entityField.getSelectedEntity();
+                break;
+            case SALE_TARGET:
+                SaleTargetComp<?> saleTargetField = (SaleTargetComp<?>) component;
+                // TODO Hoang: check dirty for this.
+                newValue = new HashSet<>(saleTargetField.getSaleTargetList());
+                break;
+            default:
+                throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());
+            }
+            if (!ObjectUtils.equals(oldValue, newValue)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -21,15 +21,13 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
 
-import com.s3s.ssm.view.annotations.Validation;
-
 @Entity
 @Table(name = "s_supplier")
 @PrimaryKeyJoinColumn(name = "supplier_id")
 public class Supplier extends Partner {
     private static final long serialVersionUID = 4797277568461280316L;
     private String representer;
-    private Boolean sex;
+    private boolean sex;
     private String position;
     private String address;
     private String phone;
@@ -46,11 +44,11 @@ public class Supplier extends Partner {
     }
 
     @Column(name = "sex", length = 1)
-    public Boolean getSex() {
+    public boolean getSex() {
         return sex;
     }
 
-    public void setSex(Boolean sex) {
+    public void setSex(boolean sex) {
         this.sex = sex;
     }
 
@@ -99,20 +97,4 @@ public class Supplier extends Partner {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    @Validation
-    public boolean validateTest1() {
-        return false;
-    }
-
-    @Validation
-    public boolean validateTest2() {
-        return false;
-    }
-
-    @Validation
-    public boolean validateTest3() {
-        return true;
-    }
-
 }
