@@ -30,7 +30,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
@@ -62,7 +63,7 @@ public abstract class Partner extends AbstractCodeOLObject {
     private Set<ContactDebt> contactDebtSet = new HashSet<ContactDebt>();
 
     @Column(name = "name", length = 128, nullable = false)
-    @NotNull
+    @NotBlank
     public String getName() {
         return name;
     }
