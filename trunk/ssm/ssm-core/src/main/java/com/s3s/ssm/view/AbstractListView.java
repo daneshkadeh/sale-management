@@ -226,6 +226,12 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         int firstIndex = (pageNumber - 1) * getPageSize();
 
         // Load necessary properties if they are lazing.
+        DetachedCriteria dc = getCriteriaForView();
+
+        return getDaoHelper().getDao(getEntityClass()).findByCriteria(dc, firstIndex, getPageSize());
+    }
+
+    protected DetachedCriteria getCriteriaForView() {
         DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
         for (DetailAttribute attribute : listDataModel) {
             String pathName = attribute.getName();
@@ -236,8 +242,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 dc.setFetchMode(StringUtils.join(paths), FetchMode.JOIN);
             }
         }
-
-        return getDaoHelper().getDao(getEntityClass()).findByCriteria(dc, firstIndex, getPageSize());
+        return dc;
     }
 
     /**
@@ -257,17 +262,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         int firstIndex = (firstPage - 1) * getPageSize();
         int recordTotal = (lastPage - firstPage) * getPageSize();
 
-        // Load necessary properties if they are lazing.
-        DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
-        for (DetailAttribute attribute : listDataModel) {
-            String pathName = attribute.getName();
-            if (pathName.contains(".")) {
-                // Not fetching the ending properties => remove it from the pathName
-                String[] paths = StringUtils.split(pathName, '.');
-                paths = (String[]) ArrayUtils.remove(paths, paths.length - 1);
-                dc.setFetchMode(StringUtils.join(paths), FetchMode.JOIN);
-            }
-        }
+        DetachedCriteria dc = getCriteriaForView();
 
         return getDaoHelper().getDao(getEntityClass()).findByCriteria(dc, firstIndex, recordTotal);
     }
