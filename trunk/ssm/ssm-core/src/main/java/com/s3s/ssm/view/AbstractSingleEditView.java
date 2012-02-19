@@ -255,7 +255,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             add(fieldsPanel, "grow");
         }
 
-        customizeComponents(name2AttributeComponent);
+        customizeComponents(name2AttributeComponent, entity);
     }
 
     /**
@@ -263,7 +263,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
      * 
      * @param name2AttributeComponent
      */
-    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent) {
+    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, T entity) {
         // Template method
     };
 

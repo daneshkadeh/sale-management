@@ -62,8 +62,8 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
     }
 
     @Override
-    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent) {
-        super.customizeComponents(name2AttributeComponent);
+    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, Supplier entity) {
+        super.customizeComponents(name2AttributeComponent, entity);
         final JTextField email = (JTextField) name2AttributeComponent.get("email").getComponent();
         JCheckBox cb = (JCheckBox) name2AttributeComponent.get("isActive").getComponent();
         cb.addItemListener(new ItemListener() {
