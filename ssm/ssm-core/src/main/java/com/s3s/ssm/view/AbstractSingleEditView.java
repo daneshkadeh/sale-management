@@ -389,7 +389,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 break;
             case RADIO_BUTTON_GROUP:
                 dataField = new RadioButtonsGroup<>(referenceData.getValue2LabelMap(), value);
-                pnlEdit.add(lblLabel);
+                pnlEdit.add(lblLabel, newline);
                 break;
             case IMAGE:
                 byte[] bytes = (byte[]) value;
