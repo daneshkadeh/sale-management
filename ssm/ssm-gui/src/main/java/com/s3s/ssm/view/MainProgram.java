@@ -59,9 +59,6 @@ import com.s3s.ssm.view.domain.ResourceManagementDomain;
 import com.s3s.ssm.view.domain.SalesManagementDomain;
 import com.s3s.ssm.view.domain.SupplyChainDomain;
 import com.s3s.ssm.view.domain.SystemManagementDomain;
-import com.s3s.ssm.view.list.ListCustomerViewTest;
-import com.s3s.ssm.view.list.ListGoodsViewTest;
-import com.s3s.ssm.view.list.ListInvoiceViewTest;
 import com.s3s.ssm.view.list.operator.ListOperatorView;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
 import com.s3s.ssm.view.security.LoginDialog;
@@ -241,12 +238,7 @@ public class MainProgram {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ListCustomerViewTest listCustomerView = new ListCustomerViewTest();
-                listCustomerView.setVisible(true);
-                listCustomerView.loadView();
-                frame.setContentPane(listCustomerView);
-                frame.repaint();
-                frame.pack();
+                // TODO
             }
         });
 
@@ -271,13 +263,7 @@ public class MainProgram {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Create and set up the content pane.
-                ListGoodsViewTest listGoodsView = new ListGoodsViewTest();
-                listGoodsView.setVisible(true);
-                listGoodsView.loadView();
-                frame.setContentPane(listGoodsView);
-                frame.repaint();
-                frame.pack();
+                // TODO
             }
         });
 
@@ -289,13 +275,7 @@ public class MainProgram {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Create and set up the content pane.
-                ListInvoiceViewTest listInvoiceView = new ListInvoiceViewTest();
-                listInvoiceView.setVisible(true);
-                listInvoiceView.loadView();
-                frame.setContentPane(listInvoiceView);
-                frame.repaint();
-                frame.pack();
+                // TODO
             }
         });
 

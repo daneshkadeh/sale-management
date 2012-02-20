@@ -76,6 +76,7 @@ import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.export.exporter.DefaultExporterFactory;
 import com.s3s.ssm.export.exporter.Exporter;
 import com.s3s.ssm.export.exporter.ExporterFactory;
@@ -111,7 +112,7 @@ import com.s3s.ssm.view.component.PagingNavigator;
  * 
  * @param <T>
  */
-public abstract class AbstractListView<T extends AbstractBaseIdObject> extends AbstractView implements
+public abstract class AbstractListView<T extends AbstractIdOLObject> extends AbstractView implements
         IPageChangeListener, IViewLazyLoadable {
 
     private static final long serialVersionUID = -1311942671249671111L;
@@ -435,7 +436,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             @Override
             public void actionPerformed(ActionEvent e) {
                 int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this),
-                        "Are you sure want to delete the selected row?", "Confirm delete", JOptionPane.YES_NO_OPTION,
+                        "Are you sure want to delete the selected row?", "Confirm delete", JOptionPane.OK_CANCEL_OPTION,
                         JOptionPane.WARNING_MESSAGE);
                 if (option == JOptionPane.YES_OPTION) {
                     int[] selectedRows = tblListEntities.getSelectedRows();
@@ -742,6 +743,11 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
     }
 
+
+    public void performAddAction() {
+        showEditView(null);
+    }
+    
     private void performEditAction() {
         int selectedRow = tblListEntities.getSelectedRow();
         if (selectedRow == -1) {
@@ -830,8 +836,9 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            showEditView(null);
+            performAddAction();
         }
+
     }
 
     private class EditAction extends AbstractAction {
@@ -891,6 +898,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     protected void setAccessRule() {
         if (!permissionSet.contains(CustomPermission.ADMINISTRATION)) {
+            // TODO Hoang should not use 'if' in this case.
             if (!permissionSet.contains(CustomPermission.CREATE)) {
                 btnAdd.setVisible(false);
             }

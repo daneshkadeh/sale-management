@@ -45,7 +45,7 @@ public class ListRoleView extends AbstractListView<Role> {
     }
 
     @Override
-    protected void showEditView(Role entity) {
+    public void showEditView(Role entity) {
         // TODO This call requires sub class override Constructor method! It's not good.
         ACLPanel aclPanel = new ACLPanel(entity);
         aclPanel.setListView(this);
