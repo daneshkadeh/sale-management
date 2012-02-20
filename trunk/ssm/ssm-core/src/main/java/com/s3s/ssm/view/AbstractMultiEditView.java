@@ -56,8 +56,8 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
         treeView.setModel(new DefaultTreeModel(root));
         treeView.setRootVisible(false);
         constructTreeView(root, entity);
-        // Set selection on the first node
         Assert.isTrue(root.getChildAt(0) != null, "There is no node in the tree");
+        // Set selection on the first node
         treeView.setSelectionPath(new TreePath(((TreeNodeWithView) root.getChildAt(0)).getPath()));
         return treeView;
     }

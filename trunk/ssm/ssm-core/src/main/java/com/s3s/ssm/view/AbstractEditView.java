@@ -15,9 +15,12 @@
 
 package com.s3s.ssm.view;
 
+import java.awt.Dimension;
+
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.util.Solution3sClassUtils;
+import com.s3s.ssm.util.view.WindowUtilities;
 
 /**
  * @author Phan Hong Phuc
@@ -64,5 +67,25 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
     @SuppressWarnings("unchecked")
     protected Class<T> getEntityClass() {
         return (Class<T>) Solution3sClassUtils.getArgumentClass(getClass());
+    }
+
+    /**
+     * Get the size of the dialog fit with the edit view. Maximum size is equal with the fullscreen size.
+     * 
+     * @param detailViewSize
+     * @return
+     */
+    public Dimension getFitSize() {
+        Dimension detailViewSize = getPreferredSize();
+        int w = detailViewSize.width + 25;
+        int h = detailViewSize.height + 45;
+        Dimension fullSize = WindowUtilities.getFullScreenSize();
+        if (w > fullSize.width) {
+            w = fullSize.width;
+        }
+        if (h > fullSize.height) {
+            h = fullSize.height;
+        }
+        return new Dimension(w, h);
     }
 }

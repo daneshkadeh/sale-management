@@ -503,12 +503,24 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 WindowUtilities.centerOnScreen(window);
             }
         });
+        
+        JButton btnMinimize = new JButton(ImageUtils.getImageIcon(ImageConstants.MINIMIZE_ICON));
+        btnMinimize.setToolTipText(ControlConfigUtils.getString("edit.button.minimize"));
+        btnMinimize.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Window window = (Window) SwingUtilities.getRoot(AbstractSingleEditView.this);
+                window.setSize(getFitSize());
+                WindowUtilities.centerOnScreen(window);
+            }
+        });
 
         toolbar.add(btnNew);
         toolbar.add(btnSave);
         toolbar.add(btnSaveNew);
         // toolbar.add(btnSaveClose);
         toolbar.add(Box.createHorizontalGlue());
+        toolbar.add(btnMinimize);
         toolbar.add(btnFullScreen);
         toolbar.add(btnExit);
         return toolbar;

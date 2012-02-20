@@ -17,7 +17,6 @@ package com.s3s.ssm.view;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
-import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -89,7 +88,6 @@ import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
-import com.s3s.ssm.util.view.WindowUtilities;
 import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.PagingNavigator;
 
@@ -500,8 +498,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
             Window parentContainer = (Window) SwingUtilities.getRoot(AbstractListView.this);
             JDialog dialog = new JDialog(parentContainer);
             dialog.setContentPane(scrollPane);
-            Dimension preferredSize = detailView.getPreferredSize();
-            dialog.setSize(getFitSize(preferredSize));
+            dialog.setSize(detailView.getFitSize());
             dialog.setLocationRelativeTo(parentContainer); // Display the dialog in the center.
             dialog.setModalityType(ModalityType.APPLICATION_MODAL);
             dialog.setVisible(true);
@@ -509,25 +506,6 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
             logger.error(ex.getMessage(), ex);
             throw new RuntimeException("There are problems when init the detail view.");
         }
-    }
-
-    /**
-     * Get the size of the dialog fit with the edit view. Maximum size is equal with the fullscreen size.
-     * 
-     * @param detailViewSize
-     * @return
-     */
-    private Dimension getFitSize(Dimension detailViewSize) {
-        int w = detailViewSize.width + 25;
-        int h = detailViewSize.height + 45;
-        Dimension fullSize = WindowUtilities.getFullScreenSize();
-        if (w > fullSize.width) {
-            w = fullSize.width;
-        }
-        if (h > fullSize.height) {
-            h = fullSize.height;
-        }
-        return new Dimension(w, h);
     }
 
     protected abstract Class<? extends AbstractEditView<T>> getEditViewClass();
