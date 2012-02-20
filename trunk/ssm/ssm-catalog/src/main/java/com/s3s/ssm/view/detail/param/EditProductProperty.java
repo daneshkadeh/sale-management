@@ -14,7 +14,7 @@ import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
 
 public class EditProductProperty extends AbstractMasterDetailView<ProductProperty, ProductPropertyElement> {
-
+    private static final long serialVersionUID = 1L;
     private static final String REF_PROPERTY_TYPE = "REF_PROPERTY_TYPE";
 
     public EditProductProperty(ProductProperty entity) {

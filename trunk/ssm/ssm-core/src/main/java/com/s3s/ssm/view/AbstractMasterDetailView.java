@@ -24,7 +24,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.util.Solution3sClassUtils;
@@ -97,7 +96,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
     private class ChildListView extends AbstractListView<E> {
         private static final long serialVersionUID = -8455234397691564647L;
 
-        public ChildListView(Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
+        public ChildListView(Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
             super(parentId, parentClass);
         }
 
@@ -157,11 +156,13 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
 
     protected abstract void addDetailIntoMaster(T masterEntity, E detailEntity);
 
+    @SuppressWarnings("unchecked")
     protected Class<T> getMasterClass() {
         Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         return (Class<T>) controllerType;
     }
 
+    @SuppressWarnings("unchecked")
     protected Class<E> getDetailClass() {
         Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         return (Class<E>) controllerType;

@@ -17,6 +17,7 @@ package com.s3s.ssm.view;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.util.Solution3sClassUtils;
 
 /**
  * @author Phan Hong Phuc
@@ -27,18 +28,23 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
     protected AbstractListView<T> listView;
     protected Class<? extends AbstractBaseIdObject> parentClass;
     protected Long parentId;
+    protected T entity;
 
-    public AbstractEditView(T entity) {
-        this(entity, null, null);
-    }
-
-    public AbstractEditView(T entity, Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
+    public AbstractEditView(T entity, Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
         super();
+        if (entity == null) {
+            try {
+                entity = getEntityClass().newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException("There is a problem when init the entity");
+            }
+        }
+        this.entity = entity;
         this.parentId = parentId;
         this.parentClass = parentClass;
     }
 
-    public void setParent(Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
+    public void setParent(Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
         this.parentId = parentId;
         this.parentClass = parentClass;
     }
@@ -53,5 +59,10 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
 
     public void setListView(AbstractListView<T> listView) {
         this.listView = listView;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected Class<T> getEntityClass() {
+        return (Class<T>) Solution3sClassUtils.getArgumentClass(getClass());
     }
 }

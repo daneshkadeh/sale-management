@@ -24,7 +24,6 @@ import net.miginfocom.swing.MigLayout;
 
 import org.springframework.util.Assert;
 
-import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 
 /**
@@ -40,8 +39,8 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
         this(entity, null, null);
     }
 
-    public AbstractMultiEditView(T entity, Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
-        super(entity);
+    public AbstractMultiEditView(T entity, Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
+        super(entity, parentId, parentClass);
         setLayout(new MigLayout("fill"));
         JScrollPane contentScrollPane = new JScrollPane();
         TreeView treeView = initTreeView(entity, contentScrollPane);

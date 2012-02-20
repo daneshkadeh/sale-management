@@ -75,7 +75,6 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.dao.IBaseDao;
-import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.export.exporter.DefaultExporterFactory;
 import com.s3s.ssm.export.exporter.Exporter;
@@ -140,7 +139,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     // instead.
     public boolean isInitialized = false;
 
-    private Class<? extends AbstractBaseIdObject> parentClass;
+    private Class<? extends AbstractIdOLObject> parentClass;
     private Long parentId;
 
     protected List<T> entities = new ArrayList<>();
@@ -171,7 +170,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         return ConfigProvider.getInstance().getContextProvider().getPermissions(aclResource);
     }
 
-    public AbstractListView(Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
+    public AbstractListView(Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
 
         this.parentId = parentId;
         this.parentClass = parentClass;
@@ -436,8 +435,8 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
             @Override
             public void actionPerformed(ActionEvent e) {
                 int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this),
-                        "Are you sure want to delete the selected row?", "Confirm delete", JOptionPane.OK_CANCEL_OPTION,
-                        JOptionPane.WARNING_MESSAGE);
+                        "Are you sure want to delete the selected row?", "Confirm delete",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
                 if (option == JOptionPane.YES_OPTION) {
                     int[] selectedRows = tblListEntities.getSelectedRows();
                     List<T> removedEntities = new ArrayList<>(selectedRows.length);
@@ -491,10 +490,6 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         Class<? extends AbstractEditView<T>> detailViewClass = getEditViewClass();
         Class<T> entityClass = getEntityClass();
         try {
-            if (entity == null) {
-                entity = entityClass.newInstance();
-            }
-
             // TODO This call requires sub class override Constructor method! It's not good.
             AbstractEditView<T> detailView = detailViewClass.getConstructor(entityClass).newInstance(entity);
             detailView.setParent(parentId, parentClass);
@@ -743,11 +738,10 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
     }
 
-
     public void performAddAction() {
         showEditView(null);
     }
-    
+
     private void performEditAction() {
         int selectedRow = tblListEntities.getSelectedRow();
         if (selectedRow == -1) {
