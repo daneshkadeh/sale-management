@@ -169,7 +169,7 @@ public class ACLPanel extends AbstractView {
 
         JButton btnSave = new JButton(ControlConfigUtils.getString("default.button.save"));
 
-        JButton btnCancel = new JButton(ControlConfigUtils.getString("default.button.cancel"));
+        JButton btnCancel = new JButton(ControlConfigUtils.getString("default.button.exit"));
 
         btnSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {

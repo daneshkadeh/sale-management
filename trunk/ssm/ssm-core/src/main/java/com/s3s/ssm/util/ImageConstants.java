@@ -24,4 +24,9 @@ public class ImageConstants {
     public static final String ERROR_ICON = "/icons/errorIcon.gif";
     public static final String INFO_ICON = "/icons/infoIcon.png";
     public static final String WARNING_ICON = "/icons/warningIcon.png";
+    public static final String NEW_ICON = "/icons/newIcon.gif";
+    public static final String SAVE_NEW_ICON = "/icons/saveNewIcon.png";
+    public static final String SAVE_ICON = "/icons/saveIcon.gif";
+    public static final String EXIT_ICON = "/icons/exitIcon.png";
+    public static final String FULLSCREEN_ICON = "/icons/fullScreenIcon.png";
 }

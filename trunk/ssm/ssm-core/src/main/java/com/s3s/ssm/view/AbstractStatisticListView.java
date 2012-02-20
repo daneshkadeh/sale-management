@@ -18,7 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 
-import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
@@ -35,7 +35,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
  * 
  * @param <T>
  */
-public abstract class AbstractStatisticListView<T extends AbstractBaseIdObject> extends AbstractListView<T> {
+public abstract class AbstractStatisticListView<T extends AbstractIdOLObject> extends AbstractListView<T> {
     private static final long serialVersionUID = -1081095962690319904L;
 
     @Override

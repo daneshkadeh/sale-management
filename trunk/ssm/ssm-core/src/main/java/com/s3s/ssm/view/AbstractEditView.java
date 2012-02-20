@@ -16,12 +16,13 @@
 package com.s3s.ssm.view;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.entity.AbstractIdOLObject;
 
 /**
  * @author Phan Hong Phuc
  * 
  */
-public abstract class AbstractEditView<T extends AbstractBaseIdObject> extends AbstractView {
+public abstract class AbstractEditView<T extends AbstractIdOLObject> extends AbstractView {
     private static final long serialVersionUID = 5467303241585854634L;
     protected AbstractListView<T> listView;
     protected Class<? extends AbstractBaseIdObject> parentClass;

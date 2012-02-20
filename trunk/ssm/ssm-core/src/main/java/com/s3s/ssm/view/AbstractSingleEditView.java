@@ -17,6 +17,7 @@ package com.s3s.ssm.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.annotation.Annotation;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -72,6 +74,7 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.Assert;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.GroupInfoData;
@@ -83,6 +86,7 @@ import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.util.view.WindowUtilities;
 import com.s3s.ssm.view.NotifyPanel.NotifyKind;
 import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
@@ -101,7 +105,7 @@ import com.s3s.ssm.view.component.SaleTargetModel;
  * @param <T>
  */
 
-public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> extends AbstractEditView<T> {
+public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> extends AbstractEditView<T> {
     private static final long serialVersionUID = 1L;
 
     private final Log logger = LogFactory.getLog(AbstractSingleEditView.class);
@@ -110,7 +114,10 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     protected Map<String, AttributeComponent> name2AttributeComponent = new HashMap<>();
 
     private JButton btnSave;
-    private JButton btnCancel;
+    // private JButton btnSaveClose;
+    private JButton btnSaveNew;
+    private JButton btnNew;
+    private JButton btnExit;
     protected T entity;
     protected BeanWrapper beanWrapper;
 
@@ -204,12 +211,12 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     public AbstractSingleEditView(T entity, Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
         super(entity, parentId, parentClass);
         this.entity = entity;
+        beanWrapper = new BeanWrapperImpl(entity);
         loadForEdit(entity);
         contructView(entity);
     }
 
     private void contructView(T entity) {
-        beanWrapper = new BeanWrapperImpl(entity);
         initialPresentationView(detailDataModel, entity);
         setReferenceDataModel(refDataModel, entity);
         initComponents();
@@ -237,7 +244,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
         // Toolbar
         JToolBar toolbar = createToolBar();
-        add(toolbar, "top");
+        add(toolbar, "growx, top");
 
         // Information panel
         notifyPanel = new NotifyPanel();
@@ -364,8 +371,6 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 pnlEdit.add(lblLabel);
                 break;
             case DROPDOWN:
-                // get the referenceDataList from ReferenceDataModel using
-                // referenceDataId of column.
                 dataField = new JComboBox<>(referenceData.getValues().toArray());
                 ((JComboBox<?>) dataField).setPreferredSize(new Dimension(width * getColumnWidth(), dataField
                         .getHeight()));
@@ -448,24 +453,72 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
         toolbar.setFloatable(false);
-        btnSave = new JButton(ControlConfigUtils.getString("default.button.save"));
+        btnSave = new JButton(ImageUtils.getImageIcon(ImageConstants.SAVE_ICON));
+        btnSave.setToolTipText(ControlConfigUtils.getString("default.button.save"));
         btnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                btnSaveActionPerformed(evt);
+                doSave();
             }
         });
 
-        btnCancel = new JButton(ControlConfigUtils.getString("default.button.cancel"));
-        btnCancel.addActionListener(new ActionListener() {
+        // btnSaveClose = new JButton("Lưu và đóng");
+        // btnSaveClose.addActionListener(new ActionListener() {
+        // @Override
+        // public void actionPerformed(ActionEvent e) {
+        // if (doSave()) {
+        // doClose();
+        // }
+        // }
+        // });
+
+        btnSaveNew = new JButton(ImageUtils.getImageIcon(ImageConstants.SAVE_NEW_ICON));
+        btnSaveNew.setToolTipText(ControlConfigUtils.getString("edit.button.saveNew"));
+        btnSaveNew.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (doSave()) {
+                    doNew();
+                }
+            }
+        });
+
+        btnNew = new JButton(ImageUtils.getImageIcon(ImageConstants.NEW_ICON));
+        btnNew.setToolTipText(ControlConfigUtils.getString("edit.button.new"));
+        btnNew.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                doCloseOrNewWithDirtyCheck(true);
+            }
+        });
+
+        btnExit = new JButton(ImageUtils.getImageIcon(ImageConstants.EXIT_ICON));
+        btnExit.setToolTipText(ControlConfigUtils.getString("edit.button.exit"));
+        btnExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                btnCancelActionPerformed(evt);
+                doCloseOrNewWithDirtyCheck(false);
+            }
+        });
+        
+        JButton btnFullScreen = new JButton(ImageUtils.getImageIcon(ImageConstants.FULLSCREEN_ICON));
+        btnExit.setToolTipText(ControlConfigUtils.getString("edit.button.fullscreen"));
+        btnFullScreen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Window window = (Window) SwingUtilities.getRoot(AbstractSingleEditView.this);
+                window.setSize(WindowUtilities.getFullScreenSize());
+                WindowUtilities.centerOnScreen(window);
             }
         });
 
+        toolbar.add(btnNew);
         toolbar.add(btnSave);
-        toolbar.add(btnCancel);
+        toolbar.add(btnSaveNew);
+        // toolbar.add(btnSaveClose);
+        toolbar.add(Box.createHorizontalGlue());
+        toolbar.add(btnFullScreen);
+        toolbar.add(btnExit);
         return toolbar;
     }
 
@@ -492,13 +545,13 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 if (listView != null) {
                     listView.notifyFromDetailView(entity, isNew);
                 }
-                
+
                 // Clear all the error on the screen
                 for (AttributeComponent at : name2AttributeComponent.values()) {
                     at.getLabel().setForeground(Color.BLACK);
                     at.getErrorIcon().setVisible(false);
                 }
-                
+
                 // Show information save success.
                 notifyPanel.setNotifyKind(NotifyKind.INFORMATION);
                 notifyPanel.setMessage(ControlConfigUtils.getString("edit.message.saveSuccess"));
@@ -551,7 +604,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 break;
             case TEXTAREA:
                 JTextArea rtxtField = (JTextArea) ((JScrollPane) component).getViewport().getView();
-                beanWrapper.setPropertyValue(attribute.getName(), StringUtils.trimToEmpty(rtxtField.getText()));
+                beanWrapper.setPropertyValue(attribute.getName(), StringUtils.trimToNull(rtxtField.getText()));
                 break;
             case PASSWORD:
                 JPasswordField pwdField = (JPasswordField) component;
@@ -644,7 +697,13 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         }
     }
 
-    protected void btnCancelActionPerformed(ActionEvent evt) {
+    /**
+     * Check dirty before close or create new entity.
+     * 
+     * @param isNew
+     *            <code>true</code> if create new entity, <code>false</code> close the current entity.
+     */
+    protected void doCloseOrNewWithDirtyCheck(boolean isNew) {
         if (isDirty()) {
             int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(this),
                     ControlConfigUtils.getString("edit.warning.cancel.message"),
@@ -652,13 +711,30 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                     JOptionPane.WARNING_MESSAGE, null);
             if (option == JOptionPane.YES_OPTION) {
                 doSave();
-                SwingUtilities.getRoot(this).setVisible(false);
+                doCloseOrNew(isNew);
             } else if (option == JOptionPane.NO_OPTION) {
-                SwingUtilities.getRoot(this).setVisible(false);
+                doCloseOrNew(isNew);
             }
         } else {
-            SwingUtilities.getRoot(this).setVisible(false);
+            doCloseOrNew(isNew);
         }
+    }
+
+    private void doCloseOrNew(boolean isNew) {
+        if (isNew) {
+            doNew();
+        } else {
+            doClose();
+        }
+    }
+
+    private void doClose() {
+        SwingUtilities.getRoot(this).setVisible(false);
+    }
+
+    private void doNew() {
+        SwingUtilities.getRoot(this).setVisible(false);
+        listView.performAddAction();
     }
 
     protected boolean isDirty() {
@@ -673,7 +749,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 break;
             case TEXTAREA:
                 JTextArea rtxtField = (JTextArea) ((JScrollPane) component).getViewport().getView();
-                newValue = StringUtils.trimToEmpty(rtxtField.getText());
+                newValue = StringUtils.trimToNull(rtxtField.getText());
                 break;
             case PASSWORD:
                 JPasswordField pwdField = (JPasswordField) component;

@@ -72,8 +72,10 @@ public class LoginDialog extends JFrame {
         JPanel panel = new JPanel(new MigLayout("wrap 2"));
         lblUsername = new JLabel(ControlConfigUtils.getString("default.Login.label.username"));
         tflUsername = new JTextField(20);
+        tflUsername.setText("admin");
         lblPassword = new JLabel(ControlConfigUtils.getString("default.Login.label.password"));
         pflPassword = new JPasswordField(20);
+        pflPassword.setText("admin");
         btnLogin = new JButton(ControlConfigUtils.getString("default.Login.button.ok"));
         btnCancel = new JButton(ControlConfigUtils.getString("default.Login.button.cancel"));
 
