@@ -73,7 +73,6 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.Assert;
 
-import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
@@ -83,7 +82,6 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.ImageConstants;
 import com.s3s.ssm.util.ImageUtils;
-import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.util.view.WindowUtilities;
@@ -118,7 +116,6 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     private JButton btnSaveNew;
     private JButton btnNew;
     private JButton btnExit;
-    protected T entity;
     protected BeanWrapper beanWrapper;
 
     private final ReferenceDataModel refDataModel = new ReferenceDataModel();
@@ -208,23 +205,17 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         this(entity, null, null);
     }
 
-    public AbstractSingleEditView(T entity, Long parentId, Class<? extends AbstractBaseIdObject> parentClass) {
+    public AbstractSingleEditView(T entity, Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
         super(entity, parentId, parentClass);
-        this.entity = entity;
-        beanWrapper = new BeanWrapperImpl(entity);
-        loadForEdit(entity);
-        contructView(entity);
+        beanWrapper = new BeanWrapperImpl(this.entity);
+        loadForEdit(this.entity);
+        contructView(this.entity);
     }
 
     private void contructView(T entity) {
         initialPresentationView(detailDataModel, entity);
         setReferenceDataModel(refDataModel, entity);
         initComponents();
-    }
-
-    @SuppressWarnings("unchecked")
-    protected Class<T> getEntityClass() {
-        return (Class<T>) Solution3sClassUtils.getArgumentClass(getClass());
     }
 
     public abstract void initialPresentationView(DetailDataModel detailDataModel, T entity);
@@ -449,6 +440,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         return pnlEdit;
     }
 
+    // TODO Phuc: move this to the parent.
     private JToolBar createToolBar() {
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
@@ -500,9 +492,9 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 doCloseOrNewWithDirtyCheck(false);
             }
         });
-        
+
         JButton btnFullScreen = new JButton(ImageUtils.getImageIcon(ImageConstants.FULLSCREEN_ICON));
-        btnExit.setToolTipText(ControlConfigUtils.getString("edit.button.fullscreen"));
+        btnFullScreen.setToolTipText(ControlConfigUtils.getString("edit.button.fullscreen"));
         btnFullScreen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
