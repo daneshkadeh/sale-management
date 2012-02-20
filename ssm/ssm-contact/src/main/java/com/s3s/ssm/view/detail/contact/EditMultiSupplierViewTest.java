@@ -24,6 +24,7 @@ import com.s3s.ssm.view.TreeNodeWithView;
  * 
  */
 public class EditMultiSupplierViewTest extends AbstractMultiEditView<Supplier> {
+
     private static final long serialVersionUID = -427718510574119477L;
 
     public EditMultiSupplierViewTest(Supplier entity) {

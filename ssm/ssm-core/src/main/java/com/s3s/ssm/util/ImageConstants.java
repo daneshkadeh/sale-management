@@ -29,4 +29,5 @@ public class ImageConstants {
     public static final String SAVE_ICON = "/icons/saveIcon.gif";
     public static final String EXIT_ICON = "/icons/exitIcon.png";
     public static final String FULLSCREEN_ICON = "/icons/fullScreenIcon.png";
+    public static final String MINIMIZE_ICON = "/icons/minimizeIcon.png";
 }
