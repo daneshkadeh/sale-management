@@ -37,6 +37,7 @@ public class EditMultiSupplierViewTest extends AbstractMultiEditView<Supplier> {
     @Override
     protected void constructTreeView(TreeNodeWithView root, Supplier entity) {
         EditSupplierView detailView = new EditSupplierView(entity);
+        detailView.setVisibleToolbar(false);
         detailView.setListView(listView);
         TreeNodeWithView node = new TreeNodeWithView("Supplier", detailView);
         root.add(node);

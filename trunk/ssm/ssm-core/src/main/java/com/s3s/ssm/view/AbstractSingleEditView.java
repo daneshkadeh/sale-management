@@ -17,9 +17,7 @@ package com.s3s.ssm.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -34,8 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -48,7 +44,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.NumberFormatter;
@@ -84,7 +79,6 @@ import com.s3s.ssm.util.ImageConstants;
 import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
-import com.s3s.ssm.util.view.WindowUtilities;
 import com.s3s.ssm.view.NotifyPanel.NotifyKind;
 import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
@@ -111,11 +105,6 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     protected DetailDataModel detailDataModel = new DetailDataModel();
     protected Map<String, AttributeComponent> name2AttributeComponent = new HashMap<>();
 
-    private JButton btnSave;
-    // private JButton btnSaveClose;
-    private JButton btnSaveNew;
-    private JButton btnNew;
-    private JButton btnExit;
     protected BeanWrapper beanWrapper;
 
     private final ReferenceDataModel refDataModel = new ReferenceDataModel();
@@ -195,6 +184,10 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
 
     }
 
+    public AbstractSingleEditView() {
+        this(null);
+    }
+
     /**
      * Initialize the detail view. TODO: concrete classes should not override this constructor.
      * 
@@ -234,7 +227,6 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         setLayout(new MigLayout("hidemode 2, wrap, fillx"));
 
         // Toolbar
-        JToolBar toolbar = createToolBar();
         add(toolbar, "growx, top");
 
         // Information panel
@@ -440,92 +432,6 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         return pnlEdit;
     }
 
-    // TODO Phuc: move this to the parent.
-    private JToolBar createToolBar() {
-        JToolBar toolbar = new JToolBar();
-        toolbar.setRollover(true);
-        toolbar.setFloatable(false);
-        btnSave = new JButton(ImageUtils.getImageIcon(ImageConstants.SAVE_ICON));
-        btnSave.setToolTipText(ControlConfigUtils.getString("default.button.save"));
-        btnSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                doSave();
-            }
-        });
-
-        // btnSaveClose = new JButton("Lưu và đóng");
-        // btnSaveClose.addActionListener(new ActionListener() {
-        // @Override
-        // public void actionPerformed(ActionEvent e) {
-        // if (doSave()) {
-        // doClose();
-        // }
-        // }
-        // });
-
-        btnSaveNew = new JButton(ImageUtils.getImageIcon(ImageConstants.SAVE_NEW_ICON));
-        btnSaveNew.setToolTipText(ControlConfigUtils.getString("edit.button.saveNew"));
-        btnSaveNew.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (doSave()) {
-                    doNew();
-                }
-            }
-        });
-
-        btnNew = new JButton(ImageUtils.getImageIcon(ImageConstants.NEW_ICON));
-        btnNew.setToolTipText(ControlConfigUtils.getString("edit.button.new"));
-        btnNew.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                doCloseOrNewWithDirtyCheck(true);
-            }
-        });
-
-        btnExit = new JButton(ImageUtils.getImageIcon(ImageConstants.EXIT_ICON));
-        btnExit.setToolTipText(ControlConfigUtils.getString("edit.button.exit"));
-        btnExit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                doCloseOrNewWithDirtyCheck(false);
-            }
-        });
-
-        JButton btnFullScreen = new JButton(ImageUtils.getImageIcon(ImageConstants.FULLSCREEN_ICON));
-        btnFullScreen.setToolTipText(ControlConfigUtils.getString("edit.button.fullscreen"));
-        btnFullScreen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Window window = (Window) SwingUtilities.getRoot(AbstractSingleEditView.this);
-                window.setSize(WindowUtilities.getFullScreenSize());
-                WindowUtilities.centerOnScreen(window);
-            }
-        });
-        
-        JButton btnMinimize = new JButton(ImageUtils.getImageIcon(ImageConstants.MINIMIZE_ICON));
-        btnMinimize.setToolTipText(ControlConfigUtils.getString("edit.button.minimize"));
-        btnMinimize.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Window window = (Window) SwingUtilities.getRoot(AbstractSingleEditView.this);
-                window.setSize(getFitSize());
-                WindowUtilities.centerOnScreen(window);
-            }
-        });
-
-        toolbar.add(btnNew);
-        toolbar.add(btnSave);
-        toolbar.add(btnSaveNew);
-        // toolbar.add(btnSaveClose);
-        toolbar.add(Box.createHorizontalGlue());
-        toolbar.add(btnMinimize);
-        toolbar.add(btnFullScreen);
-        toolbar.add(btnExit);
-        return toolbar;
-    }
-
     /**
      * <b>This function is same as JTextArea.getColumnWidth()</b> TODO move to the util.
      * 
@@ -540,7 +446,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         doSave();
     }
 
-    private boolean doSave() {
+    protected boolean doSave() {
         Set<ConstraintViolation<T>> validateResult = bindAndValidate(entity);
         if (CollectionUtils.isEmpty(validateResult) && StringUtils.isBlank(notifyPanel.getMessage())) {
             try {
@@ -724,21 +630,21 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         }
     }
 
+    @Override
+    protected void doNew() {
+        doCloseOrNewWithDirtyCheck(true);
+    }
+
+    @Override
+    protected void doClose() {
+        doCloseOrNewWithDirtyCheck(false);
+    }
+
     private void doCloseOrNew(boolean isNew) {
+        SwingUtilities.getRoot(this).setVisible(false);
         if (isNew) {
-            doNew();
-        } else {
-            doClose();
+            listView.performAddAction();
         }
-    }
-
-    private void doClose() {
-        SwingUtilities.getRoot(this).setVisible(false);
-    }
-
-    private void doNew() {
-        SwingUtilities.getRoot(this).setVisible(false);
-        listView.performAddAction();
     }
 
     protected boolean isDirty() {

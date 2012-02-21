@@ -492,7 +492,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
             AbstractEditView<T> detailView = detailViewClass.getConstructor(entityClass).newInstance(entity);
             detailView.setParent(parentId, parentClass);
             // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).
-            detailView.setListView(AbstractListView.this);
+            detailView.setListView(this);
             JScrollPane scrollPane = new JScrollPane(detailView);
 
             Window parentContainer = (Window) SwingUtilities.getRoot(AbstractListView.this);
