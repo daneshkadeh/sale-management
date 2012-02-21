@@ -14,6 +14,9 @@
  */
 package com.s3s.ssm.view;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.JPanel;
 
 import com.s3s.ssm.util.ConfigProvider;
@@ -21,10 +24,15 @@ import com.s3s.ssm.util.DaoHelper;
 
 public abstract class AbstractView extends JPanel {
     private static final long serialVersionUID = 1L;
+    protected Map<String, Object> params = new HashMap<String, Object>();
 
     private DaoHelper daoHelper = ConfigProvider.getInstance().getDaoHelper();
 
     protected DaoHelper getDaoHelper() {
         return daoHelper;
+    }
+
+    public AbstractView(Map<String, Object> params) {
+        this.params = params;
     }
 }

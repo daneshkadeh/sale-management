@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.detail.param;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.ProductFamilyType;
 import com.s3s.ssm.entity.catalog.ProductType;
@@ -27,7 +28,7 @@ public class EditProductTypeView extends AbstractSingleEditView<ProductType> {
 
     private static final String REF_PRODUCT_FAMILY = "0";
 
-    public EditProductTypeView(ProductType entity) {
+    public EditProductTypeView(Map<String, Object> entity) {
         super(entity);
     }
 

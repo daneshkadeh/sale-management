@@ -15,7 +15,9 @@
 package com.s3s.ssm.view.list.security;
 
 import java.awt.Dimension;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -45,9 +47,11 @@ public class ListRoleView extends AbstractListView<Role> {
     }
 
     @Override
-    public void showEditView(Role entity) {
+    public void showEditView(Role entity, String action) {
         // TODO This call requires sub class override Constructor method! It's not good.
-        ACLPanel aclPanel = new ACLPanel(entity);
+        Map<String, Object> params = new HashMap<>();
+        params.put("entityId", entity.getId());
+        ACLPanel aclPanel = new ACLPanel(params);
         aclPanel.setListView(this);
         // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).
         JScrollPane scrollPane = new JScrollPane(aclPanel);

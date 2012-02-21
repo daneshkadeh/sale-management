@@ -16,6 +16,7 @@ package com.s3s.ssm.view.detail.sales;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.s3s.ssm.entity.contact.Customer;
 import com.s3s.ssm.entity.sales.DetailInvoice;
@@ -39,7 +40,7 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     private static final String REF_PAY_STATUS = "paymentStatus";
     private static final String REF_CURRENCY = "currency";
 
-    public EditInvoiceView(Invoice entity) {
+    public EditInvoiceView(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -65,10 +66,11 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     }
 
     @Override
-    protected void loadForCreate(Invoice entity) {
-        super.loadForCreate(entity);
-        entity.setCreatedDate(new Date());
-        entity.setInvoiceNumber(InvoiceHelper.getNextInvoiceNumber());
+    protected Invoice loadForCreate() {
+        Invoice invoice = super.loadForCreate();
+        invoice.setCreatedDate(new Date());
+        invoice.setInvoiceNumber(InvoiceHelper.getNextInvoiceNumber());
+        return invoice;
     }
 
     @Override

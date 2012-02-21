@@ -16,6 +16,7 @@ package com.s3s.ssm.view.detail.security;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
 
@@ -32,8 +33,8 @@ import com.s3s.ssm.view.AbstractSingleEditView;
 public class EditRoleView extends AbstractSingleEditView<Role> {
     private static final long serialVersionUID = 1L;
     private static final String BOOL_REF_ID = "1";
-    
-    public EditRoleView(Role entity) {
+
+    public EditRoleView(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -41,7 +42,7 @@ public class EditRoleView extends AbstractSingleEditView<Role> {
     public void initialPresentationView(DetailDataModel detailDataModel, Role entity) {
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
-//        detailDataModel.addAttribute("name", FieldTypeEnum.CHECKBOX);
+        // detailDataModel.addAttribute("name", FieldTypeEnum.CHECKBOX);
         detailDataModel.addAttribute("isEnable", FieldTypeEnum.DROPDOWN).referenceDataId(BOOL_REF_ID);
     }
 

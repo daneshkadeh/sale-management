@@ -1,5 +1,7 @@
 package com.s3s.ssm.view.detail.sales;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.sales.DetailInvoice;
@@ -18,7 +20,7 @@ public class EditDetailInvoiceVirtualView extends AbstractSingleEditView<DetailI
     private static final String REF_TYPE = "type";
     private static final String REF_STATUS = "status";
 
-    public EditDetailInvoiceVirtualView(DetailInvoice entity) {
+    public EditDetailInvoiceVirtualView(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -43,10 +45,11 @@ public class EditDetailInvoiceVirtualView extends AbstractSingleEditView<DetailI
     }
 
     @Override
-    protected void loadForCreate(DetailInvoice entity) {
-        super.loadForCreate(entity);
+    protected DetailInvoice loadForCreate() {
+        DetailInvoice detail = super.loadForCreate();
         // TODO: work-arround. Invoice should be set from parent view
-        entity.setInvoice(new Invoice());
+        detail.setInvoice(new Invoice());
+        return detail;
     }
 
     @Override

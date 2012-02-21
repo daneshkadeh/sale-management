@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.detail.config;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
 
@@ -34,7 +35,7 @@ public class EditUnitOfMeasureView extends AbstractSingleEditView<UnitOfMeasure>
 
     private static final String CATE_REF_ID = "1";
 
-    public EditUnitOfMeasureView(UnitOfMeasure entity) {
+    public EditUnitOfMeasureView(Map<String, Object> entity) {
         super(entity);
     }
 

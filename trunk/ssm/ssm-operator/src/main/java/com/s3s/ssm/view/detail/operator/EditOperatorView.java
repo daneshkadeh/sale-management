@@ -16,6 +16,7 @@
 package com.s3s.ssm.view.detail.operator;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
 
@@ -38,7 +39,7 @@ public class EditOperatorView extends AbstractSingleEditView<Operator> {
     /**
      * @param entity
      */
-    public EditOperatorView(Operator entity) {
+    public EditOperatorView(Map<String, Object> entity) {
         super(entity);
     }
 

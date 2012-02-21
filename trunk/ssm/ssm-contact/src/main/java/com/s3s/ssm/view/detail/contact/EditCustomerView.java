@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.detail.contact;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
 
@@ -34,7 +35,7 @@ public class EditCustomerView extends AbstractMasterDetailView<Customer, Contact
     private static final String PARTNER_CATE_REF_ID = "0";
     private static final String REF_BANK = "1";
 
-    public EditCustomerView(Customer entity) {
+    public EditCustomerView(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -53,17 +54,19 @@ public class EditCustomerView extends AbstractMasterDetailView<Customer, Contact
      * {@inheritDoc}
      */
     @Override
-    protected void loadForCreate(Customer entity) {
-        super.loadForCreate(entity);
-        entity.setBankAccount(new BankAccount());
+    protected Customer loadForCreate() {
+        Customer customer = super.loadForCreate();
+        customer.setBankAccount(new BankAccount());
+        return customer;
     }
 
     @Override
-    protected void loadForEdit(Customer entity) {
-        super.loadForEdit(entity);
-        if (entity.getBankAccount() == null) {
-            entity.setBankAccount(new BankAccount());
+    protected Customer loadForEdit() {
+        Customer customer = super.loadForEdit();
+        if (customer.getBankAccount() == null) {
+            customer.setBankAccount(new BankAccount());
         }
+        return customer;
     }
 
     @Override

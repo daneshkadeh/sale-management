@@ -15,6 +15,9 @@
 
 package com.s3s.ssm.view.detail.contact;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.view.AbstractMultiEditView;
 import com.s3s.ssm.view.TreeNodeWithView;
@@ -27,7 +30,7 @@ public class EditMultiSupplierViewTest extends AbstractMultiEditView<Supplier> {
 
     private static final long serialVersionUID = -427718510574119477L;
 
-    public EditMultiSupplierViewTest(Supplier entity) {
+    public EditMultiSupplierViewTest(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -36,7 +39,9 @@ public class EditMultiSupplierViewTest extends AbstractMultiEditView<Supplier> {
      */
     @Override
     protected void constructTreeView(TreeNodeWithView root, Supplier entity) {
-        EditSupplierView detailView = new EditSupplierView(entity);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("entityId", entity.getId());
+        EditSupplierView detailView = new EditSupplierView(params);
         detailView.setVisibleToolbar(false);
         detailView.setListView(listView);
         TreeNodeWithView node = new TreeNodeWithView("Supplier", detailView);

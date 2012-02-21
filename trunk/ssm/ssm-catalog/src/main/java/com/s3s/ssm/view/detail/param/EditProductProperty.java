@@ -2,6 +2,7 @@ package com.s3s.ssm.view.detail.param;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.ProductProperty;
 import com.s3s.ssm.entity.catalog.ProductProperty.PropertyType;
@@ -17,7 +18,7 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
     private static final long serialVersionUID = 1L;
     private static final String REF_PROPERTY_TYPE = "REF_PROPERTY_TYPE";
 
-    public EditProductProperty(ProductProperty entity) {
+    public EditProductProperty(Map<String, Object> entity) {
         super(entity);
     }
 

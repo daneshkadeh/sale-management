@@ -16,6 +16,8 @@
 
 package com.s3s.ssm.view.detail.shipment;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.shipment.ShipPrice;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
@@ -30,7 +32,7 @@ public class EditShipPriceView extends AbstractSingleEditView<ShipPrice> {
     /**
      * @param entity
      */
-    public EditShipPriceView(ShipPrice entity) {
+    public EditShipPriceView(Map<String, Object> entity) {
         super(entity);
     }
 

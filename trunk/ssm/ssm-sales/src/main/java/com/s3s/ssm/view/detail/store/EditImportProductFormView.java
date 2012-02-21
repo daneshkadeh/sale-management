@@ -14,13 +14,15 @@
  */
 package com.s3s.ssm.view.detail.store;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.store.ImportProductForm;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
 public class EditImportProductFormView extends AbstractSingleEditView<ImportProductForm> {
 
-    public EditImportProductFormView(ImportProductForm entity) {
+    public EditImportProductFormView(Map<String, Object> entity) {
         super(entity);
         // TODO Auto-generated constructor stub
     }

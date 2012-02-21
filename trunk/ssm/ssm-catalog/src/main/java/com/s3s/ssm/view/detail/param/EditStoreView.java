@@ -16,6 +16,7 @@ package com.s3s.ssm.view.detail.param;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.Store;
 import com.s3s.ssm.model.DetailDataModel;
@@ -27,7 +28,7 @@ public class EditStoreView extends AbstractSingleEditView<Store> {
 
     private static final String REF_MANAGER_CODE = "REF_MANAGER_CODE";
 
-    public EditStoreView(Store entity) {
+    public EditStoreView(Map<String, Object> entity) {
         super(entity);
     }
 

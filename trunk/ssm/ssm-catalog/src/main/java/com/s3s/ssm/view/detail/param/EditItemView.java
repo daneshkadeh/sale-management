@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.detail.param;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.internal.runtime.Product;
 
@@ -42,7 +43,7 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
     private static final String REF_CURRENCY_ID = "REF_CURRENCY_ID";
     private static final String REF_UOM_ID = "REF_UOM_ID";
 
-    public EditItemView(Item entity) {
+    public EditItemView(Map<String, Object> entity) {
         super(entity);
     }
 

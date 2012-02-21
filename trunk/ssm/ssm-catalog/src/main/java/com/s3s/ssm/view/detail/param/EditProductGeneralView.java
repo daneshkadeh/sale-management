@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.detail.param;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.catalog.Manufacturer;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.catalog.ProductType;
@@ -30,7 +32,7 @@ public class EditProductGeneralView extends AbstractSingleEditView<Product> {
     private static final String MANU_REF_ID = "2";
     private static final String UOM_REF_ID = "3";
 
-    public EditProductGeneralView(Product entity) {
+    public EditProductGeneralView(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -58,17 +60,19 @@ public class EditProductGeneralView extends AbstractSingleEditView<Product> {
     }
 
     @Override
-    protected void loadForCreate(Product entity) {
-        super.loadForCreate(entity);
-        entity.setUploadFile(new UploadFile());
+    protected Product loadForCreate() {
+        Product product = super.loadForCreate();
+        product.setUploadFile(new UploadFile());
+        return product;
     }
 
     @Override
-    protected void loadForEdit(Product entity) {
-        super.loadForEdit(entity);
-        if (entity.getUploadFile() == null) {
-            entity.setUploadFile(new UploadFile());
+    protected Product loadForEdit() {
+        Product product = super.loadForEdit();
+        if (product.getUploadFile() == null) {
+            product.setUploadFile(new UploadFile());
         }
+        return product;
     }
 
     @Override

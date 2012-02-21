@@ -166,42 +166,23 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     //
     // }
 
-    /**
-     * Append default attributes for entity.
-     * 
-     * @param entity
-     */
-    protected void loadForCreate(T entity) {
-
-    }
-
-    /**
-     * Append missing attributes for entity.
-     * 
-     * @param entity
-     */
-    protected void loadForEdit(T entity) {
-
-    }
-
     public AbstractSingleEditView() {
         this(null);
     }
 
-    /**
-     * Initialize the detail view. TODO: concrete classes should not override this constructor.
-     * 
-     * @param entity
-     *            the entity of detail view.
-     */
-    public AbstractSingleEditView(T entity) {
-        this(entity, null, null);
-    }
+    // /**
+    // * Initialize the detail view. TODO: concrete classes should not override this constructor.
+    // *
+    // * @param entity
+    // * the entity of detail view.
+    // */
+    // public AbstractSingleEditView(T entity) {
+    // this(entity, null, null);
+    // }
 
-    public AbstractSingleEditView(T entity, Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
-        super(entity, parentId, parentClass);
+    public AbstractSingleEditView(Map<String, Object> params) {
+        super(params);
         beanWrapper = new BeanWrapperImpl(this.entity);
-        loadForEdit(this.entity);
         contructView(this.entity);
     }
 

@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.detail.security;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
 
@@ -33,7 +34,7 @@ public class EditUserView extends AbstractSingleEditView<User> {
     private static final long serialVersionUID = 1L;
     private static final String ROLE_REF_ID = "1";
 
-    public EditUserView(User entity) {
+    public EditUserView(Map<String, Object> entity) {
         super(entity);
     }
 

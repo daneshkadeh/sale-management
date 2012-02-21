@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.detail.param;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.catalog.ItemPrice;
 import com.s3s.ssm.entity.contact.PartnerCategory;
 import com.s3s.ssm.helper.CatalogHelper;
@@ -26,7 +28,7 @@ public class EditItemPriceVirtualView extends AbstractSingleEditView<ItemPrice> 
     private static final String REF_CONTACT_TYPE = "REF_CONTACT_TYPE";
     private static final String REF_CURRENCY_ID = "REF_CURRENCY_ID";
 
-    public EditItemPriceVirtualView(ItemPrice entity) {
+    public EditItemPriceVirtualView(Map<String, Object> entity) {
         super(entity);
     }
 

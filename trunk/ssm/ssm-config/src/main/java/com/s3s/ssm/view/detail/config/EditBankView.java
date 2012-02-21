@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.detail.config;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
@@ -22,7 +24,7 @@ import com.s3s.ssm.view.AbstractSingleEditView;
 public class EditBankView extends AbstractSingleEditView<Bank> {
     private static final long serialVersionUID = 728867266827208141L;
 
-    public EditBankView(Bank entity) {
+    public EditBankView(Map<String, Object> entity) {
         super(entity);
     }
 

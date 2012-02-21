@@ -16,6 +16,7 @@
 package com.s3s.ssm.view.detail.contact;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
 
@@ -35,7 +36,7 @@ public class EditPartnerCategoryView extends AbstractSingleEditView<PartnerCateg
     /**
      * @param entity
      */
-    public EditPartnerCategoryView(PartnerCategory entity) {
+    public EditPartnerCategoryView(Map<String, Object> entity) {
         super(entity);
     }
 

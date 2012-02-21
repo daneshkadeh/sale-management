@@ -14,13 +14,15 @@
  */
 package com.s3s.ssm.view.detail.finance;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.finance.Payment;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
 public class EditPaymentView extends AbstractSingleEditView<Payment> {
 
-    public EditPaymentView(Payment entity) {
+    public EditPaymentView(Map<String, Object> entity) {
         super(entity);
     }
 
