@@ -95,6 +95,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
      */
     private class ChildListView extends AbstractListView<E> {
         private static final long serialVersionUID = -8455234397691564647L;
+        private static final int NUM_OF_ROW = 10;
 
         public ChildListView(Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
             super(parentId, parentClass);
@@ -132,6 +133,11 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         @Override
         protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
             initialListDetailPresentationView(listDataModel);
+        }
+
+        @Override
+        protected int getPageSize() {
+            return NUM_OF_ROW;
         }
     }
 
