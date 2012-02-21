@@ -433,8 +433,8 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             try {
                 boolean isNew = (entity.getId() == null);
                 saveOrUpdate(entity);
-                if (listView != null) {
-                    listView.notifyFromDetailView(entity, isNew);
+                if (getListView() != null) {
+                    getListView().notifyFromDetailView(entity, isNew);
                 }
 
                 // Clear all the error on the screen
@@ -624,7 +624,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     private void doCloseOrNew(boolean isNew) {
         SwingUtilities.getRoot(this).setVisible(false);
         if (isNew) {
-            listView.performAddAction();
+            getListView().performAddAction();
         }
     }
 
