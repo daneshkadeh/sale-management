@@ -169,16 +169,16 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     }
 
     private Long getParentIdParam(Map<String, Object> params) {
-        if (params.get("parentId") != null) {
-            return (Long) params.get("parentId");
+        if (params.get(PARAM_PARENT_ID) != null) {
+            return (Long) params.get(PARAM_PARENT_ID);
         } else {
             return null;
         }
     }
 
     private Class getParentClassParam(Map<String, Object> params) {
-        if (params.get("parentClass") != null) {
-            return (Class) params.get("parentClass");
+        if (params.get(PARAM_PARENT_CLASS) != null) {
+            return (Class) params.get(PARAM_PARENT_CLASS);
         } else {
             return null;
         }
@@ -189,8 +189,6 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
         this.parentId = getParentIdParam(params);
         this.parentClass = (Class) params.get("parentClass");
-        // this.parentId = parentId;
-        // this.parentClass = parentClass;
         this.permissionSet = getPermissionOfCurrentUser();
         initialPresentationView(listDataModel, summaryFieldNames);
 
@@ -508,15 +506,16 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         Class<T> entityClass = getEntityClass();
         try {
             Map<String, Object> detailParams = new HashMap<>();
-            detailParams.put("entityId", entity != null ? entity.getId() : null);
-            detailParams.put("action", action);
-            detailParams.put("parentId", parentId);
-            detailParams.put("parentClass", parentClass);
+            detailParams.put(PARAM_ENTITY_ID, entity != null ? entity.getId() : null);
+            detailParams.put(PARAM_ACTION, action);
+            detailParams.put(PARAM_PARENT_ID, parentId);
+            detailParams.put(PARAM_PARENT_CLASS, parentClass);
+            detailParams.put(PARAM_LIST_VIEW, this);
 
             // TODO This call requires sub class override Constructor method! It's not good.
             AbstractEditView<T> detailView = detailViewClass.getConstructor(Map.class).newInstance(detailParams);
             // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).
-            detailView.setListView(this);
+            // detailView.setListView(this);
             JScrollPane scrollPane = new JScrollPane(detailView);
 
             Window parentContainer = (Window) SwingUtilities.getRoot(AbstractListView.this);
@@ -741,7 +740,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     }
 
     public void performAddAction() {
-        showEditView(null, "new");
+        showEditView(null, ACTION_NEW);
     }
 
     private void performEditAction() {
@@ -751,7 +750,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
                     "Warning", JOptionPane.OK_OPTION, JOptionPane.WARNING_MESSAGE);
         } else {
             int rowModel = tblListEntities.convertRowIndexToModel(selectedRow);
-            showEditView(entities.get(rowModel), "edit");
+            showEditView(entities.get(rowModel), ACTION_EDIT);
         }
     }
 

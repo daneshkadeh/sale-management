@@ -50,7 +50,7 @@ public class ListRoleView extends AbstractListView<Role> {
     public void showEditView(Role entity, String action) {
         // TODO This call requires sub class override Constructor method! It's not good.
         Map<String, Object> params = new HashMap<>();
-        params.put("entityId", entity.getId());
+        params.put(PARAM_ENTITY_ID, entity.getId());
         ACLPanel aclPanel = new ACLPanel(params);
         aclPanel.setListView(this);
         // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).

@@ -39,8 +39,8 @@ import com.s3s.ssm.util.view.WindowUtilities;
  * 
  */
 public abstract class AbstractEditView<T extends AbstractIdOLObject> extends AbstractView {
+
     private static final long serialVersionUID = 5467303241585854634L;
-    protected AbstractListView<T> listView;
     protected Class<? extends AbstractBaseIdObject> parentClass;
     protected Long parentId;
     protected T entity;
@@ -54,17 +54,17 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
 
     public AbstractEditView(Map<String, Object> inputParams) {
         super(inputParams);
-        String action = (String) params.get("action");
-        if ("new".equals(action)) {
+        String action = (String) request.get(PARAM_ACTION);
+        if (ACTION_NEW.equals(action)) {
             this.entity = loadForCreate();
-        } else if ("edit".equals(action)) {
+        } else if (ACTION_EDIT.equals(action)) {
             this.entity = loadForEdit();
         } else {
             throw new UnsupportedOperationException("This operation is not handled : " + action);
         }
 
-        this.parentId = (Long) this.params.get("parentId");
-        this.parentClass = (Class) this.params.get("parentClass");
+        this.parentId = (Long) this.request.get(PARAM_PARENT_ID);
+        this.parentClass = (Class) this.request.get(PARAM_PARENT_CLASS);
         toolbar = createToolBar();
     }
 
@@ -88,7 +88,7 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
      * @param entity
      */
     protected T loadForEdit() {
-        return getDaoHelper().getDao(getEntityClass()).findById((Long) this.params.get("entityId"));
+        return getDaoHelper().getDao(getEntityClass()).findById((Long) this.request.get(PARAM_ENTITY_ID));
     }
 
     public void setParent(Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
@@ -105,7 +105,11 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
     }
 
     public void setListView(AbstractListView<T> listView) {
-        this.listView = listView;
+        this.request.put(PARAM_LIST_VIEW, listView);
+    }
+
+    public AbstractListView<T> getListView() {
+        return (AbstractListView<T>) this.request.get(PARAM_LIST_VIEW);
     }
 
     protected JToolBar createToolBar() {

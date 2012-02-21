@@ -84,8 +84,8 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
 
         super.initComponents();
         Map<String, Object> childParams = new HashMap<String, Object>();
-        childParams.put("parentId", entity.getId());
-        childParams.put("parentClass", entity.getClass());
+        childParams.put(PARAM_PARENT_ID, entity.getId());
+        childParams.put(PARAM_PARENT_CLASS, entity.getClass());
         ChildListView childListView = new ChildListView(childParams);
 
         // Load list view immediately. This view not too large in MasterDetailView.

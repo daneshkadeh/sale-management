@@ -24,15 +24,22 @@ import com.s3s.ssm.util.DaoHelper;
 
 public abstract class AbstractView extends JPanel {
     private static final long serialVersionUID = 1L;
-    protected Map<String, Object> params = new HashMap<String, Object>();
+    protected Map<String, Object> request = new HashMap<String, Object>();
+    protected static final String ACTION_EDIT = "edit";
+    protected static final String ACTION_NEW = "new";
+    protected static final String PARAM_PARENT_CLASS = "parentClass";
+    protected static final String PARAM_PARENT_ID = "parentId";
+    protected static final String PARAM_ACTION = "action";
+    protected static final String PARAM_LIST_VIEW = "listView";
+    protected static final String PARAM_ENTITY_ID = "entityId";
 
-    private DaoHelper daoHelper = ConfigProvider.getInstance().getDaoHelper();
+    protected DaoHelper daoHelper = ConfigProvider.getInstance().getDaoHelper();
 
     protected DaoHelper getDaoHelper() {
         return daoHelper;
     }
 
     public AbstractView(Map<String, Object> params) {
-        this.params = params;
+        this.request = params;
     }
 }

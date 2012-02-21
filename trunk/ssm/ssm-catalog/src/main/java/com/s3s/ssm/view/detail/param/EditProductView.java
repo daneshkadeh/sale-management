@@ -17,10 +17,10 @@ public class EditProductView extends AbstractMultiEditView<Product> {
     @Override
     protected void constructTreeView(TreeNodeWithView root, Product entity) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("entityId", entity.getId());
-        params.put("action", this.params.get("action"));
+        params.put(PARAM_ENTITY_ID, entity.getId());
+        params.put(PARAM_ACTION, this.request.get(PARAM_ACTION));
+        params.put(PARAM_LIST_VIEW, getListView());
         EditProductGeneralView detailView = new EditProductGeneralView(params);
-        detailView.setListView(listView);
         TreeNodeWithView node = new TreeNodeWithView("General", detailView);
 
         ListItemOfProductView itemsView = new ListItemOfProductView();
