@@ -19,7 +19,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,7 +56,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
      * 
      * @param entity
      */
-    public AbstractMasterDetailView(T entity) {
+    public AbstractMasterDetailView(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -81,7 +83,10 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
     protected void initComponents() {
 
         super.initComponents();
-        ChildListView childListView = new ChildListView(entity.getId(), entity.getClass());
+        Map<String, Object> childParams = new HashMap<String, Object>();
+        childParams.put("parentId", entity.getId());
+        childParams.put("parentClass", entity.getClass());
+        ChildListView childListView = new ChildListView(childParams);
 
         // Load list view immediately. This view not too large in MasterDetailView.
         childListView.loadView();
@@ -97,8 +102,8 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         private static final long serialVersionUID = -8455234397691564647L;
         private static final int NUM_OF_ROW = 10;
 
-        public ChildListView(Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
-            super(parentId, parentClass);
+        public ChildListView(Map<String, Object> params) {
+            super(params);
         }
 
         @Override

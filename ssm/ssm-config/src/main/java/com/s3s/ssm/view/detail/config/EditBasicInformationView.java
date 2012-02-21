@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.detail.config;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.BankAccount;
 import com.s3s.ssm.entity.config.BasicInformation;
@@ -31,7 +33,7 @@ public class EditBasicInformationView extends AbstractSingleEditView<BasicInform
     private static final String BANK_REF_ID = "1";
     private static final String STALL_REF_ID = "2";
 
-    public EditBasicInformationView(BasicInformation entity) {
+    public EditBasicInformationView(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -93,23 +95,25 @@ public class EditBasicInformationView extends AbstractSingleEditView<BasicInform
     }
 
     @Override
-    protected void loadForCreate(BasicInformation entity) {
-        super.loadForCreate(entity);
-        entity.setLogo(new UploadFile());
+    protected BasicInformation loadForCreate() {
+        BasicInformation info = super.loadForCreate();
+        info.setLogo(new UploadFile());
+        return info;
     }
 
     @Override
-    protected void loadForEdit(BasicInformation entity) {
-        super.loadForEdit(entity);
-        if (entity.getLogo() == null) {
-            entity.setLogo(new UploadFile());
+    protected BasicInformation loadForEdit() {
+        BasicInformation info = super.loadForEdit();
+        if (info.getLogo() == null) {
+            info.setLogo(new UploadFile());
         }
-        if (entity.getUsdBankAccount() == null) {
-            entity.setUsdBankAccount(new BankAccount());
+        if (info.getUsdBankAccount() == null) {
+            info.setUsdBankAccount(new BankAccount());
         }
-        if (entity.getVndBankAccount() == null) {
-            entity.setVndBankAccount(new BankAccount());
+        if (info.getVndBankAccount() == null) {
+            info.setVndBankAccount(new BankAccount());
         }
+        return info;
     }
 
     @Override

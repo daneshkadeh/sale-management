@@ -159,7 +159,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     ExporterFactory exporterFactory = new DefaultExporterFactory();
 
     public AbstractListView() {
-        this(null, null);
+        this(new HashMap<String, Object>());
     }
 
     private Set<CustomPermission> getPermissionOfCurrentUser() {
@@ -168,10 +168,29 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         return ConfigProvider.getInstance().getContextProvider().getPermissions(aclResource);
     }
 
-    public AbstractListView(Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
+    private Long getParentIdParam(Map<String, Object> params) {
+        if (params.get("parentId") != null) {
+            return (Long) params.get("parentId");
+        } else {
+            return null;
+        }
+    }
 
-        this.parentId = parentId;
-        this.parentClass = parentClass;
+    private Class getParentClassParam(Map<String, Object> params) {
+        if (params.get("parentClass") != null) {
+            return (Class) params.get("parentClass");
+        } else {
+            return null;
+        }
+    }
+
+    public AbstractListView(Map<String, Object> params) {
+        super(params);
+
+        this.parentId = getParentIdParam(params);
+        this.parentClass = (Class) params.get("parentClass");
+        // this.parentId = parentId;
+        // this.parentClass = parentClass;
         this.permissionSet = getPermissionOfCurrentUser();
         initialPresentationView(listDataModel, summaryFieldNames);
 
@@ -484,13 +503,18 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
      * @param entity
      *            the entity which the detail view display for. If <code>null</code>, new entity is displayed.
      */
-    protected void showEditView(T entity) {
+    protected void showEditView(T entity, String action) {
         Class<? extends AbstractEditView<T>> detailViewClass = getEditViewClass();
         Class<T> entityClass = getEntityClass();
         try {
+            Map<String, Object> detailParams = new HashMap<>();
+            detailParams.put("entityId", entity != null ? entity.getId() : null);
+            detailParams.put("action", action);
+            detailParams.put("parentId", parentId);
+            detailParams.put("parentClass", parentClass);
+
             // TODO This call requires sub class override Constructor method! It's not good.
-            AbstractEditView<T> detailView = detailViewClass.getConstructor(entityClass).newInstance(entity);
-            detailView.setParent(parentId, parentClass);
+            AbstractEditView<T> detailView = detailViewClass.getConstructor(Map.class).newInstance(detailParams);
             // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).
             detailView.setListView(this);
             JScrollPane scrollPane = new JScrollPane(detailView);
@@ -717,7 +741,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     }
 
     public void performAddAction() {
-        showEditView(null);
+        showEditView(null, "new");
     }
 
     private void performEditAction() {
@@ -727,7 +751,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
                     "Warning", JOptionPane.OK_OPTION, JOptionPane.WARNING_MESSAGE);
         } else {
             int rowModel = tblListEntities.convertRowIndexToModel(selectedRow);
-            showEditView(entities.get(rowModel));
+            showEditView(entities.get(rowModel), "edit");
         }
     }
 

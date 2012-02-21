@@ -35,7 +35,7 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
     private static final long serialVersionUID = -8101155807024861715L;
     private static final String SEX_ID = "SEX_ID";
 
-    public EditSupplierView(Supplier entity) {
+    public EditSupplierView(Map<String, Object> entity) {
         super(entity);
     }
 

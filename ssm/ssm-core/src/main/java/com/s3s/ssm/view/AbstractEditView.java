@@ -19,6 +19,7 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -51,19 +52,43 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
     private JButton btnNew;
     private JButton btnExit;
 
-    public AbstractEditView(T entity, Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
-        super();
-        if (entity == null) {
-            try {
-                entity = getEntityClass().newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException("There is a problem when init the entity");
-            }
+    public AbstractEditView(Map<String, Object> inputParams) {
+        super(inputParams);
+        String action = (String) params.get("action");
+        if ("new".equals(action)) {
+            this.entity = loadForCreate();
+        } else if ("edit".equals(action)) {
+            this.entity = loadForEdit();
+        } else {
+            throw new UnsupportedOperationException("This operation is not handled : " + action);
         }
-        this.entity = entity;
-        this.parentId = parentId;
-        this.parentClass = parentClass;
+
+        this.parentId = (Long) this.params.get("parentId");
+        this.parentClass = (Class) this.params.get("parentClass");
         toolbar = createToolBar();
+    }
+
+    /**
+     * Append default attributes for entity.
+     * 
+     * @param entity
+     */
+    protected T loadForCreate() {
+        try {
+            return getEntityClass().newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException("There is a problem when init the entity");
+        }
+
+    }
+
+    /**
+     * Append missing attributes for entity.
+     * 
+     * @param entity
+     */
+    protected T loadForEdit() {
+        return getDaoHelper().getDao(getEntityClass()).findById((Long) this.params.get("entityId"));
     }
 
     public void setParent(Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
@@ -96,7 +121,7 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
             }
         });
 
-        // btnSaveClose = new JButton("Lưu và đóng");
+        // btnSaveClose = new JButton("Luu va dong");
         // btnSaveClose.addActionListener(new ActionListener() {
         // @Override
         // public void actionPerformed(ActionEvent e) {

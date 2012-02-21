@@ -17,6 +17,7 @@
 package com.s3s.ssm.view.detail.shipment;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
 
@@ -37,7 +38,7 @@ public class EditShipDatePriceDetail extends AbstractSingleEditView<ShipDatePric
     /**
      * @param entity
      */
-    public EditShipDatePriceDetail(ShipDatePrice entity) {
+    public EditShipDatePriceDetail(Map<String, Object> entity) {
         super(entity);
     }
 

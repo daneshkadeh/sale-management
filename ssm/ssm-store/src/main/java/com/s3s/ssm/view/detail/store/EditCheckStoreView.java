@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.detail.store;
 
 import java.util.List;
+import java.util.Map;
 
 import com.s3s.ssm.entity.store.CheckStore;
 import com.s3s.ssm.entity.store.DetailCheckStore;
@@ -25,7 +26,7 @@ import com.s3s.ssm.view.AbstractMasterDetailView;
 
 public class EditCheckStoreView extends AbstractMasterDetailView<CheckStore, DetailCheckStore> {
 
-    public EditCheckStoreView(CheckStore entity) {
+    public EditCheckStoreView(Map<String, Object> entity) {
         super(entity);
         // TODO Auto-generated constructor stub
     }

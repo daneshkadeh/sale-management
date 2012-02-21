@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -84,17 +85,20 @@ public class ACLPanel extends AbstractView {
     /**
      * Create the panel.
      */
-    public ACLPanel(Role entity) {
+    public ACLPanel(Map<String, Object> params) {
+        super(params);
+        Role entity;
+        Long entityId = (Long) params.get("entityId");
         matrix = new int[100][6];
         // aclContext = getAclContext();
-        if (entity == null) {
+        if (entityId == null) {
             this.entity = new Role();
         } else {
-            this.entity = entity;
+            this.entity = getDaoHelper().getDao(Role.class).findById(entityId);
         }
 
-        if (entity != null) {
-            role = new PrincipalSid(entity.getName());
+        if (this.entity != null) {
+            role = new PrincipalSid(this.entity.getName());
         }
 
         mutableAclService = (CustomJdbcMutableAclService) ConfigProvider.getInstance().getMutableAclService();

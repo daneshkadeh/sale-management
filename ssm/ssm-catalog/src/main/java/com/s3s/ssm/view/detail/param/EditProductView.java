@@ -1,5 +1,8 @@
 package com.s3s.ssm.view.detail.param;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.view.AbstractMultiEditView;
 import com.s3s.ssm.view.TreeNodeWithView;
@@ -7,13 +10,16 @@ import com.s3s.ssm.view.list.param.ListItemOfProductView;
 
 public class EditProductView extends AbstractMultiEditView<Product> {
 
-    public EditProductView(Product entity) {
+    public EditProductView(Map<String, Object> entity) {
         super(entity);
     }
 
     @Override
     protected void constructTreeView(TreeNodeWithView root, Product entity) {
-        EditProductGeneralView detailView = new EditProductGeneralView(entity);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("entityId", entity.getId());
+        params.put("action", this.params.get("action"));
+        EditProductGeneralView detailView = new EditProductGeneralView(params);
         detailView.setListView(listView);
         TreeNodeWithView node = new TreeNodeWithView("General", detailView);
 

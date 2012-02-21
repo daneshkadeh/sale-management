@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.detail.store;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
@@ -44,7 +46,7 @@ public class EditStoreView extends AbstractSingleEditView<Store> {
     /**
      * @param entity
      */
-    public EditStoreView(Store entity) {
+    public EditStoreView(Map<String, Object> entity) {
         super(entity);
     }
 

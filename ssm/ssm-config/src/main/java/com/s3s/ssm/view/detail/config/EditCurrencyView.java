@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.detail.config;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
@@ -23,7 +25,7 @@ public class EditCurrencyView extends AbstractSingleEditView<SCurrency> {
     private static final long serialVersionUID = 1L;
     private static final String BOOL_REF_ID = "1";
 
-    public EditCurrencyView(SCurrency entity) {
+    public EditCurrencyView(Map<String, Object> entity) {
         super(entity);
     }
 

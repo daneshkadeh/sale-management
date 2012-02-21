@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.detail.contact;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.contact.ContactShop;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
@@ -21,7 +23,7 @@ import com.s3s.ssm.view.AbstractSingleEditView;
 
 public class EditContactShopVirtualView extends AbstractSingleEditView<ContactShop> {
 
-    public EditContactShopVirtualView(ContactShop entity) {
+    public EditContactShopVirtualView(Map<String, Object> entity) {
         super(entity);
     }
 

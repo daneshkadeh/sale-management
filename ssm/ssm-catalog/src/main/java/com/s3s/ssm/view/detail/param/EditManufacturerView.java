@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.detail.param;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.catalog.Manufacturer;
 import com.s3s.ssm.entity.config.UploadFile;
 import com.s3s.ssm.model.DetailDataModel;
@@ -23,7 +25,7 @@ import com.s3s.ssm.view.AbstractSingleEditView;
 public class EditManufacturerView extends AbstractSingleEditView<Manufacturer> {
     private static final long serialVersionUID = 1L;
 
-    public EditManufacturerView(Manufacturer entity) {
+    public EditManufacturerView(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -35,17 +37,19 @@ public class EditManufacturerView extends AbstractSingleEditView<Manufacturer> {
     }
 
     @Override
-    protected void loadForCreate(Manufacturer entity) {
-        super.loadForCreate(entity);
-        entity.setSymbol(new UploadFile());
+    protected Manufacturer loadForCreate() {
+        Manufacturer manu = super.loadForCreate();
+        manu.setSymbol(new UploadFile());
+        return manu;
     }
 
     @Override
-    protected void loadForEdit(Manufacturer entity) {
-        super.loadForEdit(entity);
-        if (entity.getSymbol() == null) {
-            entity.setSymbol(new UploadFile());
+    protected Manufacturer loadForEdit() {
+        Manufacturer manu = super.loadForEdit();
+        if (manu.getSymbol() == null) {
+            manu.setSymbol(new UploadFile());
         }
+        return manu;
     }
 
     @Override

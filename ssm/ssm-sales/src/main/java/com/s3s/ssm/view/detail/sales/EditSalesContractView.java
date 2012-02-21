@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.detail.sales;
 
 import java.util.List;
+import java.util.Map;
 
 import com.s3s.ssm.entity.sales.DetailSalesContract;
 import com.s3s.ssm.entity.sales.SalesContract;
@@ -25,7 +26,7 @@ import com.s3s.ssm.view.AbstractMasterDetailView;
 
 public class EditSalesContractView extends AbstractMasterDetailView<SalesContract, DetailSalesContract> {
 
-    public EditSalesContractView(SalesContract entity) {
+    public EditSalesContractView(Map<String, Object> entity) {
         super(entity);
         // TODO Auto-generated constructor stub
     }

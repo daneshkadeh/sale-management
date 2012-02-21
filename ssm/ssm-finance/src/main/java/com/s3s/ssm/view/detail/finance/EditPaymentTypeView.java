@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.detail.finance;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import com.s3s.ssm.entity.finance.PaymentContentType;
 import com.s3s.ssm.entity.finance.PaymentType;
@@ -27,7 +28,7 @@ public class EditPaymentTypeView extends AbstractSingleEditView<PaymentType> {
 
     private static final String REF_CONTENT_TYPE = "contentType";
 
-    public EditPaymentTypeView(PaymentType entity) {
+    public EditPaymentTypeView(Map<String, Object> entity) {
         super(entity);
     }
 

@@ -18,6 +18,7 @@ package com.s3s.ssm.view.detail.operator;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
 
@@ -45,7 +46,7 @@ public class EditStallView extends AbstractSingleEditView<Stall> {
     /**
      * @param entity
      */
-    public EditStallView(Stall entity) {
+    public EditStallView(Map<String, Object> entity) {
         super(entity);
     }
 

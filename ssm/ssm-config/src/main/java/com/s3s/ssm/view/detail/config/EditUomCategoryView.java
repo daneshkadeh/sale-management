@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.detail.config;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
 
@@ -28,7 +29,7 @@ public class EditUomCategoryView extends AbstractSingleEditView<UomCategory> {
     private static final long serialVersionUID = 1L;
     private static final String CATE_REF_ID = "1";
 
-    public EditUomCategoryView(UomCategory entity) {
+    public EditUomCategoryView(Map<String, Object> entity) {
         super(entity);
     }
 

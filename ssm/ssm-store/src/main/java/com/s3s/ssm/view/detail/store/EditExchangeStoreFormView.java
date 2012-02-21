@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.detail.store;
 
 import java.util.List;
+import java.util.Map;
 
 import com.s3s.ssm.entity.store.DetailExchangeStore;
 import com.s3s.ssm.entity.store.ExchangeStoreForm;
@@ -25,7 +26,7 @@ import com.s3s.ssm.view.AbstractMasterDetailView;
 
 public class EditExchangeStoreFormView extends AbstractMasterDetailView<ExchangeStoreForm, DetailExchangeStore> {
 
-    public EditExchangeStoreFormView(ExchangeStoreForm entity) {
+    public EditExchangeStoreFormView(Map<String, Object> entity) {
         super(entity);
         // TODO Auto-generated constructor stub
     }

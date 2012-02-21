@@ -15,6 +15,8 @@
 
 package com.s3s.ssm.view;
 
+import java.util.Map;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -44,16 +46,12 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
         this(null);
     }
 
-    public AbstractMultiEditView(T entity) {
-        this(entity, null, null);
-    }
-
-    public AbstractMultiEditView(T entity, Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
-        super(entity, parentId, parentClass);
-        setLayout(new MigLayout("hidemode 2, fillx, ins 0", "","[]0[grow]"));
+    public AbstractMultiEditView(Map<String, Object> params) {
+        super(params);
+        setLayout(new MigLayout("hidemode 2, fillx, ins 0", "", "[]0[grow]"));
         add(toolbar, "growx, wrap, top");
         JScrollPane contentScrollPane = new JScrollPane();
-        TreeView treeView = initTreeView(entity, contentScrollPane);
+        TreeView treeView = initTreeView(this.entity, contentScrollPane);
         JSplitPane splitPane = new JSplitPane();
         splitPane.setLeftComponent(new JScrollPane(treeView));
         splitPane.setRightComponent(contentScrollPane);

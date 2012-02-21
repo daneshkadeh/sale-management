@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.detail.config;
 
+import java.util.Map;
+
 import com.s3s.ssm.entity.config.ExchangeRate;
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.model.DetailDataModel;
@@ -25,7 +27,7 @@ public class EditExchangeRateView extends AbstractSingleEditView<ExchangeRate> {
     private static final long serialVersionUID = 1L;
     private static final String CURRENCY_REF_ID = "1";
 
-    public EditExchangeRateView(ExchangeRate entity) {
+    public EditExchangeRateView(Map<String, Object> entity) {
         super(entity);
     }
 
