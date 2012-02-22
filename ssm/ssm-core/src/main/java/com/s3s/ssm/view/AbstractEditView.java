@@ -56,15 +56,15 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
         super(inputParams);
         String action = (String) request.get(PARAM_ACTION);
         if (ACTION_NEW.equals(action)) {
-            this.entity = loadForCreate();
+            entity = loadForCreate();
         } else if (ACTION_EDIT.equals(action)) {
-            this.entity = loadForEdit();
+            entity = loadForEdit();
         } else {
             throw new UnsupportedOperationException("This operation is not handled : " + action);
         }
 
-        this.parentId = (Long) this.request.get(PARAM_PARENT_ID);
-        this.parentClass = (Class) this.request.get(PARAM_PARENT_CLASS);
+        parentId = (Long) request.get(PARAM_PARENT_ID);
+        parentClass = (Class) request.get(PARAM_PARENT_CLASS);
         toolbar = createToolBar();
     }
 
@@ -88,7 +88,7 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
      * @param entity
      */
     protected T loadForEdit() {
-        return getDaoHelper().getDao(getEntityClass()).findById((Long) this.request.get(PARAM_ENTITY_ID));
+        return getDaoHelper().getDao(getEntityClass()).findById((Long) request.get(PARAM_ENTITY_ID));
     }
 
     public void setParent(Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
@@ -109,7 +109,7 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
     }
 
     public AbstractListView<T> getListView() {
-        return (AbstractListView<T>) this.request.get(PARAM_LIST_VIEW);
+        return (AbstractListView<T>) request.get(PARAM_LIST_VIEW);
     }
 
     protected JToolBar createToolBar() {

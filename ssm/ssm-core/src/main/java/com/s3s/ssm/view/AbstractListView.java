@@ -503,7 +503,6 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
      */
     protected void showEditView(T entity, String action) {
         Class<? extends AbstractEditView<T>> detailViewClass = getEditViewClass();
-        Class<T> entityClass = getEntityClass();
         try {
             Map<String, Object> detailParams = new HashMap<>();
             detailParams.put(PARAM_ENTITY_ID, entity != null ? entity.getId() : null);
@@ -520,6 +519,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
             Window parentContainer = (Window) SwingUtilities.getRoot(AbstractListView.this);
             JDialog dialog = new JDialog(parentContainer);
+            // dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             dialog.setContentPane(scrollPane);
             dialog.setSize(detailView.getFitSize());
             dialog.setLocationRelativeTo(parentContainer); // Display the dialog in the center.
@@ -722,6 +722,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
      * @param isNew
      */
     public void notifyFromDetailView(T entity, boolean isNew) {
+        replaceEntity(entity);
         // Keep the selected row before the data of table is changed.
         int selectedRow = tblListEntities.getSelectedRow();
         if (isNew) {
@@ -737,6 +738,18 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
         // After fireTableDataChanged() the selection is lost. We need to reselect it programmatically.
         tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
+    }
+
+    /**
+     * Replace the element in entities having ID equal the entity parameter.
+     * @param entity
+     */
+    private void replaceEntity(T entity) {
+        for (int i=0;i< entities.size();i++) {
+            if(entities.get(i).getId().equals(entity.getId())){
+                entities.set(i, entity);
+            }
+        }
     }
 
     public void performAddAction() {
