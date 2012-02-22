@@ -19,6 +19,7 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.view.AbstractMultiEditView;
+import com.s3s.ssm.view.AbstractSingleEditView;
 import com.s3s.ssm.view.TreeNodeWithView;
 
 /**
@@ -33,15 +34,20 @@ public class EditMultiSupplierViewTest extends AbstractMultiEditView<Supplier> {
         super(entity);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void constructTreeView(TreeNodeWithView root, Supplier entity, Map<String, Object> request) {
+    protected AbstractSingleEditView<Supplier> constructMainView(TreeNodeWithView root, Supplier entity,
+            Map<String, Object> request) {
         EditSupplierView detailView = new EditSupplierView(request);
         detailView.setVisibleToolbar(false);
         TreeNodeWithView node = new TreeNodeWithView("Supplier", detailView);
         root.add(node);
+        return detailView;
+    }
+
+    @Override
+    protected void constructSubViews(TreeNodeWithView root, Supplier entity, Map<String, Object> request) {
+        super.constructSubViews(root, entity, request);
+        // TODO: add subviews later
     }
 
 }
