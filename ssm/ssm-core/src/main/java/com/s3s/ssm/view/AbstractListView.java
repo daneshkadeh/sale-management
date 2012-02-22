@@ -176,19 +176,19 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         }
     }
 
-    private Class getParentClassParam(Map<String, Object> params) {
+    private Class<?> getParentClassParam(Map<String, Object> params) {
         if (params.get(PARAM_PARENT_CLASS) != null) {
-            return (Class) params.get(PARAM_PARENT_CLASS);
+            return (Class<?>) params.get(PARAM_PARENT_CLASS);
         } else {
             return null;
         }
     }
 
-    public AbstractListView(Map<String, Object> params) {
-        super(params);
+    public AbstractListView(Map<String, Object> request) {
+        super(request);
 
-        this.parentId = getParentIdParam(params);
-        this.parentClass = (Class) params.get("parentClass");
+        this.parentId = getParentIdParam(request);
+        this.parentClass = (Class) request.get("parentClass");
         this.permissionSet = getPermissionOfCurrentUser();
         initialPresentationView(listDataModel, summaryFieldNames);
 
@@ -742,11 +742,12 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
     /**
      * Replace the element in entities having ID equal the entity parameter.
+     * 
      * @param entity
      */
     private void replaceEntity(T entity) {
-        for (int i=0;i< entities.size();i++) {
-            if(entities.get(i).getId().equals(entity.getId())){
+        for (int i = 0; i < entities.size(); i++) {
+            if (entities.get(i).getId().equals(entity.getId())) {
                 entities.set(i, entity);
             }
         }
@@ -919,4 +920,11 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         }
     }
 
+    public Class<? extends AbstractIdOLObject> getParentClass() {
+        return parentClass;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
 }

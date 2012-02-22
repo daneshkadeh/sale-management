@@ -15,12 +15,12 @@
 package com.s3s.ssm.view.list.param;
 
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 import com.s3s.ssm.entity.catalog.Item;
-import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractEditView;
@@ -28,8 +28,11 @@ import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.param.EditItemView;
 
 public class ListItemOfProductView extends AbstractListView<Item> {
+    private static final long serialVersionUID = -9117809072273053963L;
 
-    private Long productId;
+    public ListItemOfProductView(Map<String, Object> request) {
+        super(request);
+    }
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
@@ -47,16 +50,7 @@ public class ListItemOfProductView extends AbstractListView<Item> {
     @Override
     protected DetachedCriteria getCriteriaForView() {
         DetachedCriteria dc = super.getCriteriaForView();
-        dc.add(Restrictions.eq("product", getDaoHelper().getDao(Product.class).findById(productId)));
+        dc.add(Restrictions.eq("product", getDaoHelper().getDao(getParentClass()).findById(getParentId())));
         return dc;
     }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
 }
