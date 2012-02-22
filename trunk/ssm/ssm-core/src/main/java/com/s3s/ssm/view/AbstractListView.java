@@ -168,26 +168,10 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         return ConfigProvider.getInstance().getContextProvider().getPermissions(aclResource);
     }
 
-    private Long getParentIdParam(Map<String, Object> params) {
-        if (params.get(PARAM_PARENT_ID) != null) {
-            return (Long) params.get(PARAM_PARENT_ID);
-        } else {
-            return null;
-        }
-    }
-
-    private Class<?> getParentClassParam(Map<String, Object> params) {
-        if (params.get(PARAM_PARENT_CLASS) != null) {
-            return (Class<?>) params.get(PARAM_PARENT_CLASS);
-        } else {
-            return null;
-        }
-    }
-
     public AbstractListView(Map<String, Object> request) {
         super(request);
 
-        this.parentId = getParentIdParam(request);
+        this.parentId = (Long) request.get(PARAM_PARENT_ID);
         this.parentClass = (Class) request.get("parentClass");
         this.permissionSet = getPermissionOfCurrentUser();
         initialPresentationView(listDataModel, summaryFieldNames);
