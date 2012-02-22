@@ -3,13 +3,9 @@ package com.s3s.ssm.view.detail.param;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.tree.DefaultTreeModel;
-
-import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.view.AbstractMultiEditView;
-import com.s3s.ssm.view.ISavedListener;
-import com.s3s.ssm.view.SavedEvent;
+import com.s3s.ssm.view.AbstractSingleEditView;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.list.param.ListItemOfProductView;
 
@@ -21,30 +17,19 @@ public class EditProductView extends AbstractMultiEditView<Product> {
     }
 
     @Override
-    protected void constructTreeView(final TreeNodeWithView root, final Product product, Map<String, Object> request) {
+    protected AbstractSingleEditView<Product> constructMainView(TreeNodeWithView root, Product entity,
+            Map<String, Object> request) {
         EditProductGeneralView detailView = new EditProductGeneralView(request);
         detailView.setVisibleToolbar(false);
         TreeNodeWithView node = new TreeNodeWithView("General", detailView);
         root.add(node);
-        final TreeNodeWithView nodeItems = new TreeNodeWithView("Items");
-
-        if (product.isPersisted()) {
-            createItemViewNode(root, nodeItems, product);
-        }
-
-        detailView.addSavedListener(new ISavedListener<AbstractIdOLObject>() {
-            @Override
-            public void doSaved(SavedEvent<AbstractIdOLObject> e) {
-                if (nodeItems.getView() == null) {
-                    createItemViewNode(root, nodeItems, (Product) e.getEntity());
-                    ((DefaultTreeModel) getTreeView().getModel()).nodeStructureChanged(root);
-                }
-            }
-        });
-
+        return detailView;
     }
 
-    private void createItemViewNode(TreeNodeWithView root, TreeNodeWithView nodeItems, Product entity) {
+    @Override
+    protected void constructSubViews(TreeNodeWithView root, Product entity, Map<String, Object> request) {
+        super.constructSubViews(root, entity, request);
+        final TreeNodeWithView nodeItems = new TreeNodeWithView("Items");
         Map<String, Object> listRequest = new HashMap<>();
         listRequest.put(PARAM_PARENT_ID, entity.getId());
         listRequest.put(PARAM_PARENT_CLASS, entity.getClass());

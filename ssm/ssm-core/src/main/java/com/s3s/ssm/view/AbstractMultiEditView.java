@@ -41,6 +41,7 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
         TreeSelectionListener {
     private static final long serialVersionUID = 5168377500300996678L;
     private TreeView treeView;
+    private boolean isCreatedSubView = false;
 
     public AbstractMultiEditView() {
         this(null);
@@ -94,10 +95,10 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
         }
 
         JPanel viewOfNode = node.getView();
-//        setVisibleToolbar(viewOfNode instanceof AbstractEditView);
+        // setVisibleToolbar(viewOfNode instanceof AbstractEditView);
     }
-    
-    protected TreeView getTreeView(){
+
+    protected TreeView getTreeView() {
         return treeView;
     }
 
@@ -105,5 +106,27 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
      * @param root
      * @return
      */
-    protected abstract void constructTreeView(TreeNodeWithView root, T entity, Map<String, Object> request);
+    protected void constructTreeView(final TreeNodeWithView root, final T entity, final Map<String, Object> request) {
+        AbstractSingleEditView<T> detailView = constructMainView(root, entity, request);
+        if (entity.isPersisted()) {
+            constructSubViews(root, entity, request);
+        }
+
+        detailView.addSavedListener(new ISavedListener<AbstractIdOLObject>() {
+            @Override
+            public void doSaved(SavedEvent<AbstractIdOLObject> e) {
+                if (!isCreatedSubView) {
+                    constructSubViews(root, entity, request);
+                    ((DefaultTreeModel) getTreeView().getModel()).nodeStructureChanged(root);
+                }
+            }
+        });
+    }
+
+    protected abstract AbstractSingleEditView<T> constructMainView(TreeNodeWithView root, T entity,
+            Map<String, Object> request);
+
+    protected void constructSubViews(TreeNodeWithView root, T entity, Map<String, Object> request) {
+        isCreatedSubView = true;
+    }
 }

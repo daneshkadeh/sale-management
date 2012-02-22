@@ -96,6 +96,10 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
         this.parentClass = parentClass;
     }
 
+    public Object getParentObject() {
+        return getDaoHelper().getDao(getParentClass()).findById(getParentId());
+    }
+
     public Long getParentId() {
         return parentId;
     }

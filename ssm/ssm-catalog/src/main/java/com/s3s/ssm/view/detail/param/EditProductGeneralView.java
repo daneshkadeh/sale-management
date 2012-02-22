@@ -18,6 +18,7 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.Manufacturer;
 import com.s3s.ssm.entity.catalog.Product;
+import com.s3s.ssm.entity.catalog.ProductProperty;
 import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.config.UploadFile;
@@ -31,6 +32,7 @@ public class EditProductGeneralView extends AbstractSingleEditView<Product> {
     private static final String TYPE_REF_ID = "1";
     private static final String MANU_REF_ID = "2";
     private static final String UOM_REF_ID = "3";
+    private static final String REF_PROPERTIES_ID = "4";
 
     public EditProductGeneralView(Map<String, Object> entity) {
         super(entity);
@@ -46,6 +48,7 @@ public class EditProductGeneralView extends AbstractSingleEditView<Product> {
         detailDataModel.addAttribute("model", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("description", FieldTypeEnum.TEXTAREA).editable(true);
         detailDataModel.addAttribute("mainUom", FieldTypeEnum.DROPDOWN).referenceDataId(UOM_REF_ID);
+        detailDataModel.addAttribute("properties", FieldTypeEnum.MULTI_SELECT_BOX).referenceDataId(REF_PROPERTIES_ID);
 
         detailDataModel.tab("More info", "More info", null);
         detailDataModel.addAttribute("uploadFile.data", FieldTypeEnum.IMAGE);
@@ -57,6 +60,7 @@ public class EditProductGeneralView extends AbstractSingleEditView<Product> {
         refDataModel.putRefDataList(TYPE_REF_ID, getDaoHelper().getDao(ProductType.class).findAll(), null);
         refDataModel.putRefDataList(MANU_REF_ID, getDaoHelper().getDao(Manufacturer.class).findAll(), null);
         refDataModel.putRefDataList(UOM_REF_ID, getDaoHelper().getDao(UnitOfMeasure.class).findAll(), null);
+        refDataModel.putRefDataList(REF_PROPERTIES_ID, getDaoHelper().getDao(ProductProperty.class).findAll(), null);
     }
 
     @Override
