@@ -46,24 +46,24 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
         this(null);
     }
 
-    public AbstractMultiEditView(Map<String, Object> params) {
-        super(params);
+    public AbstractMultiEditView(Map<String, Object> request) {
+        super(request);
         setLayout(new MigLayout("hidemode 2, fillx, ins 0", "", "[]0[grow]"));
         add(toolbar, "growx, wrap, top");
         JScrollPane contentScrollPane = new JScrollPane();
-        TreeView treeView = initTreeView(this.entity, contentScrollPane);
+        TreeView treeView = initTreeView(entity, contentScrollPane, request);
         JSplitPane splitPane = new JSplitPane();
         splitPane.setLeftComponent(new JScrollPane(treeView));
         splitPane.setRightComponent(contentScrollPane);
         add(splitPane, "grow, top");
     }
 
-    private TreeView initTreeView(T entity, JScrollPane contentScrollPane) {
+    private TreeView initTreeView(T entity, JScrollPane contentScrollPane, Map<String, Object> request) {
         treeView = new TreeView(contentScrollPane);
         TreeNodeWithView root = new TreeNodeWithView("");
         treeView.setModel(new DefaultTreeModel(root));
         treeView.setRootVisible(false);
-        constructTreeView(root, entity);
+        constructTreeView(root, entity, request);
         Assert.isTrue(root.getChildAt(0) != null, "There is no node in the tree");
         // Set selection on the first node
         treeView.setSelectionPath(new TreePath(((TreeNodeWithView) root.getChildAt(0)).getPath()));
@@ -94,12 +94,16 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
         }
 
         JPanel viewOfNode = node.getView();
-        setVisibleToolbar(viewOfNode instanceof AbstractEditView);
+//        setVisibleToolbar(viewOfNode instanceof AbstractEditView);
+    }
+    
+    protected TreeView getTreeView(){
+        return treeView;
     }
 
     /**
      * @param root
      * @return
      */
-    protected abstract void constructTreeView(TreeNodeWithView root, T entity);
+    protected abstract void constructTreeView(TreeNodeWithView root, T entity, Map<String, Object> request);
 }

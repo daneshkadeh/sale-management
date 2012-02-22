@@ -83,6 +83,7 @@ import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.NotifyPanel.NotifyKind;
 import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
+import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.ImageChooser;
 import com.s3s.ssm.view.component.MultiSelectionBox;
 import com.s3s.ssm.view.component.RadioButtonsGroup;
@@ -111,6 +112,8 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     private final ReferenceDataModel refDataModel = new ReferenceDataModel();
 
     private NotifyPanel notifyPanel;
+
+    private List<ISavedListener> savedListeners = new ArrayList<>();
 
     /**
      * The class includes the components to render an attribute. Like label, component, errorIcon...
@@ -181,8 +184,8 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     // this(entity, null, null);
     // }
 
-    public AbstractSingleEditView(Map<String, Object> params) {
-        super(params);
+    public AbstractSingleEditView(Map<String, Object> request) {
+        super(request);
         beanWrapper = new BeanWrapperImpl(this.entity);
         contructView(this.entity);
     }
@@ -434,10 +437,11 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             try {
                 boolean isNew = (entity.getId() == null);
                 saveOrUpdate(entity);
+                fireSavedListener();                
                 if (getListView() != null) {
                     getListView().notifyFromDetailView(entity, isNew);
                 }
-
+                
                 // Clear all the error on the screen
                 for (AttributeComponent at : name2AttributeComponent.values()) {
                     at.getLabel().setForeground(Color.BLACK);
@@ -654,7 +658,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 break;
             case DATE:
                 JXDatePicker dateField = (JXDatePicker) component;
-                return !DateUtils.isSameDay((Date)oldValue, dateField.getDate());
+                return !DateUtils.isSameDay((Date) oldValue, dateField.getDate());
             case DROPDOWN:
                 JComboBox<?> comboBox = (JComboBox<?>) component;
                 newValue = comboBox.getSelectedItem();
@@ -696,5 +700,21 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             }
         }
         return false;
+    }
+
+    // ////////////////////////////////
+    private void fireSavedListener() {
+        SavedEvent<T> e = new SavedEvent<>(this, entity);
+        for (ISavedListener sl : savedListeners) {
+            sl.doSaved(e);
+        }
+    }
+
+    public void addSavedListener(ISavedListener listener) {
+        savedListeners.add(listener);
+    }
+
+    public void removePageChangeListener(IPageChangeListener listener) {
+        savedListeners.remove(listener);
     }
 }
