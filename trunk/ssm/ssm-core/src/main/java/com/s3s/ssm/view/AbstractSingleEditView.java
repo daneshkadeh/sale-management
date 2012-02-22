@@ -61,6 +61,7 @@ import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXDatePicker;
@@ -601,8 +602,9 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                     ControlConfigUtils.getString("edit.warning.cancel.title"), JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.WARNING_MESSAGE, null);
             if (option == JOptionPane.YES_OPTION) {
-                doSave();
-                doCloseOrNew(isNew);
+                if (doSave()) {
+                    doCloseOrNew(isNew);
+                }
             } else if (option == JOptionPane.NO_OPTION) {
                 doCloseOrNew(isNew);
             }
@@ -652,8 +654,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 break;
             case DATE:
                 JXDatePicker dateField = (JXDatePicker) component;
-                newValue = dateField.getDate();
-                break;
+                return !DateUtils.isSameDay((Date)oldValue, dateField.getDate());
             case DROPDOWN:
                 JComboBox<?> comboBox = (JComboBox<?>) component;
                 newValue = comboBox.getSelectedItem();
