@@ -46,7 +46,6 @@ public class EditMultiSupplierViewTest extends AbstractMultiEditView<Supplier> {
 
     @Override
     protected void constructSubViews(TreeNodeWithView root, Supplier entity, Map<String, Object> request) {
-        super.constructSubViews(root, entity, request);
         // TODO: add subviews later
     }
 

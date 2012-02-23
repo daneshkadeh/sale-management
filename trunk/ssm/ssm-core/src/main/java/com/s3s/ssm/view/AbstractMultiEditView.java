@@ -95,6 +95,7 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
         }
 
         JPanel viewOfNode = node.getView();
+        // TODO Phuc
         // setVisibleToolbar(viewOfNode instanceof AbstractEditView);
     }
 
@@ -106,18 +107,21 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
      * @param root
      * @return
      */
-    protected void constructTreeView(final TreeNodeWithView root, final T entity, final Map<String, Object> request) {
+    protected void constructTreeView(final TreeNodeWithView root, T entity, final Map<String, Object> request) {
+        // TODO Phuc: should we init the main view in the this class?
         AbstractSingleEditView<T> detailView = constructMainView(root, entity, request);
         if (entity.isPersisted()) {
             constructSubViews(root, entity, request);
+            isCreatedSubView = true;
         }
 
-        detailView.addSavedListener(new ISavedListener<AbstractIdOLObject>() {
+        detailView.addSavedListener(new ISavedListener<T>() {
             @Override
-            public void doSaved(SavedEvent<AbstractIdOLObject> e) {
+            public void doSaved(SavedEvent<T> e) {
                 if (!isCreatedSubView) {
-                    constructSubViews(root, entity, request);
+                    constructSubViews(root, e.getEntity(), request);
                     ((DefaultTreeModel) getTreeView().getModel()).nodeStructureChanged(root);
+                    isCreatedSubView = true;
                 }
             }
         });
@@ -126,7 +130,5 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
     protected abstract AbstractSingleEditView<T> constructMainView(TreeNodeWithView root, T entity,
             Map<String, Object> request);
 
-    protected void constructSubViews(TreeNodeWithView root, T entity, Map<String, Object> request) {
-        isCreatedSubView = true;
-    }
+    protected abstract void constructSubViews(TreeNodeWithView root, T entity, Map<String, Object> request);
 }
