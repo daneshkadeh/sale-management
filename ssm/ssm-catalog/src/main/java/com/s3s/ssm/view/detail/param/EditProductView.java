@@ -28,8 +28,7 @@ public class EditProductView extends AbstractMultiEditView<Product> {
 
     @Override
     protected void constructSubViews(TreeNodeWithView root, Product entity, Map<String, Object> request) {
-        super.constructSubViews(root, entity, request);
-        final TreeNodeWithView nodeItems = new TreeNodeWithView("Items");
+        TreeNodeWithView nodeItems = new TreeNodeWithView("Items");
         Map<String, Object> listRequest = new HashMap<>();
         listRequest.put(PARAM_PARENT_ID, entity.getId());
         listRequest.put(PARAM_PARENT_CLASS, entity.getClass());
