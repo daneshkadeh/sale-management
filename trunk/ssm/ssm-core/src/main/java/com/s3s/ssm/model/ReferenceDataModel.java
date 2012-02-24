@@ -95,6 +95,9 @@ public class ReferenceDataModel {
                 public Component getListCellRendererComponent(JList<? extends T> list, T value, int index,
                         boolean isSelected, boolean cellHasFocus) {
                     JLabel label = new JLabel(value2Label.get(value));
+                    // if (list.getWidth() < label.getWidth()) {
+                    label.setToolTipText(label.getText());
+                    // }
                     return label;
                 }
             };

@@ -96,7 +96,7 @@ public class DetailAttribute {
 
     /**
      * The width of field. The default value for {@link FieldTypeEnum#TEXTAREA}, {@link FieldTypeEnum#TEXTBOX} is
-     * {@link UIConstants#DEFAULT_TEXTFIELD_COLUMN}.
+     * {@link UIConstants#DEFAULT_WIDTH}.
      * 
      * @param width
      * @return

@@ -55,7 +55,7 @@ public class UIConstants {
     /**
      * Suggested width for a <code>JTextField</code>
      */
-    public static final int DEFAULT_TEXTFIELD_COLUMN = 20;
+    public static final int DEFAULT_WIDTH = 250;
 
     /**
      * Suggested width for a <code>JTextArea</code>

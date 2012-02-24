@@ -16,7 +16,6 @@ package com.s3s.ssm.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -295,7 +294,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + attribute.getName());
             String newline = attribute.isNewColumn() ? "gapleft 20, " : "newline, ";
-            int width = attribute.getWidth() == 0 ? UIConstants.DEFAULT_TEXTFIELD_COLUMN : attribute.getWidth();
+            int width = attribute.getWidth() == 0 ? UIConstants.DEFAULT_WIDTH : attribute.getWidth();
             if (attribute.isMandatory()) {
                 label += " (*)";
             }
@@ -316,23 +315,26 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                     dataField = new JFormattedTextField("");
                 }
                 ((JFormattedTextField) dataField).setEditable(attribute.isEditable());
-                ((JFormattedTextField) dataField).setColumns(width);
+                dataField.setPreferredSize(new Dimension(width, dataField.getHeight()));
 
                 dataField.setEnabled(attribute.isEnable());
                 ((JFormattedTextField) dataField).setValue(value);
                 pnlEdit.add(lblLabel, newline);
                 break;
             case TEXTAREA:
-                JTextArea ta = new JTextArea(UIConstants.DEFAUL_TEXTAREA_ROWS, width);
+                JTextArea ta = new JTextArea();
+                ta.setRows(UIConstants.DEFAUL_TEXTAREA_ROWS);
                 ta.setLineWrap(true);
                 ta.setEditable(true);
                 String txtValue = value != null ? StringUtils.trimToEmpty(String.valueOf(value)) : "";
                 ta.setText(txtValue);
                 dataField = new JScrollPane(ta);
-                pnlEdit.add(lblLabel, newline + "top");
+                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+                pnlEdit.add(lblLabel, newline + "top ");
                 break;
             case PASSWORD:
-                dataField = new JPasswordField(width);
+                dataField = new JPasswordField();
+                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 ((JPasswordField) dataField).setEditable(attribute.isEditable());
                 dataField.setEnabled(attribute.isEnable());
                 ((JTextField) dataField).setText(ObjectUtils.toString(value));
@@ -340,8 +342,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 break;
             case DROPDOWN:
                 dataField = new JComboBox<>(referenceData.getValues().toArray());
-                ((JComboBox<?>) dataField).setPreferredSize(new Dimension(width * getColumnWidth(), dataField
-                        .getHeight()));
+                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 ((JComboBox<?>) dataField).setRenderer(referenceData.getRenderer());
                 ((JComboBox<?>) dataField).setSelectedItem(value);
                 pnlEdit.add(lblLabel, newline);
@@ -350,6 +351,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 List desValues = value != null ? new ArrayList((Collection<?>) value) : Collections.EMPTY_LIST;
                 List scrValues = new ArrayList<>(ListUtils.removeAll(referenceData.getValues(), desValues));
                 dataField = new MultiSelectionBox<>(scrValues, desValues, referenceData.getRenderer());
+                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 pnlEdit.add(lblLabel, newline + "top");
                 break;
             case DATE:
@@ -408,23 +410,13 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
-            pnlEdit.add(dataField);
+            pnlEdit.add(dataField, "split 2");
             JLabel errorIcon = new JLabel(ImageUtils.getImageIcon(ImageConstants.ERROR_ICON));
             pnlEdit.add(errorIcon);
             errorIcon.setVisible(false);
             name2AttributeComponent.put(attribute.getName(), new AttributeComponent(lblLabel, dataField, errorIcon));
         }
         return pnlEdit;
-    }
-
-    /**
-     * <b>This function is same as JTextArea.getColumnWidth()</b> TODO move to the util.
-     * 
-     * @return the column width >= 1
-     */
-    protected int getColumnWidth() {
-        FontMetrics metrics = getFontMetrics(getFont());
-        return metrics.charWidth('m');
     }
 
     protected void btnSaveActionPerformed(ActionEvent evt) {
@@ -437,11 +429,11 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             try {
                 boolean isNew = (entity.getId() == null);
                 saveOrUpdate(entity);
-                fireSavedListener();                
+                fireSavedListener();
                 if (getListView() != null) {
                     getListView().notifyFromDetailView(entity, isNew);
                 }
-                
+
                 // Clear all the error on the screen
                 for (AttributeComponent at : name2AttributeComponent.values()) {
                     at.getLabel().setForeground(Color.BLACK);
