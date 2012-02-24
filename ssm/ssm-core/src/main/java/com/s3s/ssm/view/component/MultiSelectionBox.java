@@ -14,7 +14,7 @@
  */
 package com.s3s.ssm.view.component;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -22,16 +22,17 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
-import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 
 import net.miginfocom.swing.MigLayout;
+
+import org.jdesktop.swingx.JXList;
 
 /**
  * The component multi-selection box. This component includes the source list box, the destination list box and 4
@@ -47,8 +48,8 @@ public class MultiSelectionBox<T> extends JPanel {
     private static final long serialVersionUID = 1L;
 
     // Subcomponents
-    private JList<T> lstSource;
-    private JList<T> lstDest;
+    private JXList lstSource;
+    private JXList lstDest;
     private JButton btnSelectSingle;
     private JButton btnSelectAll;
     private JButton btnDeselectSingle;
@@ -88,10 +89,11 @@ public class MultiSelectionBox<T> extends JPanel {
     }
 
     private void initComponents() {
-        setLayout(new MigLayout("gap 10, ins 0", "[grow,fill][center][grow,fill]", "[center]"));
+        setLayout(new MigLayout("ins 0", "[grow,fill]0[center]0[grow,fill]", "[center]"));
         // /////// Init 2 JList ///////////
         lstSource = createJList(sources, cellRenderer);
         lstDest = createJList(destinations, cellRenderer);
+
         // Move the selected element when double click to it.
         lstSource.addMouseListener(new MouseAdapter() {
             @Override
@@ -147,24 +149,28 @@ public class MultiSelectionBox<T> extends JPanel {
             }
         });
 
-        add(lstSource, "cell 0 0, grow");
+        JScrollPane sourceScrollpane = new JScrollPane(lstSource);
+        sourceScrollpane.setPreferredSize(new Dimension(100, 200));
+        JScrollPane desScrollpane = new JScrollPane(lstDest);
+        desScrollpane.setPreferredSize(new Dimension(100, 200));
+        add(sourceScrollpane, "cell 0 0");
         add(btnSelectAll, "flowy, cell 1 0, growx");
         add(btnSelectSingle, "cell 1 0, growx");
         add(btnDeselectSingle, "cell 1 0, growx");
         add(btnDeselectAll, "cell 1 0, growx");
-        add(lstDest, "grow");
+        add(desScrollpane, "cell 2 0");
     }
 
-    private JList<T> createJList(List<T> data, ListCellRenderer<T> renderer) {
+    private JXList createJList(List<T> data, ListCellRenderer<T> renderer) {
         DefaultListModel<T> listModel = new DefaultListModel<>();
         for (T d : data) {
             listModel.addElement(d);
         }
-        JList<T> jList = new JList<>(listModel);
+        JXList jList = new JXList(listModel);
         jList.setCellRenderer(renderer);
         DefaultListSelectionModel selectionModel = new DefaultListSelectionModel();
         jList.setSelectionModel(selectionModel);
-        jList.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        jList.setAutoscrolls(true);
         return jList;
     }
 
@@ -185,7 +191,7 @@ public class MultiSelectionBox<T> extends JPanel {
      * @param allElements
      *            move all elements if <code>true</code>, else just move the selected values of <code>from</code> JList.
      */
-    private void move(JList<T> from, JList<T> to, boolean allElements) {
+    private void move(JXList from, JXList to, boolean allElements) {
         DefaultListModel<T> fromModel = (DefaultListModel<T>) from.getModel();
         DefaultListModel<T> toModel = (DefaultListModel<T>) to.getModel();
         if (allElements) {
@@ -194,7 +200,7 @@ public class MultiSelectionBox<T> extends JPanel {
             }
             fromModel.removeAllElements();
         } else {
-            for (T o : from.getSelectedValuesList()) {
+            for (T o : (List<T>) from.getSelectedValuesList()) {
                 fromModel.removeElement(o);
                 toModel.addElement(o);
             }
@@ -202,7 +208,7 @@ public class MultiSelectionBox<T> extends JPanel {
         enableDisableButtons();
     }
 
-    private List<T> getAllValuesOfJList(JList<T> jList) {
+    private List<T> getAllValuesOfJList(JXList jList) {
         DefaultListModel<T> sourceModel = (DefaultListModel<T>) jList.getModel();
         List<T> sourceData = new ArrayList<T>(sourceModel.size());
         for (int i = 0; i < sourceModel.size(); i++) {
@@ -228,5 +234,4 @@ public class MultiSelectionBox<T> extends JPanel {
     public List<T> getSourceValues() {
         return getAllValuesOfJList(lstSource);
     }
-
 }
