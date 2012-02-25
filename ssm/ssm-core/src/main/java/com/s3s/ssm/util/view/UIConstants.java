@@ -15,6 +15,8 @@
 
 package com.s3s.ssm.util.view;
 
+import java.awt.Color;
+
 /**
  * Constants for swing user interface classes.
  * 
@@ -58,7 +60,7 @@ public class UIConstants {
     public static final int DEFAULT_WIDTH = 250;
 
     /**
-     * Suggested width for a <code>JTextArea</code>
+     * Suggested width for a component in edit view.
      */
     public final static int DEFAUL_TEXTAREA_ROWS = 4;
 
@@ -76,4 +78,9 @@ public class UIConstants {
      * Maximum length for some <code>JLabel</code>s, beyond which the text will be truncated.
      */
     public static final int MAX_LABEL_LENGTH = 35;
+
+    /**
+     * Color of row when mouse over on a row.
+     */
+    public static final Color HIGHLIGHT_ROW_COLOR = new Color(133, 205, 255);
 }

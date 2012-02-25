@@ -123,7 +123,15 @@ public class DetailDataModel {
     }
 
     public DetailAttribute addAttribute(String name, FieldTypeEnum fieldType) {
-        DetailAttribute attribute = new DetailAttribute(name, fieldType);
+        return addAttribute(name, fieldType, false);
+    }
+    
+    public DetailAttribute addRawAttribute(String name, FieldTypeEnum fieldType) {
+        return addAttribute(name, fieldType, true);
+    }
+    
+    private DetailAttribute addAttribute(String name, FieldTypeEnum fieldType, boolean isRaw){
+        DetailAttribute attribute = new DetailAttribute(name, fieldType, isRaw);
         detailAttributes.add(attribute);
         return attribute;
     }

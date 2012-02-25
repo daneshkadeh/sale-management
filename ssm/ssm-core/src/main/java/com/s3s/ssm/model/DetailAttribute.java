@@ -23,6 +23,8 @@ public class DetailAttribute {
     private boolean isEditable = true;
     private boolean isEnable = true;
     private boolean isMandatory = false;
+    private Object value; // The initial value for the raw attribute.
+    private boolean isRaw = false;
 
     /** The property for layout the attribute. The attribute after this attribute is rendered in new line or not. */
     private boolean newColumn = false;
@@ -31,8 +33,13 @@ public class DetailAttribute {
     private String referenceDataId;
 
     public DetailAttribute(String name, FieldTypeEnum type) {
+        this(name, type, false);
+    }
+
+    public DetailAttribute(String name, FieldTypeEnum type, boolean raw) {
         this.name = name;
         this.type = type;
+        this.isRaw = raw;
     }
 
     public String getName() {
@@ -95,8 +102,7 @@ public class DetailAttribute {
     }
 
     /**
-     * The width of field. The default value for {@link FieldTypeEnum#TEXTAREA}, {@link FieldTypeEnum#TEXTBOX} is
-     * {@link UIConstants#DEFAULT_WIDTH}.
+     * The width of field. The default value is {@link UIConstants#DEFAULT_WIDTH}.
      * 
      * @param width
      * @return
@@ -108,5 +114,25 @@ public class DetailAttribute {
 
     public int getWidth() {
         return width;
+    }
+
+    public boolean isRaw() {
+        return isRaw;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    /**
+     * Set the initial value for the raw attribute.
+     * 
+     * @param value
+     *            the initial value for the attribute.
+     * @return
+     */
+    public DetailAttribute value(Object value) {
+        this.value = value;
+        return this;
     }
 }
