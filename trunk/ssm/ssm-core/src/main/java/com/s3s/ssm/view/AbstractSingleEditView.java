@@ -60,7 +60,6 @@ import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXDatePicker;
@@ -71,6 +70,7 @@ import org.springframework.util.Assert;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
+import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.DetailDataModel.GroupInfoData;
 import com.s3s.ssm.model.DetailDataModel.TabInfoData;
 import com.s3s.ssm.model.ReferenceDataModel;
@@ -104,7 +104,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     private final Log logger = LogFactory.getLog(AbstractSingleEditView.class);
 
     protected DetailDataModel detailDataModel = new DetailDataModel();
-    protected Map<String, AttributeComponent> name2AttributeComponent = new HashMap<>();
+    private Map<String, AttributeComponent> name2AttributeComponent = new HashMap<>();
 
     protected BeanWrapper beanWrapper;
 
@@ -112,7 +112,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
 
     private NotifyPanel notifyPanel;
 
-    private List<ISavedListener> savedListeners = new ArrayList<>();
+    private List<ISavedListener<T>> savedListeners = new ArrayList<>();
 
     /**
      * The class includes the components to render an attribute. Like label, component, errorIcon...
@@ -299,12 +299,19 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 label += " (*)";
             }
             JLabel lblLabel = new JLabel(label);
-            JComponent dataField;
-            Object value = beanWrapper.getPropertyValue(attribute.getName());
+            JComponent dataField = null;
+            boolean isRawAttribute = attribute.isRaw();
+            Object value = isRawAttribute ? attribute.getValue() : beanWrapper.getPropertyValue(attribute.getName());
             ReferenceData referenceData = refDataModel.getRefDataListMap().get(attribute.getReferenceDataId());
             switch (attribute.getType()) {
             case TEXTBOX:
-                Class<?> propertyReturnType = beanWrapper.getPropertyType(attribute.getName());
+                Class<?> propertyReturnType = null;
+                if (isRawAttribute) {
+                    Assert.isTrue(value != null, "The value for the raw attribute must be set for TEXTBOX type");
+                    propertyReturnType = value.getClass();
+                } else {
+                    propertyReturnType = beanWrapper.getPropertyType(attribute.getName());
+                }
                 if (ClassUtils.isAssignable(propertyReturnType, Number.class)) {
                     NumberFormatter numFormatter = new NumberFormatter();
                     numFormatter.setValueClass(propertyReturnType);
@@ -485,67 +492,9 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     protected Set<ConstraintViolation<T>> bindAndValidate(T entity) {
         for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
             JComponent component = name2AttributeComponent.get(attribute.getName()).getComponent();
-            switch (attribute.getType()) {
-            case TEXTBOX:
-                JFormattedTextField txtField = (JFormattedTextField) component;
-                beanWrapper.setPropertyValue(attribute.getName(), txtField.getValue());
-                break;
-            case TEXTAREA:
-                JTextArea rtxtField = (JTextArea) ((JScrollPane) component).getViewport().getView();
-                beanWrapper.setPropertyValue(attribute.getName(), StringUtils.trimToNull(rtxtField.getText()));
-                break;
-            case PASSWORD:
-                JPasswordField pwdField = (JPasswordField) component;
-                beanWrapper.setPropertyValue(attribute.getName(), pwdField.getText());
-                break;
-            case CHECKBOX:
-                JCheckBox chkField = (JCheckBox) component;
-                beanWrapper.setPropertyValue(attribute.getName(), chkField.isSelected());
-                break;
-            case DATE:
-                JXDatePicker dateField = (JXDatePicker) component;
-                beanWrapper.setPropertyValue(attribute.getName(), dateField.getDate());
-                break;
-            case DROPDOWN:
-                JComboBox<?> comboBox = (JComboBox<?>) component;
-                beanWrapper.setPropertyValue(attribute.getName(), comboBox.getSelectedItem());
-                break;
-            case MULTI_SELECT_BOX:
-                MultiSelectionBox<?> multiBox = (MultiSelectionBox<?>) component;
-                // List<?> unselected = multiBox.getSourceValues();
-                List<?> selected = multiBox.getDestinationValues();
-                beanWrapper.setPropertyValue(attribute.getName(), selected);
-                // List<>
-
-                // TODO: set selected value into entity
-                // for each item in listData of entity, remove, then set
-                // selected into entity. (prevent
-                // hibernate mapping issue).
-
-                break;
-            case RADIO_BUTTON_GROUP:
-                RadioButtonsGroup<?> radioBtnGroupField = (RadioButtonsGroup<?>) component;
-                beanWrapper.setPropertyValue(attribute.getName(), radioBtnGroupField.getSelectedValue());
-                break;
-            case IMAGE:
-                ImageChooser imageField = (ImageChooser) component;
-                beanWrapper.setPropertyValue(attribute.getName(), imageField.getImageData());
-                break;
-            case FILE_CHOOSER:
-                FileChooser fileField = (FileChooser) component;
-                beanWrapper.setPropertyValue(attribute.getName(), fileField.getFilePath());
-                break;
-            case ENTITY_CHOOSER:
-                EntityChooser<?> entityField = (EntityChooser<?>) component;
-                beanWrapper.setPropertyValue(attribute.getName(), entityField.getSelectedEntity());
-                break;
-            case SALE_TARGET:
-                SaleTargetComp<?> saleTargetField = (SaleTargetComp<?>) component;
-                beanWrapper.setPropertyValue(attribute.getName(), new HashSet<>(saleTargetField.getSaleTargetList()));
-                break;
-            default:
-                throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());
-            }
+            boolean isRaw = attribute.isRaw();
+            Object value = getComponentValue(component, attribute.getType());
+            bindingValue(entity, attribute.getName(), isRaw, value);
         }
 
         validateMethods(entity);
@@ -555,6 +504,29 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
 
         Validator validator = factory.getValidator();
         return validator.validate(entity);
+    }
+
+    private void bindingValue(T entity, String name, boolean isRaw, Object value) {
+        if (isRaw) {
+            bindRawAttribute(name, value, entity);
+        } else {
+            beanWrapper.setPropertyValue(name, value);
+        }
+    }
+
+    /**
+     * Bind the raw value into the entity. The child class need to override this method to perform to binding for the
+     * raw attribute.
+     * 
+     * @param name
+     *            the name of the raw attribute.
+     * @param value
+     *            the value of the raw component.
+     * @param entity
+     *            the entity binded.
+     */
+    protected void bindRawAttribute(String name, Object value, T entity) {
+        // Template method
     }
 
     /**
@@ -571,8 +543,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             for (Method m : entity.getClass().getMethods()) {
                 for (Annotation a : m.getAnnotations()) {
                     if (ClassUtils.isAssignable(a.annotationType(), com.s3s.ssm.view.annotations.Validation.class)) {
-                        boolean isSuccess;
-                        isSuccess = (boolean) m.invoke(entity);
+                        boolean isSuccess = (boolean) m.invoke(entity);
                         if (!isSuccess) {
                             notifyPanel.addMessage(ControlConfigUtils.getString("error."
                                     + getEntityClass().getSimpleName() + "." + m.getName()));
@@ -629,80 +600,73 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     protected boolean isDirty() {
         for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
             JComponent component = name2AttributeComponent.get(attribute.getName()).getComponent();
-            Object oldValue = beanWrapper.getPropertyValue(attribute.getName());
-            Object newValue = null;
-            switch (attribute.getType()) {
-            case TEXTBOX:
-                JFormattedTextField txtField = (JFormattedTextField) component;
-                newValue = txtField.getValue();
-                break;
-            case TEXTAREA:
-                JTextArea rtxtField = (JTextArea) ((JScrollPane) component).getViewport().getView();
-                newValue = StringUtils.trimToNull(rtxtField.getText());
-                break;
-            case PASSWORD:
-                JPasswordField pwdField = (JPasswordField) component;
-                newValue = pwdField.getText();
-                break;
-            case CHECKBOX:
-                JCheckBox chkField = (JCheckBox) component;
-                newValue = chkField.isSelected();
-                break;
-            case DATE:
-                JXDatePicker dateField = (JXDatePicker) component;
-                return !DateUtils.isSameDay((Date) oldValue, dateField.getDate());
-            case DROPDOWN:
-                JComboBox<?> comboBox = (JComboBox<?>) component;
-                newValue = comboBox.getSelectedItem();
-                break;
-            case MULTI_SELECT_BOX:
-                MultiSelectionBox<?> multiBox = (MultiSelectionBox<?>) component;
-                List<?> selected = multiBox.getDestinationValues();
+            Object oldValue = attribute.isRaw() ? attribute.getValue() : beanWrapper.getPropertyValue(attribute
+                    .getName());
+            Object newValue = getComponentValue(component, attribute.getType());
 
-                // TODO Phuc: test this case
-                newValue = selected;
-                break;
-            case RADIO_BUTTON_GROUP:
-                RadioButtonsGroup<?> radioBtnGroupField = (RadioButtonsGroup<?>) component;
-                newValue = radioBtnGroupField.getSelectedValue();
-                break;
-            case IMAGE:
-                ImageChooser imageField = (ImageChooser) component;
-                newValue = imageField.getImageData();
-                break;
-            case FILE_CHOOSER:
-                FileChooser fileField = (FileChooser) component;
-                // TODO Hoang: do this component check dirty?
-                newValue = fileField.getFilePath();
-                break;
-            case ENTITY_CHOOSER:
-                EntityChooser<?> entityField = (EntityChooser<?>) component;
-                newValue = entityField.getSelectedEntity();
-                break;
-            case SALE_TARGET:
-                SaleTargetComp<?> saleTargetField = (SaleTargetComp<?>) component;
-                // TODO Hoang: check dirty for this.
-                newValue = new HashSet<>(saleTargetField.getSaleTargetList());
-                break;
-            default:
-                throw new RuntimeException("Do not support FieldTypeEnum " + attribute.getType());
-            }
             if (!ObjectUtils.equals(oldValue, newValue)) {
+                // TODO not right in all case of field type. Check again.
                 return true;
             }
         }
         return false;
     }
 
+    private Object getComponentValue(JComponent component, FieldTypeEnum type) {
+        switch (type) {
+        case TEXTBOX:
+            JFormattedTextField txtField = (JFormattedTextField) component;
+            return txtField.getValue();
+        case TEXTAREA:
+            JTextArea rtxtField = (JTextArea) ((JScrollPane) component).getViewport().getView();
+            return StringUtils.trimToNull(rtxtField.getText());
+        case PASSWORD:
+            JPasswordField pwdField = (JPasswordField) component;
+            return pwdField.getText();
+        case CHECKBOX:
+            JCheckBox chkField = (JCheckBox) component;
+            return chkField.isSelected();
+        case DATE:
+            JXDatePicker dateField = (JXDatePicker) component;
+            return dateField.getDate();
+        case DROPDOWN:
+            JComboBox<?> comboBox = (JComboBox<?>) component;
+            return comboBox.getSelectedItem();
+        case MULTI_SELECT_BOX:
+            MultiSelectionBox<?> multiBox = (MultiSelectionBox<?>) component;
+            // TODO Phuc: test this case
+            return multiBox.getDestinationValues();
+        case RADIO_BUTTON_GROUP:
+            RadioButtonsGroup<?> radioBtnGroupField = (RadioButtonsGroup<?>) component;
+            return radioBtnGroupField.getSelectedValue();
+        case IMAGE:
+            ImageChooser imageField = (ImageChooser) component;
+            return imageField.getImageData();
+        case FILE_CHOOSER:
+            FileChooser fileField = (FileChooser) component;
+            // TODO Hoang: do this component check dirty?
+            return fileField.getFilePath();
+        case ENTITY_CHOOSER:
+            EntityChooser<?> entityField = (EntityChooser<?>) component;
+            return entityField.getSelectedEntity();
+        case SALE_TARGET:
+            SaleTargetComp<?> saleTargetField = (SaleTargetComp<?>) component;
+            // TODO Hoang: check dirty for this.
+            return new HashSet<>(saleTargetField.getSaleTargetList());
+        default:
+            throw new RuntimeException("Do not support FieldTypeEnum " + type);
+        }
+    }
+
     // ////////////////////////////////
     private void fireSavedListener() {
         SavedEvent<T> e = new SavedEvent<>(this, entity);
-        for (ISavedListener sl : savedListeners) {
+        for (ISavedListener<T> sl : savedListeners) {
             sl.doSaved(e);
         }
     }
 
-    public void addSavedListener(ISavedListener listener) {
+    public void addSavedListener(ISavedListener<T> listener) {
         savedListeners.add(listener);
     }
 

@@ -14,7 +14,6 @@
  */
 package com.s3s.ssm.view;
 
-import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
 import java.awt.Event;
@@ -114,7 +113,6 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
     private static final long serialVersionUID = -1311942671249671111L;
     private static final String ADD_ACTION_KEY = "addAction";
-    private static final Color HIGHLIGHT_ROW_COLOR = new Color(97, 111, 231);
     // TODO It should get from the property "defPageRowNum" of BasicInformation in ssm-config
     private static final int DEFAULT_PAGE_SIZE = 25;
 
@@ -296,11 +294,11 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
         // ///////////////// Init main table ////////////////////////////////
         tblListEntities = new JXTable();
-        tblListEntities.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        // tblListEntities.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tblListEntities.addHighlighter(HighlighterFactory.createSimpleStriping());
         // Highlight the row when mouse over.
-        tblListEntities
-                .addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, HIGHLIGHT_ROW_COLOR, null));
+        tblListEntities.addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW,
+                UIConstants.HIGHLIGHT_ROW_COLOR, null));
 
         mainTableModel = createTableModel();
         tblListEntities.setModel(mainTableModel);

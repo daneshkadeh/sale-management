@@ -51,6 +51,10 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
         detailDataModel.endGroup();
         detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
 
+        detailDataModel.addRawAttribute("rawAttribute1", FieldTypeEnum.TEXTBOX).value("Init value");
+        detailDataModel.addRawAttribute("rawAttribute2", FieldTypeEnum.DROPDOWN).value("value 2")
+                .referenceDataId("idTest");
+
         detailDataModel.tab("We make it work!", "Tab 2", null);
         detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);
         detailDataModel.startGroup("Group 2");
@@ -59,6 +63,15 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
         detailDataModel.endGroup();
         detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX);
         detailDataModel.addAttribute("comment", FieldTypeEnum.TEXTAREA);
+    }
+
+    @Override
+    protected void bindRawAttribute(String name, Object value, Supplier entity) {
+        super.bindRawAttribute(name, value, entity);
+        // Here I cheating: set raw attribute override value of no raw attribute to test
+        if (name.equals("rawAttribute1")) {
+            entity.setPosition((String) value);
+        }
     }
 
     @Override
@@ -82,6 +95,7 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
         sex2String.put(true, ControlConfigUtils.getString("Male"));
         sex2String.put(false, ControlConfigUtils.getString("Female"));
         refDataModel.putRefDataList(SEX_ID, refDataModel.new ReferenceData<>(sex2String));
+        refDataModel.putRefDataList("idTest", new String[] { "value 1", "value 2", "value 3" });
     }
 
 }

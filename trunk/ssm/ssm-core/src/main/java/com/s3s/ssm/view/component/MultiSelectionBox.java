@@ -45,6 +45,11 @@ import org.jdesktop.swingx.JXList;
  * @author Phan Hong Phuc
  */
 public class MultiSelectionBox<T> extends JPanel {
+    /**
+     * 
+     */
+    private static final Dimension DEFAULT_LIST_SIZE = new Dimension(100, 200);
+
     private static final long serialVersionUID = 1L;
 
     // Subcomponents
@@ -150,9 +155,9 @@ public class MultiSelectionBox<T> extends JPanel {
         });
 
         JScrollPane sourceScrollpane = new JScrollPane(lstSource);
-        sourceScrollpane.setPreferredSize(new Dimension(100, 200));
+        sourceScrollpane.setPreferredSize(DEFAULT_LIST_SIZE);
         JScrollPane desScrollpane = new JScrollPane(lstDest);
-        desScrollpane.setPreferredSize(new Dimension(100, 200));
+        desScrollpane.setPreferredSize(DEFAULT_LIST_SIZE);
         add(sourceScrollpane, "cell 0 0");
         add(btnSelectAll, "flowy, cell 1 0, growx");
         add(btnSelectSingle, "cell 1 0, growx");
@@ -170,7 +175,6 @@ public class MultiSelectionBox<T> extends JPanel {
         jList.setCellRenderer(renderer);
         DefaultListSelectionModel selectionModel = new DefaultListSelectionModel();
         jList.setSelectionModel(selectionModel);
-        jList.setAutoscrolls(true);
         return jList;
     }
 
