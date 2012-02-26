@@ -84,7 +84,7 @@ import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
 import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.ImageChooser;
-import com.s3s.ssm.view.component.MultiSelectionBox;
+import com.s3s.ssm.view.component.MultiSelectionListBox;
 import com.s3s.ssm.view.component.RadioButtonsGroup;
 import com.s3s.ssm.view.component.SaleTargetComp;
 import com.s3s.ssm.view.component.SaleTargetModel;
@@ -103,10 +103,10 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
 
     private final Log logger = LogFactory.getLog(AbstractSingleEditView.class);
 
-    protected DetailDataModel detailDataModel = new DetailDataModel();
+    private DetailDataModel detailDataModel = new DetailDataModel();
     private Map<String, AttributeComponent> name2AttributeComponent = new HashMap<>();
 
-    protected BeanWrapper beanWrapper;
+    private BeanWrapper beanWrapper;
 
     private final ReferenceDataModel refDataModel = new ReferenceDataModel();
 
@@ -114,74 +114,9 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
 
     private List<ISavedListener<T>> savedListeners = new ArrayList<>();
 
-    /**
-     * The class includes the components to render an attribute. Like label, component, errorIcon...
-     */
-    public class AttributeComponent {
-        private JLabel label;
-        private JComponent component;
-        private JLabel errorIcon;
-
-        public AttributeComponent(JLabel label, JComponent component, JLabel errorIcon) {
-            super();
-            this.label = label;
-            this.component = component;
-            this.errorIcon = errorIcon;
-        }
-
-        public JLabel getLabel() {
-            return label;
-        }
-
-        public void setLabel(JLabel label) {
-            this.label = label;
-        }
-
-        public JComponent getComponent() {
-            return component;
-        }
-
-        public void setComponent(JComponent component) {
-            this.component = component;
-        }
-
-        public JLabel getErrorIcon() {
-            return errorIcon;
-        }
-
-        public void setErrorIcon(JLabel errorIcon) {
-            this.errorIcon = errorIcon;
-        }
-    }
-
-    // /**
-    // * The default constructor, init the detail view with new entity. TODO: Suspended for not confusing.
-    // */
-    // public AbstractDetailView() {
-    // try {
-    // T entity = getEntityClass().newInstance();
-    // loadForCreate(entity);
-    // contructView(entity);
-    // } catch (InstantiationException | IllegalAccessException e) {
-    // logger.error("There is a problem when init the detail view");
-    // throw new RuntimeException(e.getCause());
-    // }
-    //
-    // }
-
     public AbstractSingleEditView() {
         this(null);
     }
-
-    // /**
-    // * Initialize the detail view. TODO: concrete classes should not override this constructor.
-    // *
-    // * @param entity
-    // * the entity of detail view.
-    // */
-    // public AbstractSingleEditView(T entity) {
-    // this(entity, null, null);
-    // }
 
     public AbstractSingleEditView(Map<String, Object> request) {
         super(request);
@@ -300,13 +235,13 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             }
             JLabel lblLabel = new JLabel(label);
             JComponent dataField = null;
-            boolean isRawAttribute = attribute.isRaw();
-            Object value = isRawAttribute ? attribute.getValue() : beanWrapper.getPropertyValue(attribute.getName());
+            boolean isRaw = attribute.isRaw();
+            Object value = isRaw ? attribute.getValue() : beanWrapper.getPropertyValue(attribute.getName());
             ReferenceData referenceData = refDataModel.getRefDataListMap().get(attribute.getReferenceDataId());
             switch (attribute.getType()) {
             case TEXTBOX:
                 Class<?> propertyReturnType = null;
-                if (isRawAttribute) {
+                if (isRaw) {
                     Assert.isTrue(value != null, "The value for the raw attribute must be set for TEXTBOX type");
                     propertyReturnType = value.getClass();
                 } else {
@@ -357,7 +292,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             case MULTI_SELECT_BOX:
                 List desValues = value != null ? new ArrayList((Collection<?>) value) : Collections.EMPTY_LIST;
                 List scrValues = new ArrayList<>(ListUtils.removeAll(referenceData.getValues(), desValues));
-                dataField = new MultiSelectionBox<>(scrValues, desValues, referenceData.getRenderer());
+                dataField = new MultiSelectionListBox<>(scrValues, desValues, referenceData.getRenderer());
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 pnlEdit.add(lblLabel, newline + "top");
                 break;
@@ -418,7 +353,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 throw new RuntimeException("FieldType does not supported!");
             }
             pnlEdit.add(dataField, "split 2");
-            JLabel errorIcon = new JLabel(ImageUtils.getImageIcon(ImageConstants.ERROR_ICON));
+            JLabel errorIcon = new JLabel(ImageUtils.getIcon(ImageConstants.ERROR_ICON));
             pnlEdit.add(errorIcon);
             errorIcon.setVisible(false);
             name2AttributeComponent.put(attribute.getName(), new AttributeComponent(lblLabel, dataField, errorIcon));
@@ -454,7 +389,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 return true;
             } catch (Exception e) {
                 notifyPanel.setNotifyKind(NotifyKind.ERROR);
-                notifyPanel.setMessage(e.getCause().toString());
+                notifyPanel.setMessage(e.getMessage());
                 notifyPanel.setVisible(true);
                 return false;
             }
@@ -508,7 +443,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
 
     private void bindingValue(T entity, String name, boolean isRaw, Object value) {
         if (isRaw) {
-            bindRawAttribute(name, value, entity);
+            bindRawAttributes(name, value, entity);
         } else {
             beanWrapper.setPropertyValue(name, value);
         }
@@ -525,7 +460,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
      * @param entity
      *            the entity binded.
      */
-    protected void bindRawAttribute(String name, Object value, T entity) {
+    protected void bindRawAttributes(String name, Object value, T entity) {
         // Template method
     }
 
@@ -633,7 +568,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             JComboBox<?> comboBox = (JComboBox<?>) component;
             return comboBox.getSelectedItem();
         case MULTI_SELECT_BOX:
-            MultiSelectionBox<?> multiBox = (MultiSelectionBox<?>) component;
+            MultiSelectionListBox<?> multiBox = (MultiSelectionListBox<?>) component;
             // TODO Phuc: test this case
             return multiBox.getDestinationValues();
         case RADIO_BUTTON_GROUP:
@@ -672,5 +607,45 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
 
     public void removePageChangeListener(IPageChangeListener listener) {
         savedListeners.remove(listener);
+    }
+
+    /**
+     * The class includes the components to render an attribute. Like label, component, errorIcon...
+     */
+    public class AttributeComponent {
+        private JLabel label;
+        private JComponent component;
+        private JLabel errorIcon;
+
+        public AttributeComponent(JLabel label, JComponent component, JLabel errorIcon) {
+            super();
+            this.label = label;
+            this.component = component;
+            this.errorIcon = errorIcon;
+        }
+
+        public JLabel getLabel() {
+            return label;
+        }
+
+        public void setLabel(JLabel label) {
+            this.label = label;
+        }
+
+        public JComponent getComponent() {
+            return component;
+        }
+
+        public void setComponent(JComponent component) {
+            this.component = component;
+        }
+
+        public JLabel getErrorIcon() {
+            return errorIcon;
+        }
+
+        public void setErrorIcon(JLabel errorIcon) {
+            this.errorIcon = errorIcon;
+        }
     }
 }

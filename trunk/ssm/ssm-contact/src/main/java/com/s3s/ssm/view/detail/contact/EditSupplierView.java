@@ -41,7 +41,7 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Supplier entity) {
-        detailDataModel.tab("We are S3S", "This is a tooltip", ImageUtils.getImageIcon(ImageConstants.USER_ICON));
+        detailDataModel.tab("We are S3S", "This is a tooltip", ImageUtils.getIcon(ImageConstants.USER_ICON));
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).width(5).newColumn();
         detailDataModel.startGroup("Group 1");
@@ -66,8 +66,8 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
     }
 
     @Override
-    protected void bindRawAttribute(String name, Object value, Supplier entity) {
-        super.bindRawAttribute(name, value, entity);
+    protected void bindRawAttributes(String name, Object value, Supplier entity) {
+        super.bindRawAttributes(name, value, entity);
         // Here I cheating: set raw attribute override value of no raw attribute to test
         if (name.equals("rawAttribute1")) {
             entity.setPosition((String) value);

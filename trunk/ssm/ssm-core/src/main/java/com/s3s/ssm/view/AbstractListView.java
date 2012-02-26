@@ -50,6 +50,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableColumnModel;
@@ -297,8 +298,8 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         // tblListEntities.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tblListEntities.addHighlighter(HighlighterFactory.createSimpleStriping());
         // Highlight the row when mouse over.
-        tblListEntities.addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW,
-                UIConstants.HIGHLIGHT_ROW_COLOR, null));
+        tblListEntities.addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, UIManager
+                .getColor("Table.dropLineColor"), null));
 
         mainTableModel = createTableModel();
         tblListEntities.setModel(mainTableModel);

@@ -70,11 +70,11 @@ public abstract class AbstractDomain extends JToggleButton implements ItemListen
      * @return
      */
     private TreeView initTreeView(JScrollPane contentScrollPane) {
-        TreeView treeView = new TreeView(contentScrollPane);
         TreeNodeWithView root = new TreeNodeWithView("");
-        treeView.setModel(new DefaultTreeModel(root));
-        treeView.setRootVisible(false);
         constructTreeView(root);
+
+        TreeView treeView = new TreeView(new DefaultTreeModel(root), contentScrollPane);
+        treeView.setRootVisible(false);
         // Set selection on the first node
         Assert.isTrue(root.getChildAt(0) != null, "There is no node in the tree");
         treeView.setSelectionPath(new TreePath(((TreeNodeWithView) root.getChildAt(0)).getPath()));

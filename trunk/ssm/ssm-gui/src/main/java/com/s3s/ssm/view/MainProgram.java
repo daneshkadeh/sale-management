@@ -101,6 +101,7 @@ public class MainProgram {
      */
     private static void createAndShowGUI() {
         // Set System L&F
+
         try {
             // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {

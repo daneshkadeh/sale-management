@@ -14,9 +14,7 @@
  */
 package com.s3s.ssm.view.component;
 
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -42,6 +40,8 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.poi.util.IOUtils;
 import org.jdesktop.swingx.JXHyperlink;
+
+import com.s3s.ssm.util.ImageUtils;
 
 /**
  * Image chooser component. TODO: Should we scale image before saving to reduce the size of image to improve speed of
@@ -89,7 +89,7 @@ public class ImageChooser extends JPanel {
                 InputStream in = new ByteArrayInputStream(imageData);
                 BufferedImage image = ImageIO.read(in);
 
-                ImageIcon imgIcon = new ImageIcon(getScaledImage(image, IMG_WIDTH, IMG_HEIGHT));
+                ImageIcon imgIcon = new ImageIcon(ImageUtils.getScaledImage(image, IMG_WIDTH, IMG_HEIGHT));
                 imgLabel.setIcon(imgIcon);
                 hyperLinkBrowseImg.setText(CHANGE_IMG_TXT);
                 add(imgLabel, "cell 0 0");
@@ -99,27 +99,6 @@ public class ImageChooser extends JPanel {
                 e.printStackTrace();
             }
         }
-    }
-
-    /**
-     * Resizes an image using a Graphics2D object backed by a BufferedImage.
-     * 
-     * @param srcImg
-     *            - source image to scale
-     * @param w
-     *            - desired width
-     * @param h
-     *            - desired height
-     * @return - the new resized image
-     */
-    private Image getScaledImage(Image srcImg, int w, int h) {
-        // TODO rewrite the code and move it to ImageUtils
-        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImg, 0, 0, w, h, null);
-        g2.dispose();
-        return resizedImg;
     }
 
     private class ChooseImageAction extends AbstractAction {
@@ -139,7 +118,7 @@ public class ImageChooser extends JPanel {
 
                     // re-init component.
                     Image image = ImageIO.read(f);
-                    image = getScaledImage(image, IMG_WIDTH, IMG_HEIGHT);
+                    image = ImageUtils.getScaledImage(image, IMG_WIDTH, IMG_HEIGHT);
                     ImageIcon imgIcon = new ImageIcon(image);
                     imgLabel.setIcon(imgIcon);
                     hyperLinkBrowseImg.setText(CHANGE_IMG_TXT);

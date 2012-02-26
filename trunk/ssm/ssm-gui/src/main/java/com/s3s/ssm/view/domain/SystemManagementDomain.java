@@ -16,6 +16,8 @@ package com.s3s.ssm.view.domain;
 
 import javax.swing.JScrollPane;
 
+import com.s3s.ssm.util.ImageConstants;
+import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
@@ -107,7 +109,7 @@ public class SystemManagementDomain extends AbstractDomain {
 
         // Bank
         TreeNodeWithView bankEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Bank"),
-                new ListBankView());
+                new ListBankView(), ImageUtils.getSmallIcon(ImageConstants.BANK_ICON));
         rootNode.add(bankEntry);
 
         // Currency management
