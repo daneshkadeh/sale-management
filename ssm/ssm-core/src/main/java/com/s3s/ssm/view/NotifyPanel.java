@@ -50,7 +50,7 @@ public class NotifyPanel extends JPanel {
         FlowLayout flowLayout = (FlowLayout) getLayout();
         flowLayout.setAlignment(FlowLayout.LEFT);
         label = new JLabel();
-        label.setIcon(ImageUtils.getImageIcon(ImageConstants.INFO_ICON));
+        label.setIcon(ImageUtils.getIcon(ImageConstants.INFO_ICON));
         label.setForeground(Color.GREEN);
         setBorder(new LineBorder(Color.GREEN, 1, true));
         add(label);
@@ -82,16 +82,16 @@ public class NotifyPanel extends JPanel {
 
     public void setNotifyKind(NotifyKind kind) {
         if (kind == NotifyKind.INFORMATION) {
-            label.setIcon(ImageUtils.getImageIcon(ImageConstants.INFO_ICON));
+            label.setIcon(ImageUtils.getIcon(ImageConstants.INFO_ICON));
             label.setForeground(Color.GREEN);
             setBorder(new LineBorder(Color.GREEN, 1, true));
         } else if (kind == NotifyKind.WARNING) {
             // TODO Phuc: Change info icon to warning icon
-            label.setIcon(ImageUtils.getImageIcon(ImageConstants.INFO_ICON));
+            label.setIcon(ImageUtils.getIcon(ImageConstants.INFO_ICON));
             label.setForeground(Color.YELLOW);
             setBorder(new LineBorder(Color.YELLOW, 1, true));
         } else if (kind == NotifyKind.ERROR) {
-            label.setIcon(ImageUtils.getImageIcon(ImageConstants.ERROR_ICON));
+            label.setIcon(ImageUtils.getIcon(ImageConstants.ERROR_ICON));
             label.setForeground(Color.RED);
             setBorder(new LineBorder(Color.RED, 1, true));
         }

@@ -15,12 +15,16 @@
 
 package com.s3s.ssm.view;
 
+import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
- * The node of {@link JTree} component with the view which displayed on the right of the main sreen.
+ * The node of {@link JTree} component with the view which displayed on the right of the main screen.
  * 
  * @author Phan Hong Phuc
  * @since Nov 19, 2011
@@ -28,20 +32,28 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class TreeNodeWithView extends DefaultMutableTreeNode {
     private static final long serialVersionUID = 5556403806362671908L;
-    private JPanel view;
+    private NodeValue nodeValue;
 
     /**
      * Init the node with a label and a view. </br> <b>Note:</b> the view needs to implement {@link IViewLazyLoadable}
-     * if it is quite large to load.
+     * if it is quite large to load. </br> By default, the icon is still not set for the node. Need to write the
+     * renderer for the tree to display this icon. See {@link DefaultTreeCellRenderer}.
      * 
      * @param label
      *            label of the node.
      * @param view
      *            the view of the node.
+     * @param icon
+     *            the icon of the node.
      */
+    public TreeNodeWithView(String label, JPanel view, Icon icon) {
+        super();
+        nodeValue = new NodeValue(label, icon, view);
+        setUserObject(nodeValue);
+    }
+
     public TreeNodeWithView(String label, JPanel view) {
-        super(label);
-        this.setView(view);
+        this(label, view, null);
     }
 
     /**
@@ -54,10 +66,69 @@ public class TreeNodeWithView extends DefaultMutableTreeNode {
     }
 
     public JPanel getView() {
-        return view;
+        return nodeValue.getView();
     }
 
     public void setView(JPanel view) {
-        this.view = view;
+        nodeValue.setView(view);
+    }
+
+    protected Icon getIcon() {
+        return nodeValue.getIcon();
+    }
+
+    protected void setIcon(Icon icon) {
+        nodeValue.setIcon(icon);
+    }
+
+    /**
+     * The user object for tree node.
+     * 
+     * @author Phan Hong Phuc
+     * @since Feb 27, 2012
+     */
+    public class NodeValue {
+        private String label;
+        private Icon icon;
+        private JPanel view;
+
+        public NodeValue(String label, Icon icon, JPanel view) {
+            super();
+            this.label = label;
+            this.icon = icon;
+            this.view = view;
+        }
+
+        protected String getLabel() {
+            return label;
+        }
+
+        protected void setLabel(String label) {
+            this.label = label;
+        }
+
+        protected Icon getIcon() {
+            return icon;
+        }
+
+        protected void setIcon(Icon icon) {
+            this.icon = icon;
+        }
+
+        protected JPanel getView() {
+            return view;
+        }
+
+        protected void setView(JPanel view) {
+            this.view = view;
+        }
+
+        /**
+         * Display the label on the node of the tree.
+         */
+        @Override
+        public String toString() {
+            return StringUtils.trimToEmpty(label);
+        }
     }
 }

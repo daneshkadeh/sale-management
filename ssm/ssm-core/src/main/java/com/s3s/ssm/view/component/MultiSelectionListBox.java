@@ -1,5 +1,5 @@
 /*
- * MultiSelectionBox
+ * MultiSelectionListBox
  * 
  * Project: SSM
  * 
@@ -14,9 +14,6 @@
  */
 package com.s3s.ssm.view.component;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -25,12 +22,7 @@ import java.util.List;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXList;
 
@@ -44,21 +36,13 @@ import org.jdesktop.swingx.JXList;
  * 
  * @author Phan Hong Phuc
  */
-public class MultiSelectionBox<T> extends JPanel {
-    /**
-     * 
-     */
-    private static final Dimension DEFAULT_LIST_SIZE = new Dimension(100, 200);
+public class MultiSelectionListBox<T> extends AbstractMultiSelectionBox {
 
     private static final long serialVersionUID = 1L;
 
     // Subcomponents
     private JXList lstSource;
     private JXList lstDest;
-    private JButton btnSelectSingle;
-    private JButton btnSelectAll;
-    private JButton btnDeselectSingle;
-    private JButton btnDeselectAll;
 
     // Data
     private List<T> sources = new ArrayList<T>();
@@ -74,7 +58,7 @@ public class MultiSelectionBox<T> extends JPanel {
      * @param sources
      * @param destinations
      */
-    public MultiSelectionBox(List<T> sources, List<T> destinations) {
+    public MultiSelectionListBox(List<T> sources, List<T> destinations) {
         this(sources, destinations, null);
     }
 
@@ -85,7 +69,7 @@ public class MultiSelectionBox<T> extends JPanel {
      * @param destinations
      * @param cellRenderer
      */
-    public MultiSelectionBox(List<T> sources, List<T> destinations, ListCellRenderer<T> cellRenderer) {
+    public MultiSelectionListBox(List<T> sources, List<T> destinations, ListCellRenderer<T> cellRenderer) {
         super();
         this.sources = sources;
         this.destinations = destinations;
@@ -93,12 +77,9 @@ public class MultiSelectionBox<T> extends JPanel {
         initComponents();
     }
 
-    private void initComponents() {
-        setLayout(new MigLayout("ins 0", "[grow,fill]0[center]0[grow,fill]", "[center]"));
-        // /////// Init 2 JList ///////////
-        lstSource = createJList(sources, cellRenderer);
-        lstDest = createJList(destinations, cellRenderer);
-
+    @Override
+    protected void initComponents() {
+        super.initComponents();
         // Move the selected element when double click to it.
         lstSource.addMouseListener(new MouseAdapter() {
             @Override
@@ -116,54 +97,6 @@ public class MultiSelectionBox<T> extends JPanel {
                 }
             }
         });
-
-        // ////////// Init the buttons /////////////
-        btnDeselectSingle = new JButton("<");
-        btnDeselectSingle.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                move(lstDest, lstSource, false);
-            }
-        });
-
-        btnDeselectAll = new JButton("<<");
-        btnDeselectAll.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                move(lstDest, lstSource, true);
-            }
-        });
-
-        btnSelectSingle = new JButton(">");
-        btnSelectSingle.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                move(lstSource, lstDest, false);
-            }
-        });
-
-        btnSelectAll = new JButton(">>");
-        btnSelectAll.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                move(lstSource, lstDest, true);
-            }
-        });
-
-        JScrollPane sourceScrollpane = new JScrollPane(lstSource);
-        sourceScrollpane.setPreferredSize(DEFAULT_LIST_SIZE);
-        JScrollPane desScrollpane = new JScrollPane(lstDest);
-        desScrollpane.setPreferredSize(DEFAULT_LIST_SIZE);
-        add(sourceScrollpane, "cell 0 0");
-        add(btnSelectAll, "flowy, cell 1 0, growx");
-        add(btnSelectSingle, "cell 1 0, growx");
-        add(btnDeselectSingle, "cell 1 0, growx");
-        add(btnDeselectAll, "cell 1 0, growx");
-        add(desScrollpane, "cell 2 0");
     }
 
     private JXList createJList(List<T> data, ListCellRenderer<T> renderer) {
@@ -181,10 +114,10 @@ public class MultiSelectionBox<T> extends JPanel {
     private void enableDisableButtons() {
         DefaultListModel<T> sourceModel = (DefaultListModel<T>) lstSource.getModel();
         DefaultListModel<T> destModel = (DefaultListModel<T>) lstDest.getModel();
-        btnDeselectAll.setEnabled(destModel.getSize() > 0);
-        btnDeselectSingle.setEnabled(destModel.getSize() > 0);
-        btnSelectAll.setEnabled(sourceModel.getSize() > 0);
-        btnSelectSingle.setEnabled(sourceModel.getSize() > 0);
+        getBtnDeselectAll().setEnabled(destModel.getSize() > 0);
+        getBtnDeselectSingle().setEnabled(destModel.getSize() > 0);
+        getBtnSelectAll().setEnabled(sourceModel.getSize() > 0);
+        getBtnSelectSingle().setEnabled(sourceModel.getSize() > 0);
     }
 
     /**
@@ -237,5 +170,55 @@ public class MultiSelectionBox<T> extends JPanel {
      */
     public List<T> getSourceValues() {
         return getAllValuesOfJList(lstSource);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected JXList createDestinationView() {
+        lstDest = createJList(destinations, cellRenderer);
+        return lstDest;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected JXList createSourceView() {
+        lstSource = createJList(sources, cellRenderer);
+        return lstSource;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void doSelectAll() {
+        move(lstSource, lstDest, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void doSelectSingle() {
+        move(lstSource, lstDest, false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void doDeselectAll() {
+        move(lstDest, lstSource, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void doDeselectSingle() {
+        move(lstDest, lstSource, false);
     }
 }

@@ -60,11 +60,10 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
     }
 
     private TreeView initTreeView(T entity, JScrollPane contentScrollPane, Map<String, Object> request) {
-        treeView = new TreeView(contentScrollPane);
         TreeNodeWithView root = new TreeNodeWithView("");
-        treeView.setModel(new DefaultTreeModel(root));
-        treeView.setRootVisible(false);
         constructTreeView(root, entity, request);
+        treeView = new TreeView(new DefaultTreeModel(root), contentScrollPane);
+        treeView.setRootVisible(false);
         Assert.isTrue(root.getChildAt(0) != null, "There is no node in the tree");
         // Set selection on the first node
         treeView.setSelectionPath(new TreePath(((TreeNodeWithView) root.getChildAt(0)).getPath()));

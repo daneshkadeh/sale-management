@@ -15,11 +15,18 @@
 
 package com.s3s.ssm.view;
 
+import java.awt.Component;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeModel;
+
+import com.s3s.ssm.view.TreeNodeWithView.NodeValue;
 
 /**
  * The tree view with the node is {@link TreeNodeWithView}.
@@ -39,10 +46,11 @@ public class TreeView extends JTree implements TreeSelectionListener {
      * @param contentScrollPane
      *            the scrollPane contains the view of {@link TreeNodeWithView}.
      */
-    public TreeView(JScrollPane contentScrollPane) {
-        super();
+    public TreeView(TreeModel treeModel, JScrollPane contentScrollPane) {
+        super(treeModel);
         this.contentScrollPane = contentScrollPane;
         addTreeSelectionListener(this);
+        setCellRenderer(new TreeViewRenderer());
     }
 
     @Override
@@ -70,5 +78,21 @@ public class TreeView extends JTree implements TreeSelectionListener {
      */
     public JPanel getCurrentView() {
         return currentView;
+    }
+
+    private class TreeViewRenderer extends DefaultTreeCellRenderer {
+        private static final long serialVersionUID = -3765500551785294524L;
+
+        @Override
+        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
+                boolean leaf, int row, boolean hasFocus) {
+            super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+            NodeValue nodeValue = (NodeValue) node.getUserObject();
+            if (nodeValue.getIcon() != null) {
+                setIcon(nodeValue.getIcon());
+            }
+            return this;
+        }
     }
 }

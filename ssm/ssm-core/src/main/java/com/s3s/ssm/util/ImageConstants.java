@@ -17,7 +17,7 @@ package com.s3s.ssm.util;
 
 /**
  * @author Phan Hong Phuc
- *
+ * 
  */
 public class ImageConstants {
     public static final String USER_ICON = "/icons/user.png";
@@ -30,4 +30,5 @@ public class ImageConstants {
     public static final String EXIT_ICON = "/icons/exitIcon.png";
     public static final String FULLSCREEN_ICON = "/icons/fullScreenIcon.png";
     public static final String MINIMIZE_ICON = "/icons/minimizeIcon.png";
+    public static final String BANK_ICON = "/icons/bankIcon.png";
 }

@@ -120,7 +120,7 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
         toolbar.setFloatable(false);
-        btnSave = new JButton(ImageUtils.getImageIcon(ImageConstants.SAVE_ICON));
+        btnSave = new JButton(ImageUtils.getIcon(ImageConstants.SAVE_ICON));
         btnSave.setToolTipText(ControlConfigUtils.getString("default.button.save"));
         btnSave.addActionListener(new ActionListener() {
             @Override
@@ -139,7 +139,7 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
         // }
         // });
 
-        btnSaveNew = new JButton(ImageUtils.getImageIcon(ImageConstants.SAVE_NEW_ICON));
+        btnSaveNew = new JButton(ImageUtils.getIcon(ImageConstants.SAVE_NEW_ICON));
         btnSaveNew.setToolTipText(ControlConfigUtils.getString("edit.button.saveNew"));
         btnSaveNew.addActionListener(new ActionListener() {
             @Override
@@ -150,7 +150,7 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
             }
         });
 
-        btnNew = new JButton(ImageUtils.getImageIcon(ImageConstants.NEW_ICON));
+        btnNew = new JButton(ImageUtils.getIcon(ImageConstants.NEW_ICON));
         btnNew.setToolTipText(ControlConfigUtils.getString("edit.button.new"));
         btnNew.addActionListener(new ActionListener() {
             @Override
@@ -159,7 +159,7 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
             }
         });
 
-        btnExit = new JButton(ImageUtils.getImageIcon(ImageConstants.EXIT_ICON));
+        btnExit = new JButton(ImageUtils.getIcon(ImageConstants.EXIT_ICON));
         btnExit.setToolTipText(ControlConfigUtils.getString("edit.button.exit"));
         btnExit.addActionListener(new ActionListener() {
             @Override
@@ -168,7 +168,7 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
             }
         });
 
-        JButton btnFullScreen = new JButton(ImageUtils.getImageIcon(ImageConstants.FULLSCREEN_ICON));
+        JButton btnFullScreen = new JButton(ImageUtils.getIcon(ImageConstants.FULLSCREEN_ICON));
         btnFullScreen.setToolTipText(ControlConfigUtils.getString("edit.button.fullscreen"));
         btnFullScreen.addActionListener(new ActionListener() {
             @Override
@@ -177,7 +177,7 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
             }
         });
 
-        JButton btnMinimize = new JButton(ImageUtils.getImageIcon(ImageConstants.MINIMIZE_ICON));
+        JButton btnMinimize = new JButton(ImageUtils.getIcon(ImageConstants.MINIMIZE_ICON));
         btnMinimize.setToolTipText(ControlConfigUtils.getString("edit.button.minimize"));
         btnMinimize.addActionListener(new ActionListener() {
             @Override
