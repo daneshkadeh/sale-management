@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractListModel;
@@ -50,6 +51,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
@@ -64,6 +66,8 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.divxdede.swing.busy.DefaultBusyModel;
+import org.divxdede.swing.busy.JBusyComponent;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jdesktop.swingx.JXTable;
@@ -117,12 +121,13 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     // TODO It should get from the property "defPageRowNum" of BasicInformation in ssm-config
     private static final int DEFAULT_PAGE_SIZE = 25;
 
-    private static final String CHOOSER_DIALOG_TITLE = "Choose Directory";
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
     private JXTable tblListEntities;
     private JList<Integer> rowHeader;
     private JXTable tblFooter;
+    private JBusyComponent<JScrollPane> busyPane;
+
     private AdvanceTableModel mainTableModel;
     private PagingNavigator pagingNavigator;
     // button toolbar
@@ -285,6 +290,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     }
 
     protected void addComponents() {
+
         // //////////////////// Button panel /////////////////////////////////
         JToolBar pnlButton = createButtonToolBar(tblListEntities);
         this.add(pnlButton);
@@ -384,9 +390,9 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         rowHeader.setFixedCellHeight(tblListEntities.getRowHeight());
         JScrollPane mainScrollpane = new JScrollPane(tblListEntities);
         mainScrollpane.setRowHeaderView(rowHeader);
-        // mainScrollpane.getViewport().setBackground(Color.WHITE);
+        busyPane = createBusyPane(mainScrollpane);
 
-        this.add(mainScrollpane);
+        this.add(busyPane);
         JScrollPane footerScrollpane = new JScrollPane(tblFooter);
 
         if (CollectionUtils.isNotEmpty(summaryFieldNames)) {
@@ -394,6 +400,12 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         }
 
         this.add(pagingNavigator);
+    }
+
+    private JBusyComponent<JScrollPane> createBusyPane(JScrollPane mainScrollpane) {
+        JBusyComponent<JScrollPane> bp = new JBusyComponent<JScrollPane>(mainScrollpane);
+        ((DefaultBusyModel) bp.getBusyModel()).setDescription(ControlConfigUtils.getString("label.loading"));
+        return bp;
     }
 
     private int calculateTotalPages() {
@@ -704,23 +716,32 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
      * @param entity
      * @param isNew
      */
-    public void notifyFromDetailView(T entity, boolean isNew) {
-        replaceEntity(entity);
-        // Keep the selected row before the data of table is changed.
-        int selectedRow = tblListEntities.getSelectedRow();
-        if (isNew) {
-            entities.add(entity);
-            selectedRow = entities.size() - 1; // If add new entity, the selected row has the last index.
-        }
+    public void notifyFromDetailView(final T entity, final boolean isNew) {
+        new SwingWorker<Void, Void>() {
 
-        // fireTableDataChanged to rerender the table.
-        ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
-        ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
-        rowHeader.repaint();
-        rowHeader.revalidate();
+            @Override
+            protected Void doInBackground() throws Exception {
+                replaceEntity(entity);
+                // Keep the selected row before the data of table is changed.
+                int selectedRow = tblListEntities.getSelectedRow();
+                if (isNew) {
+                    entities.add(entity);
+                    selectedRow = entities.size() - 1; // If add new entity, the selected row has the last index.
+                }
 
-        // After fireTableDataChanged() the selection is lost. We need to reselect it programmatically.
-        tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
+                // fireTableDataChanged to rerender the table.
+                ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
+                ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
+                rowHeader.repaint();
+                rowHeader.revalidate();
+
+                // After fireTableDataChanged() the selection is lost. We need to reselect it programmatically.
+                tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
+                return null;
+            }
+
+        };
+
     }
 
     /**
@@ -812,15 +833,38 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     }
 
     protected void refreshData() {
-        entities.removeAll(entities);
-        entities.addAll(loadData(pagingNavigator.getCurrentPage()));
-        // fireTableDataChanged to re-render the table.
-        ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
-        ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
-        rowHeader.repaint();
-        rowHeader.revalidate();
+        busyPane.setBusy(true);
+        new SwingWorker<List<T>, Object>() {
 
-        tblListEntities.packAll(); // resize all column fit to their contents
+            @Override
+            protected List<T> doInBackground() throws Exception {
+                return loadData(pagingNavigator.getCurrentPage());
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    // Retrieve the list from doInBackground()
+                    List<T> refreshedList = get();
+                    entities.removeAll(entities);
+                    entities.addAll(refreshedList);
+                    // fireTableDataChanged to re-render the table.
+                    ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
+                    ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
+                    rowHeader.repaint();
+                    rowHeader.revalidate();
+
+                    tblListEntities.packAll(); // resize all column fit to their contents
+                } catch (InterruptedException | ExecutionException e) {
+                    logger.error(e.getCause());
+                    JOptionPane.showMessageDialog(AbstractListView.this,
+                            ControlConfigUtils.getString("error.refreshData.message"),
+                            ControlConfigUtils.getString("error.title"), JOptionPane.ERROR_MESSAGE, null);
+                } finally {
+                    busyPane.setBusy(false);
+                }
+            }
+        }.execute();
     }
 
     private class AddAction extends AbstractAction {
