@@ -444,22 +444,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this),
-                        "Are you sure want to delete the selected row?", "Confirm delete",
-                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-                if (option == JOptionPane.YES_OPTION) {
-                    int[] selectedRows = tblListEntities.getSelectedRows();
-                    List<T> removedEntities = new ArrayList<>(selectedRows.length);
-                    for (int i : selectedRows) {
-                        int rowModelIndex = tblListEntities.convertRowIndexToModel(i);
-                        removedEntities.add(entities.get(rowModelIndex));
-                    }
-                    // Remove row in database
-                    getDaoHelper().getDao(getEntityClass()).deleteAll(removedEntities);
-                    // Remove row in view
-                    entities.removeAll(removedEntities);
-                    ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
-                }
+                doDeleteRows();
             }
         });
 
@@ -488,6 +473,28 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         buttonToolbar.add(Box.createHorizontalGlue());
         buttonToolbar.add(btnRefresh);
         return buttonToolbar;
+    }
+
+    private void doDeleteRows() {
+        int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this),
+                "Are you sure want to delete the selected row?", "Confirm delete", JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+        if (option == JOptionPane.YES_OPTION) {
+            int[] selectedRows = tblListEntities.getSelectedRows();
+            List<T> removedEntities = new ArrayList<>(selectedRows.length);
+            for (int i : selectedRows) {
+                int rowModelIndex = tblListEntities.convertRowIndexToModel(i);
+                removedEntities.add(entities.get(rowModelIndex));
+            }
+            // Remove row in database
+            getDaoHelper().getDao(getEntityClass()).deleteAll(removedEntities);
+            // Remove row in view
+            entities.removeAll(removedEntities);
+
+            ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
+            rowHeader.repaint();
+            rowHeader.revalidate();
+        }
     }
 
     /**
@@ -717,31 +724,22 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
      * @param isNew
      */
     public void notifyFromDetailView(final T entity, final boolean isNew) {
-        new SwingWorker<Void, Void>() {
+        replaceEntity(entity);
+        // Keep the selected row before the data of table is changed.
+        int selectedRow = tblListEntities.getSelectedRow();
+        if (isNew) {
+            entities.add(entity);
+            selectedRow = entities.size() - 1; // If add new entity, the selected row has the last index.
+        }
 
-            @Override
-            protected Void doInBackground() throws Exception {
-                replaceEntity(entity);
-                // Keep the selected row before the data of table is changed.
-                int selectedRow = tblListEntities.getSelectedRow();
-                if (isNew) {
-                    entities.add(entity);
-                    selectedRow = entities.size() - 1; // If add new entity, the selected row has the last index.
-                }
+        // fireTableDataChanged to rerender the table.
+        ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
+        ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
+        rowHeader.repaint();
+        rowHeader.revalidate();
 
-                // fireTableDataChanged to rerender the table.
-                ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
-                ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
-                rowHeader.repaint();
-                rowHeader.revalidate();
-
-                // After fireTableDataChanged() the selection is lost. We need to reselect it programmatically.
-                tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
-                return null;
-            }
-
-        };
-
+        // After fireTableDataChanged() the selection is lost. We need to reselect it programmatically.
+        tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
     }
 
     /**
@@ -857,6 +855,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
                     tblListEntities.packAll(); // resize all column fit to their contents
                 } catch (InterruptedException | ExecutionException e) {
                     logger.error(e.getCause());
+                    isInitialized = false;
                     JOptionPane.showMessageDialog(AbstractListView.this,
                             ControlConfigUtils.getString("error.refreshData.message"),
                             ControlConfigUtils.getString("error.title"), JOptionPane.ERROR_MESSAGE, null);
