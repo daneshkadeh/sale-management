@@ -25,6 +25,10 @@ import javax.swing.JTree;
 public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
     private static final long serialVersionUID = 3125395234804094978L;
 
+    public MultiSelectionTreeBox() {
+        
+    }
+    
     /**
      * {@inheritDoc}
      */
