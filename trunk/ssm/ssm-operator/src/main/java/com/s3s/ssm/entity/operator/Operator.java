@@ -19,6 +19,8 @@ import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Email;
+
 import com.s3s.ssm.entity.security.User;
 
 @Entity
@@ -40,6 +42,7 @@ public class Operator extends User {
     }
 
     @Column(name = "email", length = 64)
+    @Email
     public String getEmail() {
         return email;
     }
