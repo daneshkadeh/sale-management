@@ -29,13 +29,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
-import com.s3s.ssm.entity.security.User;
 
 @Entity
 @Table(name = "o_stall")
 public class Stall extends AbstractCodeOLObject {
     private String name;
-    private User manager;
+    private Operator manager;
     private Boolean isActive = true;
     private Set<Operator> staffs = new HashSet<Operator>();
     private Set<SaleTarget> salesTarget = new HashSet<SaleTarget>();
@@ -51,11 +50,11 @@ public class Stall extends AbstractCodeOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "manager_id", nullable = false)
-    public User getManager() {
+    public Operator getManager() {
         return manager;
     }
 
-    public void setManager(User manager) {
+    public void setManager(Operator manager) {
         this.manager = manager;
     }
 
