@@ -41,7 +41,7 @@ public class TreeView extends JTree implements TreeSelectionListener {
     private JPanel currentView;
 
     /**
-     * Init the treeView with the contentScrollPane.
+     * Init the treeView with the contentScrollPane, by default the tree expands all node.
      * 
      * @param contentScrollPane
      *            the scrollPane contains the view of {@link TreeNodeWithView}.
@@ -51,6 +51,16 @@ public class TreeView extends JTree implements TreeSelectionListener {
         this.contentScrollPane = contentScrollPane;
         addTreeSelectionListener(this);
         setCellRenderer(new TreeViewRenderer());
+        expandAll();
+    }
+
+    /**
+     * Expand all node.
+     */
+    public void expandAll() {
+        for (int i = 0; i < getRowCount(); i++) {
+            expandRow(i);
+        }
     }
 
     @Override
