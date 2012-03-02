@@ -54,6 +54,7 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
         detailDataModel.addRawAttribute("rawAttribute1", FieldTypeEnum.TEXTBOX).value("Init value");
         detailDataModel.addRawAttribute("rawAttribute2", FieldTypeEnum.DROPDOWN).value("value 2")
                 .referenceDataId("idTest");
+        detailDataModel.addRawAttribute("rawAttribute3", FieldTypeEnum.MULTI_SELECT_TREE_BOX);
 
         detailDataModel.tab("We make it work!", "Tab 2", null);
         detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);

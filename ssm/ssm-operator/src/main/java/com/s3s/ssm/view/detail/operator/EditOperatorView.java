@@ -55,7 +55,7 @@ public class EditOperatorView extends AbstractSingleEditView<Operator> {
         detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
-        detailDataModel.addAttribute("roles", FieldTypeEnum.MULTI_SELECT_BOX).referenceDataId(ROLE_REF_ID);
+        detailDataModel.addAttribute("roles", FieldTypeEnum.MULTI_SELECT_LIST_BOX).referenceDataId(ROLE_REF_ID);
         detailDataModel.addAttribute("isEnabled", FieldTypeEnum.CHECKBOX);
     }
 

@@ -84,7 +84,9 @@ import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
 import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.ImageChooser;
+import com.s3s.ssm.view.component.MultiSelectableTreeNode;
 import com.s3s.ssm.view.component.MultiSelectionListBox;
+import com.s3s.ssm.view.component.MultiSelectionTreeBox;
 import com.s3s.ssm.view.component.RadioButtonsGroup;
 import com.s3s.ssm.view.component.SaleTargetComp;
 import com.s3s.ssm.view.component.SaleTargetModel;
@@ -289,11 +291,27 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 ((JComboBox<?>) dataField).setSelectedItem(value);
                 pnlEdit.add(lblLabel, newline);
                 break;
-            case MULTI_SELECT_BOX:
+            case MULTI_SELECT_LIST_BOX:
                 List desValues = value != null ? new ArrayList((Collection<?>) value) : Collections.EMPTY_LIST;
                 List scrValues = new ArrayList<>(ListUtils.removeAll(referenceData.getValues(), desValues));
                 dataField = new MultiSelectionListBox<>(scrValues, desValues, referenceData.getRenderer());
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+                pnlEdit.add(lblLabel, newline + "top");
+                break;
+            case MULTI_SELECT_TREE_BOX:
+                MultiSelectableTreeNode root = new MultiSelectableTreeNode("Root", null, false);
+                MultiSelectableTreeNode a1 = new MultiSelectableTreeNode("a1", null, false);
+                MultiSelectableTreeNode b1 = new MultiSelectableTreeNode("b1", null, false);
+                MultiSelectableTreeNode a2 = new MultiSelectableTreeNode("a2", null, false);
+                MultiSelectableTreeNode a3 = new MultiSelectableTreeNode("a3", null, false);
+                MultiSelectableTreeNode b2 = new MultiSelectableTreeNode("b2", null, false);
+                root.add(a1);
+                root.add(b1);
+                a1.add(a2);
+                a1.add(a3);
+                b1.add(b2);
+                b2.setState(true);
+                dataField = new MultiSelectionTreeBox(root);
                 pnlEdit.add(lblLabel, newline + "top");
                 break;
             case DATE:
@@ -567,7 +585,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         case DROPDOWN:
             JComboBox<?> comboBox = (JComboBox<?>) component;
             return comboBox.getSelectedItem();
-        case MULTI_SELECT_BOX:
+        case MULTI_SELECT_LIST_BOX:
             MultiSelectionListBox<?> multiBox = (MultiSelectionListBox<?>) component;
             // TODO Phuc: test this case
             return multiBox.getDestinationValues();

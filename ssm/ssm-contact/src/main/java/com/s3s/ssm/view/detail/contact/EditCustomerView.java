@@ -96,7 +96,7 @@ public class EditCustomerView extends AbstractMasterDetailView<Customer, Contact
     public void initialPresentationView(DetailDataModel detailDataModel, Customer entity) {
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("partnerCateSet", FieldTypeEnum.MULTI_SELECT_BOX).referenceDataId(
+        detailDataModel.addAttribute("partnerCateSet", FieldTypeEnum.MULTI_SELECT_LIST_BOX).referenceDataId(
                 PARTNER_CATE_REF_ID);
         detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
         detailDataModel.addAttribute("fixPhone", FieldTypeEnum.TEXTBOX);
