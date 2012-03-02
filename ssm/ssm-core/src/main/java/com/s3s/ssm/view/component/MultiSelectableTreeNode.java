@@ -43,7 +43,7 @@ public class MultiSelectableTreeNode extends DefaultMutableTreeNode {
     @Override
     public TreeNode getChildAt(int childIndex) {
         while (true) {
-            MultiSelectableTreeNode node = (MultiSelectableTreeNode) super.getChildAt(childIndex);
+            MultiSelectableTreeNode node = (MultiSelectableTreeNode) children.get(childIndex);
             if (!node.isSelected()) {
                 return node;
             }
