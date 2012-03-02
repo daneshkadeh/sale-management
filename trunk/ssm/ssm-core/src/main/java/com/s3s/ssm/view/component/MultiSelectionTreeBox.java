@@ -15,8 +15,19 @@
 
 package com.s3s.ssm.view.component;
 
+import java.awt.Component;
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTree;
+import javax.swing.ListCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Phan Hong Phuc
@@ -24,18 +35,47 @@ import javax.swing.JTree;
  */
 public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
     private static final long serialVersionUID = 3125395234804094978L;
+    private JTree tree;
+    private JList<List<MultiSelectableTreeNode>> list;
+    private MultiSelectableTreeNode rootNode;
 
-    public MultiSelectionTreeBox() {
-        
+    public MultiSelectionTreeBox(MultiSelectableTreeNode rootNode) {
+        super();
+        this.rootNode = rootNode;
+        initComponents();
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
-    protected JList<?> createDestinationView() {
-        // TODO Auto-generated method stub
-        return null;
+    protected JList<List<MultiSelectableTreeNode>> createDestinationView() {
+        DefaultListModel<List<MultiSelectableTreeNode>> model = new DefaultListModel<>();
+        list = new JList<>(model);
+        refreshDataForList();
+        list.setSelectionModel(new DefaultListSelectionModel());
+        list.setCellRenderer(new ListCellRenderer<List<MultiSelectableTreeNode>>() {
+
+            @Override
+            public Component getListCellRendererComponent(JList<? extends List<MultiSelectableTreeNode>> list,
+                    List<MultiSelectableTreeNode> value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = new JLabel();
+                label.setText(StringUtils.join(value, '>'));
+                return label;
+            }
+
+        });
+        return list;
+    }
+
+    private void refreshDataForList() {
+        DefaultListModel<List<MultiSelectableTreeNode>> model = (DefaultListModel<List<MultiSelectableTreeNode>>) list
+                .getModel();
+        model.removeAllElements();
+        List<MultiSelectableTreeNode> leafNodes = rootNode.getAllSelectedLeafNodes(rootNode);
+        for (MultiSelectableTreeNode node : leafNodes) {
+            model.addElement(node.getPathToBeforeRoot());
+        }
     }
 
     /**
@@ -43,8 +83,9 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
      */
     @Override
     protected JTree createSourceView() {
-        // TODO Auto-generated method stub
-        return null;
+        tree = new JTree(new DefaultTreeModel(rootNode));
+        tree.setRootVisible(false);
+        return tree;
     }
 
     /**
@@ -52,8 +93,9 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
      */
     @Override
     protected void doSelectAll() {
-        // TODO Auto-generated method stub
-
+        rootNode.setState(true);
+        refreshDataForList();
+        ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
     /**
@@ -61,8 +103,11 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
      */
     @Override
     protected void doSelectSingle() {
-        // TODO Auto-generated method stub
-
+        for (TreePath treePath : tree.getSelectionPaths()) {
+            ((MultiSelectableTreeNode) treePath.getLastPathComponent()).setState(true);
+        }
+        refreshDataForList();
+        ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
     /**
@@ -70,8 +115,12 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
      */
     @Override
     protected void doDeselectAll() {
-        // TODO Auto-generated method stub
-
+        List<MultiSelectableTreeNode> selectedLeafNodes = rootNode.getAllSelectedLeafNodes(rootNode);
+        for (MultiSelectableTreeNode node : selectedLeafNodes) {
+            node.setState(false);
+        }
+        refreshDataForList();
+        ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
     /**

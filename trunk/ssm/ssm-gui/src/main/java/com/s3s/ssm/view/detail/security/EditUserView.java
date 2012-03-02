@@ -43,7 +43,7 @@ public class EditUserView extends AbstractSingleEditView<User> {
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("username", FieldTypeEnum.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("password", FieldTypeEnum.PASSWORD).mandatory(true);
-        detailDataModel.addAttribute("roles", FieldTypeEnum.MULTI_SELECT_BOX).referenceDataId(ROLE_REF_ID);
+        detailDataModel.addAttribute("roles", FieldTypeEnum.MULTI_SELECT_LIST_BOX).referenceDataId(ROLE_REF_ID);
         detailDataModel.addAttribute("isEnabled", FieldTypeEnum.CHECKBOX);
     }
 

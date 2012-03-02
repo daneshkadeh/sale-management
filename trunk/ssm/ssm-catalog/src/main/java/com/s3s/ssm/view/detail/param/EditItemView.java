@@ -53,7 +53,7 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
         detailDataModel.addAttribute("sumUomName", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("baseSellPrice", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("currency", FieldTypeEnum.DROPDOWN).referenceDataId(REF_CURRENCY_ID);
-        detailDataModel.addAttribute("listUom", FieldTypeEnum.MULTI_SELECT_BOX).referenceDataId(REF_UOM_ID);
+        detailDataModel.addAttribute("listUom", FieldTypeEnum.MULTI_SELECT_LIST_BOX).referenceDataId(REF_UOM_ID);
     }
 
     @Override

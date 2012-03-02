@@ -21,7 +21,8 @@ import javax.swing.Icon;
 
 public class DetailDataModel {
     public enum FieldTypeEnum {
-        TEXTBOX, TEXTAREA, DROPDOWN, MULTI_SELECT_BOX, PASSWORD, CHECKBOX, DATE, RADIO_BUTTON_GROUP, IMAGE, FILE_CHOOSER, ENTITY_CHOOSER, SALE_TARGET;
+        TEXTBOX, TEXTAREA, DROPDOWN, MULTI_SELECT_LIST_BOX, MULTI_SELECT_TREE_BOX, 
+        PASSWORD, CHECKBOX, DATE, RADIO_BUTTON_GROUP, IMAGE, FILE_CHOOSER, ENTITY_CHOOSER, SALE_TARGET;
     }
 
     private List<DetailAttribute> detailAttributes = new ArrayList<>();
@@ -125,12 +126,12 @@ public class DetailDataModel {
     public DetailAttribute addAttribute(String name, FieldTypeEnum fieldType) {
         return addAttribute(name, fieldType, false);
     }
-    
+
     public DetailAttribute addRawAttribute(String name, FieldTypeEnum fieldType) {
         return addAttribute(name, fieldType, true);
     }
-    
-    private DetailAttribute addAttribute(String name, FieldTypeEnum fieldType, boolean isRaw){
+
+    private DetailAttribute addAttribute(String name, FieldTypeEnum fieldType, boolean isRaw) {
         DetailAttribute attribute = new DetailAttribute(name, fieldType, isRaw);
         detailAttributes.add(attribute);
         return attribute;

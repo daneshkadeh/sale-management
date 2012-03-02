@@ -48,7 +48,7 @@ public class EditProductGeneralView extends AbstractSingleEditView<Product> {
         detailDataModel.addAttribute("model", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("description", FieldTypeEnum.TEXTAREA).editable(true);
         detailDataModel.addAttribute("mainUom", FieldTypeEnum.DROPDOWN).referenceDataId(UOM_REF_ID);
-        detailDataModel.addAttribute("properties", FieldTypeEnum.MULTI_SELECT_BOX).referenceDataId(REF_PROPERTIES_ID)
+        detailDataModel.addAttribute("properties", FieldTypeEnum.MULTI_SELECT_LIST_BOX).referenceDataId(REF_PROPERTIES_ID)
                 .width(300);
 
         detailDataModel.tab("More info", "More info", null);
