@@ -18,12 +18,12 @@ package com.s3s.ssm.view.component;
 import java.awt.Component;
 import java.util.List;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTree;
-import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
@@ -53,18 +53,20 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
         DefaultListModel<List<MultiSelectableTreeNode>> model = new DefaultListModel<>();
         list = new JList<>(model);
         refreshDataForList();
-        list.setSelectionModel(new DefaultListSelectionModel());
-        list.setCellRenderer(new ListCellRenderer<List<MultiSelectableTreeNode>>() {
+        list.setCellRenderer(new DefaultListCellRenderer() {
+            private static final long serialVersionUID = 3367484517532759939L;
 
             @Override
-            public Component getListCellRendererComponent(JList<? extends List<MultiSelectableTreeNode>> list,
-                    List<MultiSelectableTreeNode> value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel label = new JLabel();
-                label.setText(StringUtils.join(value, '>'));
-                return label;
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+                    boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                setText(StringUtils.join((List<MultiSelectableTreeNode>) value, '>'));
+                return this;
             }
-
         });
+        DefaultListSelectionModel selectionModel = new DefaultListSelectionModel();
+        selectionModel.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        list.setSelectionModel(selectionModel);
         return list;
     }
 
@@ -95,6 +97,7 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
     protected void doSelectAll() {
         rootNode.setState(true);
         refreshDataForList();
+        // TODO just change the node effected. not rootNode
         ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
@@ -107,6 +110,7 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
             ((MultiSelectableTreeNode) treePath.getLastPathComponent()).setState(true);
         }
         refreshDataForList();
+        // TODO just change the node effected. not rootNode
         ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
@@ -120,6 +124,7 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
             node.setState(false);
         }
         refreshDataForList();
+        // TODO just change the node effected. not rootNode
         ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
@@ -128,8 +133,13 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
      */
     @Override
     protected void doDeselectSingle() {
-        // TODO Auto-generated method stub
-
+        List<List<MultiSelectableTreeNode>> selectedList = list.getSelectedValuesList();
+        for (List<MultiSelectableTreeNode> nodePath : selectedList) {
+            nodePath.get(nodePath.size() - 1).setState(false);
+        }
+        refreshDataForList();
+        // TODO just change the node effected. not rootNode
+        ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
 }
