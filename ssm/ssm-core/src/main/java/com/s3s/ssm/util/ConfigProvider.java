@@ -84,4 +84,8 @@ public class ConfigProvider {
     public ContextProvider getContextProvider() {
         return (ContextProvider) appContext.getBean("contextProvider");
     }
+
+    public ServiceProvider getServiceProvider() {
+        return (ServiceProvider) appContext.getBean("serviceProvider");
+    }
 }

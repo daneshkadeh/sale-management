@@ -8,24 +8,15 @@
 		<version>${ssm.version}</version>
 	</parent>
 
-	<artifactId>ssm-catalog</artifactId>
+	<artifactId>ssm-shipment-interface</artifactId>
 	<version>${ssm.version}</version>
 	<packaging>jar</packaging>
-	<name>SuperSalesManagement catalog module</name>
+	<name>SuperSalesManagement shipment-interface module</name>
 	<description>
-		Module catalog of super sales management.
+		Module shipment-interface of super sales management.
 	</description>
  
   <dependencies>
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-config</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-catalog-interface</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
+  
   </dependencies>
 </project>

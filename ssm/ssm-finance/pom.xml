@@ -17,6 +17,12 @@
 	</description>
  
   <dependencies>
+    <dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-finance-interface</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	
 	<dependency>
 		<groupId>com.s3s</groupId>
 		<artifactId>ssm-config</artifactId>

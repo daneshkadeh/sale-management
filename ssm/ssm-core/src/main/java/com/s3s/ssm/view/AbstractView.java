@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
+import com.s3s.ssm.util.ServiceProvider;
 
 public abstract class AbstractView extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -34,6 +35,8 @@ public abstract class AbstractView extends JPanel {
     protected static final String PARAM_ENTITY_ID = "entityId";
 
     protected DaoHelper daoHelper = ConfigProvider.getInstance().getDaoHelper();
+
+    protected ServiceProvider serviceProvider = ConfigProvider.getInstance().getServiceProvider();
 
     protected DaoHelper getDaoHelper() {
         return daoHelper;

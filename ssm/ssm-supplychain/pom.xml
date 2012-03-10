@@ -19,6 +19,11 @@
   <dependencies>
 	<dependency>
 		<groupId>com.s3s</groupId>
+		<artifactId>ssm-supplychain-interface</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
 		<artifactId>ssm-catalog</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>

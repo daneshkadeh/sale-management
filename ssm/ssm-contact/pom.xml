@@ -22,5 +22,17 @@
 		<artifactId>ssm-config</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
+	
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-contact-interface</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-store-interface</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
   </dependencies>
 </project>
