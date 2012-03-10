@@ -53,9 +53,6 @@
 			-->
 	</bean>
 
-	<bean id="defaultBaseDao" class="com.s3s.ssm.dao.impl.DefaultBaseDaoImpl"
-		scope="prototype"/>
-
 	<!-- AOP to open the session in service -->
 	<bean id="transactionalPointcut" class="org.springframework.aop.support.annotation.AnnotationMatchingPointcut">
 		<constructor-arg type="java.lang.Class" value="org.springframework.transaction.annotation.Transactional"/>

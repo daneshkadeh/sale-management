@@ -19,6 +19,11 @@
   <dependencies>
 	<dependency>
 		<groupId>com.s3s</groupId>
+		<artifactId>ssm-sales-interface</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
 		<artifactId>ssm-contact</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>

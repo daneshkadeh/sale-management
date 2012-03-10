@@ -78,6 +78,15 @@
   
    <modules>
       <module>ssm-core</module>
+	  
+	  <module>ssm-catalog-interface</module>
+	  <module>ssm-contact-interface</module>
+	  <module>ssm-shipment-interface</module>
+	  <module>ssm-finance-interface</module>
+      <module>ssm-store-interface</module>
+	  <module>ssm-supplychain-interface</module>
+	  <module>ssm-sales-interface</module>
+	  
       <module>ssm-operator</module>
 	  <module>ssm-config</module>
       <module>ssm-catalog</module>
