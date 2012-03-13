@@ -16,6 +16,7 @@ package com.s3s.ssm.view.detail.param;
 
 import java.util.Map;
 
+import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.ItemPrice;
 import com.s3s.ssm.entity.contact.PartnerCategory;
 import com.s3s.ssm.helper.CatalogHelper;
@@ -34,9 +35,17 @@ public class EditItemPriceVirtualView extends AbstractSingleEditView<ItemPrice> 
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ItemPrice entity) {
+        detailDataModel.addAttribute("item", FieldTypeEnum.TEXTBOX).editable(false);
         detailDataModel.addAttribute("partnerCategory", FieldTypeEnum.DROPDOWN).referenceDataId(REF_CONTACT_TYPE);
         detailDataModel.addAttribute("sellPrice", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("currency", FieldTypeEnum.DROPDOWN).referenceDataId(REF_CURRENCY_ID);
+    }
+
+    @Override
+    protected ItemPrice loadForCreate() {
+        ItemPrice itemPrice = super.loadForCreate();
+        itemPrice.setItem((Item) this.getParentObject());
+        return itemPrice;
     }
 
     @Override
@@ -46,8 +55,8 @@ public class EditItemPriceVirtualView extends AbstractSingleEditView<ItemPrice> 
         refDataModel.putRefDataList(REF_CURRENCY_ID, CatalogHelper.getCurrenciesCode(getDaoHelper()), null);
     }
 
-    @Override
-    protected void saveOrUpdate(ItemPrice entity) {
-        // Do nothing, wait for saved by master entity Item.
-    }
+    // @Override
+    // protected void saveOrUpdate(ItemPrice entity) {
+    // // Do nothing, wait for saved by master entity Item.
+    // }
 }
