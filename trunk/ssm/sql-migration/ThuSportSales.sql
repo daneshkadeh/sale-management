@@ -1486,6 +1486,26 @@ CREATE TABLE `s_product` (
   UNIQUE KEY `ui_product_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
+
+--
+-- Table structure for table `s_goods`
+--
+
+CREATE TABLE `s_goods` (
+  `goods_id` int(11) NOT NULL,
+  `alert_quantity` int(11) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `s_service` (
+  `service_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `s_voucher` (
+  `voucher_id` int(11) NOT NULL,
+  `min_amount` int(11) NOT NULL,
+  `currency_code` varchar(3) collate utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
 -- --------------------------------------------------------
 
 --

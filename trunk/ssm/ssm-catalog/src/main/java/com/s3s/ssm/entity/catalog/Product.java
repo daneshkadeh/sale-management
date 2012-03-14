@@ -17,10 +17,13 @@ package com.s3s.ssm.entity.catalog;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -34,7 +37,10 @@ import com.s3s.ssm.entity.config.UploadFile;
 
 @Entity
 @Table(name = "s_product")
+@Inheritance(strategy = InheritanceType.JOINED)
+@AttributeOverride(name = "id", column = @Column(name = "id", nullable = false, insertable = false, updatable = false))
 public class Product extends AbstractCodeOLObject {
+    private static final long serialVersionUID = 242255088169346711L;
     private String name;
     // TODO: we should have a method to get and set id directly (with AOP approach)
     // private Long manufacturerId;
@@ -75,6 +81,7 @@ public class Product extends AbstractCodeOLObject {
         this.description = description;
     }
 
+    // TODO: move to goods product.
     @ManyToOne
     @JoinColumn(name = "manufacturer_id", nullable = false)
     public Manufacturer getManufacturer() {
