@@ -45,6 +45,7 @@ import com.s3s.ssm.entity.catalog.ProductPropertyElement;
 import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.entity.catalog.SPackage;
 import com.s3s.ssm.entity.catalog.Store;
+import com.s3s.ssm.entity.catalog.Voucher;
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.BankAccount;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
@@ -73,6 +74,7 @@ import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.DetailImportProduct;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.entity.store.ImportProductForm;
+import com.s3s.ssm.model.Money;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
 
@@ -177,7 +179,7 @@ public class SSMDataLoader {
         itemDC.add(Restrictions.eq("product.id", product.getId()));
         List<Item> listItem = daoHelper.getDao(Item.class).findByCriteria(itemDC);
         Item item = listItem.get(0);
-        s_logger.info("Item is saved OK : " + item.getListUom().get(1).getCode() + ", price=" + item.getBaseSellPrice());
+        s_logger.info("Item is saved OK : " + item.getListUom().get(0).getCode() + ", price=" + item.getBaseSellPrice());
 
     }
 
@@ -191,6 +193,7 @@ public class SSMDataLoader {
         List<ProductPropertyElement> elements = initProductPropertyElements(daoHelper, properties);
 
         List<Product> products = initProduct(daoHelper);
+        List<Voucher> voucher = initVoucher(daoHelper);
 
         List<Item> listItem = initItem(daoHelper, listUom, products);
         List<SPackage> listPackage = initPackage(daoHelper, listItem);
@@ -207,6 +210,24 @@ public class SSMDataLoader {
         List<SalesContract> listSalesContracts = initSalesContracts(daoHelper, listSupplier, listItem);
         List<Invoice> listInvoice = initInvoice(daoHelper, listItem, listContact);
         List<Payment> listPayments = initPayment(daoHelper, listInvoice, listContact);
+    }
+
+    private static List<Voucher> initVoucher(DaoHelper daoHelper) {
+
+        Voucher voucher = new Voucher();
+        voucher.setCode("VOCHER01");
+        voucher.setName("Voucher 01");
+        voucher.setDescription("For B2B only");
+        voucher.setMinAmount(Money.create("VND", 500L));
+
+        DetachedCriteria uomDC = daoHelper.getDao(UnitOfMeasure.class).getCriteria();
+        uomDC.add(Restrictions.eq("code", "Cai"));
+        voucher.setMainUom(daoHelper.getDao(UnitOfMeasure.class).findByCriteria(uomDC).get(0));
+        ProductType type = daoHelper.getDao(ProductType.class).findAll().get(0);
+        voucher.setType(type);
+        voucher.setManufacturer(daoHelper.getDao(Manufacturer.class).findAll().get(0));// TODO: will be removed
+        daoHelper.getDao(Voucher.class).saveOrUpdate(voucher);
+        return Arrays.asList(voucher);
     }
 
     private static List<ProductPropertyElement> initProductPropertyElements(DaoHelper daoHelper,
@@ -526,14 +547,27 @@ public class SSMDataLoader {
         gam.setUomCategory(category);
         gam.setIsBaseMeasure(false);
         daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(gam);
-        return Arrays.asList(kg, gam);
+
+        UomCategory category2 = new UomCategory();
+        category2.setCode("Unit");
+        category2.setName("Don vi dem");
+        daoHelper.getDao(UomCategory.class).saveOrUpdate(category2);
+
+        UnitOfMeasure cai = new UnitOfMeasure();
+        cai.setCode("Cai");
+        // pair.setName(""); // TODO: error UTF-8 here. Please careful for production
+        cai.setName("Cai");
+        cai.setUomCategory(category2);
+        cai.setIsBaseMeasure(false);
+        daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(cai);
+        return Arrays.asList(cai, gam, cai);
     }
 
     private static List<Item> initItem(DaoHelper daoHelper, List<UnitOfMeasure> listUom, List<Product> products) {
         Item item = new Item();
         item.setProduct(products.get(0));
         item.setBaseSellPrice(10000.0);
-        item.setListUom(listUom);
+        item.setListUom(Arrays.asList(listUom.get(0)));
         item.setSumUomName("size 39");
         item.setCurrency("VND");
 
@@ -546,7 +580,7 @@ public class SSMDataLoader {
                 elementDc, 0, 1);
 
         propertyValue.setElement(elements.get(0));
-        item.addPropertyValue(propertyValue);
+        // item.addPropertyValue(propertyValue);//TODO: error with this
         daoHelper.getDao(Item.class).saveOrUpdate(item);
 
         return Arrays.asList(item);
