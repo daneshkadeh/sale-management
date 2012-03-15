@@ -17,11 +17,8 @@ package com.s3s.ssm.view;
 
 import java.util.Map;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
@@ -37,8 +34,7 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
  * @author Phan Hong Phuc
  * 
  */
-public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extends AbstractEditView<T> implements
-        TreeSelectionListener {
+public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extends AbstractEditView<T> {
     private static final long serialVersionUID = 5168377500300996678L;
     private TreeView treeView;
     private boolean isCreatedSubView = false;
@@ -49,7 +45,7 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
 
     public AbstractMultiEditView(Map<String, Object> request) {
         super(request);
-        setLayout(new MigLayout("hidemode 2, fillx, ins 0", "", "[]0[grow]"));
+        setLayout(new MigLayout("hidemode 2, fill, ins 0", "", "grow"));
         JScrollPane contentScrollPane = new JScrollPane();
         TreeView treeView = initTreeView(entity, contentScrollPane, request);
         JSplitPane splitPane = new JSplitPane();
@@ -66,20 +62,7 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
         Assert.isTrue(root.getChildAt(0) != null, "There is no node in the tree");
         // Set selection on the first node
         treeView.setSelectionPath(new TreePath(((TreeNodeWithView) root.getChildAt(0)).getPath()));
-        treeView.addTreeSelectionListener(this);
         return treeView;
-    }
-
-    @Override
-    public void valueChanged(TreeSelectionEvent e) {
-        TreeNodeWithView node = (TreeNodeWithView) treeView.getLastSelectedPathComponent();
-        if (node == null) {
-            return;
-        }
-
-        JPanel viewOfNode = node.getView();
-        // TODO Phuc
-        // setVisibleToolbar(viewOfNode instanceof AbstractEditView);
     }
 
     protected TreeView getTreeView() {

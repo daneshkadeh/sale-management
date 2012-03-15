@@ -177,6 +177,10 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         return ConfigProvider.getInstance().getContextProvider().getPermissions(aclResource);
     }
 
+    public AbstractListView(Icon icon) {
+        this(new HashMap<String, Object>(), icon);
+    }
+
     public AbstractListView(Map<String, Object> request) {
         this(request, null);
     }
@@ -197,7 +201,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         tabPane = new JTabbedPane();
         contentPane = new JPanel(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[]2[][]"));
         tabPane.addTab("", icon, contentPane);
-        this.setLayout(new MigLayout("ins 0", "grow, fill"));
+        this.setLayout(new MigLayout("ins 0", "grow, fill", "grow, fill"));
         this.add(tabPane, "grow");
 
         addKeyBindings();
