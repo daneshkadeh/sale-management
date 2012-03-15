@@ -17,6 +17,7 @@ package com.s3s.ssm.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -31,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -43,6 +46,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.NumberFormatter;
@@ -116,6 +120,14 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
 
     private List<ISavedListener<T>> savedListeners = new ArrayList<>();
 
+    protected JToolBar toolbar;
+    private JButton btnSave;
+    // private JButton btnSaveClose;
+    private JButton btnSaveNew;
+    private JButton btnNew;
+    private JButton btnExit;
+    
+
     public AbstractSingleEditView() {
         this(null);
     }
@@ -145,8 +157,10 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
 
     protected void initComponents() {
         // Layout the screen
-        setLayout(new MigLayout("hidemode 2, wrap, fillx"));
+        setLayout(new MigLayout("hidemode 2, wrap, fillx, ins 0", "grow"));
 
+
+        toolbar = createToolBar();
         // Toolbar
         add(toolbar, "growx, top");
 
@@ -167,6 +181,87 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         }
 
         customizeComponents(name2AttributeComponent, entity);
+    }
+    
+    protected JToolBar createToolBar() {
+        JToolBar toolbar = new JToolBar();
+        toolbar.setRollover(true);
+        toolbar.setFloatable(false);
+        btnSave = new JButton(ImageUtils.getIcon(ImageConstants.SAVE_ICON));
+        btnSave.setToolTipText(ControlConfigUtils.getString("default.button.save"));
+        btnSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                doSave();
+            }
+        });
+
+        // btnSaveClose = new JButton("Luu va dong");
+        // btnSaveClose.addActionListener(new ActionListener() {
+        // @Override
+        // public void actionPerformed(ActionEvent e) {
+        // if (doSave()) {
+        // doClose();
+        // }
+        // }
+        // });
+
+        btnSaveNew = new JButton(ImageUtils.getIcon(ImageConstants.SAVE_NEW_ICON));
+        btnSaveNew.setToolTipText(ControlConfigUtils.getString("edit.button.saveNew"));
+        btnSaveNew.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (doSave()) {
+                    doNew();
+                }
+            }
+        });
+
+        btnNew = new JButton(ImageUtils.getIcon(ImageConstants.NEW_ICON));
+        btnNew.setToolTipText(ControlConfigUtils.getString("edit.button.new"));
+        btnNew.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                doNew();
+            }
+        });
+
+        btnExit = new JButton(ImageUtils.getIcon(ImageConstants.EXIT_ICON));
+        btnExit.setToolTipText(ControlConfigUtils.getString("edit.button.exit"));
+        btnExit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                doClose();
+            }
+        });
+
+        // JButton btnFullScreen = new JButton(ImageUtils.getIcon(ImageConstants.FULLSCREEN_ICON));
+        // btnFullScreen.setToolTipText(ControlConfigUtils.getString("edit.button.fullscreen"));
+        // btnFullScreen.addActionListener(new ActionListener() {
+        // @Override
+        // public void actionPerformed(ActionEvent e) {
+        // setSizeParentWindoẉ̣(WindowUtilities.getFullScreenSize());
+        // }
+        // });
+        //
+        // JButton btnMinimize = new JButton(ImageUtils.getIcon(ImageConstants.MINIMIZE_ICON));
+        // btnMinimize.setToolTipText(ControlConfigUtils.getString("edit.button.minimize"));
+        // btnMinimize.addActionListener(new ActionListener() {
+        // @Override
+        // public void actionPerformed(ActionEvent e) {
+        // setSizeParentWindoẉ̣(getFitSize());
+        // }
+        // });
+
+        toolbar.add(btnNew);
+        toolbar.add(btnSave);
+        toolbar.add(btnSaveNew);
+        // toolbar.add(btnSaveClose);
+        toolbar.add(Box.createHorizontalGlue());
+        // toolbar.add(btnMinimize);
+        // toolbar.add(btnFullScreen);
+        toolbar.add(btnExit);
+        return toolbar;
     }
 
     /**
@@ -389,7 +484,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             try {
                 boolean isNew = (entity.getId() == null);
                 saveOrUpdate(entity);
-                fireSavedListener();
+                fireSavedListener(isNew);
                 if (getListView() != null) {
                     getListView().notifyFromDetailView(entity, isNew);
                 }
@@ -459,27 +554,24 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         return validator.validate(entity);
     }
 
-    private void bindingValue(T entity, String name, boolean isRaw, Object value) {
-        if (isRaw) {
-            bindRawAttributes(name, value, entity);
-        } else {
-            beanWrapper.setPropertyValue(name, value);
-        }
-    }
-
     /**
-     * Bind the raw value into the entity. The child class need to override this method to perform to binding for the
-     * raw attribute.
+     * Binding value to the entity. Default implementation is binding value for main attributes. The child class should
+     * override this method to binding for the raw attributes.
      * 
-     * @param name
-     *            the name of the raw attribute.
-     * @param value
-     *            the value of the raw component.
      * @param entity
      *            the entity binded.
+     * @param name
+     *            the name of attribute
+     * @param isRaw
+     *            is raw attribute or not
+     * @param value
+     *            the value of the component.
      */
-    protected void bindRawAttributes(String name, Object value, T entity) {
-        // Template method
+    protected void bindingValue(T entity, String name, boolean isRaw, Object value) {
+        // The child class should override this
+        if (!isRaw) {
+            beanWrapper.setPropertyValue(name, value);
+        }
     }
 
     /**
@@ -533,20 +625,20 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         }
     }
 
-    @Override
     protected void doNew() {
         doCloseOrNewWithDirtyCheck(true);
     }
 
-    @Override
     protected void doClose() {
         doCloseOrNewWithDirtyCheck(false);
     }
 
     private void doCloseOrNew(boolean isNew) {
-        SwingUtilities.getRoot(this).setVisible(false);
         if (isNew) {
             getListView().performAddAction();
+        } else {
+            JTabbedPane tabbedPane = getListView().getTabbedPane();
+            tabbedPane.remove(tabbedPane.indexOfComponent(this));
         }
     }
 
@@ -612,8 +704,8 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     }
 
     // ////////////////////////////////
-    private void fireSavedListener() {
-        SavedEvent<T> e = new SavedEvent<>(this, entity);
+    private void fireSavedListener(boolean isNew) {
+        SavedEvent<T> e = new SavedEvent<>(this, entity, isNew);
         for (ISavedListener<T> sl : savedListeners) {
             sl.doSaved(e);
         }

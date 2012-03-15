@@ -71,9 +71,8 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
     }
 
     @Override
-    protected void bindRawAttributes(String name, Object value, Supplier entity) {
-        super.bindRawAttributes(name, value, entity);
-        // Here I cheating: set raw attribute override value of no raw attribute to test
+    protected void bindingValue(Supplier entity, String name, boolean isRaw, Object value) {
+        super.bindingValue(entity, name, isRaw, value);
         if (name.equals("rawAttribute1")) {
             entity.setPosition((String) value);
         }

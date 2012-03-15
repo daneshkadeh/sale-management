@@ -97,7 +97,6 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
     protected void doSelectAll() {
         rootNode.setState(true);
         refreshDataForList();
-        // TODO just change the node effected. not rootNode
         ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
@@ -107,11 +106,11 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
     @Override
     protected void doSelectSingle() {
         for (TreePath treePath : tree.getSelectionPaths()) {
-            ((MultiSelectableTreeNode) treePath.getLastPathComponent()).setState(true);
+            MultiSelectableTreeNode node = (MultiSelectableTreeNode) treePath.getLastPathComponent();
+            MultiSelectableTreeNode topNode = node.setState(true);
+            ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(topNode);
         }
         refreshDataForList();
-        // TODO just change the node effected. not rootNode
-        ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
     /**
@@ -121,11 +120,10 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
     protected void doDeselectAll() {
         List<MultiSelectableTreeNode> selectedLeafNodes = rootNode.getAllSelectedLeafNodes(rootNode);
         for (MultiSelectableTreeNode node : selectedLeafNodes) {
-            node.setState(false);
+            MultiSelectableTreeNode topNode = node.setState(false);
+            ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(topNode);
         }
         refreshDataForList();
-        // TODO just change the node effected. not rootNode
-        ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
     /**
@@ -135,11 +133,11 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
     protected void doDeselectSingle() {
         List<List<MultiSelectableTreeNode>> selectedList = list.getSelectedValuesList();
         for (List<MultiSelectableTreeNode> nodePath : selectedList) {
-            nodePath.get(nodePath.size() - 1).setState(false);
+            MultiSelectableTreeNode topNode = nodePath.get(nodePath.size() - 1).setState(false);
+//            ((DefaultTreeModel) tree.getModel()).nodesWereInserted(topNode, new int[] { 1 });
+            ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(topNode);
         }
         refreshDataForList();
-        // TODO just change the node effected. not rootNode
-        ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
 }

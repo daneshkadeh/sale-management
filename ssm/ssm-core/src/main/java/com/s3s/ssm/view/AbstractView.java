@@ -26,8 +26,11 @@ import com.s3s.ssm.util.ServiceProvider;
 public abstract class AbstractView extends JPanel {
     private static final long serialVersionUID = 1L;
     protected Map<String, Object> request = new HashMap<String, Object>();
-    protected static final String ACTION_EDIT = "edit";
-    protected static final String ACTION_NEW = "new";
+
+    public enum EditActionEnum {
+        EDIT, NEW
+    }
+
     protected static final String PARAM_PARENT_CLASS = "parentClass";
     protected static final String PARAM_PARENT_ID = "parentId";
     protected static final String PARAM_ACTION = "action";

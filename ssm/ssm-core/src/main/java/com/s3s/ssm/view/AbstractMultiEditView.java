@@ -50,7 +50,6 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
     public AbstractMultiEditView(Map<String, Object> request) {
         super(request);
         setLayout(new MigLayout("hidemode 2, fillx, ins 0", "", "[]0[grow]"));
-        add(toolbar, "growx, wrap, top");
         JScrollPane contentScrollPane = new JScrollPane();
         TreeView treeView = initTreeView(entity, contentScrollPane, request);
         JSplitPane splitPane = new JSplitPane();
@@ -69,21 +68,6 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
         treeView.setSelectionPath(new TreePath(((TreeNodeWithView) root.getChildAt(0)).getPath()));
         treeView.addTreeSelectionListener(this);
         return treeView;
-    }
-
-    @Override
-    protected void doClose() {
-        ((AbstractEditView) treeView.getCurrentView()).doClose();
-    }
-
-    @Override
-    protected void doNew() {
-        ((AbstractEditView) treeView.getCurrentView()).doNew();
-    }
-
-    @Override
-    protected boolean doSave() {
-        return ((AbstractEditView) treeView.getCurrentView()).doSave();
     }
 
     @Override
