@@ -157,7 +157,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
 
     protected void initComponents() {
         // Layout the screen
-        setLayout(new MigLayout("hidemode 2, wrap, fillx, ins 0", "grow"));
+        setLayout(new MigLayout("hidemode 2, wrap, fillx, ins 0 10 0 10", "grow"));
 
 
         toolbar = createToolBar();
