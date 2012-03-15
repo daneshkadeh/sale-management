@@ -25,6 +25,7 @@ public class DetailAttribute {
     private boolean isMandatory = false;
     private Object value; // The initial value for the raw attribute.
     private boolean isRaw = false;
+    // private List<ParentNodeInfo> parentNodePath = new ArrayList<>();
 
     /** The property for layout the attribute. The attribute after this attribute is rendered in new line or not. */
     private boolean newColumn = false;

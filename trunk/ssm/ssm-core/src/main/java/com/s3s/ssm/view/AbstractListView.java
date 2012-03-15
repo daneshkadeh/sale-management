@@ -14,8 +14,8 @@
  */
 package com.s3s.ssm.view;
 
+import java.awt.Component;
 import java.awt.Dialog;
-import java.awt.Dialog.ModalityType;
 import java.awt.Event;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -40,12 +40,14 @@ import javax.swing.AbstractListModel;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Box;
+import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
@@ -92,6 +94,7 @@ import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.component.ButtonTabComponent;
 import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.PagingNavigator;
 
@@ -114,7 +117,7 @@ import com.s3s.ssm.view.component.PagingNavigator;
  * @param <T>
  */
 public abstract class AbstractListView<T extends AbstractIdOLObject> extends AbstractView implements
-        IPageChangeListener, IViewLazyLoadable {
+        IPageChangeListener, IViewLazyLoadable, ISavedListener<T> {
 
     private static final long serialVersionUID = -1311942671249671111L;
     private static final String ADD_ACTION_KEY = "addAction";
@@ -123,6 +126,8 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
+    private JTabbedPane tabPane;
+    private JPanel contentPane;
     private JXTable tblListEntities;
     private JList<Integer> rowHeader;
     private JXTable tblFooter;
@@ -173,6 +178,10 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     }
 
     public AbstractListView(Map<String, Object> request) {
+        this(request, null);
+    }
+
+    public AbstractListView(Map<String, Object> request, Icon icon) {
         super(request);
 
         this.parentId = (Long) request.get(PARAM_PARENT_ID);
@@ -185,7 +194,11 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         exportAction = new ExportAction();
         printAction = new PrintAction();
 
-        setLayout(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[]2[][]"));
+        tabPane = new JTabbedPane();
+        contentPane = new JPanel(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[]2[][]"));
+        tabPane.addTab("", icon, contentPane);
+        this.setLayout(new MigLayout("ins 0", "grow, fill"));
+        this.add(tabPane, "grow");
 
         addKeyBindings();
         addComponents();
@@ -293,7 +306,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
         // //////////////////// Button panel /////////////////////////////////
         JToolBar pnlButton = createButtonToolBar(tblListEntities);
-        this.add(pnlButton);
+        contentPane.add(pnlButton);
 
         // ///////////////////// Paging navigator ///////////////////////////////
         pagingNavigator = new PagingNavigator(calculateTotalPages());
@@ -392,14 +405,14 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         mainScrollpane.setRowHeaderView(rowHeader);
         busyPane = createBusyPane(mainScrollpane);
 
-        this.add(busyPane);
+        contentPane.add(busyPane);
         JScrollPane footerScrollpane = new JScrollPane(tblFooter);
 
         if (CollectionUtils.isNotEmpty(summaryFieldNames)) {
-            this.add(footerScrollpane);
+            contentPane.add(footerScrollpane);
         }
 
-        this.add(pagingNavigator);
+        contentPane.add(pagingNavigator);
     }
 
     private JBusyComponent<JScrollPane> createBusyPane(JScrollPane mainScrollpane) {
@@ -503,7 +516,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
      * @param entity
      *            the entity which the detail view display for. If <code>null</code>, new entity is displayed.
      */
-    protected void showEditView(T entity, String action) {
+    protected void showEditView(T entity, EditActionEnum action) {
         Class<? extends AbstractEditView<T>> detailViewClass = getEditViewClass();
         try {
             Map<String, Object> detailParams = new HashMap<>();
@@ -513,20 +526,22 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
             detailParams.put(PARAM_PARENT_CLASS, parentClass);
             detailParams.put(PARAM_LIST_VIEW, this);
 
-            // TODO This call requires sub class override Constructor method! It's not good.
             AbstractEditView<T> detailView = detailViewClass.getConstructor(Map.class).newInstance(detailParams);
-            // TODO HPP consider to listen the event from AbstractDetailView (not set reference to it).
-            // detailView.setListView(this);
             JScrollPane scrollPane = new JScrollPane(detailView);
 
-            Window parentContainer = (Window) SwingUtilities.getRoot(AbstractListView.this);
-            JDialog dialog = new JDialog(parentContainer);
-            // dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-            dialog.setContentPane(scrollPane);
-            dialog.setSize(detailView.getFitSize());
-            dialog.setLocationRelativeTo(parentContainer); // Display the dialog in the center.
-            dialog.setModalityType(ModalityType.APPLICATION_MODAL);
-            dialog.setVisible(true);
+            String tabTitle = null;
+            if (action == EditActionEnum.NEW) {
+                tabTitle = ControlConfigUtils.getString("label.tab.new");
+            } else if (action == EditActionEnum.EDIT) {
+                tabTitle = entity.getId().toString();
+            }
+            int tabIndex = tabPane.indexOfTab(tabTitle);
+            if (tabIndex == -1) {
+                tabPane.addTab(tabTitle, scrollPane);
+            }
+            tabIndex = tabPane.indexOfTab(tabTitle);
+            tabPane.setTabComponentAt(tabIndex, new ButtonTabComponent(tabPane));
+            tabPane.setSelectedIndex(tabIndex);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             throw new RuntimeException("There are problems when init the detail view.");
@@ -729,6 +744,8 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         int selectedRow = tblListEntities.getSelectedRow();
         if (isNew) {
             entities.add(entity);
+            int tabIndex = tabPane.indexOfTab(ControlConfigUtils.getString("label.tab.new"));
+            tabPane.setTitleAt(tabIndex, entity.getId().toString());
             selectedRow = entities.size() - 1; // If add new entity, the selected row has the last index.
         }
 
@@ -756,7 +773,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     }
 
     public void performAddAction() {
-        showEditView(null, ACTION_NEW);
+        showEditView(null, EditActionEnum.NEW);
     }
 
     private void performEditAction() {
@@ -766,7 +783,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
                     "Warning", JOptionPane.OK_OPTION, JOptionPane.WARNING_MESSAGE);
         } else {
             int rowModel = tblListEntities.convertRowIndexToModel(selectedRow);
-            showEditView(entities.get(rowModel), ACTION_EDIT);
+            showEditView(entities.get(rowModel), EditActionEnum.EDIT);
         }
     }
 
@@ -912,6 +929,37 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         // Re-calculate the total pages and set to the pagingNavigator.
         pagingNavigator.setTotalPage(calculateTotalPages());
         refreshData();
+    }
+
+    /**
+     * This function is intended to replace for {@link #notifyFromDetailView(AbstractIdOLObject, boolean)}.
+     * {@inheritDoc}
+     */
+    @Override
+    public void doSaved(SavedEvent<T> e) {
+        replaceEntity(e.getEntity());
+        // Keep the selected row before the data of table is changed.
+        int selectedRow = tblListEntities.getSelectedRow();
+        if (e.isNew()) {
+            entities.add(e.getEntity());
+            int tabIndex = tabPane.indexOfComponent((Component) e.getSource());
+            tabPane.setTitleAt(tabIndex, e.getEntity().getId().toString());
+            selectedRow = entities.size() - 1; // If add new entity, the selected row has the last index.
+        }
+
+        // fireTableDataChanged to rerender the table.
+        ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
+        ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
+        rowHeader.repaint();
+        rowHeader.revalidate();
+
+        // After fireTableDataChanged() the selection is lost. We need to reselect it programmatically.
+        tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
+
+    }
+
+    public JTabbedPane getTabbedPane() {
+        return tabPane;
     }
 
     @Override

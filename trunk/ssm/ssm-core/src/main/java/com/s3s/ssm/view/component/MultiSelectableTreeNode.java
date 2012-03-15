@@ -136,12 +136,19 @@ public class MultiSelectableTreeNode extends DefaultMutableTreeNode {
         return list;
     }
 
-    private void unselectParent(MultiSelectableTreeNode currentNode) {
+    /**
+     * Unselect all parent of parent... up to the unselected parent node.
+     * 
+     * @param currentNode
+     * @return the node, the branch from which has been changed.
+     */
+    private MultiSelectableTreeNode unselectParent(MultiSelectableTreeNode currentNode) {
         MultiSelectableTreeNode parentNode = (MultiSelectableTreeNode) currentNode.getParent();
         if (parentNode != null && parentNode.isSelected()) {
             parentNode.setSelected(false);
-            unselectParent(parentNode);
+            return unselectParent(parentNode);
         }
+        return parentNode;
     }
 
     /**
@@ -149,26 +156,28 @@ public class MultiSelectableTreeNode extends DefaultMutableTreeNode {
      * Multi-Selectable Tree (Please refer to the document to know the definition).
      * 
      * @param selected
+     * @return the node, the branch from which has been changed.
      */
-    public void setState(boolean selected) {
+    public MultiSelectableTreeNode setState(boolean selected) {
         if (selected == isSelected()) {
-            return;
+            return null;
         }
 
         if (isLeaf()) {
             nodeData.setSelected(selected);
             if (!selected) {
-                unselectParent(this);
+                return unselectParent(this);
             } else {
-                updateParentToSelect(this);
+                return updateParentToSelect(this);
             }
         } else {
             if (!selected) {
                 throw new IllegalStateException("Do not allow to unselect the intermediate node");
             } else {
                 nodeData.setSelected(selected);
-                updateParentToSelect(this); // update the state of parent
+                MultiSelectableTreeNode parent = updateParentToSelect(this); // update the state of parent
                 selectAllChildBranch(this); // select all child node
+                return parent;
             }
         }
     }
@@ -188,13 +197,15 @@ public class MultiSelectableTreeNode extends DefaultMutableTreeNode {
      * If the children are all selected --> the parent is set selected.
      * 
      * @param currentNode
+     * @return the node, the branch from which has been changed.
      */
-    private void updateParentToSelect(MultiSelectableTreeNode currentNode) {
+    private MultiSelectableTreeNode updateParentToSelect(MultiSelectableTreeNode currentNode) {
         MultiSelectableTreeNode parentNode = (MultiSelectableTreeNode) currentNode.getParent();
-        if (parentNode != null && !parentNode.isSelected()) {
-            parentNode.setSelected(parentNode.isAllChildSelected());
-            updateParentToSelect(parentNode);
+        if (parentNode != null && !parentNode.isSelected() && parentNode.isAllChildSelected()) {
+            parentNode.setSelected(true);
+            return updateParentToSelect(parentNode);
         }
+        return parentNode;
     }
 
     private boolean isAllChildSelected() {

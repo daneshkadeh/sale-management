@@ -517,9 +517,9 @@ public class SSMDataLoader {
     private static List<Operator> initOperator(DaoHelper daoHelper) {
         Operator operator = new Operator();
         // operator.setLogin("testOperator");
-        operator.setCode("testOperator"); // TODO: what is this?
-        operator.setUsername("testOperator");
-        operator.setPassword("123456encrypted");
+        operator.setCode("admin"); // TODO: what is this?
+        operator.setUsername("admin");
+        operator.setPassword("admin");
         operator.setEmail("test@solution3s.com");
         operator.setFullName("Test Operator");
         // operator.setActive(true);

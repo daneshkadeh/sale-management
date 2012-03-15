@@ -47,7 +47,7 @@ public class ListRoleView extends AbstractListView<Role> {
     }
 
     @Override
-    public void showEditView(Role entity, String action) {
+    public void showEditView(Role entity, EditActionEnum action) {
         // TODO This call requires sub class override Constructor method! It's not good.
         Map<String, Object> params = new HashMap<>();
         params.put(PARAM_ENTITY_ID, entity.getId());

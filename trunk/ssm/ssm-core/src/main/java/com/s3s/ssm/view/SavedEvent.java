@@ -28,21 +28,33 @@ public class SavedEvent<T extends AbstractIdOLObject> extends EventObject {
     private static final long serialVersionUID = -3306843792346320138L;
 
     private T entity;
-    
+    private boolean isNew;
+
     /**
      * @param source
      */
-    public SavedEvent(Object source, T entity) {
+    public SavedEvent(Object source, T entity, boolean isNew) {
         super(source);
         this.entity = entity;
+        this.isNew = isNew;
     }
-    
+
     /**
      * Get the entity saved.
+     * 
      * @return the entity which is saved.
      */
-    public T getEntity(){
+    public T getEntity() {
         return entity;
+    }
+
+    /**
+     * Is the entity is saved newly, or edited.
+     * 
+     * @return isNew or edit
+     */
+    public boolean isNew() {
+        return isNew;
     }
 
 }
