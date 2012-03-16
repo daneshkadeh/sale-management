@@ -77,6 +77,7 @@ import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.DetailDataModel.GroupInfoData;
 import com.s3s.ssm.model.DetailDataModel.TabInfoData;
+import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.ImageConstants;
@@ -88,6 +89,7 @@ import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
 import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.ImageChooser;
+import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.component.MultiSelectableTreeNode;
 import com.s3s.ssm.view.component.MultiSelectionListBox;
 import com.s3s.ssm.view.component.MultiSelectionTreeBox;
@@ -126,7 +128,6 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     private JButton btnSaveNew;
     private JButton btnNew;
     private JButton btnExit;
-    
 
     public AbstractSingleEditView() {
         this(null);
@@ -159,7 +160,6 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         // Layout the screen
         setLayout(new MigLayout("hidemode 2, wrap, fillx, ins 0 10 0 10", "grow"));
 
-
         toolbar = createToolBar();
         // Toolbar
         add(toolbar, "growx, top");
@@ -182,7 +182,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
 
         customizeComponents(name2AttributeComponent, entity);
     }
-    
+
     protected JToolBar createToolBar() {
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
@@ -425,6 +425,12 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 byte[] bytes = (byte[]) value;
                 dataField = new ImageChooser(bytes);
                 pnlEdit.add(lblLabel, newline + "top");
+                break;
+            case MONEY:
+                Money money = (Money) value;
+                dataField = new MoneyComponent(money, referenceData.getValues());
+                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+                pnlEdit.add(lblLabel, newline);
                 break;
             case FILE_CHOOSER:
                 String filePath = (String) value;
@@ -681,12 +687,18 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             MultiSelectionListBox<?> multiBox = (MultiSelectionListBox<?>) component;
             // TODO Phuc: test this case
             return multiBox.getDestinationValues();
+        case MULTI_SELECT_TREE_BOX:
+            MultiSelectionTreeBox multiTreeBox = (MultiSelectionTreeBox) component;
+            return multiTreeBox.getSelectedValues();
         case RADIO_BUTTON_GROUP:
             RadioButtonsGroup<?> radioBtnGroupField = (RadioButtonsGroup<?>) component;
             return radioBtnGroupField.getSelectedValue();
         case IMAGE:
             ImageChooser imageField = (ImageChooser) component;
             return imageField.getImageData();
+        case MONEY:
+            MoneyComponent moneyField = (MoneyComponent) component;
+            return moneyField.getMoney();
         case FILE_CHOOSER:
             FileChooser fileField = (FileChooser) component;
             // TODO Hoang: do this component check dirty?
