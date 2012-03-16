@@ -16,6 +16,7 @@
 package com.s3s.ssm.view.component;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
@@ -107,10 +108,10 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
     protected void doSelectSingle() {
         for (TreePath treePath : tree.getSelectionPaths()) {
             MultiSelectableTreeNode node = (MultiSelectableTreeNode) treePath.getLastPathComponent();
-            MultiSelectableTreeNode topNode = node.setState(true);
-            ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(topNode);
+            node.setState(true);
         }
         refreshDataForList();
+        ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
     /**
@@ -120,10 +121,10 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
     protected void doDeselectAll() {
         List<MultiSelectableTreeNode> selectedLeafNodes = rootNode.getAllSelectedLeafNodes(rootNode);
         for (MultiSelectableTreeNode node : selectedLeafNodes) {
-            MultiSelectableTreeNode topNode = node.setState(false);
-            ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(topNode);
+            node.setState(false);
         }
         refreshDataForList();
+        ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
     }
 
     /**
@@ -133,11 +134,23 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
     protected void doDeselectSingle() {
         List<List<MultiSelectableTreeNode>> selectedList = list.getSelectedValuesList();
         for (List<MultiSelectableTreeNode> nodePath : selectedList) {
-            MultiSelectableTreeNode topNode = nodePath.get(nodePath.size() - 1).setState(false);
-//            ((DefaultTreeModel) tree.getModel()).nodesWereInserted(topNode, new int[] { 1 });
-            ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(topNode);
+            nodePath.get(nodePath.size() - 1).setState(false);
         }
         refreshDataForList();
+        ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
+    }
+
+    /**
+     * Get the selected values.
+     * 
+     * @return list of selected values.
+     */
+    public List<Object> getSelectedValues() {
+        List<Object> values = new ArrayList<>();
+        for (List<MultiSelectableTreeNode> ln : list.getSelectedValuesList()) {
+            values.add(ln.get(ln.size() - 1).getValue());
+        }
+        return values;
     }
 
 }

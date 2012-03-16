@@ -26,6 +26,7 @@ import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.interfaces.StoreService;
 import com.s3s.ssm.model.DetailDataModel;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ImageConstants;
 import com.s3s.ssm.util.ImageUtils;
@@ -33,6 +34,14 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
 public class EditSupplierView extends AbstractSingleEditView<Supplier> {
+    /**
+     * 
+     */
+    private static final String TEST_ID = "idTest";
+    /**
+     * 
+     */
+    private static final String MONEY_ID = "MONEY_ID";
     private static final long serialVersionUID = -8101155807024861715L;
     private static final String SEX_ID = "SEX_ID";
 
@@ -54,8 +63,10 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
 
         detailDataModel.addRawAttribute("rawAttribute1", FieldTypeEnum.TEXTBOX).value("Init value");
         detailDataModel.addRawAttribute("rawAttribute2", FieldTypeEnum.DROPDOWN).value("value 2")
-                .referenceDataId("idTest");
+                .referenceDataId(TEST_ID);
         detailDataModel.addRawAttribute("rawAttribute3", FieldTypeEnum.MULTI_SELECT_TREE_BOX);
+        detailDataModel.addRawAttribute("rawAttribute4", FieldTypeEnum.MONEY).value(Money.zero("VND"))
+                .referenceDataId(MONEY_ID);
 
         detailDataModel.tab("We make it work!", "Tab 2", null);
         detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);
@@ -99,7 +110,8 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
         sex2String.put(true, ControlConfigUtils.getString("Male"));
         sex2String.put(false, ControlConfigUtils.getString("Female"));
         refDataModel.putRefDataList(SEX_ID, refDataModel.new ReferenceData<>(sex2String));
-        refDataModel.putRefDataList("idTest", new String[] { "value 1", "value 2", "value 3" });
+        refDataModel.putRefDataList(TEST_ID, new String[] { "value 1", "value 2", "value 3" });
+        refDataModel.putRefDataList(MONEY_ID, new String[] { "USD", "VND", "HPP" });
     }
 
 }
