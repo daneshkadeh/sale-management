@@ -1,5 +1,5 @@
 /*
- * ListPaymentTypeView
+ * ListBasicInformationView
  * 
  * Project: SSM
  * 
@@ -12,32 +12,38 @@
  * use it only in accordance with the terms of the license
  * agreements you entered into with HBASoft.
  */
-package com.s3s.ssm.view.list.finance;
+package com.s3s.ssm.view.list.config;
 
 import java.util.List;
 
-import com.s3s.ssm.entity.finance.PaymentType;
+import com.s3s.ssm.entity.config.Institution;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
-import com.s3s.ssm.view.detail.finance.EditPaymentTypeView;
+import com.s3s.ssm.view.detail.config.EditInstitutionView;
 
-public class ListPaymentTypeView extends AbstractListView<PaymentType> {
+public class ListInstitutionView extends AbstractListView<Institution> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("id", FieldTypeEnum.TEXTBOX));
         listDataModel.add(new DetailAttribute("code", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("contentType", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("isReceived", FieldTypeEnum.CHECKBOX));
+        listDataModel.add(new DetailAttribute("companyName", FieldTypeEnum.TEXTBOX));
 
     }
 
     @Override
-    protected Class<? extends AbstractEditView<PaymentType>> getEditViewClass() {
-        return EditPaymentTypeView.class;
+    protected Class<? extends AbstractEditView<Institution>> getEditViewClass() {
+        return EditInstitutionView.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ACLResourceEnum registerACLResource() {
+        return ACLResourceEnum.BASIC_INFORMATION;
     }
 
 }

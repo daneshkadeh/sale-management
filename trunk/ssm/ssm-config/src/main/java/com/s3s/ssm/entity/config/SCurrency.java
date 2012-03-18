@@ -55,4 +55,13 @@ public class SCurrency extends AbstractCodeOLObject {
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }

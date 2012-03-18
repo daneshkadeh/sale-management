@@ -21,7 +21,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
@@ -33,7 +34,8 @@ public class ExchangeRate extends AbstractCodeOLObject {
     private SCurrency currency;
     private Integer rate;
 
-    @Column(name = "update_date", nullable = false)
+    @Column(name = "update_date")
+    @NotBlank
     public Date getUpdateDate() {
         return updateDate;
     }
@@ -43,7 +45,8 @@ public class ExchangeRate extends AbstractCodeOLObject {
     }
 
     @ManyToOne
-    @JoinColumn(name = "currency_id", nullable = false)
+    @JoinColumn(name = "currency_id")
+    @NotBlank
     public SCurrency getCurrency() {
         return currency;
     }
@@ -52,8 +55,8 @@ public class ExchangeRate extends AbstractCodeOLObject {
         this.currency = currency;
     }
 
-    @Column(name = "rate", nullable = false)
-    @NotNull
+    @Column(name = "rate")
+    @NotBlank
     public Integer getRate() {
         return rate;
     }

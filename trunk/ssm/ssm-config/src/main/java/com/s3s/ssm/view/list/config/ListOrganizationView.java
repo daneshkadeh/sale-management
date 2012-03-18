@@ -1,5 +1,5 @@
 /*
- * ListPaymentView
+ * ListBasicInformationView
  * 
  * Project: SSM
  * 
@@ -12,27 +12,28 @@
  * use it only in accordance with the terms of the license
  * agreements you entered into with HBASoft.
  */
-package com.s3s.ssm.view.list.finance;
+package com.s3s.ssm.view.list.config;
 
 import java.util.List;
 
-import com.s3s.ssm.entity.finance.Payment;
+import com.s3s.ssm.entity.config.Organization;
 import com.s3s.ssm.model.DetailAttribute;
+import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
+import com.s3s.ssm.view.detail.config.EditOrganizationView;
 
-public class ListPaymentView extends AbstractListView<Payment> {
+public class ListOrganizationView extends AbstractListView<Organization> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        // TODO Auto-generated method stub
+        listDataModel.add(new DetailAttribute("code", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
 
     }
 
     @Override
-    protected Class<? extends AbstractEditView<Payment>> getEditViewClass() {
-        // TODO Auto-generated method stub
-        return null;
+    protected Class<? extends AbstractEditView<Organization>> getEditViewClass() {
+        return EditOrganizationView.class;
     }
-
 }

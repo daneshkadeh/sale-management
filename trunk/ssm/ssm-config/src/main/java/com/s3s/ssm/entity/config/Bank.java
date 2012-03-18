@@ -17,6 +17,9 @@ package com.s3s.ssm.entity.config;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
@@ -25,10 +28,11 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 public class Bank extends AbstractCodeOLObject {
     private static final long serialVersionUID = -1834997390961013651L;
     private String name;
-
     private String address;
 
     @Column(name = "bank_name", length = 128)
+    @NotBlank
+    @Size(max = 128)
     public String getName() {
         return name;
     }
@@ -38,6 +42,8 @@ public class Bank extends AbstractCodeOLObject {
     }
 
     @Column(name = "address", length = 256)
+    @NotBlank
+    @Size(max = 256)
     public String getAddress() {
         return address;
     }
