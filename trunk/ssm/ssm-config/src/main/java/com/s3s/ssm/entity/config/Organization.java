@@ -204,7 +204,6 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "order_inv_code_rule", length = 50)
-    @NotBlank
     @Size(max = 50)
     public String getOrderInvCodeRule() {
         return orderInvCodeRule;
@@ -215,7 +214,6 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "sales_inv_code_rule", length = 50)
-    @NotBlank
     @Size(max = 50)
     public String getSalesInvCodeRule() {
         return salesInvCodeRule;
@@ -226,7 +224,6 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "sales_refund_inv_code_rule", length = 50)
-    @NotBlank
     @Size(max = 50)
     public String getSalesRefundInvCodeRule() {
         return salesRefundInvCodeRule;
@@ -237,7 +234,6 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "pur_inv_code_rule", length = 50)
-    @NotBlank
     @Size(max = 50)
     public String getPurInvCodeRule() {
         return purInvCodeRule;
@@ -248,7 +244,6 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "pur_refund_inv_code_rule", length = 50)
-    @NotBlank
     @Size(max = 50)
     public String getPurRefundInvCodeRule() {
         return purRefundInvCodeRule;
@@ -259,7 +254,6 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "spon_contract_code_rule", length = 50)
-    @NotBlank
     @Size(max = 50)
     public String getSponContractCodeRule() {
         return sponContractCodeRule;
@@ -270,7 +264,6 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "movement_inv_code_rule", length = 50)
-    @NotBlank
     @Size(max = 50)
     public String getMovementInvCodeRule() {
         return movementInvCodeRule;
@@ -281,7 +274,6 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "export_inv_code_rule", length = 50)
-    @NotBlank
     @Size(max = 50)
     public String getExportInvCodeRule() {
         return exportInvCodeRule;
@@ -292,7 +284,6 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "import_inv_code_rule", length = 50)
-    @NotBlank
     @Size(max = 50)
     public String getImportInvCodeRule() {
         return importInvCodeRule;
@@ -303,7 +294,6 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "payment_bill_code_rule", length = 50)
-    @NotBlank
     @Size(max = 50)
     public String getPaymentBillCodeRule() {
         return paymentBillCodeRule;
@@ -314,7 +304,6 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "receipt_code_rule", length = 50)
-    @NotBlank
     @Size(max = 50)
     public String getReceiptsCodeRule() {
         return receiptsCodeRule;
@@ -325,7 +314,6 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "promotion_code_rule", length = 50)
-    @NotBlank
     @Size(max = 50)
     public String getPromotionCodeRule() {
         return promotionCodeRule;

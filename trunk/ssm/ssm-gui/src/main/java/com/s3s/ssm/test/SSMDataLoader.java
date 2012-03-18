@@ -127,8 +127,8 @@ public class SSMDataLoader {
     }
 
     private static void cleanDatabase(DaoHelper daoHelper) {
-        daoHelper.getDao(Payment.class).deleteAll(daoHelper.getDao(Payment.class).findAll());
-        daoHelper.getDao(PaymentContent.class).deleteAll(daoHelper.getDao(PaymentContent.class).findAll());
+        // daoHelper.getDao(Payment.class).deleteAll(daoHelper.getDao(Payment.class).findAll());
+        // daoHelper.getDao(PaymentContent.class).deleteAll(daoHelper.getDao(PaymentContent.class).findAll());
 
         daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());
         daoHelper.getDao(SalesContract.class).deleteAll(daoHelper.getDao(SalesContract.class).findAll());
@@ -170,15 +170,15 @@ public class SSMDataLoader {
         // Finance module
         daoHelper.getDao(PaymentContent.class).deleteAll(daoHelper.getDao(PaymentContent.class).findAll());
         // Config module
+        daoHelper.getDao(Organization.class).deleteAll(daoHelper.getDao(Organization.class).findAll());
+        daoHelper.getDao(Institution.class).deleteAll(daoHelper.getDao(Institution.class).findAll());
+        daoHelper.getDao(UploadFile.class).deleteAll(daoHelper.getDao(UploadFile.class).findAll());
         daoHelper.getDao(UnitOfMeasure.class).deleteAll(daoHelper.getDao(UnitOfMeasure.class).findAll());
         daoHelper.getDao(UomCategory.class).deleteAll(daoHelper.getDao(UomCategory.class).findAll());
         daoHelper.getDao(ExchangeRate.class).deleteAll(daoHelper.getDao(ExchangeRate.class).findAll());
         daoHelper.getDao(SCurrency.class).deleteAll(daoHelper.getDao(SCurrency.class).findAll());
         daoHelper.getDao(BankAccount.class).deleteAll(daoHelper.getDao(BankAccount.class).findAll());
         daoHelper.getDao(Bank.class).deleteAll(daoHelper.getDao(Bank.class).findAll());
-        daoHelper.getDao(Organization.class).deleteAll(daoHelper.getDao(Organization.class).findAll());
-        daoHelper.getDao(Institution.class).deleteAll(daoHelper.getDao(Institution.class).findAll());
-        daoHelper.getDao(UploadFile.class).deleteAll(daoHelper.getDao(UploadFile.class).findAll());
     }
 
     private static void testInsertedData(DaoHelper daoHelper) {
@@ -346,7 +346,7 @@ public class SSMDataLoader {
 
         Payment payment = new Payment();
         payment.setPaymentType(pc1);
-        // payment.setPaymentMean(PaymentMeanEnum.CASH);
+        payment.setPaymentMean(PaymentMode.CASH);
         // payment.setContact(listContact.get(0));
         // payment.setInvoice(listInvoice.get(0));
         payment.setMoney(10000.0);
@@ -536,7 +536,6 @@ public class SSMDataLoader {
         org1.setDefPaymentMethod(PaymentMode.CASH);
         org1.setEnableChangeInvDate(0);
         // rule of code generation
-
         org1.setSellOnCredit(2); // ko cho phep ban am
 
         List<Organization> result = Arrays.asList(org1);
