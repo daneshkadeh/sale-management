@@ -19,7 +19,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 
@@ -33,7 +35,7 @@ public class BankAccount extends AbstractIdOLObject {
 
     @ManyToOne
     @JoinColumn(name = "bank_id", nullable = false)
-    @NotNull
+    @NotBlank
     public Bank getBank() {
         return bank;
     }
@@ -43,7 +45,7 @@ public class BankAccount extends AbstractIdOLObject {
     }
 
     @Column(name = "account_number", nullable = false, length = 32)
-    @NotNull
+    @Size(max = 32)
     public String getAccountNumber() {
         return accountNumber;
     }
@@ -53,6 +55,7 @@ public class BankAccount extends AbstractIdOLObject {
     }
 
     @Column(name = "account_name", length = 128)
+    @Size(max = 128)
     public String getAccountName() {
         return accountName;
     }

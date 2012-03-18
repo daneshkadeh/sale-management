@@ -23,9 +23,10 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.list.config.ListBankView;
-import com.s3s.ssm.view.list.config.ListBasicInformationView;
 import com.s3s.ssm.view.list.config.ListCurrencyView;
 import com.s3s.ssm.view.list.config.ListExchangeRateView;
+import com.s3s.ssm.view.list.config.ListInstitutionView;
+import com.s3s.ssm.view.list.config.ListOrganizationView;
 import com.s3s.ssm.view.list.config.ListUnitOfMeasureView;
 import com.s3s.ssm.view.list.config.ListUomCategoryView;
 import com.s3s.ssm.view.list.operator.ListOperatorView;
@@ -94,9 +95,14 @@ public class SystemManagementDomain extends AbstractDomain {
         TreeNodeWithView itemNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Item"),
                 new ListItemView());
         // Basic Information Management
-        TreeNodeWithView basicInformationEntry = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.System.BasicInformation"), new ListBasicInformationView());
-        rootNode.add(basicInformationEntry);
+        // TreeNodeWithView basicInformationEntry = new TreeNodeWithView(
+        // ControlConfigUtils.getString("JTree.System.BasicInformation"), new ListBasicInformationView());
+        TreeNodeWithView institutionEntry = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.System.Institution"), new ListInstitutionView());
+        rootNode.add(institutionEntry);
+        TreeNodeWithView orgEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Organization"),
+                new ListOrganizationView());
+        rootNode.add(orgEntry);
         // TODO: ListTaxGroupView
         TreeNodeWithView taxGroupNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.TaxGroup"));
         rootNode.add(productManagementEntry);

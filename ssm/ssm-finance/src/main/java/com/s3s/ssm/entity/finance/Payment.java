@@ -25,16 +25,17 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.config.PaymentMode;
 
 @Entity
 @Table(name = "s_payment")
 public class Payment extends AbstractIdOLObject {
     // private Invoice invoice;
     // private Contact contact;
-    private PaymentType paymentType;
+    private PaymentContent paymentType;
     private Double money;
     private String currency = "VND";
-    private PaymentMeanEnum paymentMean;
+    private PaymentMode paymentMean;
     private PaymentStatus status = PaymentStatus.OPEN;
 
     // @ManyToOne(fetch = FetchType.EAGER)
@@ -59,11 +60,11 @@ public class Payment extends AbstractIdOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "payment_type_id")
-    public PaymentType getPaymentType() {
+    public PaymentContent getPaymentType() {
         return paymentType;
     }
 
-    public void setPaymentType(PaymentType paymentType) {
+    public void setPaymentType(PaymentContent paymentType) {
         this.paymentType = paymentType;
     }
 
@@ -90,11 +91,11 @@ public class Payment extends AbstractIdOLObject {
     @Column(name = "payment_mean", nullable = false)
     @NotNull
     @Enumerated(EnumType.STRING)
-    public PaymentMeanEnum getPaymentMean() {
+    public PaymentMode getPaymentMean() {
         return paymentMean;
     }
 
-    public void setPaymentMean(PaymentMeanEnum paymentMean) {
+    public void setPaymentMean(PaymentMode paymentMean) {
         this.paymentMean = paymentMean;
     }
 
