@@ -427,7 +427,13 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 pnlEdit.add(lblLabel, newline + "top");
                 break;
             case MONEY:
-                Money money = (Money) value;
+                Money money = null;
+                if (value == null) {
+                    money = Money.zero((String) referenceData.getValues().get(0)); // TODO: get default currency from
+                                                                                   // context provider
+                } else {
+                    money = (Money) value;
+                }
                 dataField = new MoneyComponent(money, referenceData.getValues());
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 pnlEdit.add(lblLabel, newline);

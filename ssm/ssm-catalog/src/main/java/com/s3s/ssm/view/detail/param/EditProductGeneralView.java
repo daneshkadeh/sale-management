@@ -27,7 +27,7 @@ import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
-public class EditProductGeneralView extends AbstractSingleEditView<Product> {
+public class EditProductGeneralView<T extends Product> extends AbstractSingleEditView<Product> {
 
     private static final String TYPE_REF_ID = "1";
     private static final String MANU_REF_ID = "2";
@@ -41,6 +41,13 @@ public class EditProductGeneralView extends AbstractSingleEditView<Product> {
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Product entity) {
         detailDataModel.tab("General", "General info", null);
+        addTabGeneral(detailDataModel);
+
+        detailDataModel.tab("More info", "More info", null);
+        detailDataModel.addAttribute("uploadFile.data", FieldTypeEnum.IMAGE);
+    }
+
+    protected void addTabGeneral(DetailDataModel detailDataModel) {
         detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("type", FieldTypeEnum.DROPDOWN).referenceDataId(TYPE_REF_ID);
@@ -48,11 +55,8 @@ public class EditProductGeneralView extends AbstractSingleEditView<Product> {
         detailDataModel.addAttribute("model", FieldTypeEnum.TEXTBOX);
         detailDataModel.addAttribute("description", FieldTypeEnum.TEXTAREA).editable(true);
         detailDataModel.addAttribute("mainUom", FieldTypeEnum.DROPDOWN).referenceDataId(UOM_REF_ID);
-        detailDataModel.addAttribute("properties", FieldTypeEnum.MULTI_SELECT_LIST_BOX).referenceDataId(REF_PROPERTIES_ID)
-                .width(300);
-
-        detailDataModel.tab("More info", "More info", null);
-        detailDataModel.addAttribute("uploadFile.data", FieldTypeEnum.IMAGE);
+        detailDataModel.addAttribute("properties", FieldTypeEnum.MULTI_SELECT_LIST_BOX)
+                .referenceDataId(REF_PROPERTIES_ID).width(300);
     }
 
     @Override
