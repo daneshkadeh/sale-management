@@ -36,6 +36,7 @@ import com.s3s.ssm.view.list.param.ListManufacturerView;
 import com.s3s.ssm.view.list.param.ListProductPropertyView;
 import com.s3s.ssm.view.list.param.ListProductTypeView;
 import com.s3s.ssm.view.list.param.ListProductView;
+import com.s3s.ssm.view.list.param.ListVoucherView;
 import com.s3s.ssm.view.list.security.ListRoleView;
 
 /**
@@ -91,6 +92,8 @@ public class SystemManagementDomain extends AbstractDomain {
                 ControlConfigUtils.getString("JTree.System.ProductGroup"), new ListProductTypeView());
         TreeNodeWithView productNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Product"),
                 new ListProductView());
+        TreeNodeWithView voucherNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Voucher"),
+                new ListVoucherView());
 
         TreeNodeWithView itemNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Item"),
                 new ListItemView());
@@ -111,6 +114,7 @@ public class SystemManagementDomain extends AbstractDomain {
         productManagementEntry.add(productPropertyNode);
         productManagementEntry.add(productGroupNode);
         productManagementEntry.add(productNode);
+        productManagementEntry.add(voucherNode);
         productManagementEntry.add(itemNode);
         productManagementEntry.add(taxGroupNode);
 

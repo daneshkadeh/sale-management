@@ -40,7 +40,7 @@ public class MoneyComponent extends JPanel {
 
     public MoneyComponent(Money money, List<String> currencyCodes) {
         super();
-        Assert.isTrue(money != null, "Money must not be ");
+        Assert.isTrue(money != null, "Money must not be null");
         setLayout(new MigLayout("ins 0", "[grow]0[]"));
         valueField = initValueField();
         currencyCodeField = initCurrencyCodeField(currencyCodes);

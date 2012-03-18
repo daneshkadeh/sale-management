@@ -760,10 +760,10 @@ CREATE TABLE `s_currency` (
 --
 -- Dumping data for table `s_currency`
 --
-
+-- TODO: This should be move to SSMDataLoader
 INSERT INTO `s_currency` (`id`, `code`, `name`, `symbol`, `active`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(20, '01', 'VND', 'd', 1, 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0),
-(21, '02', 'USD', '$', 1, 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
+(20, 'VND', 'Viet nam dong', 'd', 1, 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0),
+(21, 'USD', 'United State Dollar', '$', 1, 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
 
 -- --------------------------------------------------------
 
