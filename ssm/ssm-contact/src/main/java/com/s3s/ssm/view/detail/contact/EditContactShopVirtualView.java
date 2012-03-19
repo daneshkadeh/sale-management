@@ -18,7 +18,7 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.contact.ContactShop;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
 public class EditContactShopVirtualView extends AbstractSingleEditView<ContactShop> {
@@ -30,13 +30,13 @@ public class EditContactShopVirtualView extends AbstractSingleEditView<ContactSh
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ContactShop entity) {
         // detailDataModel.addAttribute("contact", FieldTypeEnum.TEXTBOX).editable(false);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("address", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("fixPhone", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("remark", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("address", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("phone", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("fixPhone", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("fax", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("email", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("remark", DetailFieldType.TEXTBOX);
     }
 
     @Override

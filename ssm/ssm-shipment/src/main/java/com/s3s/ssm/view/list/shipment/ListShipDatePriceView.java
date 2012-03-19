@@ -20,7 +20,7 @@ import java.util.List;
 
 import com.s3s.ssm.entity.shipment.ShipDatePrice;
 import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.shipment.EditShipDatePriceDetail;
@@ -36,9 +36,9 @@ public class ListShipDatePriceView extends AbstractListView<ShipDatePrice> {
      */
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("shipPrice", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("updateDate", FieldTypeEnum.DATE));
-        listDataModel.add(new DetailAttribute("price", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("shipPrice", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("updateDate", DetailFieldType.DATE));
+        listDataModel.add(new DetailAttribute("price", DetailFieldType.TEXTBOX));
     }
 
     /**

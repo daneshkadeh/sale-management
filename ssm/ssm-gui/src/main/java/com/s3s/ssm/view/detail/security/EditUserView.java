@@ -22,7 +22,7 @@ import javax.swing.DefaultListCellRenderer;
 import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.entity.security.User;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
@@ -40,11 +40,11 @@ public class EditUserView extends AbstractSingleEditView<User> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, User entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("username", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("password", FieldTypeEnum.PASSWORD).mandatory(true);
-        detailDataModel.addAttribute("roles", FieldTypeEnum.MULTI_SELECT_LIST_BOX).referenceDataId(ROLE_REF_ID);
-        detailDataModel.addAttribute("isEnabled", FieldTypeEnum.CHECKBOX);
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("username", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("password", DetailFieldType.PASSWORD).mandatory(true);
+        detailDataModel.addAttribute("roles", DetailFieldType.MULTI_SELECT_LIST_BOX).referenceDataId(ROLE_REF_ID);
+        detailDataModel.addAttribute("isEnabled", DetailFieldType.CHECKBOX);
     }
 
     @Override

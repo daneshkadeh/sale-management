@@ -3,15 +3,15 @@ package com.s3s.ssm.view.detail.param;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.ItemPropertyValue;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
 public class EditItemPropertyValueView extends AbstractSingleEditView<ItemPropertyValue> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ItemPropertyValue entity) {
-        detailDataModel.addAttribute("item", FieldTypeEnum.TEXTBOX).editable(false);
-        detailDataModel.addAttribute("property", FieldTypeEnum.DROPDOWN);
+        detailDataModel.addAttribute("item", DetailFieldType.TEXTBOX).editable(false);
+        detailDataModel.addAttribute("property", DetailFieldType.DROPDOWN);
 
     }
 

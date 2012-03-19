@@ -20,7 +20,7 @@ import java.util.Map;
 import com.s3s.ssm.entity.config.Institution;
 import com.s3s.ssm.entity.config.UploadFile;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
 public class EditInstitutionView extends AbstractSingleEditView<Institution> {
@@ -33,16 +33,16 @@ public class EditInstitutionView extends AbstractSingleEditView<Institution> {
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Institution entity) {
         // information of company
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("companyName", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("agent", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("position", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("logo.data", FieldTypeEnum.IMAGE);
-        detailDataModel.addAttribute("companyAddress", FieldTypeEnum.TEXTAREA);
-        detailDataModel.addAttribute("tel", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("website", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("companyName", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("agent", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("position", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("logo.data", DetailFieldType.IMAGE);
+        detailDataModel.addAttribute("companyAddress", DetailFieldType.TEXTAREA);
+        detailDataModel.addAttribute("tel", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("fax", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("website", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("email", DetailFieldType.TEXTBOX);
     }
 
     @Override

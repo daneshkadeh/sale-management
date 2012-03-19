@@ -23,7 +23,7 @@ import javax.swing.DefaultListCellRenderer;
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
@@ -48,15 +48,15 @@ public class EditOperatorView extends AbstractSingleEditView<Operator> {
      */
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Operator entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("username", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("password", FieldTypeEnum.PASSWORD);
-        detailDataModel.addAttribute("fullName", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
-        detailDataModel.addAttribute("roles", FieldTypeEnum.MULTI_SELECT_LIST_BOX).referenceDataId(ROLE_REF_ID);
-        detailDataModel.addAttribute("isEnabled", FieldTypeEnum.CHECKBOX);
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("username", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("password", DetailFieldType.PASSWORD);
+        detailDataModel.addAttribute("fullName", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("email", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("phone", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("address", DetailFieldType.TEXTAREA);
+        detailDataModel.addAttribute("roles", DetailFieldType.MULTI_SELECT_LIST_BOX).referenceDataId(ROLE_REF_ID);
+        detailDataModel.addAttribute("isEnabled", DetailFieldType.CHECKBOX);
     }
 
     @Override

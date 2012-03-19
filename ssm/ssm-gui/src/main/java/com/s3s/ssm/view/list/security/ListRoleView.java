@@ -24,7 +24,7 @@ import javax.swing.JScrollPane;
 
 import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.util.view.WindowUtilities;
 import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
@@ -36,9 +36,9 @@ public class ListRoleView extends AbstractListView<Role> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("code", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("isEnable", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("code", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("name", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("isEnable", DetailFieldType.TEXTBOX));
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.s3s.ssm.entity.catalog.ProductProperty.PropertyType;
 import com.s3s.ssm.entity.catalog.ProductPropertyElement;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
@@ -24,8 +24,8 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
 
     @Override
     protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
-        listDataModel.add(new DetailAttribute("id", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("value", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("id", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("value", DetailFieldType.TEXTBOX));
     }
 
     @Override
@@ -45,9 +45,9 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ProductProperty entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("type", FieldTypeEnum.DROPDOWN).mandatory(true).referenceDataId(REF_PROPERTY_TYPE);
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).mandatory(true).referenceDataId(REF_PROPERTY_TYPE);
     }
 
     @Override

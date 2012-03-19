@@ -21,7 +21,7 @@ import javax.swing.DefaultListCellRenderer;
 
 import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
@@ -35,9 +35,9 @@ public class EditUomCategoryView extends AbstractSingleEditView<UomCategory> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, UomCategory entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("parentUomCategory", FieldTypeEnum.DROPDOWN).referenceDataId(CATE_REF_ID);
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("parentUomCategory", DetailFieldType.DROPDOWN).referenceDataId(CATE_REF_ID);
     }
 
     @Override
