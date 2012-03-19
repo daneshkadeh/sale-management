@@ -20,7 +20,7 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.shipment.ShipPrice;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
 /**
@@ -41,8 +41,8 @@ public class EditShipPriceView extends AbstractSingleEditView<ShipPrice> {
      */
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ShipPrice entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
     }
 
 }

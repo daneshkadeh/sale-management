@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.ProductPropertyElement;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
 public class EditPropertyElementVirtualView extends AbstractSingleEditView<ProductPropertyElement> {
@@ -15,7 +15,7 @@ public class EditPropertyElementVirtualView extends AbstractSingleEditView<Produ
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ProductPropertyElement entity) {
-        detailDataModel.addAttribute("value", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("value", DetailFieldType.TEXTBOX).mandatory(true);
     }
 
     @Override

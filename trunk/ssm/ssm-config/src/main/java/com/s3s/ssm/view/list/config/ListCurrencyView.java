@@ -18,7 +18,7 @@ import java.util.List;
 
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
@@ -28,9 +28,9 @@ public class ListCurrencyView extends AbstractListView<SCurrency> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("symbol", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("isActive", FieldTypeEnum.DROPDOWN));
+        listDataModel.add(new DetailAttribute("name", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("symbol", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("isActive", DetailFieldType.DROPDOWN));
 
     }
 

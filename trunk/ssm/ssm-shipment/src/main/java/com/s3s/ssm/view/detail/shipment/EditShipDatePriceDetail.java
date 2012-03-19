@@ -24,7 +24,7 @@ import javax.swing.DefaultListCellRenderer;
 import com.s3s.ssm.entity.shipment.ShipDatePrice;
 import com.s3s.ssm.entity.shipment.ShipPrice;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
@@ -47,9 +47,9 @@ public class EditShipDatePriceDetail extends AbstractSingleEditView<ShipDatePric
      */
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ShipDatePrice entity) {
-        detailDataModel.addAttribute("shipPrice", FieldTypeEnum.DROPDOWN).referenceDataId(SHIPPRICE_REF_ID);
-        detailDataModel.addAttribute("updateDate", FieldTypeEnum.DATE).mandatory(true);
-        detailDataModel.addAttribute("price", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("shipPrice", DetailFieldType.DROPDOWN).referenceDataId(SHIPPRICE_REF_ID);
+        detailDataModel.addAttribute("updateDate", DetailFieldType.DATE).mandatory(true);
+        detailDataModel.addAttribute("price", DetailFieldType.TEXTBOX).mandatory(true);
     }
 
     @Override

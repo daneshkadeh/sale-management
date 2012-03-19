@@ -18,7 +18,7 @@ import java.util.List;
 
 import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.contact.EditMultiSupplierViewTest;
@@ -28,14 +28,14 @@ public class ListSupplierView extends AbstractListView<Supplier> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("code", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("code", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("name", DetailFieldType.TEXTBOX));
         // listDataModel.add(new DetailAttribute("title", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("representer", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("sex", FieldTypeEnum.CHECKBOX));
-        listDataModel.add(new DetailAttribute("position", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("phone", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("email", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("representer", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("sex", DetailFieldType.CHECKBOX));
+        listDataModel.add(new DetailAttribute("position", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("phone", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("email", DetailFieldType.TEXTBOX));
     }
 
     @Override

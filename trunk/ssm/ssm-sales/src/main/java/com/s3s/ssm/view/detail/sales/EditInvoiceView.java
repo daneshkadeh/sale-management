@@ -26,7 +26,7 @@ import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.utils.InvoiceHelper;
 import com.s3s.ssm.view.AbstractEditView;
@@ -46,13 +46,13 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
 
     @Override
     protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
-        listDataModel.add(new DetailAttribute("item", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("packageLine", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("amount", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("priceAfterTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("moneyAfterTax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("type", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("status", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("item", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("packageLine", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("amount", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("priceAfterTax", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("moneyAfterTax", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("type", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("status", DetailFieldType.TEXTBOX));
     }
 
     @Override
@@ -75,18 +75,18 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Invoice entity) {
-        detailDataModel.addAttribute("invoiceNumber", FieldTypeEnum.TEXTBOX).editable(false);
-        detailDataModel.addAttribute("type", FieldTypeEnum.DROPDOWN).referenceDataId(REF_TYPE);
-        detailDataModel.addAttribute("createdDate", FieldTypeEnum.DATE);
+        detailDataModel.addAttribute("invoiceNumber", DetailFieldType.TEXTBOX).editable(false);
+        detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).referenceDataId(REF_TYPE);
+        detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
 
         // TODO: contact will be chosen from and listSearchView
-        detailDataModel.addAttribute("contact", FieldTypeEnum.DROPDOWN).referenceDataId(REF_CONTACT);
-        detailDataModel.addAttribute("moneyAfterTax", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("contact", DetailFieldType.DROPDOWN).referenceDataId(REF_CONTACT);
+        detailDataModel.addAttribute("moneyAfterTax", DetailFieldType.TEXTBOX);
 
         // TODO: how to identify currency for an invoice, if 1 item is USD, 1 item is VND
         // detailDataModel.addAttribute("currency", FieldTypeEnum.DROPDOWN).referenceDataId(REF_CURRENCY);
-        detailDataModel.addAttribute("status", FieldTypeEnum.DROPDOWN).referenceDataId(REF_STATUS);
-        detailDataModel.addAttribute("paymentStatus", FieldTypeEnum.DROPDOWN).referenceDataId(REF_PAY_STATUS);
+        detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN).referenceDataId(REF_STATUS);
+        detailDataModel.addAttribute("paymentStatus", DetailFieldType.DROPDOWN).referenceDataId(REF_PAY_STATUS);
 
     }
 

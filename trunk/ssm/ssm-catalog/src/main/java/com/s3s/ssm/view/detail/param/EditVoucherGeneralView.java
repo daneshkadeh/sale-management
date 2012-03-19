@@ -8,7 +8,7 @@ import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.catalog.Voucher;
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 
 public class EditVoucherGeneralView extends EditProductGeneralView<Voucher> {
@@ -22,7 +22,7 @@ public class EditVoucherGeneralView extends EditProductGeneralView<Voucher> {
     @Override
     protected void addTabGeneral(DetailDataModel detailDataModel) {
         super.addTabGeneral(detailDataModel);
-        detailDataModel.addAttribute("minAmount", FieldTypeEnum.MONEY).referenceDataId(REF_CURRENCY);
+        detailDataModel.addAttribute("minAmount", DetailFieldType.MONEY).referenceDataId(REF_CURRENCY);
     }
 
     @Override

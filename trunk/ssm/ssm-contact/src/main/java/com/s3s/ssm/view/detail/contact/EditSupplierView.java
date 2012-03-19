@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.interfaces.StoreService;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ImageConstants;
@@ -52,30 +52,30 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Supplier entity) {
         detailDataModel.tab("We are S3S", "This is a tooltip", ImageUtils.getIcon(ImageConstants.USER_ICON));
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).width(5).newColumn();
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).width(5).newColumn();
         detailDataModel.startGroup("Group 1");
-        detailDataModel.addAttribute("representer", FieldTypeEnum.TEXTBOX).width(40);
-        detailDataModel.addAttribute("sex", FieldTypeEnum.RADIO_BUTTON_GROUP).referenceDataId(SEX_ID);
-        detailDataModel.addAttribute("position", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("representer", DetailFieldType.TEXTBOX).width(40);
+        detailDataModel.addAttribute("sex", DetailFieldType.RADIO_BUTTON_GROUP).referenceDataId(SEX_ID);
+        detailDataModel.addAttribute("position", DetailFieldType.TEXTBOX);
         detailDataModel.endGroup();
-        detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
+        detailDataModel.addAttribute("address", DetailFieldType.TEXTAREA);
 
-        detailDataModel.addRawAttribute("rawAttribute1", FieldTypeEnum.TEXTBOX).value("Init value");
-        detailDataModel.addRawAttribute("rawAttribute2", FieldTypeEnum.DROPDOWN).value("value 2")
+        detailDataModel.addRawAttribute("rawAttribute1", DetailFieldType.TEXTBOX).value("Init value");
+        detailDataModel.addRawAttribute("rawAttribute2", DetailFieldType.DROPDOWN).value("value 2")
                 .referenceDataId(TEST_ID);
-        detailDataModel.addRawAttribute("rawAttribute3", FieldTypeEnum.MULTI_SELECT_TREE_BOX);
-        detailDataModel.addRawAttribute("rawAttribute4", FieldTypeEnum.MONEY).value(Money.zero("VND"))
+        detailDataModel.addRawAttribute("rawAttribute3", DetailFieldType.MULTI_SELECT_TREE_BOX);
+        detailDataModel.addRawAttribute("rawAttribute4", DetailFieldType.MONEY).value(Money.zero("VND"))
                 .referenceDataId(MONEY_ID);
 
         detailDataModel.tab("We make it work!", "Tab 2", null);
-        detailDataModel.addAttribute("phone", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("phone", DetailFieldType.TEXTBOX);
         detailDataModel.startGroup("Group 2");
-        detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("fax", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("email", DetailFieldType.TEXTBOX);
         detailDataModel.endGroup();
-        detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX);
-        detailDataModel.addAttribute("comment", FieldTypeEnum.TEXTAREA);
+        detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX);
+        detailDataModel.addAttribute("comment", DetailFieldType.TEXTAREA);
         // TODO: todo test code
         System.out.println("call store service from contact module: "
                 + serviceProvider.getService(StoreService.class).testService());

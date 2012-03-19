@@ -24,7 +24,7 @@ import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.config.UploadFile;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
@@ -45,18 +45,18 @@ public class EditProductGeneralView<T extends Product> extends AbstractSingleEdi
         addTabGeneral(detailDataModel);
 
         detailDataModel.tab("More info", "More info", null);
-        detailDataModel.addAttribute("uploadFile.data", FieldTypeEnum.IMAGE);
+        detailDataModel.addAttribute("uploadFile.data", DetailFieldType.IMAGE);
     }
 
     protected void addTabGeneral(DetailDataModel detailDataModel) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("type", FieldTypeEnum.DROPDOWN).referenceDataId(TYPE_REF_ID);
-        detailDataModel.addAttribute("manufacturer", FieldTypeEnum.DROPDOWN).referenceDataId(MANU_REF_ID);
-        detailDataModel.addAttribute("model", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("description", FieldTypeEnum.TEXTAREA).editable(true);
-        detailDataModel.addAttribute("mainUom", FieldTypeEnum.DROPDOWN).referenceDataId(UOM_REF_ID);
-        detailDataModel.addAttribute("properties", FieldTypeEnum.MULTI_SELECT_LIST_BOX)
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).referenceDataId(TYPE_REF_ID);
+        detailDataModel.addAttribute("manufacturer", DetailFieldType.DROPDOWN).referenceDataId(MANU_REF_ID);
+        detailDataModel.addAttribute("model", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("description", DetailFieldType.TEXTAREA).editable(true);
+        detailDataModel.addAttribute("mainUom", DetailFieldType.DROPDOWN).referenceDataId(UOM_REF_ID);
+        detailDataModel.addAttribute("properties", DetailFieldType.MULTI_SELECT_LIST_BOX)
                 .referenceDataId(REF_PROPERTIES_ID).width(300);
         System.err.println(entity.getProperties());
     }

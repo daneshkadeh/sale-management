@@ -24,7 +24,7 @@ import javax.swing.JComboBox;
 import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.entity.finance.PaymentType;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
@@ -39,11 +39,11 @@ public class EditPaymentContentView extends AbstractSingleEditView<PaymentConten
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, PaymentContent entity) {
-        detailDataModel.addAttribute("paymentType", FieldTypeEnum.DROPDOWN).mandatory(true)
+        detailDataModel.addAttribute("paymentType", DetailFieldType.DROPDOWN).mandatory(true)
                 .referenceDataId(REF_PAYMENT_TYPE);
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTAREA).mandatory(true);
-        detailDataModel.addAttribute("parent", FieldTypeEnum.DROPDOWN).referenceDataId(REF_PAYMENT_CONTENT);
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTAREA).mandatory(true);
+        detailDataModel.addAttribute("parent", DetailFieldType.DROPDOWN).referenceDataId(REF_PAYMENT_CONTENT);
     }
 
     @Override

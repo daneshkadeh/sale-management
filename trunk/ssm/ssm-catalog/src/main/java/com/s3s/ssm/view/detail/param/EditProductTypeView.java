@@ -20,7 +20,7 @@ import java.util.Map;
 import com.s3s.ssm.entity.catalog.ProductFamilyType;
 import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
@@ -34,9 +34,9 @@ public class EditProductTypeView extends AbstractSingleEditView<ProductType> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ProductType entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("productFamilyType", FieldTypeEnum.DROPDOWN).referenceDataId(REF_PRODUCT_FAMILY);
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("productFamilyType", DetailFieldType.DROPDOWN).referenceDataId(REF_PRODUCT_FAMILY);
     }
 
     @Override

@@ -18,7 +18,7 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
 public class EditBankView extends AbstractSingleEditView<Bank> {
@@ -30,9 +30,9 @@ public class EditBankView extends AbstractSingleEditView<Bank> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Bank entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("address", DetailFieldType.TEXTAREA);
     }
 
 }

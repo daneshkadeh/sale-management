@@ -25,7 +25,7 @@ import com.s3s.ssm.entity.config.PaymentMode;
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.entity.operator.Stall;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.AbstractSingleEditView;
@@ -59,57 +59,57 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
         String separatorGrp = ControlConfigUtils.getString("label.Organization.separatorGrp");
 
         detailDataModel.tab(infoTab, infoTab, null);
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA).mandatory(true);
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("address", DetailFieldType.TEXTAREA).mandatory(true);
         // information of bank
         detailDataModel.tab(bankTab, bankTab, null);
-        detailDataModel.addAttribute("beneficeName", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("beneficeName", DetailFieldType.TEXTBOX);
         detailDataModel.startGroup(usdAcctGrp);
-        detailDataModel.addAttribute("usdBankAcct.bank", FieldTypeEnum.DROPDOWN).referenceDataId(BANK_REF_ID);
-        detailDataModel.addAttribute("usdBankAcct.accountName", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("usdBankAcct.accountNumber", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("usdBankAcct.bank", DetailFieldType.DROPDOWN).referenceDataId(BANK_REF_ID);
+        detailDataModel.addAttribute("usdBankAcct.accountName", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("usdBankAcct.accountNumber", DetailFieldType.TEXTBOX);
         detailDataModel.endGroup();
 
         detailDataModel.startGroup(vndAcctGrp);
-        detailDataModel.addAttribute("vndBankAcct.bank", FieldTypeEnum.DROPDOWN).referenceDataId(BANK_REF_ID);
-        detailDataModel.addAttribute("vndBankAcct.accountName", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("vndBankAcct.accountNumber", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("vndBankAcct.bank", DetailFieldType.DROPDOWN).referenceDataId(BANK_REF_ID);
+        detailDataModel.addAttribute("vndBankAcct.accountName", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("vndBankAcct.accountNumber", DetailFieldType.TEXTBOX);
         detailDataModel.endGroup();
         // general parameter
         detailDataModel.tab(generalTab, generalTab, null);
-        detailDataModel.addAttribute("defCurrency", FieldTypeEnum.DROPDOWN).mandatory(true)
+        detailDataModel.addAttribute("defCurrency", DetailFieldType.DROPDOWN).mandatory(true)
                 .referenceDataId(CURRENCY_REF_ID);
-        detailDataModel.addAttribute("defPaymentMethod", FieldTypeEnum.DROPDOWN).mandatory(true)
+        detailDataModel.addAttribute("defPaymentMethod", DetailFieldType.DROPDOWN).mandatory(true)
                 .referenceDataId(REF_PAYMENT_MODE);
-        detailDataModel.addAttribute("defStall", FieldTypeEnum.DROPDOWN).mandatory(true).referenceDataId(STALL_REF_ID);
-        detailDataModel.addAttribute("defDetailInvNum", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("defPageRowNum", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("defStall", DetailFieldType.DROPDOWN).mandatory(true).referenceDataId(STALL_REF_ID);
+        detailDataModel.addAttribute("defDetailInvNum", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("defPageRowNum", DetailFieldType.TEXTBOX).mandatory(true);
         // rule of code generation
         detailDataModel.tab(ruleCodeTab, ruleCodeTab, null);
-        detailDataModel.addAttribute("orderInvCodeRule", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("salesInvCodeRule", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("salesRefundInvCodeRule", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("purInvCodeRule", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("purRefundInvCodeRule", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("sponContractCodeRule", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("movementInvCodeRule", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("exportInvCodeRule", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("importInvCodeRule", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("paymentBillCodeRule", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("receiptsCodeRule", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("promotionCodeRule", FieldTypeEnum.TEXTBOX);
+        detailDataModel.addAttribute("orderInvCodeRule", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("salesInvCodeRule", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("salesRefundInvCodeRule", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("purInvCodeRule", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("purRefundInvCodeRule", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("sponContractCodeRule", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("movementInvCodeRule", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("exportInvCodeRule", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("importInvCodeRule", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("paymentBillCodeRule", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("receiptsCodeRule", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("promotionCodeRule", DetailFieldType.TEXTBOX);
 
         detailDataModel.tab(numFormatTab, numFormatTab, null);
         detailDataModel.startGroup(digitAfterCommaGrp);
-        detailDataModel.addAttribute("digitAfterQuan", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("digitAfterUnitPrice", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("digitAfterAmt", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("digitAfterRate", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("digitAfterQuan", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("digitAfterUnitPrice", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("digitAfterAmt", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("digitAfterRate", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.endGroup();
         detailDataModel.startGroup(separatorGrp);
-        detailDataModel.addAttribute("thousandsSeparator", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("oddSeparator", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("thousandsSeparator", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("oddSeparator", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.endGroup();
 
         // sold on credit

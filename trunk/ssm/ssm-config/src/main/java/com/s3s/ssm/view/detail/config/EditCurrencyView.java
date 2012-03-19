@@ -18,7 +18,7 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
 public class EditCurrencyView extends AbstractSingleEditView<SCurrency> {
@@ -31,9 +31,9 @@ public class EditCurrencyView extends AbstractSingleEditView<SCurrency> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, SCurrency entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("symbol", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX);
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("symbol", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX);
     }
 }

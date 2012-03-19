@@ -14,12 +14,12 @@
  */
 package com.s3s.ssm.model;
 
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.util.view.UIConstants;
 
 public class DetailAttribute {
     private String name;
-    private FieldTypeEnum type;
+    private DetailFieldType type;
     private boolean isEditable = true;
     private boolean isEnable = true;
     private boolean isMandatory = false;
@@ -33,11 +33,11 @@ public class DetailAttribute {
 
     private String referenceDataId;
 
-    public DetailAttribute(String name, FieldTypeEnum type) {
+    public DetailAttribute(String name, DetailFieldType type) {
         this(name, type, false);
     }
 
-    public DetailAttribute(String name, FieldTypeEnum type, boolean raw) {
+    public DetailAttribute(String name, DetailFieldType type, boolean raw) {
         this.name = name;
         this.type = type;
         this.isRaw = raw;
@@ -47,7 +47,7 @@ public class DetailAttribute {
         return name;
     }
 
-    public FieldTypeEnum getType() {
+    public DetailFieldType getType() {
         return type;
     }
 

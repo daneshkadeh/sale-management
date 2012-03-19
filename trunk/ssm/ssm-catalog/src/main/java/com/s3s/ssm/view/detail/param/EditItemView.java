@@ -25,7 +25,7 @@ import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.helper.CatalogHelper;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
@@ -49,11 +49,11 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Item entity) {
-        detailDataModel.addAttribute("product", FieldTypeEnum.DROPDOWN).referenceDataId(REF_PRODUCT_ID);
-        detailDataModel.addAttribute("sumUomName", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("baseSellPrice", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("currency", FieldTypeEnum.DROPDOWN).referenceDataId(REF_CURRENCY_ID);
-        detailDataModel.addAttribute("listUom", FieldTypeEnum.MULTI_SELECT_LIST_BOX).referenceDataId(REF_UOM_ID);
+        detailDataModel.addAttribute("product", DetailFieldType.DROPDOWN).referenceDataId(REF_PRODUCT_ID);
+        detailDataModel.addAttribute("sumUomName", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("baseSellPrice", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("currency", DetailFieldType.DROPDOWN).referenceDataId(REF_CURRENCY_ID);
+        detailDataModel.addAttribute("listUom", DetailFieldType.MULTI_SELECT_LIST_BOX).referenceDataId(REF_UOM_ID);
     }
 
     @Override
@@ -67,9 +67,9 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
 
     @Override
     protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
-        listDataModel.add(new DetailAttribute("partnerCategory", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("sellPrice", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("currency", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("partnerCategory", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("sellPrice", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("currency", DetailFieldType.TEXTBOX));
 
     }
 

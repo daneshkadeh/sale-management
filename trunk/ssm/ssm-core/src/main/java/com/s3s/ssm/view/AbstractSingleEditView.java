@@ -74,7 +74,7 @@ import org.springframework.util.Assert;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.DetailDataModel.GroupInfoData;
 import com.s3s.ssm.model.DetailDataModel.TabInfoData;
 import com.s3s.ssm.model.Money;
@@ -678,7 +678,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         return false;
     }
 
-    private Object getComponentValue(JComponent component, FieldTypeEnum type) {
+    private Object getComponentValue(JComponent component, DetailFieldType type) {
         switch (type) {
         case TEXTBOX:
             JFormattedTextField txtField = (JFormattedTextField) component;

@@ -18,7 +18,7 @@ import java.util.List;
 
 import com.s3s.ssm.entity.config.Institution;
 import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractListView;
@@ -28,8 +28,8 @@ public class ListInstitutionView extends AbstractListView<Institution> {
 
     @Override
     protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("code", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("companyName", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("code", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("companyName", DetailFieldType.TEXTBOX));
 
     }
 

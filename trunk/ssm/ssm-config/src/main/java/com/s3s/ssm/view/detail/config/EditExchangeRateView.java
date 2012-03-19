@@ -19,7 +19,7 @@ import java.util.Map;
 import com.s3s.ssm.entity.config.ExchangeRate;
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
@@ -33,11 +33,11 @@ public class EditExchangeRateView extends AbstractSingleEditView<ExchangeRate> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ExchangeRate entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("updateDate", FieldTypeEnum.DATE).mandatory(true);
-        detailDataModel.addAttribute("currency", FieldTypeEnum.DROPDOWN).referenceDataId(CURRENCY_REF_ID)
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("updateDate", DetailFieldType.DATE).mandatory(true);
+        detailDataModel.addAttribute("currency", DetailFieldType.DROPDOWN).referenceDataId(CURRENCY_REF_ID)
                 .mandatory(true);
-        detailDataModel.addAttribute("rate", FieldTypeEnum.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("rate", DetailFieldType.TEXTBOX).mandatory(true);
     }
 
     @Override

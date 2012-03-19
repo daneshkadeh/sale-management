@@ -26,7 +26,7 @@ import com.s3s.ssm.entity.contact.Customer;
 import com.s3s.ssm.entity.contact.PartnerCategory;
 import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractEditView;
 import com.s3s.ssm.view.AbstractMasterDetailView;
@@ -41,13 +41,13 @@ public class EditCustomerView extends AbstractMasterDetailView<Customer, Contact
 
     @Override
     protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
-        listDataModel.add(new DetailAttribute("name", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("address", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("phone", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("fixPhone", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("fax", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("email", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("remark", FieldTypeEnum.TEXTBOX));
+        listDataModel.add(new DetailAttribute("name", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("address", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("phone", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("fixPhone", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("fax", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("email", DetailFieldType.TEXTBOX));
+        listDataModel.add(new DetailAttribute("remark", DetailFieldType.TEXTBOX));
     }
 
     /**
@@ -94,20 +94,20 @@ public class EditCustomerView extends AbstractMasterDetailView<Customer, Contact
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Customer entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("partnerCateSet", FieldTypeEnum.MULTI_SELECT_LIST_BOX).referenceDataId(
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("partnerCateSet", DetailFieldType.MULTI_SELECT_LIST_BOX).referenceDataId(
                 PARTNER_CATE_REF_ID);
-        detailDataModel.addAttribute("address", FieldTypeEnum.TEXTAREA);
-        detailDataModel.addAttribute("fixPhone", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("mobilePhone", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("fax", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("email", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("taxCode", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("bankAccount.bank", FieldTypeEnum.DROPDOWN).referenceDataId(REF_BANK);
-        detailDataModel.addAttribute("bankAccount.accountNumber", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("bankAccount.accountName", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("isActive", FieldTypeEnum.CHECKBOX);
+        detailDataModel.addAttribute("address", DetailFieldType.TEXTAREA);
+        detailDataModel.addAttribute("fixPhone", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("mobilePhone", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("fax", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("email", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("taxCode", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("bankAccount.bank", DetailFieldType.DROPDOWN).referenceDataId(REF_BANK);
+        detailDataModel.addAttribute("bankAccount.accountNumber", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("bankAccount.accountName", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX);
     }
 
     @Override

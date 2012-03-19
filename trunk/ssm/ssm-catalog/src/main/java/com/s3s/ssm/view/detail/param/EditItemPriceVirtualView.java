@@ -21,7 +21,7 @@ import com.s3s.ssm.entity.catalog.ItemPrice;
 import com.s3s.ssm.entity.contact.PartnerCategory;
 import com.s3s.ssm.helper.CatalogHelper;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
@@ -35,10 +35,10 @@ public class EditItemPriceVirtualView extends AbstractSingleEditView<ItemPrice> 
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ItemPrice entity) {
-        detailDataModel.addAttribute("item", FieldTypeEnum.TEXTBOX).editable(false);
-        detailDataModel.addAttribute("partnerCategory", FieldTypeEnum.DROPDOWN).referenceDataId(REF_CONTACT_TYPE);
-        detailDataModel.addAttribute("sellPrice", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("currency", FieldTypeEnum.DROPDOWN).referenceDataId(REF_CURRENCY_ID);
+        detailDataModel.addAttribute("item", DetailFieldType.TEXTBOX).editable(false);
+        detailDataModel.addAttribute("partnerCategory", DetailFieldType.DROPDOWN).referenceDataId(REF_CONTACT_TYPE);
+        detailDataModel.addAttribute("sellPrice", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("currency", DetailFieldType.DROPDOWN).referenceDataId(REF_CURRENCY_ID);
     }
 
     @Override

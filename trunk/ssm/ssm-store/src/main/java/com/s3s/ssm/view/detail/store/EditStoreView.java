@@ -18,7 +18,7 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.FieldTypeEnum;
+import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
 /*
@@ -55,13 +55,13 @@ public class EditStoreView extends AbstractSingleEditView<Store> {
      */
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Store entity) {
-        detailDataModel.addAttribute("code", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("name", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("address", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("storedAddress", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("importAddress", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("exportAddress", FieldTypeEnum.TEXTBOX);
-        detailDataModel.addAttribute("isEnabled", FieldTypeEnum.CHECKBOX);
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("address", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("storedAddress", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("importAddress", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("exportAddress", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("isEnabled", DetailFieldType.CHECKBOX);
     }
 
 }
