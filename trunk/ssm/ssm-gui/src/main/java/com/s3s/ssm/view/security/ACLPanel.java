@@ -49,8 +49,8 @@ import com.s3s.ssm.security.CustomJdbcMutableAclService;
 import com.s3s.ssm.security.CustomPermission;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.AbstractView;
+import com.s3s.ssm.view.list.AbstractListView;
 
 public class ACLPanel extends AbstractView {
     private final String SPACE = "   ";

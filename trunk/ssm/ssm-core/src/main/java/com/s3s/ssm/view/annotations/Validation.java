@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.s3s.ssm.view.AbstractEditView;
+import com.s3s.ssm.view.edit.AbstractEditView;
 
 /**
  * The annotation to mark on the method which perform validation. The method must be insided {@link AbstractEditView}

@@ -3,10 +3,10 @@ package com.s3s.ssm.view.list.param;
 import java.util.List;
 
 import com.s3s.ssm.entity.catalog.ItemPropertyValue;
-import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
-import com.s3s.ssm.view.AbstractEditView;
-import com.s3s.ssm.view.AbstractListView;
+import com.s3s.ssm.view.edit.AbstractEditView;
+import com.s3s.ssm.view.edit.DetailAttribute;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
+import com.s3s.ssm.view.list.AbstractListView;
 
 public class ListItemPropertyValueView extends AbstractListView<ItemPropertyValue> {
 

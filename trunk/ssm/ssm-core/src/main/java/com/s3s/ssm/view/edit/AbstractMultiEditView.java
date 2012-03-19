@@ -13,7 +13,7 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.view;
+package com.s3s.ssm.view.edit;
 
 import java.util.Map;
 
@@ -27,6 +27,10 @@ import net.miginfocom.swing.MigLayout;
 import org.springframework.util.Assert;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.view.ISavedListener;
+import com.s3s.ssm.view.SavedEvent;
+import com.s3s.ssm.view.TreeNodeWithView;
+import com.s3s.ssm.view.TreeView;
 
 /**
  * The edit view with multi-view on the tree.

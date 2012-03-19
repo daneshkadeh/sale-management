@@ -23,12 +23,12 @@ import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.ItemPrice;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.helper.CatalogHelper;
-import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractEditView;
-import com.s3s.ssm.view.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.AbstractEditView;
+import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.DetailAttribute;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 /**
  * This view is only used to TEST. A list items should be shown on 1 product config. The entity tree view is required

@@ -12,7 +12,7 @@
  * use it only in accordance with the terms of the license
  * agreements you entered into with HBASoft.
  */
-package com.s3s.ssm.model;
+package com.s3s.ssm.view.edit;
 
 import java.util.ArrayList;
 import java.util.List;

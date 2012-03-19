@@ -3,9 +3,9 @@ package com.s3s.ssm.view.detail.param;
 import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.Item;
-import com.s3s.ssm.view.AbstractMultiEditView;
-import com.s3s.ssm.view.AbstractSingleEditView;
 import com.s3s.ssm.view.TreeNodeWithView;
+import com.s3s.ssm.view.edit.AbstractMultiEditView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
 
 public class EditItemMultiView extends AbstractMultiEditView<Item> {
 

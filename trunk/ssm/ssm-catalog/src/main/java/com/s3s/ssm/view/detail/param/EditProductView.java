@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.Product;
-import com.s3s.ssm.view.AbstractMultiEditView;
-import com.s3s.ssm.view.AbstractSingleEditView;
 import com.s3s.ssm.view.TreeNodeWithView;
+import com.s3s.ssm.view.edit.AbstractMultiEditView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.list.param.ListItemOfProductView;
 
 public class EditProductView extends AbstractMultiEditView<Product> {

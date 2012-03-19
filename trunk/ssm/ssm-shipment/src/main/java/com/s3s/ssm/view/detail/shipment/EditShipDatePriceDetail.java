@@ -23,10 +23,10 @@ import javax.swing.DefaultListCellRenderer;
 
 import com.s3s.ssm.entity.shipment.ShipDatePrice;
 import com.s3s.ssm.entity.shipment.ShipPrice;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 /**
  * @author Le Thanh Hoang

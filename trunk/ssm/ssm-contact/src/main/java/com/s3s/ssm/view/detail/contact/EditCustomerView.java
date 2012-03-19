@@ -24,12 +24,12 @@ import com.s3s.ssm.entity.config.BankAccount;
 import com.s3s.ssm.entity.contact.ContactShop;
 import com.s3s.ssm.entity.contact.Customer;
 import com.s3s.ssm.entity.contact.PartnerCategory;
-import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractEditView;
-import com.s3s.ssm.view.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.AbstractEditView;
+import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.DetailAttribute;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditCustomerView extends AbstractMasterDetailView<Customer, ContactShop> {
     private static final String PARTNER_CATE_REF_ID = "0";

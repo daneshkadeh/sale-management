@@ -19,9 +19,9 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.config.Institution;
 import com.s3s.ssm.entity.config.UploadFile;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
-import com.s3s.ssm.view.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditInstitutionView extends AbstractSingleEditView<Institution> {
     private static final long serialVersionUID = 1L;

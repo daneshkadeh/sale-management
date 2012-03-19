@@ -19,10 +19,10 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.ProductFamilyType;
 import com.s3s.ssm.entity.catalog.ProductType;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditProductTypeView extends AbstractSingleEditView<ProductType> {
 

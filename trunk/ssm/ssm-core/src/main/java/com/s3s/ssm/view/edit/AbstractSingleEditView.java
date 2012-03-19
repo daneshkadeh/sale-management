@@ -12,7 +12,7 @@
  * use it only in accordance with the terms of the license
  * agreements you entered into with HBASoft.
  */
-package com.s3s.ssm.view;
+package com.s3s.ssm.view.edit;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -72,11 +72,6 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.Assert;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
-import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
-import com.s3s.ssm.model.DetailDataModel.GroupInfoData;
-import com.s3s.ssm.model.DetailDataModel.TabInfoData;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
@@ -84,7 +79,8 @@ import com.s3s.ssm.util.ImageConstants;
 import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
-import com.s3s.ssm.view.NotifyPanel.NotifyKind;
+import com.s3s.ssm.view.ISavedListener;
+import com.s3s.ssm.view.SavedEvent;
 import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
 import com.s3s.ssm.view.component.IPageChangeListener;
@@ -96,6 +92,10 @@ import com.s3s.ssm.view.component.MultiSelectionTreeBox;
 import com.s3s.ssm.view.component.RadioButtonsGroup;
 import com.s3s.ssm.view.component.SaleTargetComp;
 import com.s3s.ssm.view.component.SaleTargetModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
+import com.s3s.ssm.view.edit.DetailDataModel.GroupInfoData;
+import com.s3s.ssm.view.edit.DetailDataModel.TabInfoData;
+import com.s3s.ssm.view.edit.NotifyPanel.NotifyKind;
 
 /**
  * The edit view with single view.

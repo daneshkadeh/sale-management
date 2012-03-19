@@ -24,13 +24,13 @@ import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.sales.InvoicePaymentStatus;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.sales.InvoiceType;
-import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.utils.InvoiceHelper;
-import com.s3s.ssm.view.AbstractEditView;
-import com.s3s.ssm.view.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.AbstractEditView;
+import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.DetailAttribute;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInvoice> {
 

@@ -26,9 +26,9 @@ import javax.swing.tree.TreePath;
 
 import org.springframework.util.Assert;
 
-import com.s3s.ssm.view.AbstractMultiEditView;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.TreeView;
+import com.s3s.ssm.view.edit.AbstractMultiEditView;
 
 /**
  * The domain button with the particular tree which displayed on the left of main screen.

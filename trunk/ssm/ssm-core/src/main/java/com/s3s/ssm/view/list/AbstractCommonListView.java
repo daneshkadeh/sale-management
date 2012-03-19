@@ -12,7 +12,7 @@
  * use it only in accordance with the terms of the license
  * agreements you entered into with HBASoft.
  */
-package com.s3s.ssm.view;
+package com.s3s.ssm.view.list;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +28,8 @@ import net.miginfocom.swing.MigLayout;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.view.SortView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
 
 /**
  * The list view containing buttons of the common list screen:
