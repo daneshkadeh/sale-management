@@ -35,4 +35,9 @@ public class EditBankView extends AbstractSingleEditView<Bank> {
         detailDataModel.addAttribute("address", DetailFieldType.TEXTAREA);
     }
 
+    @Override
+    protected String getDefaultTitle(Bank entity) {
+        return entity.getName();
+    }
+
 }
