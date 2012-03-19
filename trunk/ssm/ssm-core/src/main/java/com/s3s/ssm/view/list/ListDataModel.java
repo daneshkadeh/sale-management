@@ -23,15 +23,19 @@ import java.util.List;
  * @since Mar 19, 2012
  */
 public class ListDataModel {
-    public enum ListColumType {
-        TEXT
+    public enum ListColumnType {
+        TEXT, BOOLEAN, NUMBER, DATE
     }
 
     private List<ColumnModel> columns = new ArrayList<>();
 
-    public ListDataModel addColumn(String name, ListColumType type) {
-        columns.add(new ColumnModel(name, type));
-        return this;
+    public ColumnModel addColumn(String name, ListColumnType type) {
+        ColumnModel columnModel = new ColumnModel(name, type);
+        columns.add(columnModel);
+        return columnModel;
     }
 
+    public List<ColumnModel> getColumns() {
+        return columns;
+    }
 }

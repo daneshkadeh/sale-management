@@ -14,26 +14,24 @@
  */
 package com.s3s.ssm.view.list.param;
 
-import java.util.List;
-
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.view.detail.param.EditProductView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.DetailAttribute;
-import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 public class ListProductView extends AbstractListView<Product> {
 
     @Override
-    protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("code", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("name", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("type", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("manufacturer", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("model", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("description", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("mainUom", DetailFieldType.TEXTBOX));
+    protected void initialPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("code", ListColumnType.TEXT);
+        listDataModel.addColumn("name", ListColumnType.TEXT);
+        listDataModel.addColumn("type", ListColumnType.TEXT);
+        listDataModel.addColumn("manufacturer", ListColumnType.TEXT);
+        listDataModel.addColumn("model", ListColumnType.TEXT);
+        listDataModel.addColumn("description", ListColumnType.TEXT);
+        listDataModel.addColumn("mainUom", ListColumnType.TEXT);
     }
 
     @Override

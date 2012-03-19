@@ -14,7 +14,6 @@
  */
 package com.s3s.ssm.view.detail.param;
 
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.internal.runtime.Product;
@@ -26,9 +25,10 @@ import com.s3s.ssm.helper.CatalogHelper;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
-import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 /**
  * This view is only used to TEST. A list items should be shown on 1 product config. The entity tree view is required
@@ -66,10 +66,10 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
     }
 
     @Override
-    protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
-        listDataModel.add(new DetailAttribute("partnerCategory", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("sellPrice", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("currency", DetailFieldType.TEXTBOX));
+    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("partnerCategory", ListColumnType.TEXT);
+        listDataModel.addColumn("sellPrice", ListColumnType.TEXT);
+        listDataModel.addColumn("currency", ListColumnType.TEXT);
 
     }
 

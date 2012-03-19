@@ -14,23 +14,21 @@
  */
 package com.s3s.ssm.view.list.finance;
 
-import java.util.List;
-
 import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.view.detail.finance.EditPaymentContentView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.DetailAttribute;
-import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 public class ListPaymentContentView extends AbstractListView<PaymentContent> {
 
     @Override
-    protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("code", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("name", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("paymentType", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("parent", DetailFieldType.TEXTBOX));
+    protected void initialPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("code", ListColumnType.TEXT);
+        listDataModel.addColumn("name", ListColumnType.TEXT);
+        listDataModel.addColumn("paymentType", ListColumnType.TEXT);
+        listDataModel.addColumn("parent", ListColumnType.TEXT);
     }
 
     @Override

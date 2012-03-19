@@ -14,27 +14,25 @@
  */
 package com.s3s.ssm.view.list.sales;
 
-import java.util.List;
-
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.view.detail.sales.EditInvoiceView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.DetailAttribute;
-import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 public class ListInvoiceView extends AbstractListView<Invoice> {
 
     @Override
-    protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("invoiceNumber", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("type", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("contact", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("createdDate", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("moneyAfterTax", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("invoiceNumber", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("status", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("paymentStatus", DetailFieldType.TEXTBOX));
+    protected void initialPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("invoiceNumber", ListColumnType.TEXT);
+        listDataModel.addColumn("type", ListColumnType.TEXT);
+        listDataModel.addColumn("contact", ListColumnType.TEXT);
+        listDataModel.addColumn("createdDate", ListColumnType.TEXT);
+        listDataModel.addColumn("moneyAfterTax", ListColumnType.TEXT);
+        listDataModel.addColumn("invoiceNumber", ListColumnType.TEXT);
+        listDataModel.addColumn("status", ListColumnType.TEXT);
+        listDataModel.addColumn("paymentStatus", ListColumnType.TEXT);
 
     }
 

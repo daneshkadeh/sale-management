@@ -1,7 +1,6 @@
 package com.s3s.ssm.view.detail.param;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.ProductProperty;
@@ -10,9 +9,10 @@ import com.s3s.ssm.entity.catalog.ProductPropertyElement;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
-import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 public class EditProductProperty extends AbstractMasterDetailView<ProductProperty, ProductPropertyElement> {
     private static final long serialVersionUID = 1L;
@@ -23,9 +23,9 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
     }
 
     @Override
-    protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
-        listDataModel.add(new DetailAttribute("id", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("value", DetailFieldType.TEXTBOX));
+    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("id", ListColumnType.TEXT);
+        listDataModel.addColumn("value", ListColumnType.TEXT);
     }
 
     @Override
@@ -47,7 +47,8 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
     public void initialPresentationView(DetailDataModel detailDataModel, ProductProperty entity) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).mandatory(true).referenceDataId(REF_PROPERTY_TYPE);
+        detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).mandatory(true)
+                .referenceDataId(REF_PROPERTY_TYPE);
     }
 
     @Override

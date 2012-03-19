@@ -14,17 +14,15 @@
  */
 package com.s3s.ssm.view.list.sales;
 
-import java.util.List;
-
 import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.ListDataModel;
 
 public class ListSalesContractView extends AbstractListView<SalesContract> {
 
     @Override
-    protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
+    protected void initialPresentationView(ListDataModel listDataModel) {
         // TODO Auto-generated method stub
 
     }

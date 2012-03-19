@@ -15,7 +15,7 @@
 
 package com.s3s.ssm.view.list;
 
-import com.s3s.ssm.view.list.ListDataModel.ListColumType;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 /**
  * @author Phan Hong Phuc
@@ -24,12 +24,13 @@ import com.s3s.ssm.view.list.ListDataModel.ListColumType;
 public class ColumnModel {
     private String name;
     private boolean isRaw;
-    private ListColumType type;
+    private ListColumnType type;
+    private boolean isSummarized; // show sum values in footer or not. It must be Number type.
 
-    public ColumnModel(String name, ListColumType type) {
+    public ColumnModel(String name, ListColumnType type) {
         super();
-        this.setName(name);
-        this.setType(type);
+        this.name = name;
+        this.type = type;
     }
 
     public boolean isRaw() {
@@ -44,16 +45,17 @@ public class ColumnModel {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ListColumType getType() {
+    public ListColumnType getType() {
         return type;
     }
 
-    public void setType(ListColumType type) {
-        this.type = type;
+    public boolean isSummarized() {
+        return isSummarized;
+    }
+
+    public ColumnModel summarized() {
+        this.isSummarized = true;
+        return this;
     }
 
 }

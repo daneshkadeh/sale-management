@@ -14,28 +14,26 @@
  */
 package com.s3s.ssm.view.list.contact;
 
-import java.util.List;
-
 import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.view.detail.contact.EditMultiSupplierViewTest;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.DetailAttribute;
-import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 public class ListSupplierView extends AbstractListView<Supplier> {
     private static final long serialVersionUID = -1414670444682843015L;
 
     @Override
-    protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("code", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("name", DetailFieldType.TEXTBOX));
-        // listDataModel.add(new DetailAttribute("title", FieldTypeEnum.TEXTBOX));
-        listDataModel.add(new DetailAttribute("representer", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("sex", DetailFieldType.CHECKBOX));
-        listDataModel.add(new DetailAttribute("position", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("phone", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("email", DetailFieldType.TEXTBOX));
+    protected void initialPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("code", ListColumnType.TEXT);
+        listDataModel.addColumn("name", ListColumnType.TEXT);
+        // listDataModel.addColumn("title", FieldTypeEnum.TEXTBOX));
+        listDataModel.addColumn("representer", ListColumnType.TEXT);
+        listDataModel.addColumn("sex", ListColumnType.BOOLEAN);
+        listDataModel.addColumn("position", ListColumnType.TEXT);
+        listDataModel.addColumn("phone", ListColumnType.TEXT);
+        listDataModel.addColumn("email", ListColumnType.TEXT);
     }
 
     @Override

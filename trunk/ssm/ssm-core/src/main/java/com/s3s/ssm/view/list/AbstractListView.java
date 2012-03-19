@@ -63,7 +63,6 @@ import javax.swing.table.TableModel;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
@@ -102,7 +101,6 @@ import com.s3s.ssm.view.component.ButtonTabComponent;
 import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.PagingNavigator;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.DetailAttribute;
 
 /**
  * This is an abstract view for list entities.
@@ -159,8 +157,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     protected List<T> entities = new ArrayList<>();
 
     // This model is used by sub classes.
-    protected final List<DetailAttribute> listDataModel = new ArrayList<>();
-    protected final List<String> summaryFieldNames = new ArrayList<>();
+    protected final ListDataModel listDataModel = new ListDataModel();
 
     private Action addAction;
     private Action editAction;
@@ -184,19 +181,19 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         return ConfigProvider.getInstance().getContextProvider().getPermissions(aclResource);
     }
 
-    public AbstractListView(Icon icon) {
-        this(new HashMap<String, Object>(), icon);
+    public AbstractListView(Icon icon, String label, String tooltip) {
+        this(new HashMap<String, Object>(), icon, label, tooltip);
     }
 
     public AbstractListView(Map<String, Object> request) {
-        this(request, null);
+        this(request, null, null, null);
     }
 
-    public AbstractListView(Map<String, Object> request, Icon icon) {
+    public AbstractListView(Map<String, Object> request, Icon icon, String label, String tooltip) {
         super(request);
 
         this.permissionSet = getPermissionOfCurrentUser();
-        initialPresentationView(listDataModel, summaryFieldNames);
+        initialPresentationView(listDataModel);
 
         addAction = new AddAction();
         editAction = new EditAction();
@@ -205,7 +202,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
         tabPane = new JTabbedPane();
         contentPane = new JPanel(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[]2[][]"));
-        tabPane.addTab("", icon, contentPane);
+        tabPane.addTab(label, icon, contentPane, tooltip);
         this.setLayout(new MigLayout("ins 0", "grow, fill", "grow, fill"));
         this.add(tabPane, "grow");
 
@@ -234,8 +231,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
      * @param summaryFieldNames
      *            the fields want to show sum values in footer. They must be Number type.
      */
-    protected abstract void
-            initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames);
+    protected abstract void initialPresentationView(ListDataModel listDataModel);
 
     /**
      * Load the data for the particular page which having current pageNumber.
@@ -258,8 +254,8 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
     protected DetachedCriteria getCriteriaForView() {
         DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
-        for (DetailAttribute attribute : listDataModel) {
-            String pathName = attribute.getName();
+        for (ColumnModel column : listDataModel.getColumns()) {
+            String pathName = column.getName();
             if (pathName.contains(".")) {
                 // Not fetching the ending properties => remove it from the pathName
                 String[] paths = StringUtils.split(pathName, '.');
@@ -418,8 +414,12 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         contentPane.add(busyPane);
         JScrollPane footerScrollpane = new JScrollPane(tblFooter);
 
-        if (CollectionUtils.isNotEmpty(summaryFieldNames)) {
-            contentPane.add(footerScrollpane);
+        // Show the footer if existing a column summarized.
+        for (ColumnModel column : listDataModel.getColumns()) {
+            if (column.isSummarized()) {
+                contentPane.add(footerScrollpane);
+                break;
+            }
         }
 
         contentPane.add(pagingNavigator);
@@ -636,13 +636,13 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
                 return entity.getId();
             }
 
-            DetailAttribute dataModel = listDataModel.get(columnIndex - 1);
+            ColumnModel dataModel = listDataModel.getColumns().get(columnIndex - 1);
             return beanWrapper.getPropertyValue(dataModel.getName());
         }
 
         @Override
         public int getColumnCount() {
-            return listDataModel.size() + 1; // Add a more column contain entity value.
+            return listDataModel.getColumns().size() + 1; // Add a more column contain entity value.
         }
 
         @Override
@@ -651,14 +651,14 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
                 return "";
             }
             return ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
-                    + listDataModel.get(column - 1).getName());
+                    + listDataModel.getColumns().get(column - 1).getName());
         }
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             T entity = currentEntities.get(rowIndex);
             beanWrapper = new BeanWrapperImpl(entity);
-            DetailAttribute dataModel = listDataModel.get(columnIndex);
+            ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
             beanWrapper.setPropertyValue(dataModel.getName(), aValue);
         }
 
@@ -667,7 +667,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
             if (columnIndex == 0) {
                 return getEntityClass();
             }
-            return getClassOfField(listDataModel.get(columnIndex - 1).getName());
+            return getClassOfField(listDataModel.getColumns().get(columnIndex - 1).getName());
         }
 
         private List<T> getVisibleEntities() {
@@ -694,32 +694,27 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
             if (columnIndex == 0) {
                 return null;
             }
-            DetailAttribute detailDataModel = listDataModel.get(columnIndex - 1); // decrease 1 because the hidden
-                                                                                  // entity column
-            String fieldName = detailDataModel.getName();
-            // Check exists summaryFieldName is fieldName or not.
-            for (String sfName : summaryFieldNames) {
-                if (fieldName.equals(sfName)) {
-                    Class<?> fieldClass = getClassOfField(fieldName);
-                    if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
-                        int sum = 0;
-                        for (int i = 0; i < mainTableModel.getRowCount(); i++) {
-                            sum = sum + (Integer) mainTableModel.getValueAt(i, columnIndex);
-                        }
-                        return sum;
+            ColumnModel column = listDataModel.getColumns().get(columnIndex - 1); // decrease 1 because the hidden
+            if (column.isSummarized()) {
+                Class<?> fieldClass = getClassOfField(column.getName());
+                if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
+                    int sum = 0;
+                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
+                        sum = sum + (Integer) mainTableModel.getValueAt(i, columnIndex);
                     }
-
-                    if (ClassUtils.isAssignable(fieldClass, Double.class)) {
-                        Double sum = 0d;
-                        for (int i = 0; i < mainTableModel.getRowCount(); i++) {
-                            sum = sum + (Double) mainTableModel.getValueAt(i, columnIndex);
-                        }
-                        return sum;
-                    }
-
-                    throw new RuntimeException("Just support sum for Double and Integer type");
-
+                    return sum;
                 }
+
+                if (ClassUtils.isAssignable(fieldClass, Double.class)) {
+                    Double sum = 0d;
+                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
+                        sum = sum + (Double) mainTableModel.getValueAt(i, columnIndex);
+                    }
+                    return sum;
+                }
+
+                throw new RuntimeException("Just support sum for Double and Integer type");
+
             }
             return null;
         }
@@ -739,7 +734,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
             if (columnIndex == 0) {
                 return getEntityClass();
             }
-            return getClassOfField(listDataModel.get(columnIndex - 1).getName());
+            return getClassOfField(listDataModel.getColumns().get(columnIndex - 1).getName());
         }
 
     }
@@ -810,8 +805,8 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
                 // get field List
                 List<String> fieldList = new ArrayList<String>();
                 Map<String, String> labels = new HashMap<String, String>();
-                for (DetailAttribute detailAtribute : listDataModel) {
-                    String fieldName = detailAtribute.getName();
+                for (ColumnModel column : listDataModel.getColumns()) {
+                    String fieldName = column.getName();
                     fieldList.add(fieldName);
                     labels.put(fieldName,
                             ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "." + fieldName));
@@ -883,7 +878,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
                     tblListEntities.packAll(); // resize all column fit to their contents
                 } catch (InterruptedException | ExecutionException e) {
-                    logger.error(e.getCause());
+                    logger.error(e.getMessage());
                     isInitialized = false;
                     JOptionPane.showMessageDialog(AbstractListView.this,
                             ControlConfigUtils.getString("error.refreshData.message"),
@@ -1004,13 +999,5 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
                 btnDelete.setVisible(false);
             }
         }
-    }
-
-    public Class<? extends AbstractIdOLObject> getParentClass() {
-        return parentClass;
-    }
-
-    public Long getParentId() {
-        return parentId;
     }
 }
