@@ -21,12 +21,12 @@ import com.s3s.ssm.view.list.ListDataModel.ListColumType;
  * @author Phan Hong Phuc
  * @since Mar 19, 2012
  */
-public class Column {
+public class ColumnModel {
     private String name;
     private boolean isRaw;
     private ListColumType type;
 
-    public Column(String name, ListColumType type) {
+    public ColumnModel(String name, ListColumType type) {
         super();
         this.setName(name);
         this.setType(type);
