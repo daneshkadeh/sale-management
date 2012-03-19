@@ -14,6 +14,7 @@
  */
 package com.s3s.ssm.view.detail.config;
 
+import java.util.List;
 import java.util.Map;
 
 import com.s3s.ssm.entity.config.Institution;
@@ -52,8 +53,8 @@ public class EditInstitutionView extends AbstractSingleEditView<Institution> {
     }
 
     @Override
-    protected Institution loadForEdit() {
-        Institution info = super.loadForEdit();
+    protected Institution loadForEdit(List<String> eagerLoadedProperties) {
+        Institution info = super.loadForEdit(eagerLoadedProperties);
         if (info.getLogo() == null) {
             info.setLogo(new UploadFile());
         }

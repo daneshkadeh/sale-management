@@ -14,6 +14,7 @@
  */
 package com.s3s.ssm.view.detail.param;
 
+import java.util.List;
 import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.Manufacturer;
@@ -28,7 +29,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.AbstractSingleEditView;
 
 public class EditProductGeneralView<T extends Product> extends AbstractSingleEditView<Product> {
-
+    private static final long serialVersionUID = 4375985070956587330L;
     private static final String TYPE_REF_ID = "1";
     private static final String MANU_REF_ID = "2";
     private static final String UOM_REF_ID = "3";
@@ -57,6 +58,7 @@ public class EditProductGeneralView<T extends Product> extends AbstractSingleEdi
         detailDataModel.addAttribute("mainUom", FieldTypeEnum.DROPDOWN).referenceDataId(UOM_REF_ID);
         detailDataModel.addAttribute("properties", FieldTypeEnum.MULTI_SELECT_LIST_BOX)
                 .referenceDataId(REF_PROPERTIES_ID).width(300);
+        System.err.println(entity.getProperties());
     }
 
     @Override
@@ -76,8 +78,9 @@ public class EditProductGeneralView<T extends Product> extends AbstractSingleEdi
     }
 
     @Override
-    protected Product loadForEdit() {
-        Product product = super.loadForEdit();
+    protected Product loadForEdit(List<String> eagerLoadedProperties) {
+        eagerLoadedProperties.add("properties");
+        Product product = super.loadForEdit(eagerLoadedProperties);
         if (product.getUploadFile() == null) {
             product.setUploadFile(new UploadFile());
         }

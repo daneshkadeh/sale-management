@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.detail.config;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.s3s.ssm.entity.config.Bank;
@@ -139,8 +140,8 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
     }
 
     @Override
-    protected Organization loadForEdit() {
-        Organization org = super.loadForEdit();
+    protected Organization loadForEdit(List<String> eagerLoadedProperties) {
+        Organization org = super.loadForEdit(eagerLoadedProperties);
         if (org.getUsdBankAcct() == null) {
             org.setUsdBankAcct(new BankAccount());
         }

@@ -128,6 +128,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
     private JTabbedPane tabPane;
     private JPanel contentPane;
+    private JToolBar toolbar;
     private JXTable tblListEntities;
     private JList<Integer> rowHeader;
     private JXTable tblFooter;
@@ -188,8 +189,6 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     public AbstractListView(Map<String, Object> request, Icon icon) {
         super(request);
 
-        this.parentId = (Long) request.get(PARAM_PARENT_ID);
-        this.parentClass = (Class) request.get("parentClass");
         this.permissionSet = getPermissionOfCurrentUser();
         initialPresentationView(listDataModel, summaryFieldNames);
 
@@ -309,8 +308,8 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     protected void addComponents() {
 
         // //////////////////// Button panel /////////////////////////////////
-        JToolBar pnlButton = createButtonToolBar(tblListEntities);
-        contentPane.add(pnlButton);
+        toolbar = createButtonToolBar(tblListEntities);
+        contentPane.add(toolbar);
 
         // ///////////////////// Paging navigator ///////////////////////////////
         pagingNavigator = new PagingNavigator(calculateTotalPages());

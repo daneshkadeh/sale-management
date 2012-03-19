@@ -61,8 +61,8 @@ public class EditCustomerView extends AbstractMasterDetailView<Customer, Contact
     }
 
     @Override
-    protected Customer loadForEdit() {
-        Customer customer = super.loadForEdit();
+    protected Customer loadForEdit(List<String> eagerLoadedProperties) {
+        Customer customer = super.loadForEdit(eagerLoadedProperties);
         if (customer.getBankAccount() == null) {
             customer.setBankAccount(new BankAccount());
         }

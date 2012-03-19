@@ -57,7 +57,7 @@ public class EditDetailInvoiceVirtualView extends AbstractSingleEditView<DetailI
         // THU does not care about tax
         entity.setPriceBeforeTax(entity.getPriceAfterTax());
         entity.setMoneyBeforeTax(entity.getMoneyAfterTax());
-        // Do not save. Will be save by parent view
+        super.saveOrUpdate(entity);
     }
 
 }
