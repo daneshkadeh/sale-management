@@ -29,9 +29,9 @@ import org.hibernate.criterion.Restrictions;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.util.Solution3sClassUtils;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.WindowUtilities;
 import com.s3s.ssm.view.AbstractView;
-import com.s3s.ssm.view.AbstractView.EditActionEnum;
 import com.s3s.ssm.view.list.AbstractListView;
 
 /**
@@ -87,6 +87,14 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
         return getDaoHelper().getDao(getEntityClass()).findByCriteria(dc).get(0);
     }
 
+    public final String getTitle() {
+        return entity.getId() == null ? ControlConfigUtils.getString("label.tab.new") : getDefaultTitle(entity);
+    }
+
+    protected String getDefaultTitle(T entity) {
+        return entity.getId().toString();
+    }
+
     public void setListView(AbstractListView<T> listView) {
         this.request.put(PARAM_LIST_VIEW, listView);
     }
@@ -98,6 +106,10 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
     @SuppressWarnings("unchecked")
     protected Class<T> getEntityClass() {
         return (Class<T>) Solution3sClassUtils.getArgumentClass(getClass());
+    }
+
+    public T getEntity() {
+        return entity;
     }
 
     protected void setSizeParentWindoẉ̣(Dimension size) {

@@ -59,6 +59,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -97,7 +98,6 @@ import com.s3s.ssm.view.AbstractView;
 import com.s3s.ssm.view.ISavedListener;
 import com.s3s.ssm.view.IViewLazyLoadable;
 import com.s3s.ssm.view.SavedEvent;
-import com.s3s.ssm.view.AbstractView.EditActionEnum;
 import com.s3s.ssm.view.component.ButtonTabComponent;
 import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.PagingNavigator;
@@ -140,7 +140,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     private JXTable tblFooter;
     private JBusyComponent<JScrollPane> busyPane;
 
-    private AdvanceTableModel mainTableModel;
+    private TableModel mainTableModel;
     private PagingNavigator pagingNavigator;
     // button toolbar
     private JButton btnAdd;
@@ -167,7 +167,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     private Action exportAction;
     private Action printAction;
 
-    private BeanWrapper beanWrapper;
+    protected BeanWrapper beanWrapper;
     // the service is used to get access rule
     private Set<CustomPermission> permissionSet;
     // export factory
@@ -218,7 +218,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         // Key binding
         InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
 
-        // Ctrl-A to add new row
+        // Ctrl-N to add new row
         KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK);
         inputMap.put(key, ADD_ACTION_KEY);
 
@@ -320,6 +320,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         // ///////////////////// Paging navigator ///////////////////////////////
         pagingNavigator = new PagingNavigator(calculateTotalPages());
         pagingNavigator.addPageChangeListener(this);
+        entities = loadData(pagingNavigator.getCurrentPage());
 
         // ///////////////// Init main table ////////////////////////////////
         tblListEntities = new JXTable();
@@ -445,8 +446,14 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
         return dao.findCountByCriteria(dao.getCriteria());
     }
 
-    private AdvanceTableModel createTableModel() {
-        entities = loadData(pagingNavigator.getCurrentPage());
+    /**
+     * Create model for the table. </br> <b>Pay attention:</b> if the child class override this method to change the
+     * model of the table. It must ensure that the first hide column must be the id of the entities. This will warranty
+     * that the edit view linked to edit view correctly.
+     * 
+     * @return the model of the table.
+     */
+    protected TableModel createTableModel() {
         return new AdvanceTableModel();
     }
 
@@ -538,12 +545,8 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
             AbstractEditView<T> detailView = detailViewClass.getConstructor(Map.class).newInstance(detailParams);
             JScrollPane scrollPane = new JScrollPane(detailView);
 
-            String tabTitle = null;
-            if (action == EditActionEnum.NEW) {
-                tabTitle = ControlConfigUtils.getString("label.tab.new");
-            } else if (action == EditActionEnum.EDIT) {
-                tabTitle = entity.getId().toString();
-            }
+            String tabTitle = detailView.getTitle();
+
             int tabIndex = tabPane.indexOfTab(tabTitle);
             if (tabIndex == -1) {
                 tabPane.addTab(tabTitle, scrollPane);
@@ -680,9 +683,9 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
     private class FooterTableModel extends AbstractTableModel {
         private static final long serialVersionUID = 1L;
-        private final AdvanceTableModel mainTableModel;
+        private final TableModel mainTableModel;
 
-        public FooterTableModel(AdvanceTableModel mainTableModel) {
+        public FooterTableModel(TableModel mainTableModel) {
             this.mainTableModel = mainTableModel;
         }
 
