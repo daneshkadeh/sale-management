@@ -27,10 +27,10 @@ public class ListDataModel {
         TEXT
     }
 
-    private List<Column> columns = new ArrayList<>();
+    private List<ColumnModel> columns = new ArrayList<>();
 
     public ListDataModel addColumn(String name, ListColumType type) {
-        columns.add(new Column(name, type));
+        columns.add(new ColumnModel(name, type));
         return this;
     }
 
