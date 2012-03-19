@@ -17,11 +17,16 @@ package com.s3s.ssm.view;
 
 import java.awt.Dimension;
 import java.awt.Window;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import com.s3s.ssm.entity.AbstractBaseIdObject;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.view.WindowUtilities;
@@ -33,8 +38,7 @@ import com.s3s.ssm.util.view.WindowUtilities;
 public abstract class AbstractEditView<T extends AbstractIdOLObject> extends AbstractView {
 
     private static final long serialVersionUID = 5467303241585854634L;
-    protected Class<? extends AbstractBaseIdObject> parentClass;
-    protected Long parentId;
+
     protected T entity;
 
     public AbstractEditView(Map<String, Object> inputParams) {
@@ -43,13 +47,11 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
         if (action == EditActionEnum.NEW) {
             entity = loadForCreate();
         } else if (action == EditActionEnum.EDIT) {
-            entity = loadForEdit();
+            entity = loadForEdit(new ArrayList<String>());
         } else {
             throw new UnsupportedOperationException("This operation is not handled : " + action);
         }
 
-        parentId = (Long) request.get(PARAM_PARENT_ID);
-        parentClass = (Class) request.get(PARAM_PARENT_CLASS);
     }
 
     /**
@@ -69,27 +71,17 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
     /**
      * Append missing attributes for entity.
      * 
-     * @param entity
+     * @param eagerLoadedProperties
+     *            the name of properties need to load with the entity but they are mark as LAZY (cause the lazy load
+     *            exception).
      */
-    protected T loadForEdit() {
-        return getDaoHelper().getDao(getEntityClass()).findById((Long) request.get(PARAM_ENTITY_ID));
-    }
-
-    public void setParent(Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
-        this.parentId = parentId;
-        this.parentClass = parentClass;
-    }
-
-    public Object getParentObject() {
-        return getDaoHelper().getDao(getParentClass()).findById(getParentId());
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public Class<? extends AbstractBaseIdObject> getParentClass() {
-        return parentClass;
+    protected T loadForEdit(List<String> eagerLoadedProperties) {
+        DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
+        dc.add(Restrictions.eq("id", (Long) request.get(PARAM_ENTITY_ID)));
+        for (String path : eagerLoadedProperties) {
+            dc.setFetchMode(path, FetchMode.JOIN);
+        }
+        return getDaoHelper().getDao(getEntityClass()).findByCriteria(dc).get(0);
     }
 
     public void setListView(AbstractListView<T> listView) {

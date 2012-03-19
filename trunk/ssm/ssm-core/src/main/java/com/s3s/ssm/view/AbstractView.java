@@ -19,6 +19,8 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
+import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
 import com.s3s.ssm.util.ServiceProvider;
@@ -26,6 +28,8 @@ import com.s3s.ssm.util.ServiceProvider;
 public abstract class AbstractView extends JPanel {
     private static final long serialVersionUID = 1L;
     protected Map<String, Object> request = new HashMap<String, Object>();
+    protected Class<? extends AbstractBaseIdObject> parentClass;
+    protected Long parentId;
 
     public enum EditActionEnum {
         EDIT, NEW
@@ -47,5 +51,25 @@ public abstract class AbstractView extends JPanel {
 
     public AbstractView(Map<String, Object> params) {
         this.request = params;
+        parentId = (Long) request.get(PARAM_PARENT_ID);
+        parentClass = (Class) request.get(PARAM_PARENT_CLASS);
     }
+    
+    public void setParent(Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
+        this.parentId = parentId;
+        this.parentClass = parentClass;
+    }
+
+    public Object getParentObject() {
+        return getDaoHelper().getDao(getParentClass()).findById(getParentId());
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public Class<? extends AbstractBaseIdObject> getParentClass() {
+        return parentClass;
+    }
+
 }

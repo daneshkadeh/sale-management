@@ -33,7 +33,6 @@ import javax.persistence.Transient;
 @MappedSuperclass
 public abstract class AbstractBaseIdObject implements Serializable {
     private static final long serialVersionUID = 1L;
-
     private Long id;
 
     public void setId(Long id) {

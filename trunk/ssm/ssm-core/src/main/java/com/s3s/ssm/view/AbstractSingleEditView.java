@@ -380,6 +380,10 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 pnlEdit.add(lblLabel);
                 break;
             case DROPDOWN:
+                if (!attribute.isMandatory()) {
+                    // TODO Phuc: not able to add to Arrays.asList.
+                    // referenceData.getValues().add(0, null);
+                }
                 dataField = new JComboBox<>(referenceData.getValues().toArray());
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 ((JComboBox<?>) dataField).setRenderer(referenceData.getRenderer());
@@ -513,8 +517,13 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 notifyPanel.setVisible(true);
                 return true;
             } catch (Exception e) {
+                for (StackTraceElement st : e.getStackTrace()) {
+                    logger.error(st.toString());
+                }
+                logger.error(e.getMessage());
                 notifyPanel.setNotifyKind(NotifyKind.ERROR);
-                notifyPanel.setMessage(e.getMessage());
+                notifyPanel.setMessage("<html>" + ControlConfigUtils.getString("error.technicalerror") + "</br>"
+                        + e.getMessage() + "</html>");
                 notifyPanel.setVisible(true);
                 return false;
             }

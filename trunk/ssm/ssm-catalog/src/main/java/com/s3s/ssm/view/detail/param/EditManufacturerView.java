@@ -14,6 +14,7 @@
  */
 package com.s3s.ssm.view.detail.param;
 
+import java.util.List;
 import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.Manufacturer;
@@ -44,8 +45,8 @@ public class EditManufacturerView extends AbstractSingleEditView<Manufacturer> {
     }
 
     @Override
-    protected Manufacturer loadForEdit() {
-        Manufacturer manu = super.loadForEdit();
+    protected Manufacturer loadForEdit(List<String> eagerLoadedProperties) {
+        Manufacturer manu = super.loadForEdit(eagerLoadedProperties);
         if (manu.getSymbol() == null) {
             manu.setSymbol(new UploadFile());
         }

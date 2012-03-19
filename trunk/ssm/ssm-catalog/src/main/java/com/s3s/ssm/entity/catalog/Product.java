@@ -122,7 +122,7 @@ public class Product extends AbstractCodeOLObject {
         this.uploadFile = uploadFile;
     }
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(name = "at_product_property", joinColumns = { @JoinColumn(name = "product_id") }, inverseJoinColumns = { @JoinColumn(name = "property_id") })
     public
             Set<ProductProperty> getProperties() {

@@ -51,6 +51,8 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
 
     private List<E> detailEntities = new ArrayList<E>();
 
+    private ChildListView childListView;
+
     /**
      * The default constructor.
      * 
@@ -86,10 +88,11 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         Map<String, Object> childParams = new HashMap<String, Object>();
         childParams.put(PARAM_PARENT_ID, entity.getId());
         childParams.put(PARAM_PARENT_CLASS, entity.getClass());
-        ChildListView childListView = new ChildListView(childParams);
+        childListView = new ChildListView(childParams);
 
         // Load list view immediately. This view not too large in MasterDetailView.
         childListView.loadView();
+        childListView.setVisible(entity.getId() != null);
         add(childListView, "grow");
     }
 
@@ -144,6 +147,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         protected int getPageSize() {
             return NUM_OF_ROW;
         }
+
     }
 
     /**
@@ -152,6 +156,11 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
     @Override
     protected void saveOrUpdate(T masterEntity) {
         saveOrUpdate(masterEntity, detailEntities);
+        if (childListView.getParentId() == null) {
+            // Show the toolbar, allow user manipulate with child view.
+            childListView.setParent(masterEntity.getId(), getMasterClass());
+            childListView.setVisible(true);
+        }
     };
 
     protected void saveOrUpdate(T masterEntity, List<E> detailEntities) {
