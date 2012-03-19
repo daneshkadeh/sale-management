@@ -29,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.ListDataModel;
 
 /**
  * This view is used for a master entity and its detail entities.</br> Example: An invoice and list detail invoice. User
@@ -65,7 +66,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
     /**
      * Init presentation of list detail objects.
      */
-    protected abstract void initialListDetailPresentationView(List<DetailAttribute> listDataModel);
+    protected abstract void initialListDetailPresentationView(ListDataModel listDataModel);
 
     /**
      * Get detail view class of child entity.
@@ -139,7 +140,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         }
 
         @Override
-        protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
+        protected void initialPresentationView(ListDataModel listDataModel) {
             initialListDetailPresentationView(listDataModel);
         }
 

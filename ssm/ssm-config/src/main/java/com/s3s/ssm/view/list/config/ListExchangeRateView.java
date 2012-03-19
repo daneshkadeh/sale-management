@@ -14,23 +14,21 @@
  */
 package com.s3s.ssm.view.list.config;
 
-import java.util.List;
-
 import com.s3s.ssm.entity.config.ExchangeRate;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.view.detail.config.EditExchangeRateView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.DetailAttribute;
-import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 public class ListExchangeRateView extends AbstractListView<ExchangeRate> {
 
     @Override
-    protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("code", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("updateDate", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("rate", DetailFieldType.DROPDOWN));
+    protected void initialPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("code", ListColumnType.TEXT);
+        listDataModel.addColumn("updateDate", ListColumnType.TEXT);
+        listDataModel.addColumn("rate", ListColumnType.NUMBER);
 
     }
 

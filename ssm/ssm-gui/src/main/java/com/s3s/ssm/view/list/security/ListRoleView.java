@@ -16,7 +16,6 @@ package com.s3s.ssm.view.list.security;
 
 import java.awt.Dimension;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFrame;
@@ -26,19 +25,19 @@ import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.util.view.WindowUtilities;
 import com.s3s.ssm.view.detail.security.EditRoleView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.DetailAttribute;
-import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 import com.s3s.ssm.view.security.ACLPanel;
 
 public class ListRoleView extends AbstractListView<Role> {
     private static final long serialVersionUID = 7072683198560551663L;
 
     @Override
-    protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("code", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("name", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("isEnable", DetailFieldType.TEXTBOX));
+    protected void initialPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("code", ListColumnType.TEXT);
+        listDataModel.addColumn("name", ListColumnType.TEXT);
+        listDataModel.addColumn("isEnable", ListColumnType.TEXT);
     }
 
     @Override

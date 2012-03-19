@@ -15,14 +15,12 @@
 
 package com.s3s.ssm.view.list.operator;
 
-import java.util.List;
-
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.view.detail.operator.EditOperatorView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.DetailAttribute;
-import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 /**
  * @author Le Thanh Hoang
@@ -34,10 +32,10 @@ public class ListOperatorView extends AbstractListView<Operator> {
      * {@inheritDoc}
      */
     @Override
-    protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("code", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("username", DetailFieldType.TEXTBOX));
-        // listDataModel.add(new DetailAttribute("fullname", FieldTypeEnum.TEXTBOX));
+    protected void initialPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("code", ListColumnType.TEXT);
+        listDataModel.addColumn("username", ListColumnType.TEXT);
+        // listDataModel.addColumn("fullname", FieldTypeEnum.TEXTBOX));
     }
 
     /**

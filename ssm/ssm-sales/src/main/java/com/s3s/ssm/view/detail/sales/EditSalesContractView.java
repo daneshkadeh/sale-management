@@ -21,8 +21,8 @@ import com.s3s.ssm.entity.sales.DetailSalesContract;
 import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
-import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.list.ListDataModel;
 
 public class EditSalesContractView extends AbstractMasterDetailView<SalesContract, DetailSalesContract> {
 
@@ -32,7 +32,7 @@ public class EditSalesContractView extends AbstractMasterDetailView<SalesContrac
     }
 
     @Override
-    protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
+    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
         // TODO Auto-generated method stub
 
     }

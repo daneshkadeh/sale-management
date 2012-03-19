@@ -14,7 +14,6 @@
  */
 package com.s3s.ssm.view.list.param;
 
-import java.util.List;
 import java.util.Map;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -23,9 +22,9 @@ import org.hibernate.criterion.Restrictions;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.view.detail.param.EditItemView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.DetailAttribute;
-import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 public class ListItemOfProductView extends AbstractListView<Item> {
     private static final long serialVersionUID = -9117809072273053963L;
@@ -35,11 +34,11 @@ public class ListItemOfProductView extends AbstractListView<Item> {
     }
 
     @Override
-    protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("product", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("sumUomName", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("baseSellPrice", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("currency", DetailFieldType.TEXTBOX));
+    protected void initialPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("product", ListColumnType.TEXT);
+        listDataModel.addColumn("sumUomName", ListColumnType.TEXT);
+        listDataModel.addColumn("baseSellPrice", ListColumnType.TEXT);
+        listDataModel.addColumn("currency", ListColumnType.TEXT);
     }
 
     @Override

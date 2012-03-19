@@ -14,17 +14,15 @@
  */
 package com.s3s.ssm.view.list.store;
 
-import java.util.List;
-
 import com.s3s.ssm.entity.store.ImportProductForm;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.ListDataModel;
 
 public class ListImportProductFormView extends AbstractListView<ImportProductForm> {
 
     @Override
-    protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
+    protected void initialPresentationView(ListDataModel listDataModel) {
         // TODO Auto-generated method stub
 
     }

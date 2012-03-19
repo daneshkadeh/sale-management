@@ -21,8 +21,8 @@ import com.s3s.ssm.entity.store.CheckStore;
 import com.s3s.ssm.entity.store.DetailCheckStore;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
-import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.list.ListDataModel;
 
 public class EditCheckStoreView extends AbstractMasterDetailView<CheckStore, DetailCheckStore> {
 
@@ -32,7 +32,7 @@ public class EditCheckStoreView extends AbstractMasterDetailView<CheckStore, Det
     }
 
     @Override
-    protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
+    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
         // TODO Auto-generated method stub
 
     }

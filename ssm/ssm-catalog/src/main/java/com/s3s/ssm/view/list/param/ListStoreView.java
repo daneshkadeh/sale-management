@@ -14,26 +14,24 @@
  */
 package com.s3s.ssm.view.list.param;
 
-import java.util.List;
-
 import com.s3s.ssm.entity.catalog.Store;
 import com.s3s.ssm.view.detail.param.EditStoreView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.DetailAttribute;
-import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 public class ListStoreView extends AbstractListView<Store> {
 
     @Override
-    protected void initialPresentationView(List<DetailAttribute> listDataModel, List<String> summaryFieldNames) {
-        listDataModel.add(new DetailAttribute("code", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("name", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("address", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("storedAddress", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("importAddress", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("exportAddress", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("managerCode", DetailFieldType.TEXTBOX));
+    protected void initialPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("code", ListColumnType.TEXT);
+        listDataModel.addColumn("name", ListColumnType.TEXT);
+        listDataModel.addColumn("address", ListColumnType.TEXT);
+        listDataModel.addColumn("storedAddress", ListColumnType.TEXT);
+        listDataModel.addColumn("importAddress", ListColumnType.TEXT);
+        listDataModel.addColumn("exportAddress", ListColumnType.TEXT);
+        listDataModel.addColumn("managerCode", ListColumnType.TEXT);
     }
 
     @Override

@@ -27,9 +27,10 @@ import com.s3s.ssm.entity.contact.PartnerCategory;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
-import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 public class EditCustomerView extends AbstractMasterDetailView<Customer, ContactShop> {
     private static final String PARTNER_CATE_REF_ID = "0";
@@ -40,14 +41,14 @@ public class EditCustomerView extends AbstractMasterDetailView<Customer, Contact
     }
 
     @Override
-    protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
-        listDataModel.add(new DetailAttribute("name", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("address", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("phone", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("fixPhone", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("fax", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("email", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("remark", DetailFieldType.TEXTBOX));
+    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("name", ListColumnType.TEXT);
+        listDataModel.addColumn("address", ListColumnType.TEXT);
+        listDataModel.addColumn("phone", ListColumnType.TEXT);
+        listDataModel.addColumn("fixPhone", ListColumnType.TEXT);
+        listDataModel.addColumn("fax", ListColumnType.TEXT);
+        listDataModel.addColumn("email", ListColumnType.TEXT);
+        listDataModel.addColumn("remark", ListColumnType.TEXT);
     }
 
     /**

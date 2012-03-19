@@ -19,7 +19,7 @@ public class EditProductView extends AbstractMultiEditView<Product> {
     @Override
     protected AbstractSingleEditView<Product> constructMainView(TreeNodeWithView root, Product entity,
             Map<String, Object> request) {
-        EditProductGeneralView detailView = new EditProductGeneralView(request);
+        EditProductGeneralView<Product> detailView = new EditProductGeneralView<>(request);
         TreeNodeWithView node = new TreeNodeWithView("General", detailView);
         root.add(node);
         return detailView;

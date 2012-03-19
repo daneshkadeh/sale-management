@@ -120,8 +120,9 @@ public class SystemManagementDomain extends AbstractDomain {
 
         // Bank
         ImageIcon bankIcon = ImageUtils.getSmallIcon(ImageConstants.BANK_ICON);
-        TreeNodeWithView bankEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Bank"),
-                new ListBankView(bankIcon), bankIcon);
+        String bankTitle = ControlConfigUtils.getString("JTree.System.Bank");
+        TreeNodeWithView bankEntry = new TreeNodeWithView(bankTitle,
+                new ListBankView(bankIcon, null, bankTitle), bankIcon);
         rootNode.add(bankEntry);
 
         // Currency management

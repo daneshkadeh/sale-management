@@ -21,8 +21,8 @@ import com.s3s.ssm.entity.store.DetailExchangeStore;
 import com.s3s.ssm.entity.store.ExchangeStoreForm;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
-import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.list.ListDataModel;
 
 public class EditExchangeStoreFormView extends AbstractMasterDetailView<ExchangeStoreForm, DetailExchangeStore> {
 
@@ -32,7 +32,7 @@ public class EditExchangeStoreFormView extends AbstractMasterDetailView<Exchange
     }
 
     @Override
-    protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
+    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
         // TODO Auto-generated method stub
 
     }

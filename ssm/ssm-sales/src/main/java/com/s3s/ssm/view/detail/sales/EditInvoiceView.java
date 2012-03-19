@@ -28,9 +28,10 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.utils.InvoiceHelper;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
-import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
+import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInvoice> {
 
@@ -45,14 +46,14 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     }
 
     @Override
-    protected void initialListDetailPresentationView(List<DetailAttribute> listDataModel) {
-        listDataModel.add(new DetailAttribute("item", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("packageLine", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("amount", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("priceAfterTax", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("moneyAfterTax", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("type", DetailFieldType.TEXTBOX));
-        listDataModel.add(new DetailAttribute("status", DetailFieldType.TEXTBOX));
+    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
+        listDataModel.addColumn("item", ListColumnType.TEXT);
+        listDataModel.addColumn("packageLine", ListColumnType.TEXT);
+        listDataModel.addColumn("amount", ListColumnType.TEXT);
+        listDataModel.addColumn("priceAfterTax", ListColumnType.TEXT);
+        listDataModel.addColumn("moneyAfterTax", ListColumnType.TEXT);
+        listDataModel.addColumn("type", ListColumnType.TEXT);
+        listDataModel.addColumn("status", ListColumnType.TEXT);
     }
 
     @Override
