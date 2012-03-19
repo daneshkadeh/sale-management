@@ -21,10 +21,10 @@ import java.util.Map;
 import javax.swing.DefaultListCellRenderer;
 
 import com.s3s.ssm.entity.security.Role;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 /**
  * @author Le Thanh Hoang

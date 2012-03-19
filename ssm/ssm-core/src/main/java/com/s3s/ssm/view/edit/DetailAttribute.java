@@ -12,10 +12,10 @@
  * use it only in accordance with the terms of the license
  * agreements you entered into with HBASoft.
  */
-package com.s3s.ssm.model;
+package com.s3s.ssm.view.edit;
 
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class DetailAttribute {
     private String name;

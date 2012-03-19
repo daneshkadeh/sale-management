@@ -19,10 +19,10 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.sales.DetailSalesContract;
 import com.s3s.ssm.entity.sales.SalesContract;
-import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.view.AbstractEditView;
-import com.s3s.ssm.view.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.AbstractEditView;
+import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.DetailAttribute;
+import com.s3s.ssm.view.edit.DetailDataModel;
 
 public class EditSalesContractView extends AbstractMasterDetailView<SalesContract, DetailSalesContract> {
 

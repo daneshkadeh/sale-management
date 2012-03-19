@@ -8,10 +8,10 @@ import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.DetailInvoiceStatus;
 import com.s3s.ssm.entity.sales.DetailInvoiceType;
 import com.s3s.ssm.entity.sales.Invoice;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditDetailInvoiceVirtualView extends AbstractSingleEditView<DetailInvoice> {
 

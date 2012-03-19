@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.jdesktop.swingx.JXTable;
 
-import com.s3s.ssm.view.AbstractListView.AdvanceTableModel;
+import com.s3s.ssm.view.list.AbstractListView.AdvanceTableModel;
 
 /**
  * @author Le Thanh Hoang

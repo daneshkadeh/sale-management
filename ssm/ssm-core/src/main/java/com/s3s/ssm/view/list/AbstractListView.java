@@ -12,7 +12,7 @@
  * use it only in accordance with the terms of the license
  * agreements you entered into with HBASoft.
  */
-package com.s3s.ssm.view;
+package com.s3s.ssm.view.list;
 
 import java.awt.Component;
 import java.awt.Dialog;
@@ -87,16 +87,22 @@ import com.s3s.ssm.export.exporter.ExporterFactory;
 import com.s3s.ssm.export.exporter.ExporterNotFoundException;
 import com.s3s.ssm.export.exporter.ExportingException;
 import com.s3s.ssm.export.view.ExportDialog;
-import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.security.CustomPermission;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.AbstractView;
+import com.s3s.ssm.view.ISavedListener;
+import com.s3s.ssm.view.IViewLazyLoadable;
+import com.s3s.ssm.view.SavedEvent;
+import com.s3s.ssm.view.AbstractView.EditActionEnum;
 import com.s3s.ssm.view.component.ButtonTabComponent;
 import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.PagingNavigator;
+import com.s3s.ssm.view.edit.AbstractEditView;
+import com.s3s.ssm.view.edit.DetailAttribute;
 
 /**
  * This is an abstract view for list entities.

@@ -19,11 +19,11 @@ import java.util.List;
 import javax.swing.Icon;
 
 import com.s3s.ssm.entity.config.Bank;
-import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
-import com.s3s.ssm.view.AbstractEditView;
-import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.config.EditBankView;
+import com.s3s.ssm.view.edit.AbstractEditView;
+import com.s3s.ssm.view.edit.DetailAttribute;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
+import com.s3s.ssm.view.list.AbstractListView;
 
 public class ListBankView extends AbstractListView<Bank> {
     private static final long serialVersionUID = 1898147147716601668L;

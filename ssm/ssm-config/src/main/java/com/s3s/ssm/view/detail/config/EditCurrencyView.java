@@ -17,9 +17,9 @@ package com.s3s.ssm.view.detail.config;
 import java.util.Map;
 
 import com.s3s.ssm.entity.config.SCurrency;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
-import com.s3s.ssm.view.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditCurrencyView extends AbstractSingleEditView<SCurrency> {
     private static final long serialVersionUID = 1L;

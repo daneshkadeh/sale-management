@@ -7,9 +7,9 @@ import java.util.Map;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.catalog.Voucher;
 import com.s3s.ssm.entity.config.SCurrency;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditVoucherGeneralView extends EditProductGeneralView<Voucher> {
 

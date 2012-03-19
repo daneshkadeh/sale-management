@@ -17,8 +17,8 @@ package com.s3s.ssm.view.detail.store;
 import java.util.Map;
 
 import com.s3s.ssm.entity.store.ImportProductForm;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.view.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.DetailDataModel;
 
 public class EditImportProductFormView extends AbstractSingleEditView<ImportProductForm> {
 

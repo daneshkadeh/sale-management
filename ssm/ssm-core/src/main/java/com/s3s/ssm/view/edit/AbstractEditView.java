@@ -13,7 +13,7 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.view;
+package com.s3s.ssm.view.edit;
 
 import java.awt.Dimension;
 import java.awt.Window;
@@ -30,6 +30,9 @@ import org.hibernate.criterion.Restrictions;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.view.WindowUtilities;
+import com.s3s.ssm.view.AbstractView;
+import com.s3s.ssm.view.AbstractView.EditActionEnum;
+import com.s3s.ssm.view.list.AbstractListView;
 
 /**
  * @author Phan Hong Phuc

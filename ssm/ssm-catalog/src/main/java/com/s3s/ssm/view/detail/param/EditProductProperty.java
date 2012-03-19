@@ -7,12 +7,12 @@ import java.util.Map;
 import com.s3s.ssm.entity.catalog.ProductProperty;
 import com.s3s.ssm.entity.catalog.ProductProperty.PropertyType;
 import com.s3s.ssm.entity.catalog.ProductPropertyElement;
-import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractEditView;
-import com.s3s.ssm.view.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.AbstractEditView;
+import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.DetailAttribute;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditProductProperty extends AbstractMasterDetailView<ProductProperty, ProductPropertyElement> {
     private static final long serialVersionUID = 1L;

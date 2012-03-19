@@ -20,10 +20,10 @@ import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.ItemPrice;
 import com.s3s.ssm.entity.contact.PartnerCategory;
 import com.s3s.ssm.helper.CatalogHelper;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditItemPriceVirtualView extends AbstractSingleEditView<ItemPrice> {
     private static final String REF_CONTACT_TYPE = "REF_CONTACT_TYPE";

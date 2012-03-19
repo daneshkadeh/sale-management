@@ -23,12 +23,12 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import com.s3s.ssm.entity.security.Role;
-import com.s3s.ssm.model.DetailAttribute;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.util.view.WindowUtilities;
-import com.s3s.ssm.view.AbstractEditView;
-import com.s3s.ssm.view.AbstractListView;
 import com.s3s.ssm.view.detail.security.EditRoleView;
+import com.s3s.ssm.view.edit.AbstractEditView;
+import com.s3s.ssm.view.edit.DetailAttribute;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
+import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.security.ACLPanel;
 
 public class ListRoleView extends AbstractListView<Role> {

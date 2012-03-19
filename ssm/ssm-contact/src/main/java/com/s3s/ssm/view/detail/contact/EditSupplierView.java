@@ -24,14 +24,14 @@ import javax.swing.JTextField;
 
 import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.interfaces.StoreService;
-import com.s3s.ssm.model.DetailDataModel;
-import com.s3s.ssm.model.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ImageConstants;
 import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.DetailDataModel;
+import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditSupplierView extends AbstractSingleEditView<Supplier> {
     /**

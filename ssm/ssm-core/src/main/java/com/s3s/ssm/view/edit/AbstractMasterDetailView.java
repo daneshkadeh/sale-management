@@ -12,7 +12,7 @@
  * use it only in accordance with the terms of the license
  * agreements you entered into with HBASoft.
  */
-package com.s3s.ssm.view;
+package com.s3s.ssm.view.edit;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -27,8 +27,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
-import com.s3s.ssm.model.DetailAttribute;
 import com.s3s.ssm.util.Solution3sClassUtils;
+import com.s3s.ssm.view.list.AbstractListView;
 
 /**
  * This view is used for a master entity and its detail entities.</br> Example: An invoice and list detail invoice. User

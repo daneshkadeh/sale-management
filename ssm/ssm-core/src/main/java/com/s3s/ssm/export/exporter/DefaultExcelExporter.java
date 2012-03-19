@@ -27,7 +27,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.export.builder.ExcelBuilder;
-import com.s3s.ssm.view.AbstractListView.AdvanceTableModel;
+import com.s3s.ssm.view.list.AbstractListView.AdvanceTableModel;
 
 /**
  * @author Le Thanh Hoang
