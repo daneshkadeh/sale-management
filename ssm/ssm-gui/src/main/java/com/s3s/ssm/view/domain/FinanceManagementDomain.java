@@ -20,6 +20,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.list.finance.ListPaymentContentView;
+import com.s3s.ssm.view.list.finance.ListPaymentView;
 
 /**
  * All views relates to finance activity.
@@ -38,7 +39,10 @@ public class FinanceManagementDomain extends AbstractDomain {
     protected void constructTreeView(TreeNodeWithView rootNode) {
         TreeNodeWithView paymentContentEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Finance.PaymentContent"), new ListPaymentContentView());
+        TreeNodeWithView paymentEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Finance.Payment"),
+                new ListPaymentView());
         rootNode.add(paymentContentEntry);
+        rootNode.add(paymentEntry);
         // Financial management -TODO: not add views
         // TreeNodeWithView receiveFMEntry = new
         // TreeNodeWithView(ControlConfigUtils.getString("JTree.Finance.Receivable")); //
