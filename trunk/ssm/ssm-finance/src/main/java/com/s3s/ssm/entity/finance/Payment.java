@@ -14,7 +14,12 @@
  */
 package com.s3s.ssm.entity.finance;
 
+import java.util.Date;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,91 +27,121 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
-import com.s3s.ssm.entity.AbstractIdOLObject;
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.config.PaymentMode;
+import com.s3s.ssm.model.Money;
 
 @Entity
 @Table(name = "s_payment")
-public class Payment extends AbstractIdOLObject {
-    // private Invoice invoice;
-    // private Contact contact;
-    private PaymentContent paymentType;
-    private Double money;
-    private String currency = "VND";
-    private PaymentMode paymentMean;
-    private PaymentStatus status = PaymentStatus.OPEN;
+public class Payment extends AbstractCodeOLObject {
+    private PaymentContent paymentContent;
+    private Date paymentDate;
+    private String partnerCode;
+    private String partnerName;
+    private String staffCode;
+    private String staffName;
+    private PaymentMode paymentMode;
+    private Money money;
+    private Integer rate;
 
-    // @ManyToOne(fetch = FetchType.EAGER)
-    // @JoinColumn(name = "invoice_id")
-    // public Invoice getInvoice() {
-    // return invoice;
-    // }
-    //
-    // public void setInvoice(Invoice invoice) {
-    // this.invoice = invoice;
-    // }
-    //
-    // @ManyToOne(fetch = FetchType.EAGER)
-    // @JoinColumn(name = "contact_id")
-    // public Contact getContact() {
-    // return contact;
-    // }
-    //
-    // public void setContact(Contact contact) {
-    // this.contact = contact;
-    // }
+    private String notes;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "payment_type_id")
-    public PaymentContent getPaymentType() {
-        return paymentType;
+    @JoinColumn(name = "payment_content_id")
+    public PaymentContent getPaymentContent() {
+        return paymentContent;
     }
 
-    public void setPaymentType(PaymentContent paymentType) {
-        this.paymentType = paymentType;
+    public void setPaymentType(PaymentContent paymentContent) {
+        this.paymentContent = paymentContent;
     }
 
-    @Column(name = "money", nullable = false)
-    @NotNull
-    public Double getMoney() {
+    @Column(name = "payment_date")
+    @NotBlank
+    public Date getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(Date paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    @Column(name = "payment_date")
+    public String getPartner_code() {
+        return partnerCode;
+    }
+
+    public void setPartnerCode(String partner_code) {
+        this.partnerCode = partner_code;
+    }
+
+    @Column(name = "partner_name")
+    public String getPartnerName() {
+        return partnerName;
+    }
+
+    public void setPartnerName(String partner_name) {
+        this.partnerName = partner_name;
+    }
+
+    @Column(name = "staff_code")
+    public String getStaffCode() {
+        return staffCode;
+    }
+
+    public void setStaffCode(String staff_code) {
+        this.staffCode = staff_code;
+    }
+
+    @Column(name = "staff_name")
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staff_name) {
+        this.staffName = staff_name;
+    }
+
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "money")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code")) })
+    public Money getMoney() {
         return money;
     }
 
-    public void setMoney(Double money) {
+    public void setMoney(Money money) {
         this.money = money;
     }
 
-    @Column(name = "currency", nullable = false)
-    @NotNull
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    @Column(name = "payment_mean", nullable = false)
-    @NotNull
+    @Column(name = "payment_mode")
+    @NotBlank
     @Enumerated(EnumType.STRING)
-    public PaymentMode getPaymentMean() {
-        return paymentMean;
+    public PaymentMode getPaymentMode() {
+        return paymentMode;
     }
 
-    public void setPaymentMean(PaymentMode paymentMean) {
-        this.paymentMean = paymentMean;
+    public void setPaymentMode(PaymentMode paymentMode) {
+        this.paymentMode = paymentMode;
     }
 
-    @Column(name = "status", nullable = false)
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    public PaymentStatus getStatus() {
-        return status;
+    @Column(name = "rate")
+    public Integer getRate() {
+        return rate;
     }
 
-    public void setStatus(PaymentStatus status) {
-        this.status = status;
+    public void setRate(Integer rate) {
+        this.rate = rate;
+    }
+
+    @Column(name = "notes")
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

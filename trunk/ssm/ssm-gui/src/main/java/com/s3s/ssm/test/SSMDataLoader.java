@@ -64,7 +64,6 @@ import com.s3s.ssm.entity.contact.PartnerCategory;
 import com.s3s.ssm.entity.contact.Supplier;
 import com.s3s.ssm.entity.finance.Payment;
 import com.s3s.ssm.entity.finance.PaymentContent;
-import com.s3s.ssm.entity.finance.PaymentStatus;
 import com.s3s.ssm.entity.finance.PaymentType;
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.entity.sales.DetailInvoice;
@@ -346,11 +345,11 @@ public class SSMDataLoader {
 
         Payment payment = new Payment();
         payment.setPaymentType(pc1);
-        payment.setPaymentMean(PaymentMode.CASH);
-        // payment.setContact(listContact.get(0));
-        // payment.setInvoice(listInvoice.get(0));
-        payment.setMoney(10000.0);
-        payment.setStatus(PaymentStatus.CLOSED);
+        // payment.setPaymentMean(PaymentMode.CASH);
+        // // payment.setContact(listContact.get(0));
+        // // payment.setInvoice(listInvoice.get(0));
+        // payment.setMoney(10000.0);
+        // payment.setStatus(PaymentStatus.CLOSED);
         daoHelper.getDao(Payment.class).saveOrUpdate(payment);
         return Arrays.asList(payment);
     }
