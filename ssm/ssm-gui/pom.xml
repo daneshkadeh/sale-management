@@ -17,21 +17,54 @@
 	</description>
  
   <dependencies>
+    <!-- The view from modules of the project -->
 	<dependency>
 		<groupId>com.s3s</groupId>
-		<artifactId>ssm-sales</artifactId>
+		<artifactId>ssm-sales-view</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
 	<dependency>
 		<groupId>com.s3s</groupId>
-		<artifactId>ssm-shipment</artifactId>
+		<artifactId>ssm-shipment-view</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
 	<dependency>
 		<groupId>com.s3s</groupId>
-		<artifactId>ssm-supplychain</artifactId>
+		<artifactId>ssm-supplychain-view</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-catalog-view</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-config-view</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-finance-view</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-operator-view</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-store-view</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-contact-view</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<!-- -->
+	
 	<dependency>
 		<groupId>org.swinglabs</groupId>
 		<artifactId>swingx</artifactId>

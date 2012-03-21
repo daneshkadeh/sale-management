@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+	<parent>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm</artifactId>
+		<version>${ssm.version}</version>
+	</parent>
+
+	<artifactId>ssm-common</artifactId>
+	<version>${ssm.version}</version>
+	<packaging>jar</packaging>
+	<name>SuperSalesManagement common</name>
+	<description>
+		Module common includes the entire model and interfaces of the project.
+	</description>
+ 
+  <dependencies>
+		<!-- TODO this should not depend on an entire core module, just jpa, hibernate to declare the entity -->
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-core</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+  </dependencies>
+</project>

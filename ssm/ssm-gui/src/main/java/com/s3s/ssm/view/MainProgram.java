@@ -225,6 +225,7 @@ public class MainProgram {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 ListOperatorView listOperatorView = new ListOperatorView();
                 listOperatorView.setVisible(true);
                 frame.setContentPane(listOperatorView);

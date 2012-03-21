@@ -77,25 +77,28 @@
   </build>
   
    <modules>
-      <module>ssm-core</module>
+      <module>ssm-core</module>  
 	  
-	  <module>ssm-catalog-interface</module>
-	  <module>ssm-contact-interface</module>
-	  <module>ssm-shipment-interface</module>
-	  <module>ssm-finance-interface</module>
-      <module>ssm-store-interface</module>
-	  <module>ssm-supplychain-interface</module>
-	  <module>ssm-sales-interface</module>
+      <module>ssm-common</module>
+	  	  
+      <module>ssm-operator-service</module>
+	  <module>ssm-catalog-service</module>
+	  <module>ssm-contact-service</module>
+	  <module>ssm-shipment-service</module>
+	  <module>ssm-finance-service</module>
+      <module>ssm-store-service</module>
+	  <module>ssm-supplychain-service</module>
+	  <module>ssm-sales-service</module>
 	  
-      <module>ssm-operator</module>
-	  <module>ssm-config</module>
-      <module>ssm-catalog</module>
-	  <module>ssm-contact</module>
-      <module>ssm-shipment</module>
-	  <module>ssm-finance</module>
-      <module>ssm-store</module>
-	  <module>ssm-supplychain</module>
-	  <module>ssm-sales</module>
+      <module>ssm-operator-view</module>
+	  <module>ssm-config-view</module>
+      <module>ssm-catalog-view</module>
+	  <module>ssm-contact-view</module>
+      <module>ssm-shipment-view</module>
+	  <module>ssm-finance-view</module>
+      <module>ssm-store-view</module>
+	  <module>ssm-supplychain-view</module>
+	  <module>ssm-sales-view</module>
       <module>ssm-gui</module>
    </modules>
    

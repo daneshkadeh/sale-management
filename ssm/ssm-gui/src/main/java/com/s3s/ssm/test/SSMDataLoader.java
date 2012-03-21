@@ -167,7 +167,7 @@ public class SSMDataLoader {
         daoHelper.getDao(Operator.class).deleteAll(daoHelper.getDao(Operator.class).findAll());
 
         // Finance module
-        daoHelper.getDao(PaymentContent.class).deleteAll(daoHelper.getDao(PaymentContent.class).findAll());
+        // daoHelper.getDao(PaymentContent.class).deleteAll(daoHelper.getDao(PaymentContent.class).findAll());
         // Config module
         daoHelper.getDao(Organization.class).deleteAll(daoHelper.getDao(Organization.class).findAll());
         daoHelper.getDao(Institution.class).deleteAll(daoHelper.getDao(Institution.class).findAll());
@@ -226,7 +226,7 @@ public class SSMDataLoader {
         List<SalesContract> listSalesContracts = initSalesContracts(daoHelper, listSupplier, listItem);
         List<Invoice> listInvoice = initInvoice(daoHelper, listItem, listContact);
         // Init data for finance module
-        List<Payment> listPayments = initPayment(daoHelper, listInvoice, listContact);
+        // List<Payment> listPayments = initPayment(daoHelper, listInvoice, listContact);
     }
 
     private static List<Voucher> initVoucher(DaoHelper daoHelper) {
@@ -344,7 +344,7 @@ public class SSMDataLoader {
         daoHelper.getDao(PaymentContent.class).saveOrUpdateAll(listPaymentContent);
 
         Payment payment = new Payment();
-        payment.setPaymentType(pc1);
+        payment.setPaymentContent(pc1);
         // payment.setPaymentMean(PaymentMode.CASH);
         // // payment.setContact(listContact.get(0));
         // // payment.setInvoice(listInvoice.get(0));
