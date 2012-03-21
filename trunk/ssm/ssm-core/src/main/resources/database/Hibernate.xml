@@ -28,18 +28,18 @@
 
 		<property name="packagesToScan">
 			<list>
-				<value>com.s3s.ssm.entity</value>
+				<!-- <value>com.s3s.ssm.entity</value> -->
 				<value>com.s3s.ssm.entity.operator</value>
 				<value>com.s3s.ssm.entity.config</value>
 				<value>com.s3s.ssm.entity.catalog</value>
 				<value>com.s3s.ssm.entity.contact</value>
 				<value>com.s3s.ssm.entity.sales</value>
-				<value>com.s3s.ssm.entity.bi</value>
+				<!--value>com.s3s.ssm.entity.bi</value-->
 				<value>com.s3s.ssm.entity.store</value>
 				<value>com.s3s.ssm.entity.finance</value>
 				<value>com.s3s.ssm.entity.shipment</value>
 				<value>com.s3s.ssm.entity.supplychain</value>
-				<value>com.s3s.ssm.entity.security</value>
+				<value>com.s3s.ssm.entity.security</value>				
 			</list>
 		</property>
 		<!-- property name="annotatedClasses">
