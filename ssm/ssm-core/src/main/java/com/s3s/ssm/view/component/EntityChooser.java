@@ -19,6 +19,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,7 +58,6 @@ import com.s3s.ssm.util.view.UIConstants;
  */
 public class EntityChooser<T> extends JPanel {
     private static final long serialVersionUID = 7757253525648364105L;
-    private static final int CODE_WIDTH = 10;
     private JTextField txtFldCode;
     private JLabel lblName;
     private JButton chooseBtn;
@@ -85,8 +85,7 @@ public class EntityChooser<T> extends JPanel {
         setLayout(new MigLayout("wrap 3"));
 
         txtFldCode = new JTextField();
-        txtFldCode.setColumns(CODE_WIDTH);
-
+        txtFldCode.setPreferredSize(new Dimension(UIConstants.DEFAULT_WIDTH, txtFldCode.getHeight()));
         lblName = new JLabel();
 
         setComponentValue();
@@ -123,7 +122,7 @@ public class EntityChooser<T> extends JPanel {
             String code = (String) beanWrapper.getPropertyValue("code");
             String name = entity.toString();
             txtFldCode.setText(code);
-            lblName.setText("<html><u>" + name + "</u></html>");
+            lblName.setText("<html>" + name + "</html>");
             this.repaint();
         }
     }
@@ -133,7 +132,6 @@ public class EntityChooser<T> extends JPanel {
     }
 
     private class EntityDialog<T> extends JDialog {
-        private static final int OK_OPTION = 1;
         private static final int WIDTH_DIALOG = 400;
         private static final int HEIGHT_DIALOG = 300;
         private String dialogTitle;
