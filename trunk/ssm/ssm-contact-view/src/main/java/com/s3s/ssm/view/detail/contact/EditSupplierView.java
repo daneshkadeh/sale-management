@@ -21,14 +21,17 @@ import java.util.Map;
 
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
 
 import com.s3s.ssm.entity.contact.Supplier;
-import com.s3s.ssm.interfaces.store.StoreService;
+import com.s3s.ssm.interfaces.store.IStoreService;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ImageConstants;
 import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.view.component.IMoneyChangedListener;
+import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -78,7 +81,7 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
         detailDataModel.addAttribute("comment", DetailFieldType.TEXTAREA);
         // TODO: todo test code
         System.out.println("call store service from contact module: "
-                + serviceProvider.getService(StoreService.class).testService());
+                + serviceProvider.getService(IStoreService.class).testService());
     }
 
     @Override
@@ -93,6 +96,7 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
     protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, Supplier entity) {
         super.customizeComponents(name2AttributeComponent, entity);
         final JTextField email = (JTextField) name2AttributeComponent.get("email").getComponent();
+        final JTextField position = (JTextField) name2AttributeComponent.get("position").getComponent();
         JCheckBox cb = (JCheckBox) name2AttributeComponent.get("isActive").getComponent();
         cb.addItemListener(new ItemListener() {
 
@@ -101,6 +105,17 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
                 email.setVisible(e.getStateChange() == ItemEvent.DESELECTED);
             }
         });
+
+        MoneyComponent mc = (MoneyComponent) name2AttributeComponent.get("rawAttribute4").getComponent();
+        mc.addMoneyChangeListener(new IMoneyChangedListener() {
+
+            @Override
+            public void doMoneyChanged(ChangeEvent e) {
+                MoneyComponent m = (MoneyComponent) e.getSource();
+                position.setText(m.getMoney().toString());
+            }
+        });
+
     }
 
     @Override
