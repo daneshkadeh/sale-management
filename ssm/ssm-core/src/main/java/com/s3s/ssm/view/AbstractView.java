@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.util.CacheDataService;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
 import com.s3s.ssm.util.ServiceProvider;
@@ -45,6 +46,8 @@ public abstract class AbstractView extends JPanel {
 
     protected ServiceProvider serviceProvider = ConfigProvider.getInstance().getServiceProvider();
 
+    protected CacheDataService cacheDataService = ConfigProvider.getInstance().getCacheDataService();
+
     protected DaoHelper getDaoHelper() {
         return daoHelper;
     }
@@ -54,7 +57,7 @@ public abstract class AbstractView extends JPanel {
         parentId = (Long) request.get(PARAM_PARENT_ID);
         parentClass = (Class) request.get(PARAM_PARENT_CLASS);
     }
-    
+
     public void setParent(Long parentId, Class<? extends AbstractIdOLObject> parentClass) {
         this.parentId = parentId;
         this.parentClass = parentClass;

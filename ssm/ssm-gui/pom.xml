@@ -38,6 +38,12 @@
 		<artifactId>ssm-catalog-view</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
+	<!-- TODO: Current design forces us to make all dependencies for GUI -->
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-config-service</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
 	<dependency>
 		<groupId>com.s3s</groupId>
 		<artifactId>ssm-config-view</artifactId>
