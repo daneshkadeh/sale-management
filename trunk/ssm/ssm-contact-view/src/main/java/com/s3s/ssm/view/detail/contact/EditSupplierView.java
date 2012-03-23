@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 
 import com.s3s.ssm.entity.contact.Supplier;
-import com.s3s.ssm.interfaces.store.IStoreService;
+import com.s3s.ssm.interfaces.store.StoreService;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ImageConstants;
@@ -81,7 +81,7 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
         detailDataModel.addAttribute("comment", DetailFieldType.TEXTAREA);
         // TODO: todo test code
         System.out.println("call store service from contact module: "
-                + serviceProvider.getService(IStoreService.class).testService());
+                + serviceProvider.getService(StoreService.class).testService());
     }
 
     @Override

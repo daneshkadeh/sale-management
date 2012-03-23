@@ -1,12 +1,11 @@
 package com.s3s.ssm.service.impl;
 
-import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
 import com.s3s.ssm.util.ServiceProvider;
 
 public abstract class AbstractModuleServiceImpl {
     protected ServiceProvider serviceProvider;
-    protected static DaoHelper daoHelper = ConfigProvider.getInstance().getDaoHelper();
+    private DaoHelper daoHelper;
 
     public void init() {
         // serviceProvider.register(StoreService.class, this);
@@ -22,5 +21,9 @@ public abstract class AbstractModuleServiceImpl {
 
     public DaoHelper getDaoHelper() {
         return daoHelper;
+    }
+
+    public void setDaoHelper(DaoHelper daoHelper) {
+        this.daoHelper = daoHelper;
     }
 }
