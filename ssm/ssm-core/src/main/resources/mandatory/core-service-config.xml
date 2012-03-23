@@ -19,6 +19,9 @@
 		<property name="serviceProvider">
 			<ref bean="serviceProvider"/>
 		</property>
+		<property name="daoHelper">
+			<ref bean="daoHelper"/>
+		</property>
 	</bean>
 	
 </beans>    
