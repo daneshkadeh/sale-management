@@ -22,6 +22,9 @@
 		<property name="daoHelper">
 			<ref bean="daoHelper"/>
 		</property>
+		<property name="cacheDataService">
+			<ref bean="cacheDataService"/>
+		</property>
 	</bean>
 	
 </beans>    

@@ -88,4 +88,8 @@ public class ConfigProvider {
     public ServiceProvider getServiceProvider() {
         return (ServiceProvider) appContext.getBean("serviceProvider");
     }
+
+    public CacheDataService getCacheDataService() {
+        return (CacheDataService) appContext.getBean("cacheDataService");
+    }
 }

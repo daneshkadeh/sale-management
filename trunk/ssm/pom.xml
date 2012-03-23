@@ -82,6 +82,7 @@
       <module>ssm-common</module>
 	  	  
       <module>ssm-operator-service</module>
+	  <module>ssm-config-service</module>
 	  <module>ssm-catalog-service</module>
 	  <module>ssm-contact-service</module>
 	  <module>ssm-shipment-service</module>
