@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 18, 2012 at 11:14 AM
+-- Generation Time: Mar 26, 2012 at 04:13 AM
 -- Server version: 5.0.45
 -- PHP Version: 5.2.4
 
@@ -175,8 +175,6 @@ CREATE TABLE `at_advantage_buypackage` (
 -- Dumping data for table `at_advantage_buypackage`
 --
 
-INSERT INTO `at_advantage_buypackage` (`advantage_id`, `package_id`) VALUES
-(3, 3);
 
 -- --------------------------------------------------------
 
@@ -194,8 +192,6 @@ CREATE TABLE `at_advantage_giftitem` (
 -- Dumping data for table `at_advantage_giftitem`
 --
 
-INSERT INTO `at_advantage_giftitem` (`advantage_id`, `item_id`) VALUES
-(3, 3);
 
 -- --------------------------------------------------------
 
@@ -230,8 +226,6 @@ CREATE TABLE `at_item_uom` (
 -- Dumping data for table `at_item_uom`
 --
 
-INSERT INTO `at_item_uom` (`item_id`, `uom_id`) VALUES
-(3, 36);
 
 -- --------------------------------------------------------
 
@@ -249,8 +243,6 @@ CREATE TABLE `at_product_property` (
 -- Dumping data for table `at_product_property`
 --
 
-INSERT INTO `at_product_property` (`product_id`, `property_id`) VALUES
-(5, 5);
 
 -- --------------------------------------------------------
 
@@ -307,7 +299,7 @@ CREATE TABLE `au_user` (
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `au_user`
@@ -315,8 +307,7 @@ CREATE TABLE `au_user` (
 
 INSERT INTO `au_user` (`id`, `code`, `username`, `password`, `isAccountNonExpired`, `isAccountNonLocked`, `isCredentialsNonExpired`, `isEnabled`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
 (2, '2', 'user1', 'user1', 1, 1, 1, 0, 'DEFAULT_USER', '2011-12-12 22:22:55', 'admin', '2012-01-21 23:30:49', 6),
-(3, '3', 'user2', 'user2', 1, 1, 1, 1, 'admin', '2011-12-26 15:18:17', 'admin', '2011-12-26 15:18:17', 0),
-(6, 'admin', 'admin', 'admin', 1, 1, 1, 1, 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0);
+(3, '3', 'user2', 'user2', 1, 1, 1, 1, 'admin', '2011-12-26 15:18:17', 'admin', '2011-12-26 15:18:17', 0);
 
 -- --------------------------------------------------------
 
@@ -436,14 +427,12 @@ CREATE TABLE `s_advantage` (
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_advantage`
 --
 
-INSERT INTO `s_advantage` (`id`, `code`, `name`, `discount_percent`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 'KHUYENMAI_2011', 'Khuyen mai mua dong 2011', 0, 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0);
 
 -- --------------------------------------------------------
 
@@ -466,14 +455,12 @@ CREATE TABLE `s_article` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_barcode` (`barcode`),
   KEY `idx_item_id` (`item_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_article`
 --
 
-INSERT INTO `s_article` (`id`, `item_id`, `barcode`, `first_maintain_date`, `second_maintain_date`, `store_id`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 3, '12345678910', '2012-09-18 10:38:16', NULL, 3, 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0);
 
 -- --------------------------------------------------------
 
@@ -493,14 +480,12 @@ CREATE TABLE `s_bank` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_bank_code` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `s_bank`
 --
 
-INSERT INTO `s_bank` (`id`, `code`, `bank_name`, `address`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(12, 'NHPTNT_3', 'NGAN HANG PHAT TRIEN NONG THON CHI NHANH 3', '569A, Nguyen Dinh Chieu, Q3, HCM, Viet Nam', 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
 
 -- --------------------------------------------------------
 
@@ -520,14 +505,12 @@ CREATE TABLE `s_bank_account` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_bank_account` (`bank_id`,`account_number`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `s_bank_account`
 --
 
-INSERT INTO `s_bank_account` (`id`, `bank_id`, `account_number`, `account_name`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(12, 12, '1602 2010 19820', NULL, 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
 
 -- --------------------------------------------------------
 
@@ -637,14 +620,12 @@ CREATE TABLE `s_contact_debt` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_contact_currency` (`partner_id`,`currency_id`),
   KEY `idx_contact_id` (`partner_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_contact_debt`
 --
 
-INSERT INTO `s_contact_debt` (`id`, `partner_id`, `debt_money`, `currency_id`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 7, 1000000, 'VND', 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0);
 
 -- --------------------------------------------------------
 
@@ -670,14 +651,28 @@ CREATE TABLE `s_contact_shop` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `idx_contact_id` (`customer_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_contact_shop`
 --
 
-INSERT INTO `s_contact_shop` (`id`, `code`, `name`, `customer_id`, `address`, `phone`, `fix_phone`, `fax`, `email`, `remark`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 'GIAY_SO_1', 'Cua hang giay so 1', 7, '123 Bui vien', NULL, '0909000000', NULL, NULL, 'Mo cua 8h-21h', 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `s_contract_payment`
+--
+
+CREATE TABLE `s_contract_payment` (
+  `contract_payment_id` int(11) NOT NULL,
+  `sales_contract_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `s_contract_payment`
+--
+
 
 -- --------------------------------------------------------
 
@@ -755,15 +750,12 @@ CREATE TABLE `s_currency` (
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=48 ;
 
 --
 -- Dumping data for table `s_currency`
 --
--- TODO: This should be move to SSMDataLoader
-INSERT INTO `s_currency` (`id`, `code`, `name`, `symbol`, `active`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(20, 'VND', 'Viet nam dong', 'd', 1, 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0),
-(21, 'USD', 'United State Dollar', '$', 1, 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
+
 
 -- --------------------------------------------------------
 
@@ -786,8 +778,6 @@ CREATE TABLE `s_customer` (
 -- Dumping data for table `s_customer`
 --
 
-INSERT INTO `s_customer` (`customer_id`, `fix_phone`, `mobile_phone`, `fax`, `email`, `address`, `tax_code`, `bank_account_id`) VALUES
-(7, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -926,16 +916,12 @@ CREATE TABLE `s_detail_invoice` (
   PRIMARY KEY  (`id`),
   KEY `idx_invoice_item` (`invoice_id`,`item_id`),
   KEY `idx_invoice_id` (`invoice_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `s_detail_invoice`
 --
 
-INSERT INTO `s_detail_invoice` (`id`, `invoice_id`, `packageline_id`, `item_id`, `amount`, `price_before_tax`, `price_of_tax`, `price_after_tax`, `money_before_tax`, `money_of_tax`, `money_after_tax`, `currency`, `status`, `detail_invoice_type`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(7, 5, NULL, 3, 2, 5000, 0, 5000, 10000, 0, 10000, 'VND', 'OPEN', 'SALES', 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0),
-(8, 6, NULL, 3, 2, 6000, 0, 6000, 12000, 0, 12000, 'VND', 'OPEN', 'SALES', 'admin', '2012-03-18 10:38:17', 'admin', '2012-03-18 10:38:17', 0),
-(9, 6, NULL, 3, 2, 5000, 0, 5000, 10000, 0, 10000, 'VND', 'OPEN', 'SALES', 'admin', '2012-03-18 10:38:17', 'admin', '2012-03-18 10:38:17', 0);
 
 -- --------------------------------------------------------
 
@@ -986,14 +972,12 @@ CREATE TABLE `s_detail_sales_contract` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `idx_salescon_item` (`salescon_id`,`item_id`),
   KEY `idx_salescon_id` (`salescon_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_detail_sales_contract`
 --
 
-INSERT INTO `s_detail_sales_contract` (`id`, `salescon_id`, `item_id`, `amount`, `unit_price`, `currency`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 3, 3, 5, 100, 'VND', 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0);
 
 -- --------------------------------------------------------
 
@@ -1122,14 +1106,12 @@ CREATE TABLE `s_exchange_rate` (
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `code` (`code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 
 --
 -- Dumping data for table `s_exchange_rate`
 --
 
-INSERT INTO `s_exchange_rate` (`id`, `code`, `update_date`, `currency_id`, `rate`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(11, '01', '2012-03-18 10:38:15', 21, 21000, 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
 
 -- --------------------------------------------------------
 
@@ -1262,14 +1244,12 @@ CREATE TABLE `s_institution` (
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `s_institution`
 --
 
-INSERT INTO `s_institution` (`id`, `code`, `company_name`, `agent`, `position`, `upload_file_id`, `company_address`, `tel`, `fax`, `website`, `email`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(10, 'THUSPORTS', 'THU SPORTS', 'Huynh Thi Dieu Hien', 'Tong giam doc', NULL, '28, Pham Hong Thai, P Ben Thanh, Q1, HCM', '(848) 38220541', '84 - 8 - 38220542', 'www.thusport.com', 'support@thusport.com', 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
 
 -- --------------------------------------------------------
 
@@ -1297,15 +1277,12 @@ CREATE TABLE `s_invoice` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_invoice_number` (`invoice_number`),
   KEY `idx_contact_id` (`contact_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `s_invoice`
 --
 
-INSERT INTO `s_invoice` (`id`, `invoice_number`, `invoice_type`, `contact_id`, `created_date`, `money_before_tax`, `money_of_tax`, `money_after_tax`, `currency`, `status`, `payment_status`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(5, '0000001', 'SALES', NULL, '2012-03-18 10:38:16', 10000, 0, 10000, 'VND', 'OPEN', 'NO_PAYMENT', 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0),
-(6, '0000002', 'SALES', 7, '2012-03-18 10:38:17', 22000, 0, 22000, 'VND', 'OPEN', 'NO_PAYMENT', 'admin', '2012-03-18 10:38:17', 'admin', '2012-03-18 10:38:17', 0);
 
 -- --------------------------------------------------------
 
@@ -1326,14 +1303,12 @@ CREATE TABLE `s_item` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `idx_product_id` (`product_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_item`
 --
 
-INSERT INTO `s_item` (`id`, `product_id`, `sum_uom_name`, `base_sell_price`, `currency`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 5, 'size 39', 10000, 'VND', 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:16', 1);
 
 -- --------------------------------------------------------
 
@@ -1380,14 +1355,12 @@ CREATE TABLE `s_item_origin_price` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_item_supplier` (`item_id`,`supplier_id`),
   KEY `idx_item_id` (`item_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_item_origin_price`
 --
 
-INSERT INTO `s_item_origin_price` (`id`, `item_id`, `supplier_id`, `original_price`, `currency`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 3, 8, 90, 'VND', 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0);
 
 -- --------------------------------------------------------
 
@@ -1409,14 +1382,12 @@ CREATE TABLE `s_item_price` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_item_contacttype_id` (`item_id`,`contacttype_id`),
   KEY `idx_item_id` (`item_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_item_price`
 --
 
-INSERT INTO `s_item_price` (`id`, `item_id`, `contacttype_id`, `sell_price`, `currency`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 3, 3, 100, 'VND', 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 1);
 
 -- --------------------------------------------------------
 
@@ -1465,14 +1436,12 @@ CREATE TABLE `s_manufacturer` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_manufacturer_code` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_manufacturer`
 --
 
-INSERT INTO `s_manufacturer` (`id`, `code`, `name`, `symbol_id`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 'NIKE', 'Nike corporation', NULL, 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
 
 -- --------------------------------------------------------
 
@@ -1492,8 +1461,6 @@ CREATE TABLE `s_operator` (
 -- Dumping data for table `s_operator`
 --
 
-INSERT INTO `s_operator` (`operator_id`, `full_name`, `email`, `phone`, `address`) VALUES
-(6, 'Test Operator', 'test@solution3s.com', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1535,6 +1502,7 @@ CREATE TABLE `s_organization` (
   `digit_after_amt` int(2) NOT NULL,
   `thousands_Separator` varchar(1) collate utf8_bin NOT NULL,
   `odd_Separator` varchar(1) collate utf8_bin NOT NULL,
+  `is_default` tinyint(1) NOT NULL,
   `usr_log_i` varchar(32) character set utf8 collate utf8_unicode_ci NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
@@ -1542,14 +1510,12 @@ CREATE TABLE `s_organization` (
   `version` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `s_organization`
 --
 
-INSERT INTO `s_organization` (`id`, `code`, `institution_id`, `name`, `address`, `usd_bank_acct_id`, `vnd_bank_acct_id`, `benefice_name`, `def_currency_id`, `def_detail_inv_num`, `def_page_row_num`, `def_payment_method`, `def_stall_id`, `enable_chg_inv_date`, `order_inv_code_rule`, `sales_inv_code_rule`, `sales_refund_inv_code_rule`, `pur_inv_code_rule`, `pur_refund_inv_code_rule`, `spon_contract_code_rule`, `movement_inv_code_rule`, `export_inv_code_rule`, `import_inv_code_rule`, `payment_bill_code_rule`, `receipt_code_rule`, `promotion_code_rule`, `sell_on_credit`, `digit_after_quan`, `digit_after_unit_price`, `digit_after_rate`, `digit_after_amt`, `thousands_Separator`, `odd_Separator`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(2, 'HCM_BRANCH', 10, 'Chi nhanh HCM', '28, Pham Hong Thai, P Ben Thanh, Q1, HCM', 12, 12, 'THU SPORTS', 21, 10, 10, 'CASH', NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 5, 2, 2, '.', ',', 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
 
 -- --------------------------------------------------------
 
@@ -1570,14 +1536,12 @@ CREATE TABLE `s_package` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_code` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_package`
 --
 
-INSERT INTO `s_package` (`id`, `code`, `name`, `min_total_item_amount`, `max_total_item_amount`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 'Group_12_BLX', 'Goi 12 san pham BLX', 12, 12, 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
 
 -- --------------------------------------------------------
 
@@ -1601,14 +1565,12 @@ CREATE TABLE `s_package_line` (
   PRIMARY KEY  (`id`),
   KEY `ui_package_item` (`package_id`,`item_id`),
   KEY `idx_package_id` (`package_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_package_line`
 --
 
-INSERT INTO `s_package_line` (`id`, `package_id`, `item_id`, `parentpackline_id`, `min_item_amount`, `max_item_amount`, `optional`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 3, 3, NULL, 12, 12, 0, 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0);
 
 -- --------------------------------------------------------
 
@@ -1697,7 +1659,7 @@ CREATE TABLE `s_partner` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_uom_category_code` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `s_partner`
@@ -1705,9 +1667,7 @@ CREATE TABLE `s_partner` (
 
 INSERT INTO `s_partner` (`id`, `code`, `name`, `title`, `comment`, `website`, `is_customer`, `is_supplier`, `is_employee`, `debit_limit`, `unit_id`, `is_active`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
 (1, '1', 'Cust1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2012-01-24 00:38:38', 'admin', '2012-01-24 00:38:38', 0),
-(2, '2', 'SUPPLIER1', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2012-01-24 12:59:59', 'admin', '2012-01-24 13:00:08', 2),
-(7, 'CONTYBANLE123', 'Cong ty ban le 123', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0),
-(8, 'NIKE', 'Nike company', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0);
+(2, '2', 'SUPPLIER1', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2012-01-24 12:59:59', 'admin', '2012-01-24 13:00:08', 2);
 
 -- --------------------------------------------------------
 
@@ -1727,14 +1687,12 @@ CREATE TABLE `s_partner_category` (
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_partner_category`
 --
 
-INSERT INTO `s_partner_category` (`id`, `code`, `name`, `parent_category_id`, `is_active`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 'B2B', 'B2B', NULL, 1, 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 1);
 
 -- --------------------------------------------------------
 
@@ -1751,8 +1709,6 @@ CREATE TABLE `s_partner_partner_category` (
 -- Dumping data for table `s_partner_partner_category`
 --
 
-INSERT INTO `s_partner_partner_category` (`partner_id`, `partner_category_id`) VALUES
-(7, 3);
 
 -- --------------------------------------------------------
 
@@ -1762,30 +1718,28 @@ INSERT INTO `s_partner_partner_category` (`partner_id`, `partner_category_id`) V
 
 CREATE TABLE `s_payment` (
   `id` int(11) NOT NULL auto_increment,
-  `invoice_id` int(11) default NULL,
-  `contact_id` int(11) default NULL,
-  `payment_type_id` int(11) NOT NULL,
-  `money` double NOT NULL default '0',
-  `currency` varchar(3) collate utf8_bin NOT NULL,
-  `status` varchar(32) collate utf8_bin NOT NULL,
-  `payment_mean` varchar(16) collate utf8_bin NOT NULL,
+  `code` varchar(32) collate utf8_bin NOT NULL,
+  `payment_content_id` int(11) NOT NULL,
+  `payment_date` date NOT NULL,
+  `partner_id` varchar(32) collate utf8_bin default NULL,
+  `operator_id` varchar(32) collate utf8_bin default NULL,
+  `money` int(11) default NULL,
+  `currency_code` varchar(3) collate utf8_bin default NULL,
+  `payment_mode` varchar(50) collate utf8_bin NOT NULL,
+  `rate` int(10) default NULL,
+  `notes` varchar(256) collate utf8_bin default NULL,
   `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_invoice_id` (`invoice_id`),
-  KEY `idx_contact_id` (`contact_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `s_payment`
 --
 
-INSERT INTO `s_payment` (`id`, `invoice_id`, `contact_id`, `payment_type_id`, `money`, `currency`, `status`, `payment_mean`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(1, NULL, NULL, 1, 10000, 'VND', 'CLOSED', 'CASH', 'admin', '2012-03-17 21:49:32', 'admin', '2012-03-17 21:49:32', 0),
-(2, NULL, NULL, 5, 10000, 'VND', 'CLOSED', 'CASH', 'admin', '2012-03-18 10:38:17', 'admin', '2012-03-18 10:38:17', 0);
 
 -- --------------------------------------------------------
 
@@ -1805,17 +1759,12 @@ CREATE TABLE `s_payment_content` (
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `s_payment_content`
 --
 
-INSERT INTO `s_payment_content` (`id`, `code`, `name`, `payment_type`, `parent_id`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(8, '04', 'Thu lai khi xuat tra hang nha cung cap', 'RECEIPT', NULL, 'admin', '2012-03-18 10:38:17', 'admin', '2012-03-18 10:38:17', 0),
-(7, '03', 'Khach tra tien mua hang', 'RECEIPT', NULL, 'admin', '2012-03-18 10:38:17', 'admin', '2012-03-18 10:38:17', 0),
-(6, '02', 'Chi tra nha cung cap', 'PAY', NULL, 'admin', '2012-03-18 10:38:17', 'admin', '2012-03-18 10:38:17', 0),
-(5, '01', 'Chi tra khi nhap hang khach tra lai', 'PAY', NULL, 'admin', '2012-03-18 10:38:17', 'admin', '2012-03-18 10:38:17', 0);
 
 -- --------------------------------------------------------
 
@@ -1840,15 +1789,12 @@ CREATE TABLE `s_product` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_product_code` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `s_product`
 --
 
-INSERT INTO `s_product` (`id`, `producttype_id`, `code`, `name`, `manufacturer_id`, `model`, `description`, `uploadfile_id`, `main_uom_id`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(5, 3, 'GIAY_NAM', 'Giay nam', 3, 'Model100', 'Giay nam choi tennis', NULL, 34, 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0),
-(6, 3, 'VOCHER01', 'Voucher 01', 3, NULL, 'For B2B only', NULL, 36, 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
 
 -- --------------------------------------------------------
 
@@ -1866,15 +1812,12 @@ CREATE TABLE `s_productproperty_element` (
   `dte_log_lu` datetime NOT NULL,
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `s_productproperty_element`
 --
 
-INSERT INTO `s_productproperty_element` (`id`, `property_id`, `element_value`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(5, 5, 'GREEN', 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 1),
-(6, 5, 'BLUE', 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 1);
 
 -- --------------------------------------------------------
 
@@ -1894,15 +1837,12 @@ CREATE TABLE `s_product_property` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_product_code` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `s_product_property`
 --
 
-INSERT INTO `s_product_property` (`id`, `code`, `name`, `property_type`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(5, 'COLOR', 'Mau sac', 'SIMPLE', 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 1),
-(6, 'SIZE', 'Kich thuoc', 'SIMPLE', 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
 
 -- --------------------------------------------------------
 
@@ -1922,14 +1862,12 @@ CREATE TABLE `s_product_type` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_product_type_code` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_product_type`
 --
 
-INSERT INTO `s_product_type` (`id`, `code`, `name`, `product_family_type`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 'SHOES', 'Giay dep', 'GOODS', 'admin', '2012-03-18 10:38:15', 'admin', '2012-03-18 10:38:15', 0);
 
 -- --------------------------------------------------------
 
@@ -1984,14 +1922,12 @@ CREATE TABLE `s_sales_contract` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_sales_contract_code` (`code`),
   KEY `idx_supplier_id` (`supplier_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_sales_contract`
 --
 
-INSERT INTO `s_sales_contract` (`id`, `code`, `supplier_id`, `datetime_contract`, `money_before_tax`, `money_of_tax`, `money_after_tax`, `currency`, `status`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 'CO123456', 8, '2012-03-18 10:38:16', 1000, 10, 990, 'VND', 'OPEN', 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0);
 
 -- --------------------------------------------------------
 
@@ -2113,14 +2049,12 @@ CREATE TABLE `s_store` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_store_code` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `s_store`
 --
 
-INSERT INTO `s_store` (`id`, `code`, `store_name`, `manager_code`, `address`, `stored_address`, `import_address`, `export_address`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(3, 'K05', 'Kho 05', 'OPERATOR1', '28, Pham Hong Thai, P Ben Thanh, Q1, HCM', '28, Pham Hong Thai, P Ben Thanh, Q1, HCM', '28, Pham Hong Thai, P Ben Thanh, Q1, HCM', '28, Pham Hong Thai, P Ben Thanh, Q1, HCM', 'admin', '2012-03-18 10:38:16', 'admin', '2012-03-18 10:38:16', 0);
 
 -- --------------------------------------------------------
 
@@ -2143,8 +2077,6 @@ CREATE TABLE `s_supplier` (
 -- Dumping data for table `s_supplier`
 --
 
-INSERT INTO `s_supplier` (`supplier_id`, `representer`, `sex`, `position`, `address`, `phone`, `fax`, `email`) VALUES
-(8, NULL, 1, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2195,16 +2127,12 @@ CREATE TABLE `s_unit_of_measure` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_uom_code` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=76 ;
 
 --
 -- Dumping data for table `s_unit_of_measure`
 --
 
-INSERT INTO `s_unit_of_measure` (`id`, `uom_category_id`, `code`, `uom_name`, `is_base_measure`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(34, 23, 'KG', 'Kilogam', 0, 'admin', '2012-03-18 10:38:14', 'admin', '2012-03-18 10:38:14', 0),
-(35, 23, 'G', 'gam', 0, 'admin', '2012-03-18 10:38:14', 'admin', '2012-03-18 10:38:14', 0),
-(36, 24, 'Cai', 'Cai', 0, 'admin', '2012-03-18 10:38:14', 'admin', '2012-03-18 10:38:14', 0);
 
 -- --------------------------------------------------------
 
@@ -2224,15 +2152,12 @@ CREATE TABLE `s_uom_category` (
   `version` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ui_uom_category_code` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=51 ;
 
 --
 -- Dumping data for table `s_uom_category`
 --
 
-INSERT INTO `s_uom_category` (`id`, `code`, `name`, `parentUomCategory_id`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(23, 'Weight', 'Can nang', NULL, 'admin', '2012-03-18 10:38:14', 'admin', '2012-03-18 10:38:14', 0),
-(24, 'Unit', 'Don vi dem', NULL, 'admin', '2012-03-18 10:38:14', 'admin', '2012-03-18 10:38:14', 0);
 
 -- --------------------------------------------------------
 
@@ -2280,8 +2205,6 @@ CREATE TABLE `s_voucher` (
 -- Dumping data for table `s_voucher`
 --
 
-INSERT INTO `s_voucher` (`voucher_id`, `min_amount`, `currency_code`) VALUES
-(6, 500, 'VND');
 
 -- --------------------------------------------------------
 
