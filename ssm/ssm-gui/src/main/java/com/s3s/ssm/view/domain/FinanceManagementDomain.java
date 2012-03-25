@@ -19,8 +19,10 @@ import javax.swing.JScrollPane;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
+import com.s3s.ssm.view.list.finance.ListContractPaymentView;
 import com.s3s.ssm.view.list.finance.ListPaymentContentView;
 import com.s3s.ssm.view.list.finance.ListPaymentView;
+import com.s3s.ssm.view.list.finance.ListReceiptView;
 
 /**
  * All views relates to finance activity.
@@ -41,8 +43,14 @@ public class FinanceManagementDomain extends AbstractDomain {
                 ControlConfigUtils.getString("JTree.Finance.PaymentContent"), new ListPaymentContentView());
         TreeNodeWithView paymentEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Finance.Payment"),
                 new ListPaymentView());
+        TreeNodeWithView receiptEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Finance.Receipt"),
+                new ListReceiptView());
+        TreeNodeWithView contractPaymentEntry = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.Finance.ContractPayment"), new ListContractPaymentView());
         rootNode.add(paymentContentEntry);
         rootNode.add(paymentEntry);
+        rootNode.add(receiptEntry);
+        rootNode.add(contractPaymentEntry);
         // Financial management -TODO: not add views
         // TreeNodeWithView receiveFMEntry = new
         // TreeNodeWithView(ControlConfigUtils.getString("JTree.Finance.Receivable")); //

@@ -10,5 +10,8 @@
                             http://www.springframework.org/schema/aop
                             http://www.springframework.org/schema/aop/spring-aop-2.5.xsd"> 
 		
-	
+	<bean id="configService"
+		class="com.s3s.ssm.service.impl.ConfigServiceImpl"
+		parent="abstractModuleService" init-method="init"> 
+		</bean>
 </beans>    

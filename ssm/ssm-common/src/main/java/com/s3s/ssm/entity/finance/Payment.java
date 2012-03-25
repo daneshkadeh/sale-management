@@ -24,32 +24,30 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.Digits;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.config.PaymentMode;
+import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.model.Money;
 
 @Entity
 @Table(name = "s_payment")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Payment extends AbstractCodeOLObject {
-    private static final long serialVersionUID = 1420800624547633129L;
     private PaymentContent paymentContent;
     private Date paymentDate;
-    private String partnerCode;
-    private String partnerName;
-    private String staffCode;
-    private String staffName;
+    private Partner partner;
+    private Operator operator;
     private PaymentMode paymentMode;
     private Money money;
     private Integer rate;
-
     private String notes;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -63,50 +61,12 @@ public class Payment extends AbstractCodeOLObject {
     }
 
     @Column(name = "payment_date")
-    @Temporal(TemporalType.DATE)
-    @NotBlank
     public Date getPaymentDate() {
         return paymentDate;
     }
 
     public void setPaymentDate(Date paymentDate) {
         this.paymentDate = paymentDate;
-    }
-
-    @Column(name = "partner_code")
-    public String getPartnerCode() {
-        return partnerCode;
-    }
-
-    public void setPartnerCode(String partner_code) {
-        this.partnerCode = partner_code;
-    }
-
-    @Column(name = "partner_name")
-    public String getPartnerName() {
-        return partnerName;
-    }
-
-    public void setPartnerName(String partner_name) {
-        this.partnerName = partner_name;
-    }
-
-    @Column(name = "staff_code")
-    public String getStaffCode() {
-        return staffCode;
-    }
-
-    public void setStaffCode(String staff_code) {
-        this.staffCode = staff_code;
-    }
-
-    @Column(name = "staff_name")
-    public String getStaffName() {
-        return staffName;
-    }
-
-    public void setStaffName(String staff_name) {
-        this.staffName = staff_name;
     }
 
     @Embedded
@@ -121,7 +81,6 @@ public class Payment extends AbstractCodeOLObject {
     }
 
     @Column(name = "payment_mode")
-    @NotBlank
     @Enumerated(EnumType.STRING)
     public PaymentMode getPaymentMode() {
         return paymentMode;
@@ -131,7 +90,28 @@ public class Payment extends AbstractCodeOLObject {
         this.paymentMode = paymentMode;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "partner_id")
+    public Partner getPartner() {
+        return partner;
+    }
+
+    public void setPartner(Partner partner) {
+        this.partner = partner;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "operator_id")
+    public Operator getOperator() {
+        return operator;
+    }
+
+    public void setOperator(Operator operator) {
+        this.operator = operator;
+    }
+
     @Column(name = "rate")
+    @Digits(fraction = 0, integer = 10)
     public Integer getRate() {
         return rate;
     }

@@ -20,6 +20,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -28,6 +29,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
@@ -76,10 +79,12 @@ public class Organization extends AbstractCodeOLObject {
     private Integer digitAfterAmt = 2;
     private String thousandsSeparator = ".";
     private String oddSeparator = ",";
+    private Boolean isDefault = false;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution_id")
     @NotNull
+    @Cascade({ CascadeType.SAVE_UPDATE })
     public Institution getInstitution() {
         return institution;
     }
@@ -139,8 +144,8 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @ManyToOne
-    @JoinColumn(name = "def_currency_id", nullable = false)
-    @NotBlank
+    @JoinColumn(name = "def_currency_id")
+    @NotNull
     public SCurrency getDefCurrency() {
         return defCurrency;
     }
@@ -150,7 +155,7 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "def_detail_inv_num", length = 3)
-    @NotBlank
+    @NotNull
     @Digits(fraction = 0, integer = 3)
     public Integer getDefDetailInvNum() {
         return defDetailInvNum;
@@ -161,7 +166,7 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "def_page_row_num", length = 3)
-    @NotBlank
+    @NotNull
     @Digits(fraction = 0, integer = 3)
     public Integer getDefPageRowNum() {
         return defPageRowNum;
@@ -173,7 +178,7 @@ public class Organization extends AbstractCodeOLObject {
 
     @Column(name = "def_payment_method", length = 3)
     @Enumerated(EnumType.STRING)
-    @NotBlank
+    @NotNull
     public PaymentMode getDefPaymentMethod() {
         return defPaymentMethod;
     }
@@ -193,7 +198,7 @@ public class Organization extends AbstractCodeOLObject {
     }
 
     @Column(name = "enable_chg_inv_date", length = 1)
-    @NotBlank
+    @NotNull
     @Digits(fraction = 0, integer = 1)
     public Integer getEnableChangeInvDate() {
         return enableChangeInvDate;
@@ -393,5 +398,14 @@ public class Organization extends AbstractCodeOLObject {
 
     public void setOddSeparator(String oddSeparator) {
         this.oddSeparator = oddSeparator;
+    }
+
+    @Column(name = "is_default", length = 1)
+    public Boolean getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
     }
 }

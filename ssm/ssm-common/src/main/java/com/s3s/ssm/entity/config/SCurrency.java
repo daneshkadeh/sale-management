@@ -17,7 +17,8 @@ package com.s3s.ssm.entity.config;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
@@ -29,7 +30,7 @@ public class SCurrency extends AbstractCodeOLObject {
     private Boolean isActive = true;
 
     @Column(name = "name", length = 128)
-    @NotNull
+    @NotBlank
     public String getName() {
         return name;
     }
@@ -39,6 +40,7 @@ public class SCurrency extends AbstractCodeOLObject {
     }
 
     @Column(name = "symbol", length = 10)
+    @NotBlank
     public String getSymbol() {
         return symbol;
     }
