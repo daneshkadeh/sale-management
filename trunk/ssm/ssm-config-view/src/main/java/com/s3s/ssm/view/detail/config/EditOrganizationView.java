@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.BankAccount;
 import com.s3s.ssm.entity.config.Organization;
@@ -62,6 +65,7 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("address", DetailFieldType.TEXTAREA).mandatory(true);
+        detailDataModel.addAttribute("isDefault", DetailFieldType.CHECKBOX);
         // information of bank
         detailDataModel.tab(bankTab, bankTab, null);
         detailDataModel.addAttribute("beneficeName", DetailFieldType.TEXTBOX);
@@ -82,7 +86,8 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
                 .referenceDataId(CURRENCY_REF_ID);
         detailDataModel.addAttribute("defPaymentMethod", DetailFieldType.DROPDOWN).mandatory(true)
                 .referenceDataId(REF_PAYMENT_MODE);
-        detailDataModel.addAttribute("defStall", DetailFieldType.DROPDOWN).mandatory(true).referenceDataId(STALL_REF_ID);
+        detailDataModel.addAttribute("defStall", DetailFieldType.DROPDOWN).mandatory(true)
+                .referenceDataId(STALL_REF_ID);
         detailDataModel.addAttribute("defDetailInvNum", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("defPageRowNum", DetailFieldType.TEXTBOX).mandatory(true);
         // rule of code generation
@@ -149,5 +154,23 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
             org.setVndBankAcct(new BankAccount());
         }
         return org;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void saveOrUpdate(Organization entity) {
+        if (entity.getIsDefault() == true) {
+            DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
+            dc.add(Restrictions.eq("isDefault", true));
+            Organization org = getDaoHelper().getDao(Organization.class).findFirstByCriteria(dc);
+            if (!org.getCode().equals(entity.getCode())) {
+                org.setIsDefault(false);
+                getDaoHelper().getDao(getEntityClass()).saveOrUpdate(org);
+            }
+        }
+        getDaoHelper().getDao(getEntityClass()).saveOrUpdate(entity);
+        this.repaint();
     }
 }

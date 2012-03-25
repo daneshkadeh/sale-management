@@ -14,18 +14,14 @@
  */
 package com.s3s.ssm.view.list.finance;
 
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
-
-import com.s3s.ssm.entity.finance.Payment;
-import com.s3s.ssm.entity.finance.PaymentType;
-import com.s3s.ssm.view.detail.finance.EditPaymentView;
+import com.s3s.ssm.entity.finance.ContractPayment;
+import com.s3s.ssm.view.detail.finance.EditContractPaymentView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
-public class ListPaymentView extends AbstractListView<Payment> {
+public class ListContractPaymentView extends AbstractListView<ContractPayment> {
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListColumnType.TEXT);
@@ -37,19 +33,7 @@ public class ListPaymentView extends AbstractListView<Payment> {
     }
 
     @Override
-    protected Class<? extends AbstractEditView<Payment>> getEditViewClass() {
-        return EditPaymentView.class;
+    protected Class<? extends AbstractEditView<ContractPayment>> getEditViewClass() {
+        return EditContractPaymentView.class;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected DetachedCriteria getCriteriaForView() {
-        DetachedCriteria dc = super.getCriteriaForView();
-        dc.createAlias("paymentContent", "paymentContent");
-        dc.add(Restrictions.eq("paymentContent.paymentType", PaymentType.PAY));
-        return dc;
-    }
-
 }

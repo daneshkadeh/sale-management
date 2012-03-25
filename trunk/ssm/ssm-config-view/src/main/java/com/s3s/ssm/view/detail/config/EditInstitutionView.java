@@ -18,13 +18,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.s3s.ssm.entity.config.Institution;
+import com.s3s.ssm.entity.config.Organization;
 import com.s3s.ssm.entity.config.UploadFile;
+import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditInstitutionView extends AbstractSingleEditView<Institution> {
     private static final long serialVersionUID = 1L;
+    private static final String REF_ORG = "1";
 
     public EditInstitutionView(Map<String, Object> entity) {
         super(entity);
@@ -68,4 +71,13 @@ public class EditInstitutionView extends AbstractSingleEditView<Institution> {
         getDaoHelper().getDao(UploadFile.class).saveOrUpdate(entity.getLogo());
         super.saveOrUpdate(entity);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void setReferenceDataModel(ReferenceDataModel refDataModel, Institution entity) {
+        refDataModel.putRefDataList(REF_ORG, getDaoHelper().getDao(Organization.class).findAll(), null);
+    }
+
 }

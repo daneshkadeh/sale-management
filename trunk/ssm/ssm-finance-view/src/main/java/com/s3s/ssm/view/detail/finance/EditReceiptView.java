@@ -16,7 +16,6 @@ package com.s3s.ssm.view.detail.finance;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -35,15 +34,14 @@ import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
-public class EditPaymentView extends AbstractSingleEditView<Payment> {
-
+public class EditReceiptView extends AbstractSingleEditView<Payment> {
     private static final String REF_PAYMENT_MODE = "0";
     private static final String REF_PAYMENT_CONTENT = "1";
     private static final String REF_CURRENCY = "2";
     private static final String REF_PARTNER = "3";
     private static final String REF_OPERATOR = "4";
 
-    public EditPaymentView(Map<String, Object> entity) {
+    public EditReceiptView(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -77,21 +75,10 @@ public class EditPaymentView extends AbstractSingleEditView<Payment> {
         refDataModel.putRefDataList(REF_CURRENCY, currencyCodes, null);
 
         DetachedCriteria dc = DetachedCriteria.forClass(PaymentContent.class).add(
-                Property.forName("paymentType").eq(PaymentType.PAY));
+                Property.forName("paymentType").eq(PaymentType.RECEIPT));
         refDataModel.putRefDataList(REF_PAYMENT_CONTENT,
                 getDaoHelper().getDao(PaymentContent.class).findByCriteria(dc), null);
         refDataModel.putRefDataList(REF_PARTNER, getDaoHelper().getDao(Partner.class).findAll(), null);
         refDataModel.putRefDataList(REF_OPERATOR, getDaoHelper().getDao(Operator.class).findAll(), null);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Payment loadForCreate() {
-        Payment payment = super.loadForCreate();
-        payment.setPaymentDate(new Date());
-        return payment;
-    }
-
 }

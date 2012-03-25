@@ -62,6 +62,7 @@ import com.s3s.ssm.entity.contact.Customer;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.contact.PartnerCategory;
 import com.s3s.ssm.entity.contact.Supplier;
+import com.s3s.ssm.entity.finance.ContractPayment;
 import com.s3s.ssm.entity.finance.Payment;
 import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.entity.finance.PaymentType;
@@ -78,9 +79,11 @@ import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.DetailImportProduct;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.entity.store.ImportProductForm;
+import com.s3s.ssm.interfaces.config.ConfigService;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
+import com.s3s.ssm.util.ServiceProvider;
 
 /**
  * This data loader create a basic database so that the application can be tested. </br> NOTE: This class should only
@@ -98,6 +101,8 @@ public class SSMDataLoader {
     private static final String UOM_KG = "KG";
     private static final String COMPANY_ADDRESS = "28, Pham Hong Thai, P Ben Thanh, Q1, HCM";
 
+    ServiceProvider serviceProvider = ConfigProvider.getInstance().getServiceProvider();
+
     public static void main(String[] args) {
         // Not find solution to get class path from ssm-core.
         // String classpath = MainProgram.class.getClassLoader().get
@@ -107,13 +112,14 @@ public class SSMDataLoader {
 
         ConfigProvider configProvider = ConfigProvider.getInstance();
         DaoHelper daoHelper = configProvider.getDaoHelper();
+        ServiceProvider serviceProvider = ConfigProvider.getInstance().getServiceProvider();
 
         try {
             s_logger.info("Cleaning data SSM");
             cleanDatabase(daoHelper);
 
             s_logger.info("Initializing data SSM");
-            initDatabase(daoHelper);
+            initDatabase(daoHelper, serviceProvider);
 
             s_logger.info("Testing data SSM");
             testInsertedData(daoHelper);
@@ -121,13 +127,16 @@ public class SSMDataLoader {
             System.exit(0);
         } catch (Exception e) {
             s_logger.error("Error when init data, please check and clean test data", e);
+            System.exit(0);
         }
         s_logger.info("Error on data loader SSM!");
     }
 
     private static void cleanDatabase(DaoHelper daoHelper) {
-        // daoHelper.getDao(Payment.class).deleteAll(daoHelper.getDao(Payment.class).findAll());
-        // daoHelper.getDao(PaymentContent.class).deleteAll(daoHelper.getDao(PaymentContent.class).findAll());
+        // Finance module
+        daoHelper.getDao(ContractPayment.class).deleteAll(daoHelper.getDao(ContractPayment.class).findAll());
+        daoHelper.getDao(Payment.class).deleteAll(daoHelper.getDao(Payment.class).findAll());
+        daoHelper.getDao(PaymentContent.class).deleteAll(daoHelper.getDao(PaymentContent.class).findAll());
 
         daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());
         daoHelper.getDao(SalesContract.class).deleteAll(daoHelper.getDao(SalesContract.class).findAll());
@@ -171,6 +180,7 @@ public class SSMDataLoader {
         // Config module
         daoHelper.getDao(Organization.class).deleteAll(daoHelper.getDao(Organization.class).findAll());
         daoHelper.getDao(Institution.class).deleteAll(daoHelper.getDao(Institution.class).findAll());
+
         daoHelper.getDao(UploadFile.class).deleteAll(daoHelper.getDao(UploadFile.class).findAll());
         daoHelper.getDao(UnitOfMeasure.class).deleteAll(daoHelper.getDao(UnitOfMeasure.class).findAll());
         daoHelper.getDao(UomCategory.class).deleteAll(daoHelper.getDao(UomCategory.class).findAll());
@@ -195,7 +205,7 @@ public class SSMDataLoader {
 
     }
 
-    private static void initDatabase(DaoHelper daoHelper) {
+    private static void initDatabase(DaoHelper daoHelper, ServiceProvider serviceProvider) {
         // Init data for config module
         List<UnitOfMeasure> listUom = initUOM(daoHelper);
         List<BankAccount> listBankAccount = initBankAccount(daoHelper);
@@ -226,7 +236,8 @@ public class SSMDataLoader {
         List<SalesContract> listSalesContracts = initSalesContracts(daoHelper, listSupplier, listItem);
         List<Invoice> listInvoice = initInvoice(daoHelper, listItem, listContact);
         // Init data for finance module
-        // List<Payment> listPayments = initPayment(daoHelper, listInvoice, listContact);
+        List<Payment> listPayments = initPayment(daoHelper, serviceProvider, listSalesContracts, listContact,
+                listOperator);
     }
 
     private static List<Voucher> initVoucher(DaoHelper daoHelper) {
@@ -315,7 +326,8 @@ public class SSMDataLoader {
         return Arrays.asList(contactDebt);
     }
 
-    private static List<Payment> initPayment(DaoHelper daoHelper, List<Invoice> listInvoice, List<Partner> listContact) {
+    private static List<Payment> initPayment(DaoHelper daoHelper, ServiceProvider serviceProvider,
+            List<SalesContract> listSalesContract, List<Partner> listContact, List<Operator> listOperator) {
 
         PaymentContent pc1 = new PaymentContent();
         pc1.setCode("01"); // TODO: should use code rule of organization
@@ -343,13 +355,41 @@ public class SSMDataLoader {
         List<PaymentContent> listPaymentContent = Arrays.asList(pc1, pc2, pc3, pc4);
         daoHelper.getDao(PaymentContent.class).saveOrUpdateAll(listPaymentContent);
 
+        String code = serviceProvider.getService(ConfigService.class).generateCode(Payment.class);
+        SCurrency defCurrency = serviceProvider.getService(ConfigService.class).getDefCurrency();
+        Money money = Money.create(defCurrency.getCode(), 1000000L);
         Payment payment = new Payment();
+        payment.setCode(code);
         payment.setPaymentContent(pc1);
-        // payment.setPaymentMean(PaymentMode.CASH);
-        // // payment.setContact(listContact.get(0));
-        // // payment.setInvoice(listInvoice.get(0));
-        // payment.setMoney(10000.0);
-        // payment.setStatus(PaymentStatus.CLOSED);
+        payment.setPaymentDate(new Date());
+        payment.setPartner(listContact.get(0));
+        payment.setOperator(listOperator.get(0));
+        payment.setPaymentMode(PaymentMode.CASH);
+        payment.setRate(21000);
+        payment.setMoney(money);
+        daoHelper.getDao(Payment.class).saveOrUpdate(payment);
+
+        Payment receipt = new Payment();
+        receipt.setCode(code);
+        receipt.setPaymentContent(pc3);
+        receipt.setPaymentDate(new Date());
+        receipt.setPartner(listContact.get(0));
+        receipt.setOperator(listOperator.get(0));
+        receipt.setPaymentMode(PaymentMode.BANK_TRANSFER);
+        receipt.setRate(21000);
+        receipt.setMoney(money);
+        daoHelper.getDao(Payment.class).saveOrUpdate(payment);
+
+        ContractPayment contractPayment = new ContractPayment();
+        contractPayment.setCode(code);
+        contractPayment.setPaymentContent(pc4);
+        contractPayment.setPaymentDate(new Date());
+        contractPayment.setPartner(listContact.get(0));
+        contractPayment.setOperator(listOperator.get(0));
+        contractPayment.setPaymentMode(PaymentMode.BANK_TRANSFER);
+        contractPayment.setRate(21000);
+        contractPayment.setMoney(money);
+        contractPayment.setSalesContract(listSalesContract.get(0));
         daoHelper.getDao(Payment.class).saveOrUpdate(payment);
         return Arrays.asList(payment);
     }
@@ -503,11 +543,17 @@ public class SSMDataLoader {
         List<SCurrency> result = Arrays.asList(vndCurrency, usdCurrency);
         daoHelper.getDao(SCurrency.class).saveOrUpdateAll(result);
 
-        ExchangeRate exRate = new ExchangeRate();
-        exRate.setCode("01");
-        exRate.setCurrency(usdCurrency);
-        exRate.setRate(21000);
-        daoHelper.getDao(ExchangeRate.class).save(exRate);
+        ExchangeRate usdExRate = new ExchangeRate();
+        usdExRate.setCode("01");
+        usdExRate.setCurrency(usdCurrency);
+        usdExRate.setRate(21000D);
+        daoHelper.getDao(ExchangeRate.class).save(usdExRate);
+
+        ExchangeRate vndExRate = new ExchangeRate();
+        vndExRate.setCode("02");
+        vndExRate.setCurrency(vndCurrency);
+        vndExRate.setRate(21000D);
+        daoHelper.getDao(ExchangeRate.class).save(vndExRate);
 
         return result;
     }
@@ -536,9 +582,55 @@ public class SSMDataLoader {
         org1.setEnableChangeInvDate(0);
         // rule of code generation
         org1.setSellOnCredit(2); // ko cho phep ban am
+        org1.setOrderInvCodeRule("HDDH");
+        org1.setPurInvCodeRule("HDMH");
+        org1.setSalesInvCodeRule("NKHMTL");
+        org1.setPurInvCodeRule("MHNCC");
+        org1.setPurRefundInvCodeRule("XTNCC");
+        org1.setSponContractCodeRule("HDTT");
+        org1.setMovementInvCodeRule("CK");
+        org1.setExportInvCodeRule("XK");
+        org1.setImportInvCodeRule("NK");
+        org1.setPaymentBillCodeRule("PC");
+        org1.setPromotionCodeRule("PT");
+        org1.setSponContractCodeRule("KM");
+        org1.setIsDefault(true);
 
-        List<Organization> result = Arrays.asList(org1);
+        Organization org2 = new Organization();
+        org2.setInstitution(ins);
+        org2.setCode("HANOI_BRANCH");
+        org2.setName("Chi nhanh Ha Noi");
+        org2.setAddress(COMPANY_ADDRESS);
+        // Bank information
+        org2.setBeneficeName("THU SPORTS");
+        if (listBankAccount != null && listBankAccount.size() == 2) {
+            org2.setUsdBankAcct(listBankAccount.get(0));
+            org2.setVndBankAcct(listBankAccount.get(1));
+        }
+        // General Information
+        if (listSCurrency != null) {
+            SCurrency defCurrency = listSCurrency.get(1);
+            org2.setDefCurrency(defCurrency);
+        }
+        org2.setDefPaymentMethod(PaymentMode.CASH);
+        org2.setEnableChangeInvDate(0);
+        // rule of code generation
+        org2.setSellOnCredit(2); // ko cho phep ban am
+        org2.setOrderInvCodeRule("HDDH");
+        org2.setPurInvCodeRule("HDMH");
+        org2.setSalesInvCodeRule("NKHMTL");
+        org2.setPurInvCodeRule("MHNCC");
+        org2.setPurRefundInvCodeRule("XTNCC");
+        org2.setSponContractCodeRule("HDTT");
+        org2.setMovementInvCodeRule("CK");
+        org2.setExportInvCodeRule("XK");
+        org2.setImportInvCodeRule("NK");
+        org2.setPaymentBillCodeRule("PC");
+        org2.setPromotionCodeRule("PT");
+        org2.setSponContractCodeRule("KM");
+        List<Organization> result = Arrays.asList(org1, org2);
         daoHelper.getDao(Organization.class).saveOrUpdateAll(result);
+        daoHelper.getDao(Institution.class).saveOrUpdate(ins);
         return result;
     }
 

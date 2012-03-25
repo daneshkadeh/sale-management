@@ -18,11 +18,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
@@ -32,10 +32,10 @@ public class ExchangeRate extends AbstractCodeOLObject {
     private static final long serialVersionUID = -9188655499937108343L;
     private Date updateDate = new Date(); // default is current date
     private SCurrency currency;
-    private Integer rate;
+    private Double rate;
 
     @Column(name = "update_date")
-    @NotBlank
+    @NotNull
     public Date getUpdateDate() {
         return updateDate;
     }
@@ -44,9 +44,9 @@ public class ExchangeRate extends AbstractCodeOLObject {
         this.updateDate = updateDate;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "currency_id")
-    @NotBlank
+    @NotNull
     public SCurrency getCurrency() {
         return currency;
     }
@@ -56,12 +56,12 @@ public class ExchangeRate extends AbstractCodeOLObject {
     }
 
     @Column(name = "rate")
-    @NotBlank
-    public Integer getRate() {
+    @NotNull
+    public Double getRate() {
         return rate;
     }
 
-    public void setRate(Integer rate) {
+    public void setRate(Double rate) {
         this.rate = rate;
     }
 

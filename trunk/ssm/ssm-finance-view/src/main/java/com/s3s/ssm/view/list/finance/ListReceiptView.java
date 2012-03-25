@@ -19,13 +19,13 @@ import org.hibernate.criterion.Restrictions;
 
 import com.s3s.ssm.entity.finance.Payment;
 import com.s3s.ssm.entity.finance.PaymentType;
-import com.s3s.ssm.view.detail.finance.EditPaymentView;
+import com.s3s.ssm.view.detail.finance.EditReceiptView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
-public class ListPaymentView extends AbstractListView<Payment> {
+public class ListReceiptView extends AbstractListView<Payment> {
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListColumnType.TEXT);
@@ -38,7 +38,7 @@ public class ListPaymentView extends AbstractListView<Payment> {
 
     @Override
     protected Class<? extends AbstractEditView<Payment>> getEditViewClass() {
-        return EditPaymentView.class;
+        return EditReceiptView.class;
     }
 
     /**
@@ -48,8 +48,7 @@ public class ListPaymentView extends AbstractListView<Payment> {
     protected DetachedCriteria getCriteriaForView() {
         DetachedCriteria dc = super.getCriteriaForView();
         dc.createAlias("paymentContent", "paymentContent");
-        dc.add(Restrictions.eq("paymentContent.paymentType", PaymentType.PAY));
+        dc.add(Restrictions.eq("paymentContent.paymentType", PaymentType.RECEIPT));
         return dc;
     }
-
 }

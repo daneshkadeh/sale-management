@@ -45,7 +45,7 @@ import com.s3s.ssm.entity.config.UnitOfMeasure;
 @Entity
 @Table(name = "s_partner")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Partner extends AbstractCodeOLObject {
+public class Partner extends AbstractCodeOLObject {
     private static final long serialVersionUID = 1435468012252943876L;
     private String name;
     private Integer title; // Partner Form
