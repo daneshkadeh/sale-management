@@ -26,6 +26,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -49,6 +50,10 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
         clazz = getEntityClass();
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @Override
     public void setEntityClass(Class<T> clazz) {
         this.clazz = clazz;
@@ -72,6 +77,10 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
         setSessionFactory(sessionFactory);
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @Override
     protected HibernateTemplate createHibernateTemplate(SessionFactory sessionFactory) {
         OptimisticLockingInterceptor interceptor = new OptimisticLockingInterceptor();
@@ -80,23 +89,39 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
         return super.createHibernateTemplate(sessionFactory);
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @Override
     public T save(T entity) {
         getHibernateTemplate().save(entity);
         return entity;
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @Override
     public T update(T entity) {
         getHibernateTemplate().update(entity);
         return entity;
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @Override
     public void delete(T entity) {
         getHibernateTemplate().delete(entity);
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @Override
     public void deleteAll(Collection<T> entities) {
         if (CollectionUtils.isNotEmpty(entities)) {
@@ -104,45 +129,102 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
         }
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @Override
     public Collection<T> saveOrUpdateAll(Collection<T> list) {
         getHibernateTemplate().saveOrUpdateAll(list);
         return list;
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @Override
     public T saveOrUpdate(T entity) {
         getHibernateTemplate().saveOrUpdate(entity);
         return entity;
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public T findById(Long id) {
         return (T) getHibernateTemplate().get(getEntityClass(), id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public T findByCode(String code) {
+        DetachedCriteria criteria = getCriteria();
+        criteria.add(Restrictions.eq("code", code));
+        List<T> list = getHibernateTemplate().findByCriteria(criteria);
+        if (list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @Override
     public List<T> findAll() {
         List<T> list = getHibernateTemplate().find("from " + getEntityClass().getSimpleName());
         return list;
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @Override
     public DetachedCriteria getCriteria() {
         return DetachedCriteria.forClass(getEntityClass());
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public List<T> findByCriteria(DetachedCriteria criteria, int firstResult, int maxResults) {
         return getHibernateTemplate().findByCriteria(criteria, firstResult, maxResults);
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public List<T> findByCriteria(DetachedCriteria criteria) {
         return getHibernateTemplate().findByCriteria(criteria);
+    }
+
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public T findFirstByCriteria(DetachedCriteria criteria) {
+        List<T> list = findByCriteria(criteria, 0, 1);
+        if (list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
     }
 
     /**
@@ -178,5 +260,4 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
     public void flush() {
         getHibernateTemplate().flush();
     }
-
 }

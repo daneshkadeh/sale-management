@@ -37,6 +37,8 @@ public interface IBaseDao<T> {
 
     T findById(Long id);
 
+    T findByCode(String code);
+
     List<T> findAll();
 
     DetachedCriteria getCriteria();
@@ -50,6 +52,17 @@ public interface IBaseDao<T> {
      * A delegation of {@link HibernateTemplate#findByCriteria(DetachedCriteria)}.
      */
     List<T> findByCriteria(DetachedCriteria dc);
+
+    /**
+     * Retrieves the first of domain objects matching the Hibernate criteria.
+     * 
+     * @param dc
+     *            the criteria that the result has to fulfill <b>Note: Do not reuse criteria objects! They need to
+     *            recreated (or cloned e.g. using <tt>SerializationUtils.clone()</tt>) per execution, due to the
+     *            suboptimal design of Hibernate's criteria facility.</b>
+     * @return the first of objects that fulfill the criteria
+     */
+    T findFirstByCriteria(DetachedCriteria dc);
 
     /**
      * Retrieves the number of domain objects matching the Hibernate criteria.
