@@ -369,6 +369,7 @@ public class SSMDataLoader {
         payment.setMoney(money);
         daoHelper.getDao(Payment.class).saveOrUpdate(payment);
 
+        code = serviceProvider.getService(ConfigService.class).generateCode(Payment.class);
         Payment receipt = new Payment();
         receipt.setCode(code);
         receipt.setPaymentContent(pc3);
@@ -378,8 +379,9 @@ public class SSMDataLoader {
         receipt.setPaymentMode(PaymentMode.BANK_TRANSFER);
         receipt.setRate(21000);
         receipt.setMoney(money);
-        daoHelper.getDao(Payment.class).saveOrUpdate(payment);
+        daoHelper.getDao(Payment.class).saveOrUpdate(receipt);
 
+        code = serviceProvider.getService(ConfigService.class).generateCode(Payment.class);
         ContractPayment contractPayment = new ContractPayment();
         contractPayment.setCode(code);
         contractPayment.setPaymentContent(pc4);
@@ -390,8 +392,8 @@ public class SSMDataLoader {
         contractPayment.setRate(21000);
         contractPayment.setMoney(money);
         contractPayment.setSalesContract(listSalesContract.get(0));
-        daoHelper.getDao(Payment.class).saveOrUpdate(payment);
-        return Arrays.asList(payment);
+        daoHelper.getDao(Payment.class).saveOrUpdate(contractPayment);
+        return Arrays.asList(payment, receipt, contractPayment);
     }
 
     /**
