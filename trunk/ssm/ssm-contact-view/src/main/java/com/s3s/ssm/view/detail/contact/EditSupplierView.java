@@ -24,7 +24,6 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 
 import com.s3s.ssm.entity.contact.Supplier;
-import com.s3s.ssm.interfaces.store.StoreService;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
@@ -81,8 +80,8 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
         detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX);
         detailDataModel.addAttribute("comment", DetailFieldType.TEXTAREA);
         // TODO: todo test code
-        System.out.println("call store service from contact module: "
-                + serviceProvider.getService(StoreService.class).testService());
+        // System.out.println("call store service from contact module: "
+        // + serviceProvider.getService(StoreService.class).testService());
         System.out.println("call cache service of config service: "
                 + cacheDataService.getReferenceDataList(CacheId.REF_LIST_CURRENCY));
     }
