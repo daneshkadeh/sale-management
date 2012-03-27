@@ -20,7 +20,17 @@
     <!-- The view from modules of the project -->
 	<dependency>
 		<groupId>com.s3s</groupId>
+		<artifactId>ssm-sales-service</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
 		<artifactId>ssm-sales-view</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-shipment-service</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
 	<dependency>
@@ -30,7 +40,17 @@
 	</dependency>
 	<dependency>
 		<groupId>com.s3s</groupId>
+		<artifactId>ssm-supplychain-service</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
 		<artifactId>ssm-supplychain-view</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-catalog-service</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
 	<dependency>
@@ -38,7 +58,7 @@
 		<artifactId>ssm-catalog-view</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
-	<!-- TODO: Current design forces us to make all dependencies for GUI -->
+	<!-- TODO: Current design forces us to make all dependencies for GUI. It will be fixed by remote Hessian -->
 	<dependency>
 		<groupId>com.s3s</groupId>
 		<artifactId>ssm-config-service</artifactId>
@@ -49,21 +69,48 @@
 		<artifactId>ssm-config-view</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
+	
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-finance-service</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
 	<dependency>
 		<groupId>com.s3s</groupId>
 		<artifactId>ssm-finance-view</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
+	
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-operator-service</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	
 	<dependency>
 		<groupId>com.s3s</groupId>
 		<artifactId>ssm-operator-view</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
+	
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-store-service</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	
 	<dependency>
 		<groupId>com.s3s</groupId>
 		<artifactId>ssm-store-view</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
+	
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-contact-service</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	
 	<dependency>
 		<groupId>com.s3s</groupId>
 		<artifactId>ssm-contact-view</artifactId>

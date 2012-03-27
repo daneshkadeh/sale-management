@@ -8,6 +8,8 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.config.ExchangeRate;
@@ -18,6 +20,7 @@ import com.s3s.ssm.entity.finance.Payment;
 import com.s3s.ssm.interfaces.config.ConfigService;
 import com.s3s.ssm.util.CacheId;
 
+@Transactional
 public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ConfigService {
     private static final int CODE_LENGTH = 20;
 
@@ -31,6 +34,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements Conf
         }
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<String> getCurrencyCodes() {
         List<SCurrency> currencies = getDaoHelper().getDao(SCurrency.class).findAll();
