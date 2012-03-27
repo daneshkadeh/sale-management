@@ -45,7 +45,6 @@ import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditContractPaymentView extends AbstractSingleEditView<ContractPayment> {
-
     private static final String REF_PAYMENT_MODE = "0";
     private static final String REF_PAYMENT_CONTENT = "1";
     private static final String REF_CURRENCY = "2";

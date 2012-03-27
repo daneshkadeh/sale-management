@@ -11,7 +11,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	<import resource="../database/Hibernate.xml"/>
 	
 	<!-- import all resources in folder src/main/resources/mandatory -->
-	<import resource="classpath*:mandatory/*.xml"/>
+	<!--import resource="classpath*:mandatory/*.xml"/-->
 	
 	<!-- Auto scan the components -->
 	<context:component-scan 

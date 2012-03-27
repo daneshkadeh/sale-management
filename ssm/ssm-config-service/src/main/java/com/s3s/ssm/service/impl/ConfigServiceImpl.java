@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +22,11 @@ import com.s3s.ssm.interfaces.config.ConfigService;
 import com.s3s.ssm.util.CacheId;
 
 @Transactional
+@Service("configServiceImpl")
 public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ConfigService {
     private static final int CODE_LENGTH = 20;
 
+    @Override
     public void init() {
         serviceProvider.register(ConfigService.class, this);
         try {
