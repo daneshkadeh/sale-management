@@ -90,6 +90,7 @@
       <module>ssm-store-service</module>
 	  <module>ssm-supplychain-service</module>
 	  <module>ssm-sales-service</module>
+	  <module>ssm-report-service</module>
 	  
       <module>ssm-operator-view</module>
 	  <module>ssm-config-view</module>
@@ -100,6 +101,7 @@
       <module>ssm-store-view</module>
 	  <module>ssm-supplychain-view</module>
 	  <module>ssm-sales-view</module>
+	  <module>ssm-report-view</module>
       <module>ssm-gui</module>
    </modules>
    

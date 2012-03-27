@@ -14,8 +14,16 @@
  */
 package com.s3s.ssm.view.domain;
 
+import java.sql.SQLException;
+
 import javax.swing.JScrollPane;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.swing.JRViewer;
+
+import com.s3s.ssm.interfaces.report.IReportService;
+import com.s3s.ssm.util.ConfigProvider;
+import com.s3s.ssm.util.ServiceProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
@@ -27,6 +35,7 @@ import com.s3s.ssm.view.component.AbstractDomain;
  * 
  */
 public class ReportDomain extends AbstractDomain {
+    private static final long serialVersionUID = 6771751960199984966L;
 
     public ReportDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         super(treeScrollPane, contentScrollPane);
@@ -46,12 +55,25 @@ public class ReportDomain extends AbstractDomain {
         TreeNodeWithView thongKeDoanhThuChiPhiNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Report.DoanhThuChiPhi")); // "Thong ke doanh thu - chi phi"
 
+        // //////////Test
+
+        TreeNodeWithView reportTestNode = new TreeNodeWithView("Test report"); // "Thong ke doanh thu - chi phi"
+
+        try {
+            ServiceProvider sp = ConfigProvider.getInstance().getServiceProvider();
+            JRViewer jviewer = new JRViewer(sp.getService(IReportService.class).getBankingReport());
+            reportTestNode.setView(jviewer);
+        } catch (JRException | SQLException e) {
+            e.printStackTrace();
+        }
+
         rootNode.add(baoDongKichCauNode);
         rootNode.add(baoDongHetHangNode);
         rootNode.add(hangBanChayNode);
         rootNode.add(hangTonQuaLauNode);
         rootNode.add(thongKeHangBanNode);
         rootNode.add(thongKeDoanhThuChiPhiNode);
+        rootNode.add(reportTestNode);
     }
 
 }

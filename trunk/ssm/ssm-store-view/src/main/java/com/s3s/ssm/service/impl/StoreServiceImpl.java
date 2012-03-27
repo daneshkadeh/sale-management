@@ -2,19 +2,19 @@ package com.s3s.ssm.service.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.s3s.ssm.interfaces.store.StoreService;
+import com.s3s.ssm.interfaces.store.IStoreService;
 
-public class StoreServiceImpl extends AbstractModuleServiceImpl implements StoreService {
+@Transactional
+@Service("storeServiceImpl")
+public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStoreService {
     private static Log logger = LogFactory.getLog(StoreServiceImpl.class);
 
-    public StoreServiceImpl() {
-        super();
-
-    }
-
+    @Override
     public void init() {
-        serviceProvider.register(StoreService.class, this);
+        serviceProvider.register(IStoreService.class, this);
     }
 
     @Override

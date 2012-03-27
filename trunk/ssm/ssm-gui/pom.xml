@@ -116,6 +116,17 @@
 		<artifactId>ssm-contact-view</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-report-service</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>com.s3s</groupId>
+		<artifactId>ssm-report-view</artifactId>
+		<version>${ssm.version}</version>
+	</dependency>
 	<!-- -->
 	
 	<dependency>

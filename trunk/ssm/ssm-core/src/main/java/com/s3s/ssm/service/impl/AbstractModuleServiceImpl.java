@@ -1,17 +1,27 @@
 package com.s3s.ssm.service.impl;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.s3s.ssm.util.CacheDataService;
 import com.s3s.ssm.util.DaoHelper;
 import com.s3s.ssm.util.ServiceProvider;
 
 public abstract class AbstractModuleServiceImpl {
+    @Autowired
     protected ServiceProvider serviceProvider;
+
+    @Autowired
     private DaoHelper daoHelper;
+
+    @Autowired
     private CacheDataService cacheDataService;
 
-    public void init() {
-        // serviceProvider.register(StoreService.class, this);
-    }
+    @PostConstruct
+    public abstract void init();
+
+    // serviceProvider.register(StoreService.class, this);
 
     public ServiceProvider getServiceProvider() {
         return serviceProvider;
