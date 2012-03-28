@@ -333,9 +333,15 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             JLabel lblLabel = new JLabel(label);
             JComponent dataField = null;
             boolean isRaw = attribute.isRaw();
+            boolean editable = attribute.isEditable();
             Object value = isRaw ? attribute.getValue() : beanWrapper.getPropertyValue(attribute.getName());
             ReferenceData referenceData = refDataModel.getRefDataListMap().get(attribute.getReferenceDataId());
             switch (attribute.getType()) {
+            case LABEL:
+                dataField = new JLabel((String) value);
+                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+                pnlEdit.add(lblLabel, newline);
+                break;
             case TEXTBOX:
                 Class<?> propertyReturnType = null;
                 if (isRaw) {
@@ -353,7 +359,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                     // The format type is String
                     dataField = new JFormattedTextField("");
                 }
-                ((JFormattedTextField) dataField).setEditable(attribute.isEditable());
+                ((JFormattedTextField) dataField).setEditable(editable);
                 dataField.setPreferredSize(new Dimension(width, dataField.getHeight()));
 
                 dataField.setEnabled(attribute.isEnable());
@@ -374,7 +380,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             case PASSWORD:
                 dataField = new JPasswordField();
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
-                ((JPasswordField) dataField).setEditable(attribute.isEditable());
+                ((JPasswordField) dataField).setEditable(editable);
                 dataField.setEnabled(attribute.isEnable());
                 ((JTextField) dataField).setText(ObjectUtils.toString(value));
                 pnlEdit.add(lblLabel);
@@ -680,6 +686,9 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
 
     private Object getComponentValue(JComponent component, DetailFieldType type) {
         switch (type) {
+        case LABEL:
+            JLabel lbl = (JLabel) component;
+            return lbl.getText();
         case TEXTBOX:
             JFormattedTextField txtField = (JFormattedTextField) component;
             return txtField.getValue();
