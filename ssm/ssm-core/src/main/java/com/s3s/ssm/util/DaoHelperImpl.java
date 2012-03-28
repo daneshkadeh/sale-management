@@ -56,11 +56,10 @@ public class DaoHelperImpl implements DaoHelper {
                 dao = (IBaseDao<T>) ConfigProvider.getInstance().getApplicationContext()
                         .getBean(StringUtils.uncapitalize(clazz.getSimpleName()) + "Dao");
             } catch (BeansException e) {
-                dao = (IBaseDao<T>) ConfigProvider.getInstance().getApplicationContext()
-                        .getBean("defaultBaseDao");
+                dao = (IBaseDao<T>) ConfigProvider.getInstance().getApplicationContext().getBean("defaultBaseDao");
             }
-            mapDAOs.put(clazz, dao);
             dao.setEntityClass(clazz);
+            mapDAOs.put(clazz, dao);
         }
         return dao;
     }
