@@ -335,7 +335,16 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             boolean isRaw = attribute.isRaw();
             boolean editable = attribute.isEditable();
             Object value = isRaw ? attribute.getValue() : beanWrapper.getPropertyValue(attribute.getName());
-            ReferenceData referenceData = refDataModel.getRefDataListMap().get(attribute.getReferenceDataId());
+
+            ReferenceData referenceData = null;
+            // cacheDataId is priority than referenceDataId
+            if (attribute.getCacheDataId() != null) {
+                referenceData = refDataModel.new ReferenceData(cacheDataService.getReferenceDataList(attribute
+                        .getCacheDataId()), null);
+            } else {
+                referenceData = refDataModel.getRefDataListMap().get(attribute.getReferenceDataId());
+            }
+
             switch (attribute.getType()) {
             case LABEL:
                 dataField = new JLabel((String) value);

@@ -33,6 +33,8 @@ public class DetailAttribute {
 
     private String referenceDataId;
 
+    private String cacheDataId;
+
     public DetailAttribute(String name, DetailFieldType type) {
         this(name, type, false);
     }
@@ -81,6 +83,15 @@ public class DetailAttribute {
 
     public String getReferenceDataId() {
         return referenceDataId;
+    }
+
+    public String getCacheDataId() {
+        return cacheDataId;
+    }
+
+    public DetailAttribute cacheDataId(String cacheDataId) {
+        this.cacheDataId = cacheDataId;
+        return this;
     }
 
     public boolean isMandatory() {
