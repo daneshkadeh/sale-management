@@ -62,7 +62,7 @@ public class ReportDomain extends AbstractDomain {
         TreeNodeWithView reportTestNode = new TreeNodeWithView("Test report"); // "Thong ke doanh thu - chi phi"
 
         final ServiceProvider sp = ConfigProvider.getInstance().getServiceProvider();
-        JRViewer jviewer = new SSMReportViewer(null) {
+        JRViewer jviewer = new SSMReportViewer() {
             private static final long serialVersionUID = 3700658325020850865L;
 
             @Override

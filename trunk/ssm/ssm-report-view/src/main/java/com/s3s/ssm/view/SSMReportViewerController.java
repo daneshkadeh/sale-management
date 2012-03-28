@@ -17,8 +17,18 @@ package com.s3s.ssm.view;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
+
+import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.swing.JRViewerController;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
  * @author Phan Hong Phuc
@@ -26,6 +36,7 @@ import net.sf.jasperreports.swing.JRViewerController;
  */
 public class SSMReportViewerController extends JRViewerController {
 
+    private static final Log logger = LogFactory.getLog(SSMReportViewerController.class);
     protected SSMReportViewer ssmReportViewer;
 
     /**
@@ -36,6 +47,7 @@ public class SSMReportViewerController extends JRViewerController {
     public SSMReportViewerController(SSMReportViewer ssmReportViewer, Locale locale, ResourceBundle resBundle) {
         super(locale, resBundle);
         this.ssmReportViewer = ssmReportViewer;
+
     }
 
     @Override
@@ -45,8 +57,29 @@ public class SSMReportViewerController extends JRViewerController {
 
     @Override
     public void reload() {
-        loadReport(ssmReportViewer.getJasperPrint());
-        forceRefresh();
+        ssmReportViewer.getBusyPane().setBusy(true);
+        new SwingWorker<JasperPrint, Object>() {
+
+            @Override
+            protected JasperPrint doInBackground() throws Exception {
+                return ssmReportViewer.getJasperPrint();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    loadReport(get());
+                    forceRefresh();
+                } catch (InterruptedException | ExecutionException e) {
+                    logger.error(e.getMessage());
+                    JOptionPane.showMessageDialog(ssmReportViewer,
+                            ControlConfigUtils.getString("error.refreshData.message"),
+                            ControlConfigUtils.getString("error.title"), JOptionPane.ERROR_MESSAGE, null);
+                } finally {
+                    ssmReportViewer.getBusyPane().setBusy(false);
+                }
+            }
+        }.execute();
     }
 
 }
