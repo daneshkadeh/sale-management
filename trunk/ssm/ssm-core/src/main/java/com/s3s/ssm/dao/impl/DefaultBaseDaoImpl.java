@@ -14,6 +14,7 @@
  */
 package com.s3s.ssm.dao.impl;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
@@ -24,6 +25,7 @@ import com.s3s.ssm.entity.AbstractBaseIdObject;
  * @author phamcongbang
  * 
  */
+@Scope("prototype")
 @Repository("defaultBaseDao")
 public class DefaultBaseDaoImpl extends BaseDaoImpl<AbstractBaseIdObject> {
 
