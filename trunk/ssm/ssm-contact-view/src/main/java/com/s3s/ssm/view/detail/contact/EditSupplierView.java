@@ -70,6 +70,7 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
         detailDataModel.addRawAttribute("rawAttribute3", DetailFieldType.MULTI_SELECT_TREE_BOX);
         detailDataModel.addRawAttribute("rawAttribute4", DetailFieldType.MONEY).value(Money.zero("VND"))
                 .referenceDataId(MONEY_ID);
+        detailDataModel.addRawAttribute("rawLabel", DetailFieldType.LABEL).value("Hello label");
 
         detailDataModel.tab("We make it work!", "Tab 2", null);
         detailDataModel.addAttribute("phone", DetailFieldType.TEXTBOX);

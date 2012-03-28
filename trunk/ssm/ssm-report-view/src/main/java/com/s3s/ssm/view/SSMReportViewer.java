@@ -41,6 +41,10 @@ public abstract class SSMReportViewer extends JRViewer implements IViewLazyLoada
 
     public SSMReportViewer() {
         super(null);
+        wrapMainPanelByBusyPane();
+    }
+
+    private void wrapMainPanelByBusyPane() {
         JPanel mainPanel = (JPanel) getComponent(1);
         busyPane = createBusyPane(mainPanel);
         add(busyPane, 1);
