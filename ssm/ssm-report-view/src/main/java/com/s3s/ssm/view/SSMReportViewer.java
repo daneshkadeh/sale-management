@@ -18,22 +18,38 @@ package com.s3s.ssm.view;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.JPanel;
+
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.swing.JRViewer;
 
+import org.divxdede.swing.busy.DefaultBusyModel;
+import org.divxdede.swing.busy.JBusyComponent;
+
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
 /**
+ * The report viewer supporting load report dynamically through the supported function getJasperPrint().
+ * 
  * @author Phan Hong Phuc
  * @since Mar 28, 2012
  */
-public abstract class SSMReportViewer extends JRViewer {
+public abstract class SSMReportViewer extends JRViewer implements IViewLazyLoadable {
+    private static final long serialVersionUID = 4125751301041408777L;
+    private boolean isInitialized = false;
+    protected JBusyComponent<JPanel> busyPane;
 
-    /**
-     * @param jrPrint
-     */
-    public SSMReportViewer(JasperPrint jrPrint) {
-        super(jrPrint);
-        viewerContext.loadReport(getJasperPrint());
-        // TODO Auto-generated constructor stub
+    public SSMReportViewer() {
+        super(null);
+        JPanel mainPanel = (JPanel) getComponent(1);
+        busyPane = createBusyPane(mainPanel);
+        add(busyPane, 1);
+    }
+
+    private JBusyComponent<JPanel> createBusyPane(JPanel panel) {
+        JBusyComponent<JPanel> bp = new JBusyComponent<>((JPanel) panel);
+        ((DefaultBusyModel) bp.getBusyModel()).setDescription(ControlConfigUtils.getString("label.report.loading"));
+        return bp;
     }
 
     @Override
@@ -41,6 +57,18 @@ public abstract class SSMReportViewer extends JRViewer {
         viewerContext = new SSMReportViewerController(this, locale, resBundle);
         setLocale(viewerContext.getLocale());
         viewerContext.addListener(this);
+    }
+
+    @Override
+    public void loadView() {
+        if (!isInitialized) {
+            viewerContext.reload();
+            isInitialized = true;
+        }
+    }
+
+    public JBusyComponent<JPanel> getBusyPane() {
+        return busyPane;
     }
 
     /**
