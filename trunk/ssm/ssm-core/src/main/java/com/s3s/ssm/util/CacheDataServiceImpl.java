@@ -18,6 +18,8 @@ public class CacheDataServiceImpl implements CacheDataService {
 
     @Override
     public List<?> getReferenceDataList(String cacheId) {
+        // TODO: In future, the result of service can be stored in cache. Then, this method return that stored data to
+        // client instead of call service a lot of time.
         Method method = mapCacheMethod.get(cacheId);
         if (method == null) {
             throw new RuntimeException("Method is not register for cacheId=" + cacheId);

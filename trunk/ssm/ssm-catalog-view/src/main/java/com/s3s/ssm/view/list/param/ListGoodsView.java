@@ -14,14 +14,14 @@
  */
 package com.s3s.ssm.view.list.param;
 
-import com.s3s.ssm.entity.catalog.Product;
-import com.s3s.ssm.view.detail.param.EditProductView;
+import com.s3s.ssm.entity.catalog.Goods;
+import com.s3s.ssm.view.detail.param.EditGoodsView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
-public class ListProductView extends AbstractListView<Product> {
+public class ListGoodsView extends AbstractListView<Goods> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
@@ -35,8 +35,8 @@ public class ListProductView extends AbstractListView<Product> {
     }
 
     @Override
-    protected Class<? extends AbstractEditView<Product>> getEditViewClass() {
-        return EditProductView.class;
+    protected Class<? extends AbstractEditView<Goods>> getEditViewClass() {
+        return EditGoodsView.class;
     }
 
 }

@@ -1184,6 +1184,9 @@ CREATE TABLE `s_export_store_form` (
 
 CREATE TABLE `s_goods` (
   `goods_id` int(11) NOT NULL,
+  `manufacturer_id` int(11) default NULL,
+  `model` varchar(32) collate utf8_bin default NULL,
+  `main_uom_id` int(11) default NULL,
   `alert_quantity` int(11) default NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -1777,11 +1780,8 @@ CREATE TABLE `s_product` (
   `producttype_id` int(11) default NULL,
   `code` varchar(32) collate utf8_bin default NULL,
   `name` varchar(128) collate utf8_bin default NULL,
-  `manufacturer_id` int(11) default NULL,
-  `model` varchar(32) collate utf8_bin default NULL,
   `description` varchar(128) collate utf8_bin default NULL,
   `uploadfile_id` int(11) default NULL,
-  `main_uom_id` int(11) default NULL,
   `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
   `dte_log_i` datetime NOT NULL,
   `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,

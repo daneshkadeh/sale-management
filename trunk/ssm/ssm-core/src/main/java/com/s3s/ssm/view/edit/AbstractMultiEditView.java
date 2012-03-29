@@ -47,6 +47,11 @@ public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extend
         this(null);
     }
 
+    /**
+     * All sub classes must override this constructor
+     * 
+     * @param request
+     */
     public AbstractMultiEditView(Map<String, Object> request) {
         super(request);
         setLayout(new MigLayout("hidemode 2, fill, ins 0", "", "grow"));

@@ -2,6 +2,7 @@ package com.s3s.ssm.view.detail.param;
 
 import java.util.Map;
 
+import com.s3s.ssm.entity.catalog.ProductFamilyType;
 import com.s3s.ssm.entity.catalog.Voucher;
 import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -16,5 +17,10 @@ public class EditVoucherGeneralView extends EditProductGeneralView<Voucher> {
     protected void addTabGeneral(DetailDataModel detailDataModel) {
         super.addTabGeneral(detailDataModel);
         detailDataModel.addAttribute("minAmount", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+    }
+
+    @Override
+    protected ProductFamilyType getProductFamilyType() {
+        return ProductFamilyType.VOUCHER;
     }
 }
