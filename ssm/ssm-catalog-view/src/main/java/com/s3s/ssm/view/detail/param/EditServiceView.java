@@ -2,29 +2,29 @@ package com.s3s.ssm.view.detail.param;
 
 import java.util.Map;
 
-import com.s3s.ssm.entity.catalog.Voucher;
+import com.s3s.ssm.entity.catalog.Service;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.edit.AbstractMultiEditView;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 
-public class EditVoucherView extends AbstractMultiEditView<Voucher> {
+public class EditServiceView extends AbstractMultiEditView<Service> {
     private static final long serialVersionUID = 1L;
 
-    public EditVoucherView(Map<String, Object> entity) {
-        super(entity);
+    public EditServiceView(Map<String, Object> request) {
+        super(request);
     }
 
     @Override
-    protected AbstractSingleEditView<Voucher> constructMainView(TreeNodeWithView root, Voucher entity,
+    protected AbstractSingleEditView<Service> constructMainView(TreeNodeWithView root, Service entity,
             Map<String, Object> request) {
-        EditVoucherGeneralView detailView = new EditVoucherGeneralView(request);
+        EditServiceGeneralView detailView = new EditServiceGeneralView(request);
         TreeNodeWithView node = new TreeNodeWithView("General", detailView);
         root.add(node);
         return detailView;
     }
 
     @Override
-    protected void constructSubViews(TreeNodeWithView root, Voucher entity, Map<String, Object> request) {
+    protected void constructSubViews(TreeNodeWithView root, Service entity, Map<String, Object> request) {
         // TODO Auto-generated method stub
 
     }

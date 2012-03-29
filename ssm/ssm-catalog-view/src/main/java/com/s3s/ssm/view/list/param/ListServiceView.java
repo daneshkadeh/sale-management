@@ -1,13 +1,14 @@
 package com.s3s.ssm.view.list.param;
 
-import com.s3s.ssm.entity.catalog.Voucher;
-import com.s3s.ssm.view.detail.param.EditVoucherView;
+import com.s3s.ssm.entity.catalog.Service;
+import com.s3s.ssm.view.detail.param.EditServiceView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
-public class ListVoucherView extends AbstractListView<Voucher> {
+public class ListServiceView extends AbstractListView<Service> {
+    private static final long serialVersionUID = 1L;
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
@@ -18,8 +19,8 @@ public class ListVoucherView extends AbstractListView<Voucher> {
     }
 
     @Override
-    protected Class<? extends AbstractEditView<Voucher>> getEditViewClass() {
-        return EditVoucherView.class;
+    protected Class<? extends AbstractEditView<Service>> getEditViewClass() {
+        return EditServiceView.class;
     }
 
 }
