@@ -396,8 +396,10 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 break;
             case DROPDOWN:
                 if (!attribute.isMandatory()) {
-                    // TODO Phuc: not able to add to Arrays.asList.
-                    // referenceData.getValues().add(0, null);
+                    List<Object> refDataValues = new ArrayList<>(referenceData.getValues());
+                    refDataValues.add(0, null);
+                    referenceData.getValues().clear();
+                    referenceData.getValues().addAll(refDataValues);
                 }
                 dataField = new JComboBox<>(referenceData.getValues().toArray());
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
@@ -570,6 +572,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     }
 
     protected void saveOrUpdate(T entity) {
+        // System.err.println(getDaoHelper().getDao(getEntityClass()).getNextSequence());
         getDaoHelper().getDao(getEntityClass()).saveOrUpdate(entity);
     }
 

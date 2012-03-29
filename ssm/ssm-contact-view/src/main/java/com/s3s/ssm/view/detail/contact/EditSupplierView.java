@@ -56,7 +56,7 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
     public void initialPresentationView(DetailDataModel detailDataModel, Supplier entity) {
         detailDataModel.tab("We are S3S", "This is a tooltip", ImageUtils.getIcon(ImageConstants.USER_ICON));
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).width(5).newColumn();
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).width(50).newColumn();
         detailDataModel.startGroup("Group 1");
         detailDataModel.addAttribute("representer", DetailFieldType.TEXTBOX).width(40);
         detailDataModel.addAttribute("sex", DetailFieldType.RADIO_BUTTON_GROUP).referenceDataId(SEX_ID);
