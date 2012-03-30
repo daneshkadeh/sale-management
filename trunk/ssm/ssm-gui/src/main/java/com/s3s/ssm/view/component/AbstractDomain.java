@@ -16,6 +16,7 @@
 package com.s3s.ssm.view.component;
 
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -50,6 +51,7 @@ public abstract class AbstractDomain extends JToggleButton implements ItemListen
         this.contentScrollPane = contentScrollPane;
         treeView = initTreeView(contentScrollPane);
         setCursor(new Cursor(Cursor.HAND_CURSOR));
+        setFont(new Font("Arial", Font.BOLD, 12));
         setHorizontalAlignment(LEFT);
         addItemListener(this);
     }

@@ -16,12 +16,14 @@ package com.s3s.ssm.dao.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
@@ -217,7 +219,6 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
      * 
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public T findFirstByCriteria(DetachedCriteria criteria) {
         List<T> list = findByCriteria(criteria, 0, 1);
@@ -225,6 +226,27 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
             return list.get(0);
         }
         return null;
+    }
+
+    /**
+     * This implements for MySQL DB. Use the supported function if using other DB. </br> {@inheritDoc}
+     */
+    @Override
+    public long getNextSequence(final String name) {
+        Object result = getHibernateTemplate().executeWithNativeSession(new HibernateCallback() {
+            @Override
+            public Object doInHibernate(Session session) throws HibernateException {
+                Query query = session.createSQLQuery("select seq('" + name + "')");
+                long uniqueResult = ((BigInteger) query.uniqueResult()).longValue();
+                if (uniqueResult == 0) {
+                    query = session.createSQLQuery("insert into `seq` values('" + name + "', 1)");
+                    query.executeUpdate();
+                    uniqueResult = 1;
+                }
+                return uniqueResult;
+            }
+        });
+        return (long) result;
     }
 
     /**

@@ -15,6 +15,25 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 -- --------------------------------------------------------
 
+
+-- ------ Function and table to support get next sequence --------- --
+delimiter //
+create function seq(seq_name char (100)) returns bigint
+begin
+ update seq set val=last_insert_id(val+1) where name=seq_name;
+ return last_insert_id();
+end
+//
+delimiter ;
+
+CREATE TABLE `seq` (
+  `name` char(100) NOT NULL,
+  `val` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY  (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------------- --
+
 --
 -- Table structure for table `acl_class`
 --
