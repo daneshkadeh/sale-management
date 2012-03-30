@@ -81,4 +81,13 @@ public interface IBaseDao<T> {
     void deleteAll(Collection<T> entities);
 
     void flush();
+
+    /**
+     * Get the next sequence of the <code>name</code>. If the sequence of <code>name</code> is not in the sequence table
+     * yet, it will automatically insert a row in to the table. It may raise the duplicate constraint exception when
+     * there are 2 users initialize the <code>name</code> at the same time.
+     * 
+     * @return the next sequence of <code>name</code>
+     */
+    long getNextSequence(String name);
 }

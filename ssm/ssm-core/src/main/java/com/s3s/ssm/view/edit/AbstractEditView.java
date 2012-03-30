@@ -23,10 +23,13 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
+import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
@@ -39,6 +42,7 @@ import com.s3s.ssm.view.list.AbstractListView;
  * 
  */
 public abstract class AbstractEditView<T extends AbstractIdOLObject> extends AbstractView {
+    private static final int LENGTH_OF_CODE = 20;
 
     private static final long serialVersionUID = 5467303241585854634L;
 
@@ -64,11 +68,38 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
      */
     protected T loadForCreate() {
         try {
-            return getEntityClass().newInstance();
+            T instance = getEntityClass().newInstance();
+            if (ClassUtils.isAssignable(getEntityClass(), AbstractCodeOLObject.class)) {
+                AbstractCodeOLObject codeInstance = (AbstractCodeOLObject) instance;
+                String code = createCodeForObject(getEntityClass());
+                codeInstance.setCode(code);
+            }
+            return instance;
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("There is a problem when init the entity");
         }
+    }
 
+    /**
+     * @param entityClass
+     * @return
+     */
+    private String createCodeForObject(Class<T> entityClass) {
+        String prefix = "TEST";
+        long nextSequence = getDaoHelper().getDao(getEntityClass())
+                .getNextSequence(getEntityClass().getCanonicalName());
+        return addPaddingZero(prefix, nextSequence);
+    }
+
+    /**
+     * @param prefix
+     * @param nextSequence
+     * @return
+     */
+    private String addPaddingZero(String prefix, long nextSequence) {
+        String sequence = String.valueOf(nextSequence);
+        int numPadding = LENGTH_OF_CODE - prefix.length();
+        return prefix + StringUtils.leftPad(sequence, numPadding, '0');
     }
 
     /**
@@ -93,6 +124,10 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
 
     protected String getDefaultTitle(T entity) {
         return entity.getId().toString();
+    }
+
+    public boolean focus() {
+        return requestFocusInWindow();
     }
 
     public void setListView(AbstractListView<T> listView) {

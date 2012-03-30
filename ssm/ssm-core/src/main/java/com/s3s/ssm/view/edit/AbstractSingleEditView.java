@@ -273,6 +273,11 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         // Template method
     };
 
+    public boolean focus() {
+        String firstAttributeName = detailDataModel.getDetailAttributes().get(0).getName();
+        return name2AttributeComponent.get(firstAttributeName).getComponent().requestFocusInWindow();
+    }
+
     private JTabbedPane createTabPane(List<TabInfoData> tabList, int numOfAttributes) {
         Assert.isTrue(tabList.get(0).getStartIndex() == 0, "Tab must be added before attribute");
         JTabbedPane tabPane = new JTabbedPane();
