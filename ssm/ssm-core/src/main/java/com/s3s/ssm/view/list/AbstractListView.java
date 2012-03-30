@@ -535,6 +535,15 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     protected void showEditView(T entity, EditActionEnum action) {
         Class<? extends AbstractEditView<T>> detailViewClass = getEditViewClass();
         try {
+            // if existing a new tab --> select it.
+            if (action == EditActionEnum.NEW) {
+                int idx = tabPane.indexOfTab(AbstractEditView.NEW_TITLE);
+                if (idx != -1) {
+                    tabPane.setSelectedIndex(idx);
+                    return;
+                }
+            }
+
             Map<String, Object> detailParams = new HashMap<>();
             detailParams.put(PARAM_ENTITY_ID, entity != null ? entity.getId() : null);
             detailParams.put(PARAM_ACTION, action);
