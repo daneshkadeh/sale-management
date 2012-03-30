@@ -395,12 +395,9 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 pnlEdit.add(lblLabel);
                 break;
             case DROPDOWN:
-                // if (!attribute.isMandatory()) {
-                // List<Object> refDataValues = new ArrayList<>(referenceData.getValues());
-                // refDataValues.add(0, null);
-                // referenceData.getValues().clear();
-                // referenceData.getValues().addAll(refDataValues);
-                // }
+                if (!attribute.isMandatory()) {
+                    referenceData.getValues().add(0, null);
+                }
                 dataField = new JComboBox<>(referenceData.getValues().toArray());
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 ((JComboBox<?>) dataField).setRenderer(referenceData.getRenderer());
@@ -516,6 +513,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         if (CollectionUtils.isEmpty(validateResult) && StringUtils.isBlank(notifyPanel.getMessage())) {
             try {
                 boolean isNew = (entity.getId() == null);
+                // entity.setVersion(1L);
                 saveOrUpdate(entity);
                 fireSavedListener(isNew);
                 if (getListView() != null) {
@@ -572,7 +570,6 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
     }
 
     protected void saveOrUpdate(T entity) {
-        // System.err.println(getDaoHelper().getDao(getEntityClass()).getNextSequence());
         getDaoHelper().getDao(getEntityClass()).saveOrUpdate(entity);
     }
 
