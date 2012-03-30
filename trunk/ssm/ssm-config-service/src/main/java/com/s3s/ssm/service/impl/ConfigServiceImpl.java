@@ -7,17 +7,23 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.ExchangeRate;
 import com.s3s.ssm.entity.config.Institution;
 import com.s3s.ssm.entity.config.Organization;
 import com.s3s.ssm.entity.config.SCurrency;
+import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.finance.Payment;
+import com.s3s.ssm.entity.finance.PaymentContent;
+import com.s3s.ssm.entity.finance.PaymentType;
+import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.interfaces.config.ConfigService;
 import com.s3s.ssm.util.CacheId;
 
@@ -32,6 +38,15 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements Conf
         try {
             getCacheDataService().registerCache(CacheId.REF_LIST_CURRENCY, this,
                     this.getClass().getMethod("getCurrencyCodes"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_BANK, this, this.getClass().getMethod("getBanks"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_PARTNER, this,
+                    this.getClass().getMethod("getPartners"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_OPERATOR, this,
+                    this.getClass().getMethod("getOperators"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_PAYMENT_CONTENT, this,
+                    this.getClass().getMethod("getPaymentContents"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_RECEIPT_CONTENT, this,
+                    this.getClass().getMethod("getReceiptContents"));
         } catch (NoSuchMethodException | SecurityException e) {
             throw new RuntimeException("Cannot register method to cache service!", e);
         }
@@ -48,9 +63,49 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements Conf
         return currencyCodes;
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<Bank> getBanks() {
+        List<Bank> banks = getDaoHelper().getDao(Bank.class).findAll();
+        return banks;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<Partner> getPartners() {
+        List<Partner> partners = getDaoHelper().getDao(Partner.class).findAll();
+        return partners;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<Operator> getOperators() {
+        List<Operator> operators = getDaoHelper().getDao(Operator.class).findAll();
+        return operators;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<PaymentContent> getPaymentContents() {
+        DetachedCriteria dc = DetachedCriteria.forClass(PaymentContent.class).add(
+                Property.forName("paymentType").eq(PaymentType.PAY));
+        List<PaymentContent> pamentContent = getDaoHelper().getDao(PaymentContent.class).findAll();
+        return pamentContent;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<PaymentContent> getReceiptContents() {
+        DetachedCriteria dc = DetachedCriteria.forClass(PaymentContent.class).add(
+                Property.forName("paymentType").eq(PaymentType.RECEIPT));
+        List<PaymentContent> receiptContent = getDaoHelper().getDao(PaymentContent.class).findByCriteria(dc);
+        return receiptContent;
+    }
+
     /**
      * {@inheritDoc}
      */
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public Double getExchangeRate(String currencyCode) {
         return getExchangeRate(currencyCode, new Date(0));

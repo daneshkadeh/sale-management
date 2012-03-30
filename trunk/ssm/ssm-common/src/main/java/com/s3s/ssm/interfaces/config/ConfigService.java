@@ -3,8 +3,12 @@ package com.s3s.ssm.interfaces.config;
 import java.util.Date;
 import java.util.List;
 
+import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.Organization;
 import com.s3s.ssm.entity.config.SCurrency;
+import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.finance.PaymentContent;
+import com.s3s.ssm.entity.operator.Operator;
 
 public interface ConfigService {
     /**
@@ -36,6 +40,16 @@ public interface ConfigService {
     public String generateCode(Class clazz);
 
     public List<String> getCurrencyCodes();
+
+    public List<Bank> getBanks();
+
+    public List<Partner> getPartners();
+
+    public List<Operator> getOperators();
+
+    public List<PaymentContent> getPaymentContents();
+
+    public List<PaymentContent> getReceiptContents();
 
     /**
      * Get default organization
