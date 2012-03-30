@@ -14,15 +14,18 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.entity.shipment;
+package com.s3s.ssm.entity.store;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
@@ -31,12 +34,13 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
  * 
  */
 @Entity
-@Table(name = "s_ship_price")
-public class ShipPrice extends AbstractCodeOLObject {
+@Table(name = "s_ship_price_type")
+public class ShipPriceType extends AbstractCodeOLObject {
     private String name;
-    private Set<ShipDatePrice> shipPriceDetails = new HashSet<ShipDatePrice>();
+    private Set<ShipPrice> shipPrices = new HashSet<ShipPrice>();
 
     @Column(name = "name", length = 20)
+    @NotBlank
     public String getName() {
         return name;
     }
@@ -45,13 +49,13 @@ public class ShipPrice extends AbstractCodeOLObject {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "shipPrice")
-    public Set<ShipDatePrice> getShipPriceDetails() {
-        return shipPriceDetails;
+    @OneToMany(mappedBy = "shipPrice", fetch = FetchType.LAZY)
+    public Set<ShipPrice> getShipPrices() {
+        return shipPrices;
     }
 
-    public void setShipPriceDetails(Set<ShipDatePrice> shipPriceDetails) {
-        this.shipPriceDetails = shipPriceDetails;
+    public void setShipPrices(Set<ShipPrice> shipPrices) {
+        this.shipPrices = shipPrices;
     }
 
     @Override

@@ -29,7 +29,8 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
 @Entity
 @Table(name = "s_session_store")
 public class SessionStore extends AbstractIdOLObject {
-    private com.s3s.ssm.entity.catalog.Store store;
+    private static final long serialVersionUID = 1L;
+    private Store store;
     private Date startDate;
     private Date endDate;
     private Integer referMonth;
@@ -39,11 +40,11 @@ public class SessionStore extends AbstractIdOLObject {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "store_id", nullable = false)
     @NotNull
-    public com.s3s.ssm.entity.catalog.Store getStore() {
+    public Store getStore() {
         return store;
     }
 
-    public void setStore(com.s3s.ssm.entity.catalog.Store store) {
+    public void setStore(Store store) {
         this.store = store;
     }
 

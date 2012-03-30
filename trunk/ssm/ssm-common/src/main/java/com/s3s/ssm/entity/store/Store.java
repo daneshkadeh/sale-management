@@ -12,26 +12,36 @@
  * use it only in accordance with the terms of the license
  * agreements you entered into with HBASoft.
  */
-
 package com.s3s.ssm.entity.store;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.operator.Operator;
 
-/**
- * @author Le Thanh Hoang
- * 
- */
-public class Store extends AbstractCodeOLObject {
+@Entity
+@Table(name = "s_store")
+public class Store extends AbstractCodeOLObject implements Serializable {
+    private static final long serialVersionUID = 4672724391118673824L;
     private String name;
     private String address;
     private String storedAddress;
     private String importAddress;
     private String exportAddress;
-    private Boolean isEnabled = true;
+    private Operator manager;
 
-    @Column(name = "store_name", nullable = false, length = 32, unique = true)
+    @Column(name = "store_name", nullable = false, length = 256)
+    @NotBlank
     public String getName() {
         return name;
     }
@@ -40,7 +50,8 @@ public class Store extends AbstractCodeOLObject {
         this.name = name;
     }
 
-    @Column(name = "address", nullable = false, length = 256, unique = true)
+    @Column(name = "address")
+    @NotBlank
     public String getAddress() {
         return address;
     }
@@ -49,7 +60,8 @@ public class Store extends AbstractCodeOLObject {
         this.address = address;
     }
 
-    @Column(name = "stored_address", nullable = false, length = 256, unique = true)
+    @Column(name = "stored_address")
+    @NotBlank
     public String getStoredAddress() {
         return storedAddress;
     }
@@ -58,7 +70,8 @@ public class Store extends AbstractCodeOLObject {
         this.storedAddress = storedAddress;
     }
 
-    @Column(name = "import_address", nullable = false, length = 256, unique = true)
+    @Column(name = "import_address")
+    @NotBlank
     public String getImportAddress() {
         return importAddress;
     }
@@ -67,7 +80,8 @@ public class Store extends AbstractCodeOLObject {
         this.importAddress = importAddress;
     }
 
-    @Column(name = "export_address", nullable = false, length = 256, unique = true)
+    @Column(name = "export_address")
+    @NotNull
     public String getExportAddress() {
         return exportAddress;
     }
@@ -76,13 +90,14 @@ public class Store extends AbstractCodeOLObject {
         this.exportAddress = exportAddress;
     }
 
-    @Column(name = "isEnabled")
-    public Boolean getIsEnabled() {
-        return isEnabled;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "manager_id")
+    public Operator getManager() {
+        return manager;
     }
 
-    public void setIsEnabled(Boolean isEnabled) {
-        this.isEnabled = isEnabled;
+    public void setManager(Operator manager) {
+        this.manager = manager;
     }
 
 }

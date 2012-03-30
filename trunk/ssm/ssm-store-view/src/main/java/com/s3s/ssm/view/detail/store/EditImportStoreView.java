@@ -16,19 +16,19 @@ package com.s3s.ssm.view.detail.store;
 
 import java.util.Map;
 
-import com.s3s.ssm.entity.store.ImportProductForm;
+import com.s3s.ssm.entity.store.ImportStore;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 
-public class EditImportProductFormView extends AbstractSingleEditView<ImportProductForm> {
+public class EditImportStoreView extends AbstractSingleEditView<ImportStore> {
 
-    public EditImportProductFormView(Map<String, Object> entity) {
+    public EditImportStoreView(Map<String, Object> entity) {
         super(entity);
         // TODO Auto-generated constructor stub
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ImportProductForm entity) {
+    public void initialPresentationView(DetailDataModel detailDataModel, ImportStore entity) {
         // TODO Auto-generated method stub
 
     }

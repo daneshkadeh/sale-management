@@ -395,12 +395,12 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 pnlEdit.add(lblLabel);
                 break;
             case DROPDOWN:
-                if (!attribute.isMandatory()) {
-                    List<Object> refDataValues = new ArrayList<>(referenceData.getValues());
-                    refDataValues.add(0, null);
-                    referenceData.getValues().clear();
-                    referenceData.getValues().addAll(refDataValues);
-                }
+                // if (!attribute.isMandatory()) {
+                // List<Object> refDataValues = new ArrayList<>(referenceData.getValues());
+                // refDataValues.add(0, null);
+                // referenceData.getValues().clear();
+                // referenceData.getValues().addAll(refDataValues);
+                // }
                 dataField = new JComboBox<>(referenceData.getValues().toArray());
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 ((JComboBox<?>) dataField).setRenderer(referenceData.getRenderer());

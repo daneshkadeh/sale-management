@@ -14,12 +14,12 @@
  */
 package com.s3s.ssm.view.list.store;
 
-import com.s3s.ssm.entity.store.ImportProductForm;
+import com.s3s.ssm.entity.store.ImportStore;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
 
-public class ListImportProductFormView extends AbstractListView<ImportProductForm> {
+public class ListImportStoreView extends AbstractListView<ImportStore> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
@@ -28,7 +28,7 @@ public class ListImportProductFormView extends AbstractListView<ImportProductFor
     }
 
     @Override
-    protected Class<? extends AbstractEditView<ImportProductForm>> getEditViewClass() {
+    protected Class<? extends AbstractEditView<ImportStore>> getEditViewClass() {
         // TODO Auto-generated method stub
         return null;
     }

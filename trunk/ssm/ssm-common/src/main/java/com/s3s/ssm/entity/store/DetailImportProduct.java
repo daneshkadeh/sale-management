@@ -28,7 +28,7 @@ import com.s3s.ssm.entity.catalog.Item;
 @Entity
 @Table(name = "s_detail_import_product")
 public class DetailImportProduct extends AbstractIdOLObject {
-    private ImportProductForm importProductForm;
+    private ImportStore importProductForm;
     private Item item;
     private Integer importAmount;
     private Integer remainingAmount;
@@ -36,11 +36,11 @@ public class DetailImportProduct extends AbstractIdOLObject {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "import_product_id", nullable = false)
     @NotNull
-    public ImportProductForm getImportProductForm() {
+    public ImportStore getImportProductForm() {
         return importProductForm;
     }
 
-    public void setImportProductForm(ImportProductForm importProductForm) {
+    public void setImportProductForm(ImportStore importProductForm) {
         this.importProductForm = importProductForm;
     }
 

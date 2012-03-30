@@ -31,10 +31,10 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 @Entity
 @Table(name = "s_exchange_store_form")
 public class ExchangeStoreForm extends AbstractCodeOLObject {
-    private com.s3s.ssm.entity.catalog.Store fromStore;// TODO Hoang duplicate entity Store in catalog and store. Store
-                                                       // in store has no @Table mark
-    private com.s3s.ssm.entity.catalog.Store toStore;// TODO Hoang duplicate entity Store in catalog and store. Store in
-                                                     // store has no @Table mark
+    private Store fromStore;// TODO Hoang duplicate entity Store in catalog and store. Store
+                            // in store has no @Table mark
+    private Store toStore;// TODO Hoang duplicate entity Store in catalog and store. Store in
+                          // store has no @Table mark
     private String fromUser;
     private String toUser;
     private String responsibleUser;
@@ -46,22 +46,22 @@ public class ExchangeStoreForm extends AbstractCodeOLObject {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "from_store_id", nullable = false)
     @NotNull
-    public com.s3s.ssm.entity.catalog.Store getFromStore() {
+    public Store getFromStore() {
         return fromStore;
     }
 
-    public void setFromStore(com.s3s.ssm.entity.catalog.Store fromStore) {
+    public void setFromStore(Store fromStore) {
         this.fromStore = fromStore;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "to_store_id", nullable = false)
     @NotNull
-    public com.s3s.ssm.entity.catalog.Store getToStore() {
+    public Store getToStore() {
         return toStore;
     }
 
-    public void setToStore(com.s3s.ssm.entity.catalog.Store toStore) {
+    public void setToStore(Store toStore) {
         this.toStore = toStore;
     }
 

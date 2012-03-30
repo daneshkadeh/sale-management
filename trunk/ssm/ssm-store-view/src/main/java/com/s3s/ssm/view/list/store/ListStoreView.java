@@ -23,7 +23,7 @@ import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 /**
- * @author Chanhchua
+ * @author Le Thanh Hoang
  * 
  */
 public class ListStoreView extends AbstractListView<Store> {
@@ -39,7 +39,7 @@ public class ListStoreView extends AbstractListView<Store> {
         listDataModel.addColumn("storedAddress", ListColumnType.TEXT);
         listDataModel.addColumn("importAddress", ListColumnType.TEXT);
         listDataModel.addColumn("exportAddress", ListColumnType.TEXT);
-        listDataModel.addColumn("isEnabled", ListColumnType.TEXT);
+        listDataModel.addColumn("manager", ListColumnType.TEXT);
     }
 
     /**

@@ -24,6 +24,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.store.Store;
 
 @Entity
 @Table(name = "s_article")

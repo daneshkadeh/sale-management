@@ -17,10 +17,14 @@
 package com.s3s.ssm.entity.finance;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.s3s.ssm.entity.sales.SalesContract;
 
@@ -34,7 +38,8 @@ import com.s3s.ssm.entity.sales.SalesContract;
 public class ContractPayment extends Payment {
     private SalesContract salesContract;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Cascade(value = CascadeType.SAVE_UPDATE)
     @JoinColumn(name = "sales_contract_id")
     public SalesContract getSalesContract() {
         return salesContract;
