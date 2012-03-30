@@ -341,6 +341,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             if (attribute.getCacheDataId() != null) {
                 referenceData = refDataModel.new ReferenceData(cacheDataService.getReferenceDataList(attribute
                         .getCacheDataId()), null);
+                refDataModel.putRefDataList("CACHE_ID_" + attribute.getCacheDataId(), referenceData);
             } else {
                 referenceData = refDataModel.getRefDataListMap().get(attribute.getReferenceDataId());
             }

@@ -38,28 +38,37 @@ public class ReferenceDataModel {
     private final Map<String, ReferenceData<?>> refDataListMap = new HashMap<>();
 
     public void putRefDataList(String refId, ReferenceData<?> refData) {
+        if (refData.getRenderer() == null) {
+            refData.setRenderer(getDefaultListCellRenderer());
+        }
         refDataListMap.put(refId, refData);
     }
 
     public void putRefDataList(String refId, List<?> values, ListCellRenderer<?> renderer) {
         if (renderer == null) {
-            renderer = new DefaultListCellRenderer() {
-                private static final long serialVersionUID = -2480226005447134931L;
-
-                @Override
-                public Component getListCellRendererComponent(JList<?> list, Object value, int index,
-                        boolean isSelected, boolean cellHasFocus) {
-                    super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                    if (value == null) {
-                        setText(ControlConfigUtils.getString("label.dropdown.pleaseSelect"));
-                    }
-                    return this;
-                }
-
-            };
+            renderer = getDefaultListCellRenderer();
         }
         ReferenceData refData = new ReferenceData(values, renderer);
         refDataListMap.put(refId, refData);
+    }
+
+    private ListCellRenderer<?> getDefaultListCellRenderer() {
+        ListCellRenderer<?> renderer;
+        renderer = new DefaultListCellRenderer() {
+            private static final long serialVersionUID = -2480226005447134931L;
+
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+                    boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value == null) {
+                    setText(ControlConfigUtils.getString("label.dropdown.pleaseSelect"));
+                }
+                return this;
+            }
+
+        };
+        return renderer;
     }
 
     public void putRefDataList(String refId, Object[] values) {
@@ -93,6 +102,10 @@ public class ReferenceDataModel {
             this.values = new ArrayList<>(values);
             this.renderer = renderer;
 
+        }
+
+        public void setRenderer(ListCellRenderer<?> listCellRenderer) {
+            this.renderer = (ListCellRenderer<T>) listCellRenderer;
         }
 
         /**
