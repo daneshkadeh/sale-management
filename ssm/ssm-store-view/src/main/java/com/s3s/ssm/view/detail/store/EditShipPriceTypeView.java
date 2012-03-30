@@ -14,11 +14,11 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.view.detail.shipment;
+package com.s3s.ssm.view.detail.store;
 
 import java.util.Map;
 
-import com.s3s.ssm.entity.shipment.ShipPrice;
+import com.s3s.ssm.entity.store.ShipPriceType;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -27,12 +27,12 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
  * @author Le Thanh Hoang
  * 
  */
-public class EditShipPriceView extends AbstractSingleEditView<ShipPrice> {
+public class EditShipPriceTypeView extends AbstractSingleEditView<ShipPriceType> {
 
     /**
      * @param entity
      */
-    public EditShipPriceView(Map<String, Object> entity) {
+    public EditShipPriceTypeView(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -40,7 +40,7 @@ public class EditShipPriceView extends AbstractSingleEditView<ShipPrice> {
      * {@inheritDoc}
      */
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ShipPrice entity) {
+    public void initialPresentationView(DetailDataModel detailDataModel, ShipPriceType entity) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
     }

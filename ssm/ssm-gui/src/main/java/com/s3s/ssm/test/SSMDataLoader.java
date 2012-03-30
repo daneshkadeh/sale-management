@@ -46,7 +46,6 @@ import com.s3s.ssm.entity.catalog.ProductPropertyElement;
 import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.entity.catalog.SPackage;
 import com.s3s.ssm.entity.catalog.Service;
-import com.s3s.ssm.entity.catalog.Store;
 import com.s3s.ssm.entity.catalog.Voucher;
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.BankAccount;
@@ -80,7 +79,8 @@ import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.DetailImportProduct;
 import com.s3s.ssm.entity.store.ExportStoreForm;
-import com.s3s.ssm.entity.store.ImportProductForm;
+import com.s3s.ssm.entity.store.ImportStore;
+import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.interfaces.config.ConfigService;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.util.ConfigProvider;
@@ -147,7 +147,7 @@ public class SSMDataLoader {
         daoHelper.getDao(ExportStoreForm.class).deleteAll(daoHelper.getDao(ExportStoreForm.class).findAll());
 
         daoHelper.getDao(DetailImportProduct.class).deleteAll(daoHelper.getDao(DetailImportProduct.class).findAll());
-        daoHelper.getDao(ImportProductForm.class).deleteAll(daoHelper.getDao(ImportProductForm.class).findAll());
+        daoHelper.getDao(ImportStore.class).deleteAll(daoHelper.getDao(ImportStore.class).findAll());
 
         daoHelper.getDao(DetailInvoice.class).deleteAll(daoHelper.getDao(DetailInvoice.class).findAll());
         daoHelper.getDao(Invoice.class).deleteAll(daoHelper.getDao(Invoice.class).findAll());
@@ -679,7 +679,7 @@ public class SSMDataLoader {
         store.setExportAddress(COMPANY_ADDRESS);
         store.setImportAddress(COMPANY_ADDRESS);
         store.setName("Kho 05");
-        store.setManagerCode("OPERATOR1");
+        store.setManager(listOperator.get(0));
         daoHelper.getDao(Store.class).saveOrUpdate(store);
         return Arrays.asList(store);
     }

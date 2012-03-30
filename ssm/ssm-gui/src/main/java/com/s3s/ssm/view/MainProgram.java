@@ -53,10 +53,10 @@ import com.s3s.ssm.view.component.RadioButtonsGroup;
 import com.s3s.ssm.view.domain.BuyManagementDomain;
 import com.s3s.ssm.view.domain.ContactManagementDomain;
 import com.s3s.ssm.view.domain.FinanceManagementDomain;
-import com.s3s.ssm.view.domain.InventoryManagementDomain;
 import com.s3s.ssm.view.domain.ReportDomain;
 import com.s3s.ssm.view.domain.ResourceManagementDomain;
 import com.s3s.ssm.view.domain.SalesManagementDomain;
+import com.s3s.ssm.view.domain.StoreManagementDomain;
 import com.s3s.ssm.view.domain.SupplyChainDomain;
 import com.s3s.ssm.view.domain.SystemManagementDomain;
 import com.s3s.ssm.view.list.operator.ListOperatorView;
@@ -174,7 +174,7 @@ public class MainProgram {
         SystemManagementDomain systemDomain = new SystemManagementDomain(treeScrollPane, contentScrollPane);
         BuyManagementDomain buyDomain = new BuyManagementDomain(treeScrollPane, contentScrollPane);
         SalesManagementDomain salesDomain = new SalesManagementDomain(treeScrollPane, contentScrollPane);
-        InventoryManagementDomain inventoryDomain = new InventoryManagementDomain(treeScrollPane, contentScrollPane);
+        StoreManagementDomain storeDomain = new StoreManagementDomain(treeScrollPane, contentScrollPane);
         ContactManagementDomain contactDomain = new ContactManagementDomain(treeScrollPane, contentScrollPane);
         FinanceManagementDomain financeDomain = new FinanceManagementDomain(treeScrollPane, contentScrollPane);
         SupplyChainDomain supplyChainDomain = new SupplyChainDomain(treeScrollPane, contentScrollPane);
@@ -184,7 +184,7 @@ public class MainProgram {
         buttonGroup.add(systemDomain);
         buttonGroup.add(buyDomain);
         buttonGroup.add(salesDomain);
-        buttonGroup.add(inventoryDomain);
+        buttonGroup.add(storeDomain);
         buttonGroup.add(contactDomain);
         buttonGroup.add(financeDomain);
         buttonGroup.add(supplyChainDomain);
@@ -194,7 +194,7 @@ public class MainProgram {
         panel.add(systemDomain, "grow");
         panel.add(buyDomain, "grow");
         panel.add(salesDomain, "grow");
-        panel.add(inventoryDomain, "grow");
+        panel.add(storeDomain, "grow");
         panel.add(contactDomain, "grow");
         panel.add(financeDomain, "grow");
         panel.add(supplyChainDomain, "grow");

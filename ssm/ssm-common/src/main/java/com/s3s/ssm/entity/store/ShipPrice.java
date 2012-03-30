@@ -14,7 +14,7 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.entity.shipment;
+package com.s3s.ssm.entity.store;
 
 import java.util.Date;
 
@@ -32,18 +32,18 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
  */
 @Entity
 @Table(name = "s_ship_date_price")
-public class ShipDatePrice extends AbstractIdOLObject {
-    private ShipPrice shipPrice;
+public class ShipPrice extends AbstractIdOLObject {
+    private ShipPriceType shipPrice;
     private Double price = 0.0;
     private Date updateDate = new Date();
 
     @ManyToOne
     @JoinColumn(name = "ship_price_id")
-    public ShipPrice getShipPrice() {
+    public ShipPriceType getShipPrice() {
         return shipPrice;
     }
 
-    public void setShipPrice(ShipPrice shipPrice) {
+    public void setShipPrice(ShipPriceType shipPrice) {
         this.shipPrice = shipPrice;
     }
 

@@ -176,7 +176,7 @@ public class Organization extends AbstractCodeOLObject {
         this.defPageRowNum = defPageRowNum;
     }
 
-    @Column(name = "def_payment_method", length = 3)
+    @Column(name = "def_payment_method")
     @Enumerated(EnumType.STRING)
     @NotNull
     public PaymentMode getDefPaymentMethod() {

@@ -31,8 +31,8 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
 @Entity
 @Table(name = "s_check_store")
 public class CheckStore extends AbstractIdOLObject {
-    private com.s3s.ssm.entity.catalog.Store store; // TODO Hoang duplicate entity Store in catalog and store. Store in
-                                                    // store has no @Table mark
+    private Store store; // TODO Hoang duplicate entity Store in catalog and store. Store in
+                         // store has no @Table mark
     private Date dateStartCheck;
     private Date dateEndCheck;
     private String responsibleUser;
@@ -41,11 +41,11 @@ public class CheckStore extends AbstractIdOLObject {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "store_id", nullable = false)
     @NotNull
-    public com.s3s.ssm.entity.catalog.Store getStore() {
+    public Store getStore() {
         return store;
     }
 
-    public void setStore(com.s3s.ssm.entity.catalog.Store store) {
+    public void setStore(Store store) {
         this.store = store;
     }
 

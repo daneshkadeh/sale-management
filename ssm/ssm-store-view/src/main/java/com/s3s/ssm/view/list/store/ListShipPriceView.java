@@ -1,5 +1,5 @@
 /*
- * ListShipmentPriceView
+ * ListShipDatePriceView
  * 
  * Project: SSM
  * 
@@ -14,10 +14,10 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.view.list.shipment;
+package com.s3s.ssm.view.list.store;
 
-import com.s3s.ssm.entity.shipment.ShipPrice;
-import com.s3s.ssm.view.detail.shipment.EditShipPriceView;
+import com.s3s.ssm.entity.store.ShipPrice;
+import com.s3s.ssm.view.detail.store.EditShipPriceView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
@@ -34,8 +34,9 @@ public class ListShipPriceView extends AbstractListView<ShipPrice> {
      */
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("code", ListColumnType.TEXT);
-        listDataModel.addColumn("name", ListColumnType.TEXT);
+        listDataModel.addColumn("shipPrice", ListColumnType.TEXT);
+        listDataModel.addColumn("updateDate", ListColumnType.DATE);
+        listDataModel.addColumn("price", ListColumnType.TEXT);
     }
 
     /**
