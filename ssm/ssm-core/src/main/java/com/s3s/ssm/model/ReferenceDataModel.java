@@ -79,7 +79,7 @@ public class ReferenceDataModel {
      *            the data type of <code>values</code>
      */
     public class ReferenceData<T> {
-        private List<T> values = new ArrayList<>();
+        private List<T> values;
         private ListCellRenderer<T> renderer;
         private Map<T, String> value2LabelMap;
 
@@ -90,7 +90,7 @@ public class ReferenceDataModel {
          *            list of values
          */
         public ReferenceData(List<T> values, ListCellRenderer<T> renderer) {
-            this.values = values;
+            this.values = new ArrayList<>(values);
             this.renderer = renderer;
 
         }
