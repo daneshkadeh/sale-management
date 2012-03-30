@@ -42,6 +42,11 @@ import com.s3s.ssm.view.list.AbstractListView;
  * 
  */
 public abstract class AbstractEditView<T extends AbstractIdOLObject> extends AbstractView {
+    /**
+     * 
+     */
+    public static final String NEW_TITLE = ControlConfigUtils.getString("label.tab.new");
+
     private static final int LENGTH_OF_CODE = 20;
 
     private static final long serialVersionUID = 5467303241585854634L;
@@ -119,7 +124,7 @@ public abstract class AbstractEditView<T extends AbstractIdOLObject> extends Abs
     }
 
     public final String getTitle() {
-        return entity.getId() == null ? ControlConfigUtils.getString("label.tab.new") : getDefaultTitle(entity);
+        return entity.getId() == null ? NEW_TITLE : getDefaultTitle(entity);
     }
 
     protected String getDefaultTitle(T entity) {

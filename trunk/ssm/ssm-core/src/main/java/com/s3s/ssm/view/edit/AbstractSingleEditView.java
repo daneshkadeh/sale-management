@@ -218,6 +218,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         });
 
         btnNew = new JButton(ImageUtils.getIcon(ImageConstants.NEW_ICON));
+        btnNew.setEnabled(entity.isPersisted());
         btnNew.setToolTipText(ControlConfigUtils.getString("edit.button.new"));
         btnNew.addActionListener(new ActionListener() {
             @Override
@@ -536,6 +537,8 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 notifyPanel.setNotifyKind(NotifyKind.INFORMATION);
                 notifyPanel.setMessage(ControlConfigUtils.getString("edit.message.saveSuccess"));
                 notifyPanel.setVisible(true);
+
+                btnNew.setEnabled(true);
                 return true;
             } catch (Exception e) {
                 for (StackTraceElement st : e.getStackTrace()) {
