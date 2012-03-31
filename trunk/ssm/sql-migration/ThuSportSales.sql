@@ -1336,6 +1336,8 @@ CREATE TABLE `s_invoice` (
   KEY `FK9C23C761F4FC45F2` (`contact_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
+insert into `seq` values('invoice_number_seq', 1);
+
 --
 -- Dumping data for table `s_invoice`
 --
