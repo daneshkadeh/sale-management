@@ -24,8 +24,8 @@ import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.sales.InvoicePaymentStatus;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.sales.InvoiceType;
+import com.s3s.ssm.interfaces.sales.InvoiceService;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.utils.InvoiceHelper;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -70,7 +70,7 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     protected Invoice loadForCreate() {
         Invoice invoice = super.loadForCreate();
         invoice.setCreatedDate(new Date());
-        invoice.setInvoiceNumber(InvoiceHelper.getNextInvoiceNumber());
+        invoice.setInvoiceNumber(serviceProvider.getService(InvoiceService.class).getNextInvoiceNumber());
         return invoice;
     }
 

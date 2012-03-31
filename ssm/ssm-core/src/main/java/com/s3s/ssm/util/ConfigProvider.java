@@ -24,7 +24,6 @@ import com.s3s.ssm.security.CustomJdbcMutableAclService;
 import com.s3s.ssm.service.CustomerService;
 import com.s3s.ssm.service.DetailInvoiceService;
 import com.s3s.ssm.service.GoodsService;
-import com.s3s.ssm.service.InvoiceService;
 
 public class ConfigProvider {
     private static ConfigProvider configProvider;
@@ -59,10 +58,6 @@ public class ConfigProvider {
 
     public GoodsService getGoodsService() {
         return (GoodsService) appContext.getBean("goodsService");
-    }
-
-    public InvoiceService getInvoiceService() {
-        return (InvoiceService) appContext.getBean("invoiceService");
     }
 
     public DetailInvoiceService getDetailInvoiceService() {
