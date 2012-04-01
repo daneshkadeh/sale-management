@@ -7,10 +7,8 @@ import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.Organization;
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.entity.contact.Partner;
-import com.s3s.ssm.entity.finance.PaymentContent;
-import com.s3s.ssm.entity.operator.Operator;
 
-public interface ConfigService {
+public interface IConfigService {
     /**
      * Get exchange rate based on currency code of latest date
      * 
@@ -35,9 +33,9 @@ public interface ConfigService {
      */
     public Double getExchangeRate(SCurrency currency);
 
-    public String generatePaymentCode(String orgCode);
-
-    public String generateCode(Class clazz);
+    // public String generatePaymentCode(String orgCode);
+    //
+    // public String generateCode(Class clazz);
 
     public List<String> getCurrencyCodes();
 
@@ -45,18 +43,14 @@ public interface ConfigService {
 
     public List<Partner> getPartners();
 
-    public List<Operator> getOperators();
-
-    public List<PaymentContent> getPaymentContents();
-
-    public List<PaymentContent> getReceiptContents();
-
     /**
      * Get default organization
      * 
      * @return
      */
     public Organization getDefOrganization();
+
+    public List<Organization> getOrganizations();
 
     public SCurrency getDefCurrency();
 
