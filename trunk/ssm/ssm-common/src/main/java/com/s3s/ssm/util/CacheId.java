@@ -8,4 +8,9 @@ public interface CacheId {
     public static String REF_LIST_BANK = "referenceListBank";
     public static String REF_LIST_PAYMENT_CONTENT = "referenceListPaymentContent";
     public static String REF_LIST_RECEIPT_CONTENT = "referenceListReceiptContent";
+    public static String REF_LIST_PAYMENT_MODE = "referenceListPaymentMode";
+    public static String REF_LIST_STORE = "referenceListStore";
+    public static String REF_LIST_SHIP_PRICE_TYPE = "referenceListShipPriceType";
+    public static String REF_LIST_ORGANIZATION = "referenceListOrganization";
+    public static String REF_LIST_STALL = "referenceListStall";
 }

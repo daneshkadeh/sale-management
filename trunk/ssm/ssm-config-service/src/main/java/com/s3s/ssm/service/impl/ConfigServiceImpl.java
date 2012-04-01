@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -16,37 +15,28 @@ import org.springframework.transaction.annotation.Transactional;
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.ExchangeRate;
-import com.s3s.ssm.entity.config.Institution;
 import com.s3s.ssm.entity.config.Organization;
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.entity.contact.Partner;
-import com.s3s.ssm.entity.finance.Payment;
-import com.s3s.ssm.entity.finance.PaymentContent;
-import com.s3s.ssm.entity.finance.PaymentType;
-import com.s3s.ssm.entity.operator.Operator;
-import com.s3s.ssm.interfaces.config.ConfigService;
+import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.util.CacheId;
 
 @Transactional
 @Service("configServiceImpl")
-public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ConfigService {
+public class ConfigServiceImpl extends AbstractModuleServiceImpl implements IConfigService {
     private static final int CODE_LENGTH = 20;
 
     @Override
     public void init() {
-        serviceProvider.register(ConfigService.class, this);
+        serviceProvider.register(IConfigService.class, this);
         try {
             getCacheDataService().registerCache(CacheId.REF_LIST_CURRENCY, this,
                     this.getClass().getMethod("getCurrencyCodes"));
             getCacheDataService().registerCache(CacheId.REF_LIST_BANK, this, this.getClass().getMethod("getBanks"));
             getCacheDataService().registerCache(CacheId.REF_LIST_PARTNER, this,
                     this.getClass().getMethod("getPartners"));
-            getCacheDataService().registerCache(CacheId.REF_LIST_OPERATOR, this,
-                    this.getClass().getMethod("getOperators"));
-            getCacheDataService().registerCache(CacheId.REF_LIST_PAYMENT_CONTENT, this,
-                    this.getClass().getMethod("getPaymentContents"));
-            getCacheDataService().registerCache(CacheId.REF_LIST_RECEIPT_CONTENT, this,
-                    this.getClass().getMethod("getReceiptContents"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_ORGANIZATION, this,
+                    this.getClass().getMethod("getOrganizations"));
         } catch (NoSuchMethodException | SecurityException e) {
             throw new RuntimeException("Cannot register method to cache service!", e);
         }
@@ -75,31 +65,6 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements Conf
     public List<Partner> getPartners() {
         List<Partner> partners = getDaoHelper().getDao(Partner.class).findAll();
         return partners;
-    }
-
-    @Transactional(propagation = Propagation.SUPPORTS)
-    @Override
-    public List<Operator> getOperators() {
-        List<Operator> operators = getDaoHelper().getDao(Operator.class).findAll();
-        return operators;
-    }
-
-    @Transactional(propagation = Propagation.SUPPORTS)
-    @Override
-    public List<PaymentContent> getPaymentContents() {
-        DetachedCriteria dc = DetachedCriteria.forClass(PaymentContent.class).add(
-                Property.forName("paymentType").eq(PaymentType.PAY));
-        List<PaymentContent> pamentContent = getDaoHelper().getDao(PaymentContent.class).findAll();
-        return pamentContent;
-    }
-
-    @Transactional(propagation = Propagation.SUPPORTS)
-    @Override
-    public List<PaymentContent> getReceiptContents() {
-        DetachedCriteria dc = DetachedCriteria.forClass(PaymentContent.class).add(
-                Property.forName("paymentType").eq(PaymentType.RECEIPT));
-        List<PaymentContent> receiptContent = getDaoHelper().getDao(PaymentContent.class).findByCriteria(dc);
-        return receiptContent;
     }
 
     /**
@@ -139,45 +104,26 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements Conf
         return getExchangeRate(currency.getCode(), new Date(0));
     }
 
-    /**
-     * 
-     * {@inheritDoc}
-     */
-    // TODO: Should have a function findByCode instead of findById
-    @Override
-    public String generatePaymentCode(String orgCode) {
-        String genCode = "";
-        Long maxId = getMaxId(Payment.class);
-        DetachedCriteria dc = getDaoHelper().getDao(Organization.class).getCriteria();
-        dc.add(Restrictions.eq("code", orgCode));
-        List<Organization> orgList = getDaoHelper().getDao(Organization.class).findByCriteria(dc, 0, 1);
-        if (orgList.size() > 0) {
-            Organization org = orgList.get(0);
-            String ruleCode = org.getPaymentBillCodeRule();
-            genCode = generateCode(ruleCode, maxId);
-        }
-        return genCode;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String generateCode(Class clazz) {
-        String genCode = "";
-        Long maxId = getMaxId(Payment.class);
-        String orgCode = getDefOrganization().getCode();
-        Organization org = getDaoHelper().getDao(Organization.class).findByCode(orgCode);
-        if (org == null) {
-            return genCode;
-        }
-        String ruleCode = "";
-        if (clazz.getName().equalsIgnoreCase(Payment.class.getName())) {
-            ruleCode = org.getPaymentBillCodeRule();
-        }
-        genCode = generateCode(ruleCode, maxId);
-        return genCode;
-    }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public String generateCode(Class clazz) {
+    // String genCode = "";
+    // Long maxId = getMaxId(Payment.class);
+    // String orgCode = getDefOrganization().getCode();
+    // Organization org = getDaoHelper().getDao(Organization.class).findByCode(orgCode);
+    // if (org == null) {
+    // return genCode;
+    // }
+    // String ruleCode = "";
+    // if (clazz.getName().equalsIgnoreCase(Payment.class.getName())) {
+    // ruleCode = org.getPaymentBillCodeRule();
+    // }
+    // genCode = generateCode(ruleCode, maxId);
+    // return genCode;
+    // }
 
     /**
      * 
@@ -234,12 +180,11 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements Conf
     }
 
     /**
-     * Get institution
-     * 
-     * @return
+     * {@inheritDoc}
      */
-    private Institution getInstitution() {
-        List<Institution> insList = getDaoHelper().getDao(Institution.class).findAll();
-        return insList.get(0);
+    @Override
+    public List<Organization> getOrganizations() {
+        List<Organization> organizations = getDaoHelper().getDao(Organization.class).findAll();
+        return organizations;
     }
 }
