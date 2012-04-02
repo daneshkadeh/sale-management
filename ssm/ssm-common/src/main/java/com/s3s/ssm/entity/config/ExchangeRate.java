@@ -24,11 +24,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractIdOLObject;
 
 @Entity
-@Table(name = "s_exchange_rate")
-public class ExchangeRate extends AbstractCodeOLObject {
+@Table(name = "config_exchange_rate")
+public class ExchangeRate extends AbstractIdOLObject {
     private static final long serialVersionUID = -9188655499937108343L;
     private Date updateDate = new Date(); // default is current date
     private SCurrency currency;

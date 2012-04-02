@@ -23,7 +23,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
-@Table(name = "s_currency")
+@Table(name = "config_currency")
 public class SCurrency extends AbstractCodeOLObject {
     private String name;
     private String symbol;

@@ -40,7 +40,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
  * 
  */
 @Entity
-@Table(name = "s_institution")
+@Table(name = "config_institution")
 public class Institution extends AbstractCodeOLObject {
     private String companyName;
     private String agent;
@@ -51,6 +51,19 @@ public class Institution extends AbstractCodeOLObject {
     private String fax;
     private String website;
     private String email;
+    // rule of code generation
+    private String orderInvCodeRule;
+    private String salesInvCodeRule;
+    private String salesRefundInvCodeRule;
+    private String purInvCodeRule;
+    private String purRefundInvCodeRule;
+    private String sponContractCodeRule;
+    private String movementInvCodeRule;
+    private String exportInvCodeRule;
+    private String importInvCodeRule;
+    private String paymentBillCodeRule;
+    private String receiptsCodeRule;
+    private String promotionCodeRule;
     private Set<Organization> organizations = new HashSet<Organization>();
 
     @Column(name = "company_name", length = 250)
@@ -145,6 +158,126 @@ public class Institution extends AbstractCodeOLObject {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Column(name = "order_inv_code_rule", length = 50)
+    @Size(max = 50)
+    public String getOrderInvCodeRule() {
+        return orderInvCodeRule;
+    }
+
+    public void setOrderInvCodeRule(String orderInvCodeRule) {
+        this.orderInvCodeRule = orderInvCodeRule;
+    }
+
+    @Column(name = "sales_inv_code_rule", length = 50)
+    @Size(max = 50)
+    public String getSalesInvCodeRule() {
+        return salesInvCodeRule;
+    }
+
+    public void setSalesInvCodeRule(String salesInvCodeRule) {
+        this.salesInvCodeRule = salesInvCodeRule;
+    }
+
+    @Column(name = "sales_refund_inv_code_rule", length = 50)
+    @Size(max = 50)
+    public String getSalesRefundInvCodeRule() {
+        return salesRefundInvCodeRule;
+    }
+
+    public void setSalesRefundInvCodeRule(String salesRefundInvCodeRule) {
+        this.salesRefundInvCodeRule = salesRefundInvCodeRule;
+    }
+
+    @Column(name = "pur_inv_code_rule", length = 50)
+    @Size(max = 50)
+    public String getPurInvCodeRule() {
+        return purInvCodeRule;
+    }
+
+    public void setPurInvCodeRule(String purInvCodeRule) {
+        this.purInvCodeRule = purInvCodeRule;
+    }
+
+    @Column(name = "pur_refund_inv_code_rule", length = 50)
+    @Size(max = 50)
+    public String getPurRefundInvCodeRule() {
+        return purRefundInvCodeRule;
+    }
+
+    public void setPurRefundInvCodeRule(String purRefundInvCodeRule) {
+        this.purRefundInvCodeRule = purRefundInvCodeRule;
+    }
+
+    @Column(name = "spon_contract_code_rule", length = 50)
+    @Size(max = 50)
+    public String getSponContractCodeRule() {
+        return sponContractCodeRule;
+    }
+
+    public void setSponContractCodeRule(String sponContractCodeRule) {
+        this.sponContractCodeRule = sponContractCodeRule;
+    }
+
+    @Column(name = "movement_inv_code_rule", length = 50)
+    @Size(max = 50)
+    public String getMovementInvCodeRule() {
+        return movementInvCodeRule;
+    }
+
+    public void setMovementInvCodeRule(String movementInvCodeRule) {
+        this.movementInvCodeRule = movementInvCodeRule;
+    }
+
+    @Column(name = "export_inv_code_rule", length = 50)
+    @Size(max = 50)
+    public String getExportInvCodeRule() {
+        return exportInvCodeRule;
+    }
+
+    public void setExportInvCodeRule(String exportInvCodeRule) {
+        this.exportInvCodeRule = exportInvCodeRule;
+    }
+
+    @Column(name = "import_inv_code_rule", length = 50)
+    @Size(max = 50)
+    public String getImportInvCodeRule() {
+        return importInvCodeRule;
+    }
+
+    public void setImportInvCodeRule(String importInvCodeRule) {
+        this.importInvCodeRule = importInvCodeRule;
+    }
+
+    @Column(name = "payment_bill_code_rule", length = 50)
+    @Size(max = 50)
+    public String getPaymentBillCodeRule() {
+        return paymentBillCodeRule;
+    }
+
+    public void setPaymentBillCodeRule(String paymentBillCodeRule) {
+        this.paymentBillCodeRule = paymentBillCodeRule;
+    }
+
+    @Column(name = "receipt_code_rule", length = 50)
+    @Size(max = 50)
+    public String getReceiptsCodeRule() {
+        return receiptsCodeRule;
+    }
+
+    public void setReceiptsCodeRule(String receiptsCodeRule) {
+        this.receiptsCodeRule = receiptsCodeRule;
+    }
+
+    @Column(name = "promotion_code_rule", length = 50)
+    @Size(max = 50)
+    public String getPromotionCodeRule() {
+        return promotionCodeRule;
+    }
+
+    public void setPromotionCodeRule(String promotionCodeRule) {
+        this.promotionCodeRule = promotionCodeRule;
     }
 
     @OneToMany(mappedBy = "institution")

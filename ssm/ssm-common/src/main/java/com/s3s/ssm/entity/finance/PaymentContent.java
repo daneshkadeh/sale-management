@@ -28,7 +28,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
-@Table(name = "s_payment_content")
+@Table(name = "finace_payment_content")
 public class PaymentContent extends AbstractCodeOLObject {
     private String name;
     private PaymentType paymentType;

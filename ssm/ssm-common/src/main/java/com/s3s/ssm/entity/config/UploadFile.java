@@ -22,7 +22,7 @@ import javax.persistence.Table;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 
 @Entity
-@Table(name = "s_upload_file")
+@Table(name = "config_upload_file")
 public class UploadFile extends AbstractIdOLObject {
     private String title;
     private byte[] data;

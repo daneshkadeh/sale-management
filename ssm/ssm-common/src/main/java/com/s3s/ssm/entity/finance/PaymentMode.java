@@ -1,5 +1,5 @@
 /*
- * FinanceService
+ * PaymentFormEnum
  * 
  * Project: SSM
  * 
@@ -14,22 +14,15 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.interfaces.finance;
-
-import java.util.List;
-
-import com.s3s.ssm.entity.finance.PaymentContent;
-import com.s3s.ssm.entity.finance.PaymentMode;
+package com.s3s.ssm.entity.finance;
 
 /**
- * @author Le Thanh Hoang
+ * CASH: the payment is paid by cash. </br> DEBT_TRANSFER: the payment is paid by moving money to debt account of
+ * customer.
+ * 
+ * @author phamcongbang
  * 
  */
-public interface IFinanceService {
-
-    public List<PaymentContent> getPaymentContents();
-
-    public List<PaymentContent> getReceiptContents();
-
-    public List<PaymentMode> getPaymentModes();
+public enum PaymentMode {
+    CASH, BANK_TRANSFER, VISA, CREDIT_CARD, DEBT_TRANSFER, VOUCHER
 }

@@ -24,7 +24,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
-@Table(name = "s_bank")
+@Table(name = "config_bank")
 public class Bank extends AbstractCodeOLObject {
     private static final long serialVersionUID = -1834997390961013651L;
     private String name;

@@ -14,23 +14,23 @@
  */
 package com.s3s.ssm.view.list.store;
 
-import com.s3s.ssm.entity.store.ImportStore;
+import com.s3s.ssm.entity.store.ImportStoreForm;
+import com.s3s.ssm.view.detail.store.EditImportStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
-public class ListImportStoreView extends AbstractListView<ImportStore> {
+public class ListImportStoreFormView extends AbstractListView<ImportStoreForm> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        // TODO Auto-generated method stub
-
+        listDataModel.addColumn("code", ListColumnType.TEXT);
     }
 
     @Override
-    protected Class<? extends AbstractEditView<ImportStore>> getEditViewClass() {
-        // TODO Auto-generated method stub
-        return null;
+    protected Class<? extends AbstractEditView<ImportStoreForm>> getEditViewClass() {
+        return EditImportStoreFormView.class;
     }
 
 }

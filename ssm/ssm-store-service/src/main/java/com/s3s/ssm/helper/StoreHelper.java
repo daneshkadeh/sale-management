@@ -1,5 +1,5 @@
 /*
- * FinanceService
+ * StoreHelper
  * 
  * Project: SSM
  * 
@@ -14,22 +14,18 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.interfaces.finance;
+package com.s3s.ssm.helper;
 
-import java.util.List;
-
-import com.s3s.ssm.entity.finance.PaymentContent;
-import com.s3s.ssm.entity.finance.PaymentMode;
+import com.s3s.ssm.entity.store.ShipPrice;
+import com.s3s.ssm.entity.store.ShipPriceType;
 
 /**
  * @author Le Thanh Hoang
  * 
  */
-public interface IFinanceService {
-
-    public List<PaymentContent> getPaymentContents();
-
-    public List<PaymentContent> getReceiptContents();
-
-    public List<PaymentMode> getPaymentModes();
+public class StoreHelper {
+    public static ShipPrice getLatestShipPrice(ShipPriceType type) {
+        ShipPrice shipPrice = null;
+        return shipPrice;
+    }
 }

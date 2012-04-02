@@ -24,7 +24,7 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.view.component.SaleTargetModel;
 
 @Entity
-@Table(name = "o_sale_target")
+@Table(name = "operator_sale_target")
 public class SaleTarget extends AbstractIdOLObject implements SaleTargetModel {
     private Stall stall;
     private Integer year;

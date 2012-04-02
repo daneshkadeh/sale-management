@@ -16,13 +16,8 @@
 
 package com.s3s.ssm.entity.store;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -34,12 +29,11 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
  * 
  */
 @Entity
-@Table(name = "s_ship_price_type")
+@Table(name = "store_ship_price_type")
 public class ShipPriceType extends AbstractCodeOLObject {
     private String name;
-    private Set<ShipPrice> shipPrices = new HashSet<ShipPrice>();
 
-    @Column(name = "name", length = 20)
+    @Column(name = "name", length = 20, unique = true)
     @NotBlank
     public String getName() {
         return name;
@@ -47,15 +41,6 @@ public class ShipPriceType extends AbstractCodeOLObject {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @OneToMany(mappedBy = "shipPrice", fetch = FetchType.LAZY)
-    public Set<ShipPrice> getShipPrices() {
-        return shipPrices;
-    }
-
-    public void setShipPrices(Set<ShipPrice> shipPrices) {
-        this.shipPrices = shipPrices;
     }
 
     @Override

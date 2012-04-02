@@ -33,12 +33,12 @@ import com.s3s.ssm.entity.sales.SalesContract;
  * 
  */
 @Entity
-@Table(name = "s_contract_payment")
+@Table(name = "finance_contract_payment")
 @PrimaryKeyJoinColumn(name = "contract_payment_id")
 public class ContractPayment extends Payment {
     private SalesContract salesContract;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @Cascade(value = CascadeType.SAVE_UPDATE)
     @JoinColumn(name = "sales_contract_id")
     public SalesContract getSalesContract() {

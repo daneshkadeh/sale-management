@@ -16,14 +16,10 @@
 
 package com.s3s.ssm.view.detail.store;
 
-import java.util.List;
 import java.util.Map;
 
-import javax.swing.DefaultListCellRenderer;
-
 import com.s3s.ssm.entity.store.ShipPrice;
-import com.s3s.ssm.entity.store.ShipPriceType;
-import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -33,7 +29,7 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
  * 
  */
 public class EditShipPriceView extends AbstractSingleEditView<ShipPrice> {
-    private static final String SHIPPRICE_REF_ID = "1";
+    private static final long serialVersionUID = -7524462966557044478L;
 
     /**
      * @param entity
@@ -47,16 +43,10 @@ public class EditShipPriceView extends AbstractSingleEditView<ShipPrice> {
      */
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ShipPrice entity) {
-        detailDataModel.addAttribute("shipPrice", DetailFieldType.DROPDOWN).referenceDataId(SHIPPRICE_REF_ID);
         detailDataModel.addAttribute("updateDate", DetailFieldType.DATE).mandatory(true);
-        detailDataModel.addAttribute("price", DetailFieldType.TEXTBOX).mandatory(true);
-    }
-
-    @Override
-    protected void setReferenceDataModel(ReferenceDataModel refDataModel, ShipPrice entity) {
-        super.setReferenceDataModel(refDataModel, entity);
-        List<ShipPriceType> shipPriceList = getDaoHelper().getDao(ShipPriceType.class).findAll();
-        refDataModel.putRefDataList(SHIPPRICE_REF_ID, refDataModel.new ReferenceData(shipPriceList,
-                new DefaultListCellRenderer()));
+        detailDataModel.addAttribute("shipPriceType", DetailFieldType.DROPDOWN).mandatory(true)
+                .cacheDataId(CacheId.REF_LIST_SHIP_PRICE_TYPE);
+        detailDataModel.addAttribute("price", DetailFieldType.MONEY).mandatory(true)
+                .cacheDataId(CacheId.REF_LIST_CURRENCY);
     }
 }

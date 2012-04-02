@@ -24,7 +24,7 @@ import org.hibernate.validator.constraints.Email;
 import com.s3s.ssm.entity.security.User;
 
 @Entity
-@Table(name = "s_operator")
+@Table(name = "operator_operator")
 @PrimaryKeyJoinColumn(name = "operator_id")
 public class Operator extends User {
     private String fullName;

@@ -1,5 +1,5 @@
 /*
- * PaymentFormEnum
+ * ImportStoreStatus
  * 
  * Project: SSM
  * 
@@ -14,15 +14,14 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.entity.config;
+package com.s3s.ssm.entity.store;
 
 /**
- * CASH: the payment is paid by cash. </br> DEBT_TRANSFER: the payment is paid by moving money to debt account of
- * customer.
+ * It contains all status of ImportStore
  * 
- * @author phamcongbang
+ * @author Le Thanh Hoang
  * 
  */
-public enum PaymentMode {
-    CASH, BANK_TRANSFER, VISA, CREDIT_CARD, DEBT_TRANSFER, VOUCHER
+public enum ImportStoreStatus {
+    OPEN, DRAFT, DELETED
 }
