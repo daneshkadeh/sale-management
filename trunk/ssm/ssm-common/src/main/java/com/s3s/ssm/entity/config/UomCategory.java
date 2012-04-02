@@ -29,7 +29,7 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
-@Table(name = "s_uom_category")
+@Table(name = "config_uom_category")
 public class UomCategory extends AbstractCodeOLObject {
     private String name;
     private UomCategory parentUomCategory;

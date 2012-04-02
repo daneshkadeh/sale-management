@@ -14,20 +14,15 @@
  */
 package com.s3s.ssm.view.detail.config;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.BankAccount;
 import com.s3s.ssm.entity.config.Organization;
-import com.s3s.ssm.entity.config.PaymentMode;
-import com.s3s.ssm.entity.config.SCurrency;
-import com.s3s.ssm.entity.operator.Stall;
-import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -35,11 +30,6 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditOrganizationView extends AbstractSingleEditView<Organization> {
     private static final long serialVersionUID = 1L;
-    private static final String CURRENCY_REF_ID = "0";
-    private static final String BANK_REF_ID = "1";
-    private static final String STALL_REF_ID = "2";
-    private static final String REF_PAYMENT_MODE = "3";
-    private static final String REF_SELL_ON_CREDIT = "4";
 
     public EditOrganizationView(Map<String, Object> entity) {
         super(entity);
@@ -52,7 +42,6 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
         String infoTab = ControlConfigUtils.getString("label.Organization.infoTab");
         String bankTab = ControlConfigUtils.getString("label.Organization.bankTab");
         String generalTab = ControlConfigUtils.getString("label.Organization.generalTab");
-        String ruleCodeTab = ControlConfigUtils.getString("label.Organization.ruleCodeTab");
         String numFormatTab = ControlConfigUtils.getString("label.Organization.numFormatTab");
         String warningTab = ControlConfigUtils.getString("label.Organization.warningTab");
 
@@ -70,40 +59,26 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
         detailDataModel.tab(bankTab, bankTab, null);
         detailDataModel.addAttribute("beneficeName", DetailFieldType.TEXTBOX);
         detailDataModel.startGroup(usdAcctGrp);
-        detailDataModel.addAttribute("usdBankAcct.bank", DetailFieldType.DROPDOWN).referenceDataId(BANK_REF_ID);
+        detailDataModel.addAttribute("usdBankAcct.bank", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_BANK);
         detailDataModel.addAttribute("usdBankAcct.accountName", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("usdBankAcct.accountNumber", DetailFieldType.TEXTBOX);
         detailDataModel.endGroup();
 
         detailDataModel.startGroup(vndAcctGrp);
-        detailDataModel.addAttribute("vndBankAcct.bank", DetailFieldType.DROPDOWN).referenceDataId(BANK_REF_ID);
+        detailDataModel.addAttribute("vndBankAcct.bank", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_BANK);
         detailDataModel.addAttribute("vndBankAcct.accountName", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("vndBankAcct.accountNumber", DetailFieldType.TEXTBOX);
         detailDataModel.endGroup();
         // general parameter
         detailDataModel.tab(generalTab, generalTab, null);
         detailDataModel.addAttribute("defCurrency", DetailFieldType.DROPDOWN).mandatory(true)
-                .referenceDataId(CURRENCY_REF_ID);
+                .cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("defPaymentMethod", DetailFieldType.DROPDOWN).mandatory(true)
-                .referenceDataId(REF_PAYMENT_MODE);
+                .cacheDataId(CacheId.REF_LIST_PAYMENT_MODE);
         detailDataModel.addAttribute("defStall", DetailFieldType.DROPDOWN).mandatory(true)
-                .referenceDataId(STALL_REF_ID);
+                .cacheDataId(CacheId.REF_LIST_STALL);
         detailDataModel.addAttribute("defDetailInvNum", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("defPageRowNum", DetailFieldType.TEXTBOX).mandatory(true);
-        // rule of code generation
-        detailDataModel.tab(ruleCodeTab, ruleCodeTab, null);
-        detailDataModel.addAttribute("orderInvCodeRule", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("salesInvCodeRule", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("salesRefundInvCodeRule", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("purInvCodeRule", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("purRefundInvCodeRule", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("sponContractCodeRule", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("movementInvCodeRule", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("exportInvCodeRule", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("importInvCodeRule", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("paymentBillCodeRule", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("receiptsCodeRule", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("promotionCodeRule", DetailFieldType.TEXTBOX);
 
         detailDataModel.tab(numFormatTab, numFormatTab, null);
         detailDataModel.startGroup(digitAfterCommaGrp);
@@ -120,16 +95,6 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
         // sold on credit
         // detailDataModel.tab(warningTab, numFormatTab, null);
         // detailDataModel.addAttribute("sellOnCredit", FieldTypeEnum.RADIO_BUTTON_GROUP);
-    }
-
-    @Override
-    protected void setReferenceDataModel(ReferenceDataModel refDataModel, Organization entity) {
-        super.setReferenceDataModel(refDataModel, entity);
-        refDataModel.putRefDataList(CURRENCY_REF_ID, getDaoHelper().getDao(SCurrency.class).findAll(), null);
-        refDataModel.putRefDataList(BANK_REF_ID, getDaoHelper().getDao(Bank.class).findAll(), null);
-        refDataModel.putRefDataList(STALL_REF_ID, getDaoHelper().getDao(Stall.class).findAll(), null);
-        refDataModel.putRefDataList(REF_PAYMENT_MODE, Arrays.asList(PaymentMode.values()), null);
-        // refDataModel.putRefDataList(REF_SELL_ON_CREDIT, Arrays.asList(PaymentMode.values()), null);
     }
 
     @Override

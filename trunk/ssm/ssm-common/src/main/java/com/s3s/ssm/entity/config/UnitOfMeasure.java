@@ -28,7 +28,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
  * 
  */
 @Entity
-@Table(name = "s_unit_of_measure")
+@Table(name = "config_unit_of_measure")
 public class UnitOfMeasure extends AbstractCodeOLObject {
     private UomCategory uomCategory;
     private String name;

@@ -18,41 +18,47 @@ package com.s3s.ssm.entity.store;
 
 import java.util.Date;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.model.Money;
 
 /**
  * @author Le Thanh Hoang
  * 
  */
 @Entity
-@Table(name = "s_ship_date_price")
+@Table(name = "store_ship_price")
 public class ShipPrice extends AbstractIdOLObject {
-    private ShipPriceType shipPrice;
-    private Double price = 0.0;
+    private ShipPriceType shipPriceType;
+    private Money price;
     private Date updateDate = new Date();
 
     @ManyToOne
-    @JoinColumn(name = "ship_price_id")
-    public ShipPriceType getShipPrice() {
-        return shipPrice;
+    @JoinColumn(name = "ship_price_type_id")
+    public ShipPriceType getShipPriceType() {
+        return shipPriceType;
     }
 
-    public void setShipPrice(ShipPriceType shipPrice) {
-        this.shipPrice = shipPrice;
+    public void setShipPriceType(ShipPriceType shipPriceType) {
+        this.shipPriceType = shipPriceType;
     }
 
-    @Column(name = "price", nullable = false)
-    public Double getPrice() {
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "price")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code")) })
+    public Money getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Money price) {
         this.price = price;
     }
 

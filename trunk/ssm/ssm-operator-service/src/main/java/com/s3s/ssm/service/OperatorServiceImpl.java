@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.entity.operator.Stall;
-import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.interfaces.operator.IOperatorService;
 import com.s3s.ssm.service.impl.AbstractModuleServiceImpl;
 import com.s3s.ssm.util.CacheId;
@@ -18,7 +17,7 @@ public class OperatorServiceImpl extends AbstractModuleServiceImpl implements IO
 
     @Override
     public void init() {
-        serviceProvider.register(IConfigService.class, this);
+        serviceProvider.register(IOperatorService.class, this);
         try {
             getCacheDataService().registerCache(CacheId.REF_LIST_OPERATOR, this,
                     this.getClass().getMethod("getOperators"));

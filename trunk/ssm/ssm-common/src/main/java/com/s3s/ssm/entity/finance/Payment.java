@@ -32,17 +32,16 @@ import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
-import com.s3s.ssm.entity.config.PaymentMode;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.model.Money;
 
 @Entity
-@Table(name = "s_payment")
+@Table(name = "finance_payment")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Payment extends AbstractCodeOLObject {
     private PaymentContent paymentContent;
-    private Date paymentDate;
+    private Date paymentDate = new Date();
     private Partner partner;
     private Operator operator;
     private PaymentMode paymentMode;

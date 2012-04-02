@@ -34,7 +34,7 @@ public class ListShipPriceView extends AbstractListView<ShipPrice> {
      */
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("shipPrice", ListColumnType.TEXT);
+        listDataModel.addColumn("shipPriceType", ListColumnType.TEXT);
         listDataModel.addColumn("updateDate", ListColumnType.DATE);
         listDataModel.addColumn("price", ListColumnType.TEXT);
     }

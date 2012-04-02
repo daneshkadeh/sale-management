@@ -23,7 +23,6 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditCurrencyView extends AbstractSingleEditView<SCurrency> {
     private static final long serialVersionUID = 1L;
-    private static final String BOOL_REF_ID = "1";
 
     public EditCurrencyView(Map<String, Object> entity) {
         super(entity);

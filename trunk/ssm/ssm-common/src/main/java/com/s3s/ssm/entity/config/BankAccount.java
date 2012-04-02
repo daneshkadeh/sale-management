@@ -26,7 +26,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 
 @Entity
-@Table(name = "s_bank_account")
+@Table(name = "config_bank_account")
 public class BankAccount extends AbstractIdOLObject {
     private static final long serialVersionUID = 3551288465254593923L;
     private Bank bank;

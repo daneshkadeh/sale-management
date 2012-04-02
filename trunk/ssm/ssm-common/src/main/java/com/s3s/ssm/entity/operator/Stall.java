@@ -31,7 +31,7 @@ import javax.persistence.Table;
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
-@Table(name = "o_stall")
+@Table(name = "operator_stall")
 public class Stall extends AbstractCodeOLObject {
     private String name;
     private Operator manager;

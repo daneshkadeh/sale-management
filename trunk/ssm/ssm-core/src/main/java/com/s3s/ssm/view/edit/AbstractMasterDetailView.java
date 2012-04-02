@@ -98,6 +98,23 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void initialPresentationView(DetailDataModel detailDataModel, T entity) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, T entity) {
+        super.customizeComponents(name2AttributeComponent, entity);
+    }
+
+    /**
      * TODO: The ChildListView must be have smaller size than normal list view (about 7 rows) so that it does not cover
      * the screen.
      * 

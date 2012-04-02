@@ -26,7 +26,7 @@ import javax.persistence.MappedSuperclass;
  */
 
 @MappedSuperclass
-public abstract class AbstractDetailObject extends AbstractBaseIdObject {
+public abstract class AbstractDetailObject extends AbstractIdOLObject {
     private Date createdDate = new Date();
     private Date modifiedDate;
     private Integer lineNo;

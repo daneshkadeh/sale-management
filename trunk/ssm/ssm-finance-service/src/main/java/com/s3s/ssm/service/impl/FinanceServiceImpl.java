@@ -8,10 +8,9 @@ import org.hibernate.criterion.Property;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.s3s.ssm.entity.config.PaymentMode;
 import com.s3s.ssm.entity.finance.PaymentContent;
+import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.finance.PaymentType;
-import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.interfaces.finance.IFinanceService;
 import com.s3s.ssm.util.CacheId;
 
@@ -21,7 +20,7 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
 
     @Override
     public void init() {
-        serviceProvider.register(IConfigService.class, this);
+        serviceProvider.register(IFinanceService.class, this);
         try {
             getCacheDataService().registerCache(CacheId.REF_LIST_PAYMENT_CONTENT, this,
                     this.getClass().getMethod("getPaymentContents"));
