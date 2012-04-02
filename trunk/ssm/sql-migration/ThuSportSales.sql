@@ -16,6 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 
+
 -- ------ Function and table to support get next sequence --------- --
 delimiter //
 create function seq(seq_name char (100)) returns bigint
@@ -32,7 +33,138 @@ CREATE TABLE `seq` (
   PRIMARY KEY  (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+
 -- --------------------------------------------------------------- --
+
+--
+-- Table structure for table `acl_class`
+--
+
+CREATE TABLE `acl_class` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `class` varchar(500) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `unique_uk_2` (`class`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `acl_class`
+--
+
+INSERT INTO `acl_class` (`id`, `class`) VALUES
+(3, 'com.s3s.ssm.security.ACLResourceEnum'),
+(2, 'com.s3s.ssm.view.security.ACLResourceEnum'),
+(1, 'com.s3s.ssm.view.security.ACLResources');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acl_entry`
+--
+
+CREATE TABLE `acl_entry` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `acl_object_identity` bigint(20) NOT NULL,
+  `ace_order` int(11) NOT NULL,
+  `sid` bigint(20) NOT NULL,
+  `mask` int(11) NOT NULL,
+  `granting` tinyint(1) NOT NULL,
+  `audit_success` tinyint(1) NOT NULL,
+  `audit_failure` tinyint(1) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `unique_uk_4` (`acl_object_identity`,`ace_order`),
+  KEY `foreign_fk_5` (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=197 ;
+
+--
+-- Dumping data for table `acl_entry`
+--
+
+INSERT INTO `acl_entry` (`id`, `acl_object_identity`, `ace_order`, `sid`, `mask`, `granting`, `audit_success`, `audit_failure`) VALUES
+(107, 1, 0, 5, 16, 1, 0, 0),
+(108, 1, 1, 9, 4, 1, 0, 0),
+(109, 1, 2, 9, 16, 1, 0, 0),
+(110, 1, 3, 8, 16, 1, 0, 0),
+(111, 1, 4, 10, 16, 1, 0, 0),
+(113, 3, 0, 5, 16, 1, 0, 0),
+(189, 5, 0, 5, 32, 1, 0, 0),
+(190, 5, 1, 5, 8, 1, 0, 0),
+(191, 5, 2, 5, 4, 1, 0, 0),
+(192, 5, 3, 5, 16, 1, 0, 0),
+(193, 5, 4, 8, 16, 1, 0, 0),
+(194, 5, 5, 7, 16, 1, 0, 0),
+(195, 6, 0, 5, 32, 1, 0, 0),
+(196, 6, 1, 8, 16, 1, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acl_object_identity`
+--
+
+CREATE TABLE `acl_object_identity` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `object_id_class` bigint(20) NOT NULL,
+  `object_id_identity` bigint(20) NOT NULL,
+  `parent_object` bigint(20) default NULL,
+  `owner_sid` bigint(20) default NULL,
+  `entries_inheriting` tinyint(1) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `unique_uk_3` (`object_id_class`,`object_id_identity`),
+  KEY `foreign_fk_1` (`parent_object`),
+  KEY `foreign_fk_3` (`owner_sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+
+--
+-- Dumping data for table `acl_object_identity`
+--
+
+INSERT INTO `acl_object_identity` (`id`, `object_id_class`, `object_id_identity`, `parent_object`, `owner_sid`, `entries_inheriting`) VALUES
+(1, 1, 0, NULL, 1, 1),
+(2, 1, 1, NULL, 1, 1),
+(3, 2, 0, NULL, 11, 1),
+(4, 2, 1, NULL, 11, 1),
+(5, 3, 0, NULL, 11, 1),
+(6, 3, 1, NULL, 11, 1),
+(7, 3, 2, NULL, 11, 1),
+(8, 3, 3, NULL, 11, 1),
+(9, 3, 4, NULL, 11, 1),
+(10, 3, 5, NULL, 11, 1),
+(11, 3, 6, NULL, 11, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acl_sid`
+--
+
+CREATE TABLE `acl_sid` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `principal` tinyint(1) NOT NULL,
+  `sid` varchar(100) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `unique_uk_1` (`sid`,`principal`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+
+--
+-- Dumping data for table `acl_sid`
+--
+
+INSERT INTO `acl_sid` (`id`, `principal`, `sid`) VALUES
+(11, 1, 'admin'),
+(2, 0, 'ROLE_ADMIN'),
+(5, 1, 'ROLE_ADMIN'),
+(10, 1, 'ROLE_DEPLO'),
+(9, 1, 'ROLE_DEPLOY'),
+(4, 0, 'ROLE_MANAGER'),
+(7, 1, 'ROLE_MANAGER'),
+(6, 1, 'ROLE_PM'),
+(8, 1, 'ROLE_TEST'),
+(3, 0, 'user_admin'),
+(1, 1, 'user_admin');
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `acl_class`
@@ -352,10 +484,385 @@ CREATE TABLE `au_user_role` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `o_sale_target`
+-- Table structure for table `config_bank`
 --
 
-CREATE TABLE `o_sale_target` (
+CREATE TABLE `config_bank` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `code` varchar(32) NOT NULL,
+  `address` longtext,
+  `bank_name` varchar(128) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `config_bank`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `config_bank_account`
+--
+
+CREATE TABLE `config_bank_account` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `account_name` varchar(128) default NULL,
+  `account_number` varchar(32) NOT NULL,
+  `bank_id` bigint(20) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FK1E4FFD0794DAE04` (`bank_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `config_bank_account`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `config_currency`
+--
+
+CREATE TABLE `config_currency` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `code` varchar(32) NOT NULL,
+  `active` bit(1) default NULL,
+  `name` varchar(128) default NULL,
+  `symbol` varchar(10) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `config_currency`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `config_exchange_rate`
+--
+
+CREATE TABLE `config_exchange_rate` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `rate` double default NULL,
+  `update_date` datetime default NULL,
+  `currency_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FK2A964F3FCE40C623` (`currency_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `config_exchange_rate`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `config_institution`
+--
+
+CREATE TABLE `config_institution` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `code` varchar(32) NOT NULL,
+  `agent` varchar(250) default NULL,
+  `company_address` varchar(250) default NULL,
+  `company_name` varchar(250) default NULL,
+  `email` varchar(100) default NULL,
+  `export_inv_code_rule` varchar(50) default NULL,
+  `fax` varchar(20) default NULL,
+  `import_inv_code_rule` varchar(50) default NULL,
+  `movement_inv_code_rule` varchar(50) default NULL,
+  `order_inv_code_rule` varchar(50) default NULL,
+  `payment_bill_code_rule` varchar(50) default NULL,
+  `position` varchar(100) default NULL,
+  `promotion_code_rule` varchar(50) default NULL,
+  `pur_inv_code_rule` varchar(50) default NULL,
+  `pur_refund_inv_code_rule` varchar(50) default NULL,
+  `receipt_code_rule` varchar(50) default NULL,
+  `sales_inv_code_rule` varchar(50) default NULL,
+  `sales_refund_inv_code_rule` varchar(50) default NULL,
+  `spon_contract_code_rule` varchar(50) default NULL,
+  `tel` varchar(20) default NULL,
+  `website` varchar(100) default NULL,
+  `upload_file_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FK62F0B43B89B623E7` (`upload_file_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `config_institution`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `config_organization`
+--
+
+CREATE TABLE `config_organization` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `code` varchar(32) NOT NULL,
+  `address` varchar(250) default NULL,
+  `benefice_name` longtext,
+  `def_detail_inv_num` int(11) default NULL,
+  `def_page_row_num` int(11) default NULL,
+  `def_payment_method` varchar(255) default NULL,
+  `digit_after_amt` int(11) default NULL,
+  `digit_after_quan` int(11) default NULL,
+  `digit_after_rate` int(11) default NULL,
+  `digit_after_unit_price` int(11) default NULL,
+  `enable_chg_inv_date` int(11) default NULL,
+  `is_default` bit(1) default NULL,
+  `name` varchar(100) default NULL,
+  `odd_Separator` varchar(1) default NULL,
+  `sell_on_credit` int(11) default NULL,
+  `thousands_Separator` varchar(1) default NULL,
+  `def_currency_id` bigint(20) default NULL,
+  `def_stall_id` bigint(20) default NULL,
+  `institution_id` bigint(20) default NULL,
+  `usd_bank_acct_id` bigint(20) default NULL,
+  `vnd_bank_acct_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FKD15FAF10996039BE` (`vnd_bank_acct_id`),
+  KEY `FKD15FAF1079176F24` (`usd_bank_acct_id`),
+  KEY `FKD15FAF10869FF8C` (`def_stall_id`),
+  KEY `FKD15FAF10E797C8E9` (`def_currency_id`),
+  KEY `FKD15FAF10B52809B0` (`institution_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `config_organization`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `config_unit_of_measure`
+--
+
+CREATE TABLE `config_unit_of_measure` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `code` varchar(32) NOT NULL,
+  `is_base_measure` bit(1) NOT NULL,
+  `uom_name` varchar(128) NOT NULL,
+  `uom_category_id` bigint(20) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FK320EC994CBA000F7` (`uom_category_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `config_unit_of_measure`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `config_uom_category`
+--
+
+CREATE TABLE `config_uom_category` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `code` varchar(32) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `parentUomCategory_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FKAA21F08792B9DA5A` (`parentUomCategory_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `config_uom_category`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `config_upload_file`
+--
+
+CREATE TABLE `config_upload_file` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `content` longblob,
+  `title` varchar(128) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `config_upload_file`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `finace_payment_content`
+--
+
+CREATE TABLE `finace_payment_content` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `code` varchar(32) NOT NULL,
+  `name` varchar(128) default NULL,
+  `payment_type` varchar(255) default NULL,
+  `parent_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FK575A39993D390FD9` (`parent_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `finace_payment_content`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `finance_contract_payment`
+--
+
+CREATE TABLE `finance_contract_payment` (
+  `contract_payment_id` bigint(20) NOT NULL,
+  `sales_contract_id` bigint(20) default NULL,
+  PRIMARY KEY  (`contract_payment_id`),
+  KEY `FK2677399E92F51291` (`contract_payment_id`),
+  KEY `FK2677399EFA3AB9EF` (`sales_contract_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `finance_contract_payment`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `finance_payment`
+--
+
+CREATE TABLE `finance_payment` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `code` varchar(32) NOT NULL,
+  `currency_code` varchar(255) default NULL,
+  `money` bigint(20) default NULL,
+  `notes` varchar(255) default NULL,
+  `payment_date` datetime default NULL,
+  `payment_mode` varchar(255) default NULL,
+  `rate` int(11) default NULL,
+  `operator_id` bigint(20) default NULL,
+  `partner_id` bigint(20) default NULL,
+  `payment_content_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FK2757AEA1984FE183` (`payment_content_id`),
+  KEY `FK2757AEA11BBF2162` (`operator_id`),
+  KEY `FK2757AEA1F6C7EC4A` (`partner_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `finance_payment`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `operator_operator`
+--
+
+CREATE TABLE `operator_operator` (
+  `address` longtext,
+  `email` varchar(64) default NULL,
+  `full_name` longtext,
+  `phone` varchar(32) default NULL,
+  `operator_id` bigint(20) NOT NULL,
+  PRIMARY KEY  (`operator_id`),
+  KEY `FKCD5EA9DFBD0FAB6D` (`operator_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `operator_operator`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `operator_sale_target`
+--
+
+CREATE TABLE `operator_sale_target` (
   `id` bigint(20) NOT NULL auto_increment,
   `dte_log_i` datetime default NULL,
   `dte_log_lu` datetime default NULL,
@@ -378,21 +885,21 @@ CREATE TABLE `o_sale_target` (
   `id_stall` bigint(20) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
-  KEY `FKADF050B98DEFC5F4` (`id_stall`)
+  KEY `FK7B3ED16E8DEFC5F4` (`id_stall`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
--- Dumping data for table `o_sale_target`
+-- Dumping data for table `operator_sale_target`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `o_stall`
+-- Table structure for table `operator_stall`
 --
 
-CREATE TABLE `o_stall` (
+CREATE TABLE `operator_stall` (
   `id` bigint(20) NOT NULL auto_increment,
   `dte_log_i` datetime default NULL,
   `dte_log_lu` datetime default NULL,
@@ -405,11 +912,11 @@ CREATE TABLE `o_stall` (
   `manager_id` bigint(20) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
-  KEY `FK987AD7D0A866F1B9` (`manager_id`)
+  KEY `FKA0114445A866F1B9` (`manager_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
--- Dumping data for table `o_stall`
+-- Dumping data for table `operator_stall`
 --
 
 
@@ -429,6 +936,164 @@ CREATE TABLE `o_stall_user` (
 
 --
 -- Dumping data for table `o_stall_user`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `store_detail_import`
+--
+
+CREATE TABLE `store_detail_import` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `currencyCode` varchar(255) default NULL,
+  `price_subtotal` bigint(20) default NULL,
+  `currency_code` varchar(255) default NULL,
+  `price_unit` bigint(20) default NULL,
+  `qty` int(11) default NULL,
+  `form_id` bigint(20) default NULL,
+  `item_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FK60BAB875FC2B26F1` (`item_id`),
+  KEY `FK60BAB875DC4E0F67` (`form_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `store_detail_import`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `store_import_store_form`
+--
+
+CREATE TABLE `store_import_store_form` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `code` varchar(32) NOT NULL,
+  `created_date` datetime default NULL,
+  `import_num` varchar(255) default NULL,
+  `is_printed` bit(1) default NULL,
+  `is_processed` bit(1) default NULL,
+  `mob_order` varchar(255) default NULL,
+  `modified_date` datetime default NULL,
+  `print_after_save` bit(1) default NULL,
+  `receipt_date` datetime default NULL,
+  `sender` varchar(255) default NULL,
+  `ship_num` double default NULL,
+  `currency_code` varchar(255) default NULL,
+  `shipPrice` bigint(20) default NULL,
+  `status` varchar(255) default NULL,
+  `supplier_name` varchar(255) default NULL,
+  `receiver_id` bigint(20) default NULL,
+  `salescon_id` bigint(20) NOT NULL,
+  `shipPriceType_id` bigint(20) default NULL,
+  `store_id` bigint(20) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FK8633965E965BD837` (`receiver_id`),
+  KEY `FK8633965E14F6666B` (`shipPriceType_id`),
+  KEY `FK8633965ED78E952B` (`store_id`),
+  KEY `FK8633965E2D500E3E` (`salescon_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `store_import_store_form`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `store_ship_price`
+--
+
+CREATE TABLE `store_ship_price` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `currency_code` varchar(255) default NULL,
+  `price` bigint(20) default NULL,
+  `update_date` datetime NOT NULL,
+  `ship_price_type_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FKDCC707A426E21DDF` (`ship_price_type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `store_ship_price`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `store_ship_price_type`
+--
+
+CREATE TABLE `store_ship_price_type` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `code` varchar(32) NOT NULL,
+  `name` varchar(20) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `store_ship_price_type`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `store_store`
+--
+
+CREATE TABLE `store_store` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `dte_log_i` datetime default NULL,
+  `dte_log_lu` datetime default NULL,
+  `usr_log_i` varchar(255) default NULL,
+  `usr_log_lu` varchar(255) default NULL,
+  `version` bigint(20) default NULL,
+  `code` varchar(32) NOT NULL,
+  `address` varchar(255) default NULL,
+  `export_address` varchar(255) default NULL,
+  `import_address` varchar(255) default NULL,
+  `store_name` longtext NOT NULL,
+  `stored_address` varchar(255) default NULL,
+  `manager_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FKA7726803A866F1B9` (`manager_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `store_store`
 --
 
 
@@ -485,118 +1150,6 @@ CREATE TABLE `s_article` (
 -- Dumping data for table `s_article`
 --
 
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_bank`
---
-
-CREATE TABLE `s_bank` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `code` varchar(32) NOT NULL,
-  `address` longtext,
-  `bank_name` varchar(128) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `s_bank`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_bank_account`
---
-
-CREATE TABLE `s_bank_account` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `account_name` varchar(128) default NULL,
-  `account_number` varchar(32) NOT NULL,
-  `bank_id` bigint(20) NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK8C76377694DAE04` (`bank_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `s_bank_account`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_basic_information`
---
-
-CREATE TABLE `s_basic_information` (
-  `id` int(11) NOT NULL auto_increment,
-  `code` varchar(32) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `company_name` varchar(250) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `agent` varchar(250) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `position` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `upload_file_id` int(11) default NULL,
-  `company_address` varchar(250) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `tel` varchar(20) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `fax` varchar(20) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `website` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `bank_name` varchar(250) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `bank_address` varchar(250) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `usd_acct_number` varchar(100) NOT NULL,
-  `vnd_acct_number` varchar(100) NOT NULL,
-  `benefice_name` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `def_currency_id` int(11) NOT NULL,
-  `def_detail_inv_num` int(3) NOT NULL,
-  `def_page_row_num` int(3) NOT NULL,
-  `def_payment_method` int(3) NOT NULL,
-  `order_inv_code_rule` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `sales_inv_code_rule` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `sales_refund_inv_code_rule` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `pur_inv_code_rule` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `pur_refund_inv_code_rule` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `spon_contract_code_rule` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `movement_inv_code_rule` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `export_inv_code_rule` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `import_inv_code_rule` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `payment_bill_code_rule` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `receipt_code_rule` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `promotion_code_rule` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `backup_path` varchar(250) NOT NULL,
-  `sell_on_credit` int(1) default NULL,
-  `digit_adter_comma_quan` int(2) NOT NULL,
-  `digit_adter_comma_price` int(2) NOT NULL,
-  `digit_adter_comma_rate` int(2) NOT NULL,
-  `thousands_Separator` varchar(1) NOT NULL,
-  `odd_Separator` varchar(1) NOT NULL,
-  `usr_log_i` varchar(32) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `s_basic_information`
---
-
-INSERT INTO `s_basic_information` (`id`, `code`, `company_name`, `agent`, `position`, `upload_file_id`, `company_address`, `tel`, `fax`, `website`, `email`, `bank_name`, `bank_address`, `usd_acct_number`, `vnd_acct_number`, `benefice_name`, `def_currency_id`, `def_detail_inv_num`, `def_page_row_num`, `def_payment_method`, `order_inv_code_rule`, `sales_inv_code_rule`, `sales_refund_inv_code_rule`, `pur_inv_code_rule`, `pur_refund_inv_code_rule`, `spon_contract_code_rule`, `movement_inv_code_rule`, `export_inv_code_rule`, `import_inv_code_rule`, `payment_bill_code_rule`, `receipt_code_rule`, `promotion_code_rule`, `backup_path`, `sell_on_credit`, `digit_adter_comma_quan`, `digit_adter_comma_price`, `digit_adter_comma_rate`, `thousands_Separator`, `odd_Separator`, `usr_log_i`, `dte_log_i`, `usr_log_lu`, `dte_log_lu`, `version`) VALUES
-(1, '1', 'THUSPORT', 'MS Hien', 'T?ng gi', NULL, '569A, Nguy?n ', '(848) 38220541', '84 - 8 - 38220542', 'www.thusport.com', 'thusport@yahoo.com', 'NG', '569A, Nguy?n ', '1602 2010 19836', '1602 2010 19820', 'THU SPORTS', 1, 10, 10, 1, 'H', 'H', 'XTNCC_', 'NHKTL_', 'BK_', 'H', 'CK_', 'XK_', 'NK_', 'PC_', 'PT_', 'KM_', 'D:\\Download', NULL, 5, 5, 2, '.', ',', 'DEFAULT_USER', '2011-12-18 16:40:31', 'DEFAULT_USER', '2011-12-18 16:40:31', 0);
 
 -- --------------------------------------------------------
 
@@ -687,109 +1240,6 @@ CREATE TABLE `s_contact_shop` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `s_contract_payment`
---
-
-CREATE TABLE `s_contract_payment` (
-  `contract_payment_id` bigint(20) NOT NULL,
-  `sales_contract_id` bigint(20) default NULL,
-  PRIMARY KEY  (`contract_payment_id`),
-  KEY `FK6BA1AE2592F51291` (`contract_payment_id`),
-  KEY `FK6BA1AE25FA3AB9EF` (`sales_contract_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `s_contract_payment`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_coupon`
---
-
-CREATE TABLE `s_coupon` (
-  `id` int(11) NOT NULL auto_increment,
-  `code` varchar(32) collate utf8_bin NOT NULL,
-  `coupon_name` varchar(32) collate utf8_bin NOT NULL,
-  `start_date` datetime NOT NULL,
-  `end_date` datetime NOT NULL,
-  `status` varchar(32) collate utf8_bin NOT NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `ui_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_coupon`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_coupon_item`
---
-
-CREATE TABLE `s_coupon_item` (
-  `id` int(11) NOT NULL auto_increment,
-  `coupon_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL,
-  `contacttype_id` int(11) NOT NULL,
-  `base_price` int(11) NOT NULL,
-  `coupon_price` int(11) NOT NULL,
-  `currency` varchar(3) collate utf8_bin NOT NULL,
-  `status` varchar(32) collate utf8_bin NOT NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `ui_coupon_item` (`coupon_id`,`item_id`,`contacttype_id`),
-  KEY `idx_coupon_id` (`coupon_id`),
-  KEY `idx_item_id` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_coupon_item`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_currency`
---
-
-CREATE TABLE `s_currency` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `code` varchar(32) NOT NULL,
-  `active` bit(1) default NULL,
-  `name` varchar(128) default NULL,
-  `symbol` varchar(10) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `s_currency`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `s_customer`
 --
 
@@ -809,34 +1259,6 @@ CREATE TABLE `s_customer` (
 
 --
 -- Dumping data for table `s_customer`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_detail_check_store`
---
-
-CREATE TABLE `s_detail_check_store` (
-  `id` int(11) NOT NULL auto_increment,
-  `checkstore_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL,
-  `change_amount` int(11) NOT NULL,
-  `change_type` varchar(32) collate utf8_bin NOT NULL,
-  `remark` varchar(256) collate utf8_bin default NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `ui_checkstore_item` (`checkstore_id`,`item_id`),
-  KEY `idx_checkstore_id` (`checkstore_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_check_store`
 --
 
 
@@ -897,34 +1319,6 @@ CREATE TABLE `s_detail_export_store` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `s_detail_import_product`
---
-
-CREATE TABLE `s_detail_import_product` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `import_amount` int(11) NOT NULL,
-  `remaining_amount` int(11) NOT NULL,
-  `import_product_id` bigint(20) NOT NULL,
-  `item_id` bigint(20) NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK63161537FC2B26F1` (`item_id`),
-  KEY `FK6316153792ED01D2` (`import_product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_import_product`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `s_detail_invoice`
 --
 
@@ -957,34 +1351,6 @@ CREATE TABLE `s_detail_invoice` (
 
 --
 -- Dumping data for table `s_detail_invoice`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_detail_maintainance`
---
-
-CREATE TABLE `s_detail_maintainance` (
-  `id` int(11) NOT NULL auto_increment,
-  `maintainance_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `unit_price` int(11) NOT NULL,
-  `total_price` int(11) NOT NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_maintainance_id` (`maintainance_id`),
-  KEY `idx_item_id` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_maintainance`
 --
 
 
@@ -1042,114 +1408,6 @@ CREATE TABLE `s_detail_session_store` (
 
 --
 -- Dumping data for table `s_detail_session_store`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_detail_store`
---
-
-CREATE TABLE `s_detail_store` (
-  `id` int(11) NOT NULL auto_increment,
-  `store_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `sellable_amount` int(11) NOT NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `ui_store_item` (`store_id`,`item_id`),
-  KEY `idx_store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_store`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_detail_support_form`
---
-
-CREATE TABLE `s_detail_support_form` (
-  `id` int(11) NOT NULL auto_increment,
-  `support_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `unit_price` double NOT NULL,
-  `total_price` double NOT NULL,
-  `currency` varchar(3) collate utf8_bin NOT NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_support_id` (`support_id`),
-  KEY `idx_item_id` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_support_form`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_detail_warranty`
---
-
-CREATE TABLE `s_detail_warranty` (
-  `id` int(11) NOT NULL auto_increment,
-  `warranty_id` int(11) NOT NULL,
-  `warranty_date` datetime NOT NULL,
-  `description` varchar(256) collate utf8_bin NOT NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_warranty_id` (`warranty_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_detail_warranty`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_exchange_rate`
---
-
-CREATE TABLE `s_exchange_rate` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `code` varchar(32) NOT NULL,
-  `rate` double default NULL,
-  `update_date` datetime default NULL,
-  `currency_id` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK813762B0CE40C623` (`currency_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `s_exchange_rate`
 --
 
 
@@ -1243,74 +1501,6 @@ CREATE TABLE `s_goods` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `s_import_store`
---
-
-CREATE TABLE `s_import_store` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `code` varchar(32) NOT NULL,
-  `created_date` datetime NOT NULL,
-  `import_num` varchar(255) default NULL,
-  `mob_order` varchar(255) default NULL,
-  `receipt_date` datetime default NULL,
-  `sender` varchar(255) default NULL,
-  `supplier_name` varchar(255) default NULL,
-  `receiver_id` bigint(20) default NULL,
-  `salescon_id` bigint(20) NOT NULL,
-  `store_id` bigint(20) NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK938BBC13965BD837` (`receiver_id`),
-  KEY `FK938BBC13D78E952B` (`store_id`),
-  KEY `FK938BBC132D500E3E` (`salescon_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_import_store`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_institution`
---
-
-CREATE TABLE `s_institution` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `code` varchar(32) NOT NULL,
-  `agent` varchar(250) default NULL,
-  `company_address` varchar(250) default NULL,
-  `company_name` varchar(250) default NULL,
-  `email` varchar(100) default NULL,
-  `fax` varchar(20) default NULL,
-  `position` varchar(100) default NULL,
-  `tel` varchar(20) default NULL,
-  `website` varchar(100) default NULL,
-  `upload_file_id` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK34F1EFEC89B623E7` (`upload_file_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `s_institution`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `s_invoice`
 --
 
@@ -1335,8 +1525,6 @@ CREATE TABLE `s_invoice` (
   UNIQUE KEY `id` (`id`),
   KEY `FK9C23C761F4FC45F2` (`contact_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
-insert into `seq` values('invoice_number_seq', 1);
 
 --
 -- Dumping data for table `s_invoice`
@@ -1458,35 +1646,6 @@ CREATE TABLE `s_item_price` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `s_maintainance_form`
---
-
-CREATE TABLE `s_maintainance_form` (
-  `id` int(11) NOT NULL auto_increment,
-  `maintainance_date` datetime NOT NULL,
-  `contact_id` int(11) NOT NULL,
-  `invoice_id` int(11) default NULL,
-  `money_before_tax` double NOT NULL default '0',
-  `money_of_tax` double NOT NULL default '0',
-  `money_after_tax` double NOT NULL default '0',
-  `currency` varchar(3) collate utf8_bin NOT NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_contact_id` (`contact_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_maintainance_form`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `s_manufacturer`
 --
 
@@ -1507,87 +1666,6 @@ CREATE TABLE `s_manufacturer` (
 
 --
 -- Dumping data for table `s_manufacturer`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_operator`
---
-
-CREATE TABLE `s_operator` (
-  `address` longtext,
-  `email` varchar(64) default NULL,
-  `full_name` longtext,
-  `phone` varchar(32) default NULL,
-  `operator_id` bigint(20) NOT NULL,
-  PRIMARY KEY  (`operator_id`),
-  KEY `FKA48D2AF0BD0FAB6D` (`operator_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `s_operator`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_organization`
---
-
-CREATE TABLE `s_organization` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `code` varchar(32) NOT NULL,
-  `address` varchar(250) default NULL,
-  `benefice_name` longtext,
-  `def_detail_inv_num` int(11) default NULL,
-  `def_page_row_num` int(11) default NULL,
-  `def_payment_method` varchar(255) default NULL,
-  `digit_after_amt` int(11) default NULL,
-  `digit_after_quan` int(11) default NULL,
-  `digit_after_rate` int(11) default NULL,
-  `digit_after_unit_price` int(11) default NULL,
-  `enable_chg_inv_date` int(11) default NULL,
-  `export_inv_code_rule` varchar(50) default NULL,
-  `import_inv_code_rule` varchar(50) default NULL,
-  `is_default` bit(1) default NULL,
-  `movement_inv_code_rule` varchar(50) default NULL,
-  `name` varchar(100) default NULL,
-  `odd_Separator` varchar(1) default NULL,
-  `order_inv_code_rule` varchar(50) default NULL,
-  `payment_bill_code_rule` varchar(50) default NULL,
-  `promotion_code_rule` varchar(50) default NULL,
-  `pur_inv_code_rule` varchar(50) default NULL,
-  `pur_refund_inv_code_rule` varchar(50) default NULL,
-  `receipt_code_rule` varchar(50) default NULL,
-  `sales_inv_code_rule` varchar(50) default NULL,
-  `sales_refund_inv_code_rule` varchar(50) default NULL,
-  `sell_on_credit` int(11) default NULL,
-  `spon_contract_code_rule` varchar(50) default NULL,
-  `thousands_Separator` varchar(1) default NULL,
-  `def_currency_id` bigint(20) default NULL,
-  `def_stall_id` bigint(20) default NULL,
-  `institution_id` bigint(20) default NULL,
-  `usd_bank_acct_id` bigint(20) default NULL,
-  `vnd_bank_acct_id` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK3F85E97F996039BE` (`vnd_bank_acct_id`),
-  KEY `FK3F85E97F79176F24` (`usd_bank_acct_id`),
-  KEY `FK3F85E97F869FF8C` (`def_stall_id`),
-  KEY `FK3F85E97FE797C8E9` (`def_currency_id`),
-  KEY `FK3F85E97FB52809B0` (`institution_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `s_organization`
 --
 
 
@@ -1679,41 +1757,6 @@ CREATE TABLE `s_package_line_item_price` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `s_paid_money_form`
---
-
-CREATE TABLE `s_paid_money_form` (
-  `id` int(11) NOT NULL auto_increment,
-  `contact_id` int(11) default NULL,
-  `invoice_id` int(11) default NULL,
-  `importstore_id` int(11) default NULL,
-  `code` varchar(32) collate utf8_bin NOT NULL,
-  `paid_type` varchar(32) collate utf8_bin NOT NULL,
-  `responsible_user` varchar(32) collate utf8_bin NOT NULL,
-  `money` int(11) NOT NULL,
-  `currency` varchar(3) collate utf8_bin NOT NULL,
-  `validatetime_user` varchar(32) collate utf8_bin NOT NULL,
-  `description` varchar(256) collate utf8_bin NOT NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_related_code` (`code`),
-  KEY `idx_contact_id` (`contact_id`),
-  KEY `idx_invoice_id` (`invoice_id`),
-  KEY `idx_importstore_id` (`importstore_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_paid_money_form`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `s_partner`
 --
 
@@ -1788,68 +1831,6 @@ CREATE TABLE `s_partner_partner_category` (
 
 --
 -- Dumping data for table `s_partner_partner_category`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_payment`
---
-
-CREATE TABLE `s_payment` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `code` varchar(32) NOT NULL,
-  `currency_code` varchar(255) default NULL,
-  `money` bigint(20) default NULL,
-  `notes` varchar(255) default NULL,
-  `payment_date` datetime default NULL,
-  `payment_mode` varchar(255) default NULL,
-  `rate` int(11) default NULL,
-  `operator_id` bigint(20) default NULL,
-  `partner_id` bigint(20) default NULL,
-  `payment_content_id` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FKF869B63A984FE183` (`payment_content_id`),
-  KEY `FKF869B63A1BBF2162` (`operator_id`),
-  KEY `FKF869B63AF6C7EC4A` (`partner_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
-
---
--- Dumping data for table `s_payment`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_payment_content`
---
-
-CREATE TABLE `s_payment_content` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `code` varchar(32) NOT NULL,
-  `name` varchar(128) default NULL,
-  `payment_type` varchar(255) default NULL,
-  `parent_id` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK831BB7743D390FD9` (`parent_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `s_payment_content`
 --
 
 
@@ -1953,35 +1934,6 @@ CREATE TABLE `s_product_type` (
 
 --
 -- Dumping data for table `s_product_type`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_received_money_form`
---
-
-CREATE TABLE `s_received_money_form` (
-  `id` int(11) NOT NULL auto_increment,
-  `code` varchar(32) collate utf8_bin NOT NULL,
-  `receive_type` varchar(32) collate utf8_bin NOT NULL,
-  `responsible_user` varchar(32) collate utf8_bin NOT NULL,
-  `money` int(11) NOT NULL,
-  `currency` varchar(3) collate utf8_bin NOT NULL,
-  `validatetime_user` varchar(32) collate utf8_bin NOT NULL,
-  `description` varchar(256) collate utf8_bin NOT NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_related_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_received_money_form`
 --
 
 
@@ -2121,86 +2073,6 @@ CREATE TABLE `s_shipment_type` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `s_ship_date_price`
---
-
-CREATE TABLE `s_ship_date_price` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `price` double NOT NULL,
-  `update_date` datetime NOT NULL,
-  `ship_price_id` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FKB767178F3B1295CC` (`ship_price_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_ship_date_price`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_ship_price_type`
---
-
-CREATE TABLE `s_ship_price_type` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `code` varchar(32) NOT NULL,
-  `name` varchar(20) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_ship_price_type`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_store`
---
-
-CREATE TABLE `s_store` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `code` varchar(32) NOT NULL,
-  `address` varchar(255) default NULL,
-  `export_address` varchar(255) default NULL,
-  `import_address` varchar(255) default NULL,
-  `store_name` longtext NOT NULL,
-  `stored_address` varchar(255) default NULL,
-  `manager_id` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK6C13FA15A866F1B9` (`manager_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `s_store`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `s_supplier`
 --
 
@@ -2225,113 +2097,6 @@ CREATE TABLE `s_supplier` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `s_support_form`
---
-
-CREATE TABLE `s_support_form` (
-  `id` int(11) NOT NULL auto_increment,
-  `supplier_id` int(11) NOT NULL,
-  `contact_id` int(11) NOT NULL,
-  `reason` varchar(128) collate utf8_bin NOT NULL,
-  `start_date` datetime NOT NULL,
-  `end_date` datetime NOT NULL,
-  `number_of_month` int(11) NOT NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `idx_supplier_id` (`supplier_id`),
-  KEY `idx_contact_id` (`contact_id`),
-  KEY `idx_end_date` (`end_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_support_form`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_unit_of_measure`
---
-
-CREATE TABLE `s_unit_of_measure` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `code` varchar(32) NOT NULL,
-  `is_base_measure` bit(1) NOT NULL,
-  `uom_name` varchar(128) NOT NULL,
-  `uom_category_id` bigint(20) NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK64B8C4C5CBA000F7` (`uom_category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
-
---
--- Dumping data for table `s_unit_of_measure`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_uom_category`
---
-
-CREATE TABLE `s_uom_category` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `code` varchar(32) NOT NULL,
-  `name` varchar(128) NOT NULL,
-  `parentUomCategory_id` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK18482AF692B9DA5A` (`parentUomCategory_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `s_uom_category`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_upload_file`
---
-
-CREATE TABLE `s_upload_file` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dte_log_i` datetime default NULL,
-  `dte_log_lu` datetime default NULL,
-  `usr_log_i` varchar(255) default NULL,
-  `usr_log_lu` varchar(255) default NULL,
-  `version` bigint(20) default NULL,
-  `content` longblob,
-  `title` varchar(128) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_upload_file`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `s_voucher`
 --
 
@@ -2348,159 +2113,108 @@ CREATE TABLE `s_voucher` (
 --
 
 
--- --------------------------------------------------------
-
---
--- Table structure for table `s_warning_board`
---
-
-CREATE TABLE `s_warning_board` (
-  `id` int(11) NOT NULL auto_increment,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_warning_board`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_warranty_form`
---
-
-CREATE TABLE `s_warranty_form` (
-  `id` int(11) NOT NULL auto_increment,
-  `article_id` int(11) NOT NULL,
-  `contact_id` int(11) NOT NULL,
-  `number_of_month` int(11) NOT NULL,
-  `start_date` datetime NOT NULL,
-  `end_date` datetime NOT NULL,
-  `usr_log_i` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_i` datetime NOT NULL,
-  `usr_log_lu` varchar(32) collate utf8_bin NOT NULL,
-  `dte_log_lu` datetime NOT NULL,
-  `version` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `ui_article_id` (`article_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `s_warranty_form`
---
-
-
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `acl_entry`
+-- Constraints for table `config_unit_of_measure`
 --
-ALTER TABLE `acl_entry`
-  ADD CONSTRAINT `foreign_fk_4` FOREIGN KEY (`acl_object_identity`) REFERENCES `acl_object_identity` (`id`),
-  ADD CONSTRAINT `foreign_fk_5` FOREIGN KEY (`sid`) REFERENCES `acl_sid` (`id`);
+ALTER TABLE `config_unit_of_measure`
+  ADD CONSTRAINT `FK320EC994CBA000F7` FOREIGN KEY (`uom_category_id`) REFERENCES `config_uom_category` (`id`);
 
 --
--- Constraints for table `acl_object_identity`
+-- Constraints for table `config_uom_category`
 --
-ALTER TABLE `acl_object_identity`
-  ADD CONSTRAINT `foreign_fk_1` FOREIGN KEY (`parent_object`) REFERENCES `acl_object_identity` (`id`),
-  ADD CONSTRAINT `foreign_fk_2` FOREIGN KEY (`object_id_class`) REFERENCES `acl_class` (`id`),
-  ADD CONSTRAINT `foreign_fk_3` FOREIGN KEY (`owner_sid`) REFERENCES `acl_sid` (`id`);
+ALTER TABLE `config_uom_category`
+  ADD CONSTRAINT `FKAA21F08792B9DA5A` FOREIGN KEY (`parentUomCategory_id`) REFERENCES `config_uom_category` (`id`);
 
 --
--- Constraints for table `at_advantage_buyitem`
+-- Constraints for table `finace_payment_content`
 --
-ALTER TABLE `at_advantage_buyitem`
-  ADD CONSTRAINT `FK5C614979C59FC223` FOREIGN KEY (`advantage_id`) REFERENCES `s_advantage` (`id`),
-  ADD CONSTRAINT `FK5C614979FC2B26F1` FOREIGN KEY (`item_id`) REFERENCES `s_item` (`id`);
+ALTER TABLE `finace_payment_content`
+  ADD CONSTRAINT `FK575A39993D390FD9` FOREIGN KEY (`parent_id`) REFERENCES `finace_payment_content` (`id`);
 
 --
--- Constraints for table `at_advantage_buypackage`
+-- Constraints for table `finance_contract_payment`
 --
-ALTER TABLE `at_advantage_buypackage`
-  ADD CONSTRAINT `FKAF290420C59FC223` FOREIGN KEY (`advantage_id`) REFERENCES `s_advantage` (`id`),
-  ADD CONSTRAINT `FKAF290420D556929E` FOREIGN KEY (`package_id`) REFERENCES `s_package` (`id`);
+ALTER TABLE `finance_contract_payment`
+  ADD CONSTRAINT `FK2677399EFA3AB9EF` FOREIGN KEY (`sales_contract_id`) REFERENCES `s_sales_contract` (`id`),
+  ADD CONSTRAINT `FK2677399E92F51291` FOREIGN KEY (`contract_payment_id`) REFERENCES `finance_payment` (`id`);
 
 --
--- Constraints for table `at_advantage_giftitem`
+-- Constraints for table `finance_payment`
 --
-ALTER TABLE `at_advantage_giftitem`
-  ADD CONSTRAINT `FK9C8D2563C59FC223` FOREIGN KEY (`advantage_id`) REFERENCES `s_advantage` (`id`),
-  ADD CONSTRAINT `FK9C8D2563FC2B26F1` FOREIGN KEY (`item_id`) REFERENCES `s_item` (`id`);
+ALTER TABLE `finance_payment`
+  ADD CONSTRAINT `FK2757AEA1F6C7EC4A` FOREIGN KEY (`partner_id`) REFERENCES `s_partner` (`id`),
+  ADD CONSTRAINT `FK2757AEA11BBF2162` FOREIGN KEY (`operator_id`) REFERENCES `operator_operator` (`operator_id`),
+  ADD CONSTRAINT `FK2757AEA1984FE183` FOREIGN KEY (`payment_content_id`) REFERENCES `finace_payment_content` (`id`);
 
 --
--- Constraints for table `at_advantage_giftpackage`
+-- Constraints for table `operator_operator`
 --
-ALTER TABLE `at_advantage_giftpackage`
-  ADD CONSTRAINT `FK5F15A7F6C59FC223` FOREIGN KEY (`advantage_id`) REFERENCES `s_advantage` (`id`),
-  ADD CONSTRAINT `FK5F15A7F6D556929E` FOREIGN KEY (`package_id`) REFERENCES `s_package` (`id`);
+ALTER TABLE `operator_operator`
+  ADD CONSTRAINT `FKCD5EA9DFBD0FAB6D` FOREIGN KEY (`operator_id`) REFERENCES `au_user` (`id`);
 
 --
--- Constraints for table `at_item_uom`
+-- Constraints for table `operator_sale_target`
 --
-ALTER TABLE `at_item_uom`
-  ADD CONSTRAINT `FK6788DC73AFB657A0` FOREIGN KEY (`uom_id`) REFERENCES `s_unit_of_measure` (`id`),
-  ADD CONSTRAINT `FK6788DC73FC2B26F1` FOREIGN KEY (`item_id`) REFERENCES `s_item` (`id`);
+ALTER TABLE `operator_sale_target`
+  ADD CONSTRAINT `FK7B3ED16E8DEFC5F4` FOREIGN KEY (`id_stall`) REFERENCES `operator_stall` (`id`);
 
 --
--- Constraints for table `at_product_property`
+-- Constraints for table `operator_stall`
 --
-ALTER TABLE `at_product_property`
-  ADD CONSTRAINT `FK50AE41B15E2CA132` FOREIGN KEY (`property_id`) REFERENCES `s_product_property` (`id`),
-  ADD CONSTRAINT `FK50AE41B1AB63B28A` FOREIGN KEY (`product_id`) REFERENCES `s_goods` (`goods_id`);
-
---
--- Constraints for table `au_user_role`
---
-ALTER TABLE `au_user_role`
-  ADD CONSTRAINT `FKB2524A1F17808E9C` FOREIGN KEY (`id_role`) REFERENCES `au_role` (`id`),
-  ADD CONSTRAINT `FKB2524A1F17836546` FOREIGN KEY (`id_user`) REFERENCES `au_user` (`id`);
-
---
--- Constraints for table `o_sale_target`
---
-ALTER TABLE `o_sale_target`
-  ADD CONSTRAINT `FKADF050B98DEFC5F4` FOREIGN KEY (`id_stall`) REFERENCES `o_stall` (`id`);
-
---
--- Constraints for table `o_stall`
---
-ALTER TABLE `o_stall`
-  ADD CONSTRAINT `FK987AD7D0A866F1B9` FOREIGN KEY (`manager_id`) REFERENCES `s_operator` (`operator_id`);
+ALTER TABLE `operator_stall`
+  ADD CONSTRAINT `FKA0114445A866F1B9` FOREIGN KEY (`manager_id`) REFERENCES `operator_operator` (`operator_id`);
 
 --
 -- Constraints for table `o_stall_user`
 --
 ALTER TABLE `o_stall_user`
-  ADD CONSTRAINT `FKEE152EDA7632DB3B` FOREIGN KEY (`id_user`) REFERENCES `s_operator` (`operator_id`),
-  ADD CONSTRAINT `FKEE152EDA8DEFC5F4` FOREIGN KEY (`id_stall`) REFERENCES `o_stall` (`id`);
+  ADD CONSTRAINT `FKEE152EDA7632DB3B` FOREIGN KEY (`id_user`) REFERENCES `operator_operator` (`operator_id`),
+  ADD CONSTRAINT `FKEE152EDA8DEFC5F4` FOREIGN KEY (`id_stall`) REFERENCES `operator_stall` (`id`);
+
+--
+-- Constraints for table `store_detail_import`
+--
+ALTER TABLE `store_detail_import`
+  ADD CONSTRAINT `FK60BAB875DC4E0F67` FOREIGN KEY (`form_id`) REFERENCES `store_import_store_form` (`id`),
+  ADD CONSTRAINT `FK60BAB875FC2B26F1` FOREIGN KEY (`item_id`) REFERENCES `s_item` (`id`);
+
+--
+-- Constraints for table `store_import_store_form`
+--
+ALTER TABLE `store_import_store_form`
+  ADD CONSTRAINT `FK8633965E2D500E3E` FOREIGN KEY (`salescon_id`) REFERENCES `s_sales_contract` (`id`),
+  ADD CONSTRAINT `FK8633965E14F6666B` FOREIGN KEY (`shipPriceType_id`) REFERENCES `store_ship_price_type` (`id`),
+  ADD CONSTRAINT `FK8633965E965BD837` FOREIGN KEY (`receiver_id`) REFERENCES `operator_operator` (`operator_id`),
+  ADD CONSTRAINT `FK8633965ED78E952B` FOREIGN KEY (`store_id`) REFERENCES `store_store` (`id`);
+
+--
+-- Constraints for table `store_ship_price`
+--
+ALTER TABLE `store_ship_price`
+  ADD CONSTRAINT `FKDCC707A426E21DDF` FOREIGN KEY (`ship_price_type_id`) REFERENCES `store_ship_price_type` (`id`);
+
+--
+-- Constraints for table `store_store`
+--
+ALTER TABLE `store_store`
+  ADD CONSTRAINT `FKA7726803A866F1B9` FOREIGN KEY (`manager_id`) REFERENCES `operator_operator` (`operator_id`);
 
 --
 -- Constraints for table `s_article`
 --
 ALTER TABLE `s_article`
-  ADD CONSTRAINT `FKFBA6512AD78E952B` FOREIGN KEY (`store_id`) REFERENCES `s_store` (`id`),
+  ADD CONSTRAINT `FKFBA6512AD78E952B` FOREIGN KEY (`store_id`) REFERENCES `store_store` (`id`),
   ADD CONSTRAINT `FKFBA6512AFC2B26F1` FOREIGN KEY (`item_id`) REFERENCES `s_item` (`id`);
-
---
--- Constraints for table `s_bank_account`
---
-ALTER TABLE `s_bank_account`
-  ADD CONSTRAINT `FK8C76377694DAE04` FOREIGN KEY (`bank_id`) REFERENCES `s_bank` (`id`);
 
 --
 -- Constraints for table `s_check_store`
 --
 ALTER TABLE `s_check_store`
-  ADD CONSTRAINT `FK4205A51ED78E952B` FOREIGN KEY (`store_id`) REFERENCES `s_store` (`id`);
+  ADD CONSTRAINT `FK4205A51ED78E952B` FOREIGN KEY (`store_id`) REFERENCES `store_store` (`id`);
 
 --
 -- Constraints for table `s_contact_debt`
@@ -2515,17 +2229,10 @@ ALTER TABLE `s_contact_shop`
   ADD CONSTRAINT `FK456C00011BBADF6A` FOREIGN KEY (`customer_id`) REFERENCES `s_customer` (`customer_id`);
 
 --
--- Constraints for table `s_contract_payment`
---
-ALTER TABLE `s_contract_payment`
-  ADD CONSTRAINT `FK6BA1AE2592F51291` FOREIGN KEY (`contract_payment_id`) REFERENCES `s_payment` (`id`),
-  ADD CONSTRAINT `FK6BA1AE25FA3AB9EF` FOREIGN KEY (`sales_contract_id`) REFERENCES `s_sales_contract` (`id`);
-
---
 -- Constraints for table `s_customer`
 --
 ALTER TABLE `s_customer`
-  ADD CONSTRAINT `FKE684822A72F46197` FOREIGN KEY (`bank_account_id`) REFERENCES `s_bank_account` (`id`),
+  ADD CONSTRAINT `FKE684822A72F46197` FOREIGN KEY (`bank_account_id`) REFERENCES `config_bank_account` (`id`),
   ADD CONSTRAINT `FKE684822A83066974` FOREIGN KEY (`customer_id`) REFERENCES `s_partner` (`id`);
 
 --
@@ -2541,13 +2248,6 @@ ALTER TABLE `s_detail_exchange_store`
 ALTER TABLE `s_detail_export_store`
   ADD CONSTRAINT `FKFA5CBF886A6F2AF` FOREIGN KEY (`exportstore_id`) REFERENCES `s_export_store_form` (`id`),
   ADD CONSTRAINT `FKFA5CBF8FC2B26F1` FOREIGN KEY (`item_id`) REFERENCES `s_item` (`id`);
-
---
--- Constraints for table `s_detail_import_product`
---
-ALTER TABLE `s_detail_import_product`
-  ADD CONSTRAINT `FK6316153792ED01D2` FOREIGN KEY (`import_product_id`) REFERENCES `s_import_store` (`id`),
-  ADD CONSTRAINT `FK63161537FC2B26F1` FOREIGN KEY (`item_id`) REFERENCES `s_item` (`id`);
 
 --
 -- Constraints for table `s_detail_invoice`
@@ -2568,51 +2268,31 @@ ALTER TABLE `s_detail_sales_contract`
 -- Constraints for table `s_detail_session_store`
 --
 ALTER TABLE `s_detail_session_store`
-  ADD CONSTRAINT `FKA7658ED68C68AE60` FOREIGN KEY (`sess_store_id`) REFERENCES `s_session_store` (`id`),
-  ADD CONSTRAINT `FKA7658ED6FC2B26F1` FOREIGN KEY (`item_id`) REFERENCES `s_item` (`id`);
-
---
--- Constraints for table `s_exchange_rate`
---
-ALTER TABLE `s_exchange_rate`
-  ADD CONSTRAINT `FK813762B0CE40C623` FOREIGN KEY (`currency_id`) REFERENCES `s_currency` (`id`);
+  ADD CONSTRAINT `FKA7658ED6FC2B26F1` FOREIGN KEY (`item_id`) REFERENCES `s_item` (`id`),
+  ADD CONSTRAINT `FKA7658ED68C68AE60` FOREIGN KEY (`sess_store_id`) REFERENCES `s_session_store` (`id`);
 
 --
 -- Constraints for table `s_exchange_store_form`
 --
 ALTER TABLE `s_exchange_store_form`
-  ADD CONSTRAINT `FK4C5BAB32406CD26F` FOREIGN KEY (`to_store_id`) REFERENCES `s_store` (`id`),
-  ADD CONSTRAINT `FK4C5BAB32E4B2AE20` FOREIGN KEY (`from_store_id`) REFERENCES `s_store` (`id`);
+  ADD CONSTRAINT `FK4C5BAB32E4B2AE20` FOREIGN KEY (`from_store_id`) REFERENCES `store_store` (`id`),
+  ADD CONSTRAINT `FK4C5BAB32406CD26F` FOREIGN KEY (`to_store_id`) REFERENCES `store_store` (`id`);
 
 --
 -- Constraints for table `s_export_store_form`
 --
 ALTER TABLE `s_export_store_form`
+  ADD CONSTRAINT `FK4EDDAE01D78E952B` FOREIGN KEY (`store_id`) REFERENCES `store_store` (`id`),
   ADD CONSTRAINT `FK4EDDAE01B1905696` FOREIGN KEY (`invoice_id`) REFERENCES `s_invoice` (`id`),
-  ADD CONSTRAINT `FK4EDDAE01D78E952B` FOREIGN KEY (`store_id`) REFERENCES `s_store` (`id`),
   ADD CONSTRAINT `FK4EDDAE01F4FC45F2` FOREIGN KEY (`contact_id`) REFERENCES `s_partner` (`id`);
 
 --
 -- Constraints for table `s_goods`
 --
 ALTER TABLE `s_goods`
+  ADD CONSTRAINT `FK6B68988AEE747F31` FOREIGN KEY (`manufacturer_id`) REFERENCES `s_manufacturer` (`id`),
   ADD CONSTRAINT `FK6B68988A8491A21C` FOREIGN KEY (`goods_id`) REFERENCES `s_product` (`id`),
-  ADD CONSTRAINT `FK6B68988AB92D1CE6` FOREIGN KEY (`main_uom_id`) REFERENCES `s_unit_of_measure` (`id`),
-  ADD CONSTRAINT `FK6B68988AEE747F31` FOREIGN KEY (`manufacturer_id`) REFERENCES `s_manufacturer` (`id`);
-
---
--- Constraints for table `s_import_store`
---
-ALTER TABLE `s_import_store`
-  ADD CONSTRAINT `FK938BBC132D500E3E` FOREIGN KEY (`salescon_id`) REFERENCES `s_sales_contract` (`id`),
-  ADD CONSTRAINT `FK938BBC13965BD837` FOREIGN KEY (`receiver_id`) REFERENCES `s_operator` (`operator_id`),
-  ADD CONSTRAINT `FK938BBC13D78E952B` FOREIGN KEY (`store_id`) REFERENCES `s_store` (`id`);
-
---
--- Constraints for table `s_institution`
---
-ALTER TABLE `s_institution`
-  ADD CONSTRAINT `FK34F1EFEC89B623E7` FOREIGN KEY (`upload_file_id`) REFERENCES `s_upload_file` (`id`);
+  ADD CONSTRAINT `FK6B68988AB92D1CE6` FOREIGN KEY (`main_uom_id`) REFERENCES `config_unit_of_measure` (`id`);
 
 --
 -- Constraints for table `s_invoice`
@@ -2652,44 +2332,28 @@ ALTER TABLE `s_item_price`
 -- Constraints for table `s_manufacturer`
 --
 ALTER TABLE `s_manufacturer`
-  ADD CONSTRAINT `FK83DF201D3B7F3A89` FOREIGN KEY (`symbol_id`) REFERENCES `s_upload_file` (`id`);
-
---
--- Constraints for table `s_operator`
---
-ALTER TABLE `s_operator`
-  ADD CONSTRAINT `FKA48D2AF0BD0FAB6D` FOREIGN KEY (`operator_id`) REFERENCES `au_user` (`id`);
-
---
--- Constraints for table `s_organization`
---
-ALTER TABLE `s_organization`
-  ADD CONSTRAINT `FK3F85E97F79176F24` FOREIGN KEY (`usd_bank_acct_id`) REFERENCES `s_bank_account` (`id`),
-  ADD CONSTRAINT `FK3F85E97F869FF8C` FOREIGN KEY (`def_stall_id`) REFERENCES `o_stall` (`id`),
-  ADD CONSTRAINT `FK3F85E97F996039BE` FOREIGN KEY (`vnd_bank_acct_id`) REFERENCES `s_bank_account` (`id`),
-  ADD CONSTRAINT `FK3F85E97FB52809B0` FOREIGN KEY (`institution_id`) REFERENCES `s_institution` (`id`),
-  ADD CONSTRAINT `FK3F85E97FE797C8E9` FOREIGN KEY (`def_currency_id`) REFERENCES `s_currency` (`id`);
+  ADD CONSTRAINT `FK83DF201D3B7F3A89` FOREIGN KEY (`symbol_id`) REFERENCES `config_upload_file` (`id`);
 
 --
 -- Constraints for table `s_package_line`
 --
 ALTER TABLE `s_package_line`
-  ADD CONSTRAINT `FK895CEC9928D37186` FOREIGN KEY (`parentpackline_id`) REFERENCES `s_package_line` (`id`),
   ADD CONSTRAINT `FK895CEC99D556929E` FOREIGN KEY (`package_id`) REFERENCES `s_package` (`id`),
+  ADD CONSTRAINT `FK895CEC9928D37186` FOREIGN KEY (`parentpackline_id`) REFERENCES `s_package_line` (`id`),
   ADD CONSTRAINT `FK895CEC99FC2B26F1` FOREIGN KEY (`item_id`) REFERENCES `s_item` (`id`);
 
 --
 -- Constraints for table `s_package_line_item_price`
 --
 ALTER TABLE `s_package_line_item_price`
-  ADD CONSTRAINT `FK6F1D74839FF4C097` FOREIGN KEY (`contact_type_id`) REFERENCES `s_partner_category` (`id`),
-  ADD CONSTRAINT `FK6F1D7483F07C1DB0` FOREIGN KEY (`package_line_id`) REFERENCES `s_package_line` (`id`);
+  ADD CONSTRAINT `FK6F1D7483F07C1DB0` FOREIGN KEY (`package_line_id`) REFERENCES `s_package_line` (`id`),
+  ADD CONSTRAINT `FK6F1D74839FF4C097` FOREIGN KEY (`contact_type_id`) REFERENCES `s_partner_category` (`id`);
 
 --
 -- Constraints for table `s_partner`
 --
 ALTER TABLE `s_partner`
-  ADD CONSTRAINT `FKF80A60FCD0AC218F` FOREIGN KEY (`unit_id`) REFERENCES `s_unit_of_measure` (`id`);
+  ADD CONSTRAINT `FKF80A60FCD0AC218F` FOREIGN KEY (`unit_id`) REFERENCES `config_unit_of_measure` (`id`);
 
 --
 -- Constraints for table `s_partner_category`
@@ -2705,25 +2369,11 @@ ALTER TABLE `s_partner_partner_category`
   ADD CONSTRAINT `FK42688B78F6C7EC4A` FOREIGN KEY (`partner_id`) REFERENCES `s_partner` (`id`);
 
 --
--- Constraints for table `s_payment`
---
-ALTER TABLE `s_payment`
-  ADD CONSTRAINT `FKF869B63A1BBF2162` FOREIGN KEY (`operator_id`) REFERENCES `s_operator` (`operator_id`),
-  ADD CONSTRAINT `FKF869B63A984FE183` FOREIGN KEY (`payment_content_id`) REFERENCES `s_payment_content` (`id`),
-  ADD CONSTRAINT `FKF869B63AF6C7EC4A` FOREIGN KEY (`partner_id`) REFERENCES `s_partner` (`id`);
-
---
--- Constraints for table `s_payment_content`
---
-ALTER TABLE `s_payment_content`
-  ADD CONSTRAINT `FK831BB7743D390FD9` FOREIGN KEY (`parent_id`) REFERENCES `s_payment_content` (`id`);
-
---
 -- Constraints for table `s_product`
 --
 ALTER TABLE `s_product`
   ADD CONSTRAINT `FK14DB5123A01C0F43` FOREIGN KEY (`producttype_id`) REFERENCES `s_product_type` (`id`),
-  ADD CONSTRAINT `FK14DB5123FE9D5F04` FOREIGN KEY (`uploadfile_id`) REFERENCES `s_upload_file` (`id`);
+  ADD CONSTRAINT `FK14DB5123FE9D5F04` FOREIGN KEY (`uploadfile_id`) REFERENCES `config_upload_file` (`id`);
 
 --
 -- Constraints for table `s_productproperty_element`
@@ -2747,7 +2397,7 @@ ALTER TABLE `s_service`
 -- Constraints for table `s_session_store`
 --
 ALTER TABLE `s_session_store`
-  ADD CONSTRAINT `FK3AD3A32CD78E952B` FOREIGN KEY (`store_id`) REFERENCES `s_store` (`id`);
+  ADD CONSTRAINT `FK3AD3A32CD78E952B` FOREIGN KEY (`store_id`) REFERENCES `store_store` (`id`);
 
 --
 -- Constraints for table `s_shipment`
@@ -2757,34 +2407,10 @@ ALTER TABLE `s_shipment`
   ADD CONSTRAINT `FKA39C73E686A6F2AF` FOREIGN KEY (`exportstore_id`) REFERENCES `s_export_store_form` (`id`);
 
 --
--- Constraints for table `s_ship_date_price`
---
-ALTER TABLE `s_ship_date_price`
-  ADD CONSTRAINT `FKB767178F3B1295CC` FOREIGN KEY (`ship_price_id`) REFERENCES `s_ship_price_type` (`id`);
-
---
--- Constraints for table `s_store`
---
-ALTER TABLE `s_store`
-  ADD CONSTRAINT `FK6C13FA15A866F1B9` FOREIGN KEY (`manager_id`) REFERENCES `s_operator` (`operator_id`);
-
---
 -- Constraints for table `s_supplier`
 --
 ALTER TABLE `s_supplier`
   ADD CONSTRAINT `FK5F3EFC18CF7980C6` FOREIGN KEY (`supplier_id`) REFERENCES `s_partner` (`id`);
-
---
--- Constraints for table `s_unit_of_measure`
---
-ALTER TABLE `s_unit_of_measure`
-  ADD CONSTRAINT `FK64B8C4C5CBA000F7` FOREIGN KEY (`uom_category_id`) REFERENCES `s_uom_category` (`id`);
-
---
--- Constraints for table `s_uom_category`
---
-ALTER TABLE `s_uom_category`
-  ADD CONSTRAINT `FK18482AF692B9DA5A` FOREIGN KEY (`parentUomCategory_id`) REFERENCES `s_uom_category` (`id`);
 
 --
 -- Constraints for table `s_voucher`
