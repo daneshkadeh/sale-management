@@ -19,7 +19,9 @@ import javax.swing.JScrollPane;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
+import com.s3s.ssm.view.list.store.ListImportStoreFormView;
 import com.s3s.ssm.view.list.store.ListShipPriceTypeView;
+import com.s3s.ssm.view.list.store.ListShipPriceView;
 import com.s3s.ssm.view.list.store.ListStoreView;
 
 /**
@@ -42,7 +44,9 @@ public class StoreManagementDomain extends AbstractDomain {
         TreeNodeWithView shipPriceTypeNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Store.ShipPriceType"), new ListShipPriceTypeView());
         TreeNodeWithView shipPriceNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.ShipPrice"),
-                new ListShipPriceTypeView());
+                new ListShipPriceView());
+        TreeNodeWithView importStoreNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.Store.ImportStore"), new ListImportStoreFormView());
 
         // TreeNodeWithView chuyenKhoNode = new TreeNodeWithView(
         // ControlConfigUtils.getString("JTree.Store.ExchangeStore"), new ListExchangeStoreFormView()); // "chuyen kho"
@@ -60,6 +64,7 @@ public class StoreManagementDomain extends AbstractDomain {
         rootNode.add(storeNode);
         rootNode.add(shipPriceTypeNode);
         rootNode.add(shipPriceNode);
+        rootNode.add(importStoreNode);
         // rootNode.add(chuyenKhoNode);
         // rootNode.add(phieuXuatKhoNode);
         // rootNode.add(phieuNhapKhoNode);

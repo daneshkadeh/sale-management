@@ -30,7 +30,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.operator.Operator;
 
 @Entity
-@Table(name = "s_store")
+@Table(name = "store_store")
 public class Store extends AbstractCodeOLObject implements Serializable {
     private static final long serialVersionUID = 4672724391118673824L;
     private String name;
