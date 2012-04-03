@@ -82,7 +82,7 @@ public class EntityChooser<T> extends JPanel {
     }
 
     private void initialComponent() {
-        setLayout(new MigLayout("wrap 3"));
+        setLayout(new MigLayout("wrap 3, ins 0"));
 
         txtFldCode = new JTextField();
         txtFldCode.setPreferredSize(new Dimension(UIConstants.DEFAULT_WIDTH, txtFldCode.getHeight()));

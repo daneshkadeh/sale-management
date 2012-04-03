@@ -19,9 +19,9 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
-import org.jdesktop.swingx.JXTable;
+import javax.swing.table.TableModel;
 
-import com.s3s.ssm.view.list.AbstractListView.AdvanceTableModel;
+import org.jdesktop.swingx.JXTable;
 
 /**
  * @author Le Thanh Hoang
@@ -47,6 +47,6 @@ public interface Exporter {
 
     void export(OutputStream outputStream, List data) throws ExportingException;
 
-    void export(OutputStream outputStream, JXTable jxTable, AdvanceTableModel tableModel) throws ExportingException;
+    void export(OutputStream outputStream, JXTable jxTable, TableModel tableModel) throws ExportingException;
     // void export(OutputStream outputStream, JXTable jxTable, AdvanceTableModel tableModel) throws ExportingException;
 }

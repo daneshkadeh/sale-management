@@ -128,12 +128,12 @@
 	<commons-collections.version>3.2.1</commons-collections.version>
 	<antlr.version>2.7.7</antlr.version>
 	
-	<swingx.version>1.6.1</swingx.version>
+	<swingx.version>1.6.3</swingx.version>
 	<miglayout.version>3.7.3.1</miglayout.version>
 	<testng.version>6.1.1</testng.version>
 	<beansbinding.version>1.2.1</beansbinding.version>
 	<jasperreport.version>4.1.1</jasperreport.version>
-	<!--glazedlists.version>1.8.0</glazedlists.version-->
+	<glazedlists.version>1.8.0</glazedlists.version>
 	<jodatime.version>2.0</jodatime.version>
 	<jodatime-hibernate.version>1.3</jodatime-hibernate.version>
 	
@@ -308,10 +308,10 @@
 		
 		<!-- SwingX: extensions for Swing components -->
 		<dependency>
-			<groupId>org.swinglabs</groupId>
-			<artifactId>swingx</artifactId>
+			<groupId>org.swinglabs.swingx</groupId>
+			<artifactId>swingx-all</artifactId>
 			<version>${swingx.version}</version>
-		</dependency>
+		</dependency>           
 		
 		<!-- MigLayout for swing -->
 		<dependency>
@@ -321,13 +321,6 @@
 			<classifier>swing</classifier>
 		</dependency>	
 		
-		<!-- SwingX -->
-		<dependency>
-			<groupId>org.swinglabs</groupId>
-			<artifactId>swingx</artifactId>
-			<version>${swingx.version}</version>
-		</dependency>
-		
 		<!-- Beansbinding -->	
 		<dependency>
 			<groupId>org.jdesktop</groupId>
@@ -336,11 +329,11 @@
 		</dependency>
 		
 		<!-- GlazedList -->
-		<!--dependency>
+		<dependency>
 			<groupId> net.java.dev.glazedlists</groupId>
 			<artifactId>glazedlists_java15</artifactId>		
 			<version>${glazedlists.version}</version>
-		</dependency -->
+		</dependency>
 		
 		<!-- Jasper report -->	
 		<dependency>
