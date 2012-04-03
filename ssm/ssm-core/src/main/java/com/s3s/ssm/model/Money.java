@@ -10,7 +10,8 @@ public class Money {
     // TODO Bang: should we change currencyCode to enum type.
     private String currencyCode;
     private Long value;
-    private int digit;
+
+    // private int digit;
 
     public String getCurrencyCode() {
         return currencyCode;
@@ -116,12 +117,12 @@ public class Money {
         return super.equals(obj);
     }
 
-    public int getDigit() {
-        return digit;
-    }
-
-    public void setDigit(int digit) {
-        this.digit = digit;
-    }
+    // public int getDigit() {
+    // return digit;
+    // }
+    //
+    // public void setDigit(int digit) {
+    // this.digit = digit;
+    // }
 
 }
