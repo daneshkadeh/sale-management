@@ -89,5 +89,4 @@ public abstract class AbstractIdOLObject extends AbstractBaseIdObject {
     public void setVersion(Long version) {
         this.version = version;
     }
-
 }

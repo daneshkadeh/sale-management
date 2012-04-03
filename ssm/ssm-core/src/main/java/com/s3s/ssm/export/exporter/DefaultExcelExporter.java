@@ -19,6 +19,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -27,7 +28,6 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.export.builder.ExcelBuilder;
-import com.s3s.ssm.view.list.AbstractListView.AdvanceTableModel;
 
 /**
  * @author Le Thanh Hoang
@@ -40,7 +40,7 @@ public class DefaultExcelExporter extends AbstractExporter {
      * {@inheritDoc}
      */
     @Override
-    public void exportData(OutputStream outputStream, JXTable tblListEntities, AdvanceTableModel tableModel)
+    public void exportData(OutputStream outputStream, JXTable tblListEntities, TableModel tableModel)
             throws ExportingException {
         try {
             ExcelBuilder builder = new ExcelBuilder();

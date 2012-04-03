@@ -65,8 +65,8 @@ public abstract class AbstractCommonListView<T extends AbstractIdOLObject> exten
             @Override
             @SuppressWarnings("unchecked")
             public void actionPerformed(ActionEvent e) {
-                AdvanceTableModel tableModel = (AdvanceTableModel) table.getModel();
-                tableModel.showAllRows();
+                // AdvanceTableModel tableModel = (AdvanceTableModel) table.getModel();
+                // tableModel.showAllRows();
             }
         });
 
@@ -76,8 +76,8 @@ public abstract class AbstractCommonListView<T extends AbstractIdOLObject> exten
             @Override
             @SuppressWarnings("unchecked")
             public void actionPerformed(ActionEvent e) {
-                AdvanceTableModel tableModel = (AdvanceTableModel) table.getModel();
-                tableModel.hideRows(getUnselectedRows(table));
+                // AdvanceTableModel tableModel = (AdvanceTableModel) table.getModel();
+                // tableModel.hideRows(getUnselectedRows(table));
             }
         });
 

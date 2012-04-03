@@ -336,6 +336,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             if (attribute.isMandatory()) {
                 label += " (*)";
             }
+            label = wrapNewLine(label);
             JLabel lblLabel = new JLabel(label);
             JComponent dataField = null;
             boolean isRaw = attribute.isRaw();
@@ -475,7 +476,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                 break;
             case ENTITY_CHOOSER:
                 dataField = new EntityChooser<>(referenceData.getValues(), value);
-                pnlEdit.add(lblLabel, newline + "top");
+                pnlEdit.add(lblLabel, newline);
                 break;
             case SALE_TARGET:
                 Calendar now = Calendar.getInstance();
@@ -509,6 +510,18 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             name2AttributeComponent.put(attribute.getName(), new AttributeComponent(lblLabel, dataField, errorIcon));
         }
         return pnlEdit;
+    }
+
+    /**
+     * Wrap the label to new line if it's too long.
+     * 
+     * @param label
+     * @return
+     */
+    private String wrapNewLine(String label) {
+        // TODO Phuc
+        // if (label.length() > 1)
+        return label;
     }
 
     protected void btnSaveActionPerformed(ActionEvent evt) {

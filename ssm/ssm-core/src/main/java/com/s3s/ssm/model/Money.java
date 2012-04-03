@@ -10,6 +10,7 @@ public class Money {
     // TODO Bang: should we change currencyCode to enum type.
     private String currencyCode;
     private Long value;
+    private int digit;
 
     public String getCurrencyCode() {
         return currencyCode;
@@ -38,6 +39,57 @@ public class Money {
         return money;
     }
 
+    /**
+     * Operator +
+     */
+    public Money plus(Money money) {
+        if (!currencyCode.equalsIgnoreCase(money.getCurrencyCode())) {
+            throw new IllegalArgumentException("To plus, the money codes must be the same");
+        }
+        value += money.getValue();
+        return this;
+    }
+
+    /**
+     * Operator -
+     */
+    public Money minus(Money money) {
+        if (!currencyCode.equalsIgnoreCase(money.getCurrencyCode())) {
+            throw new IllegalArgumentException("To plus, the money codes must be the same");
+        }
+        value -= money.getValue();
+        return this;
+    }
+
+    /**
+     * Operator *
+     */
+    public Money multiply(double num) {
+        value = Math.round(value * num); // Rounding up
+        return this;
+    }
+
+    public Money multiply(int num) {
+        value = value * num;
+        return this;
+    }
+
+    /**
+     * Operator /
+     */
+    public Money divide(double num) {
+        value = Math.round(value / num); // Rounding up
+        return this;
+    }
+
+    /**
+     * Operator /
+     */
+    public Money divide(int num) {
+        value = value / num;
+        return this;
+    }
+
     @Override
     public String toString() {
         String v = (value == null) ? "" : value.toString();
@@ -62,6 +114,14 @@ public class Money {
             return ObjectUtils.equals(value, m.value) && ObjectUtils.equals(currencyCode, m.getCurrencyCode());
         }
         return super.equals(obj);
+    }
+
+    public int getDigit() {
+        return digit;
+    }
+
+    public void setDigit(int digit) {
+        this.digit = digit;
     }
 
 }

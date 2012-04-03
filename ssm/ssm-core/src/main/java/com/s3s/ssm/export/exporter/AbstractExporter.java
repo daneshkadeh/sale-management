@@ -21,9 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jdesktop.swingx.JXTable;
+import javax.swing.table.TableModel;
 
-import com.s3s.ssm.view.list.AbstractListView.AdvanceTableModel;
+import org.jdesktop.swingx.JXTable;
 
 /**
  * @author Le Thanh Hoang
@@ -106,8 +106,7 @@ public abstract class AbstractExporter implements Exporter {
      * {@inheritDoc}
      */
     @Override
-    public void export(OutputStream outputStream, JXTable jxTable, AdvanceTableModel tableModel)
-            throws ExportingException {
+    public void export(OutputStream outputStream, JXTable jxTable, TableModel tableModel) throws ExportingException {
         exportData(outputStream, jxTable, tableModel);
     }
 
@@ -119,7 +118,7 @@ public abstract class AbstractExporter implements Exporter {
         exportData(outputStream, data);
     }
 
-    protected abstract void exportData(OutputStream outputStream, JXTable jxTable, AdvanceTableModel tableModel)
+    protected abstract void exportData(OutputStream outputStream, JXTable jxTable, TableModel tableModel)
             throws ExportingException;
 
     protected abstract void exportData(OutputStream outputStream, List data) throws ExportingException;

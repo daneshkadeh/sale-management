@@ -29,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,8 +75,6 @@ import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractIdOLObject;
@@ -164,7 +161,6 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     private Action exportAction;
     private Action printAction;
 
-    protected BeanWrapper beanWrapper;
     // the service is used to get access rule
     private Set<CustomPermission> permissionSet;
     // export factory
@@ -320,7 +316,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
         // ///////////////// Init main table ////////////////////////////////
         tblListEntities = new JXTable();
-        // tblListEntities.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tblListEntities.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tblListEntities.addHighlighter(HighlighterFactory.createSimpleStriping());
         // Highlight the row when mouse over.
         tblListEntities.addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, UIManager
@@ -454,7 +450,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
      * @return the model of the table.
      */
     protected TableModel createTableModel() {
-        return new AdvanceTableModel();
+        return new AdvanceTableModel<T>(listDataModel, entities, getEntityClass());
     }
 
     /**
@@ -520,7 +516,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
             // Remove row in view
             entities.removeAll(removedEntities);
 
-            ((AdvanceTableModel) tblListEntities.getModel()).fireTableDataChanged();
+            ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
             rowHeader.repaint();
             rowHeader.revalidate();
         }
@@ -572,6 +568,7 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     protected abstract Class<? extends AbstractEditView<T>> getEditViewClass();
 
     private Class<?> getClassOfField(String fieldName) {
+
         String[] paths = StringUtils.split(fieldName, '.');
         Class<?> clazz = getEntityClass(); // original class is class of current entity.
         for (String path : paths) {
@@ -583,111 +580,6 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     @SuppressWarnings("unchecked")
     protected Class<T> getEntityClass() {
         return (Class<T>) Solution3sClassUtils.getArgumentClass(getClass());
-    }
-
-    /**
-     * Model support for table can be hide rows. The supported methods:</br> <code>hideRows()</code> and
-     * <code>showAllRows()</code>
-     */
-    public class AdvanceTableModel extends AbstractTableModel {
-        private static final long serialVersionUID = -4720974982417224609L;
-
-        private final Set<Integer> hiddenRows = new HashSet<Integer>();
-
-        /**
-         * The remaining entities after hiding rows.
-         */
-        private List<T> currentEntities;
-
-        public AdvanceTableModel() {
-            if (entities == null) {
-                currentEntities = new ArrayList<T>();
-            } else {
-                currentEntities = entities;
-            }
-        }
-
-        /**
-         * Hide rows.
-         * 
-         * @param rowIndices
-         *            Index of rows which will be hidden
-         */
-        public void hideRows(int[] rowIndices) {
-            hiddenRows.clear();
-            for (int i : rowIndices) {
-                hiddenRows.add(i);
-            }
-            currentEntities = getVisibleEntities();
-            fireTableDataChanged();
-        }
-
-        /**
-         * Show all rows being hidden.
-         */
-        public void showAllRows() {
-            hiddenRows.clear();
-            currentEntities = entities;
-            fireTableDataChanged();
-        }
-
-        @Override
-        public int getRowCount() {
-            return currentEntities.size();
-        }
-
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            T entity = currentEntities.get(rowIndex);
-            beanWrapper = new BeanWrapperImpl(entity);
-            // The hide extra column contain the entity ID
-            if (columnIndex == 0) {
-                return entity.getId();
-            }
-
-            ColumnModel dataModel = listDataModel.getColumns().get(columnIndex - 1);
-            return beanWrapper.getPropertyValue(dataModel.getName());
-        }
-
-        @Override
-        public int getColumnCount() {
-            return listDataModel.getColumns().size() + 1; // Add a more column contain entity value.
-        }
-
-        @Override
-        public String getColumnName(int column) {
-            if (column == 0) {
-                return "";
-            }
-            return ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
-                    + listDataModel.getColumns().get(column - 1).getName());
-        }
-
-        @Override
-        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-            T entity = currentEntities.get(rowIndex);
-            beanWrapper = new BeanWrapperImpl(entity);
-            ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
-            beanWrapper.setPropertyValue(dataModel.getName(), aValue);
-        }
-
-        @Override
-        public Class<?> getColumnClass(int columnIndex) {
-            if (columnIndex == 0) {
-                return getEntityClass();
-            }
-            return getClassOfField(listDataModel.getColumns().get(columnIndex - 1).getName());
-        }
-
-        private List<T> getVisibleEntities() {
-            List<T> visibleEntities = new ArrayList<T>(getRowCount());
-            for (int i = 0; i < currentEntities.size(); i++) {
-                if (!hiddenRows.contains(i)) {
-                    visibleEntities.add(currentEntities.get(i));
-                }
-            }
-            return visibleEntities;
-        }
     }
 
     private class FooterTableModel extends AbstractTableModel {

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import javax.swing.text.NumberFormatter;
 
 import org.apache.commons.lang.ClassUtils;
@@ -44,7 +45,6 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import com.s3s.ssm.view.list.AbstractListView.AdvanceTableModel;
 
 /**
  * @author Le Thanh Hoang
@@ -68,8 +68,7 @@ public class DefaultPDFExporter extends AbstractExporter {
      * Use this method for exporting an table on swing
      */
     @Override
-    public void exportData(OutputStream outputStream, JXTable jxTable, AdvanceTableModel tableModel)
-            throws ExportingException {
+    public void exportData(OutputStream outputStream, JXTable jxTable, TableModel tableModel) throws ExportingException {
         List<TableColumn> tableColumns = jxTable.getColumns();
         int colNum = tableColumns.size();
         int colNumNotHide = getColNumNotHide(jxTable);
