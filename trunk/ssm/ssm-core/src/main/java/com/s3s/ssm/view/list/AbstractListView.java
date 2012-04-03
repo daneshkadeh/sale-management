@@ -547,18 +547,25 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
             detailParams.put(PARAM_PARENT_CLASS, parentClass);
             detailParams.put(PARAM_LIST_VIEW, this);
 
-            AbstractEditView<T> detailView = detailViewClass.getConstructor(Map.class).newInstance(detailParams);
+            final AbstractEditView<T> detailView = detailViewClass.getConstructor(Map.class).newInstance(detailParams);
+
             JScrollPane scrollPane = new JScrollPane(detailView);
 
             String tabTitle = detailView.getTitle();
 
             int tabIndex = tabPane.indexOfTab(tabTitle);
             if (tabIndex == -1) {
-                tabPane.addTab(tabTitle, scrollPane);
+                tabPane.addTab(tabTitle, detailView);
             }
             tabIndex = tabPane.indexOfTab(tabTitle);
             tabPane.setTabComponentAt(tabIndex, new ButtonTabComponent(tabPane));
             tabPane.setSelectedIndex(tabIndex);
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    detailView.requestFocusInWindow();
+                }
+            });
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             throw new RuntimeException("There are problems when init the detail view.");

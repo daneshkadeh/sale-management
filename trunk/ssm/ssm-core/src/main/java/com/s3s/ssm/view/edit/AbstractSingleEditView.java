@@ -305,8 +305,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         for (GroupInfoData g : detailDataModel.getGroupList()) {
             if (g.getStartGroupIndex() >= beginTabIndex && g.getEndGroupIndex() <= endTabIndex) {
                 addFields(fieldsPanel, i, g.getStartGroupIndex(), null);
-                fieldsPanel.add(addFields(fieldsPanel, g.getStartGroupIndex(), g.getEndGroupIndex(), g.getName()),
-                        "newline, span 2");
+                add(addFields(fieldsPanel, g.getStartGroupIndex(), g.getEndGroupIndex(), g.getName()));
                 i = g.getEndGroupIndex();
             }
         }
@@ -333,6 +332,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             pnlEdit = new JXTaskPane();
             ((JXTaskPane) pnlEdit).setTitle(name);
             pnlEdit.setLayout(new MigLayout("ins 0"));
+            fieldsPanel.add(pnlEdit, "newline, span 2");
         } else {
             pnlEdit = fieldsPanel;
         }
@@ -780,6 +780,11 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         default:
             throw new RuntimeException("Do not support FieldTypeEnum " + type);
         }
+    }
+
+    public boolean requestFocusInWindow() {
+        return name2AttributeComponent.get(detailDataModel.getDetailAttributes().get(0).getName()).getComponent()
+                .requestFocusInWindow();
     }
 
     // ////////////////////////////////
