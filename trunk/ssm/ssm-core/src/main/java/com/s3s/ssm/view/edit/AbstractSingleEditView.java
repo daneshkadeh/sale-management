@@ -48,7 +48,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.swing.border.TitledBorder;
 import javax.swing.text.NumberFormatter;
 import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
@@ -67,6 +66,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXDatePicker;
+import org.jdesktop.swingx.JXLabel;
+import org.jdesktop.swingx.JXTaskPane;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.Assert;
@@ -107,6 +108,11 @@ import com.s3s.ssm.view.edit.NotifyPanel.NotifyKind;
  */
 
 public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> extends AbstractEditView<T> {
+    /**
+     * 
+     */
+    private static final int MAX_WIDTH_LABEL = 150;
+
     private static final long serialVersionUID = 1L;
 
     private final Log logger = LogFactory.getLog(AbstractSingleEditView.class);
@@ -299,7 +305,8 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         for (GroupInfoData g : detailDataModel.getGroupList()) {
             if (g.getStartGroupIndex() >= beginTabIndex && g.getEndGroupIndex() <= endTabIndex) {
                 addFields(fieldsPanel, i, g.getStartGroupIndex(), null);
-                addFields(fieldsPanel, g.getStartGroupIndex(), g.getEndGroupIndex(), g.getName());
+                fieldsPanel.add(addFields(fieldsPanel, g.getStartGroupIndex(), g.getEndGroupIndex(), g.getName()),
+                        "newline, span 2");
                 i = g.getEndGroupIndex();
             }
         }
@@ -321,23 +328,24 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private JPanel addFields(JPanel fieldsPanel, int startIndex, int endIndex, String name) {
-        JPanel pnlEdit = fieldsPanel;
+        JPanel pnlEdit = null;
         if (name != null) { // in case of group of fields.
-            pnlEdit = new JPanel(new MigLayout("ins 0"));
-            fieldsPanel.add(pnlEdit, "newline, spanx");
-            pnlEdit.setBorder(new TitledBorder(name));
+            pnlEdit = new JXTaskPane();
+            ((JXTaskPane) pnlEdit).setTitle(name);
+            pnlEdit.setLayout(new MigLayout("ins 0"));
+        } else {
+            pnlEdit = fieldsPanel;
         }
         for (int i = startIndex; i < endIndex; i++) {
             DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + attribute.getName());
-            String newline = attribute.isNewColumn() ? "gapleft 20, " : "newline, ";
+            String newline = attribute.isNewColumn() ? "gapleft 10, " : "newline, ";
             int width = attribute.getWidth() == 0 ? UIConstants.DEFAULT_WIDTH : attribute.getWidth();
             if (attribute.isMandatory()) {
                 label += " (*)";
             }
-            label = wrapNewLine(label);
-            JLabel lblLabel = new JLabel(label);
+            JLabel lblLabel = createLabel(label);
             JComponent dataField = null;
             boolean isRaw = attribute.isRaw();
             boolean editable = attribute.isEditable();
@@ -512,16 +520,20 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         return pnlEdit;
     }
 
-    /**
-     * Wrap the label to new line if it's too long.
-     * 
-     * @param label
-     * @return
-     */
-    private String wrapNewLine(String label) {
-        // TODO Phuc
-        // if (label.length() > 1)
-        return label;
+    private JLabel createLabel(String label) {
+        JLabel lb = new JLabel(label);
+        Dimension preferredSize = lb.getPreferredSize();
+        // Use JXLabel to wrap the label, if just using the JXLable --> It is not work for Group panel, so I work around
+        // by using the JLabel to measure and set the min width for JXTable.
+        if (preferredSize.width > MAX_WIDTH_LABEL) {
+            JXLabel jxlbl = new JXLabel(label);
+            jxlbl.setLineWrap(true);
+            jxlbl.setMinimumSize(new Dimension(MAX_WIDTH_LABEL, preferredSize.height));
+            jxlbl.setMaxLineSpan(MAX_WIDTH_LABEL);
+            return jxlbl;
+        } else {
+            return lb;
+        }
     }
 
     protected void btnSaveActionPerformed(ActionEvent evt) {
