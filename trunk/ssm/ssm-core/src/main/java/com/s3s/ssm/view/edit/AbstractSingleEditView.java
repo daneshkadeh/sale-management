@@ -305,7 +305,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         for (GroupInfoData g : detailDataModel.getGroupList()) {
             if (g.getStartGroupIndex() >= beginTabIndex && g.getEndGroupIndex() <= endTabIndex) {
                 addFields(fieldsPanel, i, g.getStartGroupIndex(), null);
-                add(addFields(fieldsPanel, g.getStartGroupIndex(), g.getEndGroupIndex(), g.getName()));
+                addFields(fieldsPanel, g.getStartGroupIndex(), g.getEndGroupIndex(), g.getName());
                 i = g.getEndGroupIndex();
             }
         }
@@ -332,7 +332,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             pnlEdit = new JXTaskPane();
             ((JXTaskPane) pnlEdit).setTitle(name);
             pnlEdit.setLayout(new MigLayout("ins 0"));
-            fieldsPanel.add(pnlEdit, "newline, span 2");
+            fieldsPanel.add(pnlEdit, "newline, spanx");
         } else {
             pnlEdit = fieldsPanel;
         }

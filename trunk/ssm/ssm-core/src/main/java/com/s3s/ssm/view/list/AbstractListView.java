@@ -549,8 +549,6 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
 
             final AbstractEditView<T> detailView = detailViewClass.getConstructor(Map.class).newInstance(detailParams);
 
-            JScrollPane scrollPane = new JScrollPane(detailView);
-
             String tabTitle = detailView.getTitle();
 
             int tabIndex = tabPane.indexOfTab(tabTitle);
