@@ -47,8 +47,7 @@ public class Money {
         if (!currencyCode.equalsIgnoreCase(money.getCurrencyCode())) {
             throw new IllegalArgumentException("To plus, the money codes must be the same");
         }
-        value += money.getValue();
-        return this;
+        return create(currencyCode, value + money.value);
     }
 
     /**
@@ -58,37 +57,32 @@ public class Money {
         if (!currencyCode.equalsIgnoreCase(money.getCurrencyCode())) {
             throw new IllegalArgumentException("To plus, the money codes must be the same");
         }
-        value -= money.getValue();
-        return this;
+        return create(currencyCode, value - money.getValue());
     }
 
     /**
      * Operator *
      */
     public Money multiply(double num) {
-        value = Math.round(value * num); // Rounding up
-        return this;
+        return create(currencyCode, Math.round(value * num));
     }
 
     public Money multiply(int num) {
-        value = value * num;
-        return this;
+        return create(currencyCode, value * num);
     }
 
     /**
      * Operator /
      */
     public Money divide(double num) {
-        value = Math.round(value / num); // Rounding up
-        return this;
+        return create(currencyCode, Math.round(value / num));
     }
 
     /**
      * Operator /
      */
     public Money divide(int num) {
-        value = value / num;
-        return this;
+        return create(currencyCode, value / num);
     }
 
     @Override
