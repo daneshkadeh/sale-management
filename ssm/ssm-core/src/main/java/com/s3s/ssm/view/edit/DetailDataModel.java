@@ -91,8 +91,9 @@ public class DetailDataModel {
         /** The exclusive index of element in detailAttributes to end group. */
         private int endGroupIndex;
         private String name;
+        private Icon icon;
 
-        public GroupInfoData(int startGroupIndex, String name) {
+        public GroupInfoData(int startGroupIndex, String name, Icon icon) {
             this.startGroupIndex = startGroupIndex;
             this.name = name;
         }
@@ -119,6 +120,14 @@ public class DetailDataModel {
 
         public void setEndGroupIndex(int endGroupIndex) {
             this.endGroupIndex = endGroupIndex;
+        }
+
+        public Icon getIcon() {
+            return icon;
+        }
+
+        public void setIcon(Icon icon) {
+            this.icon = icon;
         }
     }
 
@@ -160,7 +169,11 @@ public class DetailDataModel {
     }
 
     public void startGroup(String name) {
-        groupList.add(new GroupInfoData(detailAttributes.size(), name));
+        startGroup(name, null);
+    }
+
+    public void startGroup(String name, Icon icon) {
+        groupList.add(new GroupInfoData(detailAttributes.size(), name, icon));
     }
 
     public void endGroup() {
