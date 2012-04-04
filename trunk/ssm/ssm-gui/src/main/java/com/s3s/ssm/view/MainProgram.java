@@ -14,24 +14,28 @@
  */
 package com.s3s.ssm.view;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -43,13 +47,9 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.xml.DOMConfigurator;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.component.ImageChooser;
-import com.s3s.ssm.view.component.RadioButtonsGroup;
+import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.domain.BuyManagementDomain;
 import com.s3s.ssm.view.domain.ContactManagementDomain;
 import com.s3s.ssm.view.domain.FinanceManagementDomain;
@@ -74,7 +74,17 @@ public class MainProgram {
             "i18n/supplychain_label", "i18n/operator_label", "i18n/gui_label", "i18n/error", "i18n/config_error",
             "i18n/catalog_error", "i18n/finance_error", "i18n/sales_error", "i18n/shipment_error",
             "i18n/contact_error", "i18n/store_error", "i18n/supplychain_error", "i18n/operator_error", "i18n/gui_error" };
+
     private static JFrame frame;
+    private static Container contentPane;
+
+    private static JSplitPane institutionPane;
+    private static JSplitPane organizationPane;
+    private static JSplitPane saleChannelPane;
+
+    private static JToggleButton institutionBtn;
+    private static JToggleButton organizationBtn;
+    private static JToggleButton saleChannelBtn;
 
     public static void main(String[] args) {
 
@@ -82,8 +92,8 @@ public class MainProgram {
         // String classpath = MainProgram.class.getClassLoader().get
         DOMConfigurator.configure("src/main/resources/log4j.xml");
         s_logger.info("Starting super sales management application...");
-        ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
-        ConfigProvider configProvider = ConfigProvider.getInstance();
+        // ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
+        // ConfigProvider configProvider = ConfigProvider.getInstance();
         ControlConfigUtils.init();
         ControlConfigUtils.setLabelMessageBundle(Locale.FRENCH, MESSSAGE_FILES);
         // Schedule a job for the event-dispatching thread:
@@ -117,21 +127,20 @@ public class MainProgram {
 
         // Create and set up the window.
         frame = new JFrame("Sales Management");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(WINDOW_MIN_SIZE);
-        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-        JMenuBar menuBar = createMenuBar(frame);
-
-        frame.setJMenuBar(menuBar);
-
-        final Container contentPane = frame.getContentPane();
 
         // login
         LoginDialog loginDialog = new LoginDialog(frame, new Runnable() {
 
             @Override
             public void run() {
-                addComponents(contentPane);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setMinimumSize(WINDOW_MIN_SIZE);
+                frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+                frame.setJMenuBar(createMenuBar());
+                initCenterPaneṣ();
+                contentPane = createContentPane();
+                frame.setContentPane(contentPane);
+                institutionBtn.doClick();
                 frame.pack();
                 frame.setVisible(true);
             }
@@ -148,73 +157,188 @@ public class MainProgram {
 
     }
 
-    private static void addComponents(Container contentPane) {
-        final JPanel componentPanel = createDemoComponentPanel();
-        final JScrollPane contentViewScrollPane = new JScrollPane(componentPanel);
-        final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+    /**
+     * 
+     */
+    protected static void initCenterPaneṣ() {
+        institutionPane = createInstitutionPanel();
+        organizationPane = createOrganizationPanel();
+        saleChannelPane = createSaleChannelPanel();
+    }
+
+    private static Container createContentPane() {
+        JPanel contentPane = new JPanel(new BorderLayout());
+        JToolBar toolbar = createToolbar();
+        contentPane.add(toolbar, BorderLayout.PAGE_START);
+        contentPane.add(new JPanel());
+        return contentPane;
+    }
+
+    private static JSplitPane createInstitutionPanel() {
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+        JScrollPane contentViewScrollPane = new JScrollPane();
         splitPane.setOneTouchExpandable(true);
         splitPane.setRightComponent(contentViewScrollPane);
 
         JScrollPane treeMenuScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         JSplitPane leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
-        leftSplitPane.setBottomComponent(createLeftBottomPane(treeMenuScrollPane, contentViewScrollPane));
+
+        leftSplitPane.setBottomComponent(createLeftBottomPane(createInstitutionDomains(treeMenuScrollPane,
+                contentViewScrollPane)));
         leftSplitPane.setTopComponent(treeMenuScrollPane);
 
         splitPane.setLeftComponent(leftSplitPane);
         splitPane.setLastDividerLocation(splitPane.getLastDividerLocation());
-        contentPane.add(splitPane);
+        return splitPane;
     }
 
-    private static JPanel createLeftBottomPane(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
-        JPanel panel = new JPanel(new MigLayout("wrap, gap 0, ins 0, fill", "grow"));
+    private static JSplitPane createOrganizationPanel() {
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+        JScrollPane contentViewScrollPane = new JScrollPane();
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setRightComponent(contentViewScrollPane);
 
+        JScrollPane treeMenuScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JSplitPane leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
+
+        leftSplitPane.setBottomComponent(createLeftBottomPane(createOrganizationDomains(treeMenuScrollPane,
+                contentViewScrollPane)));
+        leftSplitPane.setTopComponent(treeMenuScrollPane);
+
+        splitPane.setLeftComponent(leftSplitPane);
+        splitPane.setLastDividerLocation(splitPane.getLastDividerLocation());
+        return splitPane;
+    }
+
+    private static JSplitPane createSaleChannelPanel() {
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+        JScrollPane contentViewScrollPane = new JScrollPane();
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setRightComponent(contentViewScrollPane);
+
+        JScrollPane treeMenuScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JSplitPane leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
+
+        leftSplitPane.setBottomComponent(createLeftBottomPane(createSaleChannelDomains(treeMenuScrollPane,
+                contentViewScrollPane)));
+        leftSplitPane.setTopComponent(treeMenuScrollPane);
+
+        splitPane.setLeftComponent(leftSplitPane);
+        splitPane.setLastDividerLocation(splitPane.getLastDividerLocation());
+        return splitPane;
+    }
+
+    private static JToolBar createToolbar() {
+        JToolBar toolbar = new JToolBar();
+        toolbar.add(Box.createHorizontalGlue());
+        institutionBtn = new JToggleButton("Institution");
+        organizationBtn = new JToggleButton("Organization");
+        saleChannelBtn = new JToggleButton("Sale Channel");
+        ButtonGroup contextGroup = new ButtonGroup();
+        contextGroup.add(institutionBtn);
+        contextGroup.add(organizationBtn);
+        contextGroup.add(saleChannelBtn);
+        toolbar.add(institutionBtn);
+        toolbar.add(organizationBtn);
+        toolbar.add(saleChannelBtn);
+
+        institutionBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentPane.remove(1);
+                contentPane.add(institutionPane, BorderLayout.CENTER);
+                contentPane.repaint();
+                contentPane.validate();
+            }
+        });
+        organizationBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentPane.remove(1);
+                contentPane.add(organizationPane, BorderLayout.CENTER);
+                contentPane.repaint();
+                contentPane.validate();
+            }
+        });
+        saleChannelBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentPane.remove(1);
+                contentPane.add(saleChannelPane, BorderLayout.CENTER);
+                contentPane.repaint();
+                contentPane.validate();
+            }
+        });
+        return toolbar;
+    }
+
+    /**
+     * @return
+     */
+    private static List<AbstractDomain> createInstitutionDomains(JScrollPane treeScrollPane,
+            JScrollPane contentSrollPane) {
+        List<AbstractDomain> domains = new ArrayList<>();
         ButtonGroup buttonGroup = new ButtonGroup();
-
-        SystemManagementDomain systemDomain = new SystemManagementDomain(treeScrollPane, contentScrollPane);
-        BuyManagementDomain buyDomain = new BuyManagementDomain(treeScrollPane, contentScrollPane);
-        SalesManagementDomain salesDomain = new SalesManagementDomain(treeScrollPane, contentScrollPane);
-        StoreManagementDomain storeDomain = new StoreManagementDomain(treeScrollPane, contentScrollPane);
-        ContactManagementDomain contactDomain = new ContactManagementDomain(treeScrollPane, contentScrollPane);
-        FinanceManagementDomain financeDomain = new FinanceManagementDomain(treeScrollPane, contentScrollPane);
-        SupplyChainDomain supplyChainDomain = new SupplyChainDomain(treeScrollPane, contentScrollPane);
-        ResourceManagementDomain resourceDomain = new ResourceManagementDomain(treeScrollPane, contentScrollPane);
-        ReportDomain reportDomain = new ReportDomain(treeScrollPane, contentScrollPane);
-
+        SystemManagementDomain systemDomain = new SystemManagementDomain(treeScrollPane, contentSrollPane);
+        ReportDomain reportDomain = new ReportDomain(treeScrollPane, contentSrollPane);
         buttonGroup.add(systemDomain);
+        buttonGroup.add(reportDomain);
+        domains.add(systemDomain);
+        domains.add(reportDomain);
+        systemDomain.doClick();
+        return domains;
+    }
+
+    private static List<AbstractDomain> createOrganizationDomains(JScrollPane treeScrollPane,
+            JScrollPane contentSrollPane) {
+        List<AbstractDomain> domains = new ArrayList<>();
+        ButtonGroup buttonGroup = new ButtonGroup();
+        ContactManagementDomain contactDomain = new ContactManagementDomain(treeScrollPane, contentSrollPane);
+        StoreManagementDomain storeDomain = new StoreManagementDomain(treeScrollPane, contentSrollPane);
+        SupplyChainDomain supplyChainDomain = new SupplyChainDomain(treeScrollPane, contentSrollPane);
+        buttonGroup.add(contactDomain);
+        buttonGroup.add(storeDomain);
+        buttonGroup.add(supplyChainDomain);
+        domains.add(contactDomain);
+        domains.add(storeDomain);
+        domains.add(supplyChainDomain);
+
+        contactDomain.doClick();
+        return domains;
+    }
+
+    private static List<AbstractDomain> createSaleChannelDomains(JScrollPane treeScrollPane,
+            JScrollPane contentSrollPane) {
+        List<AbstractDomain> domains = new ArrayList<>();
+        ButtonGroup buttonGroup = new ButtonGroup();
+        BuyManagementDomain buyDomain = new BuyManagementDomain(treeScrollPane, contentSrollPane);
+        SalesManagementDomain salesDomain = new SalesManagementDomain(treeScrollPane, contentSrollPane);
+        FinanceManagementDomain financeDomain = new FinanceManagementDomain(treeScrollPane, contentSrollPane);
+        ResourceManagementDomain resourceDomain = new ResourceManagementDomain(treeScrollPane, contentSrollPane);
         buttonGroup.add(buyDomain);
         buttonGroup.add(salesDomain);
-        buttonGroup.add(storeDomain);
-        buttonGroup.add(contactDomain);
         buttonGroup.add(financeDomain);
-        buttonGroup.add(supplyChainDomain);
         buttonGroup.add(resourceDomain);
-        buttonGroup.add(reportDomain);
+        domains.add(buyDomain);
+        domains.add(salesDomain);
+        domains.add(financeDomain);
+        domains.add(resourceDomain);
+        buyDomain.doClick();
+        return domains;
+    }
 
-        panel.add(systemDomain, "grow");
-        panel.add(buyDomain, "grow");
-        panel.add(salesDomain, "grow");
-        panel.add(storeDomain, "grow");
-        panel.add(contactDomain, "grow");
-        panel.add(financeDomain, "grow");
-        panel.add(supplyChainDomain, "grow");
-        panel.add(resourceDomain, "grow");
-        panel.add(reportDomain, "grow");
-
-        systemDomain.doClick();
+    private static JPanel createLeftBottomPane(List<AbstractDomain> domains) {
+        JPanel panel = new JPanel(new MigLayout("wrap, gap 0, ins 0, fill", "grow"));
+        for (AbstractDomain domain : domains) {
+            panel.add(domain, "grow");
+        }
         return panel;
     }
 
-    private static JPanel createDemoComponentPanel() {
-        JPanel componentPanel = new JPanel(new MigLayout("wrap 2"));
-        componentPanel.add(new JLabel("Image component"), "top");
-        componentPanel.add(new ImageChooser());
-        componentPanel.add(new JLabel("Radio button group"), "top");
-        componentPanel.add(new RadioButtonsGroup<>(Arrays.asList("Table", "Chair", "Ruler")));
-        return componentPanel;
-    }
-
-    private static JMenuBar createMenuBar(final JFrame frame) {
+    private static JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu(ControlConfigUtils.getString("JMenuBar.File"));
         fileMenu.setMnemonic(KeyEvent.VK_F);

@@ -306,7 +306,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
         for (GroupInfoData g : detailDataModel.getGroupList()) {
             if (g.getStartGroupIndex() >= beginTabIndex && g.getEndGroupIndex() <= endTabIndex) {
                 addFields(fieldsPanel, i, g.getStartGroupIndex(), null);
-                addFields(fieldsPanel, g.getStartGroupIndex(), g.getEndGroupIndex(), g.getName());
+                addFields(fieldsPanel, g.getStartGroupIndex(), g.getEndGroupIndex(), g);
                 i = g.getEndGroupIndex();
             }
         }
@@ -322,16 +322,17 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
      *            the inclusive index in detailDataModel.getDetailAttribute()
      * @param endIndex
      *            the exclusive index in detailDataModel.getDetailAttribute()
-     * @param name
-     *            the name of panel. If not null -> The panel render with title border.
+     * @param g
+     *            the group info data of panel. If not null -> The panel render on the group panel.
      * @return
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private JPanel addFields(JPanel fieldsPanel, int startIndex, int endIndex, String name) {
+    private JPanel addFields(JPanel fieldsPanel, int startIndex, int endIndex, GroupInfoData g) {
         JPanel pnlEdit = null;
-        if (name != null) { // in case of group of fields.
+        if (g != null) { // in case of group of fields.
             pnlEdit = new JXTaskPane();
-            ((JXTaskPane) pnlEdit).setTitle(name);
+            ((JXTaskPane) pnlEdit).setTitle(g.getName());
+            ((JXTaskPane) pnlEdit).setIcon(g.getIcon());
             pnlEdit.setLayout(new MigLayout("ins 0"));
             fieldsPanel.add(pnlEdit, "newline, spanx");
         } else {
