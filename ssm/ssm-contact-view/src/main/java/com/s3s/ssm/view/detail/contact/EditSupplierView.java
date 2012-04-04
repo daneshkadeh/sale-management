@@ -65,7 +65,7 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
         detailDataModel.addAttribute("address", DetailFieldType.TEXTAREA);
 
         detailDataModel.addRawAttribute("rawAttribute1", DetailFieldType.TEXTBOX).value("Init value");
-        detailDataModel.addRawAttribute("rawAttribute2", DetailFieldType.DROPDOWN).value("value 2")
+        detailDataModel.addRawAttribute("rawAttribute2", DetailFieldType.DROPDOWN).value("value 2").autoComplete()
                 .referenceDataId(TEST_ID);
         detailDataModel.addRawAttribute("rawAttribute3", DetailFieldType.MULTI_SELECT_TREE_BOX);
         detailDataModel.addRawAttribute("rawAttribute4", DetailFieldType.MONEY).value(Money.zero("VND"))
