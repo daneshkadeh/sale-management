@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.edit;
 
+import org.springframework.util.Assert;
+
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
@@ -25,6 +27,7 @@ public class DetailAttribute {
     private boolean isMandatory = false;
     private Object value; // The initial value for the raw attribute.
     private boolean isRaw = false;
+    private boolean isAutoComplete = false;
     // private List<ParentNodeInfo> parentNodePath = new ArrayList<>();
 
     /** The property for layout the attribute. The attribute after this attribute is rendered in new line or not. */
@@ -145,6 +148,16 @@ public class DetailAttribute {
      */
     public DetailAttribute value(Object value) {
         this.value = value;
+        return this;
+    }
+
+    public boolean isAutoComplete() {
+        return isAutoComplete;
+    }
+
+    public DetailAttribute autoComplete() {
+        Assert.isTrue(type == DetailFieldType.DROPDOWN, "Auto complete is just used for DROPDOWN type");
+        this.isAutoComplete = true;
         return this;
     }
 }

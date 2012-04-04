@@ -68,6 +68,7 @@ import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXTaskPane;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.Assert;
@@ -340,7 +341,7 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
             DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + attribute.getName());
-            String newline = attribute.isNewColumn() ? "gapleft 10, " : "newline, ";
+            String newline = attribute.isNewColumn() ? "right, gapleft 10, " : "right, newline, ";
             int width = attribute.getWidth() == 0 ? UIConstants.DEFAULT_WIDTH : attribute.getWidth();
             if (attribute.isMandatory()) {
                 label += " (*)";
@@ -415,6 +416,9 @@ public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> exten
                     referenceData.getValues().add(0, null);
                 }
                 dataField = new JComboBox<>(referenceData.getValues().toArray());
+                if (attribute.isAutoComplete()) {
+                    AutoCompleteDecorator.decorate((JComboBox) dataField);
+                }
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 ((JComboBox<?>) dataField).setRenderer(referenceData.getRenderer());
                 ((JComboBox<?>) dataField).setSelectedItem(value);
