@@ -19,7 +19,9 @@ import java.awt.event.ItemListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 
@@ -37,13 +39,7 @@ import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditSupplierView extends AbstractSingleEditView<Supplier> {
-    /**
-     * 
-     */
     private static final String TEST_ID = "idTest";
-    /**
-     * 
-     */
     private static final String MONEY_ID = "MONEY_ID";
     private static final long serialVersionUID = -8101155807024861715L;
     private static final String SEX_ID = "SEX_ID";
@@ -100,6 +96,9 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
         super.customizeComponents(name2AttributeComponent, entity);
         final JTextField email = (JTextField) name2AttributeComponent.get("email").getComponent();
         final JTextField position = (JTextField) name2AttributeComponent.get("position").getComponent();
+        final JComboBox<String> comboBox = (JComboBox<String>) name2AttributeComponent.get("rawAttribute2")
+                .getComponent();
+
         JCheckBox cb = (JCheckBox) name2AttributeComponent.get("isActive").getComponent();
         cb.addItemListener(new ItemListener() {
 
@@ -116,6 +115,7 @@ public class EditSupplierView extends AbstractSingleEditView<Supplier> {
             public void doMoneyChanged(ChangeEvent e) {
                 MoneyComponent m = (MoneyComponent) e.getSource();
                 position.setText(m.getMoney().toString());
+                comboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "new 1", "new 2", "new 3" }));
             }
         });
 
