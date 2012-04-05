@@ -73,7 +73,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.Assert;
 
-import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
@@ -108,7 +108,7 @@ import com.s3s.ssm.view.edit.NotifyPanel.NotifyKind;
  * @param <T>
  */
 
-public abstract class AbstractSingleEditView<T extends AbstractIdOLObject> extends AbstractEditView<T> {
+public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> extends AbstractEditView<T> {
     /**
      * 
      */

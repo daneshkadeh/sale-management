@@ -26,7 +26,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.springframework.util.Assert;
 
-import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.view.ISavedListener;
 import com.s3s.ssm.view.SavedEvent;
 import com.s3s.ssm.view.TreeNodeWithView;
@@ -38,7 +38,7 @@ import com.s3s.ssm.view.TreeView;
  * @author Phan Hong Phuc
  * 
  */
-public abstract class AbstractMultiEditView<T extends AbstractIdOLObject> extends AbstractEditView<T> {
+public abstract class AbstractMultiEditView<T extends AbstractBaseIdObject> extends AbstractEditView<T> {
     private static final long serialVersionUID = 5168377500300996678L;
     private TreeView treeView;
     private boolean isCreatedSubView = false;

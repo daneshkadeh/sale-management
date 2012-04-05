@@ -16,19 +16,19 @@ package com.s3s.ssm.view.detail.contact;
 
 import java.util.Map;
 
-import com.s3s.ssm.entity.contact.ContactShop;
+import com.s3s.ssm.entity.config.Address;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
-public class EditContactShopVirtualView extends AbstractSingleEditView<ContactShop> {
+public class EditContactShopVirtualView extends AbstractSingleEditView<Address> {
 
     public EditContactShopVirtualView(Map<String, Object> entity) {
         super(entity);
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ContactShop entity) {
+    public void initialPresentationView(DetailDataModel detailDataModel, Address entity) {
         // detailDataModel.addAttribute("contact", FieldTypeEnum.TEXTBOX).editable(false);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("address", DetailFieldType.TEXTBOX);
@@ -40,7 +40,7 @@ public class EditContactShopVirtualView extends AbstractSingleEditView<ContactSh
     }
 
     @Override
-    protected void saveOrUpdate(ContactShop entity) {
+    protected void saveOrUpdate(Address entity) {
         // Fake id
         // TODO: How to put this entity to the listContactShop in EditContactView?
         // if (entity.getId() == null) {

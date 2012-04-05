@@ -18,8 +18,11 @@ package com.s3s.ssm.entity.contact;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
@@ -29,12 +32,19 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.config.Address;
+import com.s3s.ssm.entity.config.Bank;
+import com.s3s.ssm.entity.config.BankAccount;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
+import com.s3s.ssm.model.Money;
 
 /**
  * A partner represents all the entities that you can do business with
@@ -43,7 +53,7 @@ import com.s3s.ssm.entity.config.UnitOfMeasure;
  * 
  */
 @Entity
-@Table(name = "s_partner")
+@Table(name = "co_partner")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Partner extends AbstractCodeOLObject {
     private static final long serialVersionUID = 1435468012252943876L;
@@ -51,16 +61,38 @@ public class Partner extends AbstractCodeOLObject {
     private Integer title; // Partner Form
     private String comment;// Notes
     private String website;
-    private Boolean isCustomer;
-    private Boolean isSupplier;
-    private Boolean isEmployee;
-    private Double debitLimit;// Payable Limit
+    private String phone;
+    private String fax;
+    private String email;
+    private Money debitLimit;// Payable Limit
     private UnitOfMeasure debitTimeUnit;// the unit of debit limit. Ex: date, month, year
     private Boolean isActive = true;
+    private BankAccount bankAccount;
+    private Individual mainIndividual;
+    private PartnerAddressLink mainAddressLink;
 
+    private Set<Individual> individuals = new HashSet<>();
     private Set<PartnerCategory> partnerCateSet = new HashSet<PartnerCategory>();
 
     private Set<ContactDebt> contactDebtSet = new HashSet<ContactDebt>();
+
+    private Set<PartnerAddressLink> listAddressLinks = new HashSet<>();
+
+    private Set<PartnerProfile> listProfiles = new HashSet<>();
+
+    public Partner() {
+        // always set mainIndividual and mainAddressLink into a partner
+        mainIndividual = new Individual();
+        mainIndividual.setRole(IndividualRoleEnum.MAIN);
+        mainIndividual.setPartner(this);
+        individuals.add(mainIndividual);
+
+        mainAddressLink = new PartnerAddressLink();
+        mainAddressLink.setMain(true);
+        mainAddressLink.setPartner(this);
+        listAddressLinks.add(mainAddressLink);
+        mainAddressLink.setAddress(new Address());
+    }
 
     @Column(name = "name", length = 128, nullable = false)
     @NotBlank
@@ -99,39 +131,42 @@ public class Partner extends AbstractCodeOLObject {
         this.website = website;
     }
 
-    @Column(name = "is_customer")
-    public Boolean getIsCustomer() {
-        return isCustomer;
+    @Column(name = "phone", length = 20)
+    public String getPhone() {
+        return phone;
     }
 
-    public void setIsCustomer(Boolean isCustomer) {
-        this.isCustomer = isCustomer;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    @Column(name = "is_supplier")
-    public Boolean getIsSupplier() {
-        return isSupplier;
+    @Column(name = "fax", length = 20)
+    public String getFax() {
+        return fax;
     }
 
-    public void setIsSupplier(Boolean isSupplier) {
-        this.isSupplier = isSupplier;
+    public void setFax(String fax) {
+        this.fax = fax;
     }
 
-    @Column(name = "is_employee")
-    public Boolean getIsEmployee() {
-        return isEmployee;
+    @Column(name = "email")
+    @Email(message = "{Supplier.email.invalid}")
+    public String getEmail() {
+        return email;
     }
 
-    public void setIsEmployee(Boolean isEmployee) {
-        this.isEmployee = isEmployee;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    @Column(name = "debit_limit")
-    public Double getDebitLimit() {
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "debit_limit")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code")) })
+    public Money getDebitLimit() {
         return debitLimit;
     }
 
-    public void setDebitLimit(Double debitLimit) {
+    public void setDebitLimit(Money debitLimit) {
         this.debitLimit = debitLimit;
     }
 
@@ -154,7 +189,6 @@ public class Partner extends AbstractCodeOLObject {
         this.isActive = isActive;
     }
 
-    //
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "s_partner_partner_category", joinColumns = { @JoinColumn(name = "partner_id") }, inverseJoinColumns = { @JoinColumn(name = "partner_category_id") })
     public
@@ -175,4 +209,114 @@ public class Partner extends AbstractCodeOLObject {
         this.contactDebtSet = contactDebtSet;
     }
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "partner")
+    public Set<PartnerAddressLink> getListAddressLinks() {
+        return listAddressLinks;
+    }
+
+    public void setListAddressLinks(Set<PartnerAddressLink> listAddresses) {
+        this.listAddressLinks = listAddresses;
+    }
+
+    public void addAddressLink(PartnerAddressLink addressLink) {
+        if (listAddressLinks.isEmpty()) {
+            addressLink.setMain(true);
+        }
+        addressLink.setPartner(this);
+        listAddressLinks.add(addressLink);
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "partner")
+    public Set<PartnerProfile> getListProfiles() {
+        return listProfiles;
+    }
+
+    public void setListProfiles(Set<PartnerProfile> listProfiles) {
+        this.listProfiles = listProfiles;
+    }
+
+    @Transient
+    public void addPartnerProfile(PartnerProfile profile) {
+        profile.setPartner(this);
+        listProfiles.add(profile);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "bank_account_id")
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    //
+    @Transient
+    public Bank getBank() {
+        return bankAccount != null ? bankAccount.getBank() : null;
+    }
+
+    @Transient
+    public void setBank(Bank bank) {
+        if (bankAccount == null) {
+            bankAccount = new BankAccount();
+        }
+        bankAccount.setBank(bank);
+    }
+
+    @Transient
+    public String getAccountNumber() {
+        return bankAccount != null ? bankAccount.getAccountNumber() : null;
+    }
+
+    @Transient
+    public void setAccountNumber(String accountNumber) {
+        if (bankAccount == null) {
+            bankAccount = new BankAccount();
+        }
+        bankAccount.setAccountNumber(accountNumber);
+    }
+
+    @Transient
+    public String getAccountName() {
+        return bankAccount != null ? bankAccount.getAccountName() : null;
+    }
+
+    @Transient
+    public void setAccountName(String accountName) {
+        if (bankAccount == null) {
+            bankAccount = new BankAccount();
+        }
+        bankAccount.setAccountName(accountName);
+    }
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "main_individual")
+    public Individual getMainIndividual() {
+        return mainIndividual;
+    }
+
+    public void setMainIndividual(Individual mainIndividual) {
+        this.mainIndividual = mainIndividual;
+    }
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "main_address_link")
+    public PartnerAddressLink getMainAddressLink() {
+        return mainAddressLink;
+    }
+
+    public void setMainAddressLink(PartnerAddressLink mainAddressLink) {
+        this.mainAddressLink = mainAddressLink;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "partner")
+    public Set<Individual> getIndividuals() {
+        return individuals;
+    }
+
+    public void setIndividuals(Set<Individual> individuals) {
+        this.individuals = individuals;
+    }
 }

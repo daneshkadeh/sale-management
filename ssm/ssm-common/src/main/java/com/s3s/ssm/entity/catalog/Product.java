@@ -31,7 +31,7 @@ import com.s3s.ssm.entity.config.UploadFile;
 @Table(name = "s_product")
 @Inheritance(strategy = InheritanceType.JOINED)
 @AttributeOverride(name = "id", column = @Column(name = "id", nullable = false, insertable = false, updatable = false))
-public abstract class Product extends AbstractCodeOLObject {
+public class Product extends AbstractCodeOLObject {
     private static final long serialVersionUID = 242255088169346711L;
     private String name;
     // TODO: we should have a method to get and set id directly (with AOP approach)

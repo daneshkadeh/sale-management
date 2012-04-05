@@ -17,14 +17,14 @@ package com.s3s.ssm.view;
 
 import java.util.EventListener;
 
-import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.AbstractBaseIdObject;
 
 /**
  * 
  * @author Phan Hong Phuc
  * @since Feb 22, 2012
  */
-public interface ISavedListener<T extends AbstractIdOLObject> extends EventListener {
+public interface ISavedListener<T extends AbstractBaseIdObject> extends EventListener {
     /**
      * Invoke when the edit view was saved.
      */
