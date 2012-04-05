@@ -24,8 +24,12 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 
 @Entity
-@Table(name = "s_contact_debt")
+@Table(name = "co_contact_debt")
 public class ContactDebt extends AbstractIdOLObject {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4941626566283215149L;
     private Partner partner;
     private Double debtMoney;
     private String currency;

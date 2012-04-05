@@ -17,14 +17,14 @@ package com.s3s.ssm.view;
 
 import java.util.EventObject;
 
-import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.AbstractBaseIdObject;
 
 /**
  * 
  * @author Phan Hong Phuc
  * @since Feb 22, 2012
  */
-public class SavedEvent<T extends AbstractIdOLObject> extends EventObject {
+public class SavedEvent<T extends AbstractBaseIdObject> extends EventObject {
     private static final long serialVersionUID = -3306843792346320138L;
 
     private T entity;

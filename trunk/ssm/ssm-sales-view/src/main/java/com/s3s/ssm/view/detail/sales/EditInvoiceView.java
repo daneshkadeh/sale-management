@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.s3s.ssm.entity.contact.Customer;
+import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.sales.InvoicePaymentStatus;
@@ -94,7 +94,7 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, Invoice entity) {
         super.setReferenceDataModel(refDataModel, entity);
-        refDataModel.putRefDataList(REF_CONTACT, getDaoHelper().getDao(Customer.class).findAll(), null);
+        refDataModel.putRefDataList(REF_CONTACT, getDaoHelper().getDao(Partner.class).findAll(), null);
         // refDataModel.putRefDataList(REF_CURRENCY, getDaoHelper().getDao(SCurrency.class).findAll(), null);
         refDataModel.putRefDataList(REF_STATUS, InvoiceStatus.values());
         refDataModel.putRefDataList(REF_TYPE, InvoiceType.values());

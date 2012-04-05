@@ -15,34 +15,48 @@
 
 package com.s3s.ssm.view.list.contact;
 
-import com.s3s.ssm.entity.contact.Customer;
-import com.s3s.ssm.view.detail.contact.EditCustomerView;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+
+import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
+import com.s3s.ssm.view.detail.contact.EditMultiCustomerView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 /**
- * @author Le Thanh Hoang
+ * 
+ * @author phamcongbang
  * 
  */
-public class ListCustomerView extends AbstractListView<Customer> {
-
+public class ListCustomerView extends AbstractListView<Partner> {
     /**
-     * {@inheritDoc}
+     * 
      */
+    private static final long serialVersionUID = 2964366183405416076L;
+
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListColumnType.TEXT);
         listDataModel.addColumn("name", ListColumnType.TEXT);
+        listDataModel.addColumn("phone", ListColumnType.TEXT);
+        listDataModel.addColumn("fax", ListColumnType.TEXT);
+        listDataModel.addColumn("email", ListColumnType.TEXT);
+        listDataModel.addColumn("website", ListColumnType.TEXT);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected Class<? extends AbstractEditView<Customer>> getEditViewClass() {
-        return EditCustomerView.class;
+    protected Class<? extends AbstractEditView<Partner>> getEditViewClass() {
+        return EditMultiCustomerView.class;
+    }
+
+    @Override
+    protected DetachedCriteria getCriteriaForView() {
+        DetachedCriteria dc = super.getCriteriaForView();
+        dc.createCriteria("listProfiles").add(Restrictions.eq("type", PartnerProfileTypeEnum.CUSTOMER));
+        return dc;
     }
 
 }

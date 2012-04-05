@@ -18,10 +18,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.SessionFactory;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.s3s.ssm.dao.IBaseDao;
+import com.s3s.ssm.interceptor.OptimisticLockingInterceptor;
 
 /**
  * This class help to get DAO from an entity class. Support working with entity.
@@ -30,7 +37,7 @@ import com.s3s.ssm.dao.IBaseDao;
  * 
  */
 @Repository("daoHelper")
-public class DaoHelperImpl implements DaoHelper {
+public class DaoHelperImpl extends HibernateDaoSupport implements DaoHelper {
     private final Map<Class<?>, IBaseDao<?>> mapDAOs = new HashMap<Class<?>, IBaseDao<?>>();
 
     public DaoHelperImpl() {
@@ -62,5 +69,38 @@ public class DaoHelperImpl implements DaoHelper {
             mapDAOs.put(clazz, dao);
         }
         return dao;
+    }
+
+    /**
+     * Down cast a object in the specified class given in parameter. If the object is a hibernate proxy, we load it
+     * before the down casting to remove {@link ClassCastException}.
+     */
+    @SuppressWarnings("unchecked")
+    public static <U extends Object, T extends U> T downCast(final Class<T> entityClass, final U objectToCast) {
+        Assert.notNull(entityClass, "the 'entityClass' parameter cannot be null!");
+        Assert.notNull(objectToCast, "the 'objectToCast' parameter cannot be null!");
+
+        if (objectToCast instanceof HibernateProxy) {
+            return (T) ((HibernateProxy) objectToCast).getHibernateLazyInitializer().getImplementation();
+        } else {
+            return (T) objectToCast;
+        }
+    }
+
+    @Autowired
+    public void anyMethodName(SessionFactory sessionFactory) {
+        setSessionFactory(sessionFactory);
+    }
+
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    protected HibernateTemplate createHibernateTemplate(SessionFactory sessionFactory) {
+        OptimisticLockingInterceptor interceptor = new OptimisticLockingInterceptor();
+
+        sessionFactory.openSession(interceptor);
+        return super.createHibernateTemplate(sessionFactory);
     }
 }

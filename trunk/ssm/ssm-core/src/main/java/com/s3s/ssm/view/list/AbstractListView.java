@@ -77,6 +77,7 @@ import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 
 import com.s3s.ssm.dao.IBaseDao;
+import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.export.exporter.DefaultExporterFactory;
 import com.s3s.ssm.export.exporter.Exporter;
@@ -117,7 +118,7 @@ import com.s3s.ssm.view.edit.AbstractEditView;
  * 
  * @param <T>
  */
-public abstract class AbstractListView<T extends AbstractIdOLObject> extends AbstractView implements
+public abstract class AbstractListView<T extends AbstractBaseIdObject> extends AbstractView implements
         IPageChangeListener, IViewLazyLoadable, ISavedListener<T> {
 
     private static final long serialVersionUID = -1311942671249671111L;
@@ -147,9 +148,6 @@ public abstract class AbstractListView<T extends AbstractIdOLObject> extends Abs
     // TODO use this flag temporarily to prevent init the view more than one time. --> Need to use the Proxy object
     // instead.
     public boolean isInitialized = false;
-
-    private Class<? extends AbstractIdOLObject> parentClass;
-    private Long parentId;
 
     protected List<T> entities = new ArrayList<>();
 

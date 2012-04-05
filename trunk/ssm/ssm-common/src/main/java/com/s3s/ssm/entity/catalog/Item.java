@@ -28,11 +28,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
+import com.s3s.ssm.entity.sales.ItemOriginPrice;
 
 @Entity
 @Table(name = "s_item")
@@ -44,6 +46,8 @@ public class Item extends AbstractIdOLObject {
     private List<UnitOfMeasure> listUom = new ArrayList<>(); // TODO: this should be move to product?
     private Set<ItemPropertyValue> listPropertyValue = new HashSet<>();
     private Set<ItemPrice> listItemPrices = new HashSet<>();
+
+    private ItemOriginPrice mainOriginPrice;
 
     // @ManyToOne
     @ManyToOne(fetch = FetchType.EAGER)
@@ -124,6 +128,15 @@ public class Item extends AbstractIdOLObject {
     public void addItemPrice(ItemPrice itemPrice) {
         itemPrice.setItem(this);
         listItemPrices.add(itemPrice);
+    }
+
+    @OneToOne(mappedBy = "item")
+    public ItemOriginPrice getMainOriginPrice() {
+        return mainOriginPrice;
+    }
+
+    public void setMainOriginPrice(ItemOriginPrice mainOriginPrice) {
+        this.mainOriginPrice = mainOriginPrice;
     }
 
 }

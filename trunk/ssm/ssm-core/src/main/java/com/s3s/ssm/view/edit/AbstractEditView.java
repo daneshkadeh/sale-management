@@ -27,7 +27,7 @@ import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.WindowUtilities;
@@ -38,7 +38,7 @@ import com.s3s.ssm.view.list.AbstractListView;
  * @author Phan Hong Phuc
  * 
  */
-public abstract class AbstractEditView<T extends AbstractIdOLObject> extends AbstractView {
+public abstract class AbstractEditView<T extends AbstractBaseIdObject> extends AbstractView {
     public static final String NEW_TITLE = ControlConfigUtils.getString("label.tab.new");
 
     private static final long serialVersionUID = 5467303241585854634L;

@@ -31,12 +31,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
-import com.s3s.ssm.entity.contact.Supplier;
+import com.s3s.ssm.entity.contact.Partner;
 
 @Entity
 @Table(name = "s_sales_contract")
 public class SalesContract extends AbstractCodeOLObject {
-    private Supplier supplier;
+    private Partner supplier;
     private Date dateContract;
     private Double moneyBeforeTax;
     private Double moneyOfTax;
@@ -47,11 +47,11 @@ public class SalesContract extends AbstractCodeOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id", nullable = false)
-    public Supplier getSupplier() {
+    public Partner getSupplier() {
         return supplier;
     }
 
-    public void setSupplier(Supplier supplier) {
+    public void setSupplier(Partner supplier) {
         this.supplier = supplier;
     }
 

@@ -47,6 +47,7 @@ import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.entity.catalog.SPackage;
 import com.s3s.ssm.entity.catalog.Service;
 import com.s3s.ssm.entity.catalog.Voucher;
+import com.s3s.ssm.entity.config.Address;
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.BankAccount;
 import com.s3s.ssm.entity.config.ExchangeRate;
@@ -57,11 +58,15 @@ import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.entity.config.UploadFile;
 import com.s3s.ssm.entity.contact.ContactDebt;
-import com.s3s.ssm.entity.contact.ContactShop;
-import com.s3s.ssm.entity.contact.Customer;
+import com.s3s.ssm.entity.contact.CustomerProfile;
+import com.s3s.ssm.entity.contact.Individual;
+import com.s3s.ssm.entity.contact.IndividualRoleEnum;
+import com.s3s.ssm.entity.contact.IndividualTitleEnum;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.contact.PartnerCategory;
-import com.s3s.ssm.entity.contact.Supplier;
+import com.s3s.ssm.entity.contact.PartnerProfile;
+import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
+import com.s3s.ssm.entity.contact.SupplierProfile;
 import com.s3s.ssm.entity.finance.ContractPayment;
 import com.s3s.ssm.entity.finance.Payment;
 import com.s3s.ssm.entity.finance.PaymentContent;
@@ -178,9 +183,8 @@ public class SSMDataLoader {
         daoHelper.getDao(ProductPropertyElement.class).deleteAll(
                 daoHelper.getDao(ProductPropertyElement.class).findAll());
 
-        daoHelper.getDao(Supplier.class).deleteAll(daoHelper.getDao(Supplier.class).findAll());
         daoHelper.getDao(ContactDebt.class).deleteAll(daoHelper.getDao(ContactDebt.class).findAll());
-        daoHelper.getDao(Customer.class).deleteAll(daoHelper.getDao(Customer.class).findAll());
+        daoHelper.getDao(Partner.class).deleteAll(daoHelper.getDao(Partner.class).findAll());
         daoHelper.getDao(PartnerCategory.class).deleteAll(daoHelper.getDao(PartnerCategory.class).findAll());
         daoHelper.getDao(Store.class).deleteAll(daoHelper.getDao(Store.class).findAll());
         daoHelper.getDao(Operator.class).deleteAll(daoHelper.getDao(Operator.class).findAll());
@@ -237,9 +241,9 @@ public class SSMDataLoader {
         List<Advantage> listAdvantage = initAdvantage(daoHelper, listItem, listPackage);
 
         List<Operator> listOperator = initOperator(daoHelper);
-        List<Partner> listContact = initContact(daoHelper, listBankAccount);
+        List<Partner> listContact = initCustomer(daoHelper, listBankAccount);
         List<ContactDebt> listContactDebt = initContactDebt(daoHelper, listContact);
-        List<Supplier> listSupplier = initSupplier(daoHelper, listContact, listBankAccount);
+        List<Partner> listSupplier = initSupplier(daoHelper, listContact, listBankAccount);
         List<Store> listStore = initStore(daoHelper, listOperator);
         List<Article> listGoods = initGood(daoHelper, listStore, listItem);
         Set<ItemPrice> listItemPrices = initItemPrice(daoHelper, listItem, listContact);
@@ -556,7 +560,7 @@ public class SSMDataLoader {
     }
 
     private static List<ItemOriginPrice> initItemOriginPrice(DaoHelper daoHelper, List<Item> listItem,
-            List<Supplier> listSupplier) {
+            List<Partner> listSupplier) {
         ItemOriginPrice originPrice = new ItemOriginPrice();
         originPrice.setItem(listItem.get(0));
         originPrice.setOriginalPrice(90.0);
@@ -566,7 +570,7 @@ public class SSMDataLoader {
         return Arrays.asList(originPrice);
     }
 
-    private static List<SalesContract> initSalesContracts(DaoHelper daoHelper, List<Supplier> listSuppliers,
+    private static List<SalesContract> initSalesContracts(DaoHelper daoHelper, List<Partner> listSuppliers,
             List<Item> listItem) {
         SalesContract salesContract = new SalesContract();
         salesContract.setCode("CO123456");
@@ -737,21 +741,34 @@ public class SSMDataLoader {
         return Arrays.asList(store);
     }
 
-    private static List<Supplier> initSupplier(DaoHelper daoHelper, List<Partner> listContact,
+    private static List<Partner> initSupplier(DaoHelper daoHelper, List<Partner> listContact,
             List<BankAccount> listBankAccount) {
-        Supplier supplier = new Supplier();
+        Partner supplier = new Partner();
         supplier.setCode("NIKE");
         supplier.setName("Nike company");
-        supplier.setSex(true); // TODO: why supplier has sex? I think Sex should only be applied on individual
+        // supplier.setSex(true); // TODO: why supplier has sex? I think Sex should only be applied on individual
         // supplier.setPhoneNumber("0909825783");
         // supplier.setMainContact(listContact.get(0));
 
         // supplier.setBankAccount(listBankAccount.get(0));
-        daoHelper.getDao(Supplier.class).saveOrUpdate(supplier);
+        PartnerProfile profile = new SupplierProfile();
+        profile.setPartner(supplier);
+        profile.setType(PartnerProfileTypeEnum.SUPPLIER);
+        supplier.addPartnerProfile(profile);
+
+        supplier.getMainIndividual().setFirstName("Tschumi");
+        supplier.getMainIndividual().setLastName("Jean Paul");
+        supplier.getMainIndividual().setFullName("Jean Paul Tschumi");
+        supplier.getMainIndividual().setPosition("Genernal director");
+        supplier.getMainAddressLink().getAddress().setName("Nike company place");
+        supplier.getMainAddressLink().getAddress().setAddress("1 Harvard Rue");
+        supplier.getMainAddressLink().getAddress().setCity("London");
+        supplier.getMainAddressLink().getAddress().setDistrict("1");
+        daoHelper.getDao(Partner.class).saveOrUpdate(supplier);
         return Arrays.asList(supplier);
     }
 
-    private static List<Partner> initContact(DaoHelper daoHelper, List<BankAccount> listBankAccounts) {
+    private static List<Partner> initCustomer(DaoHelper daoHelper, List<BankAccount> listBankAccounts) {
         PartnerCategory contactType = new PartnerCategory();
         contactType.setCode("B2B");
         contactType.setName("B2B");
@@ -759,7 +776,7 @@ public class SSMDataLoader {
         // contactType.setDescription("Ban si - Bussiness to bussiness");
         daoHelper.getDao(PartnerCategory.class).saveOrUpdate(contactType);
 
-        Partner contact = new Customer();
+        Partner contact = new Partner();
         contact.setCode("CONTYBANLE123");
         contact.setName("Cong ty ban le 123");
         // contact.setFullName("Cong ty ban le 123");
@@ -772,17 +789,28 @@ public class SSMDataLoader {
         // contact.setMaximumDayDebt(100L);
 
         // daoHelper.getDao(Contact.class).saveOrUpdate(contact);
+        PartnerProfile profile = new CustomerProfile();
+        profile.setPartner(contact);
+        profile.setType(PartnerProfileTypeEnum.CUSTOMER);
+        contact.addPartnerProfile(profile);
+        Individual individual = contact.getMainIndividual();
+        individual.setFirstName("Van Tam");
+        individual.setLastName("Nguyen");
+        individual.setFullName("Nguyen Van Tam");
+        individual.setTitle(IndividualTitleEnum.MR);
+        individual.setRole(IndividualRoleEnum.MAIN);
+        individual.setPosition("Ca nhan");
+        individual.setPartner(contact);
 
-        ContactShop shop = new ContactShop();
-        shop.setCode("GIAY_SO_1");
+        Address shop = contact.getMainAddressLink().getAddress();
         shop.setName("Cua hang giay so 1");
         // shop.setContact(contact);
         shop.setAddress("123 Bui vien");
+        shop.setDistrict("1");
+        shop.setCity("Ho Chi Minh");
+        shop.setPostalCode("70000");
         shop.setFixPhone("0909000000");
         shop.setRemark("Mo cua 8h-21h");
-        // daoHelper.getDao(ContactShop.class).saveOrUpdate(shop);
-
-        ((Customer) contact).addShop(shop);
         daoHelper.getDao(Partner.class).saveOrUpdate(contact);
         return Arrays.asList(contact);
     }
