@@ -175,58 +175,41 @@ public class MainProgram {
     }
 
     private static JSplitPane createInstitutionPanel() {
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+        JScrollPane treeMenuScrollPane = new JScrollPane();
         JScrollPane contentViewScrollPane = new JScrollPane();
-        splitPane.setOneTouchExpandable(true);
-        splitPane.setRightComponent(contentViewScrollPane);
-
-        JScrollPane treeMenuScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        JSplitPane leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
-
-        leftSplitPane.setBottomComponent(createLeftBottomPane(createInstitutionDomains(treeMenuScrollPane,
-                contentViewScrollPane)));
-        leftSplitPane.setTopComponent(treeMenuScrollPane);
-
-        splitPane.setLeftComponent(leftSplitPane);
-        splitPane.setLastDividerLocation(splitPane.getLastDividerLocation());
-        return splitPane;
+        List<AbstractDomain> institutionDomains = createInstitutionDomains(treeMenuScrollPane, contentViewScrollPane);
+        return createMainSplitPane(treeMenuScrollPane, contentViewScrollPane, institutionDomains);
     }
 
     private static JSplitPane createOrganizationPanel() {
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+        JScrollPane treeMenuScrollPane = new JScrollPane();
         JScrollPane contentViewScrollPane = new JScrollPane();
-        splitPane.setOneTouchExpandable(true);
-        splitPane.setRightComponent(contentViewScrollPane);
-
-        JScrollPane treeMenuScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        JSplitPane leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
-
-        leftSplitPane.setBottomComponent(createLeftBottomPane(createOrganizationDomains(treeMenuScrollPane,
-                contentViewScrollPane)));
-        leftSplitPane.setTopComponent(treeMenuScrollPane);
-
-        splitPane.setLeftComponent(leftSplitPane);
-        splitPane.setLastDividerLocation(splitPane.getLastDividerLocation());
-        return splitPane;
+        List<AbstractDomain> organizationDomains = createOrganizationDomains(treeMenuScrollPane, contentViewScrollPane);
+        return createMainSplitPane(treeMenuScrollPane, contentViewScrollPane, organizationDomains);
     }
 
     private static JSplitPane createSaleChannelPanel() {
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+        JScrollPane treeMenuScrollPane = new JScrollPane();
         JScrollPane contentViewScrollPane = new JScrollPane();
+        List<AbstractDomain> saleChannelDomains = createSaleChannelDomains(treeMenuScrollPane, contentViewScrollPane);
+        return createMainSplitPane(treeMenuScrollPane, contentViewScrollPane, saleChannelDomains);
+    }
+
+    private static JSplitPane createMainSplitPane(JScrollPane treeMenuScrollPane, JScrollPane contentViewScrollPane,
+            List<AbstractDomain> domains) {
+        treeMenuScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        treeMenuScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false);
         splitPane.setOneTouchExpandable(true);
         splitPane.setRightComponent(contentViewScrollPane);
 
-        JScrollPane treeMenuScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         JSplitPane leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
-
-        leftSplitPane.setBottomComponent(createLeftBottomPane(createSaleChannelDomains(treeMenuScrollPane,
-                contentViewScrollPane)));
         leftSplitPane.setTopComponent(treeMenuScrollPane);
-
+        leftSplitPane.setBottomComponent(createDomainPane(domains));
+        leftSplitPane.setResizeWeight(1);
         splitPane.setLeftComponent(leftSplitPane);
+
         splitPane.setLastDividerLocation(splitPane.getLastDividerLocation());
         return splitPane;
     }
@@ -330,7 +313,7 @@ public class MainProgram {
         return domains;
     }
 
-    private static JPanel createLeftBottomPane(List<AbstractDomain> domains) {
+    private static JPanel createDomainPane(List<AbstractDomain> domains) {
         JPanel panel = new JPanel(new MigLayout("wrap, gap 0, ins 0, fill", "grow"));
         for (AbstractDomain domain : domains) {
             panel.add(domain, "grow");

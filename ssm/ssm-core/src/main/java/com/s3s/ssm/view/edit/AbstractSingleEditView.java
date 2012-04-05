@@ -18,9 +18,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -48,6 +51,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.text.NumberFormatter;
 import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
@@ -339,7 +343,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             pnlEdit = fieldsPanel;
         }
         for (int i = startIndex; i < endIndex; i++) {
-            DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
+            final DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
             String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
                     + attribute.getName());
             String newline = attribute.isNewColumn() ? "right, gapleft 10, " : "right, newline, ";
@@ -516,6 +520,9 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
+
+            // Validate the field when lost focus.
+            dataField.addFocusListener(new ValidationListener(attribute));
             pnlEdit.add(dataField, "split 2");
             JLabel errorIcon = new JLabel(ImageUtils.getIcon(ImageConstants.ERROR_ICON));
             pnlEdit.add(errorIcon);
@@ -806,6 +813,64 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
     public void removePageChangeListener(IPageChangeListener listener) {
         savedListeners.remove(listener);
+    }
+
+    /**
+     * Validation for the field when it lost or gain focus.
+     * 
+     * @author Phan Hong Phuc
+     * @since Apr 5, 2012
+     */
+    private final class ValidationListener implements FocusListener {
+        /**
+         * 
+         */
+        private final DetailAttribute attribute;
+
+        /**
+         * @param attribute
+         */
+        private ValidationListener(DetailAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            AttributeComponent attributeComponent = name2AttributeComponent.get(attribute.getName());
+            JComponent component = attributeComponent.getComponent();
+            if (attribute.getType() == DetailFieldType.TEXTBOX) {
+                try {
+                    ((JFormattedTextField) component).commitEdit();
+                } catch (ParseException e1) {
+                    UIManager.getLookAndFeel().provideErrorFeedback(component);
+                }
+            }
+
+            boolean isRaw = attribute.isRaw();
+            Object value = getComponentValue(component, attribute.getType());
+            bindingValue(entity, attribute.getName(), isRaw, value);
+            if (!isRaw) {
+                Configuration<?> config = Validation.byDefaultProvider().configure();
+                ValidatorFactory factory = config.buildValidatorFactory();
+
+                Validator validator = factory.getValidator();
+                Set<ConstraintViolation<T>> validateResult = validator.validateProperty(entity, attribute.getName());
+                JLabel label = attributeComponent.getLabel();
+                JLabel errorIcon = attributeComponent.getErrorIcon();
+                if (CollectionUtils.isNotEmpty(validateResult)) {
+                    label.setForeground(Color.RED);
+                    errorIcon.setVisible(true);
+                    errorIcon.setToolTipText(validateResult.iterator().next().getMessage());
+                } else {
+                    label.setForeground(Color.BLACK);
+                    errorIcon.setVisible(false);
+                }
+            }
+        }
+
+        @Override
+        public void focusGained(FocusEvent e) {
+        }
     }
 
     /**
