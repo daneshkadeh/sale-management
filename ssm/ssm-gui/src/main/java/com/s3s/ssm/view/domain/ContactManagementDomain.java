@@ -21,6 +21,7 @@ import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
+import com.s3s.ssm.view.list.contact.ListAudienceCategoryView;
 import com.s3s.ssm.view.list.contact.ListCustomerView;
 import com.s3s.ssm.view.list.contact.ListPartnerCategoryView;
 import com.s3s.ssm.view.list.contact.ListSupplierView;
@@ -50,11 +51,14 @@ public class ContactManagementDomain extends AbstractDomain {
                 ControlConfigUtils.getString("JTree.Contact.SupplierContact"), new ListSupplierView()); // "Supplier"
         TreeNodeWithView nguoiDuocTaiTroNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Contact.SupportedContact")); // "Nguoi duoc tai tro"
+        TreeNodeWithView audienceCateNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.Contact.AudienceCategory"), new ListAudienceCategoryView()); //
 
         rootNode.add(customerNode);
         rootNode.add(supplierNode);
         rootNode.add(partnerCateNode);
         rootNode.add(nguoiDuocTaiTroNode);
+        rootNode.add(audienceCateNode);
 
     }
 
