@@ -28,6 +28,10 @@ public class CustomerProfile extends PartnerProfile {
     private static final long serialVersionUID = 7826247385363131306L;
     private Set<AudienceCategory> audienceCates = new HashSet<>();
 
+    public CustomerProfile() {
+        this.setType(PartnerProfileTypeEnum.CUSTOMER);
+    }
+
     @ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @JoinTable(name = "at_partnerprofile_audienceCate", joinColumns = { @JoinColumn(name = "profile_id") }, inverseJoinColumns = { @JoinColumn(name = "audience_cate_id") })
     public

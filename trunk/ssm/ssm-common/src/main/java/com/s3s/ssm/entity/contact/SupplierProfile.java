@@ -18,4 +18,8 @@ public class SupplierProfile extends PartnerProfile {
      * 
      */
     private static final long serialVersionUID = 9203377259650899258L;
+
+    public SupplierProfile() {
+        this.setType(PartnerProfileTypeEnum.SUPPLIER);
+    }
 }
