@@ -57,6 +57,7 @@ import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.entity.config.UploadFile;
+import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.entity.contact.ContactDebt;
 import com.s3s.ssm.entity.contact.CustomerProfile;
 import com.s3s.ssm.entity.contact.Individual;
@@ -202,6 +203,8 @@ public class SSMDataLoader {
         daoHelper.getDao(SCurrency.class).deleteAll(daoHelper.getDao(SCurrency.class).findAll());
         daoHelper.getDao(BankAccount.class).deleteAll(daoHelper.getDao(BankAccount.class).findAll());
         daoHelper.getDao(Bank.class).deleteAll(daoHelper.getDao(Bank.class).findAll());
+
+        daoHelper.getDao(AudienceCategory.class).deleteAll(daoHelper.getDao(AudienceCategory.class).findAll());
     }
 
     private static void testInsertedData(DaoHelper daoHelper) {
@@ -769,6 +772,11 @@ public class SSMDataLoader {
     }
 
     private static List<Partner> initCustomer(DaoHelper daoHelper, List<BankAccount> listBankAccounts) {
+        AudienceCategory aucate = new AudienceCategory();
+        aucate.setCode("Vip1");
+        aucate.setName("Khach hang than thiet");
+        daoHelper.getDao(AudienceCategory.class).saveOrUpdate(aucate);
+
         PartnerCategory contactType = new PartnerCategory();
         contactType.setCode("B2B");
         contactType.setName("B2B");
@@ -792,6 +800,8 @@ public class SSMDataLoader {
         PartnerProfile profile = new CustomerProfile();
         profile.setPartner(contact);
         profile.setType(PartnerProfileTypeEnum.CUSTOMER);
+        ((CustomerProfile) profile).getAudienceCates().add(aucate);
+
         contact.addPartnerProfile(profile);
         Individual individual = contact.getMainIndividual();
         individual.setFirstName("Van Tam");

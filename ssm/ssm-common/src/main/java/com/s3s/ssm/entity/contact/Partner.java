@@ -241,6 +241,15 @@ public class Partner extends AbstractCodeOLObject {
         listProfiles.add(profile);
     }
 
+    public PartnerProfile getPartnerProfile(PartnerProfileTypeEnum type) {
+        for (PartnerProfile profile : listProfiles) {
+            if (profile.getType() == type) {
+                return profile;
+            }
+        }
+        return null;
+    }
+
     @ManyToOne
     @JoinColumn(name = "bank_account_id")
     public BankAccount getBankAccount() {

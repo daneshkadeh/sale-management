@@ -3,6 +3,9 @@ package com.s3s.ssm.view.detail.contact;
 import java.util.Map;
 
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.contact.PartnerProfile;
+import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
+import com.s3s.ssm.entity.contact.SupplierProfile;
 import com.s3s.ssm.view.edit.DetailDataModel;
 
 public class EditSupplierGeneralView extends EditPartnerGeneralView<Partner> {
@@ -14,6 +17,17 @@ public class EditSupplierGeneralView extends EditPartnerGeneralView<Partner> {
 
     public EditSupplierGeneralView(Map<String, Object> request) {
         super(request);
+    }
+
+    @Override
+    protected Partner loadForCreate() {
+        Partner entity = super.loadForCreate();
+        PartnerProfile profile = entity.getPartnerProfile(PartnerProfileTypeEnum.SUPPLIER);
+        if (profile == null) {
+            profile = new SupplierProfile();
+            entity.addPartnerProfile(profile);
+        }
+        return entity;
     }
 
     @Override
