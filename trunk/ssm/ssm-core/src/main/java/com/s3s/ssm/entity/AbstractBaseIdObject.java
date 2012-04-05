@@ -76,4 +76,10 @@ public abstract class AbstractBaseIdObject implements Serializable {
 
         return super.equals(obj);
     }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
 }
