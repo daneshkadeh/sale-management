@@ -42,14 +42,12 @@ public class EditCustomerGeneralView extends EditPartnerGeneralView<Partner> {
             CustomerProfile profile = DaoHelperImpl.downCast(CustomerProfile.class,
                     entity.getPartnerProfile(PartnerProfileTypeEnum.CUSTOMER));
             addAudienceCates(profile, (Collection<AudienceCategory>) (value));
-            // profile.getAudienceCates().addAll((Collection<AudienceCategory>) (value));
-            // profile.setAudienceCates((Collection<AudienceCategory>) (value));
         }
     }
 
     private void addAudienceCates(CustomerProfile profile, Collection<AudienceCategory> collection) {
-        // TODO Auto-generated method stub
-
+        profile.getAudienceCates().removeAll(profile.getAudienceCates());
+        profile.getAudienceCates().addAll(collection);
     }
 
     @Override
