@@ -31,6 +31,9 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 @Entity
 @Table(name = "config_uom_category")
 public class UomCategory extends AbstractCodeOLObject {
+    public static String UNIT_UOM_CATE = "Unit";
+    public static String WEIGHT_UOM_CATE = "Weight";
+    public static String TIME_UOM_CATE = "Time";
     private String name;
     private UomCategory parentUomCategory;
     private Set<UomCategory> subUomCates = new HashSet<UomCategory>();
