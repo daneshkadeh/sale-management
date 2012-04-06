@@ -153,4 +153,10 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
         return values;
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        tree.setEnabled(enabled);
+        list.setEnabled(enabled);
+    }
 }

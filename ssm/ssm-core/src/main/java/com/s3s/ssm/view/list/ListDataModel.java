@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class ListDataModel {
     public enum ListColumnType {
-        TEXT, BOOLEAN, NUMBER, DATE
+        TEXT, BOOLEAN, NUMBER, DATE, LINK
     }
 
     private List<ColumnModel> columns = new ArrayList<>();

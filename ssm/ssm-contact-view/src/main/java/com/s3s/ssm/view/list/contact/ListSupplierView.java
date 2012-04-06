@@ -35,7 +35,7 @@ public class ListSupplierView extends AbstractListView<Partner> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("code", ListColumnType.TEXT);
+        listDataModel.addColumn("code", ListColumnType.LINK); // TODO Phuc: testing
         listDataModel.addColumn("name", ListColumnType.TEXT);
         listDataModel.addColumn("phone", ListColumnType.TEXT);
         listDataModel.addColumn("fax", ListColumnType.TEXT);

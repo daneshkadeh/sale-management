@@ -1,12 +1,15 @@
 package com.s3s.ssm.model;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.ObjectUtils;
+import org.springframework.util.Assert;
 
 /**
  * @author Phan Hong Phuc
  * @since Mar 16, 2012
  */
-public class Money {
+public class Money implements Comparable<Money>, Serializable {
     // TODO Bang: should we change currencyCode to enum type.
     private String currencyCode;
     private Long value;
@@ -109,6 +112,12 @@ public class Money {
             return ObjectUtils.equals(value, m.value) && ObjectUtils.equals(currencyCode, m.getCurrencyCode());
         }
         return super.equals(obj);
+    }
+
+    @Override
+    public int compareTo(Money m) {
+        Assert.isTrue(currencyCode.equals(m.getCurrencyCode()));
+        return value.compareTo(m.getValue());
     }
 
     // public int getDigit() {

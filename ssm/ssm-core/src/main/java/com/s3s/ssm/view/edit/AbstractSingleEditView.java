@@ -52,6 +52,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.text.DefaultFormatter;
 import javax.swing.text.NumberFormatter;
 import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
@@ -172,6 +173,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         setLayout(new MigLayout("hidemode 2, wrap, fillx, ins 0 10 0 10", "grow"));
 
         toolbar = createToolBar();
+        toolbar.setVisible(!isReadOnly());
         // Toolbar
         add(toolbar, "growx, top");
 
@@ -389,6 +391,8 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 } else {
                     // The format type is String
                     dataField = new JFormattedTextField("");
+                    ((DefaultFormatter) ((JFormattedTextField) dataField).getFormatter()).setOverwriteMode(false);
+
                 }
                 ((JFormattedTextField) dataField).setEditable(editable);
                 dataField.setPreferredSize(new Dimension(width, dataField.getHeight()));
@@ -404,6 +408,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 ta.setEditable(true);
                 String txtValue = value != null ? StringUtils.trimToEmpty(String.valueOf(value)) : "";
                 ta.setText(txtValue);
+                ta.setEnabled(!isReadOnly());
                 dataField = new JScrollPane(ta);
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 pnlEdit.add(lblLabel, newline + "top ");
@@ -523,6 +528,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
             // Validate the field when lost focus.
             dataField.addFocusListener(new ValidationListener(attribute));
+            dataField.setEnabled(!isReadOnly());
             pnlEdit.add(dataField, "split 2");
             JLabel errorIcon = new JLabel(ImageUtils.getIcon(ImageConstants.ERROR_ICON));
             pnlEdit.add(errorIcon);
@@ -530,6 +536,10 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             name2AttributeComponent.put(attribute.getName(), new AttributeComponent(lblLabel, dataField, errorIcon));
         }
         return pnlEdit;
+    }
+
+    private boolean isReadOnly() {
+        return Boolean.TRUE.equals(request.get(PARAM_READONLY));
     }
 
     private JLabel createLabel(String label) {

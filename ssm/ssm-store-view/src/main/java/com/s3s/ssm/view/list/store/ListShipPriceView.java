@@ -16,6 +16,8 @@
 
 package com.s3s.ssm.view.list.store;
 
+import javax.swing.SortOrder;
+
 import com.s3s.ssm.entity.store.ShipPrice;
 import com.s3s.ssm.view.detail.store.EditShipPriceView;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -28,6 +30,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
  * 
  */
 public class ListShipPriceView extends AbstractListView<ShipPrice> {
+    private static final long serialVersionUID = -776291159859019764L;
 
     /**
      * {@inheritDoc}
@@ -35,8 +38,8 @@ public class ListShipPriceView extends AbstractListView<ShipPrice> {
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("shipPriceType", ListColumnType.TEXT);
-        listDataModel.addColumn("updateDate", ListColumnType.DATE);
-        listDataModel.addColumn("price", ListColumnType.TEXT);
+        listDataModel.addColumn("updateDate", ListColumnType.DATE).sort(SortOrder.ASCENDING, 0);
+        listDataModel.addColumn("price", ListColumnType.TEXT).sort(SortOrder.ASCENDING, 1);
     }
 
     /**

@@ -179,7 +179,4 @@ public class DetailDataModel {
     public void endGroup() {
         groupList.get(groupList.size() - 1).setEndGroupIndex(detailAttributes.size());
     }
-
-    // public DetailAttribute addParentNode
-
 }

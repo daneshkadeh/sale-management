@@ -51,14 +51,17 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowSorter;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -75,6 +78,9 @@ import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
+import org.jdesktop.swingx.hyperlink.AbstractHyperlinkAction;
+import org.jdesktop.swingx.renderer.DefaultTableRenderer;
+import org.jdesktop.swingx.renderer.HyperlinkProvider;
 
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
@@ -323,9 +329,10 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         mainTableModel = createTableModel();
         tblListEntities.setModel(mainTableModel);
 
-        // Hide the entity column by set width = 0
-        tblListEntities.getColumnModel().getColumn(0).setMinWidth(0);
-        tblListEntities.getColumnModel().getColumn(0).setMaxWidth(0);
+        // Hide the entity id column by set width = 0
+        int numOfColumn = listDataModel.getColumns().size();
+        tblListEntities.getColumnModel().getColumn(numOfColumn).setMinWidth(0);
+        tblListEntities.getColumnModel().getColumn(numOfColumn).setMaxWidth(0);
 
         // /////// Hack at here: when number of column
         tblListEntities.setVisibleColumnCount(0);
@@ -333,6 +340,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         tblListEntities.setVisibleRowCount(getVisibleRowCount());
         tblListEntities.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tblListEntities.setColumnControlVisible(true);
+        setRenderer(listDataModel, tblListEntities);
+        setSorter(listDataModel, tblListEntities);
 
         // Show edit view when double on a such row.
         // check permissions before showing detail view
@@ -417,6 +426,56 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         }
 
         contentPane.add(pagingNavigator);
+    }
+
+    /**
+     * @param ldm
+     * @param mainTable
+     */
+    private void setSorter(ListDataModel ldm, JXTable mainTable) {
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(mainTable.getModel());
+        // Swing API: The precedence of the columns in the sort is indicated by the order of the sort keys in the sort
+        // key list.
+        List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
+        for (int i = 0; i < ldm.getColumns().size(); i++) {
+            for (int j = 0; j < ldm.getColumns().size(); j++) {
+                ColumnModel cm = ldm.getColumns().get(j);
+                if (cm.isSorted() && (cm.getPrecedence() == i)) {
+                    sortKeys.add(new RowSorter.SortKey(j, cm.getSortOrder()));
+                }
+            }
+        }
+        sorter.setSortKeys(sortKeys);
+        mainTable.setRowSorter(sorter);
+    }
+
+    /**
+     * @param listDataModel2
+     * @param tblListEntities2
+     */
+    private void setRenderer(ListDataModel ldm, JXTable mainTable) {
+        for (int i = 0; i < ldm.getColumns().size(); i++) {
+            final ColumnModel columnModel = ldm.getColumns().get(i);
+            TableColumn column = mainTable.getColumnModel().getColumn(i + 1);
+            switch (columnModel.getType()) {
+            case LINK:
+                column.setCellRenderer(new DefaultTableRenderer(new HyperlinkProvider(new AbstractHyperlinkAction<T>() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JOptionPane.showConfirmDialog(AbstractListView.this, "Test");
+                        int selectedRow = tblListEntities.getSelectedRow();
+                        int rowModelIndex = tblListEntities.convertRowIndexToModel(selectedRow);
+                        if (columnModel.isRaw()) {
+
+                        }
+                    }
+                })));
+                break;
+
+            default:
+                break;
+            }
+        }
     }
 
     private JBusyComponent<JScrollPane> createBusyPane(JScrollPane mainScrollpane) {

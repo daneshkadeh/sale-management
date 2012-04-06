@@ -135,4 +135,13 @@ public abstract class AbstractMultiSelectionBox extends JPanel {
     protected JButton getBtnDeselectAll() {
         return btnDeselectAll;
     }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        btnDeselectAll.setEnabled(enabled);
+        btnDeselectSingle.setEnabled(enabled);
+        btnSelectAll.setEnabled(enabled);
+        btnSelectSingle.setEnabled(enabled);
+    }
 }

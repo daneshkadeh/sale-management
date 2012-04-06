@@ -41,6 +41,7 @@ public abstract class AbstractView extends JPanel {
     protected static final String PARAM_ACTION = "action";
     protected static final String PARAM_LIST_VIEW = "listView";
     protected static final String PARAM_ENTITY_ID = "entityId";
+    protected static final String PARAM_READONLY = "readOnly";
 
     protected DaoHelper daoHelper = ConfigProvider.getInstance().getDaoHelper();
 
