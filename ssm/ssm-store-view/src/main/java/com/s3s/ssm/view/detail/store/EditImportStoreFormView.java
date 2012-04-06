@@ -48,8 +48,11 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
      */
     @Override
     protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("item.product.code", ListColumnType.TEXT);
-        listDataModel.addColumn("item.product.name", ListColumnType.TEXT);
+        // TODO: Hoang must set max, min for column
+        listDataModel.addColumn("product.code", ListColumnType.TEXT);
+        listDataModel.addColumn("product.name", ListColumnType.TEXT);
+        listDataModel.addColumn("uom", ListColumnType.TEXT);
+        listDataModel.addColumn("baseUom", ListColumnType.TEXT);
         listDataModel.addColumn("quantity", ListColumnType.TEXT);
         listDataModel.addColumn("priceUnit", ListColumnType.TEXT);
         listDataModel.addColumn("priceSubtotal", ListColumnType.TEXT);
@@ -90,18 +93,19 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
         detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_IMPORT_STORE_STATUS).newColumn();
         detailDataModel.addAttribute("store", DetailFieldType.ENTITY_CHOOSER).cacheDataId(CacheId.REF_LIST_STORE);
+        detailDataModel.addAttribute("mobilizationOrder", DetailFieldType.TEXTBOX).newColumn();
         detailDataModel.addAttribute("salesContract", DetailFieldType.ENTITY_CHOOSER).cacheDataId(
                 CacheId.REF_LIST_SALES_CONTRACT);
+        detailDataModel.addAttribute("importNum", DetailFieldType.TEXTBOX).newColumn();
         detailDataModel.addAttribute("supplierName", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("shipNum", DetailFieldType.TEXTBOX).newColumn();
         detailDataModel.addAttribute("receiptDate", DetailFieldType.DATE);
-        detailDataModel.addAttribute("receiver", DetailFieldType.ENTITY_CHOOSER).cacheDataId(CacheId.REF_LIST_OPERATOR);
-        detailDataModel.addAttribute("sender", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("shipNum", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("shipPriceType", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_SHIP_PRICE_TYPE).newColumn();
+        detailDataModel.addAttribute("receiver", DetailFieldType.ENTITY_CHOOSER).cacheDataId(CacheId.REF_LIST_OPERATOR);
         detailDataModel.addAttribute("shipPrice", DetailFieldType.TEXTBOX).newColumn();
-        detailDataModel.addAttribute("mobilizationOrder", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("importNum", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("sender", DetailFieldType.TEXTBOX);
+
     }
 
     /**

@@ -62,6 +62,9 @@ public class ImportStoreForm extends AbstractCodeOLObject {
     private ShipPriceType shipPriceType;
     private Money shipPrice;
     private Double shipNum = 0D;
+    private Integer qtyTotal;
+    private Money amtTotal;
+    private Money taxTotal;
     private Set<DetailImportStore> detailImportStores = new HashSet<DetailImportStore>();
 
     @Column(name = "created_date")
@@ -233,9 +236,40 @@ public class ImportStoreForm extends AbstractCodeOLObject {
         this.shipNum = shipNum;
     }
 
+    @Column(name = "quantity_total")
+    public Integer getQtyTotal() {
+        return qtyTotal;
+    }
+
+    public void setQtyTotal(Integer qtyTotal) {
+        this.qtyTotal = qtyTotal;
+    }
+
     @Embedded
-    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "shipPrice")),
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "amount_total")),
             @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code")) })
+    public Money getAmtTotal() {
+        return amtTotal;
+    }
+
+    public void setAmtTotal(Money amtTotal) {
+        this.amtTotal = amtTotal;
+    }
+
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "tax_total")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code1")) })
+    public Money getTaxTotal() {
+        return taxTotal;
+    }
+
+    public void setTaxTotal(Money taxTotal) {
+        this.taxTotal = taxTotal;
+    }
+
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "ship_price")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code2")) })
     public Money getShipPrice() {
         return shipPrice;
     }

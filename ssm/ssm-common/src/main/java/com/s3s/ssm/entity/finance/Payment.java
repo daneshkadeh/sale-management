@@ -45,7 +45,8 @@ public class Payment extends AbstractCodeOLObject {
     private Partner partner;
     private Operator operator;
     private PaymentMode paymentMode;
-    private Money money;
+    private Money amount;
+    private Double exchgValue; // compared to default currency
     private Integer rate;
     private String notes;
 
@@ -69,14 +70,23 @@ public class Payment extends AbstractCodeOLObject {
     }
 
     @Embedded
-    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "money")),
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "amount")),
             @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code")) })
-    public Money getMoney() {
-        return money;
+    public Money getAmount() {
+        return amount;
     }
 
-    public void setMoney(Money money) {
-        this.money = money;
+    public void setAmount(Money amount) {
+        this.amount = amount;
+    }
+
+    @Column(name = "exchange_value")
+    public Double getExchgValue() {
+        return exchgValue;
+    }
+
+    public void setExchgValue(Double exchgValue) {
+        this.exchgValue = exchgValue;
     }
 
     @Column(name = "payment_mode")

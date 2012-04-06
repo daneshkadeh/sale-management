@@ -23,22 +23,49 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
+import com.s3s.ssm.entity.catalog.Product;
+import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.model.Money;
 
 @Entity
 @Table(name = "store_detail_import")
 public class DetailImportStore extends AbstractIdOLObject {
     private static final long serialVersionUID = 193415641537228770L;
+    private Integer lineNo;
     private ImportStoreForm importStoreForm;
+    private Product product;
     private Item item;
+    private UnitOfMeasure uom;
+    private UnitOfMeasure baseUom;
     private Integer quantity = 0;
     private Money priceUnit;
     private Money priceSubtotal;
+
+    @Column(name = "line_no")
+    @DecimalMin(value = "1")
+    public Integer getLineNo() {
+        return lineNo;
+    }
+
+    public void setLineNo(Integer lineNo) {
+        this.lineNo = lineNo;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
+    @NotNull
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "form_id")
@@ -62,8 +89,29 @@ public class DetailImportStore extends AbstractIdOLObject {
         this.item = item;
     }
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "uom_id")
+    @NotNull
+    public UnitOfMeasure getUom() {
+        return uom;
+    }
+
+    public void setUom(UnitOfMeasure uom) {
+        this.uom = uom;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "base_uom_id")
+    @NotNull
+    public UnitOfMeasure getBaseUom() {
+        return baseUom;
+    }
+
+    public void setBaseUom(UnitOfMeasure baseUom) {
+        this.baseUom = baseUom;
+    }
+
     @Column(name = "qty")
-    @Min(value = 0)
     public Integer getQuantity() {
         return quantity;
     }
@@ -75,6 +123,7 @@ public class DetailImportStore extends AbstractIdOLObject {
     @Embedded
     @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "price_unit")),
             @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code")) })
+    @NotNull
     public Money getPriceUnit() {
         return priceUnit;
     }

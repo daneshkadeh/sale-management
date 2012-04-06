@@ -401,7 +401,7 @@ public class SSMDataLoader {
         payment.setOperator(listOperator.get(0));
         payment.setPaymentMode(PaymentMode.CASH);
         payment.setRate(21000);
-        payment.setMoney(money);
+        payment.setAmount(money);
         daoHelper.getDao(Payment.class).saveOrUpdate(payment);
 
         // code = serviceProvider.getService(IConfigService.class).generateCode(Payment.class);
@@ -413,7 +413,7 @@ public class SSMDataLoader {
         receipt.setOperator(listOperator.get(0));
         receipt.setPaymentMode(PaymentMode.BANK_TRANSFER);
         receipt.setRate(21000);
-        receipt.setMoney(money);
+        receipt.setAmount(money);
         daoHelper.getDao(Payment.class).saveOrUpdate(receipt);
 
         // code = serviceProvider.getService(IConfigService.class).generateCode(Payment.class);
@@ -425,7 +425,7 @@ public class SSMDataLoader {
         contractPayment.setOperator(listOperator.get(0));
         contractPayment.setPaymentMode(PaymentMode.BANK_TRANSFER);
         contractPayment.setRate(21000);
-        contractPayment.setMoney(money);
+        contractPayment.setAmount(money);
         contractPayment.setSalesContract(listSalesContract.get(0));
         daoHelper.getDao(Payment.class).saveOrUpdate(contractPayment);
         return Arrays.asList(payment, receipt, contractPayment);
@@ -541,7 +541,7 @@ public class SSMDataLoader {
         detail1.setImportStoreForm(form1);
         detail1.setItem(listItem.get(0));
         detail1.setQuantity(20);
-
+        detail1.setUom(daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai"));
         form1.addDetailImports(detail1);
         daoHelper.getDao(ImportStoreForm.class).save(form1);
         return Arrays.asList(form1);
@@ -838,7 +838,7 @@ public class SSMDataLoader {
 
     private static List<UnitOfMeasure> initUOM(DaoHelper daoHelper) {
         UomCategory category = new UomCategory();
-        category.setCode("Weight");
+        category.setCode(UomCategory.WEIGHT_UOM_CATE);
         category.setName("Can nang");
         daoHelper.getDao(UomCategory.class).saveOrUpdate(category);
 
@@ -858,7 +858,7 @@ public class SSMDataLoader {
         daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(gam);
 
         UomCategory category2 = new UomCategory();
-        category2.setCode("Unit");
+        category2.setCode(UomCategory.UNIT_UOM_CATE);
         category2.setName("Don vi dem");
         daoHelper.getDao(UomCategory.class).saveOrUpdate(category2);
 
@@ -867,7 +867,7 @@ public class SSMDataLoader {
         // pair.setName(""); // TODO: error UTF-8 here. Please careful for production
         cai.setName("Cai");
         cai.setUomCategory(category2);
-        cai.setIsBaseMeasure(false);
+        cai.setIsBaseMeasure(true);
         daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(cai);
         return Arrays.asList(cai, gam, cai);
     }

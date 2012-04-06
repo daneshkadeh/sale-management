@@ -6,6 +6,7 @@ import java.util.List;
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.Organization;
 import com.s3s.ssm.entity.config.SCurrency;
+import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.contact.Partner;
 
 public interface IConfigService {
@@ -53,5 +54,9 @@ public interface IConfigService {
     public List<Organization> getOrganizations();
 
     public SCurrency getDefCurrency();
+
+    public List<UnitOfMeasure> getUnitUom();
+
+    public UnitOfMeasure getBaseUnitUom();
 
 }

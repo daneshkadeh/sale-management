@@ -40,8 +40,18 @@ public class EditPaymentView extends AbstractSingleEditView<Payment> {
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_CONTENT);
         detailDataModel.addAttribute("paymentMode", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_MODE);
-        detailDataModel.addAttribute("money", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
-        detailDataModel.addAttribute("rate", DetailFieldType.TEXTBOX).newColumn();
+        detailDataModel.addAttribute("amount", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+        detailDataModel.addAttribute("exchgValue", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+        detailDataModel.addAttribute("rate", DetailFieldType.LABEL).newColumn();
         detailDataModel.addAttribute("notes", DetailFieldType.TEXTAREA);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, Payment entity) {
+        super.customizeComponents(name2AttributeComponent, entity);
+    }
+
 }

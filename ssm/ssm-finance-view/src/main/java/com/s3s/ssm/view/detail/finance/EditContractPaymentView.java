@@ -52,7 +52,7 @@ public class EditContractPaymentView extends AbstractSingleEditView<ContractPaym
                 .referenceDataId(REF_SALES_CONTRACT);
         detailDataModel.addAttribute("paymentMode", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_MODE);
-        detailDataModel.addAttribute("money", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+        detailDataModel.addAttribute("amount", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("rate", DetailFieldType.TEXTBOX).newColumn();
         detailDataModel.addAttribute("notes", DetailFieldType.TEXTAREA);
     }
