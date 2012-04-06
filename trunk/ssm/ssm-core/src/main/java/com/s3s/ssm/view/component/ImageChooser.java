@@ -156,4 +156,10 @@ public class ImageChooser extends JPanel {
     public byte[] getImageData() {
         return imageData;
     }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        hyperLinkBrowseImg.setEnabled(enabled);
+        btnRemoveImg.setEnabled(enabled);
+    }
 }

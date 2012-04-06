@@ -17,6 +17,8 @@ package com.s3s.ssm.view.list;
 
 import javax.swing.SortOrder;
 
+import org.springframework.util.Assert;
+
 import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 
 /**
@@ -28,9 +30,12 @@ public class ColumnModel {
     private boolean isRaw;
     private ListColumnType type;
     private boolean isSummarized; // show sum values in footer or not. It must be Number type.
+    private Object value;
 
+    // For sorting.
     private boolean isSorted;
     private SortOrder sortOrder;
+    private int precedence;
 
     public ColumnModel(String name, ListColumnType type) {
         super();
@@ -63,9 +68,39 @@ public class ColumnModel {
         return this;
     }
 
-    public ColumnModel sort(SortOrder order) {
+    public boolean isSorted() {
+        return isSorted;
+    }
+
+    public SortOrder getSortOrder() {
+        return sortOrder;
+    }
+
+    public int getPrecedence() {
+        return precedence;
+    }
+
+    public ColumnModel sort(SortOrder order, int precedence) {
         this.isSorted = true;
         this.sortOrder = order;
+        this.precedence = precedence;
+        return this;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    /**
+     * Set the initial value for the raw attribute.
+     * 
+     * @param value
+     *            the initial value for the attribute.
+     * @return
+     */
+    public ColumnModel value(Object value) {
+        Assert.isTrue(isRaw, "Not allow to set value for not raw attribute.");
+        this.value = value;
         return this;
     }
 

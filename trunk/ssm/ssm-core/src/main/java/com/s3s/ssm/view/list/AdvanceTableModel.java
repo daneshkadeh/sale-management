@@ -55,26 +55,26 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
         T entity = entities.get(rowIndex);
         beanWrapper = new BeanWrapperImpl(entity);
         // The hide extra column contain the entity ID
-        if (columnIndex == 0) {
+        if (columnIndex == listDataModel.getColumns().size()) {
             return entity.getId();
         }
 
-        ColumnModel dataModel = listDataModel.getColumns().get(columnIndex - 1);
+        ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
         return beanWrapper.getPropertyValue(dataModel.getName());
     }
 
     @Override
     public int getColumnCount() {
-        return listDataModel.getColumns().size() + 1; // Add a more column contain entity value.
+        return listDataModel.getColumns().size() + 1; // Add a more column contain entityId value.
     }
 
     @Override
     public String getColumnName(int column) {
-        if (column == 0) {
+        if (column == listDataModel.getColumns().size()) {
             return "";
         }
         return ControlConfigUtils.getString("label." + clazz.getSimpleName() + "."
-                + listDataModel.getColumns().get(column - 1).getName());
+                + listDataModel.getColumns().get(column).getName());
     }
 
     @Override
@@ -87,10 +87,10 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex == 0) {
+        if (columnIndex == listDataModel.getColumns().size()) {
             return Long.class; // Type of entityId is Long.
         }
-        return getClassOfField(listDataModel.getColumns().get(columnIndex - 1).getName());
+        return getClassOfField(listDataModel.getColumns().get(columnIndex).getName());
     }
 
     private Class<?> getClassOfField(String fieldName) {

@@ -108,6 +108,12 @@ public class MoneyComponent extends JPanel {
         return Money.create((String) currencyCodeField.getSelectedItem(), (Long) valueField.getValue());
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        valueField.setEnabled(enabled);
+        currencyCodeField.setEnabled(enabled);
+    }
+
     public void setMoney(Money money) {
         valueField.setValue(money.getValue());
         currencyCodeField.setSelectedItem(money.getCurrencyCode());

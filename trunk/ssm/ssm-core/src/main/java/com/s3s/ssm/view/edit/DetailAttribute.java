@@ -147,6 +147,7 @@ public class DetailAttribute {
      * @return
      */
     public DetailAttribute value(Object value) {
+        Assert.isTrue(isRaw, "Not allow to set value for not raw attribute.");
         this.value = value;
         return this;
     }

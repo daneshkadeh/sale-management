@@ -27,8 +27,6 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.s3s.ssm.entity.catalog.Advantage;
 import com.s3s.ssm.entity.catalog.Article;
@@ -117,7 +115,7 @@ public class SSMDataLoader {
         // String classpath = MainProgram.class.getClassLoader().get
         DOMConfigurator.configure("src/main/resources/log4j.xml");
         s_logger.info("Starting data loader SSM...");
-        ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
+        // ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
 
         ConfigProvider configProvider = ConfigProvider.getInstance();
         DaoHelper daoHelper = configProvider.getDaoHelper();

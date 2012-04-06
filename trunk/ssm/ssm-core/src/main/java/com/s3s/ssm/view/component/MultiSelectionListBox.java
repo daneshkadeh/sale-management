@@ -221,4 +221,11 @@ public class MultiSelectionListBox<T> extends AbstractMultiSelectionBox {
     protected void doDeselectSingle() {
         move(lstDest, lstSource, false);
     }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        lstSource.setEnabled(enabled);
+        lstDest.setEnabled(enabled);
+    }
 }

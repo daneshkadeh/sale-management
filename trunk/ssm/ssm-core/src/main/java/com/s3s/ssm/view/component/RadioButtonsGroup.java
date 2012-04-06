@@ -103,4 +103,11 @@ public class RadioButtonsGroup<T> extends JPanel {
         }
         return null;
     }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        for (JRadioButton rb : radioBtn2Value.keySet()) {
+            rb.setEnabled(enabled);
+        }
+    }
 }

@@ -28,6 +28,7 @@ import javax.persistence.Version;
  */
 @MappedSuperclass
 public abstract class AbstractIdOLObject extends AbstractBaseIdObject {
+    private static final long serialVersionUID = -4709212848984538326L;
     private String userInserted;
     private Date dateInserted;
     private String userLastUpdate;

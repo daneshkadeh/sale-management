@@ -75,16 +75,12 @@ public abstract class AbstractBaseIdObject implements Serializable {
                 return true;
             }
         }
-
         return super.equals(obj);
     }
 
     @Override
     public int hashCode() {
-        if (id == null) {
-            return RandomUtils.nextInt();
-        }
-        return id.hashCode();
+        return id == null ? RandomUtils.nextInt() : id.hashCode();
     }
 
 }
