@@ -29,7 +29,7 @@ public class ListContractPaymentView extends AbstractListView<ContractPayment> {
         listDataModel.addColumn("partner", ListColumnType.TEXT);
         listDataModel.addColumn("operator", ListColumnType.TEXT);
         listDataModel.addColumn("paymentMode", ListColumnType.TEXT);
-        listDataModel.addColumn("money", ListColumnType.TEXT);
+        listDataModel.addColumn("amount", ListColumnType.TEXT);
     }
 
     @Override

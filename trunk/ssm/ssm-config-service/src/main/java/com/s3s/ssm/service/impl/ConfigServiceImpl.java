@@ -17,6 +17,8 @@ import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.ExchangeRate;
 import com.s3s.ssm.entity.config.Organization;
 import com.s3s.ssm.entity.config.SCurrency;
+import com.s3s.ssm.entity.config.UnitOfMeasure;
+import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.util.CacheId;
@@ -37,6 +39,8 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
                     this.getClass().getMethod("getPartners"));
             getCacheDataService().registerCache(CacheId.REF_LIST_ORGANIZATION, this,
                     this.getClass().getMethod("getOrganizations"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_UNIT_UOM, this,
+                    this.getClass().getMethod("getUnitUom"));
         } catch (NoSuchMethodException | SecurityException e) {
             throw new RuntimeException("Cannot register method to cache service!", e);
         }
@@ -186,5 +190,30 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     public List<Organization> getOrganizations() {
         List<Organization> organizations = getDaoHelper().getDao(Organization.class).findAll();
         return organizations;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UnitOfMeasure> getUnitUom() {
+        DetachedCriteria dc = getDaoHelper().getDao(UnitOfMeasure.class).getCriteria();
+        dc.createAlias("uomCategory", "uomCategory");
+        dc.add(Restrictions.eq("uomCategory.code", UomCategory.UNIT_UOM_CATE));
+        List<UnitOfMeasure> uomList = getDaoHelper().getDao(UnitOfMeasure.class).findByCriteria(dc);
+        return uomList;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UnitOfMeasure getBaseUnitUom() {
+        DetachedCriteria dc = getDaoHelper().getDao(UnitOfMeasure.class).getCriteria();
+        dc.createAlias("uomCategory", "uomCategory");
+        dc.add(Restrictions.eq("uomCategory.code", UomCategory.UNIT_UOM_CATE));
+        dc.add(Restrictions.eq("isBaseMeasure", true));
+        List<UnitOfMeasure> uomList = getDaoHelper().getDao(UnitOfMeasure.class).findByCriteria(dc);
+        return uomList.size() > 0 ? uomList.get(0) : null;
     }
 }

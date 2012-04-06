@@ -14,17 +14,29 @@
  */
 package com.s3s.ssm.view.detail.store;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.Map;
 
+import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+
 import com.s3s.ssm.entity.catalog.Item;
+import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.store.DetailImportStore;
 import com.s3s.ssm.entity.store.ImportStoreForm;
+import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.view.component.IMoneyChangedListener;
+import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
+import com.s3s.ssm.view.util.StoreHelper;
 
 public class EditDetailImportStoreView extends AbstractSingleEditView<DetailImportStore> {
+    private static String REF_ITEM_LIST = "0";
 
     public EditDetailImportStoreView(Map<String, Object> entity) {
         super(entity);
@@ -32,11 +44,13 @@ public class EditDetailImportStoreView extends AbstractSingleEditView<DetailImpo
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, DetailImportStore entity) {
-        detailDataModel.addAttribute("item.product.code", DetailFieldType.LABEL);
-        detailDataModel.addAttribute("item.product.name", DetailFieldType.LABEL);
+        detailDataModel.addAttribute("product", DetailFieldType.ENTITY_CHOOSER).cacheDataId(CacheId.REF_LIST_PRODUCT);
+        detailDataModel.addAttribute("item", DetailFieldType.DROPDOWN).referenceDataId(REF_ITEM_LIST);
+        detailDataModel.addAttribute("uom", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_UNIT_UOM);
+        detailDataModel.addAttribute("baseUom", DetailFieldType.DROPDOWN);
         detailDataModel.addAttribute("quantity", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("priceUnit", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("priceSubtotal", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("priceUnit", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+        detailDataModel.addAttribute("priceSubtotal", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
     }
 
     /**
@@ -44,16 +58,50 @@ public class EditDetailImportStoreView extends AbstractSingleEditView<DetailImpo
      */
     @Override
     protected DetailImportStore loadForCreate() {
+        // TODO:Hoang should get from ContextProvider
+        UnitOfMeasure baseUom = serviceProvider.getService(IConfigService.class).getBaseUnitUom();
+        // TODO:Hoang ahould get parent form
         ImportStoreForm importStore = new ImportStoreForm();
-        Item item = new Item();
         DetailImportStore detail = super.loadForCreate();
         detail.setImportStoreForm(importStore);
-        detail.setItem(item);
+        detail.setBaseUom(baseUom);
         return detail;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void
+            customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, DetailImportStore entity) {
+        super.customizeComponents(name2AttributeComponent, entity);
+        final JTextField tfdQuantity = (JTextField) name2AttributeComponent.get("quantity").getComponent();
+        final MoneyComponent mPriceUnit = (MoneyComponent) name2AttributeComponent.get("priceUnit").getComponent();
+        final MoneyComponent mSubtotal = (MoneyComponent) name2AttributeComponent.get("priceSubtotal").getComponent();
+        tfdQuantity.addFocusListener(new FocusListener() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                mSubtotal.setMoney(StoreHelper.calculatePriceSubtotal(tfdQuantity.getText(), mPriceUnit.getMoney()));
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+            }
+        });
+        mPriceUnit.addMoneyChangeListener(new IMoneyChangedListener() {
+
+            @Override
+            public void doMoneyChanged(ChangeEvent e) {
+                mSubtotal.setMoney(StoreHelper.calculatePriceSubtotal(tfdQuantity.getText(), mPriceUnit.getMoney()));
+            }
+        });
+
     }
 
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, DetailImportStore entity) {
         super.setReferenceDataModel(refDataModel, entity);
+        // TODO: Hoang handle after user selects product
+        refDataModel.putRefDataList(REF_ITEM_LIST, getDaoHelper().getDao(Item.class).findAll(), null);
     }
 }

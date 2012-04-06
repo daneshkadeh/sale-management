@@ -40,7 +40,7 @@ public class EditReceiptView extends AbstractSingleEditView<Payment> {
                 .cacheDataId(CacheId.REF_LIST_RECEIPT_CONTENT);
         detailDataModel.addAttribute("paymentMode", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_MODE);
-        detailDataModel.addAttribute("money", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+        detailDataModel.addAttribute("amount", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("rate", DetailFieldType.TEXTBOX).newColumn();
         detailDataModel.addAttribute("notes", DetailFieldType.TEXTAREA);
     }
