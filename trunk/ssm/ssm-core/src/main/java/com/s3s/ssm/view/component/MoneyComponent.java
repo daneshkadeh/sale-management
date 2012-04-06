@@ -15,6 +15,7 @@
 
 package com.s3s.ssm.view.component;
 
+import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -66,6 +67,8 @@ public class MoneyComponent extends JPanel {
                 fireMoneyChanged();
             }
         });
+        // TODO Phuc: This workaround for nimbus minimum width for Combobox
+        ccf.setMinimumSize(new Dimension(ccf.getPreferredSize().width + 3, ccf.getMinimumSize().height));
         return ccf;
     }
 
