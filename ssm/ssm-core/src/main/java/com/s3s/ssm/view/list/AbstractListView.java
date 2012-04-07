@@ -321,13 +321,13 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         tblListEntities.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // if (e.getClickCount() == 2) {
-                // // JXTable target = (JXTable)e.getSource();
-                // // int row = target.getSelectedRow();
-                // // int column = target.getSelectedColumn();
-                // // // do some action
-                // performEditAction();
-                // }
+                if (!listDataModel.isEditable() && e.getClickCount() == 2) {
+                    // JXTable target = (JXTable)e.getSource();
+                    // int row = target.getSelectedRow();
+                    // int column = target.getSelectedColumn();
+                    // // do some action
+                    performEditAction();
+                }
             }
         });
         // //////////////// Create footer table //////////////////////////////
