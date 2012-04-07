@@ -50,6 +50,10 @@ public class ListDataModel {
         return columns;
     }
 
+    public ColumnModel getColumn(int index) {
+        return columns.get(index);
+    }
+
     public boolean isEditable() {
         return isEditable;
     }

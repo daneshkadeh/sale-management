@@ -36,6 +36,7 @@ import com.s3s.ssm.entity.contact.Partner;
 @Entity
 @Table(name = "s_invoice")
 public class Invoice extends AbstractIdOLObject {
+    private static final long serialVersionUID = 5993442648457138659L;
     private String invoiceNumber;
     private InvoiceType type;
     private Partner contact;

@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
@@ -51,7 +52,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
  */
 public class SAdvanceTable extends JXTable {
     private static final long serialVersionUID = 6141561051329763125L;
-    private static final int EDITOR_HEIGHT = 30;
+    private static final int EDITOR_HEIGHT = 25;
     private ListDataModel listDataModel;
     private ReferenceDataModel refDataModel;
 
@@ -64,15 +65,43 @@ public class SAdvanceTable extends JXTable {
         // Highlight the row when mouse over.
         addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, UIManager.getColor("Table.dropLineColor"),
                 null));
-        setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        int selectionMode = listDataModel.isEditable() ? ListSelectionModel.SINGLE_SELECTION
+                : ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
+        setSelectionMode(selectionMode);
         setColumnControlVisible(true);
+
         setRenderer();
         setEditor();
         setSorter();
 
-        // ***---***--- TODO Phuc just set when the table in edit mode
         if (listDataModel.isEditable()) {
             setRowHeight(EDITOR_HEIGHT);
+        }
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                packAll();
+                setColumnWidth();
+            }
+        });
+    }
+
+    private void setColumnWidth() {
+        for (int i = 0; i < listDataModel.getColumns().size(); i++) {
+            TableColumn tc = getColumnModel().getColumn(i);
+            ColumnModel cm = listDataModel.getColumn(i);
+            if (cm.getWidth() != null) {
+                tc.setPreferredWidth(cm.getWidth());
+                tc.setWidth(cm.getWidth());
+            }
+            if (cm.getMaxWidth() != null) {
+                tc.setMaxWidth(cm.getMaxWidth());
+            }
+            if (cm.getMinWidth() != null) {
+                tc.setMinWidth(cm.getMinWidth());
+            }
         }
     }
 

@@ -39,13 +39,9 @@ import javax.swing.AbstractListModel;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Box;
-import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -54,17 +50,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.RowSorter;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -78,10 +70,6 @@ import org.divxdede.swing.busy.JBusyComponent;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.hyperlink.AbstractHyperlinkAction;
-import org.jdesktop.swingx.renderer.DefaultTableRenderer;
-import org.jdesktop.swingx.renderer.HyperlinkProvider;
-import org.jdesktop.swingx.table.DatePickerCellEditor;
 
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
@@ -418,86 +406,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      */
     protected ReferenceDataModel initReferenceDataModel() {
         return new ReferenceDataModel();
-    }
-
-    /**
-     * @param ldm
-     * @param mainTable
-     */
-    private void setEditor(ListDataModel ldm, JXTable mainTable) {
-        for (int i = 0; i < ldm.getColumns().size(); i++) {
-            TableColumn tc = mainTable.getColumnModel().getColumn(i);
-            ColumnModel cm = ldm.getColumns().get(i);
-            TableCellEditor editor = null;
-            switch (cm.getEditorType()) {
-            case TEXTFIELD:
-                editor = new DefaultCellEditor(new JFormattedTextField());
-                break;
-            case CHECKBOX:
-                editor = new DefaultCellEditor(new JCheckBox());
-                break;
-            case DATE_PICKER:
-                editor = new DatePickerCellEditor();
-                break;
-            case COMBOBOX:
-                Object[] listData = refDataModel.getRefDataListMap().get(cm.getReferenceDataId()).getValues().toArray();
-                JComboBox<?> comboBox = new JComboBox<>(listData);
-                editor = new DefaultCellEditor(comboBox);
-            default:
-                break;
-            }
-            tc.setCellEditor(editor);
-        }
-    }
-
-    /**
-     * @param ldm
-     * @param mainTable
-     */
-    private void setSorter(ListDataModel ldm, JXTable mainTable) {
-        TableRowSorter<TableModel> sorter = new TableRowSorter<>(mainTable.getModel());
-        // Swing API: The precedence of the columns in the sort is indicated by the order of the sort keys in the sort
-        // key list.
-        List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
-        for (int i = 0; i < ldm.getColumns().size(); i++) {
-            for (int j = 0; j < ldm.getColumns().size(); j++) {
-                ColumnModel cm = ldm.getColumns().get(j);
-                if (cm.isSorted() && (cm.getPrecedence() == i)) {
-                    sortKeys.add(new RowSorter.SortKey(j, cm.getSortOrder()));
-                }
-            }
-        }
-        sorter.setSortKeys(sortKeys);
-        mainTable.setRowSorter(sorter);
-    }
-
-    /**
-     * @param listDataModel2
-     * @param tblListEntities2
-     */
-    private void setRenderer(ListDataModel ldm, JXTable mainTable) {
-        for (int i = 0; i < ldm.getColumns().size(); i++) {
-            final ColumnModel columnModel = ldm.getColumns().get(i);
-            TableColumn column = mainTable.getColumnModel().getColumn(i);
-            switch (columnModel.getRendererType()) {
-            case LINK:
-                column.setCellRenderer(new DefaultTableRenderer(new HyperlinkProvider(new AbstractHyperlinkAction<T>() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        // TODO Phuc
-                        JOptionPane.showConfirmDialog(AbstractListView.this, "Test");
-                        int selectedRow = tblListEntities.getSelectedRow();
-                        int rowModelIndex = tblListEntities.convertRowIndexToModel(selectedRow);
-                        if (columnModel.isRaw()) {
-
-                        }
-                    }
-                })));
-                break;
-            default:
-                break;
-            }
-        }
     }
 
     private JBusyComponent<JScrollPane> createBusyPane(JScrollPane mainScrollpane) {
@@ -850,7 +758,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     rowHeader.repaint();
                     rowHeader.revalidate();
 
-                    tblListEntities.packAll(); // resize all column fit to their contents
+                    // tblListEntities.packAll(); // resize all column fit to their contents
                 } catch (InterruptedException | ExecutionException e) {
                     logger.error(e.getMessage());
                     isInitialized = false;
