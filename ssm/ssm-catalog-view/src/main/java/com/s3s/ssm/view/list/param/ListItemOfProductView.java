@@ -24,7 +24,7 @@ import com.s3s.ssm.view.detail.param.EditItemView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListItemOfProductView extends AbstractListView<Item> {
     private static final long serialVersionUID = -9117809072273053963L;
@@ -35,10 +35,10 @@ public class ListItemOfProductView extends AbstractListView<Item> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("product", ListColumnType.TEXT);
-        listDataModel.addColumn("sumUomName", ListColumnType.TEXT);
-        listDataModel.addColumn("baseSellPrice", ListColumnType.TEXT);
-        listDataModel.addColumn("currency", ListColumnType.TEXT);
+        listDataModel.addColumn("product", ListRendererType.TEXT);
+        listDataModel.addColumn("sumUomName", ListRendererType.TEXT);
+        listDataModel.addColumn("baseSellPrice", ListRendererType.TEXT);
+        listDataModel.addColumn("currency", ListRendererType.TEXT);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class DetailAttribute {
     private boolean isAutoComplete = false;
     // private List<ParentNodeInfo> parentNodePath = new ArrayList<>();
 
-    /** The property for layout the attribute. The attribute after this attribute is rendered in new line or not. */
+    /** The property for layout the attribute. The attribute is rendered in new line or not. */
     private boolean newColumn = false;
     private int width;
 
@@ -106,7 +106,7 @@ public class DetailAttribute {
         return this;
     }
 
-    /** Add new column. (The next attribute will be rendered in new column). */
+    /** Add new column. (The attribute will be rendered in new column). */
     public DetailAttribute newColumn() {
         this.newColumn = true;
         return this;

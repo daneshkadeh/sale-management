@@ -12,7 +12,7 @@ import com.s3s.ssm.view.edit.AbstractMasterDetailView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class EditProductProperty extends AbstractMasterDetailView<ProductProperty, ProductPropertyElement> {
     private static final long serialVersionUID = 1L;
@@ -24,8 +24,8 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
 
     @Override
     protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("id", ListColumnType.TEXT);
-        listDataModel.addColumn("value", ListColumnType.TEXT);
+        listDataModel.addColumn("id", ListRendererType.TEXT);
+        listDataModel.addColumn("value", ListRendererType.TEXT);
     }
 
     @Override

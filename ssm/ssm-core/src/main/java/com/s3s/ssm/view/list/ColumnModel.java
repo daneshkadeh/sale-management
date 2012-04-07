@@ -19,7 +19,8 @@ import javax.swing.SortOrder;
 
 import org.springframework.util.Assert;
 
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 /**
  * @author Phan Hong Phuc
@@ -28,19 +29,35 @@ import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
 public class ColumnModel {
     private String name;
     private boolean isRaw;
-    private ListColumnType type;
+    private ListRendererType rendererType;
+    private ListEditorType editorType;
     private boolean isSummarized; // show sum values in footer or not. It must be Number type.
     private Object value;
+    private boolean isEditable = true;
+
+    private String referenceDataId;
 
     // For sorting.
     private boolean isSorted;
     private SortOrder sortOrder;
     private int precedence;
 
-    public ColumnModel(String name, ListColumnType type) {
+    /**
+     * Init the column model with name, rendererType, and default value for editorType is
+     * {@link ListEditorType#TEXTFIELD}.
+     * 
+     * @param name
+     * @param rendererType
+     */
+    public ColumnModel(String name, ListRendererType rendererType) {
+        this(name, rendererType, ListEditorType.TEXTFIELD);
+    }
+
+    public ColumnModel(String name, ListRendererType rendererType, ListEditorType editorType) {
         super();
         this.name = name;
-        this.type = type;
+        this.rendererType = rendererType;
+        this.editorType = editorType;
     }
 
     public boolean isRaw() {
@@ -55,8 +72,12 @@ public class ColumnModel {
         return name;
     }
 
-    public ListColumnType getType() {
-        return type;
+    public ListRendererType getRendererType() {
+        return rendererType;
+    }
+
+    public ListEditorType getEditorType() {
+        return editorType;
     }
 
     public boolean isSummarized() {
@@ -101,6 +122,33 @@ public class ColumnModel {
     public ColumnModel value(Object value) {
         Assert.isTrue(isRaw, "Not allow to set value for not raw attribute.");
         this.value = value;
+        return this;
+    }
+
+    public String getReferenceDataId() {
+        return referenceDataId;
+    }
+
+    public ColumnModel referenceDataId(String referenceDataId) {
+        Assert.isTrue(editorType == ListEditorType.COMBOBOX, "Reference data is now just supported for "
+                + ListEditorType.COMBOBOX.toString() + " type");
+        this.referenceDataId = referenceDataId;
+        return this;
+    }
+
+    public boolean isEditable() {
+        return isEditable;
+    }
+
+    /**
+     * Set this column can not be editable <br/>
+     * Pay attention: this method is just meaningful when the {@link ListDataModel#isEditable()} is true.
+     * 
+     * @param isEditable
+     * @return
+     */
+    public ColumnModel notEditable() {
+        this.isEditable = false;
         return this;
     }
 

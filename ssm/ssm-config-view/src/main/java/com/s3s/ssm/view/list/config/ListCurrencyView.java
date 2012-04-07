@@ -20,15 +20,15 @@ import com.s3s.ssm.view.detail.config.EditCurrencyView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListCurrencyView extends AbstractListView<SCurrency> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("name", ListColumnType.TEXT);
-        listDataModel.addColumn("symbol", ListColumnType.TEXT);
-        listDataModel.addColumn("isActive", ListColumnType.BOOLEAN);
+        listDataModel.addColumn("name", ListRendererType.TEXT);
+        listDataModel.addColumn("symbol", ListRendererType.TEXT);
+        listDataModel.addColumn("isActive", ListRendererType.BOOLEAN);
 
     }
 

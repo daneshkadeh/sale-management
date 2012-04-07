@@ -19,7 +19,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import org.apache.commons.lang.ClassUtils;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 public final class Solution3sClassUtils extends ClassUtils {
 
@@ -83,5 +83,14 @@ public final class Solution3sClassUtils extends ClassUtils {
             throw new RuntimeException("field " + fieldName + " or its setter/getter method does not exist in class "
                     + clazz.getName());
         }
+    }
+
+    public static Class<?> getClassOfField(String fieldName, Class<?> clazz) {
+        String[] paths = StringUtils.split(fieldName, '.');
+        Class<?> c = clazz; // original class is class of current entity.
+        for (String path : paths) {
+            c = Solution3sClassUtils.getGetterMethod(c, path).getReturnType();
+        }
+        return c;
     }
 }

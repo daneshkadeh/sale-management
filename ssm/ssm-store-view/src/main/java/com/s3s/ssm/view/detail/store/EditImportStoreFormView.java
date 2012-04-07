@@ -32,7 +32,7 @@ import com.s3s.ssm.view.edit.AbstractMasterDetailView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStoreForm, DetailImportStore> {
 
@@ -49,13 +49,13 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
     @Override
     protected void initialListDetailPresentationView(ListDataModel listDataModel) {
         // TODO: Hoang must set max, min for column
-        listDataModel.addColumn("product.code", ListColumnType.TEXT);
-        listDataModel.addColumn("product.name", ListColumnType.TEXT);
-        listDataModel.addColumn("uom", ListColumnType.TEXT);
-        listDataModel.addColumn("baseUom", ListColumnType.TEXT);
-        listDataModel.addColumn("quantity", ListColumnType.TEXT);
-        listDataModel.addColumn("priceUnit", ListColumnType.TEXT);
-        listDataModel.addColumn("priceSubtotal", ListColumnType.TEXT);
+        listDataModel.addColumn("product.code", ListRendererType.TEXT);
+        listDataModel.addColumn("product.name", ListRendererType.TEXT);
+        listDataModel.addColumn("uom", ListRendererType.TEXT);
+        listDataModel.addColumn("baseUom", ListRendererType.TEXT);
+        listDataModel.addColumn("quantity", ListRendererType.TEXT);
+        listDataModel.addColumn("priceUnit", ListRendererType.TEXT);
+        listDataModel.addColumn("priceSubtotal", ListRendererType.TEXT);
     }
 
     /**

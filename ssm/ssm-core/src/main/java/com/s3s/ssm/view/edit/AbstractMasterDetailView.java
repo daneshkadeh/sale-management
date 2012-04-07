@@ -27,6 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
@@ -159,6 +160,11 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         @Override
         protected void initialPresentationView(ListDataModel listDataModel) {
             initialListDetailPresentationView(listDataModel);
+        }
+
+        @Override
+        protected ReferenceDataModel initReferenceDataModel() {
+            return refDataModel;
         }
 
         @Override

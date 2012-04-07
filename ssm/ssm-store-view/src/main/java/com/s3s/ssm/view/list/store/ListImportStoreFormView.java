@@ -19,13 +19,13 @@ import com.s3s.ssm.view.detail.store.EditImportStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListImportStoreFormView extends AbstractListView<ImportStoreForm> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("code", ListColumnType.TEXT);
+        listDataModel.addColumn("code", ListRendererType.TEXT);
     }
 
     @Override

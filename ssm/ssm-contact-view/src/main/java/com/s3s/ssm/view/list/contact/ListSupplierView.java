@@ -23,7 +23,7 @@ import com.s3s.ssm.view.detail.contact.EditMultiSupplierView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 /**
  * 
@@ -35,12 +35,12 @@ public class ListSupplierView extends AbstractListView<Partner> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("code", ListColumnType.LINK); // TODO Phuc: testing
-        listDataModel.addColumn("name", ListColumnType.TEXT);
-        listDataModel.addColumn("phone", ListColumnType.TEXT);
-        listDataModel.addColumn("fax", ListColumnType.TEXT);
-        listDataModel.addColumn("email", ListColumnType.TEXT);
-        listDataModel.addColumn("website", ListColumnType.TEXT);
+        listDataModel.addColumn("code", ListRendererType.LINK); // TODO Phuc: testing
+        listDataModel.addColumn("name", ListRendererType.TEXT);
+        listDataModel.addColumn("phone", ListRendererType.TEXT);
+        listDataModel.addColumn("fax", ListRendererType.TEXT);
+        listDataModel.addColumn("email", ListRendererType.TEXT);
+        listDataModel.addColumn("website", ListRendererType.TEXT);
     }
 
     @Override

@@ -38,8 +38,8 @@ public class EditDetailInvoiceVirtualView extends AbstractSingleEditView<DetailI
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, DetailInvoice entity) {
         super.setReferenceDataModel(refDataModel, entity);
-        refDataModel.putRefDataList(REF_ITEM, getDaoHelper().getDao(Item.class).findAll(), null);
-        refDataModel.putRefDataList(REF_PACKLINE, getDaoHelper().getDao(PackageLine.class).findAll(), null);
+        refDataModel.putRefDataList(REF_ITEM, getDaoHelper().getDao(Item.class).findAll());
+        refDataModel.putRefDataList(REF_PACKLINE, getDaoHelper().getDao(PackageLine.class).findAll());
         refDataModel.putRefDataList(REF_TYPE, DetailInvoiceType.values());
         refDataModel.putRefDataList(REF_STATUS, DetailInvoiceStatus.values());
     }

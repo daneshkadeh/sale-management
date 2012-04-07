@@ -39,9 +39,13 @@ import javax.swing.AbstractListModel;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Box;
+import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -50,14 +54,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
@@ -75,12 +78,10 @@ import org.divxdede.swing.busy.JBusyComponent;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.decorator.ColorHighlighter;
-import org.jdesktop.swingx.decorator.HighlightPredicate;
-import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.hyperlink.AbstractHyperlinkAction;
 import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.renderer.HyperlinkProvider;
+import org.jdesktop.swingx.table.DatePickerCellEditor;
 
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
@@ -91,6 +92,7 @@ import com.s3s.ssm.export.exporter.ExporterFactory;
 import com.s3s.ssm.export.exporter.ExporterNotFoundException;
 import com.s3s.ssm.export.exporter.ExportingException;
 import com.s3s.ssm.export.view.ExportDialog;
+import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.security.CustomPermission;
 import com.s3s.ssm.util.ConfigProvider;
@@ -159,6 +161,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     // This model is used by sub classes.
     protected final ListDataModel listDataModel = new ListDataModel();
+    private ReferenceDataModel refDataModel = new ReferenceDataModel();
 
     private Action addAction;
     private Action editAction;
@@ -317,48 +320,28 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         pagingNavigator = new PagingNavigator(calculateTotalPages());
         pagingNavigator.addPageChangeListener(this);
         entities = loadData(pagingNavigator.getCurrentPage());
+        refDataModel = initReferenceDataModel();
 
         // ///////////////// Init main table ////////////////////////////////
-        tblListEntities = new JXTable();
-        tblListEntities.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        tblListEntities.addHighlighter(HighlighterFactory.createSimpleStriping());
-        // Highlight the row when mouse over.
-        tblListEntities.addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, UIManager
-                .getColor("Table.dropLineColor"), null));
-
         mainTableModel = createTableModel();
-        tblListEntities.setModel(mainTableModel);
-
-        // Hide the entity id column by set width = 0
-        int numOfColumn = listDataModel.getColumns().size();
-        tblListEntities.getColumnModel().getColumn(numOfColumn).setMinWidth(0);
-        tblListEntities.getColumnModel().getColumn(numOfColumn).setMaxWidth(0);
-
-        // /////// Hack at here: when number of column
-        tblListEntities.setVisibleColumnCount(0);
+        tblListEntities = new SAdvanceTable(mainTableModel, listDataModel, refDataModel);
 
         tblListEntities.setVisibleRowCount(getVisibleRowCount());
-        tblListEntities.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        tblListEntities.setColumnControlVisible(true);
-        setRenderer(listDataModel, tblListEntities);
-        setSorter(listDataModel, tblListEntities);
 
         // Show edit view when double on a such row.
         // check permissions before showing detail view
-        if (permissionSet.contains(CustomPermission.ADMINISTRATION) || permissionSet.contains(CustomPermission.READ)) {
-            tblListEntities.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 2) {
-                        // JXTable target = (JXTable)e.getSource();
-                        // int row = target.getSelectedRow();
-                        // int column = target.getSelectedColumn();
-                        // // do some action
-                        performEditAction();
-                    }
-                }
-            });
-        }
+        tblListEntities.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // if (e.getClickCount() == 2) {
+                // // JXTable target = (JXTable)e.getSource();
+                // // int row = target.getSelectedRow();
+                // // int column = target.getSelectedColumn();
+                // // // do some action
+                // performEditAction();
+                // }
+            }
+        });
         // //////////////// Create footer table //////////////////////////////
         FooterTableModel footerModel = new FooterTableModel(mainTableModel);
 
@@ -429,6 +412,45 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     /**
+     * The subclass should override this method to set data model for the editor component when the cell in edit mode.
+     * 
+     * @param rdm
+     */
+    protected ReferenceDataModel initReferenceDataModel() {
+        return new ReferenceDataModel();
+    }
+
+    /**
+     * @param ldm
+     * @param mainTable
+     */
+    private void setEditor(ListDataModel ldm, JXTable mainTable) {
+        for (int i = 0; i < ldm.getColumns().size(); i++) {
+            TableColumn tc = mainTable.getColumnModel().getColumn(i);
+            ColumnModel cm = ldm.getColumns().get(i);
+            TableCellEditor editor = null;
+            switch (cm.getEditorType()) {
+            case TEXTFIELD:
+                editor = new DefaultCellEditor(new JFormattedTextField());
+                break;
+            case CHECKBOX:
+                editor = new DefaultCellEditor(new JCheckBox());
+                break;
+            case DATE_PICKER:
+                editor = new DatePickerCellEditor();
+                break;
+            case COMBOBOX:
+                Object[] listData = refDataModel.getRefDataListMap().get(cm.getReferenceDataId()).getValues().toArray();
+                JComboBox<?> comboBox = new JComboBox<>(listData);
+                editor = new DefaultCellEditor(comboBox);
+            default:
+                break;
+            }
+            tc.setCellEditor(editor);
+        }
+    }
+
+    /**
      * @param ldm
      * @param mainTable
      */
@@ -456,12 +478,13 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private void setRenderer(ListDataModel ldm, JXTable mainTable) {
         for (int i = 0; i < ldm.getColumns().size(); i++) {
             final ColumnModel columnModel = ldm.getColumns().get(i);
-            TableColumn column = mainTable.getColumnModel().getColumn(i + 1);
-            switch (columnModel.getType()) {
+            TableColumn column = mainTable.getColumnModel().getColumn(i);
+            switch (columnModel.getRendererType()) {
             case LINK:
                 column.setCellRenderer(new DefaultTableRenderer(new HyperlinkProvider(new AbstractHyperlinkAction<T>() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        // TODO Phuc
                         JOptionPane.showConfirmDialog(AbstractListView.this, "Test");
                         int selectedRow = tblListEntities.getSelectedRow();
                         int rowModelIndex = tblListEntities.convertRowIndexToModel(selectedRow);
@@ -471,7 +494,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     }
                 })));
                 break;
-
             default:
                 break;
             }
@@ -629,16 +651,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     protected abstract Class<? extends AbstractEditView<T>> getEditViewClass();
 
-    private Class<?> getClassOfField(String fieldName) {
-
-        String[] paths = StringUtils.split(fieldName, '.');
-        Class<?> clazz = getEntityClass(); // original class is class of current entity.
-        for (String path : paths) {
-            clazz = Solution3sClassUtils.getGetterMethod(clazz, path).getReturnType();
-        }
-        return clazz;
-    }
-
     @SuppressWarnings("unchecked")
     protected Class<T> getEntityClass() {
         return (Class<T>) Solution3sClassUtils.getArgumentClass(getClass());
@@ -654,12 +666,12 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            if (columnIndex == 0) {
+            if (columnIndex == listDataModel.getColumns().size()) {
                 return null;
             }
-            ColumnModel column = listDataModel.getColumns().get(columnIndex - 1); // decrease 1 because the hidden
+            ColumnModel column = listDataModel.getColumns().get(columnIndex); // decrease 1 because the hidden
             if (column.isSummarized()) {
-                Class<?> fieldClass = getClassOfField(column.getName());
+                Class<?> fieldClass = Solution3sClassUtils.getClassOfField(column.getName(), getEntityClass());
                 if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
                     int sum = 0;
                     for (int i = 0; i < mainTableModel.getRowCount(); i++) {
@@ -694,10 +706,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            if (columnIndex == 0) {
-                return getEntityClass();
-            }
-            return getClassOfField(listDataModel.getColumns().get(columnIndex - 1).getName());
+            return mainTableModel.getColumnClass(columnIndex);
         }
 
     }
@@ -747,13 +756,15 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     private void performEditAction() {
-        int selectedRow = tblListEntities.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this), "Please select a row to edit",
-                    "Warning", JOptionPane.OK_OPTION, JOptionPane.WARNING_MESSAGE);
-        } else {
-            int rowModel = tblListEntities.convertRowIndexToModel(selectedRow);
-            showEditView(entities.get(rowModel), EditActionEnum.EDIT);
+        if (permissionSet.contains(CustomPermission.ADMINISTRATION) || permissionSet.contains(CustomPermission.READ)) {
+            int selectedRow = tblListEntities.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this),
+                        "Please select a row to edit", "Warning", JOptionPane.OK_OPTION, JOptionPane.WARNING_MESSAGE);
+            } else {
+                int rowModel = tblListEntities.convertRowIndexToModel(selectedRow);
+                showEditView(entities.get(rowModel), EditActionEnum.EDIT);
+            }
         }
     }
 

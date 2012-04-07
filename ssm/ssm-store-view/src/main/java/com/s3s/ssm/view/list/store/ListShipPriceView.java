@@ -23,7 +23,7 @@ import com.s3s.ssm.view.detail.store.EditShipPriceView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 /**
  * @author Le Thanh Hoang
@@ -37,9 +37,9 @@ public class ListShipPriceView extends AbstractListView<ShipPrice> {
      */
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("shipPriceType", ListColumnType.TEXT);
-        listDataModel.addColumn("updateDate", ListColumnType.DATE).sort(SortOrder.ASCENDING, 0);
-        listDataModel.addColumn("price", ListColumnType.TEXT).sort(SortOrder.ASCENDING, 1);
+        listDataModel.addColumn("shipPriceType", ListRendererType.TEXT);
+        listDataModel.addColumn("updateDate", ListRendererType.DATE).sort(SortOrder.ASCENDING, 0);
+        listDataModel.addColumn("price", ListRendererType.TEXT).sort(SortOrder.ASCENDING, 1);
     }
 
     /**

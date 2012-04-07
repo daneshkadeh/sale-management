@@ -19,16 +19,16 @@ import com.s3s.ssm.view.detail.param.EditProductTypeView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListProductTypeView extends AbstractListView<ProductType> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("id", ListColumnType.TEXT);
-        listDataModel.addColumn("code", ListColumnType.TEXT);
-        listDataModel.addColumn("name", ListColumnType.TEXT);
-        listDataModel.addColumn("productFamilyType", ListColumnType.TEXT);
+        listDataModel.addColumn("id", ListRendererType.TEXT);
+        listDataModel.addColumn("code", ListRendererType.TEXT);
+        listDataModel.addColumn("name", ListRendererType.TEXT);
+        listDataModel.addColumn("productFamilyType", ListRendererType.TEXT);
     }
 
     @Override

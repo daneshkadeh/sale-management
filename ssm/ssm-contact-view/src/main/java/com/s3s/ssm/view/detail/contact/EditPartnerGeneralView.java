@@ -49,6 +49,7 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
 
     public EditPartnerGeneralView(Map<String, Object> request) {
         super(request);
+        setEnabled(false);
     }
 
     @Override
@@ -70,8 +71,7 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
         // detailDataModel.addRawAttribute("rawAttribute2", DetailFieldType.DROPDOWN).value("value 2")
         // .referenceDataId(TEST_ID);
         // detailDataModel.addRawAttribute("rawAttribute3", DetailFieldType.MULTI_SELECT_TREE_BOX);
-        // detailDataModel.addRawAttribute("rawAttribute4", DetailFieldType.MONEY).value(Money.zero("VND"))
-        // .referenceDataId(MONEY_ID);
+        detailDataModel.addRawAttribute("rawAttribute4", DetailFieldType.MONEY).value(null).referenceDataId(MONEY_ID);
         // detailDataModel.addRawAttribute("rawLabel", DetailFieldType.LABEL).value("Hello label");
 
         detailDataModel.tab("Main address", "Address of Partner", null);
@@ -105,6 +105,7 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
         // TODO Auto-generated method stub
         super.setReferenceDataModel(refDataModel, entity);
         refDataModel.putRefDataList(PARTNER_TITLE, IndividualTitleEnum.values());
+        refDataModel.putRefDataList(MONEY_ID, new String[] { "USD", "VND", "HPP" });
     }
 
     // Just try to keep demo code from Phuc

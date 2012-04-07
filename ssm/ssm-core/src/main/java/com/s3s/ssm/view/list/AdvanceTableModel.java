@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -54,25 +53,25 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
     public Object getValueAt(int rowIndex, int columnIndex) {
         T entity = entities.get(rowIndex);
         beanWrapper = new BeanWrapperImpl(entity);
-        // The hide extra column contain the entity ID
-        if (columnIndex == listDataModel.getColumns().size()) {
-            return entity.getId();
-        }
-
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
         return beanWrapper.getPropertyValue(dataModel.getName());
     }
 
     @Override
     public int getColumnCount() {
-        return listDataModel.getColumns().size() + 1; // Add a more column contain entityId value.
+        return listDataModel.getColumns().size();
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        if (listDataModel.isEditable()) {
+            return listDataModel.getColumns().get(columnIndex).isEditable();
+        }
+        return false;
     }
 
     @Override
     public String getColumnName(int column) {
-        if (column == listDataModel.getColumns().size()) {
-            return "";
-        }
         return ControlConfigUtils.getString("label." + clazz.getSimpleName() + "."
                 + listDataModel.getColumns().get(column).getName());
     }
@@ -87,18 +86,7 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex == listDataModel.getColumns().size()) {
-            return Long.class; // Type of entityId is Long.
-        }
-        return getClassOfField(listDataModel.getColumns().get(columnIndex).getName());
+        return Solution3sClassUtils.getClassOfField(listDataModel.getColumns().get(columnIndex).getName(), clazz);
     }
 
-    private Class<?> getClassOfField(String fieldName) {
-        String[] paths = StringUtils.split(fieldName, '.');
-        Class<?> c = clazz; // original class is class of current entity.
-        for (String path : paths) {
-            c = Solution3sClassUtils.getGetterMethod(c, path).getReturnType();
-        }
-        return c;
-    }
 }

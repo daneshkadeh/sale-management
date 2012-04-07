@@ -20,7 +20,7 @@ import com.s3s.ssm.view.detail.store.EditStoreView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 /**
  * @author Le Thanh Hoang
@@ -33,13 +33,13 @@ public class ListStoreView extends AbstractListView<Store> {
      */
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("code", ListColumnType.TEXT);
-        listDataModel.addColumn("name", ListColumnType.TEXT);
-        listDataModel.addColumn("address", ListColumnType.TEXT);
-        listDataModel.addColumn("storedAddress", ListColumnType.TEXT);
-        listDataModel.addColumn("importAddress", ListColumnType.TEXT);
-        listDataModel.addColumn("exportAddress", ListColumnType.TEXT);
-        listDataModel.addColumn("manager", ListColumnType.TEXT);
+        listDataModel.addColumn("code", ListRendererType.TEXT);
+        listDataModel.addColumn("name", ListRendererType.TEXT);
+        listDataModel.addColumn("address", ListRendererType.TEXT);
+        listDataModel.addColumn("storedAddress", ListRendererType.TEXT);
+        listDataModel.addColumn("importAddress", ListRendererType.TEXT);
+        listDataModel.addColumn("exportAddress", ListRendererType.TEXT);
+        listDataModel.addColumn("manager", ListRendererType.TEXT);
     }
 
     /**
