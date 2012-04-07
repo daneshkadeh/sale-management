@@ -42,6 +42,11 @@ public class ColumnModel {
     private SortOrder sortOrder;
     private int precedence;
 
+    // null value stand for default width
+    private Integer width;
+    private Integer maxWidth;
+    private Integer minWidth;
+
     /**
      * Init the column model with name, rendererType, and default value for editorType is
      * {@link ListEditorType#TEXTFIELD}.
@@ -152,4 +157,32 @@ public class ColumnModel {
         return this;
     }
 
+    public Integer getWidth() {
+        return width;
+    }
+
+    /**
+     * Set prefer width, min width, max width. </br> By default, the table already automatically calculate the width of
+     * column base on it contents.
+     * 
+     * @param width
+     *            the prefer width, null if default.
+     * @param minWidth
+     *            the min width, null if default.
+     * @param maxWidth
+     *            the max width, null if default.
+     * @return
+     */
+    public ColumnModel width(Integer width, Integer minWidth, Integer maxWidth) {
+        this.width = width;
+        return this;
+    }
+
+    public Integer getMaxWidth() {
+        return maxWidth;
+    }
+
+    public Integer getMinWidth() {
+        return minWidth;
+    }
 }
