@@ -758,7 +758,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     rowHeader.repaint();
                     rowHeader.revalidate();
 
-                    // tblListEntities.packAll(); // resize all column fit to their contents
+                    tblListEntities.packAll(); // resize all column fit to their contents
                 } catch (InterruptedException | ExecutionException e) {
                     logger.error(e.getMessage());
                     isInitialized = false;

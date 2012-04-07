@@ -27,7 +27,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
@@ -78,14 +77,12 @@ public class SAdvanceTable extends JXTable {
         if (listDataModel.isEditable()) {
             setRowHeight(EDITOR_HEIGHT);
         }
+    }
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                packAll();
-                setColumnWidth();
-            }
-        });
+    @Override
+    public void packAll() {
+        super.packAll();
+        setColumnWidth();
     }
 
     private void setColumnWidth() {
