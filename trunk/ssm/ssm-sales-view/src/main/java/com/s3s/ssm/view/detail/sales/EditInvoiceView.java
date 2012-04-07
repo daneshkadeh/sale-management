@@ -18,8 +18,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.s3s.ssm.entity.catalog.Item;
+import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.sales.DetailInvoice;
+import com.s3s.ssm.entity.sales.DetailInvoiceStatus;
+import com.s3s.ssm.entity.sales.DetailInvoiceType;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.sales.InvoicePaymentStatus;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
@@ -31,13 +35,18 @@ import com.s3s.ssm.view.edit.AbstractMasterDetailView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInvoice> {
 
-    private static final String REF_TYPE = "type";
+    private static final String REF_ITEM = "item";
+    private static final String REF_PACKLINE = "packageLine";
+    private static final String REF_INVOICE_TYPE = "type";
+    private static final String REF_D_INVOICE_TYPE = "detailtype";
     private static final String REF_CONTACT = "contact";
-    private static final String REF_STATUS = "status";
+    private static final String REF_INVOICE_STATUS = "status";
+    private static final String REF_D_INVOICE_STATUS = "detailstatus";
     private static final String REF_PAY_STATUS = "paymentStatus";
     private static final String REF_CURRENCY = "currency";
 
@@ -47,13 +56,17 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
 
     @Override
     protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("item", ListColumnType.TEXT);
-        listDataModel.addColumn("packageLine", ListColumnType.TEXT);
-        listDataModel.addColumn("amount", ListColumnType.TEXT);
-        listDataModel.addColumn("priceAfterTax", ListColumnType.TEXT);
-        listDataModel.addColumn("moneyAfterTax", ListColumnType.TEXT);
-        listDataModel.addColumn("type", ListColumnType.TEXT);
-        listDataModel.addColumn("status", ListColumnType.TEXT);
+        listDataModel.setEditable(true);
+        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_ITEM);
+        listDataModel.addColumn("packageLine", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
+                REF_PACKLINE);
+        listDataModel.addColumn("amount", ListRendererType.TEXT);
+        listDataModel.addColumn("priceAfterTax", ListRendererType.TEXT);
+        listDataModel.addColumn("moneyAfterTax", ListRendererType.TEXT);
+        listDataModel.addColumn("type", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
+                REF_D_INVOICE_TYPE);
+        listDataModel.addColumn("status", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
+                REF_D_INVOICE_STATUS);
     }
 
     @Override
@@ -77,7 +90,7 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Invoice entity) {
         detailDataModel.addAttribute("invoiceNumber", DetailFieldType.TEXTBOX).editable(false);
-        detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).referenceDataId(REF_TYPE);
+        detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_TYPE);
         detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
 
         // TODO: contact will be chosen from and listSearchView
@@ -86,7 +99,7 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
 
         // TODO: how to identify currency for an invoice, if 1 item is USD, 1 item is VND
         // detailDataModel.addAttribute("currency", FieldTypeEnum.DROPDOWN).referenceDataId(REF_CURRENCY);
-        detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN).referenceDataId(REF_STATUS);
+        detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_STATUS);
         detailDataModel.addAttribute("paymentStatus", DetailFieldType.DROPDOWN).referenceDataId(REF_PAY_STATUS);
 
     }
@@ -94,11 +107,15 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, Invoice entity) {
         super.setReferenceDataModel(refDataModel, entity);
-        refDataModel.putRefDataList(REF_CONTACT, getDaoHelper().getDao(Partner.class).findAll(), null);
-        // refDataModel.putRefDataList(REF_CURRENCY, getDaoHelper().getDao(SCurrency.class).findAll(), null);
-        refDataModel.putRefDataList(REF_STATUS, InvoiceStatus.values());
-        refDataModel.putRefDataList(REF_TYPE, InvoiceType.values());
+        refDataModel.putRefDataList(REF_CONTACT, getDaoHelper().getDao(Partner.class).findAll());
+        // refDataModel.putRefDataList(REF_CURRENCY, getDaoHelper().getDao(SCurrency.class).findAll());
+        refDataModel.putRefDataList(REF_INVOICE_STATUS, InvoiceStatus.values());
+        refDataModel.putRefDataList(REF_INVOICE_TYPE, InvoiceType.values());
+        refDataModel.putRefDataList(REF_D_INVOICE_STATUS, DetailInvoiceStatus.values());
+        refDataModel.putRefDataList(REF_D_INVOICE_TYPE, DetailInvoiceType.values());
         refDataModel.putRefDataList(REF_PAY_STATUS, InvoicePaymentStatus.values());
+        refDataModel.putRefDataList(REF_ITEM, getDaoHelper().getDao(Item.class).findAll());
+        refDataModel.putRefDataList(REF_PACKLINE, getDaoHelper().getDao(PackageLine.class).findAll());
     }
 
     @Override

@@ -128,7 +128,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
     private BeanWrapper beanWrapper;
 
-    private final ReferenceDataModel refDataModel = new ReferenceDataModel();
+    protected final ReferenceDataModel refDataModel = new ReferenceDataModel();
 
     private NotifyPanel notifyPanel;
 
@@ -350,6 +350,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                     + attribute.getName());
             String newline = attribute.isNewColumn() ? "right, gapleft 10, " : "right, newline, ";
             int width = attribute.getWidth() == 0 ? UIConstants.DEFAULT_WIDTH : attribute.getWidth();
+
             if (attribute.isMandatory()) {
                 label += " (*)";
             }

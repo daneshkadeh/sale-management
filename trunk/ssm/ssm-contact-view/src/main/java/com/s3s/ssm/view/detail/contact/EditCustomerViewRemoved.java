@@ -29,7 +29,7 @@ import com.s3s.ssm.view.edit.AbstractMasterDetailView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 // This view will be removed. Just keep to refactor code
 public class EditCustomerViewRemoved extends AbstractMasterDetailView<Partner, Address> {
@@ -42,16 +42,16 @@ public class EditCustomerViewRemoved extends AbstractMasterDetailView<Partner, A
 
     @Override
     protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("name", ListColumnType.TEXT);
-        listDataModel.addColumn("address", ListColumnType.TEXT);
-        listDataModel.addColumn("district", ListColumnType.TEXT);
-        listDataModel.addColumn("city", ListColumnType.TEXT);
-        listDataModel.addColumn("postalCode", ListColumnType.TEXT);
-        listDataModel.addColumn("phone", ListColumnType.TEXT);
-        listDataModel.addColumn("fixPhone", ListColumnType.TEXT);
-        listDataModel.addColumn("fax", ListColumnType.TEXT);
-        listDataModel.addColumn("email", ListColumnType.TEXT);
-        listDataModel.addColumn("remark", ListColumnType.TEXT);
+        listDataModel.addColumn("name", ListRendererType.TEXT);
+        listDataModel.addColumn("address", ListRendererType.TEXT);
+        listDataModel.addColumn("district", ListRendererType.TEXT);
+        listDataModel.addColumn("city", ListRendererType.TEXT);
+        listDataModel.addColumn("postalCode", ListRendererType.TEXT);
+        listDataModel.addColumn("phone", ListRendererType.TEXT);
+        listDataModel.addColumn("fixPhone", ListRendererType.TEXT);
+        listDataModel.addColumn("fax", ListRendererType.TEXT);
+        listDataModel.addColumn("email", ListRendererType.TEXT);
+        listDataModel.addColumn("remark", ListRendererType.TEXT);
     }
 
     /**

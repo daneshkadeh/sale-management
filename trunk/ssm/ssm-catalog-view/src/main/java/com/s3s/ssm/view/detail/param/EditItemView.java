@@ -28,7 +28,7 @@ import com.s3s.ssm.view.edit.AbstractMasterDetailView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 /**
  * This view is only used to TEST. A list items should be shown on 1 product config. The entity tree view is required
@@ -67,9 +67,9 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
 
     @Override
     protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("partnerCategory", ListColumnType.TEXT);
-        listDataModel.addColumn("sellPrice", ListColumnType.TEXT);
-        listDataModel.addColumn("currency", ListColumnType.TEXT);
+        listDataModel.addColumn("partnerCategory", ListRendererType.TEXT);
+        listDataModel.addColumn("sellPrice", ListRendererType.TEXT);
+        listDataModel.addColumn("currency", ListRendererType.TEXT);
 
     }
 

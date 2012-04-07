@@ -71,9 +71,10 @@ public class TreeView extends JTree implements TreeSelectionListener {
         }
 
         JPanel viewOfNode = node.getView();
-        if (viewOfNode == null) {
-            return;
-        }
+        // if (viewOfNode == null) {
+        // JOptionPane.showMessageDialog(this.getParent(), "The view is not supported", "Error",
+        // JOptionPane.ERROR_MESSAGE);
+        // }
         if (viewOfNode instanceof IViewLazyLoadable) {
             ((IViewLazyLoadable) viewOfNode).loadView();
         }

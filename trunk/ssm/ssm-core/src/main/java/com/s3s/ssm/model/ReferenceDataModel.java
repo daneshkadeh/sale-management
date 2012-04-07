@@ -44,6 +44,10 @@ public class ReferenceDataModel {
         refDataListMap.put(refId, refData);
     }
 
+    public void putRefDataList(String refId, List<?> values) {
+        putRefDataList(refId, values, null);
+    }
+
     public void putRefDataList(String refId, List<?> values, ListCellRenderer<?> renderer) {
         if (renderer == null) {
             renderer = getDefaultListCellRenderer();
@@ -53,8 +57,7 @@ public class ReferenceDataModel {
     }
 
     private ListCellRenderer<?> getDefaultListCellRenderer() {
-        ListCellRenderer<?> renderer;
-        renderer = new DefaultListCellRenderer() {
+        return new DefaultListCellRenderer() {
             private static final long serialVersionUID = -2480226005447134931L;
 
             @Override
@@ -66,9 +69,7 @@ public class ReferenceDataModel {
                 }
                 return this;
             }
-
         };
-        return renderer;
     }
 
     public void putRefDataList(String refId, Object[] values) {

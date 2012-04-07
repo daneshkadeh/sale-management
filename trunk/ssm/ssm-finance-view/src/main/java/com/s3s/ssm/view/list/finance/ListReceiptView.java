@@ -23,17 +23,17 @@ import com.s3s.ssm.view.detail.finance.EditReceiptView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListColumnType;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListReceiptView extends AbstractListView<Payment> {
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("code", ListColumnType.TEXT);
-        listDataModel.addColumn("paymentDate", ListColumnType.TEXT);
-        listDataModel.addColumn("partner", ListColumnType.TEXT);
-        listDataModel.addColumn("operator", ListColumnType.TEXT);
-        listDataModel.addColumn("paymentMode", ListColumnType.TEXT);
-        listDataModel.addColumn("amount", ListColumnType.TEXT);
+        listDataModel.addColumn("code", ListRendererType.TEXT);
+        listDataModel.addColumn("paymentDate", ListRendererType.TEXT);
+        listDataModel.addColumn("partner", ListRendererType.TEXT);
+        listDataModel.addColumn("operator", ListRendererType.TEXT);
+        listDataModel.addColumn("paymentMode", ListRendererType.TEXT);
+        listDataModel.addColumn("amount", ListRendererType.TEXT);
     }
 
     @Override
