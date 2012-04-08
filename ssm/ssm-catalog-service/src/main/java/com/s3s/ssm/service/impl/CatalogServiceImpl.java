@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.interfaces.catalog.ICatalogService;
 import com.s3s.ssm.util.CacheId;
@@ -30,5 +31,14 @@ public class CatalogServiceImpl extends AbstractModuleServiceImpl implements ICa
     @Override
     public List<Product> getListProducts() {
         return getDaoHelper().getDao(Product.class).findAll();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    // TODO: Bang remove it if Product have attribute contain Items
+    @Override
+    public List<Item> getAllItem() {
+        return getDaoHelper().getDao(Item.class).findAll();
     }
 }
