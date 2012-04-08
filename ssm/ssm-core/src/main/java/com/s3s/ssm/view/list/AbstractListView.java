@@ -14,7 +14,6 @@
  */
 package com.s3s.ssm.view.list;
 
-import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Event;
 import java.awt.Window;
@@ -330,6 +329,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 }
             }
         });
+
         // //////////////// Create footer table //////////////////////////////
         FooterTableModel footerModel = new FooterTableModel(mainTableModel);
 
@@ -652,6 +652,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             selectedRow = entities.size() - 1; // If add new entity, the selected row has the last index.
         }
 
+        // TODO Phuc: Should not fire entire data change. Using fireTableRow...() instead.
         // fireTableDataChanged to rerender the table.
         ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
         ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
@@ -842,25 +843,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      */
     @Override
     public void doSaved(SavedEvent<T> e) {
-        replaceEntity(e.getEntity());
-        // Keep the selected row before the data of table is changed.
-        int selectedRow = tblListEntities.getSelectedRow();
-        if (e.isNew()) {
-            entities.add(e.getEntity());
-            int tabIndex = tabPane.indexOfComponent((Component) e.getSource());
-            tabPane.setTitleAt(tabIndex, e.getEntity().getId().toString());
-            selectedRow = entities.size() - 1; // If add new entity, the selected row has the last index.
-        }
-
-        // fireTableDataChanged to rerender the table.
-        ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
-        ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
-        rowHeader.repaint();
-        rowHeader.revalidate();
-
-        // After fireTableDataChanged() the selection is lost. We need to reselect it programmatically.
-        tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
-
+        // TODO Phuc: consider add abstractListView as a listerner of EditView to make a clear code.
+        notifyFromDetailView(e.getEntity(), e.isNew());
     }
 
     public JTabbedPane getTabbedPane() {

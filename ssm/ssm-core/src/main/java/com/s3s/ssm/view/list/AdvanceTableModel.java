@@ -82,6 +82,19 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
         beanWrapper = new BeanWrapperImpl(entity);
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
         beanWrapper.setPropertyValue(dataModel.getName(), aValue);
+
+        // //////////////////////////////////////////////
+        // TODO Phuc: Reminding should fire on the cellChanged instead of rowChanged? In that case, the ColumnModel need
+        // listen() function. And the code will be like this:
+        // fireTableCellUpdated(rowIndex, columnIndex);
+        // for (int i = 0; i < listDataModel.getColumns().size(); i++) {
+        // if (listDataModel.getColumn(i).isListener()) {
+        // fireTableCellUpdated(rowIndex, i);
+        // }
+        // }
+        // ////////////////////////////////////////////////
+        fireTableRowsUpdated(rowIndex, rowIndex);
+
     }
 
     @Override

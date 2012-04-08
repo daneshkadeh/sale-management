@@ -22,6 +22,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
@@ -44,6 +45,24 @@ public class DetailInvoice extends AbstractIdOLObject {
     private String currency = "VND";
     private DetailInvoiceType type = DetailInvoiceType.SALES;
     private DetailInvoiceStatus status = DetailInvoiceStatus.OPEN;
+
+    // Transient field
+    private Double totalAmount;
+
+    @Transient
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    // Please remove this set method because it has no meaning and can be raise potential bugs (its value is calculated
+    // from the other). Remember to set editable is false if using this field in List view
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    private void updateTotalAmount() {
+        totalAmount = amount * priceAfterTax;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "invoice_id")
@@ -84,6 +103,18 @@ public class DetailInvoice extends AbstractIdOLObject {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+        updateTotalAmount();
+    }
+
+    @Column(name = "price_after_tax", nullable = false)
+    @NotNull
+    public Double getPriceAfterTax() {
+        return priceAfterTax;
+    }
+
+    public void setPriceAfterTax(Double priceAfterTax) {
+        this.priceAfterTax = priceAfterTax;
+        updateTotalAmount();
     }
 
     @Column(name = "price_before_tax", nullable = false)
@@ -104,16 +135,7 @@ public class DetailInvoice extends AbstractIdOLObject {
 
     public void setPriceOfTax(Double priceOfTax) {
         this.priceOfTax = priceOfTax;
-    }
-
-    @Column(name = "price_after_tax", nullable = false)
-    @NotNull
-    public Double getPriceAfterTax() {
-        return priceAfterTax;
-    }
-
-    public void setPriceAfterTax(Double priceAfterTax) {
-        this.priceAfterTax = priceAfterTax;
+        updateTotalAmount();
     }
 
     @Column(name = "money_before_tax", nullable = false)

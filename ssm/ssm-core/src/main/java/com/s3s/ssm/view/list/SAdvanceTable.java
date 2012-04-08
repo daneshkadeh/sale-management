@@ -180,9 +180,8 @@ public class SAdvanceTable extends JXTable {
     public void changeSelection(final int row, final int column, boolean toggle, boolean extend) {
         super.changeSelection(row, column, toggle, extend);
         // Place cell in edit mode when it 'gains focus'
-        // TODO Phuc: check row, column is view or model
-        if (editCellAt(row, column) && listDataModel.isEditable()
-                && listDataModel.getColumns().get(column).isEditable()) {
+        if (listDataModel.isEditable() && listDataModel.getColumns().get(column).isEditable()
+                && editCellAt(row, column)) {
             getEditorComponent().requestFocusInWindow();
         }
     }
