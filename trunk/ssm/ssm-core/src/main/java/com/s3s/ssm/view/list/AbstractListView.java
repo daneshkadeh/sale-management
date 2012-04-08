@@ -588,6 +588,22 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     return sum;
                 }
 
+                if (ClassUtils.isAssignable(fieldClass, Long.class)) {
+                    Long sum = 0L;
+                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
+                        sum = sum + (Long) mainTableModel.getValueAt(i, columnIndex);
+                    }
+                    return sum;
+                }
+
+                if (ClassUtils.isAssignable(fieldClass, Float.class)) {
+                    Float sum = 0f;
+                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
+                        sum = sum + (Float) mainTableModel.getValueAt(i, columnIndex);
+                    }
+                    return sum;
+                }
+
                 if (ClassUtils.isAssignable(fieldClass, Double.class)) {
                     Double sum = 0d;
                     for (int i = 0; i < mainTableModel.getRowCount(); i++) {
