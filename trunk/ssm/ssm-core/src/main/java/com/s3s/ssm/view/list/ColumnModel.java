@@ -175,6 +175,8 @@ public class ColumnModel {
      */
     public ColumnModel width(Integer width, Integer minWidth, Integer maxWidth) {
         this.width = width;
+        this.minWidth = minWidth;
+        this.maxWidth = maxWidth;
         return this;
     }
 

@@ -18,6 +18,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.SplashScreen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -90,7 +91,7 @@ public class MainProgram {
 
         // Not find solution to get class path from ssm-core.
         // String classpath = MainProgram.class.getClassLoader().get
-        DOMConfigurator.configure("src/main/resources/log4j.xml");
+        DOMConfigurator.configure("log4j.xml");
         s_logger.info("Starting super sales management application...");
         // ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
         // ConfigProvider configProvider = ConfigProvider.getInstance();
@@ -111,6 +112,8 @@ public class MainProgram {
      */
     private static void createAndShowGUI() {
         // Set System L&F
+        // Splash screen
+        SplashScreen splashScreen = SplashScreen.getSplashScreen();
 
         try {
             // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -127,29 +130,28 @@ public class MainProgram {
 
         // Create and set up the window.
         frame = new JFrame("Sales Management");
-
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setMinimumSize(WINDOW_MIN_SIZE);
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        frame.setJMenuBar(createMenuBar());
+        initCenterPaneṣ();
+        contentPane = createContentPane();
+        frame.setContentPane(contentPane);
+        institutionBtn.doClick();
+        frame.pack();
+        frame.setVisible(true);
+        // splashScreen.close();
         // login
         LoginDialog loginDialog = new LoginDialog(frame, new Runnable() {
 
             @Override
             public void run() {
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setMinimumSize(WINDOW_MIN_SIZE);
-                frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-                frame.setJMenuBar(createMenuBar());
-                initCenterPaneṣ();
-                contentPane = createContentPane();
-                frame.setContentPane(contentPane);
-                institutionBtn.doClick();
-                frame.pack();
-                frame.setVisible(true);
             }
         }, new Runnable() {
 
             @Override
             public void run() {
-                frame.dispose();
-
+                // frame.dispose();
             }
         });
         loginDialog.setVisible(true);

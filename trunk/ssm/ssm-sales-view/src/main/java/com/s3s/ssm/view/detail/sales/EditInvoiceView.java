@@ -58,7 +58,7 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     protected void initialListDetailPresentationView(ListDataModel listDataModel) {
         listDataModel.setEditable(true);
         listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_ITEM)
-                .width(150, 50, 100);
+                .width(150, 50, 200);
         listDataModel.addColumn("packageLine", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
                 REF_PACKLINE);
         listDataModel.addColumn("amount", ListRendererType.TEXT);
@@ -68,6 +68,7 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
                 REF_D_INVOICE_TYPE);
         listDataModel.addColumn("status", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
                 REF_D_INVOICE_STATUS);
+        listDataModel.addColumn("totalAmount", ListRendererType.TEXT).notEditable();
     }
 
     @Override
