@@ -42,7 +42,7 @@ import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.model.Money;
 
 @Entity
-@Table(name = "store_import_store_form")
+@Table(name = "store_import_form")
 public class ImportStoreForm extends AbstractCodeOLObject {
     private static final long serialVersionUID = 1L;
     private Date createdDate = new Date();

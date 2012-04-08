@@ -24,8 +24,7 @@ import javax.swing.event.ChangeEvent;
 
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
-import com.s3s.ssm.entity.store.DetailImportStore;
-import com.s3s.ssm.entity.store.ImportStoreForm;
+import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
@@ -36,16 +35,16 @@ import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.util.StoreHelper;
 
-public class EditDetailImportStoreView extends AbstractSingleEditView<DetailImportStore> {
+public class EditDetailExportStoreView extends AbstractSingleEditView<DetailExportStore> {
     private static String REF_ITEM_LIST = "0";
     private static String REF_BASE_UOM_LIST = "0";
 
-    public EditDetailImportStoreView(Map<String, Object> entity) {
+    public EditDetailExportStoreView(Map<String, Object> entity) {
         super(entity);
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, DetailImportStore entity) {
+    public void initialPresentationView(DetailDataModel detailDataModel, DetailExportStore entity) {
         detailDataModel.addAttribute("lineNo", DetailFieldType.LABEL);
         detailDataModel.addAttribute("product", DetailFieldType.ENTITY_CHOOSER).cacheDataId(CacheId.REF_LIST_PRODUCT);
         detailDataModel.addAttribute("item", DetailFieldType.DROPDOWN).referenceDataId(REF_ITEM_LIST);
@@ -61,17 +60,8 @@ public class EditDetailImportStoreView extends AbstractSingleEditView<DetailImpo
      * {@inheritDoc}
      */
     @Override
-    protected DetailImportStore loadForCreate() {
-        // TODO:Hoang should get from ContextProvider
-        UnitOfMeasure baseUom = serviceProvider.getService(IConfigService.class).getBaseUnitUom();
-        // TODO:Hoang ahould get parent form
-        ImportStoreForm importStore = new ImportStoreForm();
-        DetailImportStore detail = super.loadForCreate();
-        // TODO: Hoang should have
-        detail.setLineNo(1);
-        detail.setImportStoreForm(importStore);
-        detail.setBaseUom(baseUom);
-        return detail;
+    protected DetailExportStore loadForCreate() {
+        return null;
     }
 
     /**
@@ -79,7 +69,7 @@ public class EditDetailImportStoreView extends AbstractSingleEditView<DetailImpo
      */
     @Override
     protected void
-            customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, DetailImportStore entity) {
+            customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, DetailExportStore entity) {
         super.customizeComponents(name2AttributeComponent, entity);
         final JTextField tfdQuantity = (JTextField) name2AttributeComponent.get("quantity").getComponent();
         final MoneyComponent mPriceUnit = (MoneyComponent) name2AttributeComponent.get("priceUnit").getComponent();
@@ -105,7 +95,7 @@ public class EditDetailImportStoreView extends AbstractSingleEditView<DetailImpo
     }
 
     @Override
-    protected void setReferenceDataModel(ReferenceDataModel refDataModel, DetailImportStore entity) {
+    protected void setReferenceDataModel(ReferenceDataModel refDataModel, DetailExportStore entity) {
         super.setReferenceDataModel(refDataModel, entity);
         // TODO: Hoang handle after user selects product
         refDataModel.putRefDataList(REF_ITEM_LIST, getDaoHelper().getDao(Item.class).findAll(), null);

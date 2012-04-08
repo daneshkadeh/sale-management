@@ -100,4 +100,12 @@ public class Store extends AbstractCodeOLObject implements Serializable {
         this.manager = manager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }

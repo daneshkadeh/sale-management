@@ -1,9 +1,15 @@
 package com.s3s.ssm.service.impl;
 
+import java.util.List;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.interfaces.sales.InvoiceService;
 
 @Transactional
@@ -23,4 +29,12 @@ public class InvoiceServiceImpl extends AbstractModuleServiceImpl implements Inv
         return String.valueOf(nextNumber);
     }
 
+    @Override
+    public List<Invoice> getAllInvoice() {
+        DetachedCriteria dc = getDaoHelper().getDao(Invoice.class).getCriteria();
+        dc.add(Restrictions.not(Restrictions.eq("status", InvoiceStatus.CANCELLED)));
+        dc.addOrder(Order.desc("createdDate"));
+        List<Invoice> result = getDaoHelper().getDao(Invoice.class).findByCriteria(dc);
+        return result;
+    }
 }

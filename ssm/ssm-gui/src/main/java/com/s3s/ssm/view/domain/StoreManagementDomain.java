@@ -19,6 +19,8 @@ import javax.swing.JScrollPane;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
+import com.s3s.ssm.view.list.shipment.ListTransportationTypeView;
+import com.s3s.ssm.view.list.store.ListExportStoreFormView;
 import com.s3s.ssm.view.list.store.ListImportStoreFormView;
 import com.s3s.ssm.view.list.store.ListShipPriceTypeView;
 import com.s3s.ssm.view.list.store.ListShipPriceView;
@@ -45,14 +47,16 @@ public class StoreManagementDomain extends AbstractDomain {
                 ControlConfigUtils.getString("JTree.Store.ShipPriceType"), new ListShipPriceTypeView());
         TreeNodeWithView shipPriceNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.ShipPrice"),
                 new ListShipPriceView());
-        TreeNodeWithView importStoreNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.Store.ImportStore"), new ListImportStoreFormView());
+        TreeNodeWithView transportNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.Store.TransportType"), new ListTransportationTypeView());
+        TreeNodeWithView importNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.ImportStore"),
+                new ListImportStoreFormView());
 
         // TreeNodeWithView chuyenKhoNode = new TreeNodeWithView(
         // ControlConfigUtils.getString("JTree.Store.ExchangeStore"), new ListExchangeStoreFormView()); // "chuyen kho"
         //
-        // TreeNodeWithView phieuXuatKhoNode = new TreeNodeWithView(
-        // ControlConfigUtils.getString("JTree.Store.ExportStoreForm"), new ListExportStoreFormView()); //
+        TreeNodeWithView exportNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.ExportStore"),
+                new ListExportStoreFormView()); //
         // "phieu xuat kho"
         //
         // TreeNodeWithView phieuNhapKhoNode = new TreeNodeWithView(
@@ -64,7 +68,9 @@ public class StoreManagementDomain extends AbstractDomain {
         rootNode.add(storeNode);
         rootNode.add(shipPriceTypeNode);
         rootNode.add(shipPriceNode);
-        rootNode.add(importStoreNode);
+        rootNode.add(transportNode);
+        rootNode.add(importNode);
+        rootNode.add(exportNode);
         // rootNode.add(chuyenKhoNode);
         // rootNode.add(phieuXuatKhoNode);
         // rootNode.add(phieuNhapKhoNode);
