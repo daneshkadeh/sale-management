@@ -139,4 +139,12 @@ public class Item extends AbstractIdOLObject {
         this.mainOriginPrice = mainOriginPrice;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return sumUomName;
+    }
+
 }

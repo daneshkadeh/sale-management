@@ -37,6 +37,7 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
     // TODO:Hoang remove bellow after ListDataModel support caching
     private static String REF_UNIT_UOM = "1";
     private static String REF_LIST_PRODUCT = "2";
+    private static String REF_LIST_ITEM = "3";
 
     /**
      * @param entity
@@ -57,11 +58,13 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
         listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
                 REF_LIST_PRODUCT);
         listDataModel.addColumn("product.name", ListRendererType.TEXT).notEditable();
+        // TODO: Hoang the data should be updated after choosing the product
+        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM);
         listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM);
         listDataModel.addColumn("baseUom", ListRendererType.TEXT, ListEditorType.TEXTFIELD).notEditable();
-        listDataModel.addColumn("reqQuan", ListRendererType.NUMBER).summarized();
+        listDataModel.addColumn("reqQuan", ListRendererType.NUMBER).notEditable().summarized();
         listDataModel.addColumn("realQuan", ListRendererType.NUMBER).summarized();
-        listDataModel.addColumn("remainQuan", ListRendererType.NUMBER).summarized();
+        listDataModel.addColumn("remainQuan", ListRendererType.NUMBER).notEditable().summarized();
     }
 
     /**
@@ -122,6 +125,7 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
         refDataModel.putRefDataList(REF_UNIT_UOM, serviceProvider.getService(IConfigService.class).getUnitUom());
         refDataModel.putRefDataList(REF_LIST_PRODUCT, serviceProvider.getService(ICatalogService.class)
                 .getListProducts());
+        refDataModel.putRefDataList(REF_LIST_ITEM, serviceProvider.getService(ICatalogService.class).getAllItem());
     }
 
 }
