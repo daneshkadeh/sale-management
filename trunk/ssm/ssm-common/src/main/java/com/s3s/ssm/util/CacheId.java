@@ -14,6 +14,10 @@ public interface CacheId {
     public static String REF_LIST_ORGANIZATION = "referenceListOrganization";
     public static String REF_LIST_STALL = "referenceListStall";
     public static String REF_LIST_IMPORT_STORE_STATUS = "referenceListImportStoreStatus";
-    public static String REF_LIST_SALES_CONTRACT = "referenceListSalesContract";
+    public static String REF_LIST_EXPORT_STORE_STATUS = "referenceListExportStoreStatus";
     public static String REF_LIST_UNIT_UOM = "referenceListUnitUom";
+    // Sale
+    public static String REF_LIST_SALES_CONTRACT = "referenceListSalesContract";
+    // Shipment
+    public static String REF_LIST_TRANS_TYPE = "referenceListTransType";
 }

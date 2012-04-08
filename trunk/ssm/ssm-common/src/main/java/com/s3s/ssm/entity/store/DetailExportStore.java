@@ -20,28 +20,58 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
+import com.s3s.ssm.entity.catalog.Product;
+import com.s3s.ssm.entity.config.UnitOfMeasure;
 
 @Entity
-@Table(name = "s_detail_export_store")
+@Table(name = "store_detail_export")
 public class DetailExportStore extends AbstractIdOLObject {
-    private ExportStoreForm exportStoreForm;
+    private static final long serialVersionUID = 6567804203919738639L;
+    private Integer lineNo;
+    private ExportStoreForm exportForm;
+    private Product product;
     private Item item;
-    private Integer amount;
-    private DetailExportStoreStatus status;
+    private UnitOfMeasure uom;
+    private UnitOfMeasure baseUom;
+    private Long reqQuan = 0L;
+    private Long realQuan = 0L;
+    private Long remainQuan = 0L;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "exportstore_id", nullable = false)
-    @NotNull
-    public ExportStoreForm getExportStoreForm() {
-        return exportStoreForm;
+    @Column(name = "line_no")
+    @DecimalMin(value = "1")
+    public Integer getLineNo() {
+        return lineNo;
     }
 
-    public void setExportStoreForm(ExportStoreForm exportStoreForm) {
-        this.exportStoreForm = exportStoreForm;
+    public void setLineNo(Integer lineNo) {
+        this.lineNo = lineNo;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
+    @NotNull
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "export_form_id")
+    @NotNull
+    public ExportStoreForm getExportForm() {
+        return exportForm;
+    }
+
+    public void setExportForm(ExportStoreForm exportForm) {
+        this.exportForm = exportForm;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -55,13 +85,55 @@ public class DetailExportStore extends AbstractIdOLObject {
         this.item = item;
     }
 
-    @Column(name = "amount", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "uom_id")
     @NotNull
-    public Integer getAmount() {
-        return amount;
+    public UnitOfMeasure getUom() {
+        return uom;
     }
 
-    public void setAmount(Integer amount) {
-        this.amount = amount;
+    public void setUom(UnitOfMeasure uom) {
+        this.uom = uom;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "base_uom_id")
+    @NotNull
+    public UnitOfMeasure getBaseUom() {
+        return baseUom;
+    }
+
+    public void setBaseUom(UnitOfMeasure baseUom) {
+        this.baseUom = baseUom;
+    }
+
+    @Column(name = "req_quan")
+    @DecimalMin(value = "0")
+    public Long getReqQuan() {
+        return reqQuan;
+    }
+
+    public void setReqQuan(Long reqQuan) {
+        this.reqQuan = reqQuan;
+    }
+
+    @Column(name = "real_quan")
+    @DecimalMin(value = "0")
+    public Long getRealQuan() {
+        return realQuan;
+    }
+
+    public void setRealQuan(Long realQuan) {
+        this.realQuan = realQuan;
+    }
+
+    @Column(name = "remain_quan")
+    @DecimalMin(value = "0")
+    public Long getRemainQuan() {
+        return remainQuan;
+    }
+
+    public void setRemainQuan(Long remainQuan) {
+        this.remainQuan = remainQuan;
     }
 }

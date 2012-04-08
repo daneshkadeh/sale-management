@@ -80,6 +80,7 @@ import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.entity.sales.ItemOriginPrice;
 import com.s3s.ssm.entity.sales.SalesContract;
+import com.s3s.ssm.entity.shipment.TransportationType;
 import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.DetailImportStore;
 import com.s3s.ssm.entity.store.ExportStoreForm;
@@ -155,6 +156,8 @@ public class SSMDataLoader {
 
         daoHelper.getDao(DetailExportStore.class).deleteAll(daoHelper.getDao(DetailExportStore.class).findAll());
         daoHelper.getDao(ExportStoreForm.class).deleteAll(daoHelper.getDao(ExportStoreForm.class).findAll());
+
+        daoHelper.getDao(TransportationType.class).deleteAll(daoHelper.getDao(TransportationType.class).findAll());
 
         daoHelper.getDao(DetailImportStore.class).deleteAll(daoHelper.getDao(DetailImportStore.class).findAll());
         daoHelper.getDao(ImportStoreForm.class).deleteAll(daoHelper.getDao(ImportStoreForm.class).findAll());
@@ -253,11 +256,84 @@ public class SSMDataLoader {
         List<Invoice> listInvoice = initInvoice(daoHelper, listItem, listContact);
         // Init data for Store module
         List<ShipPrice> listShipPrice = initShipPrice(daoHelper);
+        List<TransportationType> listTransportationType = initTransportationType(daoHelper);
         List<ImportStoreForm> listImportStore = initImportStore(daoHelper, listStore, listItem, listSalesContracts,
                 listOperator);
+        List<ExportStoreForm> listExportStore = initExportStore(daoHelper, listStore, listItem, listOperator,
+                listInvoice, listTransportationType);
         // Init data for finance module
         List<Payment> listPayments = initPayment(daoHelper, serviceProvider, listSalesContracts, listContact,
                 listOperator);
+    }
+
+    private static List<ExportStoreForm> initExportStore(DaoHelper daoHelper, List<Store> listStore,
+            List<Item> listItem, List<Operator> listOperator, List<Invoice> listInvoice,
+            List<TransportationType> listTransType) {
+        ExportStoreForm form = new ExportStoreForm();
+        DetailExportStore detail1 = new DetailExportStore();
+        DetailExportStore detail2 = new DetailExportStore();
+
+        String custCode = listInvoice.get(0).getContact().getCode();
+        String custName = listInvoice.get(0).getContact().getName();
+        Item item = listItem.get(0);
+        Product product = item.getProduct();
+        UnitOfMeasure unit = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
+        TransportationType transType = listTransType.get(0);
+
+        form.setCode("001");
+        form.setStore(listStore.get(0));
+        form.setStaff(listOperator.get(0));
+        form.setInvoice(listInvoice.get(0));
+        form.setCustCode(custCode);
+        form.setCustName(custName);
+        form.setTransType(transType);
+        form.setTransPrice(Money.create("vnd", 20000000L));
+
+        detail1.setLineNo(1);
+        detail1.setExportForm(form);
+        detail1.setProduct(product);
+        detail1.setItem(item);
+        detail1.setUom(unit);
+        detail1.setBaseUom(unit);
+        detail1.setReqQuan(100L);
+        detail1.setRealQuan(70L);
+        detail1.setRemainQuan(30L);
+
+        detail2.setLineNo(2);
+        detail2.setExportForm(form);
+        detail2.setProduct(product);
+        detail2.setItem(item);
+        detail2.setUom(unit);
+        detail2.setBaseUom(unit);
+        detail2.setReqQuan(300L);
+        detail2.setRealQuan(200L);
+        detail2.setRemainQuan(100L);
+
+        daoHelper.getDao(ExportStoreForm.class).save(form);
+        daoHelper.getDao(DetailExportStore.class).saveOrUpdateAll(Arrays.asList(detail1, detail2));
+        return Arrays.asList(form);
+    }
+
+    private static List<TransportationType> initTransportationType(DaoHelper daoHelper) {
+        TransportationType atStoreType = new TransportationType();
+        atStoreType.setCode("AtStore");
+        atStoreType.setName("Lay tai kho");
+        atStoreType.setDescription("Khach tu tuc viec van chuyen, kho chi viec xuat hang.");
+        daoHelper.getDao(TransportationType.class).saveOrUpdate(atStoreType);
+
+        TransportationType trainType = new TransportationType();
+        trainType.setCode("Train");
+        trainType.setName("Xe lua");
+        trainType.setDescription("Cong ty giao hang bang xe lua. Moi thu tuc deu do cong ty thuc hien.");
+        daoHelper.getDao(TransportationType.class).saveOrUpdate(trainType);
+
+        TransportationType lorryType = new TransportationType();
+        lorryType.setCode("Lorry");
+        lorryType.setName("Xe tai");
+        lorryType.setDescription("Cong ty giao hang bang xe tai. Moi thu tuc deu do cong ty thuc hien.");
+        daoHelper.getDao(TransportationType.class).saveOrUpdate(lorryType);
+
+        return Arrays.asList(atStoreType, trainType, lorryType);
     }
 
     private static List<Service> initService(DaoHelper daoHelper) {
@@ -436,8 +512,9 @@ public class SSMDataLoader {
      */
     private static List<Invoice> initInvoice(DaoHelper daoHelper, List<Item> listItem, List<Partner> listContact) {
         Invoice invoice1 = new Invoice();
-        invoice1.setContact(null);
+        invoice1.setContact(listContact.get(0));
         invoice1.setInvoiceNumber("0000001");
+        invoice1.setCode("0000001");
         invoice1.setCreatedDate(new Date());
         invoice1.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice1.setStatus(InvoiceStatus.OPEN);
@@ -460,6 +537,7 @@ public class SSMDataLoader {
         Invoice invoice2 = new Invoice();
         invoice2.setContact(listContact.get(0));
         invoice2.setInvoiceNumber("0000002");
+        invoice2.setCode("0000002");
         invoice2.setCreatedDate(new Date());
         invoice2.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice2.setStatus(InvoiceStatus.OPEN);
@@ -539,9 +617,12 @@ public class SSMDataLoader {
 
         DetailImportStore detail1 = new DetailImportStore();
         detail1.setImportStoreForm(form1);
+        detail1.setProduct(listItem.get(0).getProduct());
         detail1.setItem(listItem.get(0));
         detail1.setQuantity(20);
-        detail1.setUom(daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai"));
+        UnitOfMeasure unit = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
+        detail1.setUom(unit);
+        detail1.setBaseUom(unit);
         form1.addDetailImports(detail1);
         daoHelper.getDao(ImportStoreForm.class).save(form1);
         return Arrays.asList(form1);
@@ -730,16 +811,26 @@ public class SSMDataLoader {
     }
 
     private static List<Store> initStore(DaoHelper daoHelper, List<Operator> listOperator) {
-        Store store = new Store();
-        store.setCode("K05");
-        store.setAddress(COMPANY_ADDRESS);
-        store.setStoredAddress(COMPANY_ADDRESS);
-        store.setExportAddress(COMPANY_ADDRESS);
-        store.setImportAddress(COMPANY_ADDRESS);
-        store.setName("Kho 05");
-        store.setManager(listOperator.get(0));
-        daoHelper.getDao(Store.class).saveOrUpdate(store);
-        return Arrays.asList(store);
+        Store store1 = new Store();
+        store1.setCode("K01");
+        store1.setAddress(COMPANY_ADDRESS);
+        store1.setStoredAddress(COMPANY_ADDRESS);
+        store1.setExportAddress(COMPANY_ADDRESS);
+        store1.setImportAddress(COMPANY_ADDRESS);
+        store1.setName("Kho 01");
+        store1.setManager(listOperator.get(0));
+
+        Store store2 = new Store();
+        store2.setCode("K02");
+        store2.setAddress(COMPANY_ADDRESS);
+        store2.setStoredAddress(COMPANY_ADDRESS);
+        store2.setExportAddress(COMPANY_ADDRESS);
+        store2.setImportAddress(COMPANY_ADDRESS);
+        store2.setName("Kho 02");
+        store2.setManager(listOperator.get(0));
+
+        daoHelper.getDao(Store.class).saveOrUpdateAll(Arrays.asList(store1, store2));
+        return Arrays.asList(store1);
     }
 
     private static List<Partner> initSupplier(DaoHelper daoHelper, List<Partner> listContact,

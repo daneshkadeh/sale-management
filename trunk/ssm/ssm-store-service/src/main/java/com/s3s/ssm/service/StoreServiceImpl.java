@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.s3s.ssm.entity.store.ExportStoreStatus;
 import com.s3s.ssm.entity.store.ImportStoreStatus;
 import com.s3s.ssm.entity.store.ShipPrice;
 import com.s3s.ssm.entity.store.ShipPriceType;
@@ -33,6 +34,8 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
                     this.getClass().getMethod("getShipPriceTypes"));
             getCacheDataService().registerCache(CacheId.REF_LIST_IMPORT_STORE_STATUS, this,
                     this.getClass().getMethod("getImportStoreStatusList"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_EXPORT_STORE_STATUS, this,
+                    this.getClass().getMethod("getExportStoreStatusList"));
         } catch (NoSuchMethodException | SecurityException e) {
             throw new RuntimeException("Cannot register method to cache service!", e);
         }
@@ -56,6 +59,12 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
     @Override
     public List<ImportStoreStatus> getImportStoreStatusList() {
         return Arrays.asList(ImportStoreStatus.values());
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<ExportStoreStatus> getExportStoreStatusList() {
+        return Arrays.asList(ExportStoreStatus.values());
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)

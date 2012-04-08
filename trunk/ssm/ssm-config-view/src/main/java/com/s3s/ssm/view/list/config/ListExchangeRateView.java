@@ -29,7 +29,6 @@ public class ListExchangeRateView extends AbstractListView<ExchangeRate> {
         listDataModel.addColumn("updateDate", ListRendererType.TEXT);
         listDataModel.addColumn("currency.name", ListRendererType.TEXT);
         listDataModel.addColumn("rate", ListRendererType.NUMBER);
-
     }
 
     @Override

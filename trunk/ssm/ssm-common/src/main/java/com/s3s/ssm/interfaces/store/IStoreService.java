@@ -2,6 +2,7 @@ package com.s3s.ssm.interfaces.store;
 
 import java.util.List;
 
+import com.s3s.ssm.entity.store.ExportStoreStatus;
 import com.s3s.ssm.entity.store.ImportStoreStatus;
 import com.s3s.ssm.entity.store.ShipPrice;
 import com.s3s.ssm.entity.store.ShipPriceType;
@@ -13,6 +14,8 @@ public interface IStoreService {
     public List<ShipPriceType> getShipPriceTypes();
 
     public List<ImportStoreStatus> getImportStoreStatusList();
+
+    public List<ExportStoreStatus> getExportStoreStatusList();
 
     public ShipPrice getLatestShipPrice(ShipPriceType type);
 

@@ -53,9 +53,9 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
         listDataModel.addColumn("product.name", ListRendererType.TEXT);
         listDataModel.addColumn("uom", ListRendererType.TEXT);
         listDataModel.addColumn("baseUom", ListRendererType.TEXT);
-        listDataModel.addColumn("quantity", ListRendererType.TEXT);
-        listDataModel.addColumn("priceUnit", ListRendererType.TEXT);
-        listDataModel.addColumn("priceSubtotal", ListRendererType.TEXT);
+        listDataModel.addColumn("quantity", ListRendererType.NUMBER);
+        listDataModel.addColumn("priceUnit", ListRendererType.NUMBER);
+        listDataModel.addColumn("priceSubtotal", ListRendererType.NUMBER);
     }
 
     /**

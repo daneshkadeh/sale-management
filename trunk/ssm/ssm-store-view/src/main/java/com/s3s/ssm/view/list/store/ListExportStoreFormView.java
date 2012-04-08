@@ -15,22 +15,34 @@
 package com.s3s.ssm.view.list.store;
 
 import com.s3s.ssm.entity.store.ExportStoreForm;
+import com.s3s.ssm.view.detail.store.EditExportStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListExportStoreFormView extends AbstractListView<ExportStoreForm> {
+    private static final long serialVersionUID = 7393197060716188079L;
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        // TODO Auto-generated method stub
-
+        listDataModel.addColumn("code", ListRendererType.DATE);
+        listDataModel.addColumn("status", ListRendererType.TEXT);
+        listDataModel.addColumn("createdDate", ListRendererType.DATE);
+        listDataModel.addColumn("store.name", ListRendererType.TEXT);
+        listDataModel.addColumn("staff.fullName", ListRendererType.TEXT);
+        listDataModel.addColumn("invoice.invoiceNumber", ListRendererType.LINK);
+        listDataModel.addColumn("transType.name", ListRendererType.LINK);
+        listDataModel.addColumn("transPrice", ListRendererType.TEXT);
+        listDataModel.addColumn("isPrinted", ListRendererType.BOOLEAN);
+        listDataModel.addColumn("reqQuanTotal", ListRendererType.NUMBER);
+        listDataModel.addColumn("realQuanTotal", ListRendererType.NUMBER);
+        listDataModel.addColumn("remainQuanTotal", ListRendererType.NUMBER);
     }
 
     @Override
     protected Class<? extends AbstractEditView<ExportStoreForm>> getEditViewClass() {
-        // TODO Auto-generated method stub
-        return null;
+        return EditExportStoreFormView.class;
     }
 
 }

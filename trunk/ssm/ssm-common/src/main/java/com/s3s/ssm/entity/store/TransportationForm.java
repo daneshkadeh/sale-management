@@ -1,9 +1,10 @@
 /*
- * DetailExportStoreStatus
+ * TransportationForm
  * 
  * Project: SSM
  * 
  * Copyright 2010 by HBASoft
+ * Rue de la Bergère 7, 1217 Meyrin
  * All rights reserved.
  *
  * This software is the confidential and proprietary information
@@ -12,8 +13,13 @@
  * use it only in accordance with the terms of the license
  * agreements you entered into with HBASoft.
  */
+
 package com.s3s.ssm.entity.store;
 
-public enum DetailExportStoreStatus {
-    OPEN, SENDING, DELIVER, CANCELLED;
+/**
+ * @author Le Thanh Hoang
+ * 
+ */
+public enum TransportationForm {
+
 }
