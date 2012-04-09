@@ -16,13 +16,18 @@ package com.s3s.ssm.view.detail.param;
 
 import java.util.Map;
 
-import org.eclipse.core.internal.runtime.Product;
-
+import com.s3s.ssm.entity.catalog.Goods;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.ItemPrice;
+import com.s3s.ssm.entity.catalog.ItemPropertyValue;
+import com.s3s.ssm.entity.catalog.Product;
+import com.s3s.ssm.entity.catalog.ProductFamilyType;
+import com.s3s.ssm.entity.catalog.ProductProperty;
+import com.s3s.ssm.entity.catalog.ProductPropertyElement;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
-import com.s3s.ssm.helper.CatalogHelper;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.util.DaoHelperImpl;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -40,7 +45,6 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
 
     private static final String REF_PRODUCT_ID = "REF_PRODUCT_ID";
-    private static final String REF_CURRENCY_ID = "REF_CURRENCY_ID";
     private static final String REF_UOM_ID = "REF_UOM_ID";
 
     public EditItemView(Map<String, Object> entity) {
@@ -49,20 +53,68 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Item entity) {
-        detailDataModel.addAttribute("product", DetailFieldType.DROPDOWN).referenceDataId(REF_PRODUCT_ID);
+        if (request.get(PARAM_PARENT_ID) != null) {
+            if (entity.getProduct() == null) {
+                entity.setProduct(daoHelper.getDao(Product.class).findById(
+                        Long.valueOf(request.get(PARAM_PARENT_ID).toString())));
+            }
+        } else {
+            detailDataModel.addAttribute("product", DetailFieldType.DROPDOWN).referenceDataId(REF_PRODUCT_ID);
+        }
+
         detailDataModel.addAttribute("sumUomName", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("baseSellPrice", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("currency", DetailFieldType.DROPDOWN).referenceDataId(REF_CURRENCY_ID);
-        detailDataModel.addAttribute("listUom", DetailFieldType.MULTI_SELECT_LIST_BOX).referenceDataId(REF_UOM_ID);
+        detailDataModel.addAttribute("baseSellPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+        detailDataModel.addAttribute("originPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+        if (isGoodProduct(entity)) {
+            Goods good = DaoHelperImpl.downCast(Goods.class, entity.getProduct());
+            for (ProductProperty property : good.getProperties()) {
+                ProductPropertyElement selectedElement = entity.getPropertyValue(property) != null ? entity
+                        .getPropertyValue(property).getElement() : null;
+                detailDataModel.addRawAttribute("FIELD_" + property.getId(), DetailFieldType.DROPDOWN)
+                        .label(property.getName()).referenceDataId("REF_" + property.getId()).value(selectedElement);
+            }
+        }
+    }
+
+    private boolean isGoodProduct(Item entity) {
+        return entity.getProduct() != null
+                && entity.getProduct().getType().getProductFamilyType() == ProductFamilyType.GOODS;
+    }
+
+    @Override
+    protected void bindingValue(Item entity, String name, boolean isRaw, Object value) {
+        super.bindingValue(entity, name, isRaw, value);
+        if (isGoodProduct(entity)) {
+            Goods good = DaoHelperImpl.downCast(Goods.class, entity.getProduct());
+            for (ProductProperty property : good.getProperties()) {
+                if (name.equals("FIELD_" + property.getId())) {
+                    ItemPropertyValue propertyValue = entity.getPropertyValue(property);
+                    if (propertyValue == null) {
+                        propertyValue = new ItemPropertyValue();
+                        propertyValue.setItem(entity);
+                        propertyValue.setProperty(property);
+                        entity.getListPropertyValue().add(propertyValue);
+                    }
+                    propertyValue.setElement((ProductPropertyElement) value);
+                }
+            }
+        }
     }
 
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, Item entity) {
         super.setReferenceDataModel(refDataModel, entity);
         refDataModel.putRefDataList(REF_PRODUCT_ID, getDaoHelper().getDao(Product.class).findAll(), null);
-        refDataModel.putRefDataList(REF_CURRENCY_ID, CatalogHelper.getCurrenciesCode(getDaoHelper()), null);
         refDataModel.putRefDataList(REF_UOM_ID, getDaoHelper().getDao(UnitOfMeasure.class).findAll(), null);
         // refDataModel.putRefDataList(REF_UOM_ID, Arrays.asList("0", "1", "2"), null);
+
+        // put all references to properties
+        if (isGoodProduct(entity)) {
+            Goods good = DaoHelperImpl.downCast(Goods.class, entity.getProduct());
+            for (ProductProperty property : good.getProperties()) {
+                refDataModel.putRefDataList("REF_" + property.getId(), property.getElements());
+            }
+        }
     }
 
     @Override

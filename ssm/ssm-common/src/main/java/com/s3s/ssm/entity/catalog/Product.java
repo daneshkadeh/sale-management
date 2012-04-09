@@ -28,7 +28,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.config.UploadFile;
 
 @Entity
-@Table(name = "s_product")
+@Table(name = "ca_product")
 @Inheritance(strategy = InheritanceType.JOINED)
 @AttributeOverride(name = "id", column = @Column(name = "id", nullable = false, insertable = false, updatable = false))
 public class Product extends AbstractCodeOLObject {

@@ -19,8 +19,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -28,26 +31,25 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
-import com.s3s.ssm.entity.sales.ItemOriginPrice;
+import com.s3s.ssm.model.Money;
 
 @Entity
-@Table(name = "s_item")
+@Table(name = "ca_item")
 public class Item extends AbstractIdOLObject {
     private Product product;
     private String sumUomName;
-    private Double baseSellPrice;
-    private String currency = "VND";
     private List<UnitOfMeasure> listUom = new ArrayList<>(); // TODO: this should be move to product?
     private Set<ItemPropertyValue> listPropertyValue = new HashSet<>();
     private Set<ItemPrice> listItemPrices = new HashSet<>();
 
-    private ItemOriginPrice mainOriginPrice;
+    private Money baseSellPrice;
+    private Money originPrice;
+
+    // private ItemOriginPrice mainOriginPrice;
 
     // @ManyToOne
     @ManyToOne(fetch = FetchType.EAGER)
@@ -67,26 +69,6 @@ public class Item extends AbstractIdOLObject {
 
     public void setSumUomName(String sumUomName) {
         this.sumUomName = sumUomName;
-    }
-
-    @Column(name = "base_sell_price", nullable = false)
-    @NotNull
-    public Double getBaseSellPrice() {
-        return baseSellPrice;
-    }
-
-    public void setBaseSellPrice(Double baseSellPrice) {
-        this.baseSellPrice = baseSellPrice;
-    }
-
-    @Column(name = "currency", nullable = false)
-    @NotNull
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
     // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -110,6 +92,15 @@ public class Item extends AbstractIdOLObject {
         this.listPropertyValue = listPropertyValue;
     }
 
+    public ItemPropertyValue getPropertyValue(ProductProperty property) {
+        for (ItemPropertyValue value : listPropertyValue) {
+            if (value.getProperty().equals(property)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
     public void addPropertyValue(ItemPropertyValue propertyValue) {
         propertyValue.setItem(this);
         listPropertyValue.add(propertyValue);
@@ -130,14 +121,14 @@ public class Item extends AbstractIdOLObject {
         listItemPrices.add(itemPrice);
     }
 
-    @OneToOne(mappedBy = "item")
-    public ItemOriginPrice getMainOriginPrice() {
-        return mainOriginPrice;
-    }
-
-    public void setMainOriginPrice(ItemOriginPrice mainOriginPrice) {
-        this.mainOriginPrice = mainOriginPrice;
-    }
+    // @OneToOne(mappedBy = "item")
+    // public ItemOriginPrice getMainOriginPrice() {
+    // return mainOriginPrice;
+    // }
+    //
+    // public void setMainOriginPrice(ItemOriginPrice mainOriginPrice) {
+    // this.mainOriginPrice = mainOriginPrice;
+    // }
 
     /**
      * {@inheritDoc}
@@ -145,6 +136,28 @@ public class Item extends AbstractIdOLObject {
     @Override
     public String toString() {
         return sumUomName;
+    }
+
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "base_sell_price")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code_sell")) })
+    public Money getBaseSellPrice() {
+        return baseSellPrice;
+    }
+
+    public void setBaseSellPrice(Money baseSellPrice) {
+        this.baseSellPrice = baseSellPrice;
+    }
+
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "origin_price")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code_origin")) })
+    public Money getOriginPrice() {
+        return originPrice;
+    }
+
+    public void setOriginPrice(Money originPrice) {
+        this.originPrice = originPrice;
     }
 
 }

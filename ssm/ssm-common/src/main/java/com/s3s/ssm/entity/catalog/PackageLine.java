@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 
 @Entity
-@Table(name = "s_package_line")
+@Table(name = "ca_package_line")
 public class PackageLine extends AbstractIdOLObject {
     private SPackage pack;
     private PackageLine parentPackageLine;

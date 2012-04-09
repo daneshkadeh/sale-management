@@ -37,7 +37,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
  * 
  */
 @Entity
-@Table(name = "s_product_property")
+@Table(name = "ca_product_property")
 public class ProductProperty extends AbstractCodeOLObject {
     private String name;
     private PropertyType type;
@@ -81,5 +81,10 @@ public class ProductProperty extends AbstractCodeOLObject {
     public void addElement(ProductPropertyElement element) {
         element.setProperty(this);
         elements.add(element);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

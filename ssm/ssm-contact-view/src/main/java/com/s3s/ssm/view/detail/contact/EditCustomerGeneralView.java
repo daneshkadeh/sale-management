@@ -10,6 +10,7 @@ import com.s3s.ssm.entity.contact.PartnerProfile;
 import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.DaoHelperImpl;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
@@ -24,7 +25,8 @@ public class EditCustomerGeneralView extends EditPartnerGeneralView<Partner> {
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, Partner entity) {
         super.initialPresentationView(detailDataModel, entity);
-        detailDataModel.tab("Nhom mua hang", "Nhom mua hang", null);
+        detailDataModel.tab(ControlConfigUtils.getString("label.Partner.customerProfile.audienceCates"),
+                "Nhom mua hang", null);
         detailDataModel.addRawAttribute("customerProfile.audienceCates", DetailFieldType.MULTI_SELECT_LIST_BOX)
                 .referenceDataId(REF_LIST_AUDIENCECATE).value(getAudienceCategories(entity));
     }

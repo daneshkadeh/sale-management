@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
-@Table(name = "s_package")
+@Table(name = "ca_package")
 public class SPackage extends AbstractCodeOLObject {
     private String name;
     private Integer minTotalItemAmount;

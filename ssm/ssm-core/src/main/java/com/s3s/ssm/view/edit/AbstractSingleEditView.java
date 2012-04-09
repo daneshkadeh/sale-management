@@ -346,8 +346,14 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         }
         for (int i = startIndex; i < endIndex; i++) {
             final DetailAttribute attribute = detailDataModel.getDetailAttributes().get(i);
-            String label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
-                    + attribute.getName());
+            String label = null;
+            if (attribute.getLabel() != null) {
+                label = attribute.getLabel();
+            } else {
+                label = ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + "."
+                        + attribute.getName());
+            }
+
             String newline = attribute.isNewColumn() ? "right, gapleft 10, " : "right, newline, ";
             int width = attribute.getWidth() == 0 ? UIConstants.DEFAULT_WIDTH : attribute.getWidth();
 

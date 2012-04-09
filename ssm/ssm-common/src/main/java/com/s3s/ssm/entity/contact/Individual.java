@@ -77,7 +77,7 @@ public class Individual extends AbstractIdOLObject {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "partner_id", nullable = false)
     public Partner getPartner() {
         return partner;
     }

@@ -25,7 +25,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.config.UploadFile;
 
 @Entity
-@Table(name = "s_manufacturer")
+@Table(name = "ca_manufacturer")
 public class Manufacturer extends AbstractCodeOLObject {
 
     private String name;

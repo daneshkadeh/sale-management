@@ -59,10 +59,12 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).width(50).newColumn();
         addIndividualGroup(detailDataModel);
 
-        detailDataModel.startGroup("Communicate to partner");
+        detailDataModel.startGroup(ControlConfigUtils
+                .getString("label.EditPartnerGeneralView.Partner.CommunicateToPartner"));
         detailDataModel.addAttribute("phone", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("fax", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("email", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("website", DetailFieldType.TEXTBOX);
         detailDataModel.endGroup();
 
         detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX);
@@ -74,7 +76,8 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
         detailDataModel.addRawAttribute("rawAttribute4", DetailFieldType.MONEY).value(null).referenceDataId(MONEY_ID);
         // detailDataModel.addRawAttribute("rawLabel", DetailFieldType.LABEL).value("Hello label");
 
-        detailDataModel.tab("Main address", "Address of Partner", null);
+        detailDataModel.tab(ControlConfigUtils.getString("label.EditPartnerGeneralView.Partner.address"),
+                "Address of Partner", null);
         detailDataModel.addAttribute("mainAddressLink.address.name", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("mainAddressLink.address.address", DetailFieldType.TEXTAREA);
         detailDataModel.addAttribute("mainAddressLink.address.district", DetailFieldType.TEXTBOX);
@@ -92,12 +95,20 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
     }
 
     protected void addIndividualGroup(DetailDataModel detailDataModel) {
-        detailDataModel.startGroup("Representer");
+        detailDataModel.startGroup(ControlConfigUtils.getString("label.EditPartnerGeneralView.Partner.representer"));
         detailDataModel.addAttribute("mainIndividual.title", DetailFieldType.DROPDOWN).referenceDataId(PARTNER_TITLE);
         detailDataModel.addAttribute("mainIndividual.firstName", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("mainIndividual.lastName", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("mainIndividual.position", DetailFieldType.TEXTBOX);
         detailDataModel.endGroup();
+    }
+
+    @Override
+    protected void saveOrUpdate(Partner entity) {
+        // Vietnamese: Ho + Ten, USA: Ten + Ho. Application support vietnamese now
+        entity.getMainIndividual().setFullName(
+                entity.getMainIndividual().getLastName() + " " + entity.getMainIndividual().getFirstName());
+        super.saveOrUpdate(entity);
     }
 
     @Override
