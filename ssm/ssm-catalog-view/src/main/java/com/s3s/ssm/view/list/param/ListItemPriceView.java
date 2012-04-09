@@ -11,9 +11,8 @@ public class ListItemPriceView extends AbstractListView<ItemPrice> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("partnerCategory", ListRendererType.TEXT);
+        listDataModel.addColumn("audienceCategory", ListRendererType.TEXT);
         listDataModel.addColumn("sellPrice", ListRendererType.TEXT);
-        listDataModel.addColumn("currency", ListRendererType.TEXT);
     }
 
     @Override

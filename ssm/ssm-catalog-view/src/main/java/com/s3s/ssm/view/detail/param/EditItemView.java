@@ -63,8 +63,9 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
         }
 
         detailDataModel.addAttribute("sumUomName", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("baseSellPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("originPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+        detailDataModel.addAttribute("baseSellPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+
         if (isGoodProduct(entity)) {
             Goods good = DaoHelperImpl.downCast(Goods.class, entity.getProduct());
             for (ProductProperty property : good.getProperties()) {
@@ -119,7 +120,7 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
 
     @Override
     protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("partnerCategory", ListRendererType.TEXT);
+        listDataModel.addColumn("audienceCategory", ListRendererType.TEXT);
         listDataModel.addColumn("sellPrice", ListRendererType.TEXT);
         listDataModel.addColumn("currency", ListRendererType.TEXT);
 

@@ -14,7 +14,10 @@
  */
 package com.s3s.ssm.entity.catalog;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -23,15 +26,15 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
-import com.s3s.ssm.entity.contact.PartnerCategory;
+import com.s3s.ssm.entity.contact.AudienceCategory;
+import com.s3s.ssm.model.Money;
 
 @Entity
 @Table(name = "ca_item_price")
 public class ItemPrice extends AbstractIdOLObject {
     private Item item;
-    private PartnerCategory partnerCategory;
-    private Double sellPrice;
-    private String currency;
+    private AudienceCategory audienceCategory;
+    private Money sellPrice;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", nullable = false)
@@ -46,32 +49,24 @@ public class ItemPrice extends AbstractIdOLObject {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contacttype_id", nullable = false)
     @NotNull
-    public PartnerCategory getPartnerCategory() {
-        return partnerCategory;
+    public AudienceCategory getAudienceCategory() {
+        return audienceCategory;
     }
 
-    public void setPartnerCategory(PartnerCategory partnerCategory) {
-        this.partnerCategory = partnerCategory;
+    public void setAudienceCategory(AudienceCategory partnerCategory) {
+        this.audienceCategory = partnerCategory;
     }
 
-    @Column(name = "sell_price", nullable = false)
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "sell_price")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code")) })
     @NotNull
-    public Double getSellPrice() {
+    public Money getSellPrice() {
         return sellPrice;
     }
 
-    public void setSellPrice(Double sellPrice) {
+    public void setSellPrice(Money sellPrice) {
         this.sellPrice = sellPrice;
-    }
-
-    @Column(name = "currency", nullable = false)
-    @NotNull
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
 }
