@@ -213,6 +213,7 @@ public class SSMDataLoader {
         productDc.add(Restrictions.eq("code", PRODUCT_GIAY_NAM));
         List<Goods> listGoods = daoHelper.getDao(Goods.class).findByCriteria(productDc);
         Goods goods = listGoods.get(0);
+        s_logger.info("List saved items: " + goods.getListItems());
         s_logger.info("Product is saved OK : " + goods.getCode() + ", " + goods.getManufacturer().getCode());
 
         DetachedCriteria itemDC = daoHelper.getDao(Item.class).getCriteria();

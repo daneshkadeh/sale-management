@@ -14,15 +14,23 @@
  */
 package com.s3s.ssm.entity.catalog;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.config.UploadFile;
@@ -42,6 +50,8 @@ public class Product extends AbstractCodeOLObject {
     private String description;
 
     private UploadFile uploadFile;
+
+    private Set<Item> listItems = new HashSet<>();
 
     @Column(name = "name", nullable = false, length = 128)
     @NotNull
@@ -81,6 +91,18 @@ public class Product extends AbstractCodeOLObject {
 
     public void setUploadFile(UploadFile uploadFile) {
         this.uploadFile = uploadFile;
+    }
+
+    // Can not use FetchType.EAGER. Refer to
+    // http://stackoverflow.com/questions/4334970/hibernate-cannot-simultaneously-fetch-multiple-bags
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public Set<Item> getListItems() {
+        return listItems;
+    }
+
+    public void setListItems(Set<Item> listItems) {
+        this.listItems = listItems;
     }
 
 }
