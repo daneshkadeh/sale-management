@@ -628,10 +628,9 @@ public class SSMDataLoader {
 
     private static Set<ItemPrice> initItemPrice(DaoHelper daoHelper, List<Item> listItem, List<Partner> listContact) {
         ItemPrice itemPrice = new ItemPrice();
-        List<PartnerCategory> listPartnerCate = new ArrayList<>(listContact.get(0).getPartnerCateSet());
-        itemPrice.setPartnerCategory(listPartnerCate.get(0));
-        itemPrice.setSellPrice(100.0);
-        itemPrice.setCurrency("VND");
+        List<AudienceCategory> listAudienceCate = daoHelper.getDao(AudienceCategory.class).findAll();
+        itemPrice.setAudienceCategory(listAudienceCate.get(0));
+        itemPrice.setSellPrice(Money.create("VND", 100L));
         itemPrice.setItem(listItem.get(0));
         daoHelper.getDao(ItemPrice.class).saveOrUpdate(itemPrice);
         listItem.get(0).addItemPrice(itemPrice);

@@ -18,15 +18,16 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.ItemPrice;
-import com.s3s.ssm.entity.contact.PartnerCategory;
+import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.helper.CatalogHelper;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditItemPriceVirtualView extends AbstractSingleEditView<ItemPrice> {
-    private static final String REF_CONTACT_TYPE = "REF_CONTACT_TYPE";
+    private static final String REF_AUDIENCE_CATE = "REF_AUDIENCE_CATE";
     private static final String REF_CURRENCY_ID = "REF_CURRENCY_ID";
 
     public EditItemPriceVirtualView(Map<String, Object> entity) {
@@ -35,10 +36,8 @@ public class EditItemPriceVirtualView extends AbstractSingleEditView<ItemPrice> 
 
     @Override
     public void initialPresentationView(DetailDataModel detailDataModel, ItemPrice entity) {
-        detailDataModel.addAttribute("item", DetailFieldType.TEXTBOX).editable(false);
-        detailDataModel.addAttribute("partnerCategory", DetailFieldType.DROPDOWN).referenceDataId(REF_CONTACT_TYPE);
-        detailDataModel.addAttribute("sellPrice", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("currency", DetailFieldType.DROPDOWN).referenceDataId(REF_CURRENCY_ID);
+        detailDataModel.addAttribute("audienceCategory", DetailFieldType.DROPDOWN).referenceDataId(REF_AUDIENCE_CATE);
+        detailDataModel.addAttribute("sellPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
     }
 
     @Override
@@ -51,7 +50,7 @@ public class EditItemPriceVirtualView extends AbstractSingleEditView<ItemPrice> 
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, ItemPrice entity) {
         super.setReferenceDataModel(refDataModel, entity);
-        refDataModel.putRefDataList(REF_CONTACT_TYPE, getDaoHelper().getDao(PartnerCategory.class).findAll(), null);
+        refDataModel.putRefDataList(REF_AUDIENCE_CATE, getDaoHelper().getDao(AudienceCategory.class).findAll(), null);
         refDataModel.putRefDataList(REF_CURRENCY_ID, CatalogHelper.getCurrenciesCode(getDaoHelper()), null);
     }
 
