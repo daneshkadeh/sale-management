@@ -31,7 +31,7 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
-@Table(name = "s_advantage")
+@Table(name = "ca_advantage")
 public class Advantage extends AbstractCodeOLObject {
     private String name;
     private Integer discountPercent = 0;

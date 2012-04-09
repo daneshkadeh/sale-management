@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
-@Table(name = "s_product_type")
+@Table(name = "ca_product_type")
 public class ProductType extends AbstractCodeOLObject {
     private ProductFamilyType productFamilyType;
     private String name;

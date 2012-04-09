@@ -38,7 +38,7 @@ public class ListItemOfProductView extends AbstractListView<Item> {
         listDataModel.addColumn("product", ListRendererType.TEXT);
         listDataModel.addColumn("sumUomName", ListRendererType.TEXT);
         listDataModel.addColumn("baseSellPrice", ListRendererType.TEXT);
-        listDataModel.addColumn("currency", ListRendererType.TEXT);
+        listDataModel.addColumn("originPrice", ListRendererType.TEXT);
     }
 
     @Override

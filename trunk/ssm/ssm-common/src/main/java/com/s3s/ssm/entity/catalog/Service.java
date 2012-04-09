@@ -5,7 +5,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "s_service")
+@Table(name = "ca_service")
 @PrimaryKeyJoinColumn(name = "service_id")
 public class Service extends Product {
 

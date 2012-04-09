@@ -27,7 +27,7 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.store.Store;
 
 @Entity
-@Table(name = "s_article")
+@Table(name = "ca_article")
 public class Article extends AbstractIdOLObject {
     private Item item;
     private String barcode;

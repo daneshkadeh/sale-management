@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import com.s3s.ssm.model.Money;
 
 @Entity
-@Table(name = "s_voucher")
+@Table(name = "ca_voucher")
 @PrimaryKeyJoinColumn(name = "voucher_id")
 public class Voucher extends Product {
     private Money minAmount;

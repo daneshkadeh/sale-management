@@ -31,7 +31,7 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
  * 
  */
 @Entity
-@Table(name = "s_productproperty_element")
+@Table(name = "ca_productproperty_element")
 public class ProductPropertyElement extends AbstractIdOLObject {
     private ProductProperty property;
     private String value;
@@ -54,5 +54,10 @@ public class ProductPropertyElement extends AbstractIdOLObject {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return value;
     }
 }

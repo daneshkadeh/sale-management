@@ -30,7 +30,7 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
  * 
  */
 @Entity
-@Table(name = "s_itemproperty_value")
+@Table(name = "ca_itemproperty_value")
 public class ItemPropertyValue extends AbstractIdOLObject {
     private Item item;
     private ProductProperty property;

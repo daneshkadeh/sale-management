@@ -514,7 +514,6 @@ public class SSMDataLoader {
         Invoice invoice1 = new Invoice();
         invoice1.setContact(listContact.get(0));
         invoice1.setInvoiceNumber("0000001");
-        invoice1.setCode("0000001");
         invoice1.setCreatedDate(new Date());
         invoice1.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice1.setStatus(InvoiceStatus.OPEN);
@@ -537,7 +536,6 @@ public class SSMDataLoader {
         Invoice invoice2 = new Invoice();
         invoice2.setContact(listContact.get(0));
         invoice2.setInvoiceNumber("0000002");
-        invoice2.setCode("0000002");
         invoice2.setCreatedDate(new Date());
         invoice2.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice2.setStatus(InvoiceStatus.OPEN);
@@ -901,15 +899,14 @@ public class SSMDataLoader {
         individual.setPosition("Ca nhan");
         individual.setPartner(contact);
 
-        Address shop = contact.getMainAddressLink().getAddress();
-        shop.setName("Cua hang giay so 1");
-        // shop.setContact(contact);
-        shop.setAddress("123 Bui vien");
-        shop.setDistrict("1");
-        shop.setCity("Ho Chi Minh");
-        shop.setPostalCode("70000");
-        shop.setFixPhone("0909000000");
-        shop.setRemark("Mo cua 8h-21h");
+        Address address = contact.getMainAddressLink().getAddress();
+        address.setName("Cua hang giay so 1");
+        address.setAddress("123 Bui vien");
+        address.setDistrict("1");
+        address.setCity("Ho Chi Minh");
+        address.setPostalCode("70000");
+        address.setFixPhone("0909000000");
+        address.setRemark("Mo cua 8h-21h");
         daoHelper.getDao(Partner.class).saveOrUpdate(contact);
         return Arrays.asList(contact);
     }
@@ -966,10 +963,10 @@ public class SSMDataLoader {
     private static List<Item> initItem(DaoHelper daoHelper, List<UnitOfMeasure> listUom, List<Goods> goods) {
         Item item = new Item();
         item.setProduct(goods.get(0));
-        item.setBaseSellPrice(10000.0);
+        item.setBaseSellPrice(Money.create("VND", 10000L));
+        item.setOriginPrice(Money.create("VND", 9000L));
         item.setListUom(Arrays.asList(listUom.get(0)));
         item.setSumUomName("size 39");
-        item.setCurrency("VND");
 
         ItemPropertyValue propertyValue = new ItemPropertyValue();
         List<ProductProperty> properties = new ArrayList<>(goods.get(0).getProperties());
@@ -992,6 +989,8 @@ public class SSMDataLoader {
         product.setName("Giay nam");
         product.setDescription("Giay nam choi tennis");
         product.setModel("Model100");
+        product.setBaseSellPrice(Money.create("VND", 10000L));
+        product.setOriginPrice(Money.create("VND", 9000L));
 
         DetachedCriteria uomDC = daoHelper.getDao(UnitOfMeasure.class).getCriteria();
         uomDC.add(Restrictions.eq("code", UOM_KG));

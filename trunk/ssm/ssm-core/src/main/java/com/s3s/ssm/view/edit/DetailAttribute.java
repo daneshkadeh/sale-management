@@ -37,6 +37,7 @@ public class DetailAttribute {
     private String referenceDataId;
 
     private String cacheDataId;
+    private String label;
 
     public DetailAttribute(String name, DetailFieldType type) {
         this(name, type, false);
@@ -159,6 +160,15 @@ public class DetailAttribute {
     public DetailAttribute autoComplete() {
         Assert.isTrue(type == DetailFieldType.DROPDOWN, "Auto complete is just used for DROPDOWN type");
         this.isAutoComplete = true;
+        return this;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public DetailAttribute label(String label) {
+        this.label = label;
         return this;
     }
 }

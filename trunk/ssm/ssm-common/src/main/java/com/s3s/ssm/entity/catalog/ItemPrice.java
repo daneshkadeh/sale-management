@@ -26,7 +26,7 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.contact.PartnerCategory;
 
 @Entity
-@Table(name = "s_item_price")
+@Table(name = "ca_item_price")
 public class ItemPrice extends AbstractIdOLObject {
     private Item item;
     private PartnerCategory partnerCategory;

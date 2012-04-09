@@ -32,7 +32,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -68,9 +67,6 @@ public class Partner extends AbstractCodeOLObject {
     private UnitOfMeasure debitTimeUnit;// the unit of debit limit. Ex: date, month, year
     private Boolean isActive = true;
     private BankAccount bankAccount;
-    private Individual mainIndividual;
-    private PartnerAddressLink mainAddressLink;
-
     private Set<Individual> individuals = new HashSet<>();
     private Set<PartnerCategory> partnerCateSet = new HashSet<PartnerCategory>();
 
@@ -82,12 +78,12 @@ public class Partner extends AbstractCodeOLObject {
 
     public Partner() {
         // always set mainIndividual and mainAddressLink into a partner
-        mainIndividual = new Individual();
+        Individual mainIndividual = new Individual();
         mainIndividual.setRole(IndividualRoleEnum.MAIN);
         mainIndividual.setPartner(this);
         individuals.add(mainIndividual);
 
-        mainAddressLink = new PartnerAddressLink();
+        PartnerAddressLink mainAddressLink = new PartnerAddressLink();
         mainAddressLink.setMain(true);
         mainAddressLink.setPartner(this);
         listAddressLinks.add(mainAddressLink);
@@ -300,24 +296,32 @@ public class Partner extends AbstractCodeOLObject {
         bankAccount.setAccountName(accountName);
     }
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "main_individual")
+    @Transient
     public Individual getMainIndividual() {
+        Individual mainIndividual = null;
+        if (mainIndividual == null) {
+            for (Individual individual : individuals) {
+                if (individual.getRole() == IndividualRoleEnum.MAIN) {
+                    mainIndividual = individual;
+                    break;
+                }
+            }
+        }
         return mainIndividual;
     }
 
-    public void setMainIndividual(Individual mainIndividual) {
-        this.mainIndividual = mainIndividual;
-    }
-
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "main_address_link")
+    @Transient
     public PartnerAddressLink getMainAddressLink() {
+        PartnerAddressLink mainAddressLink = null;
+        if (mainAddressLink == null) {
+            for (PartnerAddressLink addressLink : listAddressLinks) {
+                if (addressLink.isMain()) {
+                    mainAddressLink = addressLink;
+                    break;
+                }
+            }
+        }
         return mainAddressLink;
-    }
-
-    public void setMainAddressLink(PartnerAddressLink mainAddressLink) {
-        this.mainAddressLink = mainAddressLink;
     }
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "partner")
@@ -327,5 +331,10 @@ public class Partner extends AbstractCodeOLObject {
 
     public void setIndividuals(Set<Individual> individuals) {
         this.individuals = individuals;
+    }
+
+    public void addIndividual(Individual individual) {
+        individual.setPartner(this);
+        individuals.add(individual);
     }
 }

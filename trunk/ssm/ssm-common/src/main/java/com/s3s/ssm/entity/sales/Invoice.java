@@ -30,14 +30,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.contact.Partner;
 
 @Entity
 @Table(name = "s_invoice")
-public class Invoice extends AbstractCodeOLObject {
+public class Invoice extends AbstractIdOLObject {
     private static final long serialVersionUID = 5993442648457138659L;
-    private String invoiceNumber;// should use attribute code instead of invoiceNumber
+    private String invoiceNumber;
     private InvoiceType type;
     private Partner contact;
     private Date createdDate;

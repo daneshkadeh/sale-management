@@ -9,6 +9,7 @@ import com.s3s.ssm.entity.catalog.ProductFamilyType;
 import com.s3s.ssm.entity.catalog.ProductProperty;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
@@ -30,6 +31,20 @@ public class EditGoodsGeneralView extends EditProductGeneralView<Goods> {
     }
 
     @Override
+    public void initialPresentationView(DetailDataModel detailDataModel, Goods entity) {
+        super.initialPresentationView(detailDataModel, entity);
+        detailDataModel.tab("Sell info", "Sell info", null);
+        detailDataModel.addAttribute("originPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+        detailDataModel.addAttribute("baseSellPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+        detailDataModel.addAttribute("maintainPeriod", DetailFieldType.TEXTBOX); // TODO: will use timespan component
+        detailDataModel.addAttribute("minNumberOfStoredProduct", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("mustSoldPeriod", DetailFieldType.TEXTBOX); // TODO: will use timespan component
+        detailDataModel.addAttribute("minNumberSoldInMonth", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("effectiveSoldInMonth", DetailFieldType.TEXTBOX);
+
+    }
+
+    @Override
     protected void addTabGeneral(DetailDataModel detailDataModel) {
         super.addTabGeneral(detailDataModel);
         detailDataModel.addAttribute("manufacturer", DetailFieldType.DROPDOWN).referenceDataId(MANU_REF_ID);
@@ -38,6 +53,7 @@ public class EditGoodsGeneralView extends EditProductGeneralView<Goods> {
         detailDataModel.addAttribute("properties", DetailFieldType.MULTI_SELECT_LIST_BOX)
                 .referenceDataId(REF_PROPERTIES_ID).width(300);
         // System.err.println(entity.getProperties());
+
     }
 
     @Override
