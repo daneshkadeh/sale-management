@@ -122,7 +122,6 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
     protected void initialListDetailPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("audienceCategory", ListRendererType.TEXT);
         listDataModel.addColumn("sellPrice", ListRendererType.TEXT);
-        listDataModel.addColumn("currency", ListRendererType.TEXT);
 
     }
 
