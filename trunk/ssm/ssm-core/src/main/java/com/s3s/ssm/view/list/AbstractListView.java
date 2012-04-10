@@ -516,8 +516,18 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      *            the entity which the detail view display for. If <code>null</code>, new entity is displayed.
      */
     protected void showEditView(T entity, EditActionEnum action) {
-        Class<? extends AbstractEditView<T>> detailViewClass = getEditViewClass();
         try {
+            Map<String, Object> detailParams = new HashMap<>();
+            detailParams.put(PARAM_ENTITY_ID, entity != null ? entity.getId() : null);
+            detailParams.put(PARAM_ACTION, action);
+            detailParams.put(PARAM_PARENT_ID, parentId);
+            detailParams.put(PARAM_PARENT_CLASS, parentClass);
+            detailParams.put(PARAM_LIST_VIEW, this);
+
+            if (!preShowEditView(entity, action, detailParams)) {
+                return;
+            }
+
             // if existing a new tab --> select it.
             if (action == EditActionEnum.NEW) {
                 int idx = tabPane.indexOfTab(AbstractEditView.NEW_TITLE);
@@ -526,14 +536,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     return;
                 }
             }
-
-            Map<String, Object> detailParams = new HashMap<>();
-            detailParams.put(PARAM_ENTITY_ID, entity != null ? entity.getId() : null);
-            detailParams.put(PARAM_ACTION, action);
-            detailParams.put(PARAM_PARENT_ID, parentId);
-            detailParams.put(PARAM_PARENT_CLASS, parentClass);
-            detailParams.put(PARAM_LIST_VIEW, this);
-
+            Class<? extends AbstractEditView<T>> detailViewClass = getEditViewClass();
             final AbstractEditView<T> detailView = detailViewClass.getConstructor(Map.class).newInstance(detailParams);
 
             String tabTitle = detailView.getTitle();
@@ -555,6 +558,22 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             logger.error(ex.getMessage(), ex);
             throw new RuntimeException("There are problems when init the detail view.");
         }
+    }
+
+    /**
+     * The child class should override to perform action before showing the edit view.
+     * 
+     * @param entity
+     *            the entity of the row selecting on the list.
+     * @param action
+     *            the action.
+     * @param detailParams
+     *            the param to initialize the detail view.
+     * @return true if continues to show the edit view, false if otherwise.
+     */
+    protected boolean preShowEditView(T entity, EditActionEnum action, Map<String, Object> detailParams) {
+        // The template method.
+        return true;
     }
 
     protected abstract Class<? extends AbstractEditView<T>> getEditViewClass();
@@ -648,6 +667,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         if (isNew) {
             entities.add(entity);
             int tabIndex = tabPane.indexOfTab(ControlConfigUtils.getString("label.tab.new"));
+
+            // TODO Phuc: This is a bug, set the title of tab is by getDefaultTitle() from editView
             tabPane.setTitleAt(tabIndex, entity.getId().toString());
             selectedRow = entities.size() - 1; // If add new entity, the selected row has the last index.
         }
