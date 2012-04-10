@@ -29,6 +29,8 @@ public class UIConstants {
 
     public static final String ELLIPSIS = "...";
 
+    public static final String BLANK = " ";
+
     /**
      * The Java look and Feel standard for one screen space between GUI Components.
      */
@@ -83,4 +85,8 @@ public class UIConstants {
      * Color of row when mouse over on a row.
      */
     public static final Color HIGHLIGHT_ROW_COLOR = new Color(133, 205, 255);
+
+    public static final int QTY_COLUMN_WIDTH = 93;
+
+    public static final int AMT_COLUMN_WIDTH = 93;
 }
