@@ -94,7 +94,6 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
         // }
         // ////////////////////////////////////////////////
         fireTableRowsUpdated(rowIndex, rowIndex);
-
     }
 
     @Override

@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.event.TableModelEvent;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -35,7 +37,7 @@ import com.s3s.ssm.view.list.ListDataModel;
 /**
  * This view is used for a master entity and its detail entities.</br> Example: An invoice and list detail invoice. User
  * can input directly invoice and detail invoice information on this screen. </br> Defect: still not bindAndValidate
- * detail entity correctly, master entity is still null befor bindAndValidate.
+ * detail entity correctly, master entity is still null before bindAndValidate.
  * 
  * @author phamcongbang
  * @author Phan Hong Phuc
@@ -172,6 +174,20 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
             return NUM_OF_ROW;
         }
 
+        @Override
+        public void tableChanged(TableModelEvent e) {
+            super.tableChanged(e);
+            AbstractMasterDetailView.this.tableChanged(e);
+        }
+    }
+
+    /**
+     * The child class override this method to perform something when the main table data changed.
+     * 
+     * @param e
+     */
+    protected void tableChanged(TableModelEvent e) {
+        // Template method
     }
 
     /**

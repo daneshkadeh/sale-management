@@ -15,6 +15,7 @@
 
 package com.s3s.ssm.view.list;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,10 +70,13 @@ public class SAdvanceTable extends JXTable {
                 : ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
         setSelectionMode(selectionMode);
         setColumnControlVisible(true);
+        getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
 
         setRenderer();
         setEditor();
-        setSorter();
+
+        // The table is already sorted by Hibernate (done in AbstractListView)
+        // setSorter();
 
         if (listDataModel.isEditable()) {
             setRowHeight(EDITOR_HEIGHT);

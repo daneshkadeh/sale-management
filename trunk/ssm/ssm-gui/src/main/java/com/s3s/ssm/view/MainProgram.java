@@ -155,8 +155,6 @@ public class MainProgram {
             }
         });
         loginDialog.setVisible(true);
-        loginDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
 
     /**
