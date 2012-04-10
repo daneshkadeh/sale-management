@@ -14,11 +14,18 @@
  */
 package com.s3s.ssm.entity.catalog;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -29,10 +36,14 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
 public class PackageLine extends AbstractIdOLObject {
     private SPackage pack;
     private PackageLine parentPackageLine;
-    private Item item;
-    private Boolean optional;
+    private Product product;
+    private Boolean isAllItem = false;
+    private Set<Item> explicitLinkItems = new HashSet<>();
+    private Boolean optional = false;
     private Integer minItemAmount;
     private Integer maxItemAmount;
+    // PackageLineItemPrice is applied for this packageLine, use default ItemPrice to sell if not exist in this list
+    private Set<PackageLineItemPrice> itemPrices = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "package_id", nullable = false)
@@ -56,14 +67,25 @@ public class PackageLine extends AbstractIdOLObject {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false)
     @NotNull
-    public Item getItem() {
-        return item;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(name = "at_package_line_item", joinColumns = { @JoinColumn(name = "packline_id") }, inverseJoinColumns = { @JoinColumn(name = "item_id") })
+    public
+            Set<Item> getExplicitLinkItems() {
+        return explicitLinkItems;
+    }
+
+    public void setExplicitLinkItems(Set<Item> explicitLinkItems) {
+        this.explicitLinkItems = explicitLinkItems;
     }
 
     @Column(name = "optional", nullable = false)
@@ -94,6 +116,30 @@ public class PackageLine extends AbstractIdOLObject {
 
     public void setMaxItemAmount(Integer maxItemAmount) {
         this.maxItemAmount = maxItemAmount;
+    }
+
+    @Column(name = "is_all_item", nullable = false)
+    @NotNull
+    public Boolean getIsAllItem() {
+        return isAllItem;
+    }
+
+    public void setIsAllItem(Boolean linkAllItem) {
+        this.isAllItem = linkAllItem;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "packageLine")
+    public Set<PackageLineItemPrice> getItemPrices() {
+        return itemPrices;
+    }
+
+    public void setItemPrices(Set<PackageLineItemPrice> itemPrices) {
+        this.itemPrices = itemPrices;
+    }
+
+    public void addItemPrice(PackageLineItemPrice itemPrice) {
+        itemPrice.setPackageLine(this);
+        itemPrices.add(itemPrice);
     }
 
 }

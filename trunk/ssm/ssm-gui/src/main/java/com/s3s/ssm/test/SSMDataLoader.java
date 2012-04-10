@@ -36,6 +36,7 @@ import com.s3s.ssm.entity.catalog.ItemPrice;
 import com.s3s.ssm.entity.catalog.ItemPropertyValue;
 import com.s3s.ssm.entity.catalog.Manufacturer;
 import com.s3s.ssm.entity.catalog.PackageLine;
+import com.s3s.ssm.entity.catalog.PackageLineItemPrice;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.catalog.ProductFamilyType;
 import com.s3s.ssm.entity.catalog.ProductProperty;
@@ -237,6 +238,10 @@ public class SSMDataLoader {
         initManufacturer(daoHelper);
         initProductType(daoHelper);
 
+        List<Partner> listContact = initCustomer(daoHelper, listBankAccount);
+        List<ContactDebt> listContactDebt = initContactDebt(daoHelper, listContact);
+        List<Partner> listSupplier = initSupplier(daoHelper, listContact, listBankAccount);
+
         List<ProductProperty> properties = initProductProperty(daoHelper);
         List<ProductPropertyElement> elements = initProductPropertyElements(daoHelper, properties);
 
@@ -249,9 +254,7 @@ public class SSMDataLoader {
         List<Advantage> listAdvantage = initAdvantage(daoHelper, listItem, listPackage);
 
         List<Operator> listOperator = initOperator(daoHelper);
-        List<Partner> listContact = initCustomer(daoHelper, listBankAccount);
-        List<ContactDebt> listContactDebt = initContactDebt(daoHelper, listContact);
-        List<Partner> listSupplier = initSupplier(daoHelper, listContact, listBankAccount);
+
         List<Store> listStore = initStore(daoHelper, listOperator);
         List<Article> listGoods = initGood(daoHelper, listStore, listItem);
         Set<ItemPrice> listItemPrices = initItemPrice(daoHelper, listItem, listContact);
@@ -417,17 +420,24 @@ public class SSMDataLoader {
         SPackage pack = new SPackage();
         pack.setCode("Group_12_BLX");
         pack.setName("Goi 12 san pham BLX");
-        pack.setMinTotalItemAmount(12);
-        pack.setMaxTotalItemAmount(12);
+        // pack.setMinTotalItemAmount(12);
+        // pack.setMaxTotalItemAmount(12);
 
         daoHelper.getDao(SPackage.class).saveOrUpdate(pack);
 
         PackageLine line = new PackageLine();
-        line.setItem(listItem.get(0));
+        line.setIsAllItem(true);
         line.setMinItemAmount(12);
         line.setMaxItemAmount(12);
         line.setOptional(false);
         line.setPackage(pack);
+        line.setProduct(listItem.get(0).getProduct());
+
+        PackageLineItemPrice itemPrice = new PackageLineItemPrice();
+        itemPrice.setItem(listItem.get(0));
+        itemPrice.setAudienceCategory(daoHelper.getDao(AudienceCategory.class).findAll().get(0));
+        itemPrice.setSellPrice(Money.create("VND", 9000L));
+        line.addItemPrice(itemPrice);
         daoHelper.getDao(PackageLine.class).saveOrUpdate(line);
         return Arrays.asList(pack);
     }
