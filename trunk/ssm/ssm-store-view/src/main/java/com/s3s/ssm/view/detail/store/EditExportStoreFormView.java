@@ -103,7 +103,6 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
     @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, ExportStoreForm entity,
             Map<String, Object> request) {
-        super.initialPresentationView(detailDataModel, entity, request);
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("printAfterSave", DetailFieldType.CHECKBOX).newColumn();
         detailDataModel.addAttribute("createdDate", DetailFieldType.DATE).mandatory(true);

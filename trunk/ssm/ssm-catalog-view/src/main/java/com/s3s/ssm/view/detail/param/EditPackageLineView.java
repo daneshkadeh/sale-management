@@ -6,6 +6,7 @@ import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.catalog.PackageLineItemPrice;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.list.ListDataModel;
 
 public class EditPackageLineView extends AbstractMasterDetailView<PackageLine, PackageLineItemPrice> {
@@ -35,6 +36,16 @@ public class EditPackageLineView extends AbstractMasterDetailView<PackageLine, P
 
     @Override
     protected void addDetailIntoMaster(PackageLine masterEntity, PackageLineItemPrice detailEntity) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void initialPresentationView(DetailDataModel detailDataModel, PackageLine entity,
+            Map<String, Object> request) {
         // TODO Auto-generated method stub
 
     }
