@@ -14,8 +14,12 @@
  */
 package com.s3s.ssm.entity.catalog;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -25,8 +29,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 @Table(name = "ca_package")
 public class SPackage extends AbstractCodeOLObject {
     private String name;
-    private Integer minTotalItemAmount;
-    private Integer maxTotalItemAmount;
+    private Set<PackageLine> packageLines = new HashSet<>();
 
     @Column(name = "name", length = 128, nullable = false)
     @NotNull
@@ -38,23 +41,12 @@ public class SPackage extends AbstractCodeOLObject {
         this.name = name;
     }
 
-    @Column(name = "min_total_item_amount", nullable = false)
-    @NotNull
-    public Integer getMinTotalItemAmount() {
-        return minTotalItemAmount;
+    @OneToMany(mappedBy = "package")
+    public Set<PackageLine> getPackageLines() {
+        return packageLines;
     }
 
-    public void setMinTotalItemAmount(Integer minTotalItemAmount) {
-        this.minTotalItemAmount = minTotalItemAmount;
-    }
-
-    @Column(name = "max_total_item_amount", nullable = false)
-    @NotNull
-    public Integer getMaxTotalItemAmount() {
-        return maxTotalItemAmount;
-    }
-
-    public void setMaxTotalItemAmount(Integer maxTotalItemAmount) {
-        this.maxTotalItemAmount = maxTotalItemAmount;
+    public void setPackageLines(Set<PackageLine> packageLines) {
+        this.packageLines = packageLines;
     }
 }

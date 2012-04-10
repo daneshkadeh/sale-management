@@ -1,5 +1,5 @@
 /*
- * ItemPrice
+ * PackageLineItemPrice
  * 
  * Project: SSM
  * 
@@ -30,11 +30,12 @@ import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.model.Money;
 
 @Entity
-@Table(name = "ca_item_price")
-public class ItemPrice extends AbstractIdOLObject {
+@Table(name = "s_package_line_item_price")
+public class PackageLineItemPrice extends AbstractIdOLObject {
     private Item item;
     private AudienceCategory audienceCategory;
     private Money sellPrice;
+    private PackageLine packageLine;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", nullable = false)
@@ -67,6 +68,16 @@ public class ItemPrice extends AbstractIdOLObject {
 
     public void setSellPrice(Money sellPrice) {
         this.sellPrice = sellPrice;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "package_line_id", nullable = false)
+    public PackageLine getPackageLine() {
+        return packageLine;
+    }
+
+    public void setPackageLine(PackageLine packageLine) {
+        this.packageLine = packageLine;
     }
 
 }

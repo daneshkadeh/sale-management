@@ -424,7 +424,10 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 break;
             }
         }
-        contentPane.add(createFooterPanel(mainTableModel), "grow");
+        JPanel footerPanel = createFooterPanel(mainTableModel);
+        if (footerPanel != null) {
+            contentPane.add(footerPanel, "grow");
+        }
     }
 
     /**

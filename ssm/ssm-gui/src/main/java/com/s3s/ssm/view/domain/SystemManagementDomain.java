@@ -34,6 +34,7 @@ import com.s3s.ssm.view.list.operator.ListStallView;
 import com.s3s.ssm.view.list.param.ListGoodsView;
 import com.s3s.ssm.view.list.param.ListItemView;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
+import com.s3s.ssm.view.list.param.ListPackageView;
 import com.s3s.ssm.view.list.param.ListProductPropertyView;
 import com.s3s.ssm.view.list.param.ListProductTypeView;
 import com.s3s.ssm.view.list.param.ListServiceView;
@@ -99,6 +100,9 @@ public class SystemManagementDomain extends AbstractDomain {
         TreeNodeWithView serviceProductNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.Service"), new ListServiceView());
 
+        TreeNodeWithView packageNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Package"),
+                new ListPackageView());
+
         TreeNodeWithView itemNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Item"),
                 new ListItemView());
         // Basic Information Management
@@ -120,6 +124,7 @@ public class SystemManagementDomain extends AbstractDomain {
         productManagementEntry.add(productNode);
         productManagementEntry.add(voucherNode);
         productManagementEntry.add(serviceProductNode);
+        productManagementEntry.add(packageNode);
         productManagementEntry.add(itemNode);
         productManagementEntry.add(taxGroupNode);
 
