@@ -99,7 +99,8 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
      * {@inheritDoc}
      */
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ImportStoreForm entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, ImportStoreForm entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("printAfterSave", DetailFieldType.CHECKBOX).newColumn();
         detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);

@@ -30,7 +30,8 @@ public class EditExchangeRateView extends AbstractSingleEditView<ExchangeRate> {
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ExchangeRate entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, ExchangeRate entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("updateDate", DetailFieldType.DATE).mandatory(true);
         detailDataModel.addAttribute("currency", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_CURRENCY)
                 .mandatory(true);

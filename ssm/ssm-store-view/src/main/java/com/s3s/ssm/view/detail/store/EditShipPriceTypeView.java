@@ -40,7 +40,8 @@ public class EditShipPriceTypeView extends AbstractSingleEditView<ShipPriceType>
      * {@inheritDoc}
      */
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ShipPriceType entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, ShipPriceType entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
     }

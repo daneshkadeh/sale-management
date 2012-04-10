@@ -23,8 +23,9 @@ public class EditCustomerGeneralView extends EditPartnerGeneralView<Partner> {
     private static final String REF_LIST_AUDIENCECATE = "REF_LIST_AUDIENCECATE";
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, Partner entity) {
-        super.initialPresentationView(detailDataModel, entity);
+    protected void
+            initialPresentationView(DetailDataModel detailDataModel, Partner entity, Map<String, Object> request) {
+        super.initialPresentationView(detailDataModel, entity, request);
         detailDataModel.tab(ControlConfigUtils.getString("label.Partner.customerProfile.audienceCates"),
                 "Nhom mua hang", null);
         detailDataModel.addRawAttribute("customerProfile.audienceCates", DetailFieldType.MULTI_SELECT_LIST_BOX)

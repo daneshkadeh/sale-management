@@ -36,7 +36,8 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, Organization entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, Organization entity,
+            Map<String, Object> request) {
         // information of organization
 
         String infoTab = ControlConfigUtils.getString("label.Organization.infoTab");

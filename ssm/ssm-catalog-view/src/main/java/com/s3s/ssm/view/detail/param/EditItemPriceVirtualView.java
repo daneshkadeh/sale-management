@@ -35,7 +35,8 @@ public class EditItemPriceVirtualView extends AbstractSingleEditView<ItemPrice> 
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ItemPrice entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, ItemPrice entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("audienceCategory", DetailFieldType.DROPDOWN).referenceDataId(REF_AUDIENCE_CATE);
         detailDataModel.addAttribute("sellPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
     }

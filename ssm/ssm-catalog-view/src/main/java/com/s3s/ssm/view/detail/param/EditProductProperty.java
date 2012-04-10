@@ -44,7 +44,8 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ProductProperty entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, ProductProperty entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).mandatory(true)

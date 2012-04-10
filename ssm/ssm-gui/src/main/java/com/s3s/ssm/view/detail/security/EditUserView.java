@@ -39,7 +39,7 @@ public class EditUserView extends AbstractSingleEditView<User> {
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, User entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, User entity, Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("username", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("password", DetailFieldType.PASSWORD).mandatory(true);

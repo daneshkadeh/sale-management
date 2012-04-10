@@ -27,7 +27,8 @@ public class EditPartnerAddressView extends AbstractSingleEditView<PartnerAddres
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, PartnerAddressLink entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, PartnerAddressLink entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("address.name", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("address.address", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("address.district", DetailFieldType.TEXTBOX);

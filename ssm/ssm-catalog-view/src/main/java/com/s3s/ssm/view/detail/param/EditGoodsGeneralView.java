@@ -31,8 +31,8 @@ public class EditGoodsGeneralView extends EditProductGeneralView<Goods> {
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, Goods entity) {
-        super.initialPresentationView(detailDataModel, entity);
+    protected void initialPresentationView(DetailDataModel detailDataModel, Goods entity, Map<String, Object> request) {
+        super.initialPresentationView(detailDataModel, entity, request);
         detailDataModel.tab("Sell info", "Sell info", null);
         detailDataModel.addAttribute("originPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("baseSellPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);

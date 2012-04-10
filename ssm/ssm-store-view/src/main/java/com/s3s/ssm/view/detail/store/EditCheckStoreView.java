@@ -56,7 +56,8 @@ public class EditCheckStoreView extends AbstractMasterDetailView<CheckStore, Det
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, CheckStore entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, CheckStore entity,
+            Map<String, Object> request) {
         // TODO Auto-generated method stub
 
     }

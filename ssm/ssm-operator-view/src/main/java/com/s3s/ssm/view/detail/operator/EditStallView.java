@@ -54,7 +54,7 @@ public class EditStallView extends AbstractSingleEditView<Stall> {
      * {@inheritDoc}
      */
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, Stall entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, Stall entity, Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("manager", DetailFieldType.ENTITY_CHOOSER).referenceDataId(MANAGER_REF_ID);

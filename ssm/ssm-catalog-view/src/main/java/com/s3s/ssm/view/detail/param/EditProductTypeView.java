@@ -33,7 +33,8 @@ public class EditProductTypeView extends AbstractSingleEditView<ProductType> {
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ProductType entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, ProductType entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("productFamilyType", DetailFieldType.DROPDOWN).referenceDataId(REF_PRODUCT_FAMILY);

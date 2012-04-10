@@ -14,8 +14,6 @@
  */
 package com.s3s.ssm.view.list.store;
 
-import javax.swing.Icon;
-
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.view.detail.store.EditExportStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -25,10 +23,6 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListExportStoreFormView extends AbstractListView<ExportStoreForm> {
     private static final long serialVersionUID = 7393197060716188079L;
-
-    public ListExportStoreFormView(Icon icon, String label, String tooltip) {
-        super(icon, label, tooltip);
-    }
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {

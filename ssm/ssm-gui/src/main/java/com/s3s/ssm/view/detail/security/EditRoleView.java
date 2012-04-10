@@ -39,7 +39,7 @@ public class EditRoleView extends AbstractSingleEditView<Role> {
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, Role entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, Role entity, Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
         // detailDataModel.addAttribute("name", FieldTypeEnum.CHECKBOX);

@@ -40,7 +40,8 @@ public class EditUnitOfMeasureView extends AbstractSingleEditView<UnitOfMeasure>
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, UnitOfMeasure entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, UnitOfMeasure entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("uomCategory", DetailFieldType.DROPDOWN).referenceDataId(CATE_REF_ID);
