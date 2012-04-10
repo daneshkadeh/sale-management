@@ -49,6 +49,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.xml.DOMConfigurator;
 
+import com.s3s.ssm.util.ImageConstants;
+import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.domain.BuyManagementDomain;
@@ -217,9 +219,12 @@ public class MainProgram {
     private static JToolBar createToolbar() {
         JToolBar toolbar = new JToolBar();
         toolbar.add(Box.createHorizontalGlue());
-        institutionBtn = new JToggleButton("Institution");
-        organizationBtn = new JToggleButton("Organization");
-        saleChannelBtn = new JToggleButton("Sale Channel");
+        institutionBtn = new JToggleButton(ImageUtils.getMediumIcon(ImageConstants.INSTITUTION_ICON));
+        institutionBtn.setToolTipText(ControlConfigUtils.getString("icon.tooltip.institution"));
+        organizationBtn = new JToggleButton(ImageUtils.getMediumIcon(ImageConstants.ORGANIZATION_ICON));
+        organizationBtn.setToolTipText(ControlConfigUtils.getString("icon.tooltip.organization"));
+        saleChannelBtn = new JToggleButton(ImageUtils.getMediumIcon(ImageConstants.SALECHANNEL_ICON));
+        saleChannelBtn.setToolTipText(ControlConfigUtils.getString("icon.tooltip.saleChannel"));
         ButtonGroup contextGroup = new ButtonGroup();
         contextGroup.add(institutionBtn);
         contextGroup.add(organizationBtn);

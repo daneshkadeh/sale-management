@@ -24,7 +24,6 @@ import javax.swing.ImageIcon;
  * 
  */
 public class ImageUtils {
-    private static final int SMALL_SIZE = 16;
 
     private ImageUtils() {
     }
@@ -46,8 +45,20 @@ public class ImageUtils {
      * @return
      */
     public static ImageIcon getSmallIcon(String imagePath) {
+        return getIcon(imagePath, ImageConstants.SMALL_SIZE);
+    }
+
+    public static ImageIcon getMediumIcon(String imagePath) {
+        return getIcon(imagePath, ImageConstants.MEDIUM_SIZE);
+    }
+
+    public static ImageIcon getBigIcon(String imagePath) {
+        return getIcon(imagePath, ImageConstants.BIG_SIZE);
+    }
+
+    public static ImageIcon getIcon(String imagePath, int size) {
         Image image = new ImageIcon(ImageUtils.class.getResource(imagePath)).getImage();
-        return new ImageIcon(image.getScaledInstance(SMALL_SIZE, SMALL_SIZE, Image.SCALE_SMOOTH));
+        return new ImageIcon(image.getScaledInstance(size, size, Image.SCALE_SMOOTH));
     }
 
 }
