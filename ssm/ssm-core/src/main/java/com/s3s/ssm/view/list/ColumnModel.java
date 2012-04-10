@@ -180,6 +180,17 @@ public class ColumnModel {
         return this;
     }
 
+    /**
+     * Set prefer width, min and max width is not cared in this case.
+     * 
+     * @param width
+     *            the prefer width, null if default.
+     * @return
+     */
+    public ColumnModel width(Integer width) {
+        return this.width(width, null, null);
+    }
+
     public Integer getMaxWidth() {
         return maxWidth;
     }
