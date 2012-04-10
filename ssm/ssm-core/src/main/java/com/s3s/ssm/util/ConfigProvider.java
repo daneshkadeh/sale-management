@@ -14,7 +14,6 @@
  */
 package com.s3s.ssm.util;
 
-import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.security.AuthenticationManager;
@@ -38,7 +37,7 @@ public class ConfigProvider {
     }
 
     private ConfigProvider() {
-        DOMConfigurator.configure("src/main/resources/log4j.xml");
+        // DOMConfigurator.configure("log4j.xml");
         appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
         authContext = new ClassPathXmlApplicationContext(new String[] { "security/auth-context.xml",
                 "security/acl-context.xml" });
