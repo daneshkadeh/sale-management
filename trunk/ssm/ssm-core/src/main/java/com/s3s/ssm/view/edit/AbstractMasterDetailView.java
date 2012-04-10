@@ -106,15 +106,6 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
      * {@inheritDoc}
      */
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, T entity) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, T entity) {
         super.customizeComponents(name2AttributeComponent, entity);
     }
@@ -196,7 +187,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
      */
     protected JPanel createFooterPanel(TableModel tableModel) {
         // Template method
-        return null;
+        return new JPanel();
     }
 
     /**
