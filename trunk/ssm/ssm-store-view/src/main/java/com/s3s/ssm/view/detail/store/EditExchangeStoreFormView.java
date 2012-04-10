@@ -56,7 +56,8 @@ public class EditExchangeStoreFormView extends AbstractMasterDetailView<Exchange
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ExchangeStoreForm entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, ExchangeStoreForm entity,
+            Map<String, Object> request) {
         // TODO Auto-generated method stub
 
     }

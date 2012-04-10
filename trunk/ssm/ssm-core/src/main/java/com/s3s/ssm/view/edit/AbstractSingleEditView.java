@@ -152,12 +152,13 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     }
 
     private void contructView(T entity) {
-        initialPresentationView(detailDataModel, entity);
+        initialPresentationView(detailDataModel, entity, request);
         setReferenceDataModel(refDataModel, entity);
         initComponents();
     }
 
-    public abstract void initialPresentationView(DetailDataModel detailDataModel, T entity);
+    protected abstract void initialPresentationView(DetailDataModel detailDataModel, T entity,
+            Map<String, Object> request);
 
     /**
      * Set data for ComboBox, MultiSelectBox.

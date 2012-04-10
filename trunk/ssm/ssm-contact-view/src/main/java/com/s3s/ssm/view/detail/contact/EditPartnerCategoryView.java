@@ -44,7 +44,8 @@ public class EditPartnerCategoryView extends AbstractSingleEditView<PartnerCateg
      * {@inheritDoc}
      */
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, PartnerCategory entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, PartnerCategory entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("parentCategory", DetailFieldType.DROPDOWN).referenceDataId(PARTNER_CATE_REF_ID);

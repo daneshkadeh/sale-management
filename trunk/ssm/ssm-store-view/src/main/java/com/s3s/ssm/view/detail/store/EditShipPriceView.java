@@ -42,7 +42,8 @@ public class EditShipPriceView extends AbstractSingleEditView<ShipPrice> {
      * {@inheritDoc}
      */
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ShipPrice entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, ShipPrice entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("updateDate", DetailFieldType.DATE).mandatory(true);
         detailDataModel.addAttribute("shipPriceType", DetailFieldType.DROPDOWN).mandatory(true)
                 .cacheDataId(CacheId.REF_LIST_SHIP_PRICE_TYPE);

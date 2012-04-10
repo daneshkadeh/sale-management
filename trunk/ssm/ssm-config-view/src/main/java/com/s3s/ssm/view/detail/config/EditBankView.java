@@ -29,7 +29,7 @@ public class EditBankView extends AbstractSingleEditView<Bank> {
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, Bank entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, Bank entity, Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("address", DetailFieldType.TEXTAREA);

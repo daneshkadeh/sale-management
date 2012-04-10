@@ -37,7 +37,7 @@ public abstract class EditProductGeneralView<T extends Product> extends Abstract
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, T entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, T entity, Map<String, Object> request) {
         detailDataModel.tab("General", "General info", null);
         addTabGeneral(detailDataModel);
 

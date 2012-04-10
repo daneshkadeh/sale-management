@@ -44,7 +44,8 @@ public class EditDetailExportStoreView extends AbstractSingleEditView<DetailExpo
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, DetailExportStore entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, DetailExportStore entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("lineNo", DetailFieldType.LABEL);
         detailDataModel.addAttribute("product", DetailFieldType.ENTITY_CHOOSER).cacheDataId(CacheId.REF_LIST_PRODUCT);
         detailDataModel.addAttribute("item", DetailFieldType.DROPDOWN).referenceDataId(REF_ITEM_LIST);

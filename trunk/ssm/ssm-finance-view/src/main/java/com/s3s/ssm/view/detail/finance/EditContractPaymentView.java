@@ -39,7 +39,8 @@ public class EditContractPaymentView extends AbstractSingleEditView<ContractPaym
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ContractPayment entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, ContractPayment entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("paymentDate", DetailFieldType.DATE).mandatory(true);
         detailDataModel.addAttribute("partner", DetailFieldType.ENTITY_CHOOSER).mandatory(true)

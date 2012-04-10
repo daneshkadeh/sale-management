@@ -97,7 +97,8 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, Invoice entity) {
+    protected void
+            initialPresentationView(DetailDataModel detailDataModel, Invoice entity, Map<String, Object> request) {
         detailDataModel.addAttribute("invoiceNumber", DetailFieldType.TEXTBOX).editable(false);
         detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_TYPE);
         detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);

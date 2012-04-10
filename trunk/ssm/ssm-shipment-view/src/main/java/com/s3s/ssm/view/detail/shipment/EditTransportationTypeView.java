@@ -39,7 +39,8 @@ public class EditTransportationTypeView extends AbstractSingleEditView<Transport
      * {@inheritDoc}
      */
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, TransportationType entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, TransportationType entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("description", DetailFieldType.TEXTAREA);

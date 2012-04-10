@@ -14,7 +14,7 @@ public class EditPackageGeneralView extends AbstractSingleEditView<SPackage> {
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, SPackage entity) {
+    public void initialPresentationView(DetailDataModel detailDataModel, SPackage entity, Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
     }

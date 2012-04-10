@@ -38,7 +38,8 @@ public class EditPaymentContentView extends AbstractSingleEditView<PaymentConten
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, PaymentContent entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, PaymentContent entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("paymentType", DetailFieldType.DROPDOWN).mandatory(true)
                 .referenceDataId(REF_PAYMENT_TYPE);
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);

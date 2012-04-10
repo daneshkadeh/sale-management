@@ -15,7 +15,8 @@ public class EditPropertyElementVirtualView extends AbstractSingleEditView<Produ
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, ProductPropertyElement entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, ProductPropertyElement entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("value", DetailFieldType.TEXTBOX).mandatory(true);
     }
 

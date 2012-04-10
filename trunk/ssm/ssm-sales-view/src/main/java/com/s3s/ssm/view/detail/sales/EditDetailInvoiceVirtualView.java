@@ -25,7 +25,8 @@ public class EditDetailInvoiceVirtualView extends AbstractSingleEditView<DetailI
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, DetailInvoice entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, DetailInvoice entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("item", DetailFieldType.DROPDOWN).referenceDataId(REF_ITEM);
         detailDataModel.addAttribute("packageLine", DetailFieldType.DROPDOWN).referenceDataId(REF_PACKLINE);
         detailDataModel.addAttribute("amount", DetailFieldType.TEXTBOX);

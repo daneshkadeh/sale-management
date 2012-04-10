@@ -19,7 +19,8 @@ public class EditAudienceCategoryView extends AbstractSingleEditView<AudienceCat
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, AudienceCategory entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, AudienceCategory entity,
+            Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
     }

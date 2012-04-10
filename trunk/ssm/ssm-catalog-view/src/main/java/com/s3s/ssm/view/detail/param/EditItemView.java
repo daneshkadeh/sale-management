@@ -52,7 +52,7 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, Item entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, Item entity, Map<String, Object> request) {
         if (request.get(PARAM_PARENT_ID) != null) {
             if (entity.getProduct() == null) {
                 entity.setProduct(daoHelper.getDao(Product.class).findById(

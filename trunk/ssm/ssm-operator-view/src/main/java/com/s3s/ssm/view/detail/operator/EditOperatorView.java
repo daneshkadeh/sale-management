@@ -47,7 +47,8 @@ public class EditOperatorView extends AbstractSingleEditView<Operator> {
      * {@inheritDoc}
      */
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, Operator entity) {
+    protected void
+            initialPresentationView(DetailDataModel detailDataModel, Operator entity, Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("username", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("password", DetailFieldType.PASSWORD);

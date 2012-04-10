@@ -56,7 +56,8 @@ public class EditSalesContractView extends AbstractMasterDetailView<SalesContrac
     }
 
     @Override
-    public void initialPresentationView(DetailDataModel detailDataModel, SalesContract entity) {
+    protected void initialPresentationView(DetailDataModel detailDataModel, SalesContract entity,
+            Map<String, Object> request) {
         // TODO Auto-generated method stub
 
     }
