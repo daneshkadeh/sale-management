@@ -27,7 +27,6 @@ public class DetailAttribute {
     private boolean isMandatory = false;
     private Object value; // The initial value for the raw attribute.
     private boolean isRaw = false;
-    private boolean isAutoComplete = false;
     // private List<ParentNodeInfo> parentNodePath = new ArrayList<>();
 
     /** The property for layout the attribute. The attribute is rendered in new line or not. */
@@ -150,16 +149,6 @@ public class DetailAttribute {
     public DetailAttribute value(Object value) {
         Assert.isTrue(isRaw, "Not allow to set value for not raw attribute.");
         this.value = value;
-        return this;
-    }
-
-    public boolean isAutoComplete() {
-        return isAutoComplete;
-    }
-
-    public DetailAttribute autoComplete() {
-        Assert.isTrue(type == DetailFieldType.DROPDOWN, "Auto complete is just used for DROPDOWN type");
-        this.isAutoComplete = true;
         return this;
     }
 

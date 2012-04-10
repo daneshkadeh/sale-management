@@ -429,16 +429,12 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 pnlEdit.add(lblLabel);
                 break;
             case DROPDOWN:
-                if (!attribute.isMandatory()) {
-                    referenceData.getValues().add(0, null);
-                }
-                dataField = new JComboBox<>(referenceData.getValues().toArray());
-                if (attribute.isAutoComplete()) {
-                    AutoCompleteDecorator.decorate((JComboBox) dataField);
-                }
-                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
-                ((JComboBox<?>) dataField).setRenderer(referenceData.getRenderer());
-                ((JComboBox<?>) dataField).setSelectedItem(value);
+                dataField = createDropdownComponent(attribute, width, value, referenceData);
+                pnlEdit.add(lblLabel, newline);
+                break;
+            case DROPDOWN_AUTOCOMPLETE:
+                dataField = createDropdownComponent(attribute, width, value, referenceData);
+                AutoCompleteDecorator.decorate((JComboBox) dataField);
                 pnlEdit.add(lblLabel, newline);
                 break;
             case MULTI_SELECT_LIST_BOX:
@@ -543,6 +539,19 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             name2AttributeComponent.put(attribute.getName(), new AttributeComponent(lblLabel, dataField, errorIcon));
         }
         return pnlEdit;
+    }
+
+    private JComponent createDropdownComponent(final DetailAttribute attribute, int width, Object value,
+            ReferenceData referenceData) {
+        JComponent dataField;
+        if (!attribute.isMandatory()) {
+            referenceData.getValues().add(0, null);
+        }
+        dataField = new JComboBox<>(referenceData.getValues().toArray());
+        dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+        ((JComboBox<?>) dataField).setRenderer(referenceData.getRenderer());
+        ((JComboBox<?>) dataField).setSelectedItem(value);
+        return dataField;
     }
 
     private boolean isReadOnly() {

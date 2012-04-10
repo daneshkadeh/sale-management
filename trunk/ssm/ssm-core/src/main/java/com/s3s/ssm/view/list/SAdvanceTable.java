@@ -177,7 +177,7 @@ public class SAdvanceTable extends JXTable {
     }
 
     @Override
-    public void changeSelection(final int row, final int column, boolean toggle, boolean extend) {
+    public void changeSelection(int row, int column, boolean toggle, boolean extend) {
         super.changeSelection(row, column, toggle, extend);
         // Place cell in edit mode when it 'gains focus'
         if (listDataModel.isEditable() && listDataModel.getColumns().get(column).isEditable()
