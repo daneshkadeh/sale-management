@@ -434,7 +434,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      */
     protected JPanel createFooterPanel(TableModel tableModel) {
         // The template method
-        return null;
+        return new JPanel();
     }
 
     /**
