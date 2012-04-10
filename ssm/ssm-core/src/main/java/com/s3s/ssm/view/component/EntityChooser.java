@@ -119,9 +119,9 @@ public class EntityChooser<T> extends JPanel {
     private void setComponentValue() {
         if (entity != null) {
             beanWrapper = new BeanWrapperImpl(entity);
-            String code = (String) beanWrapper.getPropertyValue("code");
+            Long id = (Long) beanWrapper.getPropertyValue("id");
             String name = entity.toString();
-            txtFldCode.setText(code);
+            txtFldCode.setText(id.toString());
             lblName.setText("<html>" + name + "</html>");
             this.repaint();
         }
