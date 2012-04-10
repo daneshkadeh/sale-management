@@ -180,10 +180,10 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
      * 
      * {@inheritDoc}
      */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public List<T> findAll() {
-        List<T> list = getHibernateTemplate().find("from " + getEntityClass().getSimpleName());
-        return list;
+    public List findAll() {
+        return getHibernateTemplate().loadAll(getEntityClass());
     }
 
     /**
