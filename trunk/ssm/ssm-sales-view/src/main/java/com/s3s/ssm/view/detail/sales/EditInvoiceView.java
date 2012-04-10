@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.event.TableModelEvent;
+
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.contact.Partner;
@@ -69,6 +71,11 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
         listDataModel.addColumn("status", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
                 REF_D_INVOICE_STATUS);
         listDataModel.addColumn("totalAmount", ListRendererType.TEXT).notEditable();
+    }
+
+    @Override
+    protected void tableChanged(TableModelEvent e) {
+        super.tableChanged(e);
     }
 
     @Override

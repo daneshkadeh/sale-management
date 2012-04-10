@@ -23,7 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JPanel;
 import javax.swing.event.TableModelEvent;
+import javax.swing.table.TableModel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -179,6 +181,22 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
             super.tableChanged(e);
             AbstractMasterDetailView.this.tableChanged(e);
         }
+
+        @Override
+        protected JPanel createFooterPanel(TableModel tableModel) {
+            return AbstractMasterDetailView.this.createFooterPanel(tableModel);
+        }
+    }
+
+    /**
+     * Override this method to create footer panel for the list view.
+     * 
+     * @param tableModel
+     * @return
+     */
+    protected JPanel createFooterPanel(TableModel tableModel) {
+        // Template method
+        return null;
     }
 
     /**

@@ -47,7 +47,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SortOrder;
@@ -149,7 +148,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     // instead.
     public boolean isInitialized = false;
 
-    protected List<T> entities = new ArrayList<>();
+    protected final List<T> entities = new ArrayList<>();
 
     // This model is used by sub classes.
     protected final ListDataModel listDataModel = new ListDataModel();
@@ -326,14 +325,14 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     protected void addComponents() {
 
         // //////////////////// Button panel /////////////////////////////////
-        toolbar = createButtonToolBar(tblListEntities);
+        toolbar = createButtonToolBar();
         contentPane.add(toolbar, "grow x, split 2");
         // ///////////////////// Paging navigator ///////////////////////////////
         pagingNavigator = new PagingNavigator(calculateTotalPages());
         pagingNavigator.addPageChangeListener(this);
         contentPane.add(pagingNavigator);
 
-        entities = loadData(pagingNavigator.getCurrentPage());
+        entities.addAll(loadData(pagingNavigator.getCurrentPage()));
         refDataModel = initReferenceDataModel();
 
         // ///////////////// Init main table ////////////////////////////////
@@ -425,6 +424,17 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 break;
             }
         }
+        contentPane.add(createFooterPanel(mainTableModel), "grow");
+    }
+
+    /**
+     * Override this method to add the footer panel to the list view.
+     * 
+     * @return
+     */
+    protected JPanel createFooterPanel(TableModel tableModel) {
+        // The template method
+        return null;
     }
 
     /**
@@ -473,7 +483,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * 
      * @return the panel containing the buttons.
      */
-    protected JToolBar createButtonToolBar(JTable table) {
+    protected JToolBar createButtonToolBar() {
         JToolBar buttonToolbar = new JToolBar();
         buttonToolbar.setRollover(true);
         buttonToolbar.setFloatable(false);

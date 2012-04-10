@@ -15,7 +15,6 @@
 package com.s3s.ssm.view.list;
 
 import javax.swing.JButton;
-import javax.swing.JTable;
 import javax.swing.JToolBar;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
@@ -39,7 +38,7 @@ public abstract class AbstractStatisticListView<T extends AbstractIdOLObject> ex
     private static final long serialVersionUID = -1081095962690319904L;
 
     @Override
-    protected JToolBar createButtonToolBar(JTable table) {
+    protected JToolBar createButtonToolBar() {
         JToolBar pnlButton = new JToolBar();
         JButton btnPrint = new JButton(ControlConfigUtils.getString("ListView.Statistic.Button.Print"));
         JButton btnOpenExcel = new JButton(ControlConfigUtils.getString("ListView.Statistic.Button.OpenExcel"));
