@@ -125,6 +125,7 @@ public class DetailExportStore extends AbstractIdOLObject {
 
     public void setRealQuan(Long realQuan) {
         this.realQuan = realQuan;
+        updateRemainQuan();
     }
 
     @Column(name = "remain_quan")
@@ -135,5 +136,9 @@ public class DetailExportStore extends AbstractIdOLObject {
 
     public void setRemainQuan(Long remainQuan) {
         this.remainQuan = remainQuan;
+    }
+
+    private void updateRemainQuan() {
+        remainQuan = reqQuan - realQuan;
     }
 }

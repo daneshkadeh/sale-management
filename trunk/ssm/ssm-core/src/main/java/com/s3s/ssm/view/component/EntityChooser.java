@@ -260,9 +260,9 @@ public class EntityChooser<T> extends JPanel {
                 if (value != null) {
                     setIcon(null);
                     beanWrapper = new BeanWrapperImpl(value);
-                    String code = (String) beanWrapper.getPropertyValue("code");
+                    Long id = (Long) beanWrapper.getPropertyValue("id");
                     String name = value.toString();
-                    setText("   " + StringUtils.rightPad(code, 40) + StringUtils.rightPad(name, 50));
+                    setText("   " + StringUtils.rightPad(id.toString(), 40) + StringUtils.rightPad(name, 50));
                 } else {
                     setText("");
                 }
