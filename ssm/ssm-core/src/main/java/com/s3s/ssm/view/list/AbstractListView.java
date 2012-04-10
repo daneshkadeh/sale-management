@@ -17,6 +17,7 @@ package com.s3s.ssm.view.list;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Event;
+import java.awt.FlowLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -87,6 +88,8 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.security.CustomPermission;
 import com.s3s.ssm.util.ConfigProvider;
+import com.s3s.ssm.util.ImageConstants;
+import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
@@ -123,7 +126,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private static final long serialVersionUID = -1311942671249671111L;
     private static final String ADD_ACTION_KEY = "addAction";
     // TODO It should get from the property "defPageRowNum" of BasicInformation in ssm-config
-    private static final int DEFAULT_PAGE_SIZE = 25;
+    private static final int DEFAULT_PAGE_SIZE = 30;
 
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
@@ -195,7 +198,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         printAction = new PrintAction();
 
         tabPane = new JTabbedPane();
-        contentPane = new JPanel(new MigLayout("wrap", "grow, fill", "[]0[]0[]0[]2[][]"));
+        contentPane = new JPanel(new MigLayout("wrap, ins 0", "grow, fill", "[]0[]0[]0[][][]"));
         tabPane.addTab(label, icon, contentPane, tooltip);
         this.setLayout(new MigLayout("ins 0", "grow, fill", "grow, fill"));
         this.add(tabPane, "grow");
@@ -437,7 +440,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      */
     protected JPanel createFooterPanel(TableModel tableModel) {
         // The template method
-        return new JPanel();
+        return new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // Just create a panel with no size
     }
 
     /**
@@ -490,10 +493,12 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         JToolBar buttonToolbar = new JToolBar();
         buttonToolbar.setRollover(true);
         buttonToolbar.setFloatable(false);
-        btnAdd = new JButton(ControlConfigUtils.getString("default.button.create"));
+        btnAdd = new JButton(ImageUtils.getSmallIcon(ImageConstants.NEW_ICON));
+        btnAdd.setToolTipText(ControlConfigUtils.getString("default.button.create"));
         btnAdd.addActionListener(addAction);
 
-        btnDelete = new JButton(ControlConfigUtils.getString("default.button.delete"));
+        btnDelete = new JButton(ImageUtils.getSmallIcon(ImageConstants.DELETE_ICON));
+        btnDelete.setToolTipText(ControlConfigUtils.getString("default.button.delete"));
         btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -501,16 +506,20 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             }
         });
 
-        btnEdit = new JButton(ControlConfigUtils.getString("default.button.edit"));
+        btnEdit = new JButton(ImageUtils.getSmallIcon(ImageConstants.EDIT_ICON));
+        btnEdit.setToolTipText(ControlConfigUtils.getString("default.button.edit"));
         btnEdit.addActionListener(editAction);
 
-        btnExport = new JButton(ControlConfigUtils.getString("default.button.export"));
+        btnExport = new JButton(ImageUtils.getSmallIcon(ImageConstants.EXPORT_ICON));
+        btnExport.setToolTipText(ControlConfigUtils.getString("default.button.export"));
         btnExport.addActionListener(exportAction);
 
-        btnPrint = new JButton(ControlConfigUtils.getString("default.button.print"));
+        btnPrint = new JButton(ImageUtils.getSmallIcon(ImageConstants.PRINT_ICON));
+        btnPrint.setToolTipText(ControlConfigUtils.getString("default.button.print"));
         btnPrint.addActionListener(printAction);
 
-        JButton btnRefresh = new JButton("Refresh");
+        JButton btnRefresh = new JButton(ImageUtils.getSmallIcon(ImageConstants.REFRESH_ICON));
+        btnRefresh.setToolTipText(ControlConfigUtils.getString("default.button.refresh"));
         btnRefresh.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -160,15 +160,6 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     protected abstract void initialPresentationView(DetailDataModel detailDataModel, T entity,
             Map<String, Object> request);
 
-    /**
-     * Set data for ComboBox, MultiSelectBox.
-     * 
-     * @param refDataModel
-     * @param entity
-     */
-    protected void setReferenceDataModel(ReferenceDataModel refDataModel, T entity) {
-    }
-
     protected void initComponents() {
         // Layout the screen
         setLayout(new MigLayout("hidemode 2, wrap, fillx, ins 0 10 0 10", "grow"));
@@ -288,9 +279,14 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         // Template method
     };
 
-    public boolean focus() {
-        String firstAttributeName = detailDataModel.getDetailAttributes().get(0).getName();
-        return name2AttributeComponent.get(firstAttributeName).getComponent().requestFocusInWindow();
+    /**
+     * Set data for ComboBox, MultiSelectBox.
+     * 
+     * @param refDataModel
+     * @param entity
+     */
+    protected void setReferenceDataModel(ReferenceDataModel refDataModel, T entity) {
+        // Template method
     }
 
     private JTabbedPane createTabPane(List<TabInfoData> tabList, int numOfAttributes) {

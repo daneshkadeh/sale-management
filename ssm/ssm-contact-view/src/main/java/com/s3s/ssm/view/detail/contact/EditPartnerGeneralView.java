@@ -55,7 +55,8 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
     @Override
     protected void
             initialPresentationView(DetailDataModel detailDataModel, Partner entity, Map<String, Object> request) {
-        detailDataModel.tab("General", "Common information of supplier", ImageUtils.getIcon(ImageConstants.USER_ICON));
+        detailDataModel.tab("General", "Common information of supplier",
+                ImageUtils.getMediumIcon(ImageConstants.USER_ICON));
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).width(50).newColumn();
         addIndividualGroup(detailDataModel);
