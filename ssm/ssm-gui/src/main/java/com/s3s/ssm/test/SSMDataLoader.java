@@ -117,6 +117,9 @@ public class SSMDataLoader {
         DOMConfigurator.configure("src/main/resources/log4j.xml");
         s_logger.info("Starting data loader SSM...");
         // ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
+        // AnnotationSessionFactoryBean sessionFactory = (AnnotationSessionFactoryBean) appContext
+        // .getBean("sessionFactory");
+        // sessionFactory.getHibernateProperties().put("hibernate.hbm2ddl.auto", "create-drop");
 
         ConfigProvider configProvider = ConfigProvider.getInstance();
         DaoHelper daoHelper = configProvider.getDaoHelper();

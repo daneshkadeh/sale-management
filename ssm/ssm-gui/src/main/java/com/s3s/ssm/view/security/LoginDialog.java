@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -46,7 +47,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
  * @author Le Thanh Hoang
  * 
  */
-public class LoginDialog extends JFrame {
+public class LoginDialog extends JDialog {
     private JTextField tflUsername;
     private JPasswordField pflPassword;
     private JLabel lblUsername;
@@ -62,10 +63,11 @@ public class LoginDialog extends JFrame {
     static ApplicationContext auContext;
 
     public LoginDialog(JFrame parent, Runnable callbackSuccess, Runnable callbackFailed) {
-        super(ControlConfigUtils.getString("default.Login.title"));
+        super(parent, ControlConfigUtils.getString("default.Login.title"));
         this.callbackSuccess = callbackSuccess;
         this.callbackFailed = callbackFailed;
         initComponents(parent);
+        setModal(true);
     }
 
     private void initComponents(Frame parent) {

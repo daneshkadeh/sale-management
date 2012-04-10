@@ -15,8 +15,10 @@
 
 package com.s3s.ssm.view;
 
+import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -26,6 +28,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 
+import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.view.TreeNodeWithView.NodeValue;
 
 /**
@@ -71,10 +74,11 @@ public class TreeView extends JTree implements TreeSelectionListener {
         }
 
         JPanel viewOfNode = node.getView();
-        // if (viewOfNode == null) {
-        // JOptionPane.showMessageDialog(this.getParent(), "The view is not supported", "Error",
-        // JOptionPane.ERROR_MESSAGE);
-        // }
+        if (node.isLeaf() && viewOfNode == null) {
+            viewOfNode = new JPanel();
+            viewOfNode.setBackground(Color.WHITE);
+            viewOfNode.add(new JLabel(ImageUtils.getIcon("/icons/Under-Construction.jpg")));
+        }
         if (viewOfNode instanceof IViewLazyLoadable) {
             ((IViewLazyLoadable) viewOfNode).loadView();
         }

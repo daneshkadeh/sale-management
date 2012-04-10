@@ -16,6 +16,7 @@
 package com.s3s.ssm.view.component;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -77,6 +78,7 @@ public class PagingNavigator extends JPanel {
      * @param currentPage
      */
     public PagingNavigator(int totalPage, int currentPage) {
+        setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
         checkTotalPage(totalPage);
         checkCurrentPage(totalPage, currentPage);
 

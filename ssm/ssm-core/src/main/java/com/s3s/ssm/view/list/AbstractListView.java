@@ -14,6 +14,7 @@
  */
 package com.s3s.ssm.view.list;
 
+import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Event;
 import java.awt.Window;
@@ -49,9 +50,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumnModel;
@@ -68,6 +72,7 @@ import org.divxdede.swing.busy.DefaultBusyModel;
 import org.divxdede.swing.busy.JBusyComponent;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.jdesktop.swingx.JXTable;
 
 import com.s3s.ssm.dao.IBaseDao;
@@ -114,7 +119,7 @@ import com.s3s.ssm.view.edit.AbstractEditView;
  * @param <T>
  */
 public abstract class AbstractListView<T extends AbstractBaseIdObject> extends AbstractView implements
-        IPageChangeListener, IViewLazyLoadable, ISavedListener<T> {
+        IPageChangeListener, IViewLazyLoadable, ISavedListener<T>, TableModelListener {
 
     private static final long serialVersionUID = -1311942671249671111L;
     private static final String ADD_ACTION_KEY = "addAction";
@@ -211,7 +216,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         ActionMap actionMap = getActionMap();
         actionMap.put(ADD_ACTION_KEY, addAction);
-
     }
 
     /**
@@ -244,7 +248,30 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     protected DetachedCriteria getCriteriaForView() {
         DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
-        for (ColumnModel column : listDataModel.getColumns()) {
+        List<ColumnModel> columns = listDataModel.getColumns();
+        setFetchMode(dc, columns);
+        setSortOrder(dc, columns);
+        return dc;
+    }
+
+    private void setSortOrder(DetachedCriteria dc, List<ColumnModel> columns) {
+        for (int i = 0; i < columns.size(); i++) {
+            for (int j = 0; j < columns.size(); j++) {
+                ColumnModel cm = columns.get(j);
+                String name = cm.getName();
+                if (cm.isSorted()) {
+                    if (cm.getSortOrder() == SortOrder.ASCENDING) {
+                        dc.addOrder(Order.asc(name));
+                    } else {
+                        dc.addOrder(Order.desc(name));
+                    }
+                }
+            }
+        }
+    }
+
+    private void setFetchMode(DetachedCriteria dc, List<ColumnModel> columns) {
+        for (ColumnModel column : columns) {
             String pathName = column.getName();
             if (pathName.contains(".")) {
                 // Not fetching the ending properties => remove it from the pathName
@@ -253,7 +280,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 dc.setFetchMode(StringUtils.join(paths), FetchMode.JOIN);
             }
         }
-        return dc;
     }
 
     /**
@@ -301,16 +327,19 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         // //////////////////// Button panel /////////////////////////////////
         toolbar = createButtonToolBar(tblListEntities);
-        contentPane.add(toolbar);
-
+        contentPane.add(toolbar, "grow x, split 2");
         // ///////////////////// Paging navigator ///////////////////////////////
         pagingNavigator = new PagingNavigator(calculateTotalPages());
         pagingNavigator.addPageChangeListener(this);
+        contentPane.add(pagingNavigator);
+
         entities = loadData(pagingNavigator.getCurrentPage());
         refDataModel = initReferenceDataModel();
 
         // ///////////////// Init main table ////////////////////////////////
         mainTableModel = createTableModel();
+        mainTableModel.addTableModelListener(this); // Listen when the table data changed.
+
         tblListEntities = new SAdvanceTable(mainTableModel, listDataModel, refDataModel);
 
         tblListEntities.setVisibleRowCount(getVisibleRowCount());
@@ -382,6 +411,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         rowHeader.setFixedCellWidth(UIConstants.DEFAULT_ROW_HEADER_WIDTH);
         rowHeader.setFixedCellHeight(tblListEntities.getRowHeight());
         JScrollPane mainScrollpane = new JScrollPane(tblListEntities);
+        mainScrollpane.getViewport().setBackground(Color.WHITE);
         mainScrollpane.setRowHeaderView(rowHeader);
         busyPane = createBusyPane(mainScrollpane);
 
@@ -395,8 +425,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 break;
             }
         }
-
-        contentPane.add(pagingNavigator);
     }
 
     /**
@@ -463,6 +491,12 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         btnEdit = new JButton(ControlConfigUtils.getString("default.button.edit"));
         btnEdit.addActionListener(editAction);
 
+        btnExport = new JButton(ControlConfigUtils.getString("default.button.export"));
+        btnExport.addActionListener(exportAction);
+
+        btnPrint = new JButton(ControlConfigUtils.getString("default.button.print"));
+        btnPrint.addActionListener(printAction);
+
         JButton btnRefresh = new JButton("Refresh");
         btnRefresh.addActionListener(new ActionListener() {
             @Override
@@ -470,12 +504,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 refreshData();
             }
         });
-
-        btnExport = new JButton(ControlConfigUtils.getString("default.button.export"));
-        btnExport.addActionListener(exportAction);
-
-        btnPrint = new JButton(ControlConfigUtils.getString("default.button.print"));
-        btnPrint.addActionListener(printAction);
 
         buttonToolbar.add(btnEdit);
         buttonToolbar.add(btnDelete);
@@ -574,6 +602,14 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     protected boolean preShowEditView(T entity, EditActionEnum action, Map<String, Object> detailParams) {
         // The template method.
         return true;
+    }
+
+    /**
+     * The child class override this method to do something everytime the main table changes value. </br> {@inheritDoc}
+     */
+    @Override
+    public void tableChanged(TableModelEvent e) {
+        // Template method
     }
 
     protected abstract Class<? extends AbstractEditView<T>> getEditViewClass();
