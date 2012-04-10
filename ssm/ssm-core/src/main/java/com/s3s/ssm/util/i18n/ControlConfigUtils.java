@@ -18,6 +18,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.TimeZone;
@@ -274,6 +276,19 @@ public class ControlConfigUtils {
             // nothing
         }
         return result;
+    }
+
+    public static <T extends Enum<T>> String getEnumString(Class<T> enumClass, T enumValue) {
+        return getString("enum" + '.' + enumClass.getSimpleName() + '.' + enumValue.name());
+    }
+
+    public static <T extends Enum<T>> List<String> getEnumStrings(Class<T> enumClass) {
+        T[] enumConstants = enumClass.getEnumConstants();
+        List<String> enumStrings = new ArrayList<String>(enumConstants.length);
+        for (T e : enumConstants) {
+            enumStrings.add(e.toString());
+        }
+        return enumStrings;
     }
 
     private static String completeString(String text, String[] mesgPara) {
