@@ -118,6 +118,7 @@ public class DetailImportStore extends AbstractIdOLObject {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+        updatePriceSubtotal();
     }
 
     @Embedded
@@ -130,15 +131,23 @@ public class DetailImportStore extends AbstractIdOLObject {
 
     public void setPriceUnit(Money priceUnit) {
         this.priceUnit = priceUnit;
+        updatePriceSubtotal();
     }
 
     @Embedded
-    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "price_subtotal")) })
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "price_subtotal")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code1")) })
     public Money getPriceSubtotal() {
         return priceSubtotal;
     }
 
     public void setPriceSubtotal(Money priceSubtotal) {
         this.priceSubtotal = priceSubtotal;
+    }
+
+    private void updatePriceSubtotal() {
+        int quan = quantity;
+        // Money priceUnitTemp = Money.create(priceUnit.getCurrencyCode(), priceUnit.getValue());
+        // priceSubtotal = priceUnitTemp.multiply(quan);
     }
 }

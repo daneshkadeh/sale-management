@@ -30,6 +30,17 @@ public class ListImportStoreFormView extends AbstractListView<ImportStoreForm> {
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListRendererType.TEXT);
+        listDataModel.addColumn("createdDate", ListRendererType.DATE);
+        listDataModel.addColumn("status", ListRendererType.TEXT);
+        listDataModel.addColumn("salesContract", ListRendererType.TEXT);
+        listDataModel.addColumn("supplierName", ListRendererType.TEXT);
+        listDataModel.addColumn("receiptDate", ListRendererType.DATE);
+        listDataModel.addColumn("receiver", ListRendererType.TEXT);
+        listDataModel.addColumn("sender", ListRendererType.TEXT);
+        listDataModel.addColumn("isProcessed", ListRendererType.BOOLEAN);
+        listDataModel.addColumn("qtyTotal", ListRendererType.NUMBER);
+        listDataModel.addColumn("amtTotal", ListRendererType.NUMBER);
+        listDataModel.addColumn("taxTotal", ListRendererType.NUMBER);
     }
 
     @Override
