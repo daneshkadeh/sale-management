@@ -28,7 +28,6 @@ import net.miginfocom.swing.MigLayout;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.SortView;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 
 /**
@@ -57,7 +56,7 @@ public abstract class AbstractCommonListView<T extends AbstractIdOLObject> exten
     JFrame detailFrame = new JFrame();
 
     @Override
-    protected JToolBar createButtonToolBar(final JTable table) {
+    protected JToolBar createButtonToolBar() {
         JToolBar pnlButton = new JToolBar();
 
         JButton btnDisplayAll = new JButton(ControlConfigUtils.getString("ListView.Common.Button.DisplayAll"));
@@ -92,7 +91,7 @@ public abstract class AbstractCommonListView<T extends AbstractIdOLObject> exten
 
                     @Override
                     public void run() {
-                        showPanelInNewFrame(new SortView(table));
+                        // showPanelInNewFrame(new SortView(table));
                     }
                 });
 
