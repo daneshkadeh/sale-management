@@ -19,6 +19,7 @@ import com.s3s.ssm.entity.config.Organization;
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.config.UomCategory;
+import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.util.CacheId;
@@ -41,6 +42,8 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
                     this.getClass().getMethod("getOrganizations"));
             getCacheDataService().registerCache(CacheId.REF_LIST_UNIT_UOM, this,
                     this.getClass().getMethod("getUnitUom"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_AUDIENCE_CATE, this,
+                    this.getClass().getMethod("getAudienceCategories"));
         } catch (NoSuchMethodException | SecurityException e) {
             throw new RuntimeException("Cannot register method to cache service!", e);
         }
@@ -69,6 +72,11 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     public List<Partner> getPartners() {
         List<Partner> partners = getDaoHelper().getDao(Partner.class).findAll();
         return partners;
+    }
+
+    @Override
+    public List<AudienceCategory> getAudienceCategories() {
+        return getDaoHelper().getDao(AudienceCategory.class).findAll();
     }
 
     /**
