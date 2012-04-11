@@ -56,7 +56,8 @@ public class StoreManagementDomain extends AbstractDomain {
         // ControlConfigUtils.getString("JTree.Store.ExchangeStore"), new ListExchangeStoreFormView()); // "chuyen kho"
         //
         TreeNodeWithView exportNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.ExportStore"),
-                new ListExportStoreFormView()); //
+                new ListExportStoreFormView(null, ControlConfigUtils.getString("label.ExportStoreForm.list.title"),
+                        null)); //
         // "phieu xuat kho"
         //
         // TreeNodeWithView phieuNhapKhoNode = new TreeNodeWithView(

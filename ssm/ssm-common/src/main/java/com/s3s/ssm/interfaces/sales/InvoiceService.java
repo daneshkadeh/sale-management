@@ -8,4 +8,6 @@ public interface InvoiceService {
     String getNextInvoiceNumber();
 
     List<Invoice> getAllInvoice();
+
+    Invoice findInvoiceByCode(String code);
 }
