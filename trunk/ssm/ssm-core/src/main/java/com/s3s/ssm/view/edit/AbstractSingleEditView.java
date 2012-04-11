@@ -192,7 +192,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
         toolbar.setFloatable(false);
-        btnSave = new JButton(ImageUtils.getIcon(ImageConstants.SAVE_ICON));
+        btnSave = new JButton(ImageUtils.getSmallIcon(ImageConstants.SAVE_ICON));
         btnSave.setToolTipText(ControlConfigUtils.getString("default.button.save"));
         btnSave.addActionListener(new ActionListener() {
             @Override
@@ -211,7 +211,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         // }
         // });
 
-        btnSaveNew = new JButton(ImageUtils.getIcon(ImageConstants.SAVE_NEW_ICON));
+        btnSaveNew = new JButton(ImageUtils.getSmallIcon(ImageConstants.SAVE_NEW_ICON));
         btnSaveNew.setToolTipText(ControlConfigUtils.getString("edit.button.saveNew"));
         btnSaveNew.addActionListener(new ActionListener() {
             @Override
@@ -222,7 +222,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             }
         });
 
-        btnNew = new JButton(ImageUtils.getIcon(ImageConstants.NEW_ICON));
+        btnNew = new JButton(ImageUtils.getSmallIcon(ImageConstants.NEW_ICON));
         btnNew.setEnabled(entity.isPersisted());
         btnNew.setToolTipText(ControlConfigUtils.getString("edit.button.new"));
         btnNew.addActionListener(new ActionListener() {
@@ -232,7 +232,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             }
         });
 
-        btnExit = new JButton(ImageUtils.getIcon(ImageConstants.EXIT_ICON));
+        btnExit = new JButton(ImageUtils.getSmallIcon(ImageConstants.EXIT_ICON));
         btnExit.setToolTipText(ControlConfigUtils.getString("edit.button.exit"));
         btnExit.addActionListener(new ActionListener() {
             @Override

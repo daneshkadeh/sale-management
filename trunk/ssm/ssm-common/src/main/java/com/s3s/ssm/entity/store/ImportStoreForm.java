@@ -202,11 +202,6 @@ public class ImportStoreForm extends AbstractCodeOLObject {
         this.detailImportStores = detailImportStores;
     }
 
-    public void addDetailImports(DetailImportStore detailImportStore) {
-        detailImportStore.setImportStoreForm(this);
-        detailImportStores.add(detailImportStore);
-    }
-
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     public ImportStoreStatus getStatus() {

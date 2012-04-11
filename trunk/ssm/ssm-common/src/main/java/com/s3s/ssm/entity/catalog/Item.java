@@ -116,11 +116,6 @@ public class Item extends AbstractIdOLObject {
         this.listItemPrices = listItemPrices;
     }
 
-    public void addItemPrice(ItemPrice itemPrice) {
-        itemPrice.setItem(this);
-        listItemPrices.add(itemPrice);
-    }
-
     // @OneToOne(mappedBy = "item")
     // public ItemOriginPrice getMainOriginPrice() {
     // return mainOriginPrice;

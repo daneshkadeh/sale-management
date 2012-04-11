@@ -632,6 +632,9 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     @Override
     public void tableChanged(TableModelEvent e) {
         // Template method
+
+        tblListEntities.repaint();
+        tblListEntities.revalidate();
     }
 
     protected abstract Class<? extends AbstractEditView<T>> getEditViewClass();
@@ -659,7 +662,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 Class<?> fieldClass = Solution3sClassUtils.getClassOfField(column.getName(), getEntityClass());
                 if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
                     int sum = 0;
-                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
+                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
                         sum = sum + (Integer) mainTableModel.getValueAt(i, columnIndex);
                     }
                     return sum;
@@ -667,7 +670,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
                 if (ClassUtils.isAssignable(fieldClass, Long.class)) {
                     Long sum = 0L;
-                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
+                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
                         sum = sum + (Long) mainTableModel.getValueAt(i, columnIndex);
                     }
                     return sum;
@@ -675,7 +678,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
                 if (ClassUtils.isAssignable(fieldClass, Float.class)) {
                     Float sum = 0f;
-                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
+                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
                         sum = sum + (Float) mainTableModel.getValueAt(i, columnIndex);
                     }
                     return sum;
@@ -683,7 +686,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
                 if (ClassUtils.isAssignable(fieldClass, Double.class)) {
                     Double sum = 0d;
-                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
+                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
                         sum = sum + (Double) mainTableModel.getValueAt(i, columnIndex);
                     }
                     return sum;
@@ -712,6 +715,11 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     }
 
+    //
+    // public Number getSummarizedValue(String fieldName){
+    // foreach
+    // }
+
     /**
      * Entity was saved on AbstractDetailView and sent to AbstractListView to refresh data.
      * 
@@ -720,26 +728,22 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      */
     public void notifyFromDetailView(final T entity, final boolean isNew) {
         replaceEntity(entity);
-        // Keep the selected row before the data of table is changed.
-        int selectedRow = tblListEntities.getSelectedRow();
         if (isNew) {
             entities.add(entity);
             int tabIndex = tabPane.indexOfTab(ControlConfigUtils.getString("label.tab.new"));
 
             // TODO Phuc: This is a bug, set the title of tab is by getDefaultTitle() from editView
             tabPane.setTitleAt(tabIndex, entity.getId().toString());
-            selectedRow = entities.size() - 1; // If add new entity, the selected row has the last index.
+            ((AbstractTableModel) tblListEntities.getModel()).fireTableRowsInserted(entities.size() - 1,
+                    entities.size() - 1);
+        } else {
+            int index = entities.indexOf(entity);
+            ((AbstractTableModel) tblListEntities.getModel()).fireTableRowsUpdated(index, index);
         }
 
-        // TODO Phuc: Should not fire entire data change. Using fireTableRow...() instead.
-        // fireTableDataChanged to rerender the table.
-        ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
         ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
         rowHeader.repaint();
         rowHeader.revalidate();
-
-        // After fireTableDataChanged() the selection is lost. We need to reselect it programmatically.
-        tblListEntities.setRowSelectionInterval(selectedRow, selectedRow);
     }
 
     /**

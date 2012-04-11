@@ -62,10 +62,4 @@ public class EditExchangeStoreFormView extends AbstractMasterDetailView<Exchange
 
     }
 
-    @Override
-    protected void addDetailIntoMaster(ExchangeStoreForm masterEntity, DetailExchangeStore detailEntity) {
-        // TODO Auto-generated method stub
-
-    }
-
 }

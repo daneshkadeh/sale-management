@@ -106,14 +106,6 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
      * {@inheritDoc}
      */
     @Override
-    protected void addDetailIntoMaster(ExportStoreForm masterEntity, DetailExportStore detailEntity) {
-        masterEntity.addDetailImports(detailEntity);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, ExportStoreForm entity,
             Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);

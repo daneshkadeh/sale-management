@@ -635,7 +635,7 @@ public class SSMDataLoader {
         UnitOfMeasure unit = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
         detail1.setUom(unit);
         detail1.setBaseUom(unit);
-        form1.addDetailImports(detail1);
+        form1.getDetailImportStores().add(detail1);
         daoHelper.getDao(ImportStoreForm.class).save(form1);
         return Arrays.asList(form1);
     }
@@ -647,7 +647,7 @@ public class SSMDataLoader {
         itemPrice.setSellPrice(Money.create("VND", 100L));
         itemPrice.setItem(listItem.get(0));
         daoHelper.getDao(ItemPrice.class).saveOrUpdate(itemPrice);
-        listItem.get(0).addItemPrice(itemPrice);
+        listItem.get(0).getListItemPrices().add(itemPrice);
         daoHelper.getDao(Item.class).saveOrUpdate(listItem.get(0));
         return listItem.get(0).getListItemPrices();
     }
