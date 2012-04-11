@@ -135,9 +135,4 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
         return "listItemPrices";
     }
 
-    @Override
-    protected void addDetailIntoMaster(Item masterEntity, ItemPrice detailEntity) {
-        masterEntity.addItemPrice(detailEntity);
-    }
-
 }

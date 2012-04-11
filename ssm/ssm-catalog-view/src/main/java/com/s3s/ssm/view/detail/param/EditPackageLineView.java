@@ -34,12 +34,6 @@ public class EditPackageLineView extends AbstractMasterDetailView<PackageLine, P
         return null;
     }
 
-    @Override
-    protected void addDetailIntoMaster(PackageLine masterEntity, PackageLineItemPrice detailEntity) {
-        // TODO Auto-generated method stub
-
-    }
-
     /**
      * {@inheritDoc}
      */

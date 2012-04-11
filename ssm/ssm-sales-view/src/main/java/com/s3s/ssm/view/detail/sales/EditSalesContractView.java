@@ -61,11 +61,4 @@ public class EditSalesContractView extends AbstractMasterDetailView<SalesContrac
         // TODO Auto-generated method stub
 
     }
-
-    @Override
-    protected void addDetailIntoMaster(SalesContract masterEntity, DetailSalesContract detailEntity) {
-        // TODO Auto-generated method stub
-
-    }
-
 }

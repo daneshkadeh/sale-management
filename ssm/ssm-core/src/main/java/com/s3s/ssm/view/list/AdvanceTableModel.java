@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -46,11 +47,14 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public int getRowCount() {
-        return entities.size();
+        return entities.size() + 1; // An empty row to add a new entity.
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        if (rowIndex == entities.size()) {
+            return null;
+        }
         T entity = entities.get(rowIndex);
         beanWrapper = new BeanWrapperImpl(entity);
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
@@ -64,7 +68,7 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (listDataModel.isEditable()) {
+        if (listDataModel.isEditable() && rowIndex != entities.size()) {
             return listDataModel.getColumns().get(columnIndex).isEditable();
         }
         return false;
@@ -78,10 +82,17 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        if (rowIndex == entities.size()) {
+            return;
+        }
         T entity = entities.get(rowIndex);
         beanWrapper = new BeanWrapperImpl(entity);
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
-        beanWrapper.setPropertyValue(dataModel.getName(), aValue);
+        Object value = beanWrapper.getPropertyValue(dataModel.getName());
+        if (!ObjectUtils.equals(value, aValue)) {
+            beanWrapper.setPropertyValue(dataModel.getName(), aValue);
+            fireTableCellUpdated(rowIndex, columnIndex);
+        }
 
         // //////////////////////////////////////////////
         // TODO Phuc: Reminding should fire on the cellChanged instead of rowChanged? In that case, the ColumnModel need
@@ -93,7 +104,6 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
         // }
         // }
         // ////////////////////////////////////////////////
-        fireTableRowsUpdated(rowIndex, rowIndex);
     }
 
     @Override

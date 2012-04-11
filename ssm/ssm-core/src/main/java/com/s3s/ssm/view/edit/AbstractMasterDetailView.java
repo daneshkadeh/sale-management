@@ -98,7 +98,6 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
 
         // Load list view immediately. This view not too large in MasterDetailView.
         childListView.loadView();
-        childListView.setVisible(entity.getId() != null);
         add(childListView, "grow");
     }
 
@@ -205,25 +204,11 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
     @Override
     protected void saveOrUpdate(T masterEntity) {
         saveOrUpdate(masterEntity, detailEntities);
-        if (childListView.getParentId() == null) {
-            // Show the toolbar, allow user manipulate with child view.
-            childListView.setParent(masterEntity.getId(), getMasterClass());
-            childListView.setVisible(true);
-        }
     };
 
     protected void saveOrUpdate(T masterEntity, List<E> detailEntities) {
-        for (E detail : detailEntities) {
-            if (detail.isPersisted()) {
-                getDaoHelper().getDao(getDetailClass()).saveOrUpdate(detail);
-            } else {
-                addDetailIntoMaster(masterEntity, detail);
-            }
-        }
         getDaoHelper().getDao(getMasterClass()).saveOrUpdate(masterEntity);
     }
-
-    protected abstract void addDetailIntoMaster(T masterEntity, E detailEntity);
 
     @SuppressWarnings("unchecked")
     protected Class<T> getMasterClass() {

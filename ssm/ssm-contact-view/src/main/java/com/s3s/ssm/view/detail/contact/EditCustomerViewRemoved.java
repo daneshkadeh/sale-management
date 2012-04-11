@@ -92,11 +92,6 @@ public class EditCustomerViewRemoved extends AbstractMasterDetailView<Partner, A
     }
 
     @Override
-    protected void addDetailIntoMaster(Partner masterEntity, Address detailEntity) {
-        // masterEntity.addShop(detailEntity);
-    }
-
-    @Override
     protected void
             initialPresentationView(DetailDataModel detailDataModel, Partner entity, Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);

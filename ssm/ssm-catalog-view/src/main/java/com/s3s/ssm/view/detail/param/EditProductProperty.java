@@ -39,11 +39,6 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
     }
 
     @Override
-    protected void addDetailIntoMaster(ProductProperty masterEntity, ProductPropertyElement detailEntity) {
-        masterEntity.addElement(detailEntity);
-    }
-
-    @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, ProductProperty entity,
             Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);

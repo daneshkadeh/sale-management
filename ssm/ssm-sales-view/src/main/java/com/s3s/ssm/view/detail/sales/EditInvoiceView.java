@@ -15,7 +15,6 @@
 package com.s3s.ssm.view.detail.sales;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.event.TableModelEvent;
@@ -128,14 +127,15 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
         refDataModel.putRefDataList(REF_PACKLINE, getDaoHelper().getDao(PackageLine.class).findAll());
     }
 
-    @Override
-    protected void addDetailIntoMaster(Invoice masterEntity, DetailInvoice detailEntity) {
-        masterEntity.addDetailInvoice(detailEntity);
-    }
+    // @Override
+    // protected void addDetailIntoMaster(Invoice masterEntity, DetailInvoice detailEntity) {
+    // masterEntity.addDetailInvoice(detailEntity);
+    // }
 
     @Override
-    protected void saveOrUpdate(Invoice masterEntity, List<DetailInvoice> detailEntities) {
+    protected void saveOrUpdate(Invoice masterEntity) {
         masterEntity.setMoneyBeforeTax(masterEntity.getMoneyAfterTax());
-        super.saveOrUpdate(masterEntity, detailEntities);
+        super.saveOrUpdate(masterEntity);
     }
+
 }

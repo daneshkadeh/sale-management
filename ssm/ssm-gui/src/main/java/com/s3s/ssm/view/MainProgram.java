@@ -219,11 +219,11 @@ public class MainProgram {
     private static JToolBar createToolbar() {
         JToolBar toolbar = new JToolBar();
         toolbar.add(Box.createHorizontalGlue());
-        institutionBtn = new JToggleButton(ImageUtils.getMediumIcon(ImageConstants.INSTITUTION_ICON));
+        institutionBtn = new JToggleButton(ImageUtils.getSmallIcon(ImageConstants.INSTITUTION_ICON));
         institutionBtn.setToolTipText(ControlConfigUtils.getString("icon.tooltip.institution"));
-        organizationBtn = new JToggleButton(ImageUtils.getMediumIcon(ImageConstants.ORGANIZATION_ICON));
+        organizationBtn = new JToggleButton(ImageUtils.getSmallIcon(ImageConstants.ORGANIZATION_ICON));
         organizationBtn.setToolTipText(ControlConfigUtils.getString("icon.tooltip.organization"));
-        saleChannelBtn = new JToggleButton(ImageUtils.getMediumIcon(ImageConstants.SALECHANNEL_ICON));
+        saleChannelBtn = new JToggleButton(ImageUtils.getSmallIcon(ImageConstants.SALECHANNEL_ICON));
         saleChannelBtn.setToolTipText(ControlConfigUtils.getString("icon.tooltip.saleChannel"));
         ButtonGroup contextGroup = new ButtonGroup();
         contextGroup.add(institutionBtn);

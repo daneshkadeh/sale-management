@@ -224,9 +224,4 @@ public class ExportStoreForm extends AbstractCodeOLObject {
     public void setExportDetails(Set<DetailExportStore> exportDetails) {
         this.exportDetails = exportDetails;
     }
-
-    public void addDetailImports(DetailExportStore detail) {
-        detail.setExportForm(this);
-        exportDetails.add(detail);
-    }
 }
