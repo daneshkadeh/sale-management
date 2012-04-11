@@ -126,6 +126,7 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
         super.bindingValue(entity, name, isRaw, value);
         if (name.equals("rawAttribute1")) {
             // entity.setPosition((String) value);
+
         }
     }
 

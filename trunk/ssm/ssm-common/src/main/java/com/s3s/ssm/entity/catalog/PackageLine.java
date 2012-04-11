@@ -35,13 +35,13 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
 @Table(name = "ca_package_line")
 public class PackageLine extends AbstractIdOLObject {
     private SPackage pack;
-    private PackageLine parentPackageLine;
+    private PackageLine parentPackageLine; // will be implement later
     private Product product;
     private Boolean isAllItem = false;
     private Set<Item> explicitLinkItems = new HashSet<>();
     private Boolean optional = false;
-    private Integer minItemAmount;
-    private Integer maxItemAmount;
+    private Integer minItemAmount = 1;
+    private Integer maxItemAmount = 1;
     // PackageLineItemPrice is applied for this packageLine, use default ItemPrice to sell if not exist in this list
     private Set<PackageLineItemPrice> itemPrices = new HashSet<>();
 

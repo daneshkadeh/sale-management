@@ -7,6 +7,7 @@ import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.Organization;
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
+import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.entity.contact.Partner;
 
 public interface IConfigService {
@@ -43,6 +44,8 @@ public interface IConfigService {
     public List<Bank> getBanks();
 
     public List<Partner> getPartners();
+
+    public List<AudienceCategory> getAudienceCategories();
 
     /**
      * Get default organization
