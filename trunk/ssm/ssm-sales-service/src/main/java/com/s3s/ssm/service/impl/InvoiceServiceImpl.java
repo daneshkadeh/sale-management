@@ -37,4 +37,16 @@ public class InvoiceServiceImpl extends AbstractModuleServiceImpl implements Inv
         List<Invoice> result = getDaoHelper().getDao(Invoice.class).findByCriteria(dc);
         return result;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Invoice findInvoiceByCode(String code) {
+        DetachedCriteria dc = getDaoHelper().getDao(Invoice.class).getCriteria();
+        dc.add(Restrictions.not(Restrictions.eq("status", InvoiceStatus.CANCELLED)));
+        dc.add(Restrictions.eq("invoiceNumber", code));
+        Invoice invoice = getDaoHelper().getDao(Invoice.class).findFirstByCriteria(dc);
+        return invoice;
+    }
 }

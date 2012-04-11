@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.detail.store;
 
 import java.util.Map;
+import java.util.Set;
 
 import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.ExportStoreForm;
@@ -32,6 +33,7 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
+import com.s3s.ssm.view.list.store.ListExportStoreFormView;
 
 public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStoreForm, DetailExportStore> {
     private static final long serialVersionUID = -7472571972492175768L;
@@ -46,7 +48,18 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
      */
     public EditExportStoreFormView(Map<String, Object> entity) {
         super(entity);
-        // TODO Auto-generated constructor stub
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ExportStoreForm loadForCreate() {
+        ExportStoreForm form = super.loadForCreate();
+        Set<DetailExportStore> detailSet = (Set<DetailExportStore>) request.get(ListExportStoreFormView.DETAIL_SET);
+        form.getExportDetails().addAll(detailSet);
+        return form;
     }
 
     /**
