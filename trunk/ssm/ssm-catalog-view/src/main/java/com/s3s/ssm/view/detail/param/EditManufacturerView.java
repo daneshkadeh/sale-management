@@ -39,8 +39,8 @@ public class EditManufacturerView extends AbstractSingleEditView<Manufacturer> {
     }
 
     @Override
-    protected Manufacturer loadForCreate() {
-        Manufacturer manu = super.loadForCreate();
+    protected Manufacturer loadForCreate(Map<String, Object> request) {
+        Manufacturer manu = super.loadForCreate(request);
         manu.setSymbol(new UploadFile());
         return manu;
     }

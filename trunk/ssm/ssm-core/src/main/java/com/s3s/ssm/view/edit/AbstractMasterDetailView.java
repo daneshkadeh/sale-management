@@ -14,6 +14,7 @@
  */
 package com.s3s.ssm.view.edit;
 
+import java.awt.FlowLayout;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -25,15 +26,19 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AdvanceTableModel;
 import com.s3s.ssm.view.list.ListDataModel;
 
 /**
@@ -50,7 +55,7 @@ import com.s3s.ssm.view.list.ListDataModel;
  *            child entity type
  */
 public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E extends AbstractIdOLObject> extends
-        AbstractSingleEditView<T> {
+        AbstractSingleEditView<T> implements TableModelListener {
     private static final long serialVersionUID = 5571051971772731048L;
 
     private final Log logger = LogFactory.getLog(AbstractMasterDetailView.class);
@@ -98,7 +103,14 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
 
         // Load list view immediately. This view not too large in MasterDetailView.
         childListView.loadView();
+        childListView.addTableModelListener(this);
         add(childListView, "grow");
+    }
+
+    @Override
+    protected T loadForEdit(List<String> eagerLoadedProperties) {
+        eagerLoadedProperties.add(getChildFieldName());
+        return super.loadForEdit(eagerLoadedProperties);
     }
 
     /**
@@ -122,12 +134,14 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
             super(params);
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         protected List<E> loadData(int pageNumber) {
             Method getChildListMethod = Solution3sClassUtils.getGetterMethod(getMasterClass(), getChildFieldName());
             try {
-                List<E> copyChildEntitiesList = new ArrayList<E>((Collection<E>) getChildListMethod.invoke(entity));
-                return copyChildEntitiesList;
+                // TODO Phuc: should be load from DB.
+                detailEntities = new ArrayList<E>((Collection<E>) getChildListMethod.invoke(entity));
+                return detailEntities;
             } catch (Exception e) {
                 logger.error(e.getCause());
                 logger.error(e.getMessage());
@@ -167,15 +181,26 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         }
 
         @Override
-        public void tableChanged(TableModelEvent e) {
-            super.tableChanged(e);
-            AbstractMasterDetailView.this.tableChanged(e);
-        }
-
-        @Override
         protected JPanel createFooterPanel(TableModel tableModel) {
             return AbstractMasterDetailView.this.createFooterPanel(tableModel);
         }
+    }
+
+    @Override
+    public void tableChanged(TableModelEvent e) {
+        AdvanceTableModel<E> model = (AdvanceTableModel<E>) e.getSource();
+        if (e.getType() == TableModelEvent.INSERT) {
+            E ent = model.getEntity(e.getFirstRow()); // Put inside the if statement to avoid an empty list case.
+            detailEntities.add(e.getFirstRow(), ent);
+        } else if (e.getType() == TableModelEvent.DELETE) {
+            detailEntities.remove(e.getFirstRow());
+        }
+    }
+
+    @Override
+    protected void initialPresentationView(DetailDataModel detailDataModel, T entity, Map<String, Object> request) {
+        // TODO Auto-generated method stub
+
     }
 
     /**
@@ -186,16 +211,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
      */
     protected JPanel createFooterPanel(TableModel tableModel) {
         // Template method
-        return new JPanel();
-    }
-
-    /**
-     * The child class override this method to perform something when the main table data changed.
-     * 
-     * @param e
-     */
-    protected void tableChanged(TableModelEvent e) {
-        // Template method
+        return new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // Just create a panel with no size
     }
 
     /**
@@ -207,6 +223,10 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
     };
 
     protected void saveOrUpdate(T masterEntity, List<E> detailEntities) {
+        BeanWrapper beanWrapper = new BeanWrapperImpl(masterEntity);
+        Collection<E> children = (Collection<E>) beanWrapper.getPropertyValue(getChildFieldName());
+        children.removeAll(children);
+        children.addAll(detailEntities);
         getDaoHelper().getDao(getMasterClass()).saveOrUpdate(masterEntity);
     }
 
@@ -220,13 +240,5 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
     protected Class<E> getDetailClass() {
         Type controllerType = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         return (Class<E>) controllerType;
-    }
-
-    public void setDetailEntities(List<E> detailEntities) {
-        this.detailEntities = detailEntities;
-    }
-
-    public List<E> getDetailEntities() {
-        return detailEntities;
     }
 }

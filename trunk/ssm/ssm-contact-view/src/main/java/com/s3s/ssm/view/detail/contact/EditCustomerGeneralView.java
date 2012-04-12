@@ -61,9 +61,9 @@ public class EditCustomerGeneralView extends EditPartnerGeneralView<Partner> {
     }
 
     @Override
-    protected Partner loadForCreate() {
+    protected Partner loadForCreate(Map<String, Object> request) {
         // TODO Auto-generated method stub
-        Partner entity = super.loadForCreate();
+        Partner entity = super.loadForCreate(request);
         PartnerProfile profile = entity.getPartnerProfile(PartnerProfileTypeEnum.CUSTOMER);
         if (profile == null) {
             profile = new CustomerProfile();

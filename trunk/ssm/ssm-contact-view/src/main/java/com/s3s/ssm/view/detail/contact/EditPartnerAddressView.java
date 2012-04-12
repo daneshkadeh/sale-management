@@ -46,8 +46,8 @@ public class EditPartnerAddressView extends AbstractSingleEditView<PartnerAddres
     }
 
     @Override
-    protected PartnerAddressLink loadForCreate() {
-        PartnerAddressLink entity = super.loadForCreate();
+    protected PartnerAddressLink loadForCreate(Map<String, Object> request) {
+        PartnerAddressLink entity = super.loadForCreate(request);
         entity.setAddress(new Address());
         return entity;
     }

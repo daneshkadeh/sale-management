@@ -17,8 +17,6 @@ package com.s3s.ssm.view.detail.sales;
 import java.util.Date;
 import java.util.Map;
 
-import javax.swing.event.TableModelEvent;
-
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.contact.Partner;
@@ -73,23 +71,18 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     }
 
     @Override
-    protected void tableChanged(TableModelEvent e) {
-        super.tableChanged(e);
-    }
-
-    @Override
     protected Class<? extends AbstractEditView<DetailInvoice>> getChildDetailViewClass() {
         return EditDetailInvoiceVirtualView.class;
     }
 
     @Override
     protected String getChildFieldName() {
-        return "listDetailInvoices";
+        return "detailInvoices";
     }
 
     @Override
-    protected Invoice loadForCreate() {
-        Invoice invoice = super.loadForCreate();
+    protected Invoice loadForCreate(Map<String, Object> request) {
+        Invoice invoice = super.loadForCreate(request);
         invoice.setCreatedDate(new Date());
         invoice.setInvoiceNumber(serviceProvider.getService(InvoiceService.class).getNextInvoiceNumber());
         return invoice;

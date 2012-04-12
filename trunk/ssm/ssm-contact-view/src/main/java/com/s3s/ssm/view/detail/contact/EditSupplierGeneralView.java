@@ -20,8 +20,8 @@ public class EditSupplierGeneralView extends EditPartnerGeneralView<Partner> {
     }
 
     @Override
-    protected Partner loadForCreate() {
-        Partner entity = super.loadForCreate();
+    protected Partner loadForCreate(Map<String, Object> request) {
+        Partner entity = super.loadForCreate(request);
         PartnerProfile profile = entity.getPartnerProfile(PartnerProfileTypeEnum.SUPPLIER);
         if (profile == null) {
             profile = new SupplierProfile();

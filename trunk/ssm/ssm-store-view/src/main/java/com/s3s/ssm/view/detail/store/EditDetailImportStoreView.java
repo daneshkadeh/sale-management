@@ -62,12 +62,12 @@ public class EditDetailImportStoreView extends AbstractSingleEditView<DetailImpo
      * {@inheritDoc}
      */
     @Override
-    protected DetailImportStore loadForCreate() {
+    protected DetailImportStore loadForCreate(Map<String, Object> request) {
         // TODO:Hoang should get from ContextProvider
         UnitOfMeasure baseUom = serviceProvider.getService(IConfigService.class).getBaseUnitUom();
         // TODO:Hoang ahould get parent form
         ImportStoreForm importStore = new ImportStoreForm();
-        DetailImportStore detail = super.loadForCreate();
+        DetailImportStore detail = super.loadForCreate(request);
         // TODO: Hoang should have
         detail.setLineNo(1);
         detail.setImportStoreForm(importStore);

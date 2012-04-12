@@ -19,8 +19,8 @@ public class EditItemPropertyValueView extends AbstractSingleEditView<ItemProper
     }
 
     @Override
-    protected ItemPropertyValue loadForCreate() {
-        ItemPropertyValue value = super.loadForCreate();
+    protected ItemPropertyValue loadForCreate(Map<String, Object> request) {
+        ItemPropertyValue value = super.loadForCreate(request);
         value.setItem((Item) getDaoHelper().getDao(this.getParentClass()).findById(this.getParentId()));
         return value;
     }

@@ -66,8 +66,8 @@ public class EditInstitutionView extends AbstractSingleEditView<Institution> {
     }
 
     @Override
-    protected Institution loadForCreate() {
-        Institution info = super.loadForCreate();
+    protected Institution loadForCreate(Map<String, Object> request) {
+        Institution info = super.loadForCreate(request);
         info.setLogo(new UploadFile());
         return info;
     }

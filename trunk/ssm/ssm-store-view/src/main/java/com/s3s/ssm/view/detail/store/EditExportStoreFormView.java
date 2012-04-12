@@ -55,8 +55,8 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
      * {@inheritDoc}
      */
     @Override
-    protected ExportStoreForm loadForCreate() {
-        ExportStoreForm form = super.loadForCreate();
+    protected ExportStoreForm loadForCreate(Map<String, Object> request) {
+        ExportStoreForm form = super.loadForCreate(request);
         Set<DetailExportStore> detailSet = (Set<DetailExportStore>) request.get(ListExportStoreFormView.DETAIL_SET);
         form.getExportDetails().addAll(detailSet);
         return form;

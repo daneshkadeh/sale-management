@@ -16,10 +16,12 @@ package com.s3s.ssm.view.edit;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -35,7 +37,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.Box;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -50,6 +56,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.text.DefaultFormatter;
@@ -141,6 +148,10 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     private JButton btnNew;
     private JButton btnExit;
 
+    private Action newAction;
+    private Action saveAction;
+    private Action saveNewAction;
+
     public AbstractSingleEditView() {
         this(null);
     }
@@ -154,7 +165,30 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     private void contructView(T entity) {
         initialPresentationView(detailDataModel, entity, request);
         setReferenceDataModel(refDataModel, entity);
+
+        newAction = new NewAction();
+        saveAction = new SaveAction();
+        saveNewAction = new SaveNewAction();
+
         initComponents();
+        addKeyBindings();
+    }
+
+    private void addKeyBindings() {
+        // Key binding
+        InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+
+        // Ctrl-N to add new row
+        KeyStroke newShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK);
+        KeyStroke saveShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK);
+
+        // KeyStroke saveNewShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK);
+        inputMap.put(newShortkey, "newActionKey");
+        inputMap.put(saveShortkey, "saveActionKey");
+
+        ActionMap actionMap = getActionMap();
+        actionMap.put("newActionKey", newAction);
+        actionMap.put("saveActionKey", saveAction);
     }
 
     protected abstract void initialPresentationView(DetailDataModel detailDataModel, T entity,
@@ -194,12 +228,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         toolbar.setFloatable(false);
         btnSave = new JButton(ImageUtils.getSmallIcon(ImageConstants.SAVE_ICON));
         btnSave.setToolTipText(ControlConfigUtils.getString("default.button.save"));
-        btnSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                doSave();
-            }
-        });
+        btnSave.addActionListener(saveAction);
 
         // btnSaveClose = new JButton("Luu va dong");
         // btnSaveClose.addActionListener(new ActionListener() {
@@ -225,12 +254,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         btnNew = new JButton(ImageUtils.getSmallIcon(ImageConstants.NEW_ICON));
         btnNew.setEnabled(entity.isPersisted());
         btnNew.setToolTipText(ControlConfigUtils.getString("edit.button.new"));
-        btnNew.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                doNew();
-            }
-        });
+        btnNew.addActionListener(newAction);
 
         btnExit = new JButton(ImageUtils.getSmallIcon(ImageConstants.EXIT_ICON));
         btnExit.setToolTipText(ControlConfigUtils.getString("edit.button.exit"));
@@ -820,6 +844,29 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     public boolean requestFocusInWindow() {
         return name2AttributeComponent.get(detailDataModel.getDetailAttributes().get(0).getName()).getComponent()
                 .requestFocusInWindow();
+    }
+
+    private class SaveAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            doSave();
+        }
+    }
+
+    private class NewAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            doNew();
+        }
+    }
+
+    private class SaveNewAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            if (doSave()) {
+                doNew();
+            }
+        }
     }
 
     // ////////////////////////////////
