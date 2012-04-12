@@ -49,7 +49,7 @@ public abstract class AbstractEditView<T extends AbstractBaseIdObject> extends A
         super(inputParams);
         EditActionEnum action = (EditActionEnum) request.get(PARAM_ACTION);
         if (action == EditActionEnum.NEW) {
-            entity = loadForCreate();
+            entity = loadForCreate(request);
         } else if (action == EditActionEnum.EDIT) {
             entity = loadForEdit(new ArrayList<String>());
         } else {
@@ -63,7 +63,7 @@ public abstract class AbstractEditView<T extends AbstractBaseIdObject> extends A
      * 
      * @param entity
      */
-    protected T loadForCreate() {
+    protected T loadForCreate(Map<String, Object> request) {
         try {
             return getEntityClass().newInstance();
         } catch (InstantiationException | IllegalAccessException e) {

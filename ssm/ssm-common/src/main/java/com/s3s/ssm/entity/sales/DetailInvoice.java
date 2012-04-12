@@ -14,6 +14,7 @@
  */
 package com.s3s.ssm.entity.sales;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -35,28 +36,28 @@ public class DetailInvoice extends AbstractIdOLObject {
     private Invoice invoice;
     private Item item;
     private PackageLine packageLine;
-    private Integer amount;
-    private Double priceBeforeTax = 0.0;
-    private Double priceOfTax = 0.0;
-    private Double priceAfterTax = 0.0;
-    private Double moneyBeforeTax = 0.0;
-    private Double moneyOfTax = 0.0;
-    private Double moneyAfterTax = 0.0;
+    private int amount;
+    private double priceBeforeTax = 0.0;
+    private double priceOfTax = 0.0;
+    private double priceAfterTax = 0.0;
+    private double moneyBeforeTax = 0.0;
+    private double moneyOfTax = 0.0;
+    private double moneyAfterTax = 0.0;
     private String currency = "VND";
     private DetailInvoiceType type = DetailInvoiceType.SALES;
     private DetailInvoiceStatus status = DetailInvoiceStatus.OPEN;
 
     // Transient field
-    private Double totalAmount;
+    private double totalAmount;
 
     @Transient
-    public Double getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
     // Please remove this set method because it has no meaning and can be raise potential bugs (its value is calculated
     // from the other). Remember to set editable is false if using this field in List view
-    public void setTotalAmount(Double totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -64,7 +65,7 @@ public class DetailInvoice extends AbstractIdOLObject {
         totalAmount = amount * priceAfterTax;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_id")
     public Invoice getInvoice() {
         return invoice;
@@ -96,80 +97,72 @@ public class DetailInvoice extends AbstractIdOLObject {
     }
 
     @Column(name = "amount", nullable = false)
-    @NotNull
-    public Integer getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
         updateTotalAmount();
     }
 
-    @Column(name = "price_after_tax", nullable = false)
-    @NotNull
-    public Double getPriceAfterTax() {
+    @Column(name = "price_after_tax")
+    public double getPriceAfterTax() {
         return priceAfterTax;
     }
 
-    public void setPriceAfterTax(Double priceAfterTax) {
+    public void setPriceAfterTax(double priceAfterTax) {
         this.priceAfterTax = priceAfterTax;
         updateTotalAmount();
     }
 
     @Column(name = "price_before_tax", nullable = false)
-    @NotNull
-    public Double getPriceBeforeTax() {
+    public double getPriceBeforeTax() {
         return priceBeforeTax;
     }
 
-    public void setPriceBeforeTax(Double priceBeforeTax) {
+    public void setPriceBeforeTax(double priceBeforeTax) {
         this.priceBeforeTax = priceBeforeTax;
     }
 
-    @Column(name = "price_of_tax", nullable = false)
-    @NotNull
-    public Double getPriceOfTax() {
+    @Column(name = "price_of_tax")
+    public double getPriceOfTax() {
         return priceOfTax;
     }
 
-    public void setPriceOfTax(Double priceOfTax) {
+    public void setPriceOfTax(double priceOfTax) {
         this.priceOfTax = priceOfTax;
         updateTotalAmount();
     }
 
-    @Column(name = "money_before_tax", nullable = false)
-    @NotNull
-    public Double getMoneyBeforeTax() {
+    @Column(name = "money_before_tax")
+    public double getMoneyBeforeTax() {
         return moneyBeforeTax;
     }
 
-    public void setMoneyBeforeTax(Double moneyBeforeTax) {
+    public void setMoneyBeforeTax(double moneyBeforeTax) {
         this.moneyBeforeTax = moneyBeforeTax;
     }
 
     @Column(name = "money_of_tax", nullable = false)
-    @NotNull
-    public Double getMoneyOfTax() {
+    public double getMoneyOfTax() {
         return moneyOfTax;
     }
 
-    public void setMoneyOfTax(Double moneyOfTax) {
+    public void setMoneyOfTax(double moneyOfTax) {
         this.moneyOfTax = moneyOfTax;
     }
 
     @Column(name = "money_after_tax", nullable = false)
-    @NotNull
-    public Double getMoneyAfterTax() {
+    public double getMoneyAfterTax() {
         return moneyAfterTax;
     }
 
-    public void setMoneyAfterTax(Double moneyAfterTax) {
+    public void setMoneyAfterTax(double moneyAfterTax) {
         this.moneyAfterTax = moneyAfterTax;
     }
 
     @Column(name = "currency", nullable = false)
-    @NotNull
     public String getCurrency() {
         return currency;
     }
@@ -179,7 +172,6 @@ public class DetailInvoice extends AbstractIdOLObject {
     }
 
     @Column(name = "detail_invoice_type", nullable = false)
-    @NotNull
     @Enumerated(EnumType.STRING)
     public DetailInvoiceType getType() {
         return type;
@@ -190,7 +182,6 @@ public class DetailInvoice extends AbstractIdOLObject {
     }
 
     @Column(name = "status", nullable = false)
-    @NotNull
     @Enumerated(EnumType.STRING)
     public DetailInvoiceStatus getStatus() {
         return status;

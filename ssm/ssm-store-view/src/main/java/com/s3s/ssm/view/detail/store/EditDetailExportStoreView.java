@@ -61,7 +61,7 @@ public class EditDetailExportStoreView extends AbstractSingleEditView<DetailExpo
      * {@inheritDoc}
      */
     @Override
-    protected DetailExportStore loadForCreate() {
+    protected DetailExportStore loadForCreate(Map<String, Object> request) {
         return null;
     }
 

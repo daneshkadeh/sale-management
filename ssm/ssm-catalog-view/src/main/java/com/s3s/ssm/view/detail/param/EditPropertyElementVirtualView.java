@@ -21,8 +21,8 @@ public class EditPropertyElementVirtualView extends AbstractSingleEditView<Produ
     }
 
     @Override
-    protected ProductPropertyElement loadForCreate() {
-        ProductPropertyElement entity = super.loadForCreate();
+    protected ProductPropertyElement loadForCreate(Map<String, Object> request) {
+        ProductPropertyElement entity = super.loadForCreate(request);
         entity.setProperty(daoHelper.getDao(ProductProperty.class).findById((Long) request.get(PARAM_PARENT_ID)));
         return entity;
     }

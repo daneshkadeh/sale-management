@@ -63,8 +63,8 @@ public abstract class EditProductGeneralView<T extends Product> extends Abstract
     protected abstract ProductFamilyType getProductFamilyType();
 
     @Override
-    protected T loadForCreate() {
-        T product = super.loadForCreate();
+    protected T loadForCreate(Map<String, Object> request) {
+        T product = super.loadForCreate(request);
         product.setUploadFile(new UploadFile());
         return product;
     }

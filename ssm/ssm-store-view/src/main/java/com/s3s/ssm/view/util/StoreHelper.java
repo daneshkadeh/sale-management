@@ -41,7 +41,7 @@ public class StoreHelper {
 
     public static Set<DetailExportStore> initDetailExportStore(ExportStoreForm form, Invoice invoice) {
         Set<DetailExportStore> result = new HashSet<>();
-        Set<DetailInvoice> invDetailSet = invoice.getListDetailInvoices();
+        Set<DetailInvoice> invDetailSet = invoice.getDetailInvoices();
         Integer lineNo = 0;
         for (DetailInvoice invDetail : invDetailSet) {
             DetailExportStore exDetail = new DetailExportStore();

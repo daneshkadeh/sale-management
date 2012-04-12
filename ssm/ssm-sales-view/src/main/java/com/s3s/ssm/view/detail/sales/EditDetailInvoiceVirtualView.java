@@ -46,8 +46,8 @@ public class EditDetailInvoiceVirtualView extends AbstractSingleEditView<DetailI
     }
 
     @Override
-    protected DetailInvoice loadForCreate() {
-        DetailInvoice detail = super.loadForCreate();
+    protected DetailInvoice loadForCreate(Map<String, Object> request) {
+        DetailInvoice detail = super.loadForCreate(request);
         // TODO: Parent entity should be set in AbstractMasterDetailView. But AbstractMasterDetailView does not know
         // about this virtual view now.
         detail.setInvoice(daoHelper.getDao(Invoice.class).findById((Long) request.get(PARAM_PARENT_ID)));

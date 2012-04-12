@@ -20,6 +20,8 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -34,20 +36,23 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractTableModel {
     private static final long serialVersionUID = -4720974982417224609L;
 
+    private static final Log logger = LogFactory.getLog(AdvanceTableModel.class);
     private ListDataModel listDataModel;
     private List<T> entities;
     private Class<T> clazz;
     protected BeanWrapper beanWrapper;
+    protected AbstractListView<T> listView;
 
-    public AdvanceTableModel(ListDataModel listDataModel, List<T> entities, Class<T> clazz) {
+    public AdvanceTableModel(ListDataModel listDataModel, List<T> entities, Class<T> clazz, AbstractListView<T> listView) {
         this.listDataModel = listDataModel;
         this.entities = entities;
         this.clazz = clazz;
+        this.listView = listView;
     }
 
     @Override
     public int getRowCount() {
-        return entities.size() + 1; // An empty row to add a new entity.
+        return listDataModel.isEditable() ? entities.size() + 1 : entities.size(); // An empty row to add a new entity.
     }
 
     @Override
@@ -104,6 +109,36 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
         // }
         // }
         // ////////////////////////////////////////////////
+    }
+
+    public void addNewRowAt(int index) {
+        try {
+            T entity = listView.initEntity(clazz.newInstance());
+            entities.add(index, entity);
+            fireTableRowsInserted(entities.size() - 1, entities.size() - 1);
+        } catch (InstantiationException | IllegalAccessException e) {
+            logger.error("Error when create an empty entity for the new row");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Delete a range of rows.
+     * 
+     * @param firstRow
+     *            first index of row, inclusive
+     * @param lastRow
+     *            last index of row, inclusive
+     */
+    public void deleteRows(int firstRow, int lastRow) {
+        for (int i = firstRow; i <= lastRow; i++) {
+            entities.remove(firstRow);
+        }
+        fireTableRowsDeleted(firstRow, lastRow);
+    }
+
+    public T getEntity(int index) {
+        return entities.get(index);
     }
 
     @Override

@@ -47,7 +47,7 @@ public class Invoice extends AbstractIdOLObject {
     private String currency = "VND";
     private InvoiceStatus status = InvoiceStatus.OPEN;
     private InvoicePaymentStatus paymentStatus = InvoicePaymentStatus.NO_PAYMENT;
-    private Set<DetailInvoice> listDetailInvoices = new HashSet<>();
+    private Set<DetailInvoice> detailInvoices = new HashSet<>();
 
     @Column(name = "invoice_number", nullable = false, length = 32)
     @NotNull
@@ -156,17 +156,11 @@ public class Invoice extends AbstractIdOLObject {
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "invoice")
-    public Set<DetailInvoice> getListDetailInvoices() {
-        return listDetailInvoices;
+    public Set<DetailInvoice> getDetailInvoices() {
+        return detailInvoices;
     }
 
-    public void setListDetailInvoices(Set<DetailInvoice> listDetailInvoices) {
-        this.listDetailInvoices = listDetailInvoices;
+    public void setDetailInvoices(Set<DetailInvoice> detailInvoices) {
+        this.detailInvoices = detailInvoices;
     }
-
-    public void addDetailInvoice(DetailInvoice detailInvoice) {
-        detailInvoice.setInvoice(this);
-        listDetailInvoices.add(detailInvoice);
-    }
-
 }

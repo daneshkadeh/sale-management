@@ -99,8 +99,8 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
     }
 
     @Override
-    protected Organization loadForCreate() {
-        Organization org = super.loadForCreate();
+    protected Organization loadForCreate(Map<String, Object> request) {
+        Organization org = super.loadForCreate(request);
         if (org.getUsdBankAcct() == null) {
             org.setUsdBankAcct(new BankAccount());
         }

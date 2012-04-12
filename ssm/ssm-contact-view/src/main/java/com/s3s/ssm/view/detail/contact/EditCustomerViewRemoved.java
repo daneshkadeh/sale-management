@@ -58,8 +58,8 @@ public class EditCustomerViewRemoved extends AbstractMasterDetailView<Partner, A
      * {@inheritDoc}
      */
     @Override
-    protected Partner loadForCreate() {
-        Partner customer = super.loadForCreate();
+    protected Partner loadForCreate(Map<String, Object> request) {
+        Partner customer = super.loadForCreate(request);
         // customer.setBankAccount(new BankAccount());
         return customer;
     }

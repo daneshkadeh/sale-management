@@ -29,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +122,7 @@ import com.s3s.ssm.view.edit.AbstractEditView;
  * @param <T>
  */
 public abstract class AbstractListView<T extends AbstractBaseIdObject> extends AbstractView implements
-        IPageChangeListener, IViewLazyLoadable, ISavedListener<T>, TableModelListener {
+        IPageChangeListener, IViewLazyLoadable, ISavedListener<T> {
 
     private static final long serialVersionUID = -1311942671249671111L;
     private static final String ADD_ACTION_KEY = "addAction";
@@ -138,7 +139,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private JXTable tblFooter;
     private JBusyComponent<JScrollPane> busyPane;
 
-    private TableModel mainTableModel;
+    private AdvanceTableModel<T> mainTableModel;
     private PagingNavigator pagingNavigator;
     // button toolbar
     private JButton btnAdd;
@@ -159,6 +160,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     private Action addAction;
     private Action editAction;
+    private Action deleteAction;
     private Action exportAction;
     private Action printAction;
 
@@ -194,6 +196,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         addAction = new AddAction();
         editAction = new EditAction();
+        deleteAction = new DeleteAction();
         exportAction = new ExportAction();
         printAction = new PrintAction();
 
@@ -209,15 +212,17 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     protected void addKeyBindings() {
-        // Key binding
         InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
 
-        // Ctrl-N to add new row
-        KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK);
-        inputMap.put(key, ADD_ACTION_KEY);
+        KeyStroke addShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK);
+        KeyStroke deleteShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_D, Event.CTRL_MASK);
+
+        inputMap.put(addShortkey, ADD_ACTION_KEY);
+        inputMap.put(deleteShortkey, "deleteKeyAction");
 
         ActionMap actionMap = getActionMap();
         actionMap.put(ADD_ACTION_KEY, addAction);
+        actionMap.put("deleteKeyAction", deleteAction);
     }
 
     /**
@@ -339,8 +344,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         refDataModel = initReferenceDataModel();
 
         // ///////////////// Init main table ////////////////////////////////
-        mainTableModel = createTableModel();
-        mainTableModel.addTableModelListener(this); // Listen when the table data changed.
+        mainTableModel = (AdvanceTableModel<T>) createTableModel();
 
         tblListEntities = new SAdvanceTable(mainTableModel, listDataModel, refDataModel);
 
@@ -400,7 +404,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
             @Override
             public int getSize() {
-                return entities.size();
+                return listDataModel.isEditable() ? entities.size() + 1 : entities.size();
             }
 
             @Override
@@ -412,6 +416,15 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         rowHeader.setCellRenderer(new RowHeaderRenderer(tblListEntities));
         rowHeader.setFixedCellWidth(UIConstants.DEFAULT_ROW_HEADER_WIDTH);
         rowHeader.setFixedCellHeight(tblListEntities.getRowHeight());
+        mainTableModel.addTableModelListener(new TableModelListener() {
+
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                rowHeader.repaint();
+                rowHeader.revalidate();
+            }
+        });
+
         JScrollPane mainScrollpane = new JScrollPane(tblListEntities);
         mainScrollpane.getViewport().setBackground(Color.WHITE);
         mainScrollpane.setRowHeaderView(rowHeader);
@@ -481,7 +494,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * @return the model of the table.
      */
     protected TableModel createTableModel() {
-        return new AdvanceTableModel<T>(listDataModel, entities, getEntityClass());
+        return new AdvanceTableModel<T>(listDataModel, entities, getEntityClass(), this);
     }
 
     /**
@@ -509,6 +522,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         btnEdit = new JButton(ImageUtils.getSmallIcon(ImageConstants.EDIT_ICON));
         btnEdit.setToolTipText(ControlConfigUtils.getString("default.button.edit"));
         btnEdit.addActionListener(editAction);
+        btnEdit.setVisible(!listDataModel.isEditable());
 
         btnExport = new JButton(ImageUtils.getSmallIcon(ImageConstants.EXPORT_ICON));
         btnExport.setToolTipText(ControlConfigUtils.getString("default.button.export"));
@@ -551,9 +565,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             // Remove row in database
             getDaoHelper().getDao(getEntityClass()).deleteAll(removedEntities);
             // Remove row in view
-            entities.removeAll(removedEntities);
-
-            ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
+            System.err.println("range deleted: " + Arrays.asList(selectedRows));
+            mainTableModel.deleteRows(selectedRows[0], selectedRows[selectedRows.length - 1]);
             rowHeader.repaint();
             rowHeader.revalidate();
         }
@@ -627,14 +640,38 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     /**
-     * The child class override this method to do something everytime the main table changes value. </br> {@inheritDoc}
+     * Override this function in case of the list is editable. When new a row, a new entity is created and initialize
+     * some field by this function.
+     * 
+     * @param entity
+     *            an empty entity
+     * @return the entity for the new row.
+     * @category template method
      */
-    @Override
-    public void tableChanged(TableModelEvent e) {
+    protected T initEntity(T entity) {
         // Template method
+        return entity;
+    }
 
-        tblListEntities.repaint();
-        tblListEntities.revalidate();
+    // /**
+    // * The child class override this method to do something everytime the main table changes value. </br>
+    // {@inheritDoc}
+    // */
+    // @Override
+    // public void tableChanged(TableModelEvent e) {
+    // // Template method
+    //
+    // tblListEntities.repaint();
+    // tblListEntities.revalidate();
+    // }
+
+    /**
+     * Add the listener for the main table data changed.
+     * 
+     * @param tableModelListener
+     */
+    public void addTableModelListener(TableModelListener tableModelListener) {
+        mainTableModel.addTableModelListener(tableModelListener);
     }
 
     protected abstract Class<? extends AbstractEditView<T>> getEditViewClass();
@@ -663,37 +700,38 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
                     int sum = 0;
                     for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
-                        sum = sum + (Integer) mainTableModel.getValueAt(i, columnIndex);
+                        Object value = mainTableModel.getValueAt(i, columnIndex);
+                        sum = sum + ((value == null) ? 0 : (int) value);
                     }
                     return sum;
                 }
 
                 if (ClassUtils.isAssignable(fieldClass, Long.class)) {
-                    Long sum = 0L;
+                    long sum = 0L;
                     for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
-                        sum = sum + (Long) mainTableModel.getValueAt(i, columnIndex);
+                        Object value = mainTableModel.getValueAt(i, columnIndex);
+                        sum = sum + ((value == null) ? 0 : (long) value);
                     }
                     return sum;
                 }
 
                 if (ClassUtils.isAssignable(fieldClass, Float.class)) {
-                    Float sum = 0f;
+                    float sum = 0f;
                     for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
-                        sum = sum + (Float) mainTableModel.getValueAt(i, columnIndex);
+                        Object value = mainTableModel.getValueAt(i, columnIndex);
+                        sum = sum + ((value == null) ? 0 : (float) value);
                     }
                     return sum;
                 }
 
                 if (ClassUtils.isAssignable(fieldClass, Double.class)) {
-                    Double sum = 0d;
+                    double sum = 0d;
                     for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
-                        sum = sum + (Double) mainTableModel.getValueAt(i, columnIndex);
+                        Object value = mainTableModel.getValueAt(i, columnIndex);
+                        sum = sum + ((value == null) ? 0 : (double) value);
                     }
                     return sum;
                 }
-
-                throw new RuntimeException("Just support sum for Double and Integer type");
-
             }
             return null;
         }
@@ -734,11 +772,10 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
             // TODO Phuc: This is a bug, set the title of tab is by getDefaultTitle() from editView
             tabPane.setTitleAt(tabIndex, entity.getId().toString());
-            ((AbstractTableModel) tblListEntities.getModel()).fireTableRowsInserted(entities.size() - 1,
-                    entities.size() - 1);
+            mainTableModel.fireTableRowsInserted(entities.size() - 1, entities.size() - 1);
         } else {
             int index = entities.indexOf(entity);
-            ((AbstractTableModel) tblListEntities.getModel()).fireTableRowsUpdated(index, index);
+            mainTableModel.fireTableRowsUpdated(index, index);
         }
 
         ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
@@ -760,7 +797,12 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     public void performAddAction() {
-        showEditView(null, EditActionEnum.NEW);
+        if (listDataModel.isEditable()) {
+            // focus on the new row
+            tblListEntities.changeSelection(entities.size(), 0, false, false);
+        } else {
+            showEditView(null, EditActionEnum.NEW);
+        }
     }
 
     private void performEditAction() {
@@ -853,7 +895,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     entities.removeAll(entities);
                     entities.addAll(refreshedList);
                     // fireTableDataChanged to re-render the table.
-                    ((AbstractTableModel) tblListEntities.getModel()).fireTableDataChanged();
+                    mainTableModel.fireTableDataChanged();
                     ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
                     rowHeader.repaint();
                     rowHeader.revalidate();
@@ -888,6 +930,16 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         @Override
         public void actionPerformed(ActionEvent e) {
             performEditAction();
+        }
+
+    }
+
+    private class DeleteAction extends AbstractAction {
+        private static final long serialVersionUID = -7091407169970088286L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            doDeleteRows();
         }
 
     }

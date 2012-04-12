@@ -67,7 +67,7 @@ public class SAdvanceTable extends JXTable {
                 null));
 
         int selectionMode = listDataModel.isEditable() ? ListSelectionModel.SINGLE_SELECTION
-                : ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
+                : ListSelectionModel.SINGLE_INTERVAL_SELECTION;
         setSelectionMode(selectionMode);
         setColumnControlVisible(true);
         getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
@@ -182,6 +182,9 @@ public class SAdvanceTable extends JXTable {
 
     @Override
     public void changeSelection(int row, int column, boolean toggle, boolean extend) {
+        if (listDataModel.isEditable() && row == getRowCount() - 1) {
+            ((AdvanceTableModel) getModel()).addNewRowAt(getRowCount() - 1);
+        }
         super.changeSelection(row, column, toggle, extend);
         // Place cell in edit mode when it 'gains focus'
         if (listDataModel.isEditable() && listDataModel.getColumns().get(column).isEditable()

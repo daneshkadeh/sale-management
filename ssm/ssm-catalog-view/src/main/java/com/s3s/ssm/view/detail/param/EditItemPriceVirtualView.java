@@ -42,8 +42,8 @@ public class EditItemPriceVirtualView extends AbstractSingleEditView<ItemPrice> 
     }
 
     @Override
-    protected ItemPrice loadForCreate() {
-        ItemPrice itemPrice = super.loadForCreate();
+    protected ItemPrice loadForCreate(Map<String, Object> request) {
+        ItemPrice itemPrice = super.loadForCreate(request);
         itemPrice.setItem((Item) this.getParentObject());
         return itemPrice;
     }
