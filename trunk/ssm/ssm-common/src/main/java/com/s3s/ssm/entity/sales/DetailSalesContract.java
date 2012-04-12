@@ -14,7 +14,10 @@
  */
 package com.s3s.ssm.entity.sales;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -24,15 +27,15 @@ import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
+import com.s3s.ssm.model.Money;
 
 @Entity
 @Table(name = "s_detail_sales_contract")
 public class DetailSalesContract extends AbstractIdOLObject {
     private SalesContract salesContract;
     private Item item;
-    private Long amount;
-    private Double unitPrice;
-    private String currency;
+    private Integer quantity;
+    private Money unitPrice;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "salescon_id", nullable = false)
@@ -54,34 +57,26 @@ public class DetailSalesContract extends AbstractIdOLObject {
         this.item = item;
     }
 
-    @Column(name = "amount", nullable = false)
+    @Column(name = "quantity", nullable = false)
     @NotNull
-    public Long getAmount() {
-        return amount;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setAmount(Long amount) {
-        this.amount = amount;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
-    @Column(name = "unit_price", nullable = false)
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "unit_price")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code")) })
     @NotNull
-    public Double getUnitPrice() {
+    public Money getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(Double unitPrice) {
+    public void setUnitPrice(Money unitPrice) {
         this.unitPrice = unitPrice;
-    }
-
-    @Column(name = "currency", nullable = false)
-    @NotNull
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
 }

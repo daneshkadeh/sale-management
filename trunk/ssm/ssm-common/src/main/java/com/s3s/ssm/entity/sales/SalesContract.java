@@ -18,8 +18,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -32,18 +35,19 @@ import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.model.Money;
 
 @Entity
 @Table(name = "s_sales_contract")
 public class SalesContract extends AbstractCodeOLObject {
     private Partner supplier;
     private Date dateContract;
-    private Double moneyBeforeTax;
-    private Double moneyOfTax;
-    private Double moneyAfterTax;
-    private String currency;
+    private Money moneyBeforeTax;
+    private Money moneyOfTax;
+    private Money moneyAfterTax;
     private SalesContractStatus status = SalesContractStatus.OPEN;
     private Set<DetailSalesContract> detailSalesContracts = new HashSet<>();
+    private Set<ImportationSC> listImportation = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id", nullable = false)
@@ -65,44 +69,40 @@ public class SalesContract extends AbstractCodeOLObject {
         this.dateContract = dateContract;
     }
 
-    @Column(name = "money_before_tax", nullable = false)
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "money_before_tax")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code_before_tax")) })
     @NotNull
-    public Double getMoneyBeforeTax() {
+    public Money getMoneyBeforeTax() {
         return moneyBeforeTax;
     }
 
-    public void setMoneyBeforeTax(Double moneyBeforeTax) {
+    public void setMoneyBeforeTax(Money moneyBeforeTax) {
         this.moneyBeforeTax = moneyBeforeTax;
     }
 
-    @Column(name = "money_of_tax", nullable = false)
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "money_of_tax")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code_tax")) })
     @NotNull
-    public Double getMoneyOfTax() {
+    public Money getMoneyOfTax() {
         return moneyOfTax;
     }
 
-    public void setMoneyOfTax(Double moneyOfTax) {
+    public void setMoneyOfTax(Money moneyOfTax) {
         this.moneyOfTax = moneyOfTax;
     }
 
-    @Column(name = "money_after_tax", nullable = false)
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "money_after_tax")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code_after_tax")) })
     @NotNull
-    public Double getMoneyAfterTax() {
+    public Money getMoneyAfterTax() {
         return moneyAfterTax;
     }
 
-    public void setMoneyAfterTax(Double moneyAfterTax) {
+    public void setMoneyAfterTax(Money moneyAfterTax) {
         this.moneyAfterTax = moneyAfterTax;
-    }
-
-    @Column(name = "currency", nullable = false)
-    @NotNull
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
     @Column(name = "status", nullable = false)
@@ -128,5 +128,14 @@ public class SalesContract extends AbstractCodeOLObject {
     public void addDetailSalesContract(DetailSalesContract detailSalesContract) {
         detailSalesContract.setSalesContract(this);
         detailSalesContracts.add(detailSalesContract);
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "salesContract")
+    public Set<ImportationSC> getListImportation() {
+        return listImportation;
+    }
+
+    public void setListImportation(Set<ImportationSC> listImportation) {
+        this.listImportation = listImportation;
     }
 }
