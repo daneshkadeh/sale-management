@@ -28,6 +28,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -48,6 +50,7 @@ public class SalesContract extends AbstractCodeOLObject {
     private SalesContractStatus status = SalesContractStatus.OPEN;
     private Set<DetailSalesContract> detailSalesContracts = new HashSet<>();
     private Set<ImportationSC> listImportation = new HashSet<>();
+    private Set<ContractDocument> listDocuments = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id", nullable = false)
@@ -137,5 +140,16 @@ public class SalesContract extends AbstractCodeOLObject {
 
     public void setListImportation(Set<ImportationSC> listImportation) {
         this.listImportation = listImportation;
+    }
+
+    @ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
+    @JoinTable(name = "at_contract_document", joinColumns = { @JoinColumn(name = "sales_contract_id") }, inverseJoinColumns = { @JoinColumn(name = "document_id") })
+    public
+            Set<ContractDocument> getListDocuments() {
+        return listDocuments;
+    }
+
+    public void setListDocuments(Set<ContractDocument> listDocuments) {
+        this.listDocuments = listDocuments;
     }
 }
