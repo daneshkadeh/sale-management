@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -64,13 +65,34 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
 
     private ChildListView childListView;
 
+    private Icon icon;
+    private String label;
+    private String tooltip;
+
     /**
-     * The default constructor.
      * 
-     * @param entity
+     * @param request
+     * @deprecated use the full param constructor instead, to set the icon, label, tooltip for the child list view.
      */
-    public AbstractMasterDetailView(Map<String, Object> entity) {
-        super(entity);
+    public AbstractMasterDetailView(Map<String, Object> request) {
+        this(request, null, null, null);
+    }
+
+    /**
+     * 
+     * @param request
+     * @param icon
+     *            icon of the child list view
+     * @param label
+     *            label of the child list view
+     * @param tooltip
+     *            tooltip of the child list view
+     */
+    public AbstractMasterDetailView(Map<String, Object> request, Icon icon, String label, String tooltip) {
+        super(request);
+        this.icon = icon;
+        this.label = label;
+        this.tooltip = tooltip;
     }
 
     /**
@@ -99,7 +121,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         Map<String, Object> childParams = new HashMap<String, Object>();
         childParams.put(PARAM_PARENT_ID, entity.getId());
         childParams.put(PARAM_PARENT_CLASS, entity.getClass());
-        childListView = new ChildListView(childParams);
+        childListView = new ChildListView(childParams, icon, label, tooltip);
 
         // Load list view immediately. This view not too large in MasterDetailView.
         childListView.loadView();
@@ -130,8 +152,8 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         private static final long serialVersionUID = -8455234397691564647L;
         private static final int NUM_OF_ROW = 10;
 
-        public ChildListView(Map<String, Object> params) {
-            super(params);
+        public ChildListView(Map<String, Object> params, Icon icon, String label, String tooltip) {
+            super(params, icon, label, tooltip);
         }
 
         @SuppressWarnings("unchecked")
