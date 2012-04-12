@@ -17,14 +17,14 @@ package com.s3s.ssm.view.detail.store;
 import java.util.List;
 import java.util.Map;
 
-import com.s3s.ssm.entity.store.DetailExchangeStore;
-import com.s3s.ssm.entity.store.ExchangeStoreForm;
+import com.s3s.ssm.entity.store.DetailMoveStore;
+import com.s3s.ssm.entity.store.MoveStoreForm;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.list.ListDataModel;
 
-public class EditExchangeStoreFormView extends AbstractMasterDetailView<ExchangeStoreForm, DetailExchangeStore> {
+public class EditExchangeStoreFormView extends AbstractMasterDetailView<MoveStoreForm, DetailMoveStore> {
 
     public EditExchangeStoreFormView(Map<String, Object> entity) {
         super(entity);
@@ -38,7 +38,7 @@ public class EditExchangeStoreFormView extends AbstractMasterDetailView<Exchange
     }
 
     @Override
-    protected Class<? extends AbstractEditView<DetailExchangeStore>> getChildDetailViewClass() {
+    protected Class<? extends AbstractEditView<DetailMoveStore>> getChildDetailViewClass() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -50,13 +50,13 @@ public class EditExchangeStoreFormView extends AbstractMasterDetailView<Exchange
     }
 
     @Override
-    protected void saveOrUpdate(ExchangeStoreForm masterEntity, List<DetailExchangeStore> detailEntities) {
+    protected void saveOrUpdate(MoveStoreForm masterEntity, List<DetailMoveStore> detailEntities) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    protected void initialPresentationView(DetailDataModel detailDataModel, ExchangeStoreForm entity,
+    protected void initialPresentationView(DetailDataModel detailDataModel, MoveStoreForm entity,
             Map<String, Object> request) {
         // TODO Auto-generated method stub
 

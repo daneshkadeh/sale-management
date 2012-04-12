@@ -26,7 +26,7 @@ public class ListSalesContractView extends AbstractListView<SalesContract> {
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListRendererType.TEXT);
-        listDataModel.addColumn("name", ListRendererType.TEXT);
+        // listDataModel.addColumn("name", ListRendererType.TEXT);
         listDataModel.addColumn("supplier", ListRendererType.TEXT);
         listDataModel.addColumn("dateContract", ListRendererType.TEXT);
         listDataModel.addColumn("moneyAfterTax", ListRendererType.TEXT);

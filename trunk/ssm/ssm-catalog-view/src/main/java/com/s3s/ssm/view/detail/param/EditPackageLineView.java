@@ -61,8 +61,8 @@ public class EditPackageLineView extends AbstractMasterDetailView<PackageLine, P
     }
 
     @Override
-    protected PackageLine loadForCreate() {
-        PackageLine entity = super.loadForCreate();
+    protected PackageLine loadForCreate(Map<String, Object> request) {
+        PackageLine entity = super.loadForCreate(request);
         entity.setPackage((SPackage) getParentObject());
         entity.setProduct((Product) request.get(ListPackageLineView.PRODUCT_OF_PACKAGE_LINE));
         return entity;

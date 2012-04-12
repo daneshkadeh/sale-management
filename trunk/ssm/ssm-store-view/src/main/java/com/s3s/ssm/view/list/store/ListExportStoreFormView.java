@@ -39,7 +39,7 @@ public class ListExportStoreFormView extends AbstractListView<ExportStoreForm> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("code", ListRendererType.DATE);
+        listDataModel.addColumn("code", ListRendererType.TEXT);
         listDataModel.addColumn("status", ListRendererType.TEXT);
         listDataModel.addColumn("createdDate", ListRendererType.DATE);
         listDataModel.addColumn("store.name", ListRendererType.TEXT);

@@ -22,6 +22,7 @@ import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.list.shipment.ListTransportationTypeView;
 import com.s3s.ssm.view.list.store.ListExportStoreFormView;
 import com.s3s.ssm.view.list.store.ListImportStoreFormView;
+import com.s3s.ssm.view.list.store.ListMoveStoreFormView;
 import com.s3s.ssm.view.list.store.ListShipPriceTypeView;
 import com.s3s.ssm.view.list.store.ListShipPriceView;
 import com.s3s.ssm.view.list.store.ListStoreView;
@@ -51,31 +52,17 @@ public class StoreManagementDomain extends AbstractDomain {
                 ControlConfigUtils.getString("JTree.Store.TransportType"), new ListTransportationTypeView());
         TreeNodeWithView importNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.ImportStore"),
                 new ListImportStoreFormView());
-
-        // TreeNodeWithView chuyenKhoNode = new TreeNodeWithView(
-        // ControlConfigUtils.getString("JTree.Store.ExchangeStore"), new ListExchangeStoreFormView()); // "chuyen kho"
-        //
         TreeNodeWithView exportNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.ExportStore"),
                 new ListExportStoreFormView(null, ControlConfigUtils.getString("label.ExportStoreForm.list.title"),
-                        null)); //
-        // "phieu xuat kho"
-        //
-        // TreeNodeWithView phieuNhapKhoNode = new TreeNodeWithView(
-        // ControlConfigUtils.getString("JTree.Store.ImportStoreForm"), new ListImportStoreView()); // "Phieu nhap kho"
-        //
-        // TreeNodeWithView phieuKiemKhoNode = new TreeNodeWithView(
-        // ControlConfigUtils.getString("JTree.Store.CheckStoreForm"), new ListCheckStoreView()); // "Phieu nhap kho"
-
+                        null));
+        TreeNodeWithView moveNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.MoveStore"),
+                new ListMoveStoreFormView(null, ControlConfigUtils.getString("label.MoveStoreForm.list.title"), null));
         rootNode.add(storeNode);
         rootNode.add(shipPriceTypeNode);
         rootNode.add(shipPriceNode);
         rootNode.add(transportNode);
         rootNode.add(importNode);
         rootNode.add(exportNode);
-        // rootNode.add(chuyenKhoNode);
-        // rootNode.add(phieuXuatKhoNode);
-        // rootNode.add(phieuNhapKhoNode);
-        // rootNode.add(phieuKiemKhoNode);
+        rootNode.add(moveNode);
     }
-
 }
