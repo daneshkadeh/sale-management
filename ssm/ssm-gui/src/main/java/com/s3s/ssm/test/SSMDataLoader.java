@@ -73,6 +73,8 @@ import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.finance.PaymentType;
 import com.s3s.ssm.entity.operator.Operator;
+import com.s3s.ssm.entity.sales.ContractDocument;
+import com.s3s.ssm.entity.sales.ContractDocument.DocumentPlaceEnum;
 import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.DetailSalesContract;
 import com.s3s.ssm.entity.sales.ImportationSC;
@@ -161,14 +163,14 @@ public class SSMDataLoader {
         daoHelper.getDao(ImportationSC.class).deleteAll(daoHelper.getDao(ImportationSC.class).findAll());
         daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());
         daoHelper.getDao(SalesContract.class).deleteAll(daoHelper.getDao(SalesContract.class).findAll());
-
+        daoHelper.getDao(ContractDocument.class).deleteAll(daoHelper.getDao(ContractDocument.class).findAll());
         daoHelper.getDao(DetailExportStore.class).deleteAll(daoHelper.getDao(DetailExportStore.class).findAll());
         daoHelper.getDao(ExportStoreForm.class).deleteAll(daoHelper.getDao(ExportStoreForm.class).findAll());
 
-        daoHelper.getDao(TransportationType.class).deleteAll(daoHelper.getDao(TransportationType.class).findAll());
-
         daoHelper.getDao(DetailImportStore.class).deleteAll(daoHelper.getDao(DetailImportStore.class).findAll());
         daoHelper.getDao(ImportStoreForm.class).deleteAll(daoHelper.getDao(ImportStoreForm.class).findAll());
+
+        daoHelper.getDao(MoveStoreForm.class).deleteAll(daoHelper.getDao(MoveStoreForm.class).findAll());
 
         daoHelper.getDao(DetailInvoice.class).deleteAll(daoHelper.getDao(DetailInvoice.class).findAll());
         daoHelper.getDao(Invoice.class).deleteAll(daoHelper.getDao(Invoice.class).findAll());
@@ -192,6 +194,8 @@ public class SSMDataLoader {
         daoHelper.getDao(ProductProperty.class).deleteAll(daoHelper.getDao(ProductProperty.class).findAll());
         daoHelper.getDao(ProductPropertyElement.class).deleteAll(
                 daoHelper.getDao(ProductPropertyElement.class).findAll());
+
+        daoHelper.getDao(TransportationType.class).deleteAll(daoHelper.getDao(TransportationType.class).findAll());
 
         daoHelper.getDao(ContactDebt.class).deleteAll(daoHelper.getDao(ContactDebt.class).findAll());
         daoHelper.getDao(Partner.class).deleteAll(daoHelper.getDao(Partner.class).findAll());
@@ -715,6 +719,12 @@ public class SSMDataLoader {
 
     private static List<SalesContract> initSalesContracts(DaoHelper daoHelper, List<Partner> listSuppliers,
             List<Item> listItem) {
+        ContractDocument document = new ContractDocument();
+        document.setCode("OCOBOARDBILLOLANDING");
+        document.setName("Original Clean on Board Bill of Lading");
+        document.setDocumentPlace(DocumentPlaceEnum.IN_FOREIGN);
+        daoHelper.getDao(ContractDocument.class).saveOrUpdate(document);
+
         SalesContract salesContract = new SalesContract();
         salesContract.setCode("CO123456");
         salesContract.setSupplier(listSuppliers.get(0));
@@ -728,6 +738,7 @@ public class SSMDataLoader {
         detail.setQuantity(5);
         detail.setUnitPrice(Money.create("USD", 1010L));
         salesContract.addDetailSalesContract(detail);
+        salesContract.getListDocuments().add(document);
 
         daoHelper.getDao(SalesContract.class).saveOrUpdate(salesContract);
         return Arrays.asList(salesContract);
