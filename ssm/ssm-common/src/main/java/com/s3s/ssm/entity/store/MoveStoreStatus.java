@@ -14,6 +14,17 @@
  */
 package com.s3s.ssm.entity.store;
 
-public enum ExchangeStoreStatus {
-    OPEN, SENDING, RECEIVED
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
+public enum MoveStoreStatus {
+    OPEN, SENDING, RECEIVED;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+    }
+
 }

@@ -30,9 +30,12 @@ public class EditPackageLineItemPriceVirtualView extends AbstractSingleEditView<
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected PackageLineItemPrice loadForCreate() {
-        PackageLineItemPrice entity = super.loadForCreate();
+    protected PackageLineItemPrice loadForCreate(Map<String, Object> request) {
+        PackageLineItemPrice entity = super.loadForCreate(request);
         entity.setPackageLine((PackageLine) getParentObject());
         return entity;
     }

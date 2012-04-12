@@ -73,8 +73,6 @@ import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.finance.PaymentType;
 import com.s3s.ssm.entity.operator.Operator;
-import com.s3s.ssm.entity.sales.AddedSCFee;
-import com.s3s.ssm.entity.sales.AddedSCFeeType;
 import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.DetailSalesContract;
 import com.s3s.ssm.entity.sales.ImportationSC;
@@ -87,8 +85,10 @@ import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.entity.shipment.TransportationType;
 import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.DetailImportStore;
+import com.s3s.ssm.entity.store.DetailMoveStore;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.entity.store.ImportStoreForm;
+import com.s3s.ssm.entity.store.MoveStoreForm;
 import com.s3s.ssm.entity.store.ShipPrice;
 import com.s3s.ssm.entity.store.ShipPriceType;
 import com.s3s.ssm.entity.store.Store;
@@ -166,6 +166,9 @@ public class SSMDataLoader {
         daoHelper.getDao(ExportStoreForm.class).deleteAll(daoHelper.getDao(ExportStoreForm.class).findAll());
 
         daoHelper.getDao(TransportationType.class).deleteAll(daoHelper.getDao(TransportationType.class).findAll());
+
+        daoHelper.getDao(DetailImportStore.class).deleteAll(daoHelper.getDao(DetailImportStore.class).findAll());
+        daoHelper.getDao(ImportStoreForm.class).deleteAll(daoHelper.getDao(ImportStoreForm.class).findAll());
 
         daoHelper.getDao(DetailInvoice.class).deleteAll(daoHelper.getDao(DetailInvoice.class).findAll());
         daoHelper.getDao(Invoice.class).deleteAll(daoHelper.getDao(Invoice.class).findAll());
@@ -272,6 +275,52 @@ public class SSMDataLoader {
         // Init data for finance module
         List<Payment> listPayments = initPayment(daoHelper, serviceProvider, listSalesContracts, listContact,
                 listOperator);
+        List<MoveStoreForm> listMoveStoreForm = initMoveStore(daoHelper, listStore, listItem, listOperator,
+                listTransportationType);
+    }
+
+    private static List<MoveStoreForm> initMoveStore(DaoHelper daoHelper, List<Store> listStore, List<Item> listItem,
+            List<Operator> listOperator, List<TransportationType> listTransType) {
+        MoveStoreForm form = new MoveStoreForm();
+        DetailMoveStore detail1 = new DetailMoveStore();
+        DetailMoveStore detail2 = new DetailMoveStore();
+
+        Item item = listItem.get(0);
+        Product product = item.getProduct();
+        UnitOfMeasure uom = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
+        TransportationType transType = listTransType.get(0);
+        Store fromStore = listStore.get(0);
+        Store destStore = listStore.get(1);
+
+        form.setCode("001");
+        form.setFromStore(fromStore);
+        form.setDestStore(destStore);
+        form.setFromStoreman("Phan Hong Phuc");
+        form.setDestStoreman("Pham Cong Bang");
+        form.setFromAddress(fromStore.getExportAddress());
+        form.setDestAddress(destStore.getImportAddress());
+        form.setTransType(listTransType.get(0));
+        form.setStaff(listOperator.get(0));
+        form.setExportQtyTotal(100);
+        form.setImportQtyTotal(100);
+
+        detail1.setMoveForm(form);
+        detail1.setProduct(product);
+        detail1.setItem(item);
+        detail1.setUom(uom);
+        detail1.setExportQty(20);
+        detail1.setImportQty(20);
+
+        detail2.setMoveForm(form);
+        detail2.setProduct(product);
+        detail2.setItem(item);
+        detail2.setUom(uom);
+        detail2.setExportQty(80);
+        detail2.setImportQty(80);
+
+        daoHelper.getDao(MoveStoreForm.class).save(form);
+        daoHelper.getDao(DetailMoveStore.class).saveOrUpdateAll(Arrays.asList(detail1, detail2));
+        return Arrays.asList(form);
     }
 
     private static List<ExportStoreForm> initExportStore(DaoHelper daoHelper, List<Store> listStore,
@@ -638,7 +687,6 @@ public class SSMDataLoader {
         detail1.setBaseUom(unit);
         form1.getDetailImportStores().add(detail1);
         daoHelper.getDao(ImportStoreForm.class).save(form1);
-        // listSalesContact.get(0).getListImportation().iterator().next().getImportStoreForms().add(form1);
         return Arrays.asList(form1);
     }
 
@@ -678,30 +726,10 @@ public class SSMDataLoader {
         DetailSalesContract detail = new DetailSalesContract();
         detail.setItem(listItem.get(0));
         detail.setQuantity(5);
-        detail.setUnitPrice(Money.create("USD", 100L));
+        detail.setUnitPrice(Money.create("USD", 1010L));
         salesContract.addDetailSalesContract(detail);
 
         daoHelper.getDao(SalesContract.class).saveOrUpdate(salesContract);
-        AddedSCFeeType feeType = new AddedSCFeeType();
-        feeType.setCode("Shipment to store");
-        feeType.setName("Van chuyen hang vao kho");
-        daoHelper.getDao(AddedSCFeeType.class).saveOrUpdate(feeType);
-
-        ImportationSC importation = new ImportationSC();
-        importation.setCode("1002/HQ/2012");
-        importation.setCreatedDate(new Date());
-        importation.setShipmentDate(new Date());
-        importation.setSalesContract(salesContract);
-
-        AddedSCFee fee = new AddedSCFee();
-        fee.setName("Shipment 20 packages");
-        fee.setType(feeType);
-        fee.setReferenceNumber("A-0121212121");
-        fee.setBasePrice(Money.create("VND", 100L));
-        fee.setUnitPrice(Money.create("VND", 100L));
-        importation.addAddedSCFee(fee);
-        daoHelper.getDao(ImportationSC.class).saveOrUpdate(importation);
-
         return Arrays.asList(salesContract);
     }
 
@@ -861,7 +889,7 @@ public class SSMDataLoader {
         store2.setManager(listOperator.get(0));
 
         daoHelper.getDao(Store.class).saveOrUpdateAll(Arrays.asList(store1, store2));
-        return Arrays.asList(store1);
+        return Arrays.asList(store1, store2);
     }
 
     private static List<Partner> initSupplier(DaoHelper daoHelper, List<Partner> listContact,
