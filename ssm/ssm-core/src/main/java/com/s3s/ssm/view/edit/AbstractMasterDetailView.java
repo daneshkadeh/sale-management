@@ -61,6 +61,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
 
     private final Log logger = LogFactory.getLog(AbstractMasterDetailView.class);
 
+    private static final int NUM_OF_ROW = 10;
     private List<E> detailEntities = new ArrayList<E>();
 
     private ChildListView childListView;
@@ -150,7 +151,6 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
      */
     private class ChildListView extends AbstractListView<E> {
         private static final long serialVersionUID = -8455234397691564647L;
-        private static final int NUM_OF_ROW = 10;
 
         public ChildListView(Map<String, Object> params, Icon icon, String label, String tooltip) {
             super(params, icon, label, tooltip);
@@ -198,14 +198,23 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         }
 
         @Override
-        protected int getPageSize() {
-            return NUM_OF_ROW;
+        protected int getVisibleRowCount() {
+            return AbstractMasterDetailView.this.getVisibleRowCount();
         }
 
         @Override
         protected JPanel createFooterPanel(TableModel tableModel) {
             return AbstractMasterDetailView.this.createFooterPanel(tableModel);
         }
+    }
+
+    /**
+     * Override this to set number of rows visible on the child list.
+     * 
+     * @return
+     */
+    protected int getVisibleRowCount() {
+        return NUM_OF_ROW;
     }
 
     @Override
