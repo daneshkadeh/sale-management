@@ -15,7 +15,6 @@
 package com.s3s.ssm.view.edit;
 
 import java.awt.FlowLayout;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.AdvanceTableModel;
 import com.s3s.ssm.view.list.ListDataModel;
@@ -109,11 +107,18 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
     protected abstract Class<? extends AbstractEditView<E>> getChildDetailViewClass();
 
     /**
-     * Get the field name of child property.
+     * Get the field name of child property, look from master entity.
      * 
      * @return
      */
     protected abstract String getChildFieldName();
+
+    /**
+     * Get the field name of parent property, look from child entity.
+     * 
+     * @return
+     */
+    protected abstract String getParentFieldName();
 
     @Override
     protected void initComponents() {
@@ -159,16 +164,10 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         @SuppressWarnings("unchecked")
         @Override
         protected List<E> loadData(int pageNumber) {
-            Method getChildListMethod = Solution3sClassUtils.getGetterMethod(getMasterClass(), getChildFieldName());
-            try {
-                // TODO Phuc: should be load from DB.
-                detailEntities = new ArrayList<E>((Collection<E>) getChildListMethod.invoke(entity));
-                return detailEntities;
-            } catch (Exception e) {
-                logger.error(e.getCause());
-                logger.error(e.getMessage());
-                throw new RuntimeException("There is problem when loadData for child entities");
-            }
+            BeanWrapper beanWrapper = new BeanWrapperImpl(entity);
+            // TODO Phuc: should be load from DB.
+            detailEntities = new ArrayList<E>((Collection<E>) beanWrapper.getPropertyValue(getChildFieldName()));
+            return detailEntities;
         };
 
         @Override
@@ -231,7 +230,6 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
     @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, T entity, Map<String, Object> request) {
         // TODO Auto-generated method stub
-
     }
 
     /**
@@ -246,19 +244,34 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
     }
 
     /**
-     * Update detailEntities with master injected.
+     * Override <code>saveOrUpdate(T masterEntity, List<E> detailEntities)</code> if necessary
      */
     @Override
     protected void saveOrUpdate(T masterEntity) {
-        saveOrUpdate(masterEntity, detailEntities);
-    };
+        BeanWrapper beanWrapper;
+        // Set master into child entity
+        for (E child : detailEntities) {
+            beanWrapper = new BeanWrapperImpl(child);
+            beanWrapper.setPropertyValue(getParentFieldName(), masterEntity);
+        }
 
-    protected void saveOrUpdate(T masterEntity, List<E> detailEntities) {
-        BeanWrapper beanWrapper = new BeanWrapperImpl(masterEntity);
+        // Set list of child to master entity
+        beanWrapper = new BeanWrapperImpl(masterEntity);
         Collection<E> children = (Collection<E>) beanWrapper.getPropertyValue(getChildFieldName());
         children.removeAll(children);
         children.addAll(detailEntities);
+
+        preSaveOrUpdate(masterEntity);
+
+        // Saving...
         getDaoHelper().getDao(getMasterClass()).saveOrUpdate(masterEntity);
+    };
+
+    /**
+     * Override to do something before saveOrUpdate.
+     */
+    protected void preSaveOrUpdate(T masterEntity) {
+        // Template method
     }
 
     @SuppressWarnings("unchecked")

@@ -15,6 +15,7 @@
 
 package com.s3s.ssm.view.list;
 
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -25,7 +26,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.UIManager;
@@ -190,6 +193,26 @@ public class SAdvanceTable extends JXTable {
         if (listDataModel.isEditable() && listDataModel.getColumns().get(column).isEditable()
                 && editCellAt(row, column)) {
             getEditorComponent().requestFocusInWindow();
+        }
+    }
+
+    protected void configureColumnControl() {
+        Container p = getParent();
+        if (p instanceof JViewport) {
+            Container gp = p.getParent();
+            if (gp instanceof JScrollPane) {
+                JScrollPane scrollPane = (JScrollPane) gp;
+                // Make certain we are the viewPort's view and not, for
+                // example, the rowHeaderView of the scrollPane -
+                // an implementor of fixed columns might do this.
+                JViewport viewport = scrollPane.getViewport();
+                if (viewport == null || viewport.getView() != this) {
+                    return;
+                }
+                if (isColumnControlVisible()) {
+                    scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, getColumnControl());
+                }
+            }
         }
     }
 }

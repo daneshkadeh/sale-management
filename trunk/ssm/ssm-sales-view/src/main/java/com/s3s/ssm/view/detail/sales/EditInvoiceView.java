@@ -76,6 +76,11 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     }
 
     @Override
+    protected String getParentFieldName() {
+        return "invoice";
+    }
+
+    @Override
     protected String getChildFieldName() {
         return "detailInvoices";
     }

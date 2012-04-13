@@ -41,6 +41,11 @@ public class EditPackageLineView extends AbstractMasterDetailView<PackageLine, P
     }
 
     @Override
+    protected String getParentFieldName() {
+        return "packageLine";
+    }
+
+    @Override
     protected String getChildFieldName() {
         return "itemPrices";
     }

@@ -14,7 +14,6 @@
  */
 package com.s3s.ssm.view.detail.store;
 
-import java.util.List;
 import java.util.Map;
 
 import com.s3s.ssm.entity.store.CheckStore;
@@ -50,16 +49,19 @@ public class EditCheckStoreView extends AbstractMasterDetailView<CheckStore, Det
     }
 
     @Override
-    protected void saveOrUpdate(CheckStore masterEntity, List<DetailCheckStore> detailEntities) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, CheckStore entity,
             Map<String, Object> request) {
         // TODO Auto-generated method stub
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getParentFieldName() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

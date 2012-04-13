@@ -78,6 +78,8 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXTaskPane;
@@ -680,11 +682,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
         validateMethods(entity);
 
-        Configuration<?> config = Validation.byDefaultProvider().configure();
-        ValidatorFactory factory = config.buildValidatorFactory();
-
-        Validator validator = factory.getValidator();
-        return validator.validate(entity);
+        return getValidator().validate(entity);
     }
 
     /**
@@ -924,17 +922,16 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             Object value = getComponentValue(component, attribute.getType());
             bindingValue(entity, attribute.getName(), isRaw, value);
             if (!isRaw) {
-                Configuration<?> config = Validation.byDefaultProvider().configure();
-                ValidatorFactory factory = config.buildValidatorFactory();
-
-                Validator validator = factory.getValidator();
+                Validator validator = getValidator();
                 Set<ConstraintViolation<T>> validateResult = validator.validateProperty(entity, attribute.getName());
                 JLabel label = attributeComponent.getLabel();
                 JLabel errorIcon = attributeComponent.getErrorIcon();
                 if (CollectionUtils.isNotEmpty(validateResult)) {
                     label.setForeground(Color.RED);
                     errorIcon.setVisible(true);
-                    errorIcon.setToolTipText(validateResult.iterator().next().getMessage());
+                    ConstraintViolation<T> cv = validateResult.iterator().next();
+                    // errorIcon.setToolTipText(ControlConfigUtils.getString(cv.getMessageTemplate()));
+                    errorIcon.setToolTipText(cv.getMessage());
                 } else {
                     label.setForeground(Color.BLACK);
                     errorIcon.setVisible(false);
@@ -945,6 +942,15 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         @Override
         public void focusGained(FocusEvent e) {
         }
+    }
+
+    private Validator getValidator() {
+        Configuration<?> config = Validation.byDefaultProvider().configure();
+        config.messageInterpolator(new ResourceBundleMessageInterpolator(new PlatformResourceBundleLocator(
+                "i18n/ValidationMessages")));
+        ValidatorFactory factory = config.buildValidatorFactory();
+        Validator validator = factory.getValidator();
+        return validator;
     }
 
     /**

@@ -14,7 +14,6 @@
  */
 package com.s3s.ssm.view.detail.store;
 
-import java.util.List;
 import java.util.Map;
 
 import com.s3s.ssm.entity.store.DetailMoveStore;
@@ -50,16 +49,19 @@ public class EditExchangeStoreFormView extends AbstractMasterDetailView<MoveStor
     }
 
     @Override
-    protected void saveOrUpdate(MoveStoreForm masterEntity, List<DetailMoveStore> detailEntities) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, MoveStoreForm entity,
             Map<String, Object> request) {
         // TODO Auto-generated method stub
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getParentFieldName() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
