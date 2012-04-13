@@ -135,8 +135,9 @@ public class ColumnModel {
     }
 
     public ColumnModel referenceDataId(String referenceDataId) {
-        Assert.isTrue(editorType == ListEditorType.COMBOBOX, "Reference data is now just supported for "
-                + ListEditorType.COMBOBOX.toString() + " type");
+        Assert.isTrue(editorType == ListEditorType.COMBOBOX || editorType == ListEditorType.MONEY,
+                "Reference data is now just supported for " + ListEditorType.COMBOBOX.toString() + " and "
+                        + ListEditorType.MONEY + " type");
         this.referenceDataId = referenceDataId;
         return this;
     }

@@ -16,8 +16,7 @@ public class EditVoucherGeneralView extends EditProductGeneralView<Voucher> {
     @Override
     protected void addTabGeneral(DetailDataModel detailDataModel) {
         super.addTabGeneral(detailDataModel);
-        detailDataModel.addAttribute("minAmount", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY)
-                .value("vnd");
+        detailDataModel.addAttribute("minAmount", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
     }
 
     @Override

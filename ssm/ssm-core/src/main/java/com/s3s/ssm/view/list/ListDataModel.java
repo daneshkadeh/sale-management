@@ -28,7 +28,7 @@ public class ListDataModel {
     }
 
     public enum ListEditorType {
-        TEXTFIELD, CHECKBOX, COMBOBOX, DATE_PICKER
+        TEXTFIELD, CHECKBOX, COMBOBOX, DATE_PICKER, MONEY
     }
 
     private List<ColumnModel> columns = new ArrayList<>();

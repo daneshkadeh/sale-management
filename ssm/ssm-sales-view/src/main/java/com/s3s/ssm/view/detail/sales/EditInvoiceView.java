@@ -27,6 +27,7 @@ import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.sales.InvoicePaymentStatus;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.sales.InvoiceType;
+import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.interfaces.sales.InvoiceService;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -39,6 +40,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInvoice> {
 
+    private static final String REF_CURRENCY = "REF_CURRENCY";
     private static final String REF_ITEM = "item";
     private static final String REF_PACKLINE = "packageLine";
     private static final String REF_INVOICE_TYPE = "type";
@@ -47,7 +49,6 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     private static final String REF_INVOICE_STATUS = "status";
     private static final String REF_D_INVOICE_STATUS = "detailstatus";
     private static final String REF_PAY_STATUS = "paymentStatus";
-    private static final String REF_CURRENCY = "currency";
 
     public EditInvoiceView(Map<String, Object> entity) {
         super(entity);
@@ -60,9 +61,12 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
                 .width(150, 50, 200);
         listDataModel.addColumn("packageLine", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
                 REF_PACKLINE);
+        // listDataModel.addColumn("testMoney", ListRendererType.TEXT, ListEditorType.MONEY);
         listDataModel.addColumn("amount", ListRendererType.TEXT);
-        listDataModel.addColumn("priceAfterTax", ListRendererType.TEXT);
-        listDataModel.addColumn("moneyAfterTax", ListRendererType.TEXT);
+        listDataModel.addColumn("priceAfterTax", ListRendererType.TEXT, ListEditorType.MONEY)
+                .referenceDataId(REF_CURRENCY).width(120);
+        listDataModel.addColumn("moneyAfterTax", ListRendererType.TEXT, ListEditorType.MONEY)
+                .referenceDataId(REF_CURRENCY).width(120);
         listDataModel.addColumn("type", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
                 REF_D_INVOICE_TYPE);
         listDataModel.addColumn("status", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
@@ -115,7 +119,6 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, Invoice entity) {
         super.setReferenceDataModel(refDataModel, entity);
         refDataModel.putRefDataList(REF_CONTACT, getDaoHelper().getDao(Partner.class).findAll());
-        // refDataModel.putRefDataList(REF_CURRENCY, getDaoHelper().getDao(SCurrency.class).findAll());
         refDataModel.putRefDataList(REF_INVOICE_STATUS, InvoiceStatus.values());
         refDataModel.putRefDataList(REF_INVOICE_TYPE, InvoiceType.values());
         refDataModel.putRefDataList(REF_D_INVOICE_STATUS, DetailInvoiceStatus.values());
@@ -123,6 +126,7 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
         refDataModel.putRefDataList(REF_PAY_STATUS, InvoicePaymentStatus.values());
         refDataModel.putRefDataList(REF_ITEM, getDaoHelper().getDao(Item.class).findAll());
         refDataModel.putRefDataList(REF_PACKLINE, getDaoHelper().getDao(PackageLine.class).findAll());
+        refDataModel.putRefDataList(REF_CURRENCY, serviceProvider.getService(IConfigService.class).getCurrencyCodes());
     }
 
     // @Override
