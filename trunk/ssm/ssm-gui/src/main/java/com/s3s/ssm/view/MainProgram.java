@@ -67,15 +67,14 @@ import com.s3s.ssm.view.security.LoginDialog;
 public class MainProgram {
     private static final Dimension WINDOW_MIN_SIZE = new Dimension(400, 300);
     public static Log s_logger = LogFactory.getLog(MainProgram.class);
-    private static final String[] MESSSAGE_FILES = new String[] { "i18n/messages",
-            "i18n/config_messages", "i18n/catalog_messages", "i18n/finance_messages", "i18n/sales_messages",
-            "i18n/shipment_messages", "i18n/contact_messages", "i18n/store_messages", "i18n/supplychain_messages",
-            "i18n/operator_messages", "i18n/gui_messages", "i18n/ui_messages", "i18n/label", "i18n/config_label",
-            "i18n/catalog_label", "i18n/finance_label", "i18n/sales_label", "i18n/shipment_label",
-            "i18n/contact_label", "i18n/store_label", "i18n/supplychain_label", "i18n/operator_label",
-            "i18n/gui_label", "i18n/error", "i18n/config_error", "i18n/catalog_error", "i18n/finance_error",
-            "i18n/sales_error", "i18n/shipment_error", "i18n/contact_error", "i18n/store_error",
-            "i18n/supplychain_error", "i18n/operator_error", "i18n/gui_error" };
+    private static final String[] MESSSAGE_FILES = new String[] { "i18n/messages", "i18n/config_messages",
+            "i18n/catalog_messages", "i18n/finance_messages", "i18n/sales_messages", "i18n/shipment_messages",
+            "i18n/contact_messages", "i18n/store_messages", "i18n/supplychain_messages", "i18n/operator_messages",
+            "i18n/gui_messages", "i18n/ui_messages", "i18n/label", "i18n/config_label", "i18n/catalog_label",
+            "i18n/finance_label", "i18n/sales_label", "i18n/shipment_label", "i18n/contact_label", "i18n/store_label",
+            "i18n/supplychain_label", "i18n/operator_label", "i18n/gui_label", "i18n/error", "i18n/config_error",
+            "i18n/catalog_error", "i18n/finance_error", "i18n/sales_error", "i18n/shipment_error",
+            "i18n/contact_error", "i18n/store_error", "i18n/supplychain_error", "i18n/operator_error", "i18n/gui_error" };
 
     private static JFrame frame;
     private static Container contentPane;
@@ -116,7 +115,6 @@ public class MainProgram {
         // Set System L&F
         // Splash screen
         SplashScreen splashScreen = SplashScreen.getSplashScreen();
-
         try {
             // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -125,6 +123,8 @@ public class MainProgram {
                     break;
                 }
             }
+            // UIManager.put("ToggleButton.background", Color.BLUE);
+            // UIManager.put("nimbusBase", new ColorUIResource(0, 0, 120));
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
                 | UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e.getCause());

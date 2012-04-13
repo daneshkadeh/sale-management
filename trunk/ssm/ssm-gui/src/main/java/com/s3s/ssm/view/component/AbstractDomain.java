@@ -51,7 +51,7 @@ public abstract class AbstractDomain extends JToggleButton implements ItemListen
         this.contentScrollPane = contentScrollPane;
         treeView = initTreeView(contentScrollPane);
         setCursor(new Cursor(Cursor.HAND_CURSOR));
-        setFont(new Font("Arial", Font.BOLD, 14));
+        setFont(new Font("Arial", Font.BOLD, 12));
         setHorizontalAlignment(LEFT);
         addItemListener(this);
     }
