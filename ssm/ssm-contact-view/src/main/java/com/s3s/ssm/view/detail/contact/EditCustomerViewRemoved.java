@@ -80,15 +80,7 @@ public class EditCustomerViewRemoved extends AbstractMasterDetailView<Partner, A
 
     @Override
     protected String getChildFieldName() {
-        return "listShops";
-    }
-
-    @Override
-    protected void saveOrUpdate(Partner masterEntity, List<Address> detailEntities) {
-        super.saveOrUpdate(masterEntity, detailEntities);
-
-        // TODO: check bankAccount not updated and do not update in database.
-        // getDaoHelper().getDao(BankAccount.class).saveOrUpdate(masterEntity.getBankAccount());
+        return "listShops"; // TODO Bang: The field name has changed
     }
 
     @Override
@@ -117,6 +109,15 @@ public class EditCustomerViewRemoved extends AbstractMasterDetailView<Partner, A
         List<PartnerCategory> partnerCateList = getDaoHelper().getDao(PartnerCategory.class).findAll();
         refDataModel.putRefDataList(PARTNER_CATE_REF_ID, refDataModel.new ReferenceData(partnerCateList,
                 new DefaultListCellRenderer()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getParentFieldName() {
+        // TODO Bang
+        return "";
     }
 
 }

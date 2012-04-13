@@ -67,6 +67,11 @@ public class EditMoveStoreFormView extends AbstractMasterDetailView<MoveStoreFor
     }
 
     @Override
+    protected String getParentFieldName() {
+        return "moveForm";
+    }
+
+    @Override
     protected String getChildFieldName() {
         return "detailSet";
     }

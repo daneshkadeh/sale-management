@@ -131,6 +131,11 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
     }
 
     @Override
+    protected String getParentFieldName() {
+        return "item";
+    }
+
+    @Override
     protected String getChildFieldName() {
         return "listItemPrices";
     }

@@ -98,6 +98,15 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
      * {@inheritDoc}
      */
     @Override
+    protected String getParentFieldName() {
+        // TODO Auto-generated method stub
+        return "exportForm";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected String getChildFieldName() {
         return "exportDetails";
     }
@@ -144,4 +153,5 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
         return ControlConfigUtils.getString("label.ExportStoreForm.detail.title") + UIConstants.BLANK
                 + entity.getCode();
     }
+
 }

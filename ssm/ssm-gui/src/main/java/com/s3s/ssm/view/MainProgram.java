@@ -62,21 +62,20 @@ import com.s3s.ssm.view.domain.SalesManagementDomain;
 import com.s3s.ssm.view.domain.StoreManagementDomain;
 import com.s3s.ssm.view.domain.SupplyChainDomain;
 import com.s3s.ssm.view.domain.SystemManagementDomain;
-import com.s3s.ssm.view.list.operator.ListOperatorView;
-import com.s3s.ssm.view.list.param.ListManufacturerView;
 import com.s3s.ssm.view.security.LoginDialog;
 
 public class MainProgram {
     private static final Dimension WINDOW_MIN_SIZE = new Dimension(400, 300);
     public static Log s_logger = LogFactory.getLog(MainProgram.class);
-    private static final String[] MESSSAGE_FILES = new String[] { "i18n/messages", "i18n/config_messages",
-            "i18n/catalog_messages", "i18n/finance_messages", "i18n/sales_messages", "i18n/shipment_messages",
-            "i18n/contact_messages", "i18n/store_messages", "i18n/supplychain_messages", "i18n/operator_messages",
-            "i18n/gui_messages", "i18n/ui_messages", "i18n/label", "i18n/config_label", "i18n/catalog_label",
-            "i18n/finance_label", "i18n/sales_label", "i18n/shipment_label", "i18n/contact_label", "i18n/store_label",
-            "i18n/supplychain_label", "i18n/operator_label", "i18n/gui_label", "i18n/error", "i18n/config_error",
-            "i18n/catalog_error", "i18n/finance_error", "i18n/sales_error", "i18n/shipment_error",
-            "i18n/contact_error", "i18n/store_error", "i18n/supplychain_error", "i18n/operator_error", "i18n/gui_error" };
+    private static final String[] MESSSAGE_FILES = new String[] { "i18n/messages",
+            "i18n/config_messages", "i18n/catalog_messages", "i18n/finance_messages", "i18n/sales_messages",
+            "i18n/shipment_messages", "i18n/contact_messages", "i18n/store_messages", "i18n/supplychain_messages",
+            "i18n/operator_messages", "i18n/gui_messages", "i18n/ui_messages", "i18n/label", "i18n/config_label",
+            "i18n/catalog_label", "i18n/finance_label", "i18n/sales_label", "i18n/shipment_label",
+            "i18n/contact_label", "i18n/store_label", "i18n/supplychain_label", "i18n/operator_label",
+            "i18n/gui_label", "i18n/error", "i18n/config_error", "i18n/catalog_error", "i18n/finance_error",
+            "i18n/sales_error", "i18n/shipment_error", "i18n/contact_error", "i18n/store_error",
+            "i18n/supplychain_error", "i18n/operator_error", "i18n/gui_error" };
 
     private static JFrame frame;
     private static Container contentPane;
@@ -97,8 +96,9 @@ public class MainProgram {
         s_logger.info("Starting super sales management application...");
         // ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
         // ConfigProvider configProvider = ConfigProvider.getInstance();
+        Locale.setDefault(Locale.FRENCH);
         ControlConfigUtils.init();
-        ControlConfigUtils.setLabelMessageBundle(Locale.FRENCH, MESSSAGE_FILES);
+        ControlConfigUtils.setLabelMessageBundle(Locale.getDefault(), MESSSAGE_FILES);
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's GUI.
         SwingUtilities.invokeLater(new Runnable() {
@@ -131,15 +131,15 @@ public class MainProgram {
         }
 
         // Create and set up the window.
-        frame = new JFrame("Sales Management");
+        frame = new JFrame("Business Active");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(WINDOW_MIN_SIZE);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-        frame.setJMenuBar(createMenuBar());
-        initCenterPaneṣ();
+        initCenterPanes();
         contentPane = createContentPane();
+        frame.setJMenuBar(createMenuBar());
         frame.setContentPane(contentPane);
-        institutionBtn.doClick();
+        // institutionBtn.doClick();
         frame.pack();
         frame.setVisible(true);
         // splashScreen.close();
@@ -162,7 +162,7 @@ public class MainProgram {
     /**
      * 
      */
-    protected static void initCenterPaneṣ() {
+    protected static void initCenterPanes() {
         institutionPane = createInstitutionPanel();
         organizationPane = createOrganizationPanel();
         saleChannelPane = createSaleChannelPanel();
@@ -170,8 +170,8 @@ public class MainProgram {
 
     private static Container createContentPane() {
         JPanel contentPane = new JPanel(new BorderLayout());
-        JToolBar toolbar = createToolbar();
-        contentPane.add(toolbar, BorderLayout.PAGE_START);
+        // JToolBar toolbar = createToolbar();
+        // contentPane.add(toolbar, BorderLayout.PAGE_START);
         contentPane.add(new JPanel());
         return contentPane;
     }
@@ -219,6 +219,10 @@ public class MainProgram {
     private static JToolBar createToolbar() {
         JToolBar toolbar = new JToolBar();
         toolbar.add(Box.createHorizontalGlue());
+        return toolbar;
+    }
+
+    private static void initContextButtons() {
         institutionBtn = new JToggleButton(ImageUtils.getSmallIcon(ImageConstants.INSTITUTION_ICON));
         institutionBtn.setToolTipText(ControlConfigUtils.getString("icon.tooltip.institution"));
         organizationBtn = new JToggleButton(ImageUtils.getSmallIcon(ImageConstants.ORGANIZATION_ICON));
@@ -229,15 +233,12 @@ public class MainProgram {
         contextGroup.add(institutionBtn);
         contextGroup.add(organizationBtn);
         contextGroup.add(saleChannelBtn);
-        toolbar.add(institutionBtn);
-        toolbar.add(organizationBtn);
-        toolbar.add(saleChannelBtn);
 
         institutionBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                contentPane.remove(1);
-                contentPane.add(institutionPane, BorderLayout.CENTER);
+                contentPane.remove(0); // remove the center panel
+                contentPane.add(institutionPane, BorderLayout.CENTER); // re-add new center-panel
                 contentPane.repaint();
                 contentPane.validate();
             }
@@ -245,7 +246,7 @@ public class MainProgram {
         organizationBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                contentPane.remove(1);
+                contentPane.remove(0);
                 contentPane.add(organizationPane, BorderLayout.CENTER);
                 contentPane.repaint();
                 contentPane.validate();
@@ -254,13 +255,12 @@ public class MainProgram {
         saleChannelBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                contentPane.remove(1);
+                contentPane.remove(0);
                 contentPane.add(saleChannelPane, BorderLayout.CENTER);
                 contentPane.repaint();
                 contentPane.validate();
             }
         });
-        return toolbar;
     }
 
     /**
@@ -337,12 +337,12 @@ public class MainProgram {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                ListOperatorView listOperatorView = new ListOperatorView();
-                listOperatorView.setVisible(true);
-                frame.setContentPane(listOperatorView);
-                frame.repaint();
-                frame.pack();
+                //
+                // ListOperatorView listOperatorView = new ListOperatorView();
+                // listOperatorView.setVisible(true);
+                // frame.setContentPane(listOperatorView);
+                // frame.repaint();
+                // frame.pack();
             }
         });
 
@@ -362,12 +362,12 @@ public class MainProgram {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ListManufacturerView listManufacturerView = new ListManufacturerView();
-                listManufacturerView.setVisible(true);
-                listManufacturerView.loadView();
-                frame.setContentPane(listManufacturerView);
-                frame.repaint();
-                frame.pack();
+                // ListManufacturerView listManufacturerView = new ListManufacturerView();
+                // listManufacturerView.setVisible(true);
+                // listManufacturerView.loadView();
+                // frame.setContentPane(listManufacturerView);
+                // frame.repaint();
+                // frame.pack();
             }
         });
 
@@ -435,6 +435,13 @@ public class MainProgram {
 
         menuBar.add(fileMenu);
         menuBar.add(helpMenu);
+
+        // Add context button to the right of JMenuBar
+        initContextButtons();
+        menuBar.add(Box.createHorizontalGlue());
+        menuBar.add(institutionBtn);
+        menuBar.add(organizationBtn);
+        menuBar.add(saleChannelBtn);
         return menuBar;
     }
 }

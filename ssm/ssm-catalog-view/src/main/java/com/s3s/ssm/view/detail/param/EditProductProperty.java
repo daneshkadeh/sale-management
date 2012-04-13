@@ -34,6 +34,11 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
     }
 
     @Override
+    protected String getParentFieldName() {
+        return "property";
+    }
+
+    @Override
     protected String getChildFieldName() {
         return "elements";
     }

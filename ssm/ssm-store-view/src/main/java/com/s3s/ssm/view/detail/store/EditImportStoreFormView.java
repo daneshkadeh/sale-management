@@ -79,6 +79,11 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
         return EditDetailImportStoreView.class;
     }
 
+    @Override
+    protected String getParentFieldName() {
+        return "importStoreForm";
+    }
+
     /**
      * {@inheritDoc}
      */
