@@ -50,7 +50,6 @@ import org.jdesktop.swingx.table.DatePickerCellEditor;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
-import com.s3s.ssm.view.component.ExtendedCellEditor;
 import com.s3s.ssm.view.component.MoneyComponent;
 
 /**
@@ -185,7 +184,7 @@ public class SAdvanceTable extends JXTable {
                 ReferenceData refData = refDataModel.getRefDataListMap().get(cm.getReferenceDataId());
                 MoneyComponent moneyCom = new MoneyComponent(Money.zero(String.valueOf(refData.getValues().get(0))),
                         refData.getValues());
-                editor = new ExtendedCellEditor(moneyCom);
+                editor = new MoneyCellEditor(moneyCom);
                 break;
             default:
                 break;
