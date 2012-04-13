@@ -21,9 +21,10 @@ public class EditImportationSCView extends AbstractSingleEditView<ImportationSC>
     @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, ImportationSC entity,
             Map<String, Object> request) {
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
-        detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
-        detailDataModel.addAttribute("status", DetailFieldType.DATE).referenceDataId(REF_STATUS);
+        detailDataModel.addAttribute("shipmentDate", DetailFieldType.DATE);
+        detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN).referenceDataId(REF_STATUS);
     }
 
     @Override
