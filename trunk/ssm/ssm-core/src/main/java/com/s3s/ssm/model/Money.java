@@ -32,6 +32,35 @@ public class Money implements Comparable<Money>, Serializable {
         this.value = value;
     }
 
+    /**
+     * This method currently use Math.round to round the value. TODO: define how to round later in configuration of
+     * sofware.
+     * 
+     * @param amount
+     * @param money
+     * @return
+     */
+    public static Money multiply(Double amount, Money money) {
+        Money result = new Money();
+        result.setCurrencyCode(money.getCurrencyCode());
+        result.setValue(Math.round(amount * money.getValue()));
+        return result;
+    }
+
+    public static Money multiply(Integer amount, Money money) {
+        Money result = new Money();
+        result.setCurrencyCode(money.getCurrencyCode());
+        result.setValue(amount * money.getValue());
+        return result;
+    }
+
+    public static Money multiply(Long amount, Money money) {
+        Money result = new Money();
+        result.setCurrencyCode(money.getCurrencyCode());
+        result.setValue(amount * money.getValue());
+        return result;
+    }
+
     public static Money zero(String currencyCode) {
         return Money.create(currencyCode, 0L);
     }

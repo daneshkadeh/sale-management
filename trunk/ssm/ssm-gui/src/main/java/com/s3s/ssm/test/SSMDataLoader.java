@@ -232,7 +232,8 @@ public class SSMDataLoader {
         itemDC.add(Restrictions.eq("product.id", goods.getId()));
         List<Item> listItem = daoHelper.getDao(Item.class).findByCriteria(itemDC);
         Item item = listItem.get(0);
-        s_logger.info("Item is saved OK : " + item.getListUom().get(0).getCode() + ", price=" + item.getBaseSellPrice());
+        // s_logger.info("Item is saved OK : " + item.getListUom().get(0).getCode() + ", price=" +
+        // item.getBaseSellPrice());
 
     }
 
@@ -348,7 +349,7 @@ public class SSMDataLoader {
         form.setCustCode(custCode);
         form.setCustName(custName);
         form.setTransType(transType);
-        form.setTransPrice(Money.create("vnd", 20000000L));
+        form.setTransPrice(Money.create("VND", 20000000L));
 
         detail1.setLineNo(1);
         detail1.setExportForm(form);
@@ -595,10 +596,10 @@ public class SSMDataLoader {
         detailInvoice.setInvoice(invoice1);
         detailInvoice.setItem(listItem.get(0));
         detailInvoice.setAmount(2);
-        detailInvoice.setPriceBeforeTax(5000.0);
-        detailInvoice.setPriceAfterTax(5000.0);
-        detailInvoice.setMoneyBeforeTax(10000.0);
-        detailInvoice.setMoneyAfterTax(10000.0);
+        detailInvoice.setPriceBeforeTax(Money.create("VND", 5000L));
+        detailInvoice.setPriceAfterTax(Money.create("VND", 5000L));
+        detailInvoice.setMoneyBeforeTax(Money.create("VND", 10000L));
+        detailInvoice.setMoneyAfterTax(Money.create("VND", 10000L));
         daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice);
 
         Invoice invoice2 = new Invoice();
@@ -617,20 +618,20 @@ public class SSMDataLoader {
         detailInvoice2.setInvoice(invoice2);
         detailInvoice2.setItem(listItem.get(0));
         detailInvoice2.setAmount(2);
-        detailInvoice2.setPriceBeforeTax(6000.0);
-        detailInvoice2.setPriceAfterTax(6000.0);
-        detailInvoice2.setMoneyBeforeTax(12000.0);
-        detailInvoice2.setMoneyAfterTax(12000.0);
+        detailInvoice2.setPriceBeforeTax(Money.create("VND", 6000L));
+        detailInvoice2.setPriceAfterTax(Money.create("VND", 6000L));
+        detailInvoice2.setMoneyBeforeTax(Money.create("VND", 12000L));
+        detailInvoice2.setMoneyAfterTax(Money.create("VND", 12000L));
         daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice2);
 
         DetailInvoice detailInvoice3 = new DetailInvoice();
         detailInvoice3.setInvoice(invoice2);
         detailInvoice3.setItem(listItem.get(0));
         detailInvoice3.setAmount(2);
-        detailInvoice3.setPriceBeforeTax(5000.0);
-        detailInvoice3.setPriceAfterTax(5000.0);
-        detailInvoice3.setMoneyBeforeTax(10000.0);
-        detailInvoice3.setMoneyAfterTax(10000.0);
+        detailInvoice3.setPriceBeforeTax(Money.create("VND", 5000L));
+        detailInvoice3.setPriceAfterTax(Money.create("VND", 5000L));
+        detailInvoice3.setMoneyBeforeTax(Money.create("VND", 10000L));
+        detailInvoice3.setMoneyAfterTax(Money.create("VND", 10000L));
         daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice3);
         return Arrays.asList(invoice1, invoice2);
     }
@@ -653,15 +654,15 @@ public class SSMDataLoader {
 
         ShipPrice shipPrice1 = new ShipPrice();
         shipPrice1.setShipPriceType(shipPriceType1);
-        shipPrice1.setPrice(Money.create("vnd", 15000L));
+        shipPrice1.setPrice(Money.create("VND", 15000L));
 
         ShipPrice shipPrice2 = new ShipPrice();
         shipPrice2.setShipPriceType(shipPriceType1);
-        shipPrice2.setPrice(Money.create("vnd", 30000L));
+        shipPrice2.setPrice(Money.create("VND", 30000L));
 
         ShipPrice shipPrice3 = new ShipPrice();
         shipPrice3.setShipPriceType(shipPriceType1);
-        shipPrice3.setPrice(Money.create("vnd", 5000L));
+        shipPrice3.setPrice(Money.create("VND", 5000L));
 
         List shipPriceList = Arrays.asList(shipPrice1, shipPrice2, shipPrice3);
         daoHelper.getDao(ShipPrice.class).saveOrUpdateAll(shipPriceList);
@@ -762,41 +763,41 @@ public class SSMDataLoader {
         bank.setAddress("569A, Nguyen Dinh Chieu, Q3, HCM, Viet Nam");
         daoHelper.getDao(Bank.class).save(bank);
 
-        BankAccount usdBankAcct = new BankAccount();
-        usdBankAcct.setBank(bank);
-        usdBankAcct.setAccountNumber("1602 2010 19836");
+        BankAccount USDBankAcct = new BankAccount();
+        USDBankAcct.setBank(bank);
+        USDBankAcct.setAccountNumber("1602 2010 19836");
 
-        BankAccount vndBankAcct = new BankAccount();
-        vndBankAcct.setBank(bank);
-        vndBankAcct.setAccountNumber("1602 2010 19820");
-        List<BankAccount> result = Arrays.asList(vndBankAcct, vndBankAcct);
+        BankAccount VNDBankAcct = new BankAccount();
+        VNDBankAcct.setBank(bank);
+        VNDBankAcct.setAccountNumber("1602 2010 19820");
+        List<BankAccount> result = Arrays.asList(VNDBankAcct, VNDBankAcct);
         daoHelper.getDao(BankAccount.class).saveOrUpdateAll(result);
         return result;
     }
 
     private static List<SCurrency> initSCurrency(DaoHelper daoHelper) {
-        SCurrency vndCurrency = new SCurrency();
-        vndCurrency.setCode("vnd");
-        vndCurrency.setName("VND");
-        vndCurrency.setSymbol("d");
+        SCurrency VNDCurrency = new SCurrency();
+        VNDCurrency.setCode("VND");
+        VNDCurrency.setName("VND");
+        VNDCurrency.setSymbol("d");
 
-        SCurrency usdCurrency = new SCurrency();
-        usdCurrency.setCode("usd");
-        usdCurrency.setName("USD");
-        usdCurrency.setSymbol("$");
+        SCurrency USDCurrency = new SCurrency();
+        USDCurrency.setCode("USD");
+        USDCurrency.setName("USD");
+        USDCurrency.setSymbol("$");
 
-        List<SCurrency> result = Arrays.asList(vndCurrency, usdCurrency);
+        List<SCurrency> result = Arrays.asList(VNDCurrency, USDCurrency);
         daoHelper.getDao(SCurrency.class).saveOrUpdateAll(result);
 
-        ExchangeRate usdExRate = new ExchangeRate();
-        usdExRate.setCurrency(usdCurrency);
-        usdExRate.setRate(21000D);
-        daoHelper.getDao(ExchangeRate.class).save(usdExRate);
+        ExchangeRate USDExRate = new ExchangeRate();
+        USDExRate.setCurrency(USDCurrency);
+        USDExRate.setRate(21000D);
+        daoHelper.getDao(ExchangeRate.class).save(USDExRate);
 
-        ExchangeRate vndExRate = new ExchangeRate();
-        vndExRate.setCurrency(vndCurrency);
-        vndExRate.setRate(21000D);
-        daoHelper.getDao(ExchangeRate.class).save(vndExRate);
+        ExchangeRate VNDExRate = new ExchangeRate();
+        VNDExRate.setCurrency(VNDCurrency);
+        VNDExRate.setRate(21000D);
+        daoHelper.getDao(ExchangeRate.class).save(VNDExRate);
 
         return result;
     }

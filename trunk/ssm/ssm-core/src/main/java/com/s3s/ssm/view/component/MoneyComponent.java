@@ -16,6 +16,7 @@
 package com.s3s.ssm.view.component;
 
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -138,5 +139,10 @@ public class MoneyComponent extends JPanel {
 
     public void removeMoneyChangeListener(IMoneyChangedListener listener) {
         listenerList.remove(IMoneyChangedListener.class, listener);
+    }
+
+    public void addActionListener(ActionListener l) {
+        listenerList.add(ActionListener.class, l);
+
     }
 }

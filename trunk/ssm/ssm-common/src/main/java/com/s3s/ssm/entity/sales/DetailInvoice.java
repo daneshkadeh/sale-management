@@ -14,8 +14,11 @@
  */
 package com.s3s.ssm.entity.sales;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,6 +32,7 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
+import com.s3s.ssm.model.Money;
 
 @Entity
 @Table(name = "s_detail_invoice")
@@ -37,32 +41,33 @@ public class DetailInvoice extends AbstractIdOLObject {
     private Item item;
     private PackageLine packageLine;
     private int amount;
-    private double priceBeforeTax = 0.0;
-    private double priceOfTax = 0.0;
-    private double priceAfterTax = 0.0;
-    private double moneyBeforeTax = 0.0;
-    private double moneyOfTax = 0.0;
-    private double moneyAfterTax = 0.0;
-    private String currency = "VND";
+
+    // TODO: don't know why we have a lot of properties for price?
+    private Money priceBeforeTax = Money.zero("VND");
+    private Money priceOfTax = Money.zero("VND");
+    private Money priceAfterTax = Money.zero("VND");
+    private Money moneyBeforeTax = Money.zero("VND");
+    private Money moneyOfTax = Money.zero("VND");
+    private Money moneyAfterTax = Money.zero("VND");
     private DetailInvoiceType type = DetailInvoiceType.SALES;
     private DetailInvoiceStatus status = DetailInvoiceStatus.OPEN;
 
     // Transient field
-    private double totalAmount;
+    private Money totalAmount;
 
     @Transient
-    public double getTotalAmount() {
+    public Money getTotalAmount() {
         return totalAmount;
     }
 
     // Please remove this set method because it has no meaning and can be raise potential bugs (its value is calculated
     // from the other). Remember to set editable is false if using this field in List view
-    public void setTotalAmount(double totalAmount) {
+    public void setTotalAmount(Money totalAmount) {
         this.totalAmount = totalAmount;
     }
 
     private void updateTotalAmount() {
-        totalAmount = amount * priceAfterTax;
+        totalAmount = Money.multiply(amount, priceAfterTax);
     }
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -106,69 +111,72 @@ public class DetailInvoice extends AbstractIdOLObject {
         updateTotalAmount();
     }
 
-    @Column(name = "price_after_tax")
-    public double getPriceAfterTax() {
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "price_after_tax")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_price_after_tax")) })
+    public Money getPriceAfterTax() {
         return priceAfterTax;
     }
 
-    public void setPriceAfterTax(double priceAfterTax) {
+    public void setPriceAfterTax(Money priceAfterTax) {
         this.priceAfterTax = priceAfterTax;
         updateTotalAmount();
     }
 
-    @Column(name = "price_before_tax", nullable = false)
-    public double getPriceBeforeTax() {
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "price_before_tax")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_price_before_tax")) })
+    public Money getPriceBeforeTax() {
         return priceBeforeTax;
     }
 
-    public void setPriceBeforeTax(double priceBeforeTax) {
+    public void setPriceBeforeTax(Money priceBeforeTax) {
         this.priceBeforeTax = priceBeforeTax;
     }
 
-    @Column(name = "price_of_tax")
-    public double getPriceOfTax() {
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "price_of_tax")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_price_of_tax")) })
+    public Money getPriceOfTax() {
         return priceOfTax;
     }
 
-    public void setPriceOfTax(double priceOfTax) {
+    public void setPriceOfTax(Money priceOfTax) {
         this.priceOfTax = priceOfTax;
         updateTotalAmount();
     }
 
-    @Column(name = "money_before_tax")
-    public double getMoneyBeforeTax() {
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "money_before_tax")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_money_before_tax")) })
+    public Money getMoneyBeforeTax() {
         return moneyBeforeTax;
     }
 
-    public void setMoneyBeforeTax(double moneyBeforeTax) {
+    public void setMoneyBeforeTax(Money moneyBeforeTax) {
         this.moneyBeforeTax = moneyBeforeTax;
     }
 
-    @Column(name = "money_of_tax", nullable = false)
-    public double getMoneyOfTax() {
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "money_of_tax")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_money_of_tax")) })
+    public Money getMoneyOfTax() {
         return moneyOfTax;
     }
 
-    public void setMoneyOfTax(double moneyOfTax) {
+    public void setMoneyOfTax(Money moneyOfTax) {
         this.moneyOfTax = moneyOfTax;
     }
 
-    @Column(name = "money_after_tax", nullable = false)
-    public double getMoneyAfterTax() {
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "money_after_tax")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_money_after_tax")) })
+    public Money getMoneyAfterTax() {
         return moneyAfterTax;
     }
 
-    public void setMoneyAfterTax(double moneyAfterTax) {
+    public void setMoneyAfterTax(Money moneyAfterTax) {
         this.moneyAfterTax = moneyAfterTax;
-    }
-
-    @Column(name = "currency", nullable = false)
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
     @Column(name = "detail_invoice_type", nullable = false)
