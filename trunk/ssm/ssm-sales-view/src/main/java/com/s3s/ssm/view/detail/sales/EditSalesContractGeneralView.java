@@ -7,6 +7,8 @@ import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.entity.sales.SalesContractStatus;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.i18n.ControlConstants;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -23,7 +25,7 @@ public class EditSalesContractGeneralView extends AbstractSingleEditView<SalesCo
     @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, SalesContract entity,
             Map<String, Object> request) {
-        detailDataModel.tab("General", "General info", null);
+        detailDataModel.tab(ControlConfigUtils.getString(ControlConstants.MESSAGE_KEY_GENERAL), "General info", null);
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("dateContract", DetailFieldType.DATE);
         detailDataModel.addAttribute("supplier", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_SUPPLIER);

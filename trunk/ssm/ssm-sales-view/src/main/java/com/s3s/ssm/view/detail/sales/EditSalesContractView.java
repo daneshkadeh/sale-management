@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.s3s.ssm.entity.sales.SalesContract;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.i18n.ControlConstants;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.edit.AbstractMultiEditView;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
@@ -39,14 +41,16 @@ public class EditSalesContractView extends AbstractMultiEditView<SalesContract> 
     protected AbstractSingleEditView<SalesContract> constructMainView(TreeNodeWithView root, SalesContract entity,
             Map<String, Object> request) {
         EditSalesContractGeneralView detailView = new EditSalesContractGeneralView(request);
-        TreeNodeWithView node = new TreeNodeWithView("General", detailView);
+        TreeNodeWithView node = new TreeNodeWithView(
+                ControlConfigUtils.getString(ControlConstants.MESSAGE_KEY_GENERAL), detailView);
         root.add(node);
         return detailView;
     }
 
     @Override
     protected void constructSubViews(TreeNodeWithView root, SalesContract entity, Map<String, Object> request) {
-        TreeNodeWithView nodeItems = new TreeNodeWithView("Details");
+        TreeNodeWithView nodeItems = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.SubMenu.EditSalesContractView.DetailSalesContract"));
         Map<String, Object> listRequest = new HashMap<>();
         listRequest.put(PARAM_PARENT_ID, entity.getId());
         listRequest.put(PARAM_PARENT_CLASS, entity.getClass());
@@ -54,7 +58,8 @@ public class EditSalesContractView extends AbstractMultiEditView<SalesContract> 
         nodeItems.setView(detailsView);
         root.add(nodeItems);
 
-        TreeNodeWithView nodeImportations = new TreeNodeWithView("Importations");
+        TreeNodeWithView nodeImportations = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.SubMenu.EditSalesContractView.ImportationSC"));
         Map<String, Object> importationRequest = new HashMap<>();
         importationRequest.put(PARAM_PARENT_ID, entity.getId());
         importationRequest.put(PARAM_PARENT_CLASS, entity.getClass());

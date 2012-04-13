@@ -20,7 +20,7 @@ public class EditDetailSalesContractView extends AbstractSingleEditView<DetailSa
             Map<String, Object> request) {
         detailDataModel.addAttribute("product", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_PRODUCT);
         detailDataModel.addAttribute("stockCode", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("description", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("description", DetailFieldType.TEXTAREA);
         detailDataModel.addAttribute("quantity", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("unitPrice", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("totalPrice", DetailFieldType.TEXTBOX);

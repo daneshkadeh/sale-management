@@ -69,7 +69,6 @@ public class ImportationSC extends AbstractCodeOLObject {
     }
 
     @Column(name = "shipment_date")
-    @NotNull
     public Date getShipmentDate() {
         return shipmentDate;
     }

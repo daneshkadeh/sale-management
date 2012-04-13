@@ -653,12 +653,14 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             for (ConstraintViolation<T> violation : validateResult) {
                 AttributeComponent attributeComponent = name2AttributeComponent.get(violation.getPropertyPath()
                         .toString());
-                JLabel label = attributeComponent.getLabel();
-                label.setForeground(Color.RED);
-                JLabel errorIcon = attributeComponent.getErrorIcon();
-                errorIcon.setToolTipText(violation.getMessage());
-                errorIcon.setVisible(true);
-                logger.error(violation.getMessage());
+                if (attributeComponent != null) {
+                    JLabel label = attributeComponent.getLabel();
+                    label.setForeground(Color.RED);
+                    JLabel errorIcon = attributeComponent.getErrorIcon();
+                    errorIcon.setToolTipText(violation.getMessage());
+                    errorIcon.setVisible(true);
+                }
+                logger.error(violation.getPropertyPath() + " " + violation.getMessage());
             }
             return false;
         }
