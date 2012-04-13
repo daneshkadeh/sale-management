@@ -14,51 +14,54 @@
  */
 package com.s3s.ssm.view.detail.sales;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
-import com.s3s.ssm.entity.sales.DetailSalesContract;
 import com.s3s.ssm.entity.sales.SalesContract;
-import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.AbstractMasterDetailView;
-import com.s3s.ssm.view.edit.DetailDataModel;
-import com.s3s.ssm.view.list.ListDataModel;
+import com.s3s.ssm.view.TreeNodeWithView;
+import com.s3s.ssm.view.edit.AbstractMultiEditView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.list.sales.ListDetailSalesContractView;
+import com.s3s.ssm.view.list.sales.ListImportationSCView;
 
-public class EditSalesContractView extends AbstractMasterDetailView<SalesContract, DetailSalesContract> {
+public class EditSalesContractView extends AbstractMultiEditView<SalesContract> {
 
-    public EditSalesContractView(Map<String, Object> entity) {
-        super(entity);
-        // TODO Auto-generated constructor stub
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6238803319896329449L;
+
+    public EditSalesContractView(Map<String, Object> request) {
+        super(request);
     }
 
     @Override
-    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    protected Class<? extends AbstractEditView<DetailSalesContract>> getChildDetailViewClass() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    protected String getChildFieldName() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    protected void saveOrUpdate(SalesContract masterEntity, List<DetailSalesContract> detailEntities) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    protected void initialPresentationView(DetailDataModel detailDataModel, SalesContract entity,
+    protected AbstractSingleEditView<SalesContract> constructMainView(TreeNodeWithView root, SalesContract entity,
             Map<String, Object> request) {
-        // TODO Auto-generated method stub
+        EditSalesContractGeneralView detailView = new EditSalesContractGeneralView(request);
+        TreeNodeWithView node = new TreeNodeWithView("General", detailView);
+        root.add(node);
+        return detailView;
+    }
+
+    @Override
+    protected void constructSubViews(TreeNodeWithView root, SalesContract entity, Map<String, Object> request) {
+        TreeNodeWithView nodeItems = new TreeNodeWithView("Details");
+        Map<String, Object> listRequest = new HashMap<>();
+        listRequest.put(PARAM_PARENT_ID, entity.getId());
+        listRequest.put(PARAM_PARENT_CLASS, entity.getClass());
+        ListDetailSalesContractView detailsView = new ListDetailSalesContractView(listRequest);
+        nodeItems.setView(detailsView);
+        root.add(nodeItems);
+
+        TreeNodeWithView nodeImportations = new TreeNodeWithView("Importations");
+        Map<String, Object> importationRequest = new HashMap<>();
+        importationRequest.put(PARAM_PARENT_ID, entity.getId());
+        importationRequest.put(PARAM_PARENT_CLASS, entity.getClass());
+        ListImportationSCView importationsView = new ListImportationSCView(importationRequest);
+        nodeImportations.setView(importationsView);
+        root.add(nodeImportations);
 
     }
+
 }

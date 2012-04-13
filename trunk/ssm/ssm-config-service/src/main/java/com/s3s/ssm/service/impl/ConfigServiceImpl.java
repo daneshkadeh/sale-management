@@ -21,6 +21,7 @@ import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
 import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.util.CacheId;
 
@@ -38,6 +39,8 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
             getCacheDataService().registerCache(CacheId.REF_LIST_BANK, this, this.getClass().getMethod("getBanks"));
             getCacheDataService().registerCache(CacheId.REF_LIST_PARTNER, this,
                     this.getClass().getMethod("getPartners"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_SUPPLIER, this,
+                    this.getClass().getMethod("getSuppliers"));
             getCacheDataService().registerCache(CacheId.REF_LIST_ORGANIZATION, this,
                     this.getClass().getMethod("getOrganizations"));
             getCacheDataService().registerCache(CacheId.REF_LIST_UNIT_UOM, this,
@@ -72,6 +75,12 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     public List<Partner> getPartners() {
         List<Partner> partners = getDaoHelper().getDao(Partner.class).findAll();
         return partners;
+    }
+
+    public List<Partner> getSuppliers() {
+        DetachedCriteria dc = getDaoHelper().getDao(Partner.class).getCriteria();
+        dc.createCriteria("listProfiles").add(Restrictions.eq("type", PartnerProfileTypeEnum.SUPPLIER));
+        return getDaoHelper().getDao(Partner.class).findByCriteria(dc);
     }
 
     @Override
