@@ -2,6 +2,7 @@ package com.s3s.ssm.util;
 
 public interface CacheId {
     public static String REF_LIST_PARTNER = "referenceListPartner";
+    public static String REF_LIST_SUPPLIER = "referenceListSupplier";
     public static String REF_LIST_OPERATOR = "referenceListOperator";
     public static String REF_LIST_PRODUCT = "referenceListProduct";
     public static String REF_LIST_CURRENCY = "referenceListCurrency";
@@ -24,4 +25,5 @@ public interface CacheId {
     public static String REF_LIST_SALES_CONTRACT = "referenceListSalesContract";
     // Shipment
     public static String REF_LIST_TRANS_TYPE = "referenceListTransType";
+
 }

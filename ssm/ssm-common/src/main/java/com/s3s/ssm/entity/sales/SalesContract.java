@@ -52,6 +52,29 @@ public class SalesContract extends AbstractCodeOLObject {
     private Set<ImportationSC> listImportation = new HashSet<>();
     private Set<ContractDocument> listDocuments = new HashSet<>();
 
+    // Should be change design multi-articles (same as ProductProperty) for other software customers.
+    // Article 1
+    private String remarkQuantity;
+    private String remarkPacking;
+
+    // Article 2
+    private String remarkShipment;
+    private Boolean isPartialShipment = false;
+    private String discharginPort;
+    private String loadingPort;
+
+    // article 3
+    private String remarkPayment;
+    private String otherRequirement;
+
+    // article 4
+    private String importLicence;
+    // article 5
+    private String forceMajeure;
+
+    // article 6
+    private String arbitrarion;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id", nullable = false)
     public Partner getSupplier() {
@@ -151,5 +174,104 @@ public class SalesContract extends AbstractCodeOLObject {
 
     public void setListDocuments(Set<ContractDocument> listDocuments) {
         this.listDocuments = listDocuments;
+    }
+
+    @Column(name = "remarkQuantity", length = 1024)
+    public String getRemarkQuantity() {
+        return remarkQuantity;
+    }
+
+    public void setRemarkQuantity(String remarkQuantity) {
+        this.remarkQuantity = remarkQuantity;
+    }
+
+    @Column(name = "remarkPacking", length = 1024)
+    public String getRemarkPacking() {
+        return remarkPacking;
+    }
+
+    public void setRemarkPacking(String remarkPacking) {
+        this.remarkPacking = remarkPacking;
+    }
+
+    @Column(name = "remarkShipment", length = 1024)
+    public String getRemarkShipment() {
+        return remarkShipment;
+    }
+
+    public void setRemarkShipment(String remarkShipment) {
+        this.remarkShipment = remarkShipment;
+    }
+
+    @Column(name = "isPartialShipment")
+    public Boolean getIsPartialShipment() {
+        return isPartialShipment;
+    }
+
+    public void setIsPartialShipment(Boolean isPartialShipment) {
+        this.isPartialShipment = isPartialShipment;
+    }
+
+    @Column(name = "discharginPort", length = 1024)
+    public String getDischarginPort() {
+        return discharginPort;
+    }
+
+    public void setDischarginPort(String discharginPort) {
+        this.discharginPort = discharginPort;
+    }
+
+    @Column(name = "loadingPort", length = 1024)
+    public String getLoadingPort() {
+        return loadingPort;
+    }
+
+    public void setLoadingPort(String loadingPort) {
+        this.loadingPort = loadingPort;
+    }
+
+    @Column(name = "remarkPayment", length = 1024)
+    public String getRemarkPayment() {
+        return remarkPayment;
+    }
+
+    public void setRemarkPayment(String remarkPayment) {
+        this.remarkPayment = remarkPayment;
+    }
+
+    @Column(name = "otherRequirement", length = 1024)
+    public String getOtherRequirement() {
+        return otherRequirement;
+    }
+
+    public void setOtherRequirement(String otherRequirement) {
+        this.otherRequirement = otherRequirement;
+    }
+
+    @Column(name = "importLicence", length = 1024)
+    public String getImportLicence() {
+        return importLicence;
+    }
+
+    public void setImportLicence(String importLicence) {
+        this.importLicence = importLicence;
+    }
+
+    @Column(name = "forceMajeure", length = 1024)
+    public String getForceMajeure() {
+        return forceMajeure;
+    }
+
+    public void setForceMajeure(String forceMajeure) {
+        this.forceMajeure = forceMajeure;
+    }
+
+    @Column(name = "arbitrarion", length = 1024)
+    public String getArbitrarion() {
+        return arbitrarion;
+    }
+
+    public void setArbitrarion(String arbitrarion) {
+        this.arbitrarion = arbitrarion;
     }
 }

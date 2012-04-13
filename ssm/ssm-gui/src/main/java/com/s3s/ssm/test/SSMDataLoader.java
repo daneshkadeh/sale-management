@@ -734,9 +734,10 @@ public class SSMDataLoader {
         salesContract.setMoneyAfterTax(Money.create("USD", 1010L));
 
         DetailSalesContract detail = new DetailSalesContract();
-        detail.setItem(listItem.get(0));
+        detail.setProduct(listItem.get(0).getProduct());
         detail.setQuantity(5);
         detail.setUnitPrice(Money.create("USD", 1010L));
+        detail.setTotalPrice(Money.create("USD", 5050L));
         salesContract.addDetailSalesContract(detail);
         salesContract.getListDocuments().add(document);
 
