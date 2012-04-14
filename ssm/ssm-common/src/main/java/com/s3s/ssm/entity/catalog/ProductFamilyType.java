@@ -17,7 +17,7 @@ package com.s3s.ssm.entity.catalog;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 public enum ProductFamilyType {
-    GOODS, SERVICE, COMPONENT, VOUCHER, PACKAGE;
+    GOODS, SERVICE, VOUCHER, PACKAGE;
 
     @Override
     public String toString() {

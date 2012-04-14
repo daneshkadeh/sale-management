@@ -18,8 +18,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -32,6 +35,7 @@ import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.model.Money;
 
 @Entity
 @Table(name = "s_invoice")
@@ -41,10 +45,9 @@ public class Invoice extends AbstractIdOLObject {
     private InvoiceType type;
     private Partner contact;
     private Date createdDate;
-    private Double moneyBeforeTax = 0.0;
-    private Double moneyOfTax = 0.0;
-    private Double moneyAfterTax = 0.0;
-    private String currency = "VND";
+    private Money moneyBeforeTax = Money.zero("VND");
+    private Money moneyOfTax = Money.zero("VND");
+    private Money moneyAfterTax = Money.zero("VND");
     private InvoiceStatus status = InvoiceStatus.OPEN;
     private InvoicePaymentStatus paymentStatus = InvoicePaymentStatus.NO_PAYMENT;
     private Set<DetailInvoice> detailInvoices = new HashSet<>();
@@ -93,44 +96,40 @@ public class Invoice extends AbstractIdOLObject {
         this.createdDate = createdDate;
     }
 
-    @Column(name = "money_before_tax", nullable = false)
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "money_before_tax")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_money_before_tax")) })
     @NotNull
-    public Double getMoneyBeforeTax() {
+    public Money getMoneyBeforeTax() {
         return moneyBeforeTax;
     }
 
-    public void setMoneyBeforeTax(Double moneyBeforeTax) {
+    public void setMoneyBeforeTax(Money moneyBeforeTax) {
         this.moneyBeforeTax = moneyBeforeTax;
     }
 
-    @Column(name = "money_of_tax", nullable = false)
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "money_of_tax")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_money_of_tax")) })
     @NotNull
-    public Double getMoneyOfTax() {
+    public Money getMoneyOfTax() {
         return moneyOfTax;
     }
 
-    public void setMoneyOfTax(Double moneyOfTax) {
+    public void setMoneyOfTax(Money moneyOfTax) {
         this.moneyOfTax = moneyOfTax;
     }
 
-    @Column(name = "money_after_tax", nullable = false)
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "money_after_tax")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_money_after_tax")) })
     @NotNull
-    public Double getMoneyAfterTax() {
+    public Money getMoneyAfterTax() {
         return moneyAfterTax;
     }
 
-    public void setMoneyAfterTax(Double moneyAfterTax) {
+    public void setMoneyAfterTax(Money moneyAfterTax) {
         this.moneyAfterTax = moneyAfterTax;
-    }
-
-    @Column(name = "currency", nullable = false)
-    @NotNull
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
     @Column(name = "status", nullable = false)

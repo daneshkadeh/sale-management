@@ -265,7 +265,7 @@ public class SSMDataLoader {
         List<Operator> listOperator = initOperator(daoHelper);
 
         List<Store> listStore = initStore(daoHelper, listOperator);
-        List<Article> listGoods = initGood(daoHelper, listStore, listItem);
+        List<Article> listGoods = initArticle(daoHelper, listStore, listItem);
         Set<ItemPrice> listItemPrices = initItemPrice(daoHelper, listItem, listContact);
         List<ItemOriginPrice> listItemOriginPrices = initItemOriginPrice(daoHelper, listItem, listSupplier);
         List<SalesContract> listSalesContracts = initSalesContracts(daoHelper, listSupplier, listItem);
@@ -587,9 +587,9 @@ public class SSMDataLoader {
         invoice1.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice1.setStatus(InvoiceStatus.OPEN);
         invoice1.setType(InvoiceType.SALES);
-        invoice1.setMoneyBeforeTax(10000.0);
-        invoice1.setMoneyOfTax(0.0);
-        invoice1.setMoneyAfterTax(10000.0);
+        invoice1.setMoneyBeforeTax(Money.create("VND", 10000L));
+        invoice1.setMoneyOfTax(Money.zero("VND"));
+        invoice1.setMoneyAfterTax(Money.create("VND", 10000L));
         daoHelper.getDao(Invoice.class).saveOrUpdate(invoice1);
 
         DetailInvoice detailInvoice = new DetailInvoice();
@@ -609,9 +609,9 @@ public class SSMDataLoader {
         invoice2.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice2.setStatus(InvoiceStatus.OPEN);
         invoice2.setType(InvoiceType.SALES);
-        invoice2.setMoneyBeforeTax(22000.0);
-        invoice2.setMoneyOfTax(0.0);
-        invoice2.setMoneyAfterTax(22000.0);
+        invoice2.setMoneyBeforeTax(Money.create("VND", 22000L));
+        invoice2.setMoneyOfTax(Money.zero("VND"));
+        invoice2.setMoneyAfterTax(Money.create("VND", 22000L));
         daoHelper.getDao(Invoice.class).saveOrUpdate(invoice2);
 
         DetailInvoice detailInvoice2 = new DetailInvoice();
@@ -746,7 +746,7 @@ public class SSMDataLoader {
         return Arrays.asList(salesContract);
     }
 
-    private static List<Article> initGood(DaoHelper daoHelper, List<Store> listStore, List<Item> listItem) {
+    private static List<Article> initArticle(DaoHelper daoHelper, List<Store> listStore, List<Item> listItem) {
         Article good = new Article();
         good.setBarcode("12345678910");
         good.setItem(listItem.get(0));
@@ -1081,28 +1081,28 @@ public class SSMDataLoader {
         return Arrays.asList(product);
     }
 
-    protected static void init100Product(DaoHelper daoHelper) {
-        DetachedCriteria uomDC = daoHelper.getDao(UnitOfMeasure.class).getCriteria();
-        uomDC.add(Restrictions.eq("code", UOM_KG));
-
-        ProductType type = daoHelper.getDao(ProductType.class).findAll().get(0);
-
-        Manufacturer manufacturer = daoHelper.getDao(Manufacturer.class).findAll().get(0);
-        UnitOfMeasure unitOfMeasure = daoHelper.getDao(UnitOfMeasure.class).findByCriteria(uomDC).get(0);
-
-        for (int i = 0; i < 200; i++) {
-            Goods goods = new Goods();
-            goods.setCode(PRODUCT_GIAY_NAM + i);
-            goods.setName("Giay nam " + i);
-            goods.setDescription("Giay nam choi tennis");
-            goods.setModel("Model100" + i);
-
-            goods.setMainUom(unitOfMeasure);
-            goods.setType(type);
-            goods.setManufacturer(manufacturer);
-            daoHelper.getDao(Product.class).saveOrUpdate(goods);
-        }
-    }
+    // protected static void init100Product(DaoHelper daoHelper) {
+    // DetachedCriteria uomDC = daoHelper.getDao(UnitOfMeasure.class).getCriteria();
+    // uomDC.add(Restrictions.eq("code", UOM_KG));
+    //
+    // ProductType type = daoHelper.getDao(ProductType.class).findAll().get(0);
+    //
+    // Manufacturer manufacturer = daoHelper.getDao(Manufacturer.class).findAll().get(0);
+    // UnitOfMeasure unitOfMeasure = daoHelper.getDao(UnitOfMeasure.class).findByCriteria(uomDC).get(0);
+    //
+    // for (int i = 0; i < 200; i++) {
+    // Goods goods = new Goods();
+    // goods.setCode(PRODUCT_GIAY_NAM + i);
+    // goods.setName("Giay nam " + i);
+    // goods.setDescription("Giay nam choi tennis");
+    // goods.setModel("Model100" + i);
+    //
+    // goods.setMainUom(unitOfMeasure);
+    // goods.setType(type);
+    // goods.setManufacturer(manufacturer);
+    // daoHelper.getDao(Product.class).saveOrUpdate(goods);
+    // }
+    // }
 
     private static List<ProductType> initProductType(DaoHelper daoHelper) {
         ProductType productType = new ProductType();
