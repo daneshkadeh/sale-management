@@ -30,6 +30,7 @@ import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.interfaces.sales.InvoiceService;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -61,7 +62,6 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
                 .width(150, 50, 200);
         listDataModel.addColumn("packageLine", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
                 REF_PACKLINE);
-        // listDataModel.addColumn("testMoney", ListRendererType.TEXT, ListEditorType.MONEY);
         listDataModel.addColumn("amount", ListRendererType.TEXT);
         listDataModel.addColumn("priceAfterTax", ListRendererType.TEXT, ListEditorType.MONEY)
                 .referenceDataId(REF_CURRENCY).width(120);
@@ -106,7 +106,7 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
 
         // TODO: contact will be chosen from and listSearchView
         detailDataModel.addAttribute("contact", DetailFieldType.DROPDOWN).referenceDataId(REF_CONTACT);
-        detailDataModel.addAttribute("moneyAfterTax", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("moneyAfterTax", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
 
         // TODO: how to identify currency for an invoice, if 1 item is USD, 1 item is VND
         // detailDataModel.addAttribute("currency", FieldTypeEnum.DROPDOWN).referenceDataId(REF_CURRENCY);

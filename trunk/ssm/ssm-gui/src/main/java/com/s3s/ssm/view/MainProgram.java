@@ -91,7 +91,7 @@ public class MainProgram {
 
         // Not find solution to get class path from ssm-core.
         // String classpath = MainProgram.class.getClassLoader().get
-        DOMConfigurator.configure("log4j.xml");
+        DOMConfigurator.configure("src/main/resources/log4j.xml");
         s_logger.info("Starting super sales management application...");
         // ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
         // ConfigProvider configProvider = ConfigProvider.getInstance();
@@ -137,7 +137,7 @@ public class MainProgram {
         }
 
         // Create and set up the window.
-        frame = new JFrame("Business Active");
+        frame = new JFrame("Business Active" + " - " + getCustomerName());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(WINDOW_MIN_SIZE);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -163,6 +163,11 @@ public class MainProgram {
             }
         });
         loginDialog.setVisible(true);
+    }
+
+    private static String getCustomerName() {
+        // TODO Should get from institution info.
+        return "THU SPORTS";
     }
 
     /**
