@@ -84,6 +84,7 @@ import com.s3s.ssm.export.exporter.ExporterFactory;
 import com.s3s.ssm.export.exporter.ExporterNotFoundException;
 import com.s3s.ssm.export.exporter.ExportingException;
 import com.s3s.ssm.export.view.ExportDialog;
+import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.security.CustomPermission;
@@ -139,7 +140,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private JBusyComponent<JScrollPane> busyPane;
 
     private AdvanceTableModel<T> mainTableModel;
-    private PagingNavigator pagingNavigator;
+    protected PagingNavigator pagingNavigator;
     // button toolbar
     private JButton btnAdd;
     private JButton btnDelete;
@@ -200,7 +201,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         printAction = new PrintAction();
 
         tabPane = new JTabbedPane();
-        contentPane = new JPanel(new MigLayout("wrap, ins 0", "grow, fill", "[]0[]0[]0[][][]"));
+        contentPane = new JPanel(new MigLayout("wrap, ins 0, hidemode 2", "grow, fill", "[]0[]0[]0[][][]"));
         tabPane.addTab(label, icon, contentPane, tooltip);
         this.setLayout(new MigLayout("ins 0", "grow, fill", "grow, fill"));
         this.add(tabPane, "grow");
@@ -327,6 +328,11 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      */
     protected int getPageSize() {
         return DEFAULT_PAGE_SIZE;
+    }
+
+    @Override
+    public boolean requestFocusInWindow() {
+        return tblListEntities.requestFocusInWindow();
     }
 
     protected void addComponents() {
@@ -656,18 +662,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         return entity;
     }
 
-    // /**
-    // * The child class override this method to do something everytime the main table changes value. </br>
-    // {@inheritDoc}
-    // */
-    // @Override
-    // public void tableChanged(TableModelEvent e) {
-    // // Template method
-    //
-    // tblListEntities.repaint();
-    // tblListEntities.revalidate();
-    // }
-
     /**
      * Add the listener for the main table data changed.
      * 
@@ -735,6 +729,17 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     }
                     return sum;
                 }
+
+                if (ClassUtils.isAssignable(fieldClass, Money.class)) {
+                    String currencyCode = "VND"; // TODO Phuc: get from organizationContext later
+                    Money sum = Money.zero(currencyCode);
+                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
+                        Object value = mainTableModel.getValueAt(i, columnIndex);
+                        sum = sum.plus(((value == null) ? Money.zero(currencyCode) : (Money) value));
+                    }
+                    return sum;
+                }
+
             }
             return null;
         }
@@ -755,11 +760,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         }
 
     }
-
-    //
-    // public Number getSummarizedValue(String fieldName){
-    // foreach
-    // }
 
     /**
      * Entity was saved on AbstractDetailView and sent to AbstractListView to refresh data.
