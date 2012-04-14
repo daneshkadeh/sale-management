@@ -116,7 +116,13 @@ public class MainProgram {
         // Splash screen
         SplashScreen splashScreen = SplashScreen.getSplashScreen();
         try {
+            // System L&F
             // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+            // Seaglass L&F (not working with java 7, see
+            // http://code.google.com/p/seaglass/issues/detail?id=77#makechanges)
+            // UIManager.setLookAndFeel(SeaGlassLookAndFeel.class.getName());
+
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
