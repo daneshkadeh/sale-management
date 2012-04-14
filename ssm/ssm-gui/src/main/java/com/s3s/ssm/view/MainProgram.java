@@ -95,7 +95,7 @@ public class MainProgram {
         s_logger.info("Starting super sales management application...");
         // ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
         // ConfigProvider configProvider = ConfigProvider.getInstance();
-        Locale.setDefault(Locale.FRENCH);
+        Locale.setDefault(new Locale("vi"));
         ControlConfigUtils.init();
         ControlConfigUtils.setLabelMessageBundle(Locale.getDefault(), MESSSAGE_FILES);
         // Schedule a job for the event-dispatching thread:

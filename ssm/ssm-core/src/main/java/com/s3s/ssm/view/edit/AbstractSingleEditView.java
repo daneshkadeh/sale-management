@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -487,7 +488,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 break;
             case DATE:
                 Date date = (Date) value;
-                dataField = new JXDatePicker();
+                dataField = new JXDatePicker(Locale.getDefault());
                 if (date != null) {
                     ((JXDatePicker) dataField).setDate(date);
                 }
