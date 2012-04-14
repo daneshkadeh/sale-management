@@ -622,7 +622,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     /**
-     * The child class should override to perform action before showing the edit view.
+     * The child class should override to perform action before showing the edit view. </br> By default, if
+     * listDataModel is editable and action is NEW, the new row is added into the list instead of show the new tab.
      * 
      * @param entity
      *            the entity of the row selecting on the list.
@@ -633,7 +634,11 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * @return true if continues to show the edit view, false if otherwise.
      */
     protected boolean preShowEditView(T entity, EditActionEnum action, Map<String, Object> detailParams) {
-        // The template method.
+        if (listDataModel.isEditable() && action == EditActionEnum.NEW) {
+            // focus on the new row
+            tblListEntities.changeSelection(entities.size(), 0, false, false);
+            return false;
+        }
         return true;
     }
 
@@ -795,12 +800,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     public void performAddAction() {
-        if (listDataModel.isEditable()) {
-            // focus on the new row
-            tblListEntities.changeSelection(entities.size(), 0, false, false);
-        } else {
-            showEditView(null, EditActionEnum.NEW);
-        }
+        showEditView(null, EditActionEnum.NEW);
     }
 
     private void performEditAction() {

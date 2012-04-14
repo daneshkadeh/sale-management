@@ -205,6 +205,27 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         protected JPanel createFooterPanel(TableModel tableModel) {
             return AbstractMasterDetailView.this.createFooterPanel(tableModel);
         }
+
+        @Override
+        protected boolean preShowEditView(E entity, EditActionEnum action, Map<String, Object> detailParams) {
+            return AbstractMasterDetailView.this.preShowEditView(entity, action, detailParams);
+        }
+
+        protected boolean defaultPreShowEditView(E entity, EditActionEnum action, Map<String, Object> detailParams) {
+            return super.preShowEditView(entity, action, detailParams);
+        }
+    }
+
+    /**
+     * A delegation of {@link ChildListView#preShowEditView(AbstractIdOLObject, EditActionEnum, Map)}.
+     * 
+     * @param entity
+     * @param action
+     * @param detailParams
+     * @return
+     */
+    protected boolean preShowEditView(E entity, EditActionEnum action, Map<String, Object> detailParams) {
+        return childListView.defaultPreShowEditView(entity, action, detailParams);
     }
 
     /**
@@ -225,11 +246,6 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         } else if (e.getType() == TableModelEvent.DELETE) {
             detailEntities.remove(e.getFirstRow());
         }
-    }
-
-    @Override
-    protected void initialPresentationView(DetailDataModel detailDataModel, T entity, Map<String, Object> request) {
-        // TODO Auto-generated method stub
     }
 
     /**
