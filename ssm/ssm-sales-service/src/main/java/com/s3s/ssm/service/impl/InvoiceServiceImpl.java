@@ -32,7 +32,7 @@ public class InvoiceServiceImpl extends AbstractModuleServiceImpl implements Inv
     @Override
     public List<Invoice> getAllInvoice() {
         DetachedCriteria dc = getDaoHelper().getDao(Invoice.class).getCriteria();
-        dc.add(Restrictions.not(Restrictions.eq("status", InvoiceStatus.CANCELLED)));
+        dc.add(Restrictions.not(Restrictions.eq("status", InvoiceStatus.ABANDONED)));
         dc.addOrder(Order.desc("createdDate"));
         List<Invoice> result = getDaoHelper().getDao(Invoice.class).findByCriteria(dc);
         return result;
@@ -44,7 +44,7 @@ public class InvoiceServiceImpl extends AbstractModuleServiceImpl implements Inv
     @Override
     public Invoice findInvoiceByCode(String code) {
         DetachedCriteria dc = getDaoHelper().getDao(Invoice.class).getCriteria();
-        dc.add(Restrictions.not(Restrictions.eq("status", InvoiceStatus.CANCELLED)));
+        dc.add(Restrictions.not(Restrictions.eq("status", InvoiceStatus.ABANDONED)));
         dc.add(Restrictions.eq("invoiceNumber", code));
         Invoice invoice = getDaoHelper().getDao(Invoice.class).findFirstByCriteria(dc);
         return invoice;

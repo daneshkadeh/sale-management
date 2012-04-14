@@ -74,7 +74,6 @@ public class EditCustomerGeneralView extends EditPartnerGeneralView<Partner> {
 
     public EditCustomerGeneralView(Map<String, Object> request) {
         super(request);
-        // TODO Auto-generated constructor stub
     }
 
 }

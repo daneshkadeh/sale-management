@@ -44,7 +44,7 @@ public class ImportationSC extends AbstractCodeOLObject {
     private Set<AddedSCFee> addedSCFees = new HashSet<>();
 
     public enum ImportationSCStatus {
-        OPEN, RECEIVED, CLOSED
+        OPEN, RECEIVED, CLOSED, CANCELLED
     }
 
     @ManyToOne(fetch = FetchType.EAGER)

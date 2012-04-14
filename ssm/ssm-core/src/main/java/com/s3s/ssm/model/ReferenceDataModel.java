@@ -66,6 +66,9 @@ public class ReferenceDataModel {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value == null) {
                     setText(ControlConfigUtils.getString("label.dropdown.pleaseSelect"));
+                } else if (value instanceof Enum) {
+                    Enum tempValue = (Enum) value;
+                    setText(ControlConfigUtils.getEnumString(tempValue.getDeclaringClass(), tempValue));
                 }
                 return this;
             }

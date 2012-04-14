@@ -7,5 +7,5 @@ package com.s3s.ssm.entity.contact;
  * 
  */
 public enum IndividualTitleEnum {
-    MR, MRS, MISS, MR_MRS, UNDEFINED
+    MR, MRS, MISS, MR_MRS, UNDEFINED;
 }
