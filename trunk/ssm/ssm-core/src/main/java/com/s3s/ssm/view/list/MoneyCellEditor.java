@@ -47,6 +47,12 @@ public class MoneyCellEditor extends AbstractCellEditor implements TableCellEdit
         return moneyComponent.getMoney();
     }
 
+    @Override
+    public boolean stopCellEditing() {
+        moneyComponent.commitEdit();
+        return super.stopCellEditing();
+    }
+
     /**
      * {@inheritDoc}
      */

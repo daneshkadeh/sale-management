@@ -129,6 +129,10 @@ public class MainProgram {
                     break;
                 }
             }
+
+            // Resource bundle for swingX component.
+            UIManager.getDefaults().addResourceBundle("i18n/swingx/swingx");
+            UIManager.getDefaults().addResourceBundle("i18n/swingx/DatePicker");
             // UIManager.put("ToggleButton.background", Color.BLUE);
             // UIManager.put("nimbusBase", new ColorUIResource(0, 0, 120));
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -145,7 +149,6 @@ public class MainProgram {
         contentPane = createContentPane();
         frame.setJMenuBar(createMenuBar());
         frame.setContentPane(contentPane);
-        // institutionBtn.doClick();
         frame.pack();
         frame.setVisible(true);
         // splashScreen.close();

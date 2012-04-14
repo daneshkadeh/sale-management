@@ -82,16 +82,7 @@ public class MoneyComponent extends JPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                try {
-                    vf.commitEdit();
-                    if (!currentValue.equals(getMoney().getValue())
-                            || !currentCode.equals(getMoney().getCurrencyCode())) {
-                        fireMoneyChanged();
-                        resetCurrentMoney();
-                    }
-                } catch (ParseException e1) {
-                    UIManager.getLookAndFeel().provideErrorFeedback(vf);
-                }
+                commitEdit();
             }
 
             @Override
@@ -143,6 +134,21 @@ public class MoneyComponent extends JPanel {
 
     public void addActionListener(ActionListener l) {
         listenerList.add(ActionListener.class, l);
+    }
 
+    public boolean requestFocusInWindow() {
+        return valueField.requestFocusInWindow();
+    }
+
+    public void commitEdit() {
+        try {
+            valueField.commitEdit();
+            if (!currentValue.equals(getMoney().getValue()) || !currentCode.equals(getMoney().getCurrencyCode())) {
+                fireMoneyChanged();
+                resetCurrentMoney();
+            }
+        } catch (ParseException e1) {
+            UIManager.getLookAndFeel().provideErrorFeedback(valueField);
+        }
     }
 }
