@@ -411,7 +411,10 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             case TEXTBOX:
                 Class<?> propertyReturnType = null;
                 if (isRaw) {
-                    Assert.isTrue(value != null, "The value for the raw attribute must be set for TEXTBOX type");
+                    // Assert.isTrue(value != null, "The value for the raw attribute must be set for TEXTBOX type");
+                    if (value == null) {
+                        value = "";
+                    }
                     propertyReturnType = value.getClass();
                 } else {
                     propertyReturnType = beanWrapper.getPropertyType(attribute.getName());
@@ -488,7 +491,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 break;
             case DATE:
                 Date date = (Date) value;
-                dataField = new JXDatePicker(Locale.getDefault());
+                dataField = new JXDatePicker();
                 if (date != null) {
                     ((JXDatePicker) dataField).setDate(date);
                 }

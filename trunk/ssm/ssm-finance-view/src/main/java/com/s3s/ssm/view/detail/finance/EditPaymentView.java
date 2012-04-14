@@ -43,7 +43,7 @@ public class EditPaymentView extends AbstractSingleEditView<Payment> {
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_MODE);
         detailDataModel.addAttribute("amount", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("exchgValue", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
-        detailDataModel.addAttribute("rate", DetailFieldType.LABEL).newColumn();
+        detailDataModel.addAttribute("rate", DetailFieldType.TEXTBOX).editable(false).newColumn();
         detailDataModel.addAttribute("notes", DetailFieldType.TEXTAREA);
     }
 

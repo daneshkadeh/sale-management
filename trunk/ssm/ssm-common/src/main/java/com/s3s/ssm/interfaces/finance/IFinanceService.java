@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.entity.finance.PaymentMode;
+import com.s3s.ssm.entity.finance.PaymentType;
 
 /**
  * @author Le Thanh Hoang
@@ -32,4 +33,7 @@ public interface IFinanceService {
     public List<PaymentContent> getReceiptContents();
 
     public List<PaymentMode> getPaymentModes();
+
+    public List<PaymentType> getPaymentTypes();
+
 }

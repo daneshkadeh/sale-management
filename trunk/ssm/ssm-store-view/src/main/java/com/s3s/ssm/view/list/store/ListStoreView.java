@@ -35,11 +35,12 @@ public class ListStoreView extends AbstractListView<Store> {
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListRendererType.TEXT);
         listDataModel.addColumn("name", ListRendererType.TEXT);
-        listDataModel.addColumn("address", ListRendererType.TEXT);
-        listDataModel.addColumn("storedAddress", ListRendererType.TEXT);
-        listDataModel.addColumn("importAddress", ListRendererType.TEXT);
-        listDataModel.addColumn("exportAddress", ListRendererType.TEXT);
         listDataModel.addColumn("manager", ListRendererType.TEXT);
+        listDataModel.addColumn("address", ListRendererType.TEXT);
+        // listDataModel.addColumn("storedAddress", ListRendererType.TEXT);
+        // listDataModel.addColumn("importAddress", ListRendererType.TEXT);
+        // listDataModel.addColumn("exportAddress", ListRendererType.TEXT);
+
     }
 
     /**

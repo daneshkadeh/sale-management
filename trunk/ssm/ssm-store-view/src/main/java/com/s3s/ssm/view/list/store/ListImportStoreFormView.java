@@ -14,10 +14,6 @@
  */
 package com.s3s.ssm.view.list.store;
 
-import java.util.Map;
-
-import javax.swing.JOptionPane;
-
 import com.s3s.ssm.entity.store.ImportStoreForm;
 import com.s3s.ssm.view.detail.store.EditImportStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -47,13 +43,4 @@ public class ListImportStoreFormView extends AbstractListView<ImportStoreForm> {
     protected Class<? extends AbstractEditView<ImportStoreForm>> getEditViewClass() {
         return EditImportStoreFormView.class;
     }
-
-    @Override
-    protected boolean preShowEditView(ImportStoreForm entity, EditActionEnum action, Map<String, Object> detailParams) {
-        super.preShowEditView(entity, action, detailParams);
-        int answer = JOptionPane.showConfirmDialog(this.getParent(), "Continue to show edit view?", "Confirm",
-                JOptionPane.YES_NO_OPTION);
-        return answer == JOptionPane.YES_OPTION;
-    }
-
 }

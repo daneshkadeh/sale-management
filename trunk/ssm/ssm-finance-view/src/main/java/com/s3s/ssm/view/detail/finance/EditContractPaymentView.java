@@ -32,7 +32,7 @@ import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditContractPaymentView extends AbstractSingleEditView<ContractPayment> {
-    private static final String REF_SALES_CONTRACT = "5";
+    private static final String REF_SALES_CONTRACT = "1";
 
     public EditContractPaymentView(Map<String, Object> entity) {
         super(entity);
@@ -63,7 +63,7 @@ public class EditContractPaymentView extends AbstractSingleEditView<ContractPaym
             final ContractPayment entity) {
         super.customizeComponents(name2AttributeComponent, entity);
         final JTextField tdfRate = (JTextField) name2AttributeComponent.get("rate").getComponent();
-        final MoneyComponent mc = (MoneyComponent) name2AttributeComponent.get("money").getComponent();
+        final MoneyComponent mc = (MoneyComponent) name2AttributeComponent.get("amount").getComponent();
         mc.addMoneyChangeListener(new IMoneyChangedListener() {
             @Override
             public void doMoneyChanged(ChangeEvent e) {

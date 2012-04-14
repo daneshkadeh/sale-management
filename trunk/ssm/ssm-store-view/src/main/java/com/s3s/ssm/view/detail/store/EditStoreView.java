@@ -19,6 +19,7 @@ import java.util.Map;
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -34,12 +35,16 @@ public class EditStoreView extends AbstractSingleEditView<Store> {
     @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, Store entity, Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX).newColumn();
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("manager", DetailFieldType.DROPDOWN).referenceDataId(REF_OPERATOR);
+        detailDataModel.addAttribute("manager", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_OPERATOR)
+                .mandatory(true);
+        detailDataModel.addAttribute("phone", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("fax", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("address", DetailFieldType.TEXTAREA).mandatory(true);
-        detailDataModel.addAttribute("storedAddress", DetailFieldType.TEXTAREA).mandatory(true);
-        detailDataModel.addAttribute("importAddress", DetailFieldType.TEXTAREA).mandatory(true);
-        detailDataModel.addAttribute("exportAddress", DetailFieldType.TEXTAREA).mandatory(true);
+        // detailDataModel.addAttribute("storedAddress", DetailFieldType.TEXTAREA);
+        // detailDataModel.addAttribute("importAddress", DetailFieldType.TEXTAREA).newColumn();
+        // detailDataModel.addAttribute("exportAddress", DetailFieldType.TEXTAREA);
     }
 
     @Override

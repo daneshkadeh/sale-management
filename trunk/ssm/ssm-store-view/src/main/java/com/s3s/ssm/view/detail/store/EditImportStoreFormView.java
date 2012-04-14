@@ -19,7 +19,6 @@ import java.awt.event.ItemListener;
 import java.util.Map;
 
 import javax.swing.JComboBox;
-import javax.swing.JTextField;
 
 import com.s3s.ssm.entity.store.DetailImportStore;
 import com.s3s.ssm.entity.store.ImportStoreForm;
@@ -30,6 +29,8 @@ import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.interfaces.store.IStoreService;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -43,6 +44,7 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
     private static String REF_UNIT_UOM = "1";
     private static String REF_LIST_PRODUCT = "2";
     private static String REF_LIST_ITEM = "3";
+    private static final String REF_CURRENCY = "REF_CURRENCY";
 
     /**
      * @param entity
@@ -66,9 +68,12 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
         listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM);
         listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM);
         listDataModel.addColumn("baseUom", ListRendererType.TEXT, ListEditorType.TEXTFIELD).notEditable();
-        listDataModel.addColumn("quantity", ListRendererType.NUMBER, ListEditorType.TEXTFIELD);
-        listDataModel.addColumn("priceUnit", ListRendererType.NUMBER, ListEditorType.TEXTFIELD);
-        listDataModel.addColumn("priceSubtotal", ListRendererType.NUMBER, ListEditorType.TEXTFIELD);
+        listDataModel.addColumn("quantity", ListRendererType.NUMBER, ListEditorType.TEXTFIELD)
+                .width(UIConstants.QTY_COLUMN_WIDTH).summarized();
+        listDataModel.addColumn("priceUnit", ListRendererType.TEXT, ListEditorType.MONEY)
+                .width(UIConstants.AMT_COLUMN_WIDTH).referenceDataId(REF_CURRENCY);
+        listDataModel.addColumn("priceSubtotal", ListRendererType.TEXT, ListEditorType.MONEY)
+                .referenceDataId(REF_CURRENCY).width(UIConstants.AMT_COLUMN_WIDTH).summarized();
     }
 
     /**
@@ -99,22 +104,24 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
     protected void initialPresentationView(DetailDataModel detailDataModel, ImportStoreForm entity,
             Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("printAfterSave", DetailFieldType.CHECKBOX).newColumn();
-        detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
+        // detailDataModel.addAttribute("printAfterSave", DetailFieldType.CHECKBOX).newColumn();
         detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_IMPORT_STORE_STATUS).newColumn();
-        detailDataModel.addAttribute("store", DetailFieldType.ENTITY_CHOOSER).cacheDataId(CacheId.REF_LIST_STORE);
-        detailDataModel.addAttribute("mobilizationOrder", DetailFieldType.TEXTBOX).newColumn();
-        detailDataModel.addAttribute("salesContract", DetailFieldType.ENTITY_CHOOSER).cacheDataId(
-                CacheId.REF_LIST_SALES_CONTRACT);
-        detailDataModel.addAttribute("importNum", DetailFieldType.TEXTBOX).newColumn();
-        detailDataModel.addAttribute("supplierName", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
         detailDataModel.addAttribute("shipNum", DetailFieldType.TEXTBOX).newColumn();
-        detailDataModel.addAttribute("receiptDate", DetailFieldType.DATE);
+        detailDataModel.addAttribute("store", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_STORE);
         detailDataModel.addAttribute("shipPriceType", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_SHIP_PRICE_TYPE).newColumn();
-        detailDataModel.addAttribute("receiver", DetailFieldType.ENTITY_CHOOSER).cacheDataId(CacheId.REF_LIST_OPERATOR);
-        detailDataModel.addAttribute("shipPrice", DetailFieldType.TEXTBOX).newColumn();
+        detailDataModel.addAttribute("salesContract", DetailFieldType.DROPDOWN_AUTOCOMPLETE).cacheDataId(
+                CacheId.REF_LIST_SALES_CONTRACT);
+        detailDataModel.addAttribute("shipPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY)
+                .newColumn();
+        detailDataModel.addAttribute("supplierName", DetailFieldType.TEXTBOX);
+
+        detailDataModel.addAttribute("receiptDate", DetailFieldType.DATE);
+
+        detailDataModel.addAttribute("receiver", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_OPERATOR);
+
         detailDataModel.addAttribute("sender", DetailFieldType.TEXTBOX);
 
     }
@@ -126,7 +133,7 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
     protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, ImportStoreForm entity) {
         super.customizeComponents(name2AttributeComponent, entity);
         final JComboBox cbShipPriceType = (JComboBox) name2AttributeComponent.get("shipPriceType").getComponent();
-        final JTextField tfdShipPrice = (JTextField) name2AttributeComponent.get("shipPrice").getComponent();
+        final MoneyComponent mShipPrice = (MoneyComponent) name2AttributeComponent.get("shipPrice").getComponent();
 
         cbShipPriceType.addItemListener(new ItemListener() {
             @Override
@@ -134,8 +141,7 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
                 ShipPriceType type = (ShipPriceType) cbShipPriceType.getSelectedItem();
                 ShipPrice shipPrice = serviceProvider.getService(IStoreService.class)
                         .getLatestShipPrice(type.getCode());
-                String strShipPrice = shipPrice.getPrice().getValue().toString();
-                tfdShipPrice.setText(strShipPrice);
+                mShipPrice.setMoney(shipPrice.getPrice());
             }
         });
     }
@@ -146,5 +152,6 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
         refDataModel.putRefDataList(REF_LIST_PRODUCT, serviceProvider.getService(ICatalogService.class)
                 .getListProducts());
         refDataModel.putRefDataList(REF_LIST_ITEM, serviceProvider.getService(ICatalogService.class).getAllItem());
+        refDataModel.putRefDataList(REF_CURRENCY, serviceProvider.getService(IConfigService.class).getCurrencyCodes());
     }
 }

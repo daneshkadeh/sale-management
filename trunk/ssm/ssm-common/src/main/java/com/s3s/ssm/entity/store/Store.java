@@ -35,10 +35,13 @@ public class Store extends AbstractCodeOLObject implements Serializable {
     private static final long serialVersionUID = 4672724391118673824L;
     private String name;
     private String address;
+    private String phone;
+    private String fax;
     private String storedAddress;
     private String importAddress;
     private String exportAddress;
     private Operator manager;
+    private Boolean isActive = true;
 
     @Column(name = "store_name", nullable = false, length = 256)
     @NotBlank
@@ -58,6 +61,25 @@ public class Store extends AbstractCodeOLObject implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Column(name = "phone")
+    @NotBlank
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    @Column(name = "fax")
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
     }
 
     @Column(name = "stored_address")
@@ -98,6 +120,15 @@ public class Store extends AbstractCodeOLObject implements Serializable {
 
     public void setManager(Operator manager) {
         this.manager = manager;
+    }
+
+    @Column(name = "is_active")
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     /**

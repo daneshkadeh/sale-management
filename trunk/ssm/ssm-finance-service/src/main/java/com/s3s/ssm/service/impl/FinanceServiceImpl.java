@@ -62,4 +62,12 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
     public List<PaymentMode> getPaymentModes() {
         return Arrays.asList(PaymentMode.values());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<PaymentType> getPaymentTypes() {
+        return Arrays.asList(PaymentType.values());
+    }
 }

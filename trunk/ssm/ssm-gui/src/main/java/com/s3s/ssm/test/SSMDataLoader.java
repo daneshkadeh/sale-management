@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -91,6 +92,7 @@ import com.s3s.ssm.entity.store.DetailMoveStore;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.entity.store.ImportStoreForm;
 import com.s3s.ssm.entity.store.MoveStoreForm;
+import com.s3s.ssm.entity.store.MoveStoreOrder;
 import com.s3s.ssm.entity.store.ShipPrice;
 import com.s3s.ssm.entity.store.ShipPriceType;
 import com.s3s.ssm.entity.store.Store;
@@ -113,7 +115,11 @@ public class SSMDataLoader {
     private static final String PRODUCT_TYPE_SHOES = "SHOES";
     private static final String PRODUCT_GIAY_NAM = "GIAY_NAM";
     private static final String UOM_KG = "KG";
-    private static final String COMPANY_ADDRESS = "28, Pham Hong Thai, P Ben Thanh, Q1, HCM";
+    private static final String COMPANY_ADDRESS = "28, Pham Hong Thai, P Ben Thanh, Q1, TP.HCM";
+    private static final String STORE_Q1 = "Kho Q1";
+    private static final String STORE_Q1_ADDRESS = "28, Pham Hong Thai, P Ben Thanh, Q1, TP.HCM";
+    private static final String STORE_Q9 = "Kho Q9";
+    private static final String STORE_Q9_ADDRESS = "34 Thuy Loi, P. Phuoc Long A, Q9, TP.HCM";
 
     ServiceProvider serviceProvider = ConfigProvider.getInstance().getServiceProvider();
 
@@ -169,9 +175,8 @@ public class SSMDataLoader {
 
         daoHelper.getDao(DetailImportStore.class).deleteAll(daoHelper.getDao(DetailImportStore.class).findAll());
         daoHelper.getDao(ImportStoreForm.class).deleteAll(daoHelper.getDao(ImportStoreForm.class).findAll());
-
         daoHelper.getDao(MoveStoreForm.class).deleteAll(daoHelper.getDao(MoveStoreForm.class).findAll());
-
+        daoHelper.getDao(MoveStoreOrder.class).deleteAll(daoHelper.getDao(MoveStoreOrder.class).findAll());
         daoHelper.getDao(DetailInvoice.class).deleteAll(daoHelper.getDao(DetailInvoice.class).findAll());
         daoHelper.getDao(Invoice.class).deleteAll(daoHelper.getDao(Invoice.class).findAll());
         daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());
@@ -286,6 +291,13 @@ public class SSMDataLoader {
 
     private static List<MoveStoreForm> initMoveStore(DaoHelper daoHelper, List<Store> listStore, List<Item> listItem,
             List<Operator> listOperator, List<TransportationType> listTransType) {
+
+        MoveStoreOrder order1 = new MoveStoreOrder();
+        order1.setCode("001");
+        order1.setFromStore(listStore.get(1));
+        order1.setDestStore(listStore.get(0));
+        order1.setDestDate(DateUtils.addMonths(new Date(), 1));
+
         MoveStoreForm form = new MoveStoreForm();
         DetailMoveStore detail1 = new DetailMoveStore();
         DetailMoveStore detail2 = new DetailMoveStore();
@@ -298,8 +310,7 @@ public class SSMDataLoader {
         Store destStore = listStore.get(1);
 
         form.setCode("001");
-        form.setFromStore(fromStore);
-        form.setDestStore(destStore);
+        form.setMoveStoreOrder(order1);
         form.setFromStoreman("Phan Hong Phuc");
         form.setDestStoreman("Pham Cong Bang");
         form.setFromAddress(fromStore.getExportAddress());
@@ -323,8 +334,17 @@ public class SSMDataLoader {
         detail2.setExportQty(80);
         detail2.setImportQty(80);
 
+        daoHelper.getDao(MoveStoreOrder.class).save(order1);
         daoHelper.getDao(MoveStoreForm.class).save(form);
         daoHelper.getDao(DetailMoveStore.class).saveOrUpdateAll(Arrays.asList(detail1, detail2));
+
+        MoveStoreOrder order2 = new MoveStoreOrder();
+        order2.setCode("002");
+        order2.setFromStore(listStore.get(0));
+        order2.setDestStore(listStore.get(1));
+        order2.setDestDate(DateUtils.addMonths(new Date(), 2));
+        daoHelper.getDao(MoveStoreOrder.class).save(order2);
+
         return Arrays.asList(form);
     }
 
@@ -678,18 +698,19 @@ public class SSMDataLoader {
         form1.setSalesContract(listSalesContact.get(0));
         form1.setSupplierName("KHACHHANG01");
         form1.setReceiver(listOperator.get(0));
-        form1.setSender("NGUOIGUI01");
-        form1.setMobilizationOrder("LENHDIEUDONG001");
-        form1.setImportNum("00001");
+        form1.setSender("Nguyen Van A");
 
+        Item item = listItem.get(0);
         DetailImportStore detail1 = new DetailImportStore();
         detail1.setImportStoreForm(form1);
-        detail1.setProduct(listItem.get(0).getProduct());
-        detail1.setItem(listItem.get(0));
+        detail1.setProduct(item.getProduct());
+        detail1.setItem(item);
         detail1.setQuantity(20);
         UnitOfMeasure unit = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
         detail1.setUom(unit);
         detail1.setBaseUom(unit);
+        detail1.setPriceUnit(item.getOriginPrice());
+        detail1.setPriceSubtotal(item.getOriginPrice().multiply(detail1.getQuantity()));
         form1.getDetailImportStores().add(detail1);
         daoHelper.getDao(ImportStoreForm.class).save(form1);
         return Arrays.asList(form1);
@@ -885,20 +906,24 @@ public class SSMDataLoader {
     private static List<Store> initStore(DaoHelper daoHelper, List<Operator> listOperator) {
         Store store1 = new Store();
         store1.setCode("K01");
-        store1.setAddress(COMPANY_ADDRESS);
-        store1.setStoredAddress(COMPANY_ADDRESS);
-        store1.setExportAddress(COMPANY_ADDRESS);
-        store1.setImportAddress(COMPANY_ADDRESS);
-        store1.setName("Kho 01");
+        store1.setAddress(STORE_Q1_ADDRESS);
+        store1.setStoredAddress(STORE_Q1_ADDRESS);
+        store1.setExportAddress(STORE_Q1_ADDRESS);
+        store1.setImportAddress(STORE_Q1_ADDRESS);
+        store1.setName(STORE_Q1);
+        store1.setPhone("(848) 38220541");
+        store1.setFax("84 - 8 - 38220542");
         store1.setManager(listOperator.get(0));
 
         Store store2 = new Store();
         store2.setCode("K02");
-        store2.setAddress(COMPANY_ADDRESS);
-        store2.setStoredAddress(COMPANY_ADDRESS);
-        store2.setExportAddress(COMPANY_ADDRESS);
-        store2.setImportAddress(COMPANY_ADDRESS);
-        store2.setName("Kho 02");
+        store2.setAddress(STORE_Q9_ADDRESS);
+        store2.setStoredAddress(STORE_Q9_ADDRESS);
+        store2.setExportAddress(STORE_Q9_ADDRESS);
+        store2.setImportAddress(STORE_Q9_ADDRESS);
+        store2.setName(STORE_Q9);
+        store2.setPhone("08.62809933");
+        store2.setFax("08.37312964");
         store2.setManager(listOperator.get(0));
 
         daoHelper.getDao(Store.class).saveOrUpdateAll(Arrays.asList(store1, store2));

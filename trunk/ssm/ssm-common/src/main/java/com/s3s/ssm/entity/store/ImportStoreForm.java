@@ -53,12 +53,10 @@ public class ImportStoreForm extends AbstractCodeOLObject {
     private Date receiptDate = new Date();
     private Operator receiver;
     private String sender;
-    private String mobilizationOrder;
-    private String importNum;
     private Boolean isProcessed = false;
     private Boolean isPrinted = false;
     private Boolean printAfterSave = false;
-    private ImportStoreStatus status = ImportStoreStatus.OPEN;
+    private ImportStoreStatus status = ImportStoreStatus.NEW;
     private ShipPriceType shipPriceType;
     private Money shipPrice;
     private Double shipNum = 0D;
@@ -145,24 +143,6 @@ public class ImportStoreForm extends AbstractCodeOLObject {
 
     public void setSender(String sender) {
         this.sender = sender;
-    }
-
-    @Column(name = "mob_order")
-    public String getMobilizationOrder() {
-        return mobilizationOrder;
-    }
-
-    public void setMobilizationOrder(String mobilizationOrder) {
-        this.mobilizationOrder = mobilizationOrder;
-    }
-
-    @Column(name = "import_num")
-    public String getImportNum() {
-        return importNum;
-    }
-
-    public void setImportNum(String importNum) {
-        this.importNum = importNum;
     }
 
     @Column(name = "is_processed")

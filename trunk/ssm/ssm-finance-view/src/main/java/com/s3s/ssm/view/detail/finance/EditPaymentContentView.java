@@ -16,22 +16,17 @@ package com.s3s.ssm.view.detail.finance;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Arrays;
 import java.util.Map;
 
 import javax.swing.JComboBox;
 
 import com.s3s.ssm.entity.finance.PaymentContent;
-import com.s3s.ssm.entity.finance.PaymentType;
-import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditPaymentContentView extends AbstractSingleEditView<PaymentContent> {
-
-    private static final String REF_PAYMENT_TYPE = "0";
-    private static final String REF_PAYMENT_CONTENT = "1";
 
     public EditPaymentContentView(Map<String, Object> entity) {
         super(entity);
@@ -41,17 +36,10 @@ public class EditPaymentContentView extends AbstractSingleEditView<PaymentConten
     protected void initialPresentationView(DetailDataModel detailDataModel, PaymentContent entity,
             Map<String, Object> request) {
         detailDataModel.addAttribute("paymentType", DetailFieldType.DROPDOWN).mandatory(true)
-                .referenceDataId(REF_PAYMENT_TYPE);
+                .cacheDataId(CacheId.REF_LIST_PAYMENT_TYPE);
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTAREA).mandatory(true);
-        detailDataModel.addAttribute("parent", DetailFieldType.DROPDOWN).referenceDataId(REF_PAYMENT_CONTENT);
-    }
-
-    @Override
-    protected void setReferenceDataModel(ReferenceDataModel refDataModel, PaymentContent entity) {
-        super.setReferenceDataModel(refDataModel, entity);
-        refDataModel.putRefDataList(REF_PAYMENT_TYPE, Arrays.asList(PaymentType.values()), null);
-        refDataModel.putRefDataList(REF_PAYMENT_CONTENT, getDaoHelper().getDao(PaymentContent.class).findAll(), null);
+        detailDataModel.addAttribute("parent", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_PAYMENT_CONTENT);
     }
 
     // TODO: add listener for PaymentType. The values of parent is based on PaymentType

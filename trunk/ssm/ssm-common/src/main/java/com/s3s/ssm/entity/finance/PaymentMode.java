@@ -16,6 +16,8 @@
 
 package com.s3s.ssm.entity.finance;
 
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
 /**
  * CASH: the payment is paid by cash. </br> DEBT_TRANSFER: the payment is paid by moving money to debt account of
  * customer.
@@ -24,5 +26,13 @@ package com.s3s.ssm.entity.finance;
  * 
  */
 public enum PaymentMode {
-    CASH, BANK_TRANSFER, VISA, CREDIT_CARD, DEBT_TRANSFER, VOUCHER
+    // CASH, BANK_TRANSFER, VISA, CREDIT_CARD, DEBT_TRANSFER, VOUCHER;
+    CASH, BANK_TRANSFER, DEBT_TRANSFER;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+    }
 }

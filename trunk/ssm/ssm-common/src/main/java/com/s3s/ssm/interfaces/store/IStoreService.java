@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.s3s.ssm.entity.store.ExportStoreStatus;
 import com.s3s.ssm.entity.store.ImportStoreStatus;
+import com.s3s.ssm.entity.store.MoveStoreOrder;
 import com.s3s.ssm.entity.store.MoveStoreStatus;
 import com.s3s.ssm.entity.store.ShipPrice;
 import com.s3s.ssm.entity.store.ShipPriceType;
@@ -30,4 +31,6 @@ public interface IStoreService {
      * @return
      */
     public ShipPrice getLatestShipPrice(String code);
+
+    public List<MoveStoreOrder> findMoveStoreOrderByStatus(MoveStoreStatus status);
 }
