@@ -52,8 +52,6 @@ public class EditGoodsGeneralView extends EditProductGeneralView<Goods> {
         detailDataModel.addAttribute("mainUom", DetailFieldType.DROPDOWN).referenceDataId(UOM_REF_ID);
         detailDataModel.addAttribute("properties", DetailFieldType.MULTI_SELECT_LIST_BOX)
                 .referenceDataId(REF_PROPERTIES_ID).width(300);
-        // System.err.println(entity.getProperties());
-
     }
 
     @Override

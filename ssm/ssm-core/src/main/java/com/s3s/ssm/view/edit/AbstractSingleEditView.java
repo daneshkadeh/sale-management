@@ -948,7 +948,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     private Validator getValidator() {
         Configuration<?> config = Validation.byDefaultProvider().configure();
         config.messageInterpolator(new ResourceBundleMessageInterpolator(new PlatformResourceBundleLocator(
-                "i18n/ValidationMessages")));
+                "i18n/validation/ValidationMessages")));
         ValidatorFactory factory = config.buildValidatorFactory();
         Validator validator = factory.getValidator();
         return validator;

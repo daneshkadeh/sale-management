@@ -29,7 +29,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -565,7 +564,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             // Remove row in database
             getDaoHelper().getDao(getEntityClass()).deleteAll(removedEntities);
             // Remove row in view
-            System.err.println("range deleted: " + Arrays.asList(selectedRows));
             mainTableModel.deleteRows(selectedRows[0], selectedRows[selectedRows.length - 1]);
             rowHeader.repaint();
             rowHeader.revalidate();
