@@ -37,8 +37,6 @@ public class ListMoveStoreFormView extends AbstractListView<MoveStoreForm> {
         listDataModel.addColumn("createdDate", ListRendererType.DATE);
         listDataModel.addColumn("receivedDate", ListRendererType.DATE);
         listDataModel.addColumn("sentDate", ListRendererType.DATE);
-        listDataModel.addColumn("fromStore", ListRendererType.TEXT);
-        listDataModel.addColumn("destStore", ListRendererType.TEXT);
         listDataModel.addColumn("transType", ListRendererType.TEXT);
         listDataModel.addColumn("exportQtyTotal", ListRendererType.NUMBER).summarized();
         listDataModel.addColumn("importQtyTotal", ListRendererType.NUMBER).summarized();

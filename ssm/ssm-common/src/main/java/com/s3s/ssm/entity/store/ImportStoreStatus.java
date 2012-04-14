@@ -23,5 +23,5 @@ package com.s3s.ssm.entity.store;
  * 
  */
 public enum ImportStoreStatus {
-    OPEN, DRAFT, DELETED
+    NEW, PROCESSED, DRAFT, CANCELLED
 }

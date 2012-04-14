@@ -60,7 +60,7 @@ public class ExportStoreForm extends AbstractCodeOLObject {
     private Long reqQuanTotal = 0L;
     private Long realQuanTotal = 0L;
     private Long remainQuanTotal = 0L;
-    private ExportStoreStatus status = ExportStoreStatus.OPEN;
+    private ExportStoreStatus status = ExportStoreStatus.NEW;
 
     private Set<DetailExportStore> exportDetails = new HashSet<DetailExportStore>();
 

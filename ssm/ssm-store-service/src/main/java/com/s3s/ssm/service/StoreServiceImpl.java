@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.store.ExportStoreStatus;
 import com.s3s.ssm.entity.store.ImportStoreStatus;
+import com.s3s.ssm.entity.store.MoveStoreOrder;
 import com.s3s.ssm.entity.store.MoveStoreStatus;
 import com.s3s.ssm.entity.store.ShipPrice;
 import com.s3s.ssm.entity.store.ShipPriceType;
@@ -95,5 +96,12 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
         dc.addOrder(Order.desc("updateDate"));
         ShipPrice shipPrice = getDaoHelper().getDao(ShipPrice.class).findFirstByCriteria(dc);
         return shipPrice;
+    }
+
+    public List<MoveStoreOrder> findMoveStoreOrderByStatus(MoveStoreStatus status) {
+        DetachedCriteria dc = getDaoHelper().getDao(MoveStoreOrder.class).getCriteria();
+        dc.add(Restrictions.eq("status", status));
+        List<MoveStoreOrder> orders = getDaoHelper().getDao(MoveStoreOrder.class).findByCriteria(dc);
+        return orders;
     }
 }
