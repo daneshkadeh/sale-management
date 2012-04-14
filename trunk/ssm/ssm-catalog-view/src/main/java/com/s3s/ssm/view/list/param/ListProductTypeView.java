@@ -25,7 +25,7 @@ public class ListProductTypeView extends AbstractListView<ProductType> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("id", ListRendererType.TEXT);
+        // listDataModel.addColumn("id", ListRendererType.TEXT);
         listDataModel.addColumn("code", ListRendererType.TEXT);
         listDataModel.addColumn("name", ListRendererType.TEXT);
         listDataModel.addColumn("productFamilyType", ListRendererType.TEXT);

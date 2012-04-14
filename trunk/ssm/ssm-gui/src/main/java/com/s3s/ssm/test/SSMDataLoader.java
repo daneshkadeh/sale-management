@@ -402,7 +402,7 @@ public class SSMDataLoader {
         ProductType productType = new ProductType();
         productType.setCode("ServiceAtHome");
         productType.setName("Sua chua tai nha");
-        productType.setProductFamilyType(ProductFamilyType.VOUCHER);
+        productType.setProductFamilyType(ProductFamilyType.SERVICE);
         daoHelper.getDao(ProductType.class).saveOrUpdate(productType);
 
         Service service = new Service();

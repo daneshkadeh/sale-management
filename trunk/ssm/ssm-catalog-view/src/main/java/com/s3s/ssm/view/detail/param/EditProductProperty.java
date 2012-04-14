@@ -48,8 +48,16 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
             Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
+        // Only support list property now
         detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).mandatory(true)
-                .referenceDataId(REF_PROPERTY_TYPE);
+                .referenceDataId(REF_PROPERTY_TYPE).editable(false);
+    }
+
+    @Override
+    protected ProductProperty loadForCreate(Map<String, Object> request) {
+        ProductProperty entity = super.loadForCreate(request);
+        entity.setType(PropertyType.LIST);
+        return entity;
     }
 
     @Override

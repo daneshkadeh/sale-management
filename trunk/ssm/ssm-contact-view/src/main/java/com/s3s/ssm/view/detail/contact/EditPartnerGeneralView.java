@@ -58,7 +58,8 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
         detailDataModel.tab("General", "Common information of supplier",
                 ImageUtils.getMediumIcon(ImageConstants.USER_ICON));
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).width(50).newColumn();
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX).newColumn();
         addIndividualGroup(detailDataModel);
 
         detailDataModel.startGroup(ControlConfigUtils
@@ -69,13 +70,13 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
         detailDataModel.addAttribute("website", DetailFieldType.TEXTBOX);
         detailDataModel.endGroup();
 
-        detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX);
-        detailDataModel.addAttribute("comment", DetailFieldType.TEXTAREA);
+        detailDataModel.addAttribute("comment", DetailFieldType.TEXTAREA).newColumn();
         // detailDataModel.addRawAttribute("rawAttribute1", DetailFieldType.TEXTBOX).value("Init value");
         // detailDataModel.addRawAttribute("rawAttribute2", DetailFieldType.DROPDOWN).value("value 2")
         // .referenceDataId(TEST_ID);
         // detailDataModel.addRawAttribute("rawAttribute3", DetailFieldType.MULTI_SELECT_TREE_BOX);
-        detailDataModel.addRawAttribute("rawAttribute4", DetailFieldType.MONEY).value(null).referenceDataId(MONEY_ID);
+        // detailDataModel.addRawAttribute("rawAttribute4",
+        // DetailFieldType.MONEY).value(null).referenceDataId(MONEY_ID);
         // detailDataModel.addRawAttribute("rawLabel", DetailFieldType.LABEL).value("Hello label");
 
         detailDataModel.tab(ControlConfigUtils.getString("label.EditPartnerGeneralView.Partner.address"),
