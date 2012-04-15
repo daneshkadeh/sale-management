@@ -20,6 +20,8 @@ import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -52,4 +54,13 @@ public class EditStoreView extends AbstractSingleEditView<Store> {
         super.setReferenceDataModel(refDataModel, entity);
         refDataModel.putRefDataList(REF_OPERATOR, getDaoHelper().getDao(Operator.class).findAll(), null);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getDefaultTitle(Store entity) {
+        return ControlConfigUtils.getString("label.Store.detail.title") + UIConstants.BLANK + entity.getCode();
+    }
+
 }

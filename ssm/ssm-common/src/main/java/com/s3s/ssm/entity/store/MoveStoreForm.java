@@ -31,7 +31,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.validator.constraints.NotBlank;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.operator.Operator;
@@ -69,7 +68,6 @@ public class MoveStoreForm extends AbstractCodeOLObject {
     }
 
     @Column(name = "from_address")
-    @NotBlank
     public String getFromAddress() {
         return fromAddress;
     }
@@ -79,7 +77,6 @@ public class MoveStoreForm extends AbstractCodeOLObject {
     }
 
     @Column(name = "dest_address")
-    @NotBlank
     public String getDestAddress() {
         return destAddress;
     }

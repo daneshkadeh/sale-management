@@ -47,7 +47,7 @@ public class StoreManagementDomain extends AbstractDomain {
     @Override
     protected void constructTreeView(TreeNodeWithView rootNode) {
         TreeNodeWithView storeNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.Store"),
-                new ListStoreView());
+                new ListStoreView(null, ControlConfigUtils.getString("label.Store.list.title"), null));
         TreeNodeWithView shipPriceTypeNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Store.ShipPriceType"), new ListShipPriceTypeView());
         TreeNodeWithView shipPriceNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.ShipPrice"),
@@ -55,7 +55,8 @@ public class StoreManagementDomain extends AbstractDomain {
         TreeNodeWithView transportNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Store.TransportType"), new ListTransportationTypeView());
         TreeNodeWithView importNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.ImportStore"),
-                new ListImportStoreFormView());
+                new ListImportStoreFormView(null, ControlConfigUtils.getString("label.ImportStoreForm.list.title"),
+                        null));
         TreeNodeWithView exportNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Store.ExportStore"),
                 new ListExportStoreFormView(null, ControlConfigUtils.getString("label.ExportStoreForm.list.title"),
                         null));

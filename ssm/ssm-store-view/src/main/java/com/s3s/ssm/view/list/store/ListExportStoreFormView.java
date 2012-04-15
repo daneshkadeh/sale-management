@@ -48,9 +48,9 @@ public class ListExportStoreFormView extends AbstractListView<ExportStoreForm> {
         listDataModel.addColumn("transType.name", ListRendererType.LINK);
         listDataModel.addColumn("transPrice", ListRendererType.TEXT);
         listDataModel.addColumn("isPrinted", ListRendererType.BOOLEAN);
-        listDataModel.addColumn("reqQuanTotal", ListRendererType.NUMBER);
-        listDataModel.addColumn("realQuanTotal", ListRendererType.NUMBER);
-        listDataModel.addColumn("remainQuanTotal", ListRendererType.NUMBER);
+        listDataModel.addColumn("reqQuanTotal", ListRendererType.NUMBER).summarized();
+        listDataModel.addColumn("realQuanTotal", ListRendererType.NUMBER).summarized();
+        listDataModel.addColumn("remainQuanTotal", ListRendererType.NUMBER).summarized();
     }
 
     @Override

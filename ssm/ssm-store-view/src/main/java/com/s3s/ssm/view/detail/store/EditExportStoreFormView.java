@@ -77,7 +77,7 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
         listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
                 .width(205);
         listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM)
-                .width(70, 0, 100);
+                .width(70);
         listDataModel.addColumn("baseUom", ListRendererType.TEXT, ListEditorType.TEXTFIELD).notEditable().width(70);
         listDataModel.addColumn("reqQuan", ListRendererType.NUMBER).notEditable().summarized()
                 .width(UIConstants.QTY_COLUMN_WIDTH);
