@@ -91,5 +91,7 @@ public class UIConstants {
 
     public static final int AMT_COLUMN_WIDTH = 93;
 
+    public static final int NUMBER_FIELD_WIDTH = 125;
+
     public static final Font DEFAULT_BOLD_FONT = new Font("Arial", Font.BOLD, 12);
 }

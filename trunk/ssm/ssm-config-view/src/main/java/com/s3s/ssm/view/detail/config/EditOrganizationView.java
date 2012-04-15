@@ -82,15 +82,15 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
         detailDataModel.addAttribute("defPageRowNum", DetailFieldType.TEXTBOX).mandatory(true);
 
         detailDataModel.tab(numFormatTab, numFormatTab, null);
+        detailDataModel.startGroup(separatorGrp);
+        detailDataModel.addAttribute("thousandsSeparator", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("oddSeparator", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.endGroup();
         detailDataModel.startGroup(digitAfterCommaGrp);
         detailDataModel.addAttribute("digitAfterQuan", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("digitAfterUnitPrice", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("digitAfterAmt", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("digitAfterRate", DetailFieldType.TEXTBOX).mandatory(true);
-        detailDataModel.endGroup();
-        detailDataModel.startGroup(separatorGrp);
-        detailDataModel.addAttribute("thousandsSeparator", DetailFieldType.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("oddSeparator", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.endGroup();
 
         // sold on credit

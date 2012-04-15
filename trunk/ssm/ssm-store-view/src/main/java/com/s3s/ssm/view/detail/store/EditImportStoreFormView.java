@@ -29,6 +29,7 @@ import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.interfaces.store.IStoreService;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -60,15 +61,17 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
     protected void initialListDetailPresentationView(ListDataModel listDataModel) {
         // TODO: Hoang must set max, min for column
         listDataModel.setEditable(true);
-        listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
-        listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
-                REF_LIST_PRODUCT);
-        listDataModel.addColumn("product.name", ListRendererType.TEXT).notEditable();
+        // listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
+        listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
+                .referenceDataId(REF_LIST_PRODUCT).width(180);
+        listDataModel.addColumn("product.name", ListRendererType.TEXT).notEditable().width(290);
         // TODO: Hoang the data should be updated after choosing the product
-        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM);
-        listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM);
+        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
+                .width(205);
+        listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM)
+                .width(70);
         listDataModel.addColumn("baseUom", ListRendererType.TEXT, ListEditorType.TEXTFIELD).notEditable();
-        listDataModel.addColumn("quantity", ListRendererType.NUMBER, ListEditorType.TEXTFIELD)
+        listDataModel.addColumn("quantity", ListRendererType.NUMBER, ListEditorType.TEXTFIELD).width(70)
                 .width(UIConstants.QTY_COLUMN_WIDTH).summarized();
         listDataModel.addColumn("priceUnit", ListRendererType.TEXT, ListEditorType.MONEY)
                 .width(UIConstants.AMT_COLUMN_WIDTH).referenceDataId(REF_CURRENCY);
@@ -153,5 +156,11 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
                 .getListProducts());
         refDataModel.putRefDataList(REF_LIST_ITEM, serviceProvider.getService(ICatalogService.class).getAllItem());
         refDataModel.putRefDataList(REF_CURRENCY, serviceProvider.getService(IConfigService.class).getCurrencyCodes());
+    }
+
+    @Override
+    protected String getDefaultTitle(ImportStoreForm entity) {
+        return ControlConfigUtils.getString("label.ImportStoreForm.detail.title") + UIConstants.BLANK
+                + entity.getCode();
     }
 }

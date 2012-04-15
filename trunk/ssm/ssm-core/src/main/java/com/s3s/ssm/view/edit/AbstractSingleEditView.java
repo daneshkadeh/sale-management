@@ -423,6 +423,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                     numFormatter.setValueClass(propertyReturnType);
                     dataField = new JFormattedTextField(numFormatter);
                     ((JFormattedTextField) dataField).setHorizontalAlignment(JFormattedTextField.RIGHT);
+                    width = UIConstants.NUMBER_FIELD_WIDTH;
                 } else {
                     // The format type is String
                     dataField = new JFormattedTextField("");
