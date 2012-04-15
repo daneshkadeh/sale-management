@@ -16,7 +16,6 @@
 package com.s3s.ssm.view.list;
 
 import java.awt.Container;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +49,7 @@ import org.jdesktop.swingx.table.DatePickerCellEditor;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.component.MoneyComponent;
 
 /**
@@ -76,7 +76,7 @@ public class SAdvanceTable extends JXTable {
                 : ListSelectionModel.SINGLE_INTERVAL_SELECTION;
         setSelectionMode(selectionMode);
         setColumnControlVisible(true);
-        getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        getTableHeader().setFont(UIConstants.DEFAULT_BOLD_FONT);
 
         setRenderer();
         setEditor();

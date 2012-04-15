@@ -56,6 +56,7 @@ public class MoneyComponent extends JPanel {
         valueField = initValueField();
         currencyCodeField = initCurrencyCodeField(currencyCodes);
         setMoney(money);
+        resetCurrentMoney();
         add(valueField, "grow");
         add(currencyCodeField);
     }

@@ -16,7 +16,6 @@
 package com.s3s.ssm.view.component;
 
 import java.awt.Cursor;
-import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -27,6 +26,7 @@ import javax.swing.tree.TreePath;
 
 import org.springframework.util.Assert;
 
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.TreeView;
 import com.s3s.ssm.view.edit.AbstractMultiEditView;
@@ -51,7 +51,7 @@ public abstract class AbstractDomain extends JToggleButton implements ItemListen
         this.contentScrollPane = contentScrollPane;
         treeView = initTreeView(contentScrollPane);
         setCursor(new Cursor(Cursor.HAND_CURSOR));
-        setFont(new Font("Arial", Font.BOLD, 12));
+        setFont(UIConstants.DEFAULT_BOLD_FONT);
         setHorizontalAlignment(LEFT);
         addItemListener(this);
     }

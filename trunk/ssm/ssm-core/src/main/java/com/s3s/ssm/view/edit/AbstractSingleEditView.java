@@ -17,7 +17,6 @@ package com.s3s.ssm.view.edit;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Event;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -386,7 +385,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 label += " (*)";
             }
             JLabel lblLabel = createLabel(label);
-            lblLabel.setFont(new Font("Arial", Font.BOLD, 12));
+            lblLabel.setFont(UIConstants.DEFAULT_BOLD_FONT);
             JComponent dataField = null;
             boolean isRaw = attribute.isRaw();
             boolean editable = attribute.isEditable();
