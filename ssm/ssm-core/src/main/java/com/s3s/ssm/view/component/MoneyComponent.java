@@ -111,7 +111,11 @@ public class MoneyComponent extends JPanel {
     }
 
     public void setMoney(Money money) {
-        valueField.setValue(money.getValue());
+        if (money == null) {
+            valueField.setValue(0L);
+        } else {
+            valueField.setValue(money.getValue());
+        }
         currencyCodeField.setSelectedItem(money.getCurrencyCode());
         fireMoneyChanged();
     }

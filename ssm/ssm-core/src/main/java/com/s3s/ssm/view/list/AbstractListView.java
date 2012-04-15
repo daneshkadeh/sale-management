@@ -398,7 +398,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         // tblFooter.setPreferredScrollableViewportSize(new Dimension(
         // tblFooter.getPreferredScrollableViewportSize().width, tblFooter.getRowHeight()));
         tblFooter.setVisibleRowCount(1);
-        tblFooter.setEnabled(false);
+        // tblFooter.setEnabled(false);
         tblFooter.setShowGrid(false);
         tblFooter.setFont(UIConstants.DEFAULT_BOLD_FONT);
 

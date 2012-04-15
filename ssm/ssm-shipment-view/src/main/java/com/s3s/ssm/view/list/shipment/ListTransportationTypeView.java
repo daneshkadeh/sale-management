@@ -16,6 +16,8 @@
 
 package com.s3s.ssm.view.list.shipment;
 
+import javax.swing.Icon;
+
 import com.s3s.ssm.entity.shipment.TransportationType;
 import com.s3s.ssm.view.detail.shipment.EditTransportationTypeView;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -28,6 +30,12 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * 
  */
 public class ListTransportationTypeView extends AbstractListView<TransportationType> {
+
+    private static final long serialVersionUID = -180700397128364374L;
+
+    public ListTransportationTypeView(Icon icon, String label, String tooltip) {
+        super(icon, label, tooltip);
+    }
 
     /**
      * {@inheritDoc}

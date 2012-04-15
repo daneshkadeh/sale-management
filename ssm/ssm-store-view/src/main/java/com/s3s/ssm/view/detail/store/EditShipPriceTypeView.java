@@ -19,6 +19,8 @@ package com.s3s.ssm.view.detail.store;
 import java.util.Map;
 
 import com.s3s.ssm.entity.store.ShipPriceType;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -46,4 +48,8 @@ public class EditShipPriceTypeView extends AbstractSingleEditView<ShipPriceType>
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
     }
 
+    @Override
+    protected String getDefaultTitle(ShipPriceType entity) {
+        return ControlConfigUtils.getString("label.ShipPriceType.detail.title") + UIConstants.BLANK + entity.getCode();
+    }
 }
