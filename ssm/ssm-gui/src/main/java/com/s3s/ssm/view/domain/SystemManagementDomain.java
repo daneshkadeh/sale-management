@@ -32,7 +32,6 @@ import com.s3s.ssm.view.list.config.ListUomCategoryView;
 import com.s3s.ssm.view.list.operator.ListOperatorView;
 import com.s3s.ssm.view.list.operator.ListStallView;
 import com.s3s.ssm.view.list.param.ListGoodsView;
-import com.s3s.ssm.view.list.param.ListItemView;
 import com.s3s.ssm.view.list.param.ListManufacturerView;
 import com.s3s.ssm.view.list.param.ListPackageView;
 import com.s3s.ssm.view.list.param.ListProductPropertyView;
@@ -105,8 +104,8 @@ public class SystemManagementDomain extends AbstractDomain {
         TreeNodeWithView packageNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Package"),
                 new ListPackageView());
 
-        TreeNodeWithView itemNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Item"),
-                new ListItemView());
+        // TreeNodeWithView itemNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Item"),
+        // new ListItemView());
         // Basic Information Management
         // TreeNodeWithView basicInformationEntry = new TreeNodeWithView(
         // ControlConfigUtils.getString("JTree.System.BasicInformation"), new ListBasicInformationView());
@@ -127,7 +126,7 @@ public class SystemManagementDomain extends AbstractDomain {
         productManagementEntry.add(voucherNode);
         productManagementEntry.add(serviceProductNode);
         productManagementEntry.add(packageNode);
-        productManagementEntry.add(itemNode);
+        // productManagementEntry.add(itemNode);
         productManagementEntry.add(taxGroupNode);
 
         // Bank

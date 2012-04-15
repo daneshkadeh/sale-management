@@ -38,4 +38,11 @@ public class EditGoodsView extends AbstractMultiEditView<Goods> {
         nodeItems.setView(itemsView);
         root.add(nodeItems);
     }
+
+    protected String getDefaultTitle(Goods entity) {
+        if (entity.isPersisted()) {
+            return (entity.getCode());
+        }
+        return getDefaultTitle(entity);
+    }
 }

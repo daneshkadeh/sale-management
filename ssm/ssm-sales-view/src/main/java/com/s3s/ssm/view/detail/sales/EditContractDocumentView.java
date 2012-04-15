@@ -30,4 +30,9 @@ public class EditContractDocumentView extends AbstractSingleEditView<ContractDoc
         super.setReferenceDataModel(refDataModel, entity);
         refDataModel.putRefDataList(REF_DOCUMENT_PLACE, DocumentPlaceEnum.values());
     }
+
+    @Override
+    protected String getDefaultTitle(ContractDocument entity) {
+        return entity.getCode();
+    }
 }

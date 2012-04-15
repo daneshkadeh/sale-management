@@ -29,4 +29,11 @@ public class EditVoucherView extends AbstractMultiEditView<Voucher> {
 
     }
 
+    protected String getDefaultTitle(Voucher entity) {
+        if (entity.isPersisted()) {
+            return (entity.getCode());
+        }
+        return getDefaultTitle(entity);
+    }
+
 }

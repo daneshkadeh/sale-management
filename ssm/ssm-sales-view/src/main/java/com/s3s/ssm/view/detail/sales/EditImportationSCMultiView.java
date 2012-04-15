@@ -38,4 +38,8 @@ public class EditImportationSCMultiView extends AbstractMultiEditView<Importatio
         root.add(nodeAddedFees);
     }
 
+    @Override
+    protected String getDefaultTitle(ImportationSC entity) {
+        return entity.getCode();
+    }
 }

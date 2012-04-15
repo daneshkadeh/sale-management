@@ -41,5 +41,4 @@ public class EditPackageView extends AbstractMultiEditView<SPackage> {
     protected String getDefaultTitle(SPackage entity) {
         return entity.getCode() != null ? entity.getCode() : "New";
     }
-
 }

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.i18n.ControlConstants;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.edit.AbstractMultiEditView;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
@@ -24,14 +26,16 @@ public class EditMultiCustomerView extends AbstractMultiEditView<Partner> {
     protected AbstractSingleEditView<Partner> constructMainView(TreeNodeWithView root, Partner entity,
             Map<String, Object> request) {
         EditCustomerGeneralView detailView = new EditCustomerGeneralView(request);
-        TreeNodeWithView node = new TreeNodeWithView("Customer", detailView);
+        TreeNodeWithView node = new TreeNodeWithView(
+                ControlConfigUtils.getString(ControlConstants.MESSAGE_KEY_GENERAL), detailView);
         root.add(node);
         return detailView;
     }
 
     @Override
     protected void constructSubViews(TreeNodeWithView root, Partner entity, Map<String, Object> request) {
-        TreeNodeWithView nodeAddress = new TreeNodeWithView("Address");
+        TreeNodeWithView nodeAddress = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.SubMenu.Partner.Address"));
         Map<String, Object> listRequest = new HashMap<>();
         listRequest.put(PARAM_PARENT_ID, entity.getId());
         listRequest.put(PARAM_PARENT_CLASS, entity.getClass());

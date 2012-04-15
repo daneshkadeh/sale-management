@@ -327,4 +327,8 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
         super.saveOrUpdate(masterEntity);
     }
 
+    @Override
+    protected String getDefaultTitle(Invoice entity) {
+        return entity.getInvoiceNumber();
+    }
 }

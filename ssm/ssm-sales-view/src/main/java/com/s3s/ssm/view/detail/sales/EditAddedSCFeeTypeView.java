@@ -20,4 +20,8 @@ public class EditAddedSCFeeTypeView extends AbstractSingleEditView<AddedSCFeeTyp
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
     }
 
+    @Override
+    protected String getDefaultTitle(AddedSCFeeType entity) {
+        return entity.getCode();
+    }
 }

@@ -29,6 +29,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ImageConstants;
 import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.i18n.ControlConstants;
 import com.s3s.ssm.view.component.IMoneyChangedListener;
 import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
@@ -55,8 +56,8 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
     @Override
     protected void
             initialPresentationView(DetailDataModel detailDataModel, Partner entity, Map<String, Object> request) {
-        detailDataModel.tab("General", "Common information of supplier",
-                ImageUtils.getMediumIcon(ImageConstants.USER_ICON));
+        detailDataModel.tab(ControlConfigUtils.getString(ControlConstants.MESSAGE_KEY_GENERAL),
+                "Common information of supplier", ImageUtils.getMediumIcon(ImageConstants.USER_ICON));
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX).newColumn();
