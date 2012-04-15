@@ -14,6 +14,9 @@
  */
 package com.s3s.ssm.entity.sales;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
@@ -25,22 +28,32 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
+import com.s3s.ssm.entity.catalog.Product;
+import com.s3s.ssm.entity.catalog.SPackage;
 import com.s3s.ssm.model.Money;
 
 @Entity
 @Table(name = "s_detail_invoice")
 public class DetailInvoice extends AbstractIdOLObject {
     private Invoice invoice;
+    private Product product;
     private Item item;
+    private SPackage pack;
     private PackageLine packageLine;
-    private int amount;
+    private DetailInvoice parent; // a package is parent detailInvoice, each line is a sub detailInvoice
+    private Set<DetailInvoice> subs = new HashSet<>();
+    private Integer amount = 0;
 
     // TODO: don't know why we have a lot of properties for price?
     private Money priceBeforeTax = Money.zero("VND");
@@ -48,12 +61,23 @@ public class DetailInvoice extends AbstractIdOLObject {
     private Money priceAfterTax = Money.zero("VND");
     private Money moneyBeforeTax = Money.zero("VND");
     private Money moneyOfTax = Money.zero("VND");
-    private Money moneyAfterTax = Money.zero("VND");
+    private Money moneyAfterTax = Money.zero("VND"); // is this totalAmount?
     private DetailInvoiceType type = DetailInvoiceType.SALES;
     private DetailInvoiceStatus status = DetailInvoiceStatus.OPEN;
 
     // Transient field
+    @Transient
     private Money totalAmount;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     @Transient
     public Money getTotalAmount() {
@@ -70,8 +94,9 @@ public class DetailInvoice extends AbstractIdOLObject {
         totalAmount = Money.multiply(amount, priceAfterTax);
     }
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "invoice_id")
+    @NotNull
     public Invoice getInvoice() {
         return invoice;
     }
@@ -81,14 +106,23 @@ public class DetailInvoice extends AbstractIdOLObject {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "item_id", nullable = false)
-    @NotNull
+    @JoinColumn(name = "item_id")
     public Item getItem() {
         return item;
     }
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "package_id")
+    public SPackage getPackage() {
+        return pack;
+    }
+
+    public void setPackage(SPackage pack) {
+        this.pack = pack;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -101,12 +135,32 @@ public class DetailInvoice extends AbstractIdOLObject {
         this.packageLine = packageLine;
     }
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_id")
+    public DetailInvoice getParent() {
+        return parent;
+    }
+
+    public void setParent(DetailInvoice parent) {
+        this.parent = parent;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public Set<DetailInvoice> getSubs() {
+        return subs;
+    }
+
+    public void setSubs(Set<DetailInvoice> subs) {
+        this.subs = subs;
+    }
+
     @Column(name = "amount", nullable = false)
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
         updateTotalAmount();
     }

@@ -34,7 +34,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -135,6 +134,10 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
     private DetailDataModel detailDataModel = new DetailDataModel();
     private Map<String, AttributeComponent> name2AttributeComponent = new HashMap<>();
+
+    protected Map<String, AttributeComponent> getName2AttributeComponent() {
+        return name2AttributeComponent;
+    }
 
     private BeanWrapper beanWrapper;
 
