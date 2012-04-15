@@ -70,6 +70,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.divxdede.swing.busy.DefaultBusyModel;
 import org.divxdede.swing.busy.JBusyComponent;
+import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -252,6 +253,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         // Load necessary properties if they are lazing.
         DetachedCriteria dc = getCriteriaForView();
 
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return getDaoHelper().getDao(getEntityClass()).findByCriteria(dc, firstIndex, getPageSize());
     }
 
@@ -310,6 +312,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
         DetachedCriteria dc = getCriteriaForView();
 
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return getDaoHelper().getDao(getEntityClass()).findByCriteria(dc, firstIndex, recordTotal);
     }
 
@@ -347,6 +350,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         pagingNavigator.addPageChangeListener(this);
         contentPane.add(pagingNavigator);
 
+        entities.removeAll(entities);
         entities.addAll(loadData(pagingNavigator.getCurrentPage()));
         refDataModel = initReferenceDataModel();
 
