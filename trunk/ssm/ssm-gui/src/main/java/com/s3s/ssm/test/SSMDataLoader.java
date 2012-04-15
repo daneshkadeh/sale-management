@@ -622,6 +622,21 @@ public class SSMDataLoader {
         detailInvoice.setMoneyAfterTax(Money.create("VND", 10000L));
         daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice);
 
+        // add a package to invoice1
+        SPackage pack = daoHelper.getDao(SPackage.class).findAll().get(0);
+        for (PackageLine line : pack.getPackageLines()) {
+            DetailInvoice detailPack = new DetailInvoice();
+            detailPack.setInvoice(invoice1);
+            detailPack.setPackageLine(line);
+            detailPack.setItem(line.getProduct().getListItems().iterator().next());
+            detailPack.setAmount(line.getMinItemAmount());
+            detailPack.setPriceBeforeTax(Money.create("VND", 5000L));
+            detailPack.setPriceAfterTax(Money.create("VND", 5000L));
+            detailPack.setMoneyBeforeTax(Money.create("VND", 10000L));
+            detailPack.setMoneyAfterTax(Money.create("VND", 10000L));
+            daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailPack);
+        }
+
         Invoice invoice2 = new Invoice();
         invoice2.setContact(listContact.get(0));
         invoice2.setInvoiceNumber("0000002");
@@ -1087,6 +1102,7 @@ public class SSMDataLoader {
         product.setCode(PRODUCT_GIAY_NAM);
         product.setName("Giay nam");
         product.setDescription("Giay nam choi tennis");
+        product.setVatRate(5.5);
         product.setModel("Model100");
         product.setBaseSellPrice(Money.create("VND", 10000L));
         product.setOriginPrice(Money.create("VND", 9000L));

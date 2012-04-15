@@ -54,8 +54,7 @@ public class AddedSCFee extends AbstractIdOLObject {
         this.type = type;
     }
 
-    @Column(name = "ref_number", nullable = false, length = 128)
-    @NotNull
+    @Column(name = "ref_number", length = 128)
     public String getReferenceNumber() {
         return referenceNumber;
     }

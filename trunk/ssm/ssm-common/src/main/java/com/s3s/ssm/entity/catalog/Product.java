@@ -53,6 +53,8 @@ public class Product extends AbstractCodeOLObject {
 
     private Set<Item> listItems = new HashSet<>();
 
+    private Double vatRate = 0.0; // use % for VAT
+
     @Column(name = "name", nullable = false, length = 128)
     @NotNull
     public String getName() {
@@ -103,6 +105,17 @@ public class Product extends AbstractCodeOLObject {
 
     public void setListItems(Set<Item> listItems) {
         this.listItems = listItems;
+    }
+
+    // @Max(value = 100)
+    @Column(name = "vat_rate")
+    @NotNull
+    public Double getVatRate() {
+        return vatRate;
+    }
+
+    public void setVatRate(Double vatRate) {
+        this.vatRate = vatRate;
     }
 
 }

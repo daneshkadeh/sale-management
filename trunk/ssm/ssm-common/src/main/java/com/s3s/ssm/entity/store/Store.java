@@ -14,8 +14,6 @@
  */
 package com.s3s.ssm.entity.store;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,8 +29,7 @@ import com.s3s.ssm.entity.operator.Operator;
 
 @Entity
 @Table(name = "store_store")
-public class Store extends AbstractCodeOLObject implements Serializable {
-    private static final long serialVersionUID = 4672724391118673824L;
+public class Store extends AbstractCodeOLObject {
     private String name;
     private String address;
     private String phone;

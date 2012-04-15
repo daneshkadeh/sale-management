@@ -47,7 +47,6 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.xml.DOMConfigurator;
 
 import com.s3s.ssm.util.ImageConstants;
 import com.s3s.ssm.util.ImageUtils;
@@ -91,7 +90,7 @@ public class MainProgram {
 
         // Not find solution to get class path from ssm-core.
         // String classpath = MainProgram.class.getClassLoader().get
-        DOMConfigurator.configure("src/main/resources/log4j.xml");
+        // DOMConfigurator.configure("log4j.xml");
         s_logger.info("Starting super sales management application...");
         // ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
         // ConfigProvider configProvider = ConfigProvider.getInstance();

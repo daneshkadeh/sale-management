@@ -49,6 +49,7 @@ public abstract class EditProductGeneralView<T extends Product> extends Abstract
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).referenceDataId(TYPE_REF_ID);
+        detailDataModel.addAttribute("vatRate", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("description", DetailFieldType.TEXTAREA).editable(true);
     }
 

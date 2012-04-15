@@ -19,6 +19,8 @@ import javax.swing.JScrollPane;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
+import com.s3s.ssm.view.list.sales.ListAddedSCFeeTypeView;
+import com.s3s.ssm.view.list.sales.ListContractDocumentView;
 import com.s3s.ssm.view.list.sales.ListSalesContractView;
 
 /**
@@ -38,16 +40,24 @@ public class BuyManagementDomain extends AbstractDomain {
     protected void constructTreeView(TreeNodeWithView rootNode) {
         TreeNodeWithView buyContractNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SalesContract.buyContract"), new ListSalesContractView()); // "Hop dong mua hang"
+
         TreeNodeWithView ttManageNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SalesContract.TTmanagement"));
         TreeNodeWithView lcManageNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SalesContract.LCmanagement"));
         TreeNodeWithView declareContractNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SalesContract.importNote")); // "Quan ly to khai"
+        TreeNodeWithView contractDocumentNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.SalesContract.contractDocument"), new ListContractDocumentView());
+        TreeNodeWithView addedSCFeeTypeNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.SalesContract.addedSCFeeType"), new ListAddedSCFeeTypeView());
+
         rootNode.add(buyContractNode);
         rootNode.add(ttManageNode);
         rootNode.add(lcManageNode);
         rootNode.add(declareContractNode);
+        rootNode.add(contractDocumentNode);
+        rootNode.add(addedSCFeeTypeNode);
     }
 
 }

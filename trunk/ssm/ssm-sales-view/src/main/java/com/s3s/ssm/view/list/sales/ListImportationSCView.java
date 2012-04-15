@@ -3,7 +3,7 @@ package com.s3s.ssm.view.list.sales;
 import java.util.Map;
 
 import com.s3s.ssm.entity.sales.ImportationSC;
-import com.s3s.ssm.view.detail.sales.EditImportationSCView;
+import com.s3s.ssm.view.detail.sales.EditImportationSCMultiView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
 import com.s3s.ssm.view.list.ListDataModel;
@@ -24,7 +24,7 @@ public class ListImportationSCView extends AbstractListView<ImportationSC> {
 
     @Override
     protected Class<? extends AbstractEditView<ImportationSC>> getEditViewClass() {
-        return EditImportationSCView.class;
+        return EditImportationSCMultiView.class;
     }
 
 }
