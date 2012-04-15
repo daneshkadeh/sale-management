@@ -50,16 +50,21 @@ public class EditDetailInvoiceVirtualView extends AbstractSingleEditView<DetailI
                 DetailInvoice subDetailInvoice = getSubDetailInvoice(line, entity);
                 detailDataModel.startGroup(ControlConfigUtils.getString("label.SPackage.PackageLine.group") + " "
                         + line.getId());
-                detailDataModel.addRawAttribute("productPackageLine" + line.getId(), DetailFieldType.TEXTBOX).value(
-                        line.getProduct());
+                detailDataModel.addRawAttribute("productPackageLine" + line.getId(), DetailFieldType.TEXTBOX)
+                        .value(line.getProduct())
+                        .label(ControlConfigUtils.getString("label.DetailInvoice.productPackageLine"));
                 detailDataModel.addRawAttribute("itemPackageLine" + line.getId(), DetailFieldType.DROPDOWN)
-                        .referenceDataId("REF_ITEM" + line.getId()).value(subDetailInvoice.getItem());
-                detailDataModel.addRawAttribute("lineAmount" + line.getId(), DetailFieldType.TEXTBOX).value(
-                        subDetailInvoice.getAmount());
+                        .referenceDataId("REF_ITEM" + line.getId()).value(subDetailInvoice.getItem())
+                        .label(ControlConfigUtils.getString("label.DetailInvoice.itemPackageLine"));
+                detailDataModel.addRawAttribute("lineAmount" + line.getId(), DetailFieldType.TEXTBOX)
+                        .value(subDetailInvoice.getAmount())
+                        .label(ControlConfigUtils.getString("label.DetailInvoice.lineAmount"));
                 detailDataModel.addRawAttribute("linePriceAfterTax" + line.getId(), DetailFieldType.MONEY)
-                        .cacheDataId(CacheId.REF_LIST_CURRENCY).value(subDetailInvoice.getPriceAfterTax());
+                        .cacheDataId(CacheId.REF_LIST_CURRENCY).value(subDetailInvoice.getPriceAfterTax())
+                        .label(ControlConfigUtils.getString("label.DetailInvoice.linePriceAfterTax"));
                 detailDataModel.addRawAttribute("lineMoneyAfterTax" + line.getId(), DetailFieldType.MONEY)
-                        .cacheDataId(CacheId.REF_LIST_CURRENCY).value(subDetailInvoice.getMoneyAfterTax());
+                        .cacheDataId(CacheId.REF_LIST_CURRENCY).value(subDetailInvoice.getMoneyAfterTax())
+                        .label(ControlConfigUtils.getString("label.DetailInvoice.lineMoneyAfterTax"));
                 detailDataModel.endGroup();
             }
             // detailDataModel.addAttribute("packageLine", DetailFieldType.DROPDOWN).referenceDataId(REF_PACKLINE);

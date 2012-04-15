@@ -10,6 +10,7 @@ import com.s3s.ssm.entity.catalog.ProductProperty;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
@@ -33,7 +34,7 @@ public class EditGoodsGeneralView extends EditProductGeneralView<Goods> {
     @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, Goods entity, Map<String, Object> request) {
         super.initialPresentationView(detailDataModel, entity, request);
-        detailDataModel.tab("Sell info", "Sell info", null);
+        detailDataModel.tab(ControlConfigUtils.getString("tab.EditGoodsGeneralView.sellInfo"), "Sell info", null);
         detailDataModel.addAttribute("originPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("baseSellPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("maintainPeriod", DetailFieldType.TEXTBOX); // TODO: will use timespan component

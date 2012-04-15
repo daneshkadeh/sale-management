@@ -66,7 +66,11 @@ public class EditSalesContractView extends AbstractMultiEditView<SalesContract> 
         ListImportationSCView importationsView = new ListImportationSCView(importationRequest);
         nodeImportations.setView(importationsView);
         root.add(nodeImportations);
+    }
 
+    @Override
+    protected String getDefaultTitle(SalesContract entity) {
+        return entity.getCode();
     }
 
 }

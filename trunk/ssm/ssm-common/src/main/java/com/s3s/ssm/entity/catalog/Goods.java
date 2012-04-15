@@ -56,7 +56,7 @@ public class Goods extends Product {
 
     // TODO: move to goods product.
     @ManyToOne
-    @JoinColumn(name = "manufacturer_id", nullable = false)
+    @JoinColumn(name = "manufacturer_id")
     public Manufacturer getManufacturer() {
         return manufacturer;
     }

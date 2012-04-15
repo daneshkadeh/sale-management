@@ -66,4 +66,8 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
         refDataModel.putRefDataList(REF_PROPERTY_TYPE, Arrays.asList(PropertyType.values()), null);
     }
 
+    @Override
+    protected String getDefaultTitle(ProductProperty entity) {
+        return entity.getCode();
+    }
 }

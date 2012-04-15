@@ -29,4 +29,11 @@ public class EditServiceView extends AbstractMultiEditView<Service> {
 
     }
 
+    protected String getDefaultTitle(Service entity) {
+        if (entity.isPersisted()) {
+            return (entity.getCode());
+        }
+        return getDefaultTitle(entity);
+    }
+
 }

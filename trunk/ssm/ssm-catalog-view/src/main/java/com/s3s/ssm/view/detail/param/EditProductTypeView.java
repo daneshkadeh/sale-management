@@ -46,4 +46,8 @@ public class EditProductTypeView extends AbstractSingleEditView<ProductType> {
         refDataModel.putRefDataList(REF_PRODUCT_FAMILY, Arrays.asList(ProductFamilyType.values()), null);
     }
 
+    @Override
+    protected String getDefaultTitle(ProductType entity) {
+        return entity.getCode();
+    }
 }

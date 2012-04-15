@@ -28,6 +28,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.util.Solution3sClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.WindowUtilities;
@@ -92,6 +93,9 @@ public abstract class AbstractEditView<T extends AbstractBaseIdObject> extends A
     }
 
     protected String getDefaultTitle(T entity) {
+        if (entity instanceof AbstractCodeOLObject) {
+            return ((AbstractCodeOLObject) entity).getCode();
+        }
         return entity.getId().toString();
     }
 

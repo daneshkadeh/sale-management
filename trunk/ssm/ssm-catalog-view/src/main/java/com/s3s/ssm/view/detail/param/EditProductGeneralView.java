@@ -24,6 +24,8 @@ import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.catalog.ProductFamilyType;
 import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.entity.config.UploadFile;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.i18n.ControlConstants;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -38,10 +40,10 @@ public abstract class EditProductGeneralView<T extends Product> extends Abstract
 
     @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, T entity, Map<String, Object> request) {
-        detailDataModel.tab("General", "General info", null);
+        detailDataModel.tab(ControlConfigUtils.getString(ControlConstants.MESSAGE_KEY_GENERAL), "General info", null);
         addTabGeneral(detailDataModel);
 
-        detailDataModel.tab("More info", "More info", null);
+        detailDataModel.tab(ControlConfigUtils.getString("tab.EditProductGeneralView.MoreInfo"), "More info", null);
         detailDataModel.addAttribute("uploadFile.data", DetailFieldType.IMAGE);
     }
 
@@ -86,5 +88,4 @@ public abstract class EditProductGeneralView<T extends Product> extends Abstract
         getDaoHelper().getDao(UploadFile.class).saveOrUpdate(entity.getUploadFile());
         super.saveOrUpdate(entity);
     }
-
 }
