@@ -16,6 +16,7 @@
 
 package com.s3s.ssm.view.list.store;
 
+import javax.swing.Icon;
 import javax.swing.SortOrder;
 
 import com.s3s.ssm.entity.store.ShipPrice;
@@ -31,6 +32,10 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  */
 public class ListShipPriceView extends AbstractListView<ShipPrice> {
     private static final long serialVersionUID = -776291159859019764L;
+
+    public ListShipPriceView(Icon icon, String label, String tooltip) {
+        super(icon, label, tooltip);
+    }
 
     /**
      * {@inheritDoc}

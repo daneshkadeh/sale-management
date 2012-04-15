@@ -51,7 +51,6 @@ public class DetailMoveStore extends AbstractIdOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
-    @NotNull
     public Product getProduct() {
         return product;
     }
@@ -62,7 +61,6 @@ public class DetailMoveStore extends AbstractIdOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id")
-    @NotNull
     public Item getItem() {
         return item;
     }
@@ -73,7 +71,6 @@ public class DetailMoveStore extends AbstractIdOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "uom_id")
-    @NotNull
     public UnitOfMeasure getUom() {
         return uom;
     }

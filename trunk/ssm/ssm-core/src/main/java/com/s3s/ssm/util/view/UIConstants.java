@@ -32,6 +32,8 @@ public class UIConstants {
 
     public static final String BLANK = " ";
 
+    public static final String HYPHEN = "-";
+
     /**
      * The Java look and Feel standard for one screen space between GUI Components.
      */

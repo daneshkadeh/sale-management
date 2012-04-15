@@ -127,8 +127,8 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
                 .mandatory(true);
         detailDataModel.addAttribute("transType", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_TRANS_TYPE)
                 .newColumn();
-        detailDataModel.addAttribute("invoice", DetailFieldType.ENTITY_CHOOSER).referenceDataId(REF_INVOICE_LIST)
-                .mandatory(true);
+        detailDataModel.addAttribute("invoice", DetailFieldType.DROPDOWN_AUTOCOMPLETE)
+                .referenceDataId(REF_INVOICE_LIST).mandatory(true);
         detailDataModel.addAttribute("transPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY)
                 .newColumn();
         detailDataModel.addAttribute("custCode", DetailFieldType.LABEL);

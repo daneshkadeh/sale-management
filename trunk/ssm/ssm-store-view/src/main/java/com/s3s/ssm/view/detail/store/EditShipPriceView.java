@@ -20,6 +20,8 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.store.ShipPrice;
 import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -49,5 +51,11 @@ public class EditShipPriceView extends AbstractSingleEditView<ShipPrice> {
                 .cacheDataId(CacheId.REF_LIST_SHIP_PRICE_TYPE);
         detailDataModel.addAttribute("price", DetailFieldType.MONEY).mandatory(true)
                 .cacheDataId(CacheId.REF_LIST_CURRENCY);
+    }
+
+    @Override
+    protected String getDefaultTitle(ShipPrice entity) {
+        return ControlConfigUtils.getString("label.ShipPrice.detail.title") + UIConstants.HYPHEN
+                + entity.getShipPriceType().getName();
     }
 }

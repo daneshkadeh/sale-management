@@ -625,25 +625,17 @@ public class SSMDataLoader {
 
         // add a package to invoice1
         SPackage pack = daoHelper.getDao(SPackage.class).findAll().get(0);
-        DetailInvoice detailOfPack = new DetailInvoice();
-        detailOfPack.setPackage(pack);
-        detailOfPack.setInvoice(invoice1);
-        daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailOfPack);
-
         for (PackageLine line : pack.getPackageLines()) {
-            DetailInvoice detailPackageLine = new DetailInvoice();
-            detailPackageLine.setInvoice(invoice1);
-            detailPackageLine.setParent(detailOfPack);
-            detailPackageLine.setPackageLine(line);
-            detailPackageLine.setPackage(line.getPackage());
-            detailPackageLine.setItem(line.getProduct().getListItems().iterator().next());
-            detailPackageLine.setProduct(line.getProduct());
-            detailPackageLine.setAmount(line.getMinItemAmount());
-            detailPackageLine.setPriceBeforeTax(Money.create("VND", 5000L));
-            detailPackageLine.setPriceAfterTax(Money.create("VND", 5000L));
-            detailPackageLine.setMoneyBeforeTax(Money.create("VND", 10000L));
-            detailPackageLine.setMoneyAfterTax(Money.create("VND", 10000L));
-            daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailPackageLine);
+            DetailInvoice detailPack = new DetailInvoice();
+            detailPack.setInvoice(invoice1);
+            detailPack.setPackageLine(line);
+            detailPack.setItem(line.getProduct().getListItems().iterator().next());
+            detailPack.setAmount(line.getMinItemAmount());
+            detailPack.setPriceBeforeTax(Money.create("VND", 5000L));
+            detailPack.setPriceAfterTax(Money.create("VND", 5000L));
+            detailPack.setMoneyBeforeTax(Money.create("VND", 10000L));
+            detailPack.setMoneyAfterTax(Money.create("VND", 10000L));
+            daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailPack);
         }
 
         Invoice invoice2 = new Invoice();
@@ -682,15 +674,15 @@ public class SSMDataLoader {
 
     private static List<ShipPrice> initShipPrice(DaoHelper daoHelper) {
         ShipPriceType shipPriceType1 = new ShipPriceType();
-        shipPriceType1.setCode("001");
+        shipPriceType1.setCode("CVC01");
         shipPriceType1.setName("20'");
 
         ShipPriceType shipPriceType2 = new ShipPriceType();
-        shipPriceType2.setCode("002");
+        shipPriceType2.setCode("CVC02");
         shipPriceType2.setName("30'");
 
         ShipPriceType shipPriceType3 = new ShipPriceType();
-        shipPriceType3.setCode("003");
+        shipPriceType3.setCode("CVC03");
         shipPriceType3.setName("Hang le");
 
         daoHelper.getDao(ShipPriceType.class).saveOrUpdateAll(
@@ -701,11 +693,11 @@ public class SSMDataLoader {
         shipPrice1.setPrice(Money.create("VND", 15000L));
 
         ShipPrice shipPrice2 = new ShipPrice();
-        shipPrice2.setShipPriceType(shipPriceType1);
+        shipPrice2.setShipPriceType(shipPriceType2);
         shipPrice2.setPrice(Money.create("VND", 30000L));
 
         ShipPrice shipPrice3 = new ShipPrice();
-        shipPrice3.setShipPriceType(shipPriceType1);
+        shipPrice3.setShipPriceType(shipPriceType3);
         shipPrice3.setPrice(Money.create("VND", 5000L));
 
         List shipPriceList = Arrays.asList(shipPrice1, shipPrice2, shipPrice3);
@@ -838,11 +830,6 @@ public class SSMDataLoader {
         USDExRate.setCurrency(USDCurrency);
         USDExRate.setRate(21000D);
         daoHelper.getDao(ExchangeRate.class).save(USDExRate);
-
-        ExchangeRate VNDExRate = new ExchangeRate();
-        VNDExRate.setCurrency(VNDCurrency);
-        VNDExRate.setRate(21000D);
-        daoHelper.getDao(ExchangeRate.class).save(VNDExRate);
 
         return result;
     }

@@ -17,6 +17,7 @@ package com.s3s.ssm.view.list.store;
 import javax.swing.Icon;
 
 import com.s3s.ssm.entity.store.ImportStoreForm;
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.detail.store.EditImportStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
@@ -41,9 +42,9 @@ public class ListImportStoreFormView extends AbstractListView<ImportStoreForm> {
         listDataModel.addColumn("receiver", ListRendererType.TEXT);
         listDataModel.addColumn("sender", ListRendererType.TEXT);
         listDataModel.addColumn("isProcessed", ListRendererType.BOOLEAN);
-        listDataModel.addColumn("qtyTotal", ListRendererType.NUMBER).summarized();
-        listDataModel.addColumn("taxTotal", ListRendererType.NUMBER).summarized();
-        listDataModel.addColumn("amtTotal", ListRendererType.NUMBER).summarized();
+        listDataModel.addColumn("qtyTotal", ListRendererType.NUMBER).summarized().width(UIConstants.QTY_COLUMN_WIDTH);
+        listDataModel.addColumn("taxTotal", ListRendererType.NUMBER).summarized().width(UIConstants.AMT_COLUMN_WIDTH);
+        listDataModel.addColumn("amtTotal", ListRendererType.NUMBER).summarized().width(UIConstants.AMT_COLUMN_WIDTH);
     }
 
     @Override

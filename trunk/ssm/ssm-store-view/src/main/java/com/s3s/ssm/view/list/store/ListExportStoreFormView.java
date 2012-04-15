@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.interfaces.sales.InvoiceService;
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.detail.store.EditExportStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
@@ -48,9 +49,12 @@ public class ListExportStoreFormView extends AbstractListView<ExportStoreForm> {
         listDataModel.addColumn("transType.name", ListRendererType.LINK);
         listDataModel.addColumn("transPrice", ListRendererType.TEXT);
         listDataModel.addColumn("isPrinted", ListRendererType.BOOLEAN);
-        listDataModel.addColumn("reqQuanTotal", ListRendererType.NUMBER).summarized();
-        listDataModel.addColumn("realQuanTotal", ListRendererType.NUMBER).summarized();
-        listDataModel.addColumn("remainQuanTotal", ListRendererType.NUMBER).summarized();
+        listDataModel.addColumn("reqQuanTotal", ListRendererType.NUMBER).width(UIConstants.QTY_COLUMN_WIDTH)
+                .summarized();
+        listDataModel.addColumn("realQuanTotal", ListRendererType.NUMBER).width(UIConstants.QTY_COLUMN_WIDTH)
+                .summarized();
+        listDataModel.addColumn("remainQuanTotal", ListRendererType.NUMBER).width(UIConstants.QTY_COLUMN_WIDTH)
+                .summarized();
     }
 
     @Override

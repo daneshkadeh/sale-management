@@ -16,6 +16,8 @@
 
 package com.s3s.ssm.view.list.store;
 
+import javax.swing.Icon;
+
 import com.s3s.ssm.entity.store.ShipPriceType;
 import com.s3s.ssm.view.detail.store.EditShipPriceTypeView;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -28,6 +30,12 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * 
  */
 public class ListShipPriceTypeView extends AbstractListView<ShipPriceType> {
+
+    private static final long serialVersionUID = 3726806486848950939L;
+
+    public ListShipPriceTypeView(Icon icon, String label, String tooltip) {
+        super(icon, label, tooltip);
+    }
 
     /**
      * {@inheritDoc}

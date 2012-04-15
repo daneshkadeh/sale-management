@@ -17,6 +17,7 @@ package com.s3s.ssm.view.list.store;
 import javax.swing.Icon;
 
 import com.s3s.ssm.entity.store.MoveStoreForm;
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.detail.store.EditMoveStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractListView;
@@ -38,8 +39,10 @@ public class ListMoveStoreFormView extends AbstractListView<MoveStoreForm> {
         listDataModel.addColumn("receivedDate", ListRendererType.DATE);
         listDataModel.addColumn("sentDate", ListRendererType.DATE);
         listDataModel.addColumn("transType", ListRendererType.TEXT);
-        listDataModel.addColumn("exportQtyTotal", ListRendererType.NUMBER).summarized();
-        listDataModel.addColumn("importQtyTotal", ListRendererType.NUMBER).summarized();
+        listDataModel.addColumn("exportQtyTotal", ListRendererType.NUMBER).width(UIConstants.QTY_COLUMN_WIDTH)
+                .summarized();
+        listDataModel.addColumn("importQtyTotal", ListRendererType.NUMBER).width(UIConstants.QTY_COLUMN_WIDTH)
+                .summarized();
     }
 
     @Override
