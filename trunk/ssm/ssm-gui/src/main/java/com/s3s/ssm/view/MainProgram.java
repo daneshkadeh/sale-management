@@ -132,6 +132,7 @@ public class MainProgram {
             // Resource bundle for swingX component.
             UIManager.getDefaults().addResourceBundle("i18n/swingx/swingx");
             UIManager.getDefaults().addResourceBundle("i18n/swingx/DatePicker");
+            UIManager.getDefaults().addResourceBundle("i18n/swingx/ErrorPane");
             // UIManager.put("ToggleButton.background", Color.BLUE);
             // UIManager.put("nimbusBase", new ColorUIResource(0, 0, 120));
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
