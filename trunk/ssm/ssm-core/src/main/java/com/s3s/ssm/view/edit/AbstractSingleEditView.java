@@ -135,6 +135,11 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     private DetailDataModel detailDataModel = new DetailDataModel();
     private Map<String, AttributeComponent> name2AttributeComponent = new HashMap<>();
 
+    /**
+     * TODO: This method is not good. Sub-class must cast too many components.
+     * 
+     * @return
+     */
     protected Map<String, AttributeComponent> getName2AttributeComponent() {
         return name2AttributeComponent;
     }
