@@ -615,6 +615,7 @@ public class SSMDataLoader {
         DetailInvoice detailInvoice = new DetailInvoice();
         detailInvoice.setInvoice(invoice1);
         detailInvoice.setItem(listItem.get(0));
+        detailInvoice.setProduct(listItem.get(0).getProduct());
         detailInvoice.setAmount(2);
         detailInvoice.setPriceBeforeTax(Money.create("VND", 5000L));
         detailInvoice.setPriceAfterTax(Money.create("VND", 5000L));
@@ -624,17 +625,25 @@ public class SSMDataLoader {
 
         // add a package to invoice1
         SPackage pack = daoHelper.getDao(SPackage.class).findAll().get(0);
+        DetailInvoice detailOfPack = new DetailInvoice();
+        detailOfPack.setPackage(pack);
+        detailOfPack.setInvoice(invoice1);
+        daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailOfPack);
+
         for (PackageLine line : pack.getPackageLines()) {
-            DetailInvoice detailPack = new DetailInvoice();
-            detailPack.setInvoice(invoice1);
-            detailPack.setPackageLine(line);
-            detailPack.setItem(line.getProduct().getListItems().iterator().next());
-            detailPack.setAmount(line.getMinItemAmount());
-            detailPack.setPriceBeforeTax(Money.create("VND", 5000L));
-            detailPack.setPriceAfterTax(Money.create("VND", 5000L));
-            detailPack.setMoneyBeforeTax(Money.create("VND", 10000L));
-            detailPack.setMoneyAfterTax(Money.create("VND", 10000L));
-            daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailPack);
+            DetailInvoice detailPackageLine = new DetailInvoice();
+            detailPackageLine.setInvoice(invoice1);
+            detailPackageLine.setParent(detailOfPack);
+            detailPackageLine.setPackageLine(line);
+            detailPackageLine.setPackage(line.getPackage());
+            detailPackageLine.setItem(line.getProduct().getListItems().iterator().next());
+            detailPackageLine.setProduct(line.getProduct());
+            detailPackageLine.setAmount(line.getMinItemAmount());
+            detailPackageLine.setPriceBeforeTax(Money.create("VND", 5000L));
+            detailPackageLine.setPriceAfterTax(Money.create("VND", 5000L));
+            detailPackageLine.setMoneyBeforeTax(Money.create("VND", 10000L));
+            detailPackageLine.setMoneyAfterTax(Money.create("VND", 10000L));
+            daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailPackageLine);
         }
 
         Invoice invoice2 = new Invoice();

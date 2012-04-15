@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
@@ -46,6 +47,10 @@ public class ReferenceDataModel {
 
     public void putRefDataList(String refId, List<?> values) {
         putRefDataList(refId, values, null);
+    }
+
+    public void putRefDataList(String refId, Set<?> values) {
+        putRefDataList(refId, new ArrayList(values), null);
     }
 
     public void putRefDataList(String refId, List<?> values, ListCellRenderer<?> renderer) {
