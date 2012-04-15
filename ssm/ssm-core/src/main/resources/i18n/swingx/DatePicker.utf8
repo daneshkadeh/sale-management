@@ -1,7 +1,7 @@
-#
+﻿#
 # Text, formatting for JXDatePicker
 #
-JXDatePicker.linkFormat=H�m nay l� {0,date}
+JXDatePicker.linkFormat=Không được để trống.
 
 # Issue #945-swingx: force a default fallback here not the right thing to
 # for locales which do not have a properties file. In that case the
