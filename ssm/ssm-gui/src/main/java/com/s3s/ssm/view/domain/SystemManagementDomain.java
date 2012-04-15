@@ -48,10 +48,12 @@ import com.s3s.ssm.view.list.security.ListRoleView;
  * 
  */
 public class SystemManagementDomain extends AbstractDomain {
+    private static final long serialVersionUID = -3556085153191024424L;
 
     public SystemManagementDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         super(treeScrollPane, contentScrollPane);
         setText(ControlConfigUtils.getString("JTree.SystemManagement"));
+        setIcon(ImageUtils.getMediumIcon(ImageConstants.SYSTEM_ICON));
     }
 
     @Override

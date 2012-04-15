@@ -27,6 +27,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeSelectionModel;
 
 import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.view.TreeNodeWithView.NodeValue;
@@ -54,6 +55,7 @@ public class TreeView extends JTree implements TreeSelectionListener {
         this.contentScrollPane = contentScrollPane;
         addTreeSelectionListener(this);
         setCellRenderer(new TreeViewRenderer());
+        getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         expandAll();
     }
 

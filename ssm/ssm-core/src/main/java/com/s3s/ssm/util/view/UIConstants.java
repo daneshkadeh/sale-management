@@ -16,6 +16,7 @@
 package com.s3s.ssm.util.view;
 
 import java.awt.Color;
+import java.awt.Font;
 
 /**
  * Constants for swing user interface classes.
@@ -89,4 +90,6 @@ public class UIConstants {
     public static final int QTY_COLUMN_WIDTH = 93;
 
     public static final int AMT_COLUMN_WIDTH = 93;
+
+    public static final Font DEFAULT_BOLD_FONT = new Font("Arial", Font.BOLD, 12);
 }

@@ -24,6 +24,8 @@ import net.sf.jasperreports.swing.JRViewer;
 
 import com.s3s.ssm.interfaces.report.IReportService;
 import com.s3s.ssm.util.ConfigProvider;
+import com.s3s.ssm.util.ImageConstants;
+import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.ServiceProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.SSMReportViewer;
@@ -42,6 +44,7 @@ public class ReportDomain extends AbstractDomain {
     public ReportDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         super(treeScrollPane, contentScrollPane);
         setText(ControlConfigUtils.getString("JTree.Report.Management"));
+        setIcon(ImageUtils.getMediumIcon(ImageConstants.REPORT_ICON));
     }
 
     @Override

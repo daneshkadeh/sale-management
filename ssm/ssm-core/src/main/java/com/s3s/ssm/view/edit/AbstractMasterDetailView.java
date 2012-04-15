@@ -60,7 +60,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
     private final Log logger = LogFactory.getLog(AbstractMasterDetailView.class);
 
     private static final int NUM_OF_ROW = 10;
-    private List<E> detailEntities = new ArrayList<E>();
+    private List<E> detailEntities;
 
     private ChildListView childListView;
 

@@ -140,7 +140,7 @@ public class MainProgram {
         }
 
         // Create and set up the window.
-        frame = new JFrame("Business Active" + " - " + getCustomerName());
+        frame = new JFrame("Business Active" + " - " + getCustomerName() + " demo version 1.0");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(WINDOW_MIN_SIZE);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -186,6 +186,7 @@ public class MainProgram {
         // JToolBar toolbar = createToolbar();
         // contentPane.add(toolbar, BorderLayout.PAGE_START);
         contentPane.add(new JPanel());
+        // contentPane.add(new JLabel("Business Active - demo version"), BorderLayout.PAGE_END);
         return contentPane;
     }
 
