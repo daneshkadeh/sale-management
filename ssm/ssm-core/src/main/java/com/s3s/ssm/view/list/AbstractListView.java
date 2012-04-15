@@ -73,7 +73,9 @@ import org.divxdede.swing.busy.JBusyComponent;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.error.ErrorInfo;
 
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
@@ -903,9 +905,11 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 } catch (InterruptedException | ExecutionException e) {
                     logger.error(e.getMessage());
                     isInitialized = false;
-                    JOptionPane.showMessageDialog(AbstractListView.this,
-                            ControlConfigUtils.getString("error.refreshData.message"),
-                            ControlConfigUtils.getString("error.title"), JOptionPane.ERROR_MESSAGE, null);
+                    ErrorInfo errorInfo = new ErrorInfo(ControlConfigUtils.getString("error.title"),
+                            ControlConfigUtils.getString("error.refreshData.message"), e.getMessage(), null, e, null,
+                            null);
+                    JXErrorPane.showDialog(AbstractListView.this, errorInfo);
+
                 } finally {
                     busyPane.setBusy(false);
                 }

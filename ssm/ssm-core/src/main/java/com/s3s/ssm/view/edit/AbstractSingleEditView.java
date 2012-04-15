@@ -80,9 +80,11 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jdesktop.swingx.JXDatePicker;
+import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.jdesktop.swingx.error.ErrorInfo;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.Assert;
@@ -645,10 +647,13 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                     logger.error(st.toString());
                 }
                 logger.error(e.getMessage());
-                notifyPanel.setNotifyKind(NotifyKind.ERROR);
-                notifyPanel.setMessage("<html>" + ControlConfigUtils.getString("error.technicalerror") + "</br>"
-                        + e.getMessage() + "</html>");
-                notifyPanel.setVisible(true);
+                // notifyPanel.setNotifyKind(NotifyKind.ERROR);
+                // notifyPanel.setMessage("<html>" + ControlConfigUtils.getString("error.technicalerror") + "</br>"
+                // + e.getMessage() + "</html>");
+                // notifyPanel.setVisible(true);
+                ErrorInfo errorInfo = new ErrorInfo(ControlConfigUtils.getString("error.title"),
+                        ControlConfigUtils.getString("error.save"), null, null, e, null, null);
+                JXErrorPane.showDialog(this, errorInfo);
                 return false;
             }
         } else {
