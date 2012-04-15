@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.Goods;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.i18n.ControlConstants;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.edit.AbstractMultiEditView;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
@@ -20,7 +22,8 @@ public class EditGoodsView extends AbstractMultiEditView<Goods> {
     protected AbstractSingleEditView<Goods> constructMainView(TreeNodeWithView root, Goods entity,
             Map<String, Object> request) {
         EditGoodsGeneralView detailView = new EditGoodsGeneralView(request);
-        TreeNodeWithView node = new TreeNodeWithView("General", detailView);
+        TreeNodeWithView node = new TreeNodeWithView(
+                ControlConfigUtils.getString(ControlConstants.MESSAGE_KEY_GENERAL), detailView);
         root.add(node);
         return detailView;
     }

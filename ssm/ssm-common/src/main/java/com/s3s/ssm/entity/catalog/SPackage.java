@@ -23,6 +23,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
@@ -42,6 +45,7 @@ public class SPackage extends AbstractCodeOLObject {
     }
 
     @OneToMany(mappedBy = "package")
+    @LazyCollection(LazyCollectionOption.FALSE)
     public Set<PackageLine> getPackageLines() {
         return packageLines;
     }
