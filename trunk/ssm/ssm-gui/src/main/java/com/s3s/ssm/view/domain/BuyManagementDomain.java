@@ -21,6 +21,7 @@ import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.list.sales.ListAddedSCFeeTypeView;
 import com.s3s.ssm.view.list.sales.ListContractDocumentView;
+import com.s3s.ssm.view.list.sales.ListSalesConfirmView;
 import com.s3s.ssm.view.list.sales.ListSalesContractView;
 
 /**
@@ -38,6 +39,9 @@ public class BuyManagementDomain extends AbstractDomain {
 
     @Override
     protected void constructTreeView(TreeNodeWithView rootNode) {
+        TreeNodeWithView salesConfirmNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.SalesContract.salesConfirm"), new ListSalesConfirmView()); // "xac nhan ban hang tu nha cung cap"
+
         TreeNodeWithView buyContractNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SalesContract.buyContract"), new ListSalesContractView()); // "Hop dong mua hang"
 
@@ -52,6 +56,7 @@ public class BuyManagementDomain extends AbstractDomain {
         TreeNodeWithView addedSCFeeTypeNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SalesContract.addedSCFeeType"), new ListAddedSCFeeTypeView());
 
+        rootNode.add(salesConfirmNode);
         rootNode.add(buyContractNode);
         rootNode.add(ttManageNode);
         rootNode.add(lcManageNode);
