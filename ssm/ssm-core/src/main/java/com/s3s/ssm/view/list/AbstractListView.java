@@ -145,11 +145,12 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private AdvanceTableModel<T> mainTableModel;
     protected PagingNavigator pagingNavigator;
     // button toolbar
-    private JButton btnAdd;
-    private JButton btnDelete;
-    private JButton btnEdit;
-    private JButton btnExport;
-    private JButton btnPrint;
+    protected JButton btnAdd;
+    protected JButton btnDelete;
+    protected JButton btnEdit;
+    protected JButton btnExport;
+    protected JButton btnPrint;
+    protected JButton btnRefresh;
 
     // TODO use this flag temporarily to prevent init the view more than one time. --> Need to use the Proxy object
     // instead.
@@ -544,7 +545,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         btnPrint.setToolTipText(ControlConfigUtils.getString("default.button.print"));
         btnPrint.addActionListener(printAction);
 
-        JButton btnRefresh = new JButton(ImageUtils.getSmallIcon(ImageConstants.REFRESH_ICON));
+        btnRefresh = new JButton(ImageUtils.getSmallIcon(ImageConstants.REFRESH_ICON));
         btnRefresh.setToolTipText(ControlConfigUtils.getString("default.button.refresh"));
         btnRefresh.addActionListener(new ActionListener() {
             @Override
@@ -553,9 +554,9 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             }
         });
 
+        buttonToolbar.add(btnAdd);
         buttonToolbar.add(btnEdit);
         buttonToolbar.add(btnDelete);
-        buttonToolbar.add(btnAdd);
         buttonToolbar.add(btnExport);
         buttonToolbar.add(btnPrint);
         buttonToolbar.add(Box.createHorizontalGlue());

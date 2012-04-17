@@ -14,6 +14,7 @@
  */
 package com.s3s.ssm.view.list;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -73,12 +74,18 @@ public abstract class AbstractSearchListView<T extends AbstractIdOLObject> exten
 
     @Override
     protected void addComponents() {
+        Color backgroundColor = new Color(200, 200, 255);
         JXTaskPane pane = new JXTaskPane();
         pane.setTitle(ControlConfigUtils.getString("label.search.searchTitle"));
         pane.setIcon(ImageUtils.getSmallIcon(ImageConstants.SEARCH_ICON));
         pane.setCollapsed(true);
-        pane.add(createSearchPanel());
-        pane.add(createSearchButtonsPanel());
+        pane.getContentPane().setBackground(backgroundColor);
+        JPanel searchPanel = createSearchPanel();
+        searchPanel.setBackground(backgroundColor);
+        pane.add(searchPanel);
+        JPanel searchButtonsPanel = createSearchButtonsPanel();
+        searchButtonsPanel.setBackground(backgroundColor);
+        pane.add(searchButtonsPanel);
         contentPane.add(pane);
         super.addComponents();
     }

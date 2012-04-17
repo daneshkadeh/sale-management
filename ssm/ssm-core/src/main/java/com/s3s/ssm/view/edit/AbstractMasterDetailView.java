@@ -160,6 +160,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         public ChildListView(Map<String, Object> params, Icon icon, String label, String tooltip) {
             super(params, icon, label, tooltip);
             pagingNavigator.setVisible(false); // Turn off the paging in the list view.
+            btnRefresh.setVisible(false);
         }
 
         @SuppressWarnings("unchecked")
