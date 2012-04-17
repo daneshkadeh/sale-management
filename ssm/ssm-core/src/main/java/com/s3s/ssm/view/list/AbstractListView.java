@@ -135,7 +135,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
     private JTabbedPane tabPane;
-    private JPanel contentPane;
+    protected JPanel contentPane;
     private JToolBar toolbar;
     private JXTable tblListEntities;
     private JList<Integer> rowHeader;

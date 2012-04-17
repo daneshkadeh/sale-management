@@ -66,4 +66,19 @@ public class ListDataModel {
     public void setEditable(boolean isEditable) {
         this.isEditable = isEditable;
     }
+
+    /**
+     * Get the searched columns
+     * 
+     * @return
+     */
+    public List<ColumnModel> getSearchedColumns() {
+        List<ColumnModel> searchedColumns = new ArrayList<>();
+        for (ColumnModel columnModel : getColumns()) {
+            if (columnModel.isSearched()) {
+                searchedColumns.add(columnModel);
+            }
+        }
+        return searchedColumns;
+    }
 }
