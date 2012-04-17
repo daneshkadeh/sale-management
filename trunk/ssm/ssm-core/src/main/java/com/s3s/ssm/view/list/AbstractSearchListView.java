@@ -21,7 +21,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import org.jdesktop.swingx.JXTaskPane;
+
 import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.util.ImageConstants;
+import com.s3s.ssm.util.ImageUtils;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
  * The list view with the search panel.
@@ -41,7 +46,8 @@ public abstract class AbstractSearchListView<T extends AbstractIdOLObject> exten
     protected abstract void clearCriteria();
 
     protected JPanel createSearchButtonsPanel() {
-        JButton btnSearch = new JButton("Search");
+        JButton btnSearch = new JButton(ImageUtils.getMediumIcon(ImageConstants.SEARCH_ICON));
+        btnSearch.setToolTipText(ControlConfigUtils.getString("tooltip.search"));
         btnSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -49,7 +55,8 @@ public abstract class AbstractSearchListView<T extends AbstractIdOLObject> exten
             }
         });
 
-        JButton btnClear = new JButton("Clear");
+        JButton btnClear = new JButton(ImageUtils.getMediumIcon(ImageConstants.CLEAR_ICON));
+        btnClear.setToolTipText(ControlConfigUtils.getString("tooltip.clearCriteria"));
         btnClear.addActionListener(new ActionListener() {
 
             @Override
@@ -66,8 +73,13 @@ public abstract class AbstractSearchListView<T extends AbstractIdOLObject> exten
 
     @Override
     protected void addComponents() {
-        add(createSearchPanel());
-        add(createSearchButtonsPanel());
+        JXTaskPane pane = new JXTaskPane();
+        pane.setTitle(ControlConfigUtils.getString("label.search.searchTitle"));
+        pane.setIcon(ImageUtils.getSmallIcon(ImageConstants.SEARCH_ICON));
+        pane.setCollapsed(true);
+        pane.add(createSearchPanel());
+        pane.add(createSearchButtonsPanel());
+        contentPane.add(pane);
         super.addComponents();
     }
 

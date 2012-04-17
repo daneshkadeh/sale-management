@@ -47,4 +47,6 @@ public class ImageConstants {
     public static final String SYSTEM_ICON = "/icons/systemIcon.png";
     public static final String REPORT_ICON = "/icons/reportIcon.png";
     public static final String SUPPLIED_PEOPLE_ICON = "/icons/suppliedPeopleIcon.png";
+    public static final String SEARCH_ICON = "/icons/searchIcon.png";
+    public static final String CLEAR_ICON = "/icons/clearIcon.png";
 }

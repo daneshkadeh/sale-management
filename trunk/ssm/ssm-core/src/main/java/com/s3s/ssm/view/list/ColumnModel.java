@@ -42,6 +42,9 @@ public class ColumnModel {
     private SortOrder sortOrder;
     private int precedence;
 
+    // For searching
+    private boolean isSearched = false;
+
     // null value stand for default width
     private Integer width;
     private Integer maxWidth;
@@ -198,5 +201,14 @@ public class ColumnModel {
 
     public Integer getMinWidth() {
         return minWidth;
+    }
+
+    public boolean isSearched() {
+        return isSearched;
+    }
+
+    public ColumnModel searched() {
+        this.isSearched = true;
+        return this;
     }
 }
