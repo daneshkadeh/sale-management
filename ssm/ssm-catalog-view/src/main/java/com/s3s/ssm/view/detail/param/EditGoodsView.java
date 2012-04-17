@@ -30,7 +30,7 @@ public class EditGoodsView extends AbstractMultiEditView<Goods> {
 
     @Override
     protected void constructSubViews(TreeNodeWithView root, Goods entity, Map<String, Object> request) {
-        TreeNodeWithView nodeItems = new TreeNodeWithView("Items");
+        TreeNodeWithView nodeItems = new TreeNodeWithView(ControlConfigUtils.getString("JTree.SubMenu.Product.items"));
         Map<String, Object> listRequest = new HashMap<>();
         listRequest.put(PARAM_PARENT_ID, entity.getId());
         listRequest.put(PARAM_PARENT_CLASS, entity.getClass());

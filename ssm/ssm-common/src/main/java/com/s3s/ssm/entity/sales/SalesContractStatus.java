@@ -14,6 +14,14 @@
  */
 package com.s3s.ssm.entity.sales;
 
+/**
+ * OPEN: only create data, not send sales contract to customer. </br> SENT: sent to customer. </br> PROCESSING:
+ * receiving products. </br> CLOSED: SalesContract is done. All products has been imported. </br> SalesContract is
+ * cancelled, no product is imported.
+ * 
+ * @author phamcongbang
+ * 
+ */
 public enum SalesContractStatus {
-    OPEN, PROCESSING, CLOSED, CANCELLED
+    OPEN, SENT, PROCESSING, CLOSED, CANCELLED
 }

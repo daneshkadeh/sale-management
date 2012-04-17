@@ -84,6 +84,7 @@ import com.s3s.ssm.entity.sales.InvoicePaymentStatus;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.entity.sales.ItemOriginPrice;
+import com.s3s.ssm.entity.sales.SalesConfirm;
 import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.entity.shipment.TransportationType;
 import com.s3s.ssm.entity.store.DetailExportStore;
@@ -757,6 +758,15 @@ public class SSMDataLoader {
 
     private static List<SalesContract> initSalesContracts(DaoHelper daoHelper, List<Partner> listSuppliers,
             List<Item> listItem) {
+        SalesConfirm salesConfirm = new SalesConfirm();
+        salesConfirm.setCode("CONFIRM_NIKE_000001");
+        salesConfirm.setCreatedDate(new Date());
+        salesConfirm.setSupplier(listSuppliers.get(0));
+        salesConfirm.setExpectedQtySC(4);
+        salesConfirm.setDescription("Ther are 4 sales contracts required."
+                + " Delivery can be available in the end of March, April, May and June");
+        daoHelper.getDao(SalesConfirm.class).save(salesConfirm);
+
         ContractDocument document = new ContractDocument();
         document.setCode("OCOBOARDBILLOLANDING");
         document.setName("Original Clean on Board Bill of Lading");
@@ -766,6 +776,7 @@ public class SSMDataLoader {
         SalesContract salesContract = new SalesContract();
         salesContract.setCode("CO123456");
         salesContract.setSupplier(listSuppliers.get(0));
+        salesContract.setSalesConfirm(salesConfirm);
         salesContract.setDateContract(new Date());
         salesContract.setMoneyBeforeTax(Money.create("USD", 1000L));
         salesContract.setMoneyOfTax(Money.create("USD", 10L));

@@ -24,7 +24,8 @@ public class EditProductProperty extends AbstractMasterDetailView<ProductPropert
 
     @Override
     protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("id", ListRendererType.TEXT);
+        listDataModel.setEditable(true);
+        listDataModel.addColumn("id", ListRendererType.TEXT).notEditable();
         listDataModel.addColumn("value", ListRendererType.TEXT);
     }
 

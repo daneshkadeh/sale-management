@@ -42,6 +42,7 @@ import com.s3s.ssm.model.Money;
 @Entity
 @Table(name = "s_sales_contract")
 public class SalesContract extends AbstractCodeOLObject {
+    private SalesConfirm salesConfirm;
     private Partner supplier;
     private Date dateContract;
     private Money moneyBeforeTax;
@@ -74,6 +75,16 @@ public class SalesContract extends AbstractCodeOLObject {
 
     // article 6
     private String arbitrarion;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "sales_confirm_id", nullable = false)
+    public SalesConfirm getSalesConfirm() {
+        return salesConfirm;
+    }
+
+    public void setSalesConfirm(SalesConfirm salesConfirm) {
+        this.salesConfirm = salesConfirm;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id", nullable = false)
