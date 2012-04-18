@@ -52,7 +52,7 @@ public class SalesContract extends AbstractCodeOLObject {
     private Set<DetailSalesContract> detailSalesContracts = new HashSet<>();
     private Set<ImportationSC> listImportation = new HashSet<>();
     private Set<ContractDocument> listDocuments = new HashSet<>();
-
+    private Set<PaymentSC> listPaymentSCs = new HashSet<>();
     // Should be change design multi-articles (same as ProductProperty) for other software customers.
     // Article 1
     private String remarkQuantity;
@@ -185,6 +185,23 @@ public class SalesContract extends AbstractCodeOLObject {
 
     public void setListDocuments(Set<ContractDocument> listDocuments) {
         this.listDocuments = listDocuments;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "salesContract")
+    public Set<PaymentSC> getListPaymentSCs() {
+        return listPaymentSCs;
+    }
+
+    public void setListPaymentSCs(Set<PaymentSC> listPaymentSCs) {
+        this.listPaymentSCs = listPaymentSCs;
+    }
+
+    /**
+     * This method is only used to a non persisted paymentSC
+     */
+    public void addPaymentSC(PaymentSC payment) {
+        payment.setSalesContract(this);
+        listPaymentSCs.add(payment);
     }
 
     @Column(name = "remarkQuantity", length = 1024)

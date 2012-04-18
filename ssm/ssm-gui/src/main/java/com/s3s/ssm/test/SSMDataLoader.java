@@ -84,6 +84,8 @@ import com.s3s.ssm.entity.sales.InvoicePaymentStatus;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.entity.sales.ItemOriginPrice;
+import com.s3s.ssm.entity.sales.PaymentSC;
+import com.s3s.ssm.entity.sales.PaymentSC.PaymentSCType;
 import com.s3s.ssm.entity.sales.SalesConfirm;
 import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.entity.shipment.TransportationType;
@@ -182,6 +184,7 @@ public class SSMDataLoader {
         daoHelper.getDao(Invoice.class).deleteAll(daoHelper.getDao(Invoice.class).findAll());
         daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());
         daoHelper.getDao(SalesContract.class).deleteAll(daoHelper.getDao(SalesContract.class).findAll());
+        daoHelper.getDao(SalesConfirm.class).deleteAll(daoHelper.getDao(SalesConfirm.class).findAll());
 
         daoHelper.getDao(Article.class).deleteAll(daoHelper.getDao(Article.class).findAll());
         daoHelper.getDao(Advantage.class).deleteAll(daoHelper.getDao(Advantage.class).findAll());
@@ -789,6 +792,12 @@ public class SSMDataLoader {
         detail.setTotalPrice(Money.create("USD", 5050L));
         salesContract.addDetailSalesContract(detail);
         salesContract.getListDocuments().add(document);
+
+        PaymentSC paymentSC = new PaymentSC();
+        paymentSC.setType(PaymentSCType.TT);
+        paymentSC.setAmount(Money.create("USD", 10L));
+        paymentSC.setSalesContract(salesContract);
+        salesContract.addPaymentSC(paymentSC);
 
         daoHelper.getDao(SalesContract.class).saveOrUpdate(salesContract);
         return Arrays.asList(salesContract);
