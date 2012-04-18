@@ -6,6 +6,7 @@ public interface CacheId {
 
     // Config
     public static String REF_LIST_UNIT_UOM = "referenceListUnitUom";
+    public static String REF_LIST_UOM_CATE = "referenceListUomCate";
     public static String REF_LIST_OPERATOR = "referenceListOperator";
     public static String REF_LIST_CURRENCY = "referenceListCurrency";
     public static String REF_LIST_BANK = "referenceListBank";

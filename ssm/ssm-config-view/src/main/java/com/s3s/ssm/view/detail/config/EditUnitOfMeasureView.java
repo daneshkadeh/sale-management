@@ -14,14 +14,20 @@
  */
 package com.s3s.ssm.view.detail.config;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
 
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.config.UomCategory;
-import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.interfaces.config.IConfigService;
+import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -32,8 +38,7 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
  * 
  */
 public class EditUnitOfMeasureView extends AbstractSingleEditView<UnitOfMeasure> {
-
-    private static final String CATE_REF_ID = "1";
+    private static final long serialVersionUID = 931208446206176131L;
 
     public EditUnitOfMeasureView(Map<String, Object> entity) {
         super(entity);
@@ -44,16 +49,33 @@ public class EditUnitOfMeasureView extends AbstractSingleEditView<UnitOfMeasure>
             Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("uomCategory", DetailFieldType.DROPDOWN).referenceDataId(CATE_REF_ID);
+        detailDataModel.addAttribute("uomCategory", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_UOM_CATE);
         detailDataModel.addAttribute("isBaseMeasure", DetailFieldType.CHECKBOX);
+        detailDataModel.addAttribute("changeRate", DetailFieldType.TEXTBOX);
+        detailDataModel.addRawAttribute("baseUom", DetailFieldType.TEXTBOX).editable(false);
     }
 
     @Override
-    protected void setReferenceDataModel(ReferenceDataModel refDataModel, UnitOfMeasure entity) {
-        super.setReferenceDataModel(refDataModel, entity);
-        List<UomCategory> cateList = getDaoHelper().getDao(UomCategory.class).findAll();
-        refDataModel.putRefDataList(CATE_REF_ID,
-                refDataModel.new ReferenceData(cateList, new DefaultListCellRenderer()));
+    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, UnitOfMeasure entity) {
+        super.customizeComponents(name2AttributeComponent, entity);
+        final JComboBox<UomCategory> cbUomCate = (JComboBox<UomCategory>) name2AttributeComponent.get("uomCategory")
+                .getComponent();
+        UomCategory cate = (UomCategory) cbUomCate.getSelectedItem();
+        final JTextField tfdBaseUom = (JTextField) name2AttributeComponent.get("baseUom").getComponent();
+        String baseUomName = serviceProvider.getService(IConfigService.class).getBaseUomName(cate);
+        tfdBaseUom.setText(baseUomName);
+        cbUomCate.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                UomCategory cate = (UomCategory) cbUomCate.getSelectedItem();
+                if (cate != null) {
+                    String baseUomName = serviceProvider.getService(IConfigService.class).getBaseUomName(cate);
+                    tfdBaseUom.setText(baseUomName);
+                } else {
+                    tfdBaseUom.setText("");
+                }
+            }
+        });
     }
 
     @Override
@@ -70,7 +92,11 @@ public class EditUnitOfMeasureView extends AbstractSingleEditView<UnitOfMeasure>
                 }
             }
         }
-
         super.saveOrUpdate(entity);
+    }
+
+    @Override
+    protected String getDefaultTitle(UnitOfMeasure entity) {
+        return ControlConfigUtils.getString("label.UnitOfMeasure.detail.title") + UIConstants.BLANK + entity.getCode();
     }
 }

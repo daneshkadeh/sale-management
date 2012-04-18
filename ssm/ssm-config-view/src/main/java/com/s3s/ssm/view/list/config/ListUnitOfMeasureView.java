@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.list.config;
 
+import javax.swing.Icon;
+
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.view.detail.config.EditUnitOfMeasureView;
@@ -23,6 +25,11 @@ import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListUnitOfMeasureView extends AbstractListView<UnitOfMeasure> {
+    private static final long serialVersionUID = -2332778174386103471L;
+
+    public ListUnitOfMeasureView(Icon icon, String label, String tooltip) {
+        super(icon, label, tooltip);
+    }
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
