@@ -86,7 +86,7 @@ public class SystemManagementDomain extends AbstractDomain {
                 ControlConfigUtils.getString("JTree.System.UomCategory"), new ListUomCategoryView());
 
         TreeNodeWithView uomNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.UnitOfMeasure"),
-                new ListUnitOfMeasureView());
+                new ListUnitOfMeasureView(null, ControlConfigUtils.getString("label.UnitOfMeasure.list.title"), null));
 
         TreeNodeWithView productPropertyNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.ProductProperty"), new ListProductPropertyView());
@@ -150,5 +150,4 @@ public class SystemManagementDomain extends AbstractDomain {
         currencyManagementEntry.add(currenciesNode);
         currencyManagementEntry.add(exchangeRateNode);
     }
-
 }

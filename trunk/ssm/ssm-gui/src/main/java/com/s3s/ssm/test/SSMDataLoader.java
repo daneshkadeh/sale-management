@@ -1056,7 +1056,8 @@ public class SSMDataLoader {
         // pair.setName(""); // TODO: error UTF-8 here. Please careful for production
         kg.setName("Kilogam");
         kg.setUomCategory(category);
-        kg.setIsBaseMeasure(false);
+        kg.setIsBaseMeasure(true);
+        kg.setChangeRate(1F);
         daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(kg);
 
         UnitOfMeasure gam = new UnitOfMeasure();
@@ -1064,6 +1065,7 @@ public class SSMDataLoader {
         gam.setName("gam");
         gam.setUomCategory(category);
         gam.setIsBaseMeasure(false);
+        gam.setChangeRate(0.001F);
         daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(gam);
 
         UomCategory category2 = new UomCategory();
@@ -1077,6 +1079,7 @@ public class SSMDataLoader {
         cai.setName("Cai");
         cai.setUomCategory(category2);
         cai.setIsBaseMeasure(true);
+        cai.setChangeRate(1F);
         daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(cai);
         return Arrays.asList(cai, gam, cai);
     }

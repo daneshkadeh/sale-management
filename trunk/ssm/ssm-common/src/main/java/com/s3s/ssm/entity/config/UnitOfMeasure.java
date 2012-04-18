@@ -20,6 +20,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
@@ -32,6 +33,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 public class UnitOfMeasure extends AbstractCodeOLObject {
     private UomCategory uomCategory;
     private String name;
+    private Float changeRate = 1F;
     private Boolean isBaseMeasure = false;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -51,6 +53,16 @@ public class UnitOfMeasure extends AbstractCodeOLObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Column(name = "change_rate")
+    @NotNull
+    public Float getChangeRate() {
+        return changeRate;
+    }
+
+    public void setChangeRate(Float changeRate) {
+        this.changeRate = changeRate;
     }
 
     @Column(name = "is_base_measure", nullable = false)

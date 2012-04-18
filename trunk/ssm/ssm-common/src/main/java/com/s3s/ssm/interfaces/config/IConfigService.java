@@ -7,6 +7,7 @@ import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.Organization;
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
+import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.entity.contact.Partner;
 
@@ -62,4 +63,9 @@ public interface IConfigService {
 
     public UnitOfMeasure getBaseUnitUom();
 
+    public List<UomCategory> getUomCategories();
+
+    public UnitOfMeasure getBaseUom(UomCategory cate);
+
+    public String getBaseUomName(UomCategory cate);
 }

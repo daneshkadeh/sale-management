@@ -45,6 +45,8 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
                     this.getClass().getMethod("getOrganizations"));
             getCacheDataService().registerCache(CacheId.REF_LIST_UNIT_UOM, this,
                     this.getClass().getMethod("getUnitUom"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_UOM_CATE, this,
+                    this.getClass().getMethod("getUomCategories"));
             getCacheDataService().registerCache(CacheId.REF_LIST_AUDIENCE_CATE, this,
                     this.getClass().getMethod("getAudienceCategories"));
         } catch (NoSuchMethodException | SecurityException e) {
@@ -232,5 +234,38 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
         dc.add(Restrictions.eq("isBaseMeasure", true));
         List<UnitOfMeasure> uomList = getDaoHelper().getDao(UnitOfMeasure.class).findByCriteria(dc);
         return uomList.size() > 0 ? uomList.get(0) : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UomCategory> getUomCategories() {
+        return getDaoHelper().getDao(UomCategory.class).findAll();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UnitOfMeasure getBaseUom(UomCategory cate) {
+        DetachedCriteria dc = getDaoHelper().getDao(UnitOfMeasure.class).getCriteria();
+        dc.createAlias("uomCategory", "uomCategory");
+        dc.add(Restrictions.eq("uomCategory.code", cate.getCode()));
+        dc.add(Restrictions.eq("isBaseMeasure", true));
+        List<UnitOfMeasure> uomList = getDaoHelper().getDao(UnitOfMeasure.class).findByCriteria(dc);
+        return uomList.size() > 0 ? uomList.get(0) : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getBaseUomName(UomCategory cate) {
+        UnitOfMeasure uom = getBaseUom(cate);
+        if (uom != null) {
+            return uom.getName();
+        }
+        return "";
     }
 }

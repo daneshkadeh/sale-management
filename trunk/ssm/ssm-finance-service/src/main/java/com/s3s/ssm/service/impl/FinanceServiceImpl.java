@@ -28,6 +28,8 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
                     this.getClass().getMethod("getReceiptContents"));
             getCacheDataService().registerCache(CacheId.REF_LIST_PAYMENT_MODE, this,
                     this.getClass().getMethod("getPaymentModes"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_PAYMENT_TYPE, this,
+                    this.getClass().getMethod("getPaymentTypes"));
         } catch (NoSuchMethodException | SecurityException e) {
             throw new RuntimeException("Cannot register method to cache service!", e);
         }
