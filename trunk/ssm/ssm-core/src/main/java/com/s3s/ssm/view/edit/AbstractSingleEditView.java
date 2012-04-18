@@ -413,7 +413,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
             switch (attribute.getType()) {
             case LABEL:
-                dataField = new JLabel((String) value);
+                dataField = new JLabel(String.valueOf(value));
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 pnlEdit.add(lblLabel, newline);
                 break;

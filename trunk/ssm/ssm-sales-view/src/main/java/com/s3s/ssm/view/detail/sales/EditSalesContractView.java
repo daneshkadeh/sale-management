@@ -25,6 +25,7 @@ import com.s3s.ssm.view.edit.AbstractMultiEditView;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.list.sales.ListDetailSalesContractView;
 import com.s3s.ssm.view.list.sales.ListImportationSCView;
+import com.s3s.ssm.view.list.sales.ListPaymentSCOfContract;
 
 public class EditSalesContractView extends AbstractMultiEditView<SalesContract> {
 
@@ -66,6 +67,15 @@ public class EditSalesContractView extends AbstractMultiEditView<SalesContract> 
         ListImportationSCView importationsView = new ListImportationSCView(importationRequest);
         nodeImportations.setView(importationsView);
         root.add(nodeImportations);
+
+        TreeNodeWithView nodePaymentSCs = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.SubMenu.EditSalesContractView.PaymentSC"));
+        Map<String, Object> paymentSCRequest = new HashMap<>();
+        paymentSCRequest.put(PARAM_PARENT_ID, entity.getId());
+        paymentSCRequest.put(PARAM_PARENT_CLASS, entity.getClass());
+        ListPaymentSCOfContract paymentSCsView = new ListPaymentSCOfContract(paymentSCRequest);
+        nodePaymentSCs.setView(paymentSCsView);
+        root.add(nodePaymentSCs);
     }
 
     @Override
