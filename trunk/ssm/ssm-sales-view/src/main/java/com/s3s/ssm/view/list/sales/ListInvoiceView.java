@@ -53,7 +53,7 @@ public class ListInvoiceView extends AbstractSearchListView<Invoice> {
      */
     @Override
     protected JPanel createSearchPanel() {
-        invoiceNumber = new JTextField(20);
+        invoiceNumber = new JTextField();
         InvoiceType[] types = (InvoiceType[]) ArrayUtils.add(InvoiceType.values(), 0, null);
         type = new JComboBox<>(types);
         fromDate = new JXDatePicker();
@@ -76,6 +76,8 @@ public class ListInvoiceView extends AbstractSearchListView<Invoice> {
         panel.add(invoiceStatus, "grow");
         panel.add(new JLabel(ControlConfigUtils.getString("label.Invoice.paymentStatus")), "right");
         panel.add(invoicePaymentStatus, "grow");
+        panel.add(new OperatorSearchComponent(), "grow");
+
         return panel;
     }
 
