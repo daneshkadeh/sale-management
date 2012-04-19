@@ -38,9 +38,9 @@ public class DetailExportStore extends AbstractIdOLObject {
     private Item item;
     private UnitOfMeasure uom;
     private UnitOfMeasure baseUom;
-    private Long reqQuan = 0L;
-    private Long realQuan = 0L;
-    private Long remainQuan = 0L;
+    private Integer reqQuan = 0;
+    private Integer realQuan = 0;
+    private Integer remainQuan = 0;
 
     @Column(name = "line_no")
     @DecimalMin(value = "1")
@@ -75,7 +75,7 @@ public class DetailExportStore extends AbstractIdOLObject {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "item_id")
     @NotNull
     public Item getItem() {
         return item;
@@ -109,32 +109,32 @@ public class DetailExportStore extends AbstractIdOLObject {
 
     @Column(name = "req_quan")
     @DecimalMin(value = "0")
-    public Long getReqQuan() {
+    public Integer getReqQuan() {
         return reqQuan;
     }
 
-    public void setReqQuan(Long reqQuan) {
+    public void setReqQuan(Integer reqQuan) {
         this.reqQuan = reqQuan;
     }
 
     @Column(name = "real_quan")
     @DecimalMin(value = "0")
-    public Long getRealQuan() {
+    public Integer getRealQuan() {
         return realQuan;
     }
 
-    public void setRealQuan(Long realQuan) {
+    public void setRealQuan(Integer realQuan) {
         this.realQuan = realQuan;
         updateRemainQuan();
     }
 
     @Column(name = "remain_quan")
     @DecimalMin(value = "0")
-    public Long getRemainQuan() {
+    public Integer getRemainQuan() {
         return remainQuan;
     }
 
-    public void setRemainQuan(Long remainQuan) {
+    public void setRemainQuan(Integer remainQuan) {
         this.remainQuan = remainQuan;
     }
 

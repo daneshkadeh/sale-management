@@ -2,6 +2,8 @@ package com.s3s.ssm.interfaces.store;
 
 import java.util.List;
 
+import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.entity.store.ExportStoreStatus;
 import com.s3s.ssm.entity.store.ImportStoreStatus;
 import com.s3s.ssm.entity.store.MoveStoreOrder;
@@ -33,4 +35,6 @@ public interface IStoreService {
     public ShipPrice getLatestShipPrice(String code);
 
     public List<MoveStoreOrder> findMoveStoreOrderByStatus(MoveStoreStatus status);
+
+    public ExportStoreForm getLatestExportStoreForm(Invoice invoice);
 }

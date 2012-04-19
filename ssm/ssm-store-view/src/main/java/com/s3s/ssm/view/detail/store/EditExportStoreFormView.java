@@ -17,6 +17,8 @@ package com.s3s.ssm.view.detail.store;
 import java.util.Map;
 import java.util.Set;
 
+import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.interfaces.catalog.ICatalogService;
@@ -60,6 +62,27 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
         Set<DetailExportStore> detailSet = (Set<DetailExportStore>) request.get(ListExportStoreFormView.DETAIL_SET);
         form.getExportDetails().addAll(detailSet);
         return form;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void preSaveOrUpdate(ExportStoreForm masterEntity) {
+        super.preSaveOrUpdate(masterEntity);
+        // setting status of the invoice
+        Invoice invoice = masterEntity.getInvoice();
+        boolean isCompleted = true;
+        for (DetailExportStore detail : masterEntity.getExportDetails()) {
+            if (detail.getRemainQuan() > 0) {
+                isCompleted = false;
+            }
+        }
+        if (isCompleted) {
+            invoice.setStatus(InvoiceStatus.EXPORTED);
+        } else {
+            invoice.setStatus(InvoiceStatus.EXPORTING);
+        }
     }
 
     /**

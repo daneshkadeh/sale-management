@@ -359,44 +359,50 @@ public class SSMDataLoader {
         DetailExportStore detail1 = new DetailExportStore();
         DetailExportStore detail2 = new DetailExportStore();
 
-        String custCode = listInvoice.get(0).getContact().getCode();
-        String custName = listInvoice.get(0).getContact().getName();
+        Invoice invoice = listInvoice.get(0);
+        Store store = listStore.get(0);
+        Operator operator = listOperator.get(0);
+        String custCode = invoice.getContact().getCode();
+        String custName = invoice.getContact().getName();
         Item item = listItem.get(0);
         Product product = item.getProduct();
         UnitOfMeasure unit = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
         TransportationType transType = listTransType.get(0);
 
         form.setCode("001");
-        form.setStore(listStore.get(0));
-        form.setStaff(listOperator.get(0));
-        form.setInvoice(listInvoice.get(0));
+        form.setStore(store);
+        form.setStaff(operator);
+        form.setInvoice(invoice);
         form.setCustCode(custCode);
         form.setCustName(custName);
         form.setTransType(transType);
         form.setTransPrice(Money.create("VND", 20000000L));
 
-        detail1.setLineNo(1);
         detail1.setExportForm(form);
+        detail1.setLineNo(1);
         detail1.setProduct(product);
         detail1.setItem(item);
         detail1.setUom(unit);
         detail1.setBaseUom(unit);
-        detail1.setReqQuan(100L);
-        detail1.setRealQuan(70L);
-        detail1.setRemainQuan(30L);
+        detail1.setReqQuan(100);
+        detail1.setRealQuan(70);
+        detail1.setRemainQuan(30);
 
-        detail2.setLineNo(2);
         detail2.setExportForm(form);
+        detail2.setLineNo(2);
         detail2.setProduct(product);
         detail2.setItem(item);
         detail2.setUom(unit);
         detail2.setBaseUom(unit);
-        detail2.setReqQuan(300L);
-        detail2.setRealQuan(200L);
-        detail2.setRemainQuan(100L);
+        detail2.setReqQuan(300);
+        detail2.setRealQuan(200);
+        detail2.setRemainQuan(100);
 
+        form.setExportDetails(new HashSet<>(Arrays.asList(detail1, detail2)));
+
+        invoice.setStatus(InvoiceStatus.EXPORTING);
         daoHelper.getDao(ExportStoreForm.class).save(form);
-        daoHelper.getDao(DetailExportStore.class).saveOrUpdateAll(Arrays.asList(detail1, detail2));
+        daoHelper.getDao(Invoice.class).saveOrUpdate(invoice);
         return Arrays.asList(form);
     }
 

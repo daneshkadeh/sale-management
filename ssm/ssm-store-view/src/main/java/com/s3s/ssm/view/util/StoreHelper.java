@@ -40,21 +40,40 @@ public class StoreHelper {
     }
 
     public static Set<DetailExportStore> initDetailExportStore(ExportStoreForm form, Invoice invoice) {
-        Set<DetailExportStore> result = new HashSet<>();
+        Set<DetailExportStore> result = new HashSet<DetailExportStore>();
+
         Set<DetailInvoice> invDetailSet = invoice.getDetailInvoices();
         Integer lineNo = 0;
         for (DetailInvoice invDetail : invDetailSet) {
             DetailExportStore exDetail = new DetailExportStore();
             // exDetail.setExportForm(form);
             exDetail.setLineNo(lineNo);
-            exDetail.setProduct(invDetail.getItem().getProduct());// TODO: Hoang: invoice should have attribute Product
+            exDetail.setProduct(invDetail.getProduct());
             exDetail.setItem(invDetail.getItem());
-            exDetail.setReqQuan(new Long(invDetail.getAmount()));
+            exDetail.setReqQuan(invDetail.getAmount());
             result.add(exDetail);
-            // ConfigProvider.getInstance().getDaoHelper().getDao(DetailExportStore.class).save(exDetail);
             lineNo++;
         }
         return result;
-        // ConfigProvider.getInstance().getDaoHelper().getDao(DetailExportStore.class).flush();
+    }
+
+    public static Set<DetailExportStore> initDetailExportStore(ExportStoreForm form, Invoice invoice,
+            ExportStoreForm latestForm) {
+        Set<DetailExportStore> exDetalSet = new HashSet<DetailExportStore>();
+        Integer lineNo = 0;
+        for (DetailExportStore detail : latestForm.getExportDetails()) {
+            Integer reqQty = detail.getRemainQuan();
+            if (reqQty > 0) {
+                DetailExportStore exDetail = new DetailExportStore();
+                exDetail.setLineNo(lineNo);
+                exDetail.setProduct(detail.getProduct());
+                exDetail.setItem(detail.getItem());
+                exDetail.setReqQuan(reqQty);
+                exDetail.setRemainQuan(reqQty);
+                exDetalSet.add(exDetail);
+                lineNo++;
+            }
+        }
+        return exDetalSet;
     }
 }
