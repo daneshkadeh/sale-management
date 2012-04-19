@@ -65,7 +65,8 @@ public class ExportStoreForm extends AbstractCodeOLObject {
     private Set<DetailExportStore> exportDetails = new HashSet<DetailExportStore>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "invoice_id", nullable = false)
+    @Cascade({ CascadeType.SAVE_UPDATE })
+    @JoinColumn(name = "invoice_id")
     @NotNull
     public Invoice getInvoice() {
         return invoice;

@@ -15,5 +15,5 @@
 package com.s3s.ssm.entity.sales;
 
 public enum InvoiceStatus {
-    OPEN, RESERVED, CLOSED, ABANDONED;
+    OPEN, RESERVED, CLOSED, ABANDONED, EXPORTING, EXPORTED, CANCELLED;
 }

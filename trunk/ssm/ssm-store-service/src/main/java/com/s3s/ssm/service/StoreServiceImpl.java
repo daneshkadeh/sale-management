@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.entity.store.ExportStoreStatus;
 import com.s3s.ssm.entity.store.ImportStoreStatus;
 import com.s3s.ssm.entity.store.MoveStoreOrder;
@@ -103,5 +105,17 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
         dc.add(Restrictions.eq("status", status));
         List<MoveStoreOrder> orders = getDaoHelper().getDao(MoveStoreOrder.class).findByCriteria(dc);
         return orders;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportStoreForm getLatestExportStoreForm(Invoice invoice) {
+        DetachedCriteria dc = getDaoHelper().getDao(ExportStoreForm.class).getCriteria();
+        dc.add(Restrictions.eq("invoice", invoice));
+        dc.addOrder(Order.desc("createdDate"));
+        ExportStoreForm exportForm = getDaoHelper().getDao(ExportStoreForm.class).findFirstByCriteria(dc);
+        return exportForm;
     }
 }

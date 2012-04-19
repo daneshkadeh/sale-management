@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.interfaces.sales.InvoiceService;
+import com.s3s.ssm.interfaces.store.IStoreService;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.detail.store.EditExportStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -68,9 +69,19 @@ public class ListExportStoreFormView extends AbstractListView<ExportStoreForm> {
             String code = (String) JOptionPane.showInputDialog(this.getParent(), "Ma hoa don", "Nhap hoa don",
                     JOptionPane.PLAIN_MESSAGE, null, null, null);
             Invoice invoice = serviceProvider.getService(InvoiceService.class).findInvoiceByCode(code);
-            detailParams.put(DETAIL_SET, StoreHelper.initDetailExportStore(entity, invoice));
+            switch (invoice.getStatus()) {
+            case OPEN:
+                detailParams.put(DETAIL_SET, StoreHelper.initDetailExportStore(entity, invoice));
+                break;
+            case EXPORTING:
+                ExportStoreForm latestForm = serviceProvider.getService(IStoreService.class).getLatestExportStoreForm(
+                        invoice);
+                detailParams.put(DETAIL_SET, StoreHelper.initDetailExportStore(entity, invoice, latestForm));
+                break;
+            default:
+                break;
+            }
         }
-
         return true;
     }
 }
