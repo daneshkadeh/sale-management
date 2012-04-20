@@ -59,6 +59,7 @@ import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.entity.config.UploadFile;
 import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.entity.contact.ContactDebt;
+import com.s3s.ssm.entity.contact.ContactDebtHistory;
 import com.s3s.ssm.entity.contact.CustomerProfile;
 import com.s3s.ssm.entity.contact.Individual;
 import com.s3s.ssm.entity.contact.IndividualRoleEnum;
@@ -530,8 +531,7 @@ public class SSMDataLoader {
     private static List<ContactDebt> initContactDebt(DaoHelper daoHelper, List<Partner> listContact) {
         ContactDebt contactDebt = new ContactDebt();
         contactDebt.setPartner(listContact.get(0));
-        contactDebt.setDebtMoney(1000000.0);
-        contactDebt.setCurrency("VND");
+        contactDebt.setDebtMoney(Money.create("VND", 100000000L));
         daoHelper.getDao(ContactDebt.class).saveOrUpdate(contactDebt);
         return Arrays.asList(contactDebt);
     }
@@ -1043,6 +1043,14 @@ public class SSMDataLoader {
         address.setPostalCode("70000");
         address.setFixPhone("0909000000");
         address.setRemark("Mo cua 8h-21h");
+
+        ContactDebtHistory debtHitory = new ContactDebtHistory();
+        debtHitory.setStartDate(new Date());
+        debtHitory.setEndDate(new Date());
+        debtHitory.setStartDebtAmount(Money.create("VND", 0L));
+        debtHitory.setEndDebtAmount(Money.create("VND", 0L));
+        debtHitory.setPaidAmount(Money.create("VND", 0L));
+        contact.addContactDebtHistory(debtHitory);
         daoHelper.getDao(Partner.class).saveOrUpdate(contact);
         return Arrays.asList(contact);
     }

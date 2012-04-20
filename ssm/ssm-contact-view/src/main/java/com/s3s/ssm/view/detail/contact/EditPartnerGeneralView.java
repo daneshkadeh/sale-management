@@ -26,6 +26,7 @@ import javax.swing.event.ChangeEvent;
 import com.s3s.ssm.entity.contact.IndividualTitleEnum;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.util.ImageConstants;
 import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
@@ -79,6 +80,10 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
         // detailDataModel.addRawAttribute("rawAttribute4",
         // DetailFieldType.MONEY).value(null).referenceDataId(MONEY_ID);
         // detailDataModel.addRawAttribute("rawLabel", DetailFieldType.LABEL).value("Hello label");
+        detailDataModel.tab(ControlConfigUtils.getString("label.EditPartnerGeneralView.Partner.contactDebt"),
+                "Contact debt of Partner", null);
+        detailDataModel.addAttribute("contactDebt.debtMoney", DetailFieldType.MONEY).editable(!entity.isPersisted())
+                .cacheDataId(CacheId.REF_LIST_CURRENCY);
 
         detailDataModel.tab(ControlConfigUtils.getString("label.EditPartnerGeneralView.Partner.address"),
                 "Address of Partner", null);
