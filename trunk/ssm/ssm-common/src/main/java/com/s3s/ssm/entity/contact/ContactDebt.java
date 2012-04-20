@@ -14,14 +14,18 @@
  */
 package com.s3s.ssm.entity.contact;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.model.Money;
 
 @Entity
 @Table(name = "co_contact_debt")
@@ -31,10 +35,11 @@ public class ContactDebt extends AbstractIdOLObject {
      */
     private static final long serialVersionUID = 4941626566283215149L;
     private Partner partner;
-    private Double debtMoney;
-    private String currency;
+    // If customer loans 100 VND, the value must be 100 VND.
+    // If THU loans supplier 1000 VND, the value must be 1000 VND
+    private Money debtMoney = Money.create("VND", 0L);
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "partner_id", nullable = false)
     public Partner getPartner() {
         return partner;
@@ -44,25 +49,16 @@ public class ContactDebt extends AbstractIdOLObject {
         this.partner = partner;
     }
 
-    @Column(name = "debt_money", nullable = false)
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "debtAmount")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code")) })
     @NotNull
-    public Double getDebtMoney() {
+    public Money getDebtMoney() {
         return debtMoney;
     }
 
-    public void setDebtMoney(Double debtMoney) {
+    public void setDebtMoney(Money debtMoney) {
         this.debtMoney = debtMoney;
-    }
-
-    // TODO: draft code
-    @Column(name = "currency_id", nullable = false)
-    @NotNull
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
 }

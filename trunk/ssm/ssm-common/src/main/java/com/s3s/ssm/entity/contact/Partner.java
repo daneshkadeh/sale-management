@@ -32,9 +32,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -70,7 +73,8 @@ public class Partner extends AbstractCodeOLObject {
     private Set<Individual> individuals = new HashSet<>();
     private Set<PartnerCategory> partnerCateSet = new HashSet<PartnerCategory>();
 
-    private Set<ContactDebt> contactDebtSet = new HashSet<ContactDebt>();
+    private ContactDebt contactDebt;
+    private Set<ContactDebtHistory> contactDebtHistories = new HashSet<ContactDebtHistory>();
 
     private Set<PartnerAddressLink> listAddressLinks = new HashSet<>();
 
@@ -88,6 +92,8 @@ public class Partner extends AbstractCodeOLObject {
         mainAddressLink.setPartner(this);
         listAddressLinks.add(mainAddressLink);
         mainAddressLink.setAddress(new Address());
+
+        contactDebt = new ContactDebt();
     }
 
     @Column(name = "name", length = 128, nullable = false)
@@ -196,13 +202,28 @@ public class Partner extends AbstractCodeOLObject {
         this.partnerCateSet = partnerCateSet;
     }
 
-    @OneToMany(mappedBy = "partner")
-    public Set<ContactDebt> getContactDebtSet() {
-        return contactDebtSet;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "partner")
+    public ContactDebt getContactDebt() {
+        return contactDebt;
     }
 
-    public void setContactDebtSet(Set<ContactDebt> contactDebtSet) {
-        this.contactDebtSet = contactDebtSet;
+    public void setContactDebt(ContactDebt contactDebt) {
+        this.contactDebt = contactDebt;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partner")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public Set<ContactDebtHistory> getContactDebtHistories() {
+        return contactDebtHistories;
+    }
+
+    public void setContactDebtHistories(Set<ContactDebtHistory> contactDebtHitories) {
+        this.contactDebtHistories = contactDebtHitories;
+    }
+
+    public void addContactDebtHistory(ContactDebtHistory debtHistory) {
+        debtHistory.setPartner(this);
+        contactDebtHistories.add(debtHistory);
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "partner")
