@@ -94,6 +94,7 @@ public class Partner extends AbstractCodeOLObject {
         mainAddressLink.setAddress(new Address());
 
         contactDebt = new ContactDebt();
+        contactDebt.setPartner(this);
     }
 
     @Column(name = "name", length = 128, nullable = false)
