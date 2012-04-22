@@ -20,7 +20,6 @@ import java.util.Map;
 
 import javax.swing.JComboBox;
 
-import com.s3s.ssm.entity.store.DetailImportStore;
 import com.s3s.ssm.entity.store.ImportStoreForm;
 import com.s3s.ssm.entity.store.ShipPrice;
 import com.s3s.ssm.entity.store.ShipPriceType;
@@ -32,15 +31,13 @@ import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.component.MoneyComponent;
-import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
-import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
-import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
+import com.s3s.ssm.view.edit.IComponentInfo;
+import com.s3s.ssm.view.edit.ListComponentInfo;
 
-public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStoreForm, DetailImportStore> {
+public class EditImportStoreFormView extends AbstractSingleEditView<ImportStoreForm> {
     // TODO:Hoang remove bellow after ListDataModel support caching
     private static String REF_UNIT_UOM = "1";
     private static String REF_LIST_PRODUCT = "2";
@@ -52,52 +49,6 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
      */
     public EditImportStoreFormView(Map<String, Object> entity) {
         super(entity);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        // TODO: Hoang must set max, min for column
-        // listDataModel.setEditable(true);
-        // listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
-        listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
-                .referenceDataId(REF_LIST_PRODUCT).width(180);
-        listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable().width(290);
-        // TODO: Hoang the data should be updated after choosing the product
-        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
-                .width(205);
-        listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM)
-                .width(70);
-        listDataModel.addColumn("baseUom", ListRendererType.TEXT, ListEditorType.TEXTFIELD).notEditable();
-        listDataModel.addColumn("quantity", ListRendererType.NUMBER, ListEditorType.TEXTFIELD).width(70)
-                .width(UIConstants.QTY_COLUMN_WIDTH).summarized();
-        listDataModel.addColumn("priceUnit", ListRendererType.TEXT, ListEditorType.MONEY)
-                .width(UIConstants.AMT_COLUMN_WIDTH).referenceDataId(REF_CURRENCY);
-        listDataModel.addColumn("priceSubtotal", ListRendererType.TEXT, ListEditorType.MONEY)
-                .referenceDataId(REF_CURRENCY).width(UIConstants.AMT_COLUMN_WIDTH).summarized();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Class<? extends AbstractEditView<DetailImportStore>> getChildDetailViewClass() {
-        return EditDetailImportStoreView.class;
-    }
-
-    @Override
-    protected String getParentFieldName() {
-        return "importStoreForm";
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected String getChildFieldName() {
-        return "detailImportStores";
     }
 
     /**
@@ -126,7 +77,13 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
         detailDataModel.addAttribute("receiver", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_OPERATOR);
 
         detailDataModel.addAttribute("sender", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("detailImportStores", DetailFieldType.LIST).componentInfo(
+                createImportDetailsComponentInfo());
+    }
 
+    private IComponentInfo createImportDetailsComponentInfo() {
+        ListImportDetailComponent component = new ListImportDetailComponent(null, null, null);
+        return new ListComponentInfo(component);
     }
 
     /**

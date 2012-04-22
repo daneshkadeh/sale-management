@@ -5,9 +5,6 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
@@ -82,25 +79,20 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public ShipPrice getLatestShipPrice(ShipPriceType type) {
-        DetachedCriteria dc = getDaoHelper().getDao(ShipPrice.class).getCriteria();
-        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        ProjectionList projList = Projections.projectionList();
-        projList.add(Projections.max("updateDate"));
-        dc.createAlias("currency", "currency");
-        dc.add(Restrictions.eq("shipPriceType.code", type.getCode()));
-        dc.setProjection(projList);
-        ShipPrice shipPrice = getDaoHelper().getDao(ShipPrice.class).findFirstByCriteria(dc);
-        return shipPrice;
+        return getLatestShipPrice(type.getCode());
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public ShipPrice getLatestShipPrice(String code) {
+        DetachedCriteria subselectDc = getDaoHelper().getDao(ShipPrice.class).getCriteria();
+        subselectDc.setProjection(Property.forName("updateDate").max());
+
         DetachedCriteria dc = getDaoHelper().getDao(ShipPrice.class).getCriteria();
         dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dc.createAlias("shipPriceType", "shipPriceType");
-        dc.add(Restrictions.eq("shipPriceType.code", code));
-        dc.addOrder(Order.desc("updateDate"));
+        dc.add(Property.forName("shipPriceType.code").ge(code));
+        dc.add(Property.forName("updateDate").eq(subselectDc));
         ShipPrice shipPrice = getDaoHelper().getDao(ShipPrice.class).findFirstByCriteria(dc);
         return shipPrice;
     }
@@ -118,15 +110,14 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public ExportStoreForm getLatestExportStoreForm(Invoice invoice) {
-        DetachedCriteria latestDateDc = getDaoHelper().getDao(ExportStoreForm.class).getCriteria();
-        latestDateDc.setProjection(Property.forName("createdDate").max());
+        DetachedCriteria subselectDc = getDaoHelper().getDao(ExportStoreForm.class).getCriteria();
+        subselectDc.setProjection(Property.forName("createdDate").max());
 
         DetachedCriteria dc = getDaoHelper().getDao(ExportStoreForm.class).getCriteria();
         dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dc.createAlias("invoice", "inv");
-        // dc.add(Restrictions.eq("invoice.invoiceNumber", invoice.getInvoiceNumber()));
         dc.add(Property.forName("invoice.invoiceNumber").ge(invoice.getInvoiceNumber()));
-        dc.add(Property.forName("createdDate").ge(latestDateDc));
+        dc.add(Property.forName("createdDate").eq(subselectDc));
         ExportStoreForm exportForm = getDaoHelper().getDao(ExportStoreForm.class).findFirstByCriteria(dc);
         return exportForm;
     }

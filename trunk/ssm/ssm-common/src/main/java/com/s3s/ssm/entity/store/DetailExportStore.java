@@ -67,7 +67,7 @@ public class DetailExportStore extends AbstractIdOLObject {
         this.product = product;
     }
 
-    @Column(name = "productName")
+    @Column(name = "product_name")
     @NotBlank
     public String getProductName() {
         return productName;

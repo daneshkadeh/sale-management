@@ -92,9 +92,11 @@ import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.entity.shipment.TransportationType;
 import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.DetailImportStore;
+import com.s3s.ssm.entity.store.DetailInventoryStore;
 import com.s3s.ssm.entity.store.DetailMoveStore;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.entity.store.ImportStoreForm;
+import com.s3s.ssm.entity.store.InventoryStoreForm;
 import com.s3s.ssm.entity.store.MoveStoreForm;
 import com.s3s.ssm.entity.store.MoveStoreOrder;
 import com.s3s.ssm.entity.store.ShipPrice;
@@ -174,13 +176,20 @@ public class SSMDataLoader {
         daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());
         daoHelper.getDao(SalesContract.class).deleteAll(daoHelper.getDao(SalesContract.class).findAll());
         daoHelper.getDao(ContractDocument.class).deleteAll(daoHelper.getDao(ContractDocument.class).findAll());
+
         daoHelper.getDao(DetailExportStore.class).deleteAll(daoHelper.getDao(DetailExportStore.class).findAll());
         daoHelper.getDao(ExportStoreForm.class).deleteAll(daoHelper.getDao(ExportStoreForm.class).findAll());
 
         daoHelper.getDao(DetailImportStore.class).deleteAll(daoHelper.getDao(DetailImportStore.class).findAll());
         daoHelper.getDao(ImportStoreForm.class).deleteAll(daoHelper.getDao(ImportStoreForm.class).findAll());
+
+        daoHelper.getDao(DetailMoveStore.class).deleteAll(daoHelper.getDao(DetailMoveStore.class).findAll());
         daoHelper.getDao(MoveStoreForm.class).deleteAll(daoHelper.getDao(MoveStoreForm.class).findAll());
         daoHelper.getDao(MoveStoreOrder.class).deleteAll(daoHelper.getDao(MoveStoreOrder.class).findAll());
+
+        daoHelper.getDao(DetailInventoryStore.class).deleteAll(daoHelper.getDao(DetailInventoryStore.class).findAll());
+        daoHelper.getDao(InventoryStoreForm.class).deleteAll(daoHelper.getDao(InventoryStoreForm.class).findAll());
+        // Sales module
         daoHelper.getDao(DetailInvoice.class).deleteAll(daoHelper.getDao(DetailInvoice.class).findAll());
         daoHelper.getDao(Invoice.class).deleteAll(daoHelper.getDao(Invoice.class).findAll());
         daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());
@@ -292,6 +301,58 @@ public class SSMDataLoader {
                 listOperator);
         List<MoveStoreForm> listMoveStoreForm = initMoveStore(daoHelper, listStore, listItem, listOperator,
                 listTransportationType);
+
+        List<InventoryStoreForm> listInventoryStoreForm = initInventoryStore(daoHelper, listStore, listItem,
+                listOperator);
+    }
+
+    private static List<InventoryStoreForm> initInventoryStore(DaoHelper daoHelper, List<Store> listStore,
+            List<Item> listItem, List<Operator> listOperator) {
+        InventoryStoreForm form = new InventoryStoreForm();
+        DetailInventoryStore detail1 = new DetailInventoryStore();
+        DetailInventoryStore detail2 = new DetailInventoryStore();
+
+        Store store = listStore.get(0);
+        Operator staff = listOperator.get(0);
+        Item item = listItem.get(0);
+        Money priceUnit = item.getOriginPrice();
+        // TODO: Hoang must get based on product (after baseUom of product is defined on Product Category)
+        UnitOfMeasure unit = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
+
+        form.setCode("KK001");
+        form.setStore(store);
+        form.setStaff(staff);
+        form.setCurQtyTotal(300);
+        form.setRealQtyTotal(280);
+
+        detail1.setInventoryForm(form);
+        detail1.setLineNo(1);
+        detail1.setProduct(item.getProduct());
+        detail1.setItem(item);
+        detail1.setPriceUnit(priceUnit);
+        detail1.setBaseUom(unit);
+        detail1.setCurQty(100);
+        detail1.setRealQty(100);
+        detail1.setLostQty(0);
+        detail1.setCurPriceSubtotal(priceUnit.multiply(100));
+        detail1.setRealPriceSubtotal(priceUnit.multiply(100));
+
+        // TODO: Hoang should use other product to create detail2
+        detail2.setInventoryForm(form);
+        detail2.setLineNo(2);
+        detail2.setProduct(item.getProduct());
+        detail2.setItem(item);
+        detail2.setPriceUnit(priceUnit);
+        detail2.setBaseUom(unit);
+        detail2.setCurQty(200);
+        detail2.setRealQty(180);
+        detail1.setLostQty(20);
+        detail2.setCurPriceSubtotal(priceUnit.multiply(200));
+        detail2.setRealPriceSubtotal(priceUnit.multiply(180));
+
+        form.setDetailInventoryStores(new HashSet<>(Arrays.asList(detail2, detail1)));
+        daoHelper.getDao(InventoryStoreForm.class).save(form);
+        return Arrays.asList(form);
     }
 
     private static List<MoveStoreForm> initMoveStore(DaoHelper daoHelper, List<Store> listStore, List<Item> listItem,
@@ -369,6 +430,7 @@ public class SSMDataLoader {
         String custName = invoice.getContact().getName();
         Item item = listItem.get(0);
         Product product = item.getProduct();
+        // TODO: Hoang must get based on product (after baseUom of product is defined on Product Category)
         UnitOfMeasure unit = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
         TransportationType transType = listTransType.get(0);
 
