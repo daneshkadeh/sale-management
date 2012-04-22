@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -81,6 +82,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
 
     public List<Partner> getSuppliers() {
         DetachedCriteria dc = getDaoHelper().getDao(Partner.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dc.createCriteria("listProfiles").add(Restrictions.eq("type", PartnerProfileTypeEnum.SUPPLIER));
         return getDaoHelper().getDao(Partner.class).findByCriteria(dc);
     }
@@ -108,6 +110,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
             date = new Date();
         }
         DetachedCriteria exRateDC = getDaoHelper().getDao(ExchangeRate.class).getCriteria();
+        exRateDC.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         exRateDC.createAlias("currency", "currency");
         exRateDC.add(Restrictions.eq("currency.code", currencyCode));
         exRateDC.add(Restrictions.le("updateDate", date));
@@ -155,6 +158,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     @Override
     public Organization getDefOrganization() {
         DetachedCriteria dc = getDaoHelper().getDao(Organization.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dc.add(Restrictions.eq("isDefault", true));
         List<Organization> orgList = getDaoHelper().getDao(Organization.class).findByCriteria(dc, 0, 1);
         if (orgList.size() > 0) {
@@ -178,6 +182,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     private Long getMaxId(Class clazz) {
         Long maxId = 0L;
         DetachedCriteria dc = getDaoHelper().getDao(clazz).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dc.addOrder(Order.desc("id"));
         List<AbstractCodeOLObject> idList = getDaoHelper().getDao(clazz).findByCriteria(dc, 0, 1);
         if (idList.size() > 0) {
@@ -217,6 +222,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     @Override
     public List<UnitOfMeasure> getUnitUom() {
         DetachedCriteria dc = getDaoHelper().getDao(UnitOfMeasure.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dc.createAlias("uomCategory", "uomCategory");
         dc.add(Restrictions.eq("uomCategory.code", UomCategory.UNIT_UOM_CATE));
         List<UnitOfMeasure> uomList = getDaoHelper().getDao(UnitOfMeasure.class).findByCriteria(dc);
@@ -229,6 +235,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     @Override
     public UnitOfMeasure getBaseUnitUom() {
         DetachedCriteria dc = getDaoHelper().getDao(UnitOfMeasure.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dc.createAlias("uomCategory", "uomCategory");
         dc.add(Restrictions.eq("uomCategory.code", UomCategory.UNIT_UOM_CATE));
         dc.add(Restrictions.eq("isBaseMeasure", true));
@@ -250,6 +257,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     @Override
     public UnitOfMeasure getBaseUom(UomCategory cate) {
         DetachedCriteria dc = getDaoHelper().getDao(UnitOfMeasure.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dc.createAlias("uomCategory", "uomCategory");
         dc.add(Restrictions.eq("uomCategory.code", cate.getCode()));
         dc.add(Restrictions.eq("isBaseMeasure", true));

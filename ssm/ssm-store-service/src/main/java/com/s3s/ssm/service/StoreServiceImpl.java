@@ -3,16 +3,19 @@ package com.s3s.ssm.service;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.entity.store.ExportStoreStatus;
 import com.s3s.ssm.entity.store.ImportStoreStatus;
@@ -80,6 +83,7 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
     @Override
     public ShipPrice getLatestShipPrice(ShipPriceType type) {
         DetachedCriteria dc = getDaoHelper().getDao(ShipPrice.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         ProjectionList projList = Projections.projectionList();
         projList.add(Projections.max("updateDate"));
         dc.createAlias("currency", "currency");
@@ -93,6 +97,7 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
     @Override
     public ShipPrice getLatestShipPrice(String code) {
         DetachedCriteria dc = getDaoHelper().getDao(ShipPrice.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dc.createAlias("shipPriceType", "shipPriceType");
         dc.add(Restrictions.eq("shipPriceType.code", code));
         dc.addOrder(Order.desc("updateDate"));
@@ -110,12 +115,33 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
     /**
      * {@inheritDoc}
      */
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public ExportStoreForm getLatestExportStoreForm(Invoice invoice) {
+        DetachedCriteria latestDateDc = getDaoHelper().getDao(ExportStoreForm.class).getCriteria();
+        latestDateDc.setProjection(Property.forName("createdDate").max());
+
         DetachedCriteria dc = getDaoHelper().getDao(ExportStoreForm.class).getCriteria();
-        dc.add(Restrictions.eq("invoice", invoice));
-        dc.addOrder(Order.desc("createdDate"));
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dc.createAlias("invoice", "inv");
+        // dc.add(Restrictions.eq("invoice.invoiceNumber", invoice.getInvoiceNumber()));
+        dc.add(Property.forName("invoice.invoiceNumber").ge(invoice.getInvoiceNumber()));
+        dc.add(Property.forName("createdDate").ge(latestDateDc));
         ExportStoreForm exportForm = getDaoHelper().getDao(ExportStoreForm.class).findFirstByCriteria(dc);
         return exportForm;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<DetailExportStore> getAllDetail(ExportStoreForm form) {
+        DetachedCriteria dc = getDaoHelper().getDao(DetailExportStore.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dc.createAlias("exportForm", "exportForm");
+        dc.add(Restrictions.eq("exportForm.code", form.getCode()));
+        List<DetailExportStore> details = getDaoHelper().getDao(DetailExportStore.class).findByCriteria(dc);
+        return details;
     }
 }

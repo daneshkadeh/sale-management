@@ -58,7 +58,7 @@ public class EditMoveStoreFormView extends AbstractMasterDetailView<MoveStoreFor
         // listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
         listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
                 .referenceDataId(REF_LIST_PRODUCT).width(180);
-        listDataModel.addColumn("product.name", ListRendererType.TEXT).notEditable().width(290);
+        listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable().width(290);
         // TODO: Hoang the data should be updated after choosing the product
         listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
                 .width(205);

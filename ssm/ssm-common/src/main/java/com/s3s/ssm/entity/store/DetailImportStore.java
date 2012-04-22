@@ -26,6 +26,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
@@ -38,13 +40,14 @@ public class DetailImportStore extends AbstractIdOLObject {
     private static final long serialVersionUID = 193415641537228770L;
     private Integer lineNo;
     private ImportStoreForm importStoreForm;
-    private Product product;
-    private Item item;
+    private Product product = new Product();
+    private String productName;
+    private Item item = new Item();
     private UnitOfMeasure uom;
     private UnitOfMeasure baseUom;
     private Integer quantity = 0;
-    private Money priceUnit;
-    private Money priceSubtotal;
+    private Money priceUnit = Money.create("VND", 0L);
+    private Money priceSubtotal = Money.create("VND", 0L);;
 
     @Column(name = "line_no")
     @DecimalMin(value = "1")
@@ -65,6 +68,16 @@ public class DetailImportStore extends AbstractIdOLObject {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    @Column(name = "productName")
+    @NotBlank
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -118,7 +131,6 @@ public class DetailImportStore extends AbstractIdOLObject {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-        updatePriceSubtotal();
     }
 
     @Embedded
@@ -131,7 +143,6 @@ public class DetailImportStore extends AbstractIdOLObject {
 
     public void setPriceUnit(Money priceUnit) {
         this.priceUnit = priceUnit;
-        updatePriceSubtotal();
     }
 
     @Embedded
@@ -143,11 +154,5 @@ public class DetailImportStore extends AbstractIdOLObject {
 
     public void setPriceSubtotal(Money priceSubtotal) {
         this.priceSubtotal = priceSubtotal;
-    }
-
-    private void updatePriceSubtotal() {
-        int quan = quantity;
-        // Money priceUnitTemp = Money.create(priceUnit.getCurrencyCode(), priceUnit.getValue());
-        // priceSubtotal = priceUnitTemp.multiply(quan);
     }
 }

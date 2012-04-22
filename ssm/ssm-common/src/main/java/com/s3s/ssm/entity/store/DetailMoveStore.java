@@ -22,6 +22,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
@@ -32,11 +34,12 @@ import com.s3s.ssm.entity.config.UnitOfMeasure;
 public class DetailMoveStore extends AbstractIdOLObject {
     private static final long serialVersionUID = 6554328977277943730L;
     private MoveStoreForm moveForm;
-    private Product product;
-    private Item item;
-    private UnitOfMeasure uom;
-    private Integer exportQty;
-    private Integer importQty;
+    private Product product = new Product();
+    private String productName;
+    private Item item = new Item();
+    private UnitOfMeasure uom = new UnitOfMeasure();
+    private Integer exportQty = 0;
+    private Integer importQty = 0;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "move_form_id")
@@ -57,6 +60,16 @@ public class DetailMoveStore extends AbstractIdOLObject {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    @Column(name = "productName")
+    @NotBlank
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -327,6 +327,7 @@ public class SSMDataLoader {
 
         detail1.setMoveForm(form);
         detail1.setProduct(product);
+        detail1.setProductName(product.getName());
         detail1.setItem(item);
         detail1.setUom(uom);
         detail1.setExportQty(20);
@@ -334,6 +335,7 @@ public class SSMDataLoader {
 
         detail2.setMoveForm(form);
         detail2.setProduct(product);
+        detail2.setProductName(product.getName());
         detail2.setItem(item);
         detail2.setUom(uom);
         detail2.setExportQty(80);
@@ -382,6 +384,7 @@ public class SSMDataLoader {
         detail1.setExportForm(form);
         detail1.setLineNo(1);
         detail1.setProduct(product);
+        detail1.setProductName(product.getName());
         detail1.setItem(item);
         detail1.setUom(unit);
         detail1.setBaseUom(unit);
@@ -392,6 +395,7 @@ public class SSMDataLoader {
         detail2.setExportForm(form);
         detail2.setLineNo(2);
         detail2.setProduct(product);
+        detail2.setProductName(product.getName());
         detail2.setItem(item);
         detail2.setUom(unit);
         detail2.setBaseUom(unit);
@@ -399,7 +403,7 @@ public class SSMDataLoader {
         detail2.setRealQuan(200);
         detail2.setRemainQuan(100);
 
-        form.setExportDetails(new HashSet<>(Arrays.asList(detail1, detail2)));
+        form.setExportDetails(new HashSet<>(Arrays.asList(detail2, detail1)));
 
         invoice.setStatus(InvoiceStatus.EXPORTING);
         daoHelper.getDao(ExportStoreForm.class).save(form);
@@ -727,16 +731,18 @@ public class SSMDataLoader {
         form1.setSender("Nguyen Van A");
 
         Item item = listItem.get(0);
+        Product product = item.getProduct();
         DetailImportStore detail1 = new DetailImportStore();
         detail1.setImportStoreForm(form1);
-        detail1.setProduct(item.getProduct());
+        detail1.setProduct(product);
+        detail1.setProductName(product.getName());
         detail1.setItem(item);
         detail1.setQuantity(20);
         UnitOfMeasure unit = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
         detail1.setUom(unit);
         detail1.setBaseUom(unit);
         detail1.setPriceUnit(item.getOriginPrice());
-        detail1.setPriceSubtotal(item.getOriginPrice().multiply(detail1.getQuantity()));
+        // detail1.setPriceSubtotal(item.getOriginPrice().multiply(detail1.getQuantity()));
         form1.getDetailImportStores().add(detail1);
         daoHelper.getDao(ImportStoreForm.class).save(form1);
         return Arrays.asList(form1);

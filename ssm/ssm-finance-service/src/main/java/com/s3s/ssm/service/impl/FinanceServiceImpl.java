@@ -3,6 +3,7 @@ package com.s3s.ssm.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,7 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
     public List<PaymentContent> getPaymentContents() {
         DetachedCriteria dc = DetachedCriteria.forClass(PaymentContent.class).add(
                 Property.forName("paymentType").eq(PaymentType.PAY));
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<PaymentContent> pamentContent = getDaoHelper().getDao(PaymentContent.class).findByCriteria(dc);
         return pamentContent;
     }
@@ -53,6 +55,7 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
     public List<PaymentContent> getReceiptContents() {
         DetachedCriteria dc = DetachedCriteria.forClass(PaymentContent.class).add(
                 Property.forName("paymentType").eq(PaymentType.RECEIPT));
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<PaymentContent> receiptContent = getDaoHelper().getDao(PaymentContent.class).findByCriteria(dc);
         return receiptContent;
     }

@@ -23,6 +23,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
@@ -34,10 +36,11 @@ public class DetailExportStore extends AbstractIdOLObject {
     private static final long serialVersionUID = 6567804203919738639L;
     private Integer lineNo;
     private ExportStoreForm exportForm;
-    private Product product;
-    private Item item;
-    private UnitOfMeasure uom;
-    private UnitOfMeasure baseUom;
+    private Product product = new Product();
+    private String productName;
+    private Item item = new Item();
+    private UnitOfMeasure uom = new UnitOfMeasure();
+    private UnitOfMeasure baseUom = new UnitOfMeasure();
     private Integer reqQuan = 0;
     private Integer realQuan = 0;
     private Integer remainQuan = 0;
@@ -61,6 +64,16 @@ public class DetailExportStore extends AbstractIdOLObject {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    @Column(name = "productName")
+    @NotBlank
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)

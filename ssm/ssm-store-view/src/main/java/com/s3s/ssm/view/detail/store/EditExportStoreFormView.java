@@ -15,7 +15,6 @@
 package com.s3s.ssm.view.detail.store;
 
 import java.util.Map;
-import java.util.Set;
 
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
@@ -36,6 +35,7 @@ import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 import com.s3s.ssm.view.list.store.ListExportStoreFormView;
+import com.s3s.ssm.view.util.StoreHelper;
 
 public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStoreForm, DetailExportStore> {
     private static final long serialVersionUID = -7472571972492175768L;
@@ -59,8 +59,8 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
     @Override
     protected ExportStoreForm loadForCreate(Map<String, Object> request) {
         ExportStoreForm form = super.loadForCreate(request);
-        Set<DetailExportStore> detailSet = (Set<DetailExportStore>) request.get(ListExportStoreFormView.DETAIL_SET);
-        form.getExportDetails().addAll(detailSet);
+        Invoice invoice = (Invoice) request.get(ListExportStoreFormView.INVOICE_FORM);
+        StoreHelper.initExportStoreForm(form, invoice);
         return form;
     }
 
@@ -95,7 +95,7 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
         // listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
         listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
                 .referenceDataId(REF_LIST_PRODUCT).width(180);
-        listDataModel.addColumn("product.name", ListRendererType.TEXT).notEditable().width(290);
+        listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable().width(290);
         // TODO: Hoang the data should be updated after choosing the product
         listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
                 .width(205);
@@ -143,6 +143,8 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("printAfterSave", DetailFieldType.CHECKBOX).newColumn();
         detailDataModel.addAttribute("createdDate", DetailFieldType.DATE).mandatory(true);
+        detailDataModel.addAttribute("staff", DetailFieldType.ENTITY_CHOOSER).mandatory(true)
+                .cacheDataId(CacheId.REF_LIST_OPERATOR);
         detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_EXPORT_STORE_STATUS).newColumn();
 
@@ -150,8 +152,9 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
                 .mandatory(true);
         detailDataModel.addAttribute("transType", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_TRANS_TYPE)
                 .newColumn();
-        detailDataModel.addAttribute("invoice", DetailFieldType.DROPDOWN_AUTOCOMPLETE)
-                .referenceDataId(REF_INVOICE_LIST).mandatory(true);
+        // TODO: Hoang should use SEARCH COMPONENT
+        detailDataModel.addAttribute("invoice", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_LIST)
+                .mandatory(true);
         detailDataModel.addAttribute("transPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY)
                 .newColumn();
         detailDataModel.addAttribute("custCode", DetailFieldType.LABEL);
