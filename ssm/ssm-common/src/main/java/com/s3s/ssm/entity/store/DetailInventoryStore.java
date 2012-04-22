@@ -26,8 +26,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
@@ -35,19 +33,20 @@ import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.model.Money;
 
 @Entity
-@Table(name = "store_detail_import")
-public class DetailImportStore extends AbstractIdOLObject {
-    private static final long serialVersionUID = 193415641537228770L;
+@Table(name = "store_detail_inventory")
+public class DetailInventoryStore extends AbstractIdOLObject {
+    private static final long serialVersionUID = -6106647280533540331L;
     private Integer lineNo;
-    private ImportStoreForm importStoreForm;
+    private InventoryStoreForm inventoryForm;
     private Product product = new Product();
-    private String productName;
     private Item item = new Item();
-    private UnitOfMeasure uom;
     private UnitOfMeasure baseUom;
-    private Integer quantity = 0;
+    private Integer curQty = 0;
+    private Integer realQty = 0;
+    private Integer lostQty = 0;
     private Money priceUnit = Money.create("VND", 0L);
-    private Money priceSubtotal = Money.create("VND", 0L);;
+    private Money curPriceSubtotal = Money.create("VND", 0L);
+    private Money realPriceSubtotal = Money.create("VND", 0L);
 
     @Column(name = "line_no")
     @DecimalMin(value = "1")
@@ -70,25 +69,15 @@ public class DetailImportStore extends AbstractIdOLObject {
         this.product = product;
     }
 
-    @Column(name = "product_name")
-    @NotBlank
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "form_id")
     @NotNull
-    public ImportStoreForm getImportStoreForm() {
-        return importStoreForm;
+    public InventoryStoreForm getInventoryForm() {
+        return inventoryForm;
     }
 
-    public void setImportStoreForm(ImportStoreForm importStoreForm) {
-        this.importStoreForm = importStoreForm;
+    public void setInventoryForm(InventoryStoreForm inventoryForm) {
+        this.inventoryForm = inventoryForm;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -103,17 +92,6 @@ public class DetailImportStore extends AbstractIdOLObject {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "uom_id")
-    @NotNull
-    public UnitOfMeasure getUom() {
-        return uom;
-    }
-
-    public void setUom(UnitOfMeasure uom) {
-        this.uom = uom;
-    }
-
-    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "base_uom_id")
     @NotNull
     public UnitOfMeasure getBaseUom() {
@@ -124,18 +102,60 @@ public class DetailImportStore extends AbstractIdOLObject {
         this.baseUom = baseUom;
     }
 
-    @Column(name = "qty")
-    public Integer getQuantity() {
-        return quantity;
+    @Column(name = "cur_qty")
+    public Integer getCurQty() {
+        return curQty;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setCurQty(Integer curQty) {
+        this.curQty = curQty;
+    }
+
+    @Column(name = "real_qty")
+    public Integer getRealQty() {
+        return realQty;
+    }
+
+    public void setRealQty(Integer realQty) {
+        this.realQty = realQty;
+    }
+
+    @Column(name = "lost_qty")
+    public Integer getLostQty() {
+        return lostQty;
+    }
+
+    public void setLostQty(Integer lostQty) {
+        this.lostQty = lostQty;
+    }
+
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "cur_price_subtotal")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code1")) })
+    @NotNull
+    public Money getCurPriceSubtotal() {
+        return curPriceSubtotal;
+    }
+
+    public void setCurPriceSubtotal(Money curPriceSubtotal) {
+        this.curPriceSubtotal = curPriceSubtotal;
+    }
+
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "real_price_subtotal")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code2")) })
+    @NotNull
+    public Money getRealPriceSubtotal() {
+        return realPriceSubtotal;
+    }
+
+    public void setRealPriceSubtotal(Money realPriceSubtotal) {
+        this.realPriceSubtotal = realPriceSubtotal;
     }
 
     @Embedded
     @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "price_unit")),
-            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code")) })
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code3")) })
     @NotNull
     public Money getPriceUnit() {
         return priceUnit;
@@ -143,16 +163,5 @@ public class DetailImportStore extends AbstractIdOLObject {
 
     public void setPriceUnit(Money priceUnit) {
         this.priceUnit = priceUnit;
-    }
-
-    @Embedded
-    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "price_subtotal")),
-            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code1")) })
-    public Money getPriceSubtotal() {
-        return priceSubtotal;
-    }
-
-    public void setPriceSubtotal(Money priceSubtotal) {
-        this.priceSubtotal = priceSubtotal;
     }
 }

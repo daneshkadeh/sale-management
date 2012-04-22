@@ -21,69 +21,27 @@ import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-import com.s3s.ssm.entity.store.DetailMoveStore;
 import com.s3s.ssm.entity.store.MoveStoreForm;
 import com.s3s.ssm.entity.store.MoveStoreOrder;
 import com.s3s.ssm.entity.store.MoveStoreStatus;
 import com.s3s.ssm.entity.store.Store;
-import com.s3s.ssm.interfaces.catalog.ICatalogService;
-import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.interfaces.store.IStoreService;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
-import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
-import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
-import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
+import com.s3s.ssm.view.edit.IComponentInfo;
+import com.s3s.ssm.view.edit.ListComponentInfo;
 
-public class EditMoveStoreFormView extends AbstractMasterDetailView<MoveStoreForm, DetailMoveStore> {
+public class EditMoveStoreFormView extends AbstractSingleEditView<MoveStoreForm> {
     // TODO:Hoang remove bellow after ListDataModel support caching
-    private static String REF_UNIT_UOM = "1";
-    private static String REF_LIST_PRODUCT = "2";
-    private static String REF_LIST_ITEM = "3";
-    private static String REF_LIST_MOVE_ORDER = "4";
+    private static String REF_LIST_MOVE_ORDER = "1";
 
     public EditMoveStoreFormView(Map<String, Object> entity) {
         super(entity);
-    }
-
-    @Override
-    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        // listDataModel.setEditable(true);
-        // listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
-        listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
-                .referenceDataId(REF_LIST_PRODUCT).width(180);
-        listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable().width(290);
-        // TODO: Hoang the data should be updated after choosing the product
-        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
-                .width(205);
-        listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM)
-                .width(70);
-        listDataModel.addColumn("exportQty", ListRendererType.NUMBER, ListEditorType.TEXTFIELD)
-                .width(UIConstants.QTY_COLUMN_WIDTH).summarized();
-        listDataModel.addColumn("importQty", ListRendererType.NUMBER, ListEditorType.TEXTFIELD)
-                .width(UIConstants.QTY_COLUMN_WIDTH).summarized();
-
-    }
-
-    @Override
-    protected Class<? extends AbstractEditView<DetailMoveStore>> getChildDetailViewClass() {
-        return null;
-    }
-
-    @Override
-    protected String getParentFieldName() {
-        return "moveForm";
-    }
-
-    @Override
-    protected String getChildFieldName() {
-        return "detailSet";
     }
 
     @Override
@@ -102,6 +60,12 @@ public class EditMoveStoreFormView extends AbstractMasterDetailView<MoveStoreFor
         detailDataModel.addRawAttribute("fromStore", DetailFieldType.LABEL).editable(false).newColumn();
         detailDataModel.addAttribute("receivedDate", DetailFieldType.DATE);
         detailDataModel.addRawAttribute("destStore", DetailFieldType.LABEL).editable(false).newColumn();
+        detailDataModel.addAttribute("detailSet", DetailFieldType.LIST).componentInfo(createMoveDetailsComponentInfo());
+    }
+
+    private IComponentInfo createMoveDetailsComponentInfo() {
+        ListMoveDetailComponent component = new ListMoveDetailComponent(null, null, null);
+        return new ListComponentInfo(component);
     }
 
     /**
@@ -110,10 +74,6 @@ public class EditMoveStoreFormView extends AbstractMasterDetailView<MoveStoreFor
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, MoveStoreForm entity) {
         super.setReferenceDataModel(refDataModel, entity);
-        refDataModel.putRefDataList(REF_UNIT_UOM, serviceProvider.getService(IConfigService.class).getUnitUom());
-        refDataModel.putRefDataList(REF_LIST_PRODUCT, serviceProvider.getService(ICatalogService.class)
-                .getListProducts());
-        refDataModel.putRefDataList(REF_LIST_ITEM, serviceProvider.getService(ICatalogService.class).getAllItem());
         refDataModel.putRefDataList(REF_LIST_MOVE_ORDER, serviceProvider.getService(IStoreService.class)
                 .findMoveStoreOrderByStatus(MoveStoreStatus.NEW));
     }
@@ -124,8 +84,6 @@ public class EditMoveStoreFormView extends AbstractMasterDetailView<MoveStoreFor
         super.customizeComponents(name2AttributeComponent, entity);
         final JComboBox<MoveStoreOrder> cbOrder = (JComboBox<MoveStoreOrder>) name2AttributeComponent.get(
                 "moveStoreOrder").getComponent();
-        // final JTextField tfdFromStore = (JTextField) name2AttributeComponent.get("fromStore").getComponent();
-        // final JTextField tfdDestStore = (JTextField) name2AttributeComponent.get("destStore").getComponent();
         final JLabel tfdFromStore = (JLabel) name2AttributeComponent.get("fromStore").getComponent();
         final JLabel tfdDestStore = (JLabel) name2AttributeComponent.get("destStore").getComponent();
         cbOrder.addItemListener(new ItemListener() {

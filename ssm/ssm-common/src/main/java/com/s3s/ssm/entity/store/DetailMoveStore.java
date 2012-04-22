@@ -62,7 +62,7 @@ public class DetailMoveStore extends AbstractIdOLObject {
         this.product = product;
     }
 
-    @Column(name = "productName")
+    @Column(name = "product_ame")
     @NotBlank
     public String getProductName() {
         return productName;
