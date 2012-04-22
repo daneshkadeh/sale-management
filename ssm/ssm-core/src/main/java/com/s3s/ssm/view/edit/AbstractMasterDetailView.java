@@ -221,6 +221,11 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         protected boolean defaultPreShowEditView(E entity, EditActionEnum action, Map<String, Object> detailParams) {
             return super.preShowEditView(entity, action, detailParams);
         }
+
+        @Override
+        protected E initEntity(E entity) {
+            return super.initEntity(entity);
+        }
     }
 
     /**

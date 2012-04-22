@@ -32,7 +32,6 @@ public class ListDataModel {
     }
 
     private List<ColumnModel> columns = new ArrayList<>();
-    private boolean isEditable = false;
 
     public ColumnModel addColumn(String name, ListRendererType rendererType) {
         ColumnModel columnModel = new ColumnModel(name, rendererType);
@@ -52,19 +51,6 @@ public class ListDataModel {
 
     public ColumnModel getColumn(int index) {
         return columns.get(index);
-    }
-
-    public boolean isEditable() {
-        return isEditable;
-    }
-
-    /**
-     * Set the entire table is editable or not.
-     * 
-     * @param isEditable
-     */
-    public void setEditable(boolean isEditable) {
-        this.isEditable = isEditable;
     }
 
     /**

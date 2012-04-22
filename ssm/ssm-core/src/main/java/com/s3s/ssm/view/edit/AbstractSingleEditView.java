@@ -99,6 +99,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.ISavedListener;
 import com.s3s.ssm.view.SavedEvent;
+import com.s3s.ssm.view.component.ASearchComponent;
 import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
 import com.s3s.ssm.view.component.IPageChangeListener;
@@ -114,6 +115,7 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.edit.DetailDataModel.GroupInfoData;
 import com.s3s.ssm.view.edit.DetailDataModel.TabInfoData;
 import com.s3s.ssm.view.edit.NotifyPanel.NotifyKind;
+import com.s3s.ssm.view.list.AListComponent;
 
 /**
  * The edit view with single view.
@@ -125,10 +127,9 @@ import com.s3s.ssm.view.edit.NotifyPanel.NotifyKind;
  */
 
 public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> extends AbstractEditView<T> {
-    /**
-     * 
-     */
+
     private static final int MAX_WIDTH_LABEL = 150;
+    public static final int DEFAULT_WIDTH = 300;
 
     private static final long serialVersionUID = 1L;
 
@@ -389,7 +390,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             }
 
             String newline = attribute.isNewColumn() ? "right, gapleft 10, " : "right, newline, ";
-            int width = attribute.getWidth() == 0 ? UIConstants.DEFAULT_WIDTH : attribute.getWidth();
+            int width = attribute.getWidth() == 0 ? DEFAULT_WIDTH : attribute.getWidth();
 
             if (attribute.isMandatory()) {
                 label += " (*)";
@@ -538,6 +539,23 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 dataField = new JCheckBox("", isSelected);
                 pnlEdit.add(lblLabel, newline);
                 break;
+            case SEARCHER:
+                SearchComponentInfo info = (SearchComponentInfo) attribute.getComponentInfo();
+                Assert.isTrue(info != null, "Search component need the info to initialize");
+                dataField = info.getSearchComponent();
+                ((ASearchComponent) dataField).setSelectedEntity((AbstractBaseIdObject) value);
+                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+                pnlEdit.add(lblLabel, newline);
+                break;
+            case LIST:
+                ListComponentInfo listInfo = (ListComponentInfo) attribute.getComponentInfo();
+                AListComponent listComponent = listInfo.getListComponent();
+                Assert.isTrue(listComponent != null, "List component need the info to initialize");
+                listComponent.setEntities((Collection) value);
+                dataField = listComponent;
+                // dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+                pnlEdit.add(dataField, "newline, spanx, growx");
+                break;
             case ENTITY_CHOOSER:
                 dataField = new EntityChooser<>(referenceData.getValues(), value);
                 pnlEdit.add(lblLabel, newline);
@@ -567,15 +585,16 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             default:
                 throw new RuntimeException("FieldType does not supported!");
             }
-
             // Validate the field when lost focus.
             dataField.addFocusListener(new ValidationListener(attribute));
             dataField.setEnabled(!isReadOnly());
-            pnlEdit.add(dataField, "split 2");
             JLabel errorIcon = new JLabel(ImageUtils.getIcon(ImageConstants.ERROR_ICON));
-            pnlEdit.add(errorIcon);
             errorIcon.setVisible(false);
             name2AttributeComponent.put(attribute.getName(), new AttributeComponent(lblLabel, dataField, errorIcon));
+            if (attribute.getType() != DetailFieldType.LIST) {
+                pnlEdit.add(dataField, "split 2");
+                pnlEdit.add(errorIcon);
+            }
         }
         return pnlEdit;
     }
@@ -686,7 +705,15 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     }
 
     protected void saveOrUpdate(T entity) {
+        preSaveOrUpdate(entity);
         getDaoHelper().getDao(getEntityClass()).saveOrUpdate(entity);
+    }
+
+    /**
+     * @param entity
+     */
+    protected void preSaveOrUpdate(T entity) {
+        // Template method
     }
 
     protected Set<ConstraintViolation<T>> bindAndValidate(T entity) {
@@ -826,6 +853,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             JXDatePicker dateField = (JXDatePicker) component;
             return dateField.getDate();
         case DROPDOWN:
+        case DROPDOWN_AUTOCOMPLETE:
             JComboBox<?> comboBox = (JComboBox<?>) component;
             return comboBox.getSelectedItem();
         case MULTI_SELECT_LIST_BOX:
@@ -848,6 +876,12 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             FileChooser fileField = (FileChooser) component;
             // TODO Hoang: do this component check dirty?
             return fileField.getFilePath();
+        case SEARCHER:
+            ASearchComponent searchComponent = (ASearchComponent) component;
+            return searchComponent.getSelectedEntity();
+        case LIST:
+            AListComponent listComponent = (AListComponent) component;
+            return listComponent.getEntities();
         case ENTITY_CHOOSER:
             EntityChooser<?> entityField = (EntityChooser<?>) component;
             return entityField.getSelectedEntity();

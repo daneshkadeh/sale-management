@@ -14,6 +14,7 @@
  */
 package com.s3s.ssm.entity.store;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -98,7 +99,7 @@ public class DetailExportStore extends AbstractIdOLObject {
         this.item = item;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "uom_id")
     @NotNull
     public UnitOfMeasure getUom() {
@@ -109,7 +110,7 @@ public class DetailExportStore extends AbstractIdOLObject {
         this.uom = uom;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "base_uom_id")
     @NotNull
     public UnitOfMeasure getBaseUom() {

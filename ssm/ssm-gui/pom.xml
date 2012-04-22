@@ -1,156 +1,169 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.s3s</groupId>
 		<artifactId>ssm</artifactId>
 		<version>${ssm.version}</version>
 	</parent>
-
 	<artifactId>ssm-gui</artifactId>
 	<version>${ssm.version}</version>
 	<packaging>jar</packaging>
 	<name>SuperSalesManagement GUI module</name>
-	<description>
-		Module gui of super sales management.
-	</description>
- 
-  <dependencies>
-    <!-- The view from modules of the project -->
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-sales-service</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-sales-view</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-shipment-service</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-shipment-view</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-supplychain-service</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-supplychain-view</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-catalog-service</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-catalog-view</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<!-- TODO: Current design forces us to make all dependencies for GUI. It will be fixed by remote Hessian -->
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-config-service</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-config-view</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-finance-service</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-finance-view</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-operator-service</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-operator-view</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-store-service</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-store-view</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-contact-service</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-contact-view</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-report-service</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>com.s3s</groupId>
-		<artifactId>ssm-report-view</artifactId>
-		<version>${ssm.version}</version>
-	</dependency>
-	<!-- -->
-	
-	<dependency>
-		<groupId>org.swinglabs.swingx</groupId>
-		<artifactId>swingx-all</artifactId>
-    </dependency>
-	<!-- GlazedList -->
-	<!--dependency>
+	<description>Module gui of super sales management.</description>
+	<dependencies>
+		<!-- The view from modules of the project -->
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-sales-service</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-sales-view</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-shipment-service</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-shipment-view</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-supplychain-service</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-supplychain-view</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-catalog-service</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-catalog-view</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<!-- TODO: Current design forces us to make all dependencies for GUI. It will
+			be fixed by remote Hessian -->
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-config-service</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-config-view</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-finance-service</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-finance-view</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-operator-service</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-operator-view</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-store-service</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-store-view</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-contact-service</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-contact-view</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-report-service</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-report-view</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<!-- -->
+		<dependency>
+			<groupId>org.swinglabs.swingx</groupId>
+			<artifactId>swingx-all</artifactId>
+		</dependency>
+		<!-- GlazedList -->
+		<!--dependency>
 		<groupId> net.java.dev.glazedlists</groupId>
 		<artifactId>glazedlists_java15</artifactId>
-	</dependency -->
-	
-	<!-- Apache common -->
-	<dependency>
-		<groupId>commons-collections</groupId>
-		<artifactId>commons-collections</artifactId>		
-	</dependency>
+	</dependency
+			-->
+		<!-- Apache common -->
 		<dependency>
-		<groupId>commons-beanutils</groupId>
-		<artifactId>commons-beanutils</artifactId>
-	</dependency>	
-	<dependency>
-		<groupId>commons-lang</groupId>
-		<artifactId>commons-lang</artifactId>
-	</dependency>
-  </dependencies>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.s3s.ssm.view.MainProgram</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -289,6 +289,12 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
         }
     }
 
+    @Override
+    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, Invoice entity) {
+        // TODO Auto-generated method stub
+        super.customizeComponents(name2AttributeComponent, entity);
+    }
+
     private String getContactInfo(Partner contact) {
         if (contact != null) {
             String info = contact.getName();

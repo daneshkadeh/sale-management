@@ -60,11 +60,6 @@ public class UIConstants {
     public static final int NO_KEYSTROKE_MASK = 0;
 
     /**
-     * Suggested width for a <code>JTextField</code>
-     */
-    public static final int DEFAULT_WIDTH = 250;
-
-    /**
      * Suggested width for a component in edit view.
      */
     public final static int DEFAUL_TEXTAREA_ROWS = 4;
