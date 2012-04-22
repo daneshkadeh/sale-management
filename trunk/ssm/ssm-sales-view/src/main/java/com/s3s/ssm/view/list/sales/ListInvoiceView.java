@@ -24,6 +24,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -76,8 +77,6 @@ public class ListInvoiceView extends AbstractSearchListView<Invoice> {
         panel.add(invoiceStatus, "grow");
         panel.add(new JLabel(ControlConfigUtils.getString("label.Invoice.paymentStatus")), "right");
         panel.add(invoicePaymentStatus, "grow");
-        panel.add(new OperatorSearchComponent(), "grow");
-
         return panel;
     }
 
@@ -98,7 +97,7 @@ public class ListInvoiceView extends AbstractSearchListView<Invoice> {
     protected DetachedCriteria getCriteriaForView() {
         DetachedCriteria criteria = super.getCriteriaForView();
         if (StringUtils.isNotBlank(invoiceNumber.getText())) {
-            criteria.add(Restrictions.eq("invoiceNumber", invoiceNumber.getText()));
+            criteria.add(Restrictions.ilike("invoiceNumber", invoiceNumber.getText(), MatchMode.ANYWHERE));
         }
         if (type.getSelectedItem() != null) {
             criteria.add(Restrictions.eq("type", type.getSelectedItem()));

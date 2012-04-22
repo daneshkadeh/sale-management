@@ -16,6 +16,7 @@
 package com.s3s.ssm.view.component;
 
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -40,24 +41,28 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.prompt.PromptSupport;
+import org.jdesktop.swingx.prompt.PromptSupport.FocusBehavior;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.util.ConfigProvider;
-import com.s3s.ssm.util.Solution3sClassUtils;
+import com.s3s.ssm.util.SClassUtils;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
  * @author Phan Hong Phuc
  * @since Apr 18, 2012
  */
-public abstract class SearchComponent<T extends AbstractBaseIdObject> extends JPanel implements DocumentListener {
+public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends JPanel implements DocumentListener {
     private static final long serialVersionUID = -869806032147504253L;
     private static final int MAX_RESULT = 50;
     private JTextField textField;
@@ -65,17 +70,24 @@ public abstract class SearchComponent<T extends AbstractBaseIdObject> extends JP
     private JScrollPane tablePane;
     private JXTable table;
     private List<T> entities = new ArrayList<>();
-    private List<String> attributeColumns = new ArrayList<>();
-    private List<String> searchOnAttributes = new ArrayList<>();
-    private IBaseDao<T> dao = (IBaseDao<T>) ConfigProvider.getInstance().getDaoHelper()
-            .getDao(Solution3sClassUtils.getArgumentClass(getClass()));
-    private MyWorker currentWorker = new MyWorker();
+    private String[] attributeColumns;
+    private String[] searchOnAttributes;
+    private String[] displayAttribute;
+    private IBaseDao<T> dao;
+    private EntityLoader worker = new EntityLoader();
     private T selectedEntity;
+    private Class<T> entityClass;
 
-    public SearchComponent() {
+    /**
+     * Default constructor.
+     */
+    public ASearchComponent() {
+        this.displayAttribute = getDisplayAttributes();
+        this.attributeColumns = getAttributeColumns();
+        this.searchOnAttributes = getSearchedOnAttributes();
+        this.entityClass = (Class<T>) SClassUtils.getArgumentClass(getClass());
+        this.dao = (IBaseDao<T>) ConfigProvider.getInstance().getDaoHelper().getDao(entityClass);
         setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        addAttributeColumns(attributeColumns);
-        addSearchOnAttributes(searchOnAttributes);
 
         // ///////////// Table ///////////////////
         TableModel model = new MyTableModel();
@@ -91,21 +103,29 @@ public abstract class SearchComponent<T extends AbstractBaseIdObject> extends JP
             @Override
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
+                worker.cancel(true);
+                if (selectedEntity == null) {
+                    textField.setText(null);
+                }
                 popup.setVisible(false);
                 // TODO Phuc: base on the text, find the selectedEntiy.
             }
 
         });
+        // //////// PromptSupport for textField
+        String promptText = createPromptText();
+        PromptSupport.setPrompt(promptText, textField);
+        PromptSupport.setFontStyle(Font.ITALIC, textField);
+        PromptSupport.setFocusBehavior(FocusBehavior.HIDE_PROMPT, textField);
 
+        // ////////// Key listener for textField
         InputMap inputMap = textField.getInputMap(WHEN_FOCUSED);
         KeyStroke downKey = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
         KeyStroke upKey = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0);
         KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-
         inputMap.put(downKey, "downAction");
         inputMap.put(upKey, "upAction");
         inputMap.put(enterKey, "enterAction");
-
         ActionMap actionMap = textField.getActionMap();
         actionMap.put("downAction", new DownAction());
         actionMap.put("upAction", new UpAction());
@@ -117,6 +137,39 @@ public abstract class SearchComponent<T extends AbstractBaseIdObject> extends JP
         popup.add(tablePane);
     }
 
+    /**
+     * Get the attribute to display on the text box after selecting a value. Should be unique constraint.
+     * 
+     * @return
+     */
+    protected abstract String[] getDisplayAttributes();
+
+    /**
+     * Get the attributes to show information about the entity. Each attribute is shown on a column of the dropdown
+     * table.
+     */
+    protected abstract String[] getAttributeColumns();
+
+    /**
+     * The attributes to search on when user type in textbox. </br> <b>Pay attention:</b> The attributes must be String
+     * type, or you need to override the {@link #createSearchCriteria()}.
+     */
+    protected abstract String[] getSearchedOnAttributes();
+
+    /**
+     * @return
+     */
+    private String createPromptText() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(ControlConfigUtils.getString("SearchComponent.input")).append(' ');
+        List<String> attributes = new ArrayList<>(searchOnAttributes.length);
+        for (String attribute : searchOnAttributes) {
+            attributes.add(ControlConfigUtils.getString(entityClass.getSimpleName() + '.' + attribute));
+        }
+        sb.append(StringUtils.join(attributes, ", "));
+        return sb.toString();
+    }
+
     private class DownAction extends AbstractAction {
         private static final long serialVersionUID = 3977021150275942850L;
 
@@ -124,6 +177,9 @@ public abstract class SearchComponent<T extends AbstractBaseIdObject> extends JP
         public void actionPerformed(ActionEvent e) {
 
             if (!popup.isVisible()) {
+                popup.setLocation(textField.getLocationOnScreen().x,
+                        textField.getLocationOnScreen().y + textField.getPreferredSize().height);
+                popup.setVisible(true);
                 doChangeText();
             }
             if (!entities.isEmpty()) {
@@ -172,17 +228,21 @@ public abstract class SearchComponent<T extends AbstractBaseIdObject> extends JP
                 int currentRow = table.getSelectedRow();
                 selectedEntity = entities.get(currentRow);
                 BeanWrapper wrapper = new BeanWrapperImpl(selectedEntity);
-                textField.setText((String) wrapper.getPropertyValue(getDisplayField()));
                 popup.setVisible(false);
+                String displayString = buildDisplayString(displayAttribute, wrapper);
+                textField.setText(displayString);
             }
         }
+
     }
 
-    protected abstract void addAttributeColumns(List<String> attributeColumns);
-
-    protected abstract void addSearchOnAttributes(List<String> searchOnColumns);
-
-    protected abstract String getDisplayField();
+    private String buildDisplayString(String[] displayAttribute, BeanWrapper wrapper) {
+        List<String> s = new ArrayList<>(displayAttribute.length);
+        for (String atb : displayAttribute) {
+            s.add((String) wrapper.getPropertyValue(atb));
+        }
+        return StringUtils.join(s, " - ");
+    }
 
     @Override
     public boolean requestFocusInWindow() {
@@ -200,25 +260,23 @@ public abstract class SearchComponent<T extends AbstractBaseIdObject> extends JP
 
         @Override
         public String getColumnName(int column) {
-            // TODO Phuc: name of column need to get as SearchComponent.<entity class name>.<Field name>
-            return super.getColumnName(column);
+            return ControlConfigUtils.getString(entityClass.getSimpleName() + '.' + attributeColumns[column]);
         }
 
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            return Solution3sClassUtils.getClassOfField(attributeColumns.get(columnIndex),
-                    Solution3sClassUtils.getArgumentClass(SearchComponent.this.getClass()));
+            return SClassUtils.getClassOfField(attributeColumns[columnIndex], entityClass);
         }
 
         @Override
         public int getColumnCount() {
-            return attributeColumns.size();
+            return attributeColumns.length;
         }
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             BeanWrapper wrapper = new BeanWrapperImpl(entities.get(rowIndex));
-            return wrapper.getPropertyValue(attributeColumns.get(columnIndex));
+            return wrapper.getPropertyValue(attributeColumns[columnIndex]);
         }
     }
 
@@ -241,29 +299,28 @@ public abstract class SearchComponent<T extends AbstractBaseIdObject> extends JP
      * Perform when insert, remove or change the text in textField
      */
     protected void doChangeText() {
-        currentWorker.cancel(true);
-        // SwingWorker is only designed to be executed once. Executing a SwingWorker more than once will not result
-        // in invoking the doInBackground method twice.
-        currentWorker = new MyWorker();
-        currentWorker.run();
-        popup.setLocation(textField.getLocationOnScreen().x,
-                textField.getLocationOnScreen().y + textField.getPreferredSize().height);
-        popup.pack();
-        popup.setVisible(true);
+        // TODO Phuc wait 0.5 .....
+        if (popup.isVisible()) {
+            worker.cancel(true);
+            // SwingWorker is only designed to be executed once. Executing a SwingWorker more than once will not result
+            // in invoking the doInBackground method twice.
+            worker = new EntityLoader();
+            worker.run();
+        }
     }
 
     protected DetachedCriteria createSearchCriteria() {
         DetachedCriteria criteria = dao.getCriteria();
-        Criterion criterion = Restrictions.ilike(searchOnAttributes.get(0), textField.getText(), MatchMode.ANYWHERE);
-        for (int i = 1; i < searchOnAttributes.size(); i++) {
+        Criterion criterion = Restrictions.ilike(searchOnAttributes[0], textField.getText(), MatchMode.ANYWHERE);
+        for (int i = 1; i < searchOnAttributes.length; i++) {
             criterion = Restrictions.or(criterion,
-                    Restrictions.ilike(searchOnAttributes.get(i), textField.getText(), MatchMode.ANYWHERE));
+                    Restrictions.ilike(searchOnAttributes[i], textField.getText(), MatchMode.ANYWHERE));
         }
         criteria.add(criterion);
         return criteria;
     }
 
-    class MyWorker extends SwingWorker<List<T>, T> {
+    private class EntityLoader extends SwingWorker<List<T>, T> {
 
         @Override
         protected List<T> doInBackground() throws Exception {
@@ -277,9 +334,20 @@ public abstract class SearchComponent<T extends AbstractBaseIdObject> extends JP
                 entities.addAll(get());
                 ((MyTableModel) table.getModel()).fireTableDataChanged();
                 table.packAll();
+                popup.pack();
             } catch (InterruptedException | ExecutionException | CancellationException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setSelectedEntity(T entity) {
+        selectedEntity = entity;
+        BeanWrapper wrapper = new BeanWrapperImpl(selectedEntity);
+        textField.setText(buildDisplayString(displayAttribute, wrapper));
+    }
+
+    public T getSelectedEntity() {
+        return selectedEntity;
     }
 }

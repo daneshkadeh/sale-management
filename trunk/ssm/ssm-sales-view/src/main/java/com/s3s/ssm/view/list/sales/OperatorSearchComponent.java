@@ -15,42 +15,38 @@ package com.s3s.ssm.view.list.sales;
  * agreements you entered into with HBASoft.
  */
 
-import java.util.List;
-
-import com.s3s.ssm.entity.operator.Operator;
-import com.s3s.ssm.view.component.SearchComponent;
 
 /**
  * @author Phan Hong Phuc
  * @since Apr 19, 2012
  */
-public class OperatorSearchComponent extends SearchComponent<Operator> {
+public class OperatorSearchComponent {
     private static final long serialVersionUID = 5530261536193697181L;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void addAttributeColumns(List<String> attributeColumns) {
-        attributeColumns.add("fullName");
-        attributeColumns.add("email");
-        attributeColumns.add("phone");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void addSearchOnAttributes(List<String> searchOnAttributes) {
-        searchOnAttributes.add("fullName");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected String getDisplayField() {
-        return "fullName";
-    }
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // protected void addAttributeColumns(List<String> attributeColumns) {
+    // attributeColumns.add("fullName");
+    // attributeColumns.add("email");
+    // attributeColumns.add("phone");
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // protected void addSearchOnAttributes(List<String> searchOnAttributes) {
+    // searchOnAttributes.add("fullName");
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // protected String getDisplayField() {
+    // return "fullName";
+    // }
 
 }

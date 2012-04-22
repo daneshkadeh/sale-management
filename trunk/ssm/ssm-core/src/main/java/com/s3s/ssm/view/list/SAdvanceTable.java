@@ -61,9 +61,11 @@ public class SAdvanceTable extends JXTable {
     private static final int EDITOR_HEIGHT = 25;
     private ListDataModel listDataModel;
     private ReferenceDataModel refDataModel;
+    private AdvanceTableModel tableModel;
 
-    public SAdvanceTable(TableModel tableModel, ListDataModel listDataModel, ReferenceDataModel refDataModel) {
+    public SAdvanceTable(AdvanceTableModel tableModel, ListDataModel listDataModel, ReferenceDataModel refDataModel) {
         super(tableModel);
+        this.tableModel = tableModel;
         this.listDataModel = listDataModel;
         this.refDataModel = refDataModel;
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -72,7 +74,7 @@ public class SAdvanceTable extends JXTable {
         addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW, UIManager.getColor("Table.dropLineColor"),
                 null));
 
-        int selectionMode = listDataModel.isEditable() ? ListSelectionModel.SINGLE_SELECTION
+        int selectionMode = tableModel.isEditable() ? ListSelectionModel.SINGLE_SELECTION
                 : ListSelectionModel.SINGLE_INTERVAL_SELECTION;
         setSelectionMode(selectionMode);
         setColumnControlVisible(true);
@@ -82,9 +84,9 @@ public class SAdvanceTable extends JXTable {
         setEditor();
 
         // The table is already sorted by Hibernate (done in AbstractListView)
-        // setSorter();
 
-        if (listDataModel.isEditable()) {
+        if (tableModel.isEditable()) {
+            setSorter();
             setRowHeight(EDITOR_HEIGHT);
         }
     }
@@ -195,13 +197,17 @@ public class SAdvanceTable extends JXTable {
 
     @Override
     public void changeSelection(int row, int column, boolean toggle, boolean extend) {
-        if (listDataModel.isEditable() && row == getRowCount() - 1) {
-            ((AdvanceTableModel) getModel()).addNewRowAt(getRowCount() - 1);
+        if (!listDataModel.getColumn(column).isEditable()) {
+            if (column == listDataModel.getColumns().size() - 1) {
+                column = 0;
+                row++;
+            } else {
+                column++;
+            }
         }
         super.changeSelection(row, column, toggle, extend);
         // Place cell in edit mode when it 'gains focus'
-        if (listDataModel.isEditable() && listDataModel.getColumns().get(column).isEditable()
-                && editCellAt(row, column)) {
+        if (tableModel.isEditable() && listDataModel.getColumns().get(column).isEditable() && editCellAt(row, column)) {
             getEditorComponent().requestFocusInWindow();
         }
     }

@@ -60,7 +60,7 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
     @Override
     protected void initialListDetailPresentationView(ListDataModel listDataModel) {
         // TODO: Hoang must set max, min for column
-        listDataModel.setEditable(true);
+        // listDataModel.setEditable(true);
         // listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
         listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
                 .referenceDataId(REF_LIST_PRODUCT).width(180);

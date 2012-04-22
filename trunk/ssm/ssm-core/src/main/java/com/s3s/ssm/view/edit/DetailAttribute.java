@@ -29,6 +29,8 @@ public class DetailAttribute {
     private boolean isRaw = false;
     // private List<ParentNodeInfo> parentNodePath = new ArrayList<>();
 
+    private IComponentInfo componentInfo;
+
     /** The property for layout the attribute. The attribute is rendered in new line or not. */
     private boolean newColumn = false;
     private int width;
@@ -150,6 +152,15 @@ public class DetailAttribute {
         Assert.isTrue(isRaw, "Not allow to set value for not raw attribute.");
         this.value = value;
         return this;
+    }
+
+    public DetailAttribute componentInfo(IComponentInfo componentInfo) {
+        this.componentInfo = componentInfo;
+        return this;
+    }
+
+    public IComponentInfo getComponentInfo() {
+        return componentInfo;
     }
 
     public String getLabel() {

@@ -94,7 +94,7 @@ import com.s3s.ssm.security.CustomPermission;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.ImageConstants;
 import com.s3s.ssm.util.ImageUtils;
-import com.s3s.ssm.util.Solution3sClassUtils;
+import com.s3s.ssm.util.SClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.AbstractView;
@@ -367,7 +367,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         tblListEntities.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (!listDataModel.isEditable() && e.getClickCount() == 2) {
+                if (e.getClickCount() == 2) {
                     // JXTable target = (JXTable)e.getSource();
                     // int row = target.getSelectedRow();
                     // int column = target.getSelectedColumn();
@@ -417,7 +417,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
             @Override
             public int getSize() {
-                return listDataModel.isEditable() ? entities.size() + 1 : entities.size();
+                return entities.size();
             }
 
             @Override
@@ -507,7 +507,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * @return the model of the table.
      */
     protected TableModel createTableModel() {
-        return new AdvanceTableModel<T>(listDataModel, entities, getEntityClass(), this);
+        return new AdvanceTableModel<T>(listDataModel, entities, getEntityClass(), false);
     }
 
     /**
@@ -535,7 +535,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         btnEdit = new JButton(ImageUtils.getSmallIcon(ImageConstants.EDIT_ICON));
         btnEdit.setToolTipText(ControlConfigUtils.getString("default.button.edit"));
         btnEdit.addActionListener(editAction);
-        btnEdit.setVisible(!listDataModel.isEditable());
 
         btnExport = new JButton(ImageUtils.getSmallIcon(ImageConstants.EXPORT_ICON));
         btnExport.setToolTipText(ControlConfigUtils.getString("default.button.export"));
@@ -636,8 +635,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     }
 
     /**
-     * The child class should override to perform action before showing the edit view. </br> By default, if
-     * listDataModel is editable and action is NEW, the new row is added into the list instead of show the new tab.
+     * The child class should override to perform action before showing the edit view.
      * 
      * @param entity
      *            the entity of the row selecting on the list.
@@ -648,11 +646,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * @return true if continues to show the edit view, false if otherwise.
      */
     protected boolean preShowEditView(T entity, EditActionEnum action, Map<String, Object> detailParams) {
-        if (listDataModel.isEditable() && action == EditActionEnum.NEW) {
-            // focus on the new row
-            tblListEntities.changeSelection(entities.size(), 0, false, false);
-            return false;
-        }
         return true;
     }
 
@@ -683,7 +676,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
 
     @SuppressWarnings("unchecked")
     protected Class<T> getEntityClass() {
-        return (Class<T>) Solution3sClassUtils.getArgumentClass(getClass());
+        return (Class<T>) SClassUtils.getArgumentClass(getClass());
     }
 
     private class FooterTableModel extends AbstractTableModel {
@@ -701,7 +694,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             }
             ColumnModel column = listDataModel.getColumns().get(columnIndex); // decrease 1 because the hidden
             if (column.isSummarized()) {
-                Class<?> fieldClass = Solution3sClassUtils.getClassOfField(column.getName(), getEntityClass());
+                Class<?> fieldClass = SClassUtils.getClassOfField(column.getName(), getEntityClass());
                 if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
                     int sum = 0;
                     for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {

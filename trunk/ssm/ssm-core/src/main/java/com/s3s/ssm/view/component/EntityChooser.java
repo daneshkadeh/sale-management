@@ -16,7 +16,6 @@
 package com.s3s.ssm.view.component;
 
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -69,7 +68,7 @@ public class EntityChooser<T> extends JPanel {
         setLayout(new MigLayout("wrap 3, ins 0"));
 
         txtFldCode = new JTextField();
-        txtFldCode.setPreferredSize(new Dimension(UIConstants.DEFAULT_WIDTH, txtFldCode.getHeight()));
+        // txtFldCode.setPreferredSize(new Dimension(UIConstants.DEFAULT_WIDTH, txtFldCode.getHeight()));
         lblName = new JLabel();
 
         setComponentValue();

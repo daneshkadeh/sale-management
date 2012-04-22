@@ -24,7 +24,7 @@ import com.s3s.ssm.model.Money;
 @Entity
 @Table(name = "s_contact_debt_history")
 public class ContactDebtHistory extends AbstractIdOLObject {
-
+    private static final long serialVersionUID = -3009182022258390499L;
     private Partner partner;
     private Date startDate; // Ngay dau ki
     private Date endDate; // Ngay cuoi ki
@@ -32,7 +32,7 @@ public class ContactDebtHistory extends AbstractIdOLObject {
     // => Tong tien mua hang = endDebtAmount + paidAmount - startDebtAmount
     private Money startDebtAmount; // No dau ki
     private Money endDebtAmount; // No cuoi ki
-    private Money paidAmount; // Tong tien giao dich trong thang, số tiền Partner trả THU
+    private Money paidAmount; // Tong tien giao dich trong thang, so tien Partner tra THU
 
     @ManyToOne
     @JoinColumn(name = "partner_id")

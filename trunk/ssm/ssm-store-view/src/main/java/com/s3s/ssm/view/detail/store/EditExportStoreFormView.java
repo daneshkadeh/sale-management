@@ -27,17 +27,15 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
-import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
-import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
-import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
+import com.s3s.ssm.view.edit.IComponentInfo;
+import com.s3s.ssm.view.edit.ListComponentInfo;
 import com.s3s.ssm.view.list.store.ListExportStoreFormView;
 import com.s3s.ssm.view.util.StoreHelper;
 
-public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStoreForm, DetailExportStore> {
+public class EditExportStoreFormView extends AbstractSingleEditView<ExportStoreForm> {
     private static final long serialVersionUID = -7472571972492175768L;
     private static String REF_INVOICE_LIST = "0";
     // TODO:Hoang remove bellow after ListDataModel support caching
@@ -85,54 +83,54 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        // TODO: Hoang must set max, min for column
-        listDataModel.setEditable(true);
-        // listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
-        listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
-                .referenceDataId(REF_LIST_PRODUCT).width(180);
-        listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable().width(290);
-        // TODO: Hoang the data should be updated after choosing the product
-        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
-                .width(205);
-        listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM)
-                .width(70);
-        listDataModel.addColumn("baseUom", ListRendererType.TEXT, ListEditorType.TEXTFIELD).notEditable().width(70);
-        listDataModel.addColumn("reqQuan", ListRendererType.NUMBER).notEditable().summarized()
-                .width(UIConstants.QTY_COLUMN_WIDTH);
-        listDataModel.addColumn("realQuan", ListRendererType.NUMBER).summarized().width(UIConstants.QTY_COLUMN_WIDTH);
-        listDataModel.addColumn("remainQuan", ListRendererType.NUMBER).notEditable().summarized()
-                .width(UIConstants.QTY_COLUMN_WIDTH);
-    }
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // protected void initialListDetailPresentationView(ListDataModel listDataModel) {
+    // // TODO: Hoang must set max, min for column
+    // // listDataModel.setEditable(true);
+    // // listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
+    // listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
+    // .referenceDataId(REF_LIST_PRODUCT).width(180);
+    // listDataModel.addColumn("product.name", ListRendererType.TEXT).notEditable().width(290);
+    // // TODO: Hoang the data should be updated after choosing the product
+    // listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
+    // .width(205);
+    // listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM)
+    // .width(70);
+    // listDataModel.addColumn("baseUom", ListRendererType.TEXT, ListEditorType.TEXTFIELD).notEditable().width(70);
+    // listDataModel.addColumn("reqQuan", ListRendererType.NUMBER).notEditable().summarized()
+    // .width(UIConstants.QTY_COLUMN_WIDTH);
+    // listDataModel.addColumn("realQuan", ListRendererType.NUMBER).summarized().width(UIConstants.QTY_COLUMN_WIDTH);
+    // listDataModel.addColumn("remainQuan", ListRendererType.NUMBER).notEditable().summarized()
+    // .width(UIConstants.QTY_COLUMN_WIDTH);
+    // }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Class<? extends AbstractEditView<DetailExportStore>> getChildDetailViewClass() {
-        return EditDetailExportStoreView.class;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected String getParentFieldName() {
-        // TODO Auto-generated method stub
-        return "exportForm";
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected String getChildFieldName() {
-        return "exportDetails";
-    }
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // protected Class<? extends AbstractEditView<DetailExportStore>> getChildDetailViewClass() {
+    // return EditDetailExportStoreView.class;
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // protected String getParentFieldName() {
+    // // TODO Auto-generated method stub
+    // return "exportForm";
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // protected String getChildFieldName() {
+    // return "exportDetails";
+    // }
 
     /**
      * {@inheritDoc}
@@ -159,6 +157,13 @@ public class EditExportStoreFormView extends AbstractMasterDetailView<ExportStor
                 .newColumn();
         detailDataModel.addAttribute("custCode", DetailFieldType.LABEL);
         detailDataModel.addAttribute("custName", DetailFieldType.LABEL);
+        detailDataModel.addAttribute("exportDetails", DetailFieldType.LIST).componentInfo(
+                createExportDetailsComponentInfo());
+    }
+
+    private IComponentInfo createExportDetailsComponentInfo() {
+        ListExportDetailComponent component = new ListExportDetailComponent(null, null, null);
+        return new ListComponentInfo(component);
     }
 
     /**

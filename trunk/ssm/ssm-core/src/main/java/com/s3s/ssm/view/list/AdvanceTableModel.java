@@ -15,6 +15,7 @@
 
 package com.s3s.ssm.view.list;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -26,7 +27,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
-import com.s3s.ssm.util.Solution3sClassUtils;
+import com.s3s.ssm.util.SClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
@@ -39,20 +40,20 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
     private static final Log logger = LogFactory.getLog(AdvanceTableModel.class);
     private ListDataModel listDataModel;
     private List<T> entities;
+    private boolean isEditable;
     private Class<T> clazz;
     protected BeanWrapper beanWrapper;
-    protected AbstractListView<T> listView;
 
-    public AdvanceTableModel(ListDataModel listDataModel, List<T> entities, Class<T> clazz, AbstractListView<T> listView) {
+    public AdvanceTableModel(ListDataModel listDataModel, List<T> entities, Class<T> clazz, boolean isEditable) {
         this.listDataModel = listDataModel;
         this.entities = entities;
+        this.isEditable = isEditable;
         this.clazz = clazz;
-        this.listView = listView;
     }
 
     @Override
     public int getRowCount() {
-        return listDataModel.isEditable() ? entities.size() + 1 : entities.size(); // An empty row to add a new entity.
+        return isEditable ? entities.size() + 1 : entities.size(); // An empty row to add a new entity.
     }
 
     @Override
@@ -73,7 +74,7 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (listDataModel.isEditable() && rowIndex != entities.size()) {
+        if (isEditable && rowIndex != entities.size()) {
             return listDataModel.getColumns().get(columnIndex).isEditable();
         }
         return false;
@@ -98,28 +99,17 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
             beanWrapper.setPropertyValue(dataModel.getName(), aValue);
             fireTableCellUpdated(rowIndex, columnIndex);
         }
-
-        // //////////////////////////////////////////////
-        // TODO Phuc: Reminding should fire on the cellChanged instead of rowChanged? In that case, the ColumnModel need
-        // listen() function. And the code will be like this:
-        // fireTableCellUpdated(rowIndex, columnIndex);
-        // for (int i = 0; i < listDataModel.getColumns().size(); i++) {
-        // if (listDataModel.getColumn(i).isListener()) {
-        // fireTableCellUpdated(rowIndex, i);
-        // }
-        // }
-        // ////////////////////////////////////////////////
     }
 
-    public void addNewRowAt(int index) {
-        try {
-            T entity = listView.initEntity(clazz.newInstance());
-            entities.add(index, entity);
-            fireTableRowsInserted(entities.size() - 1, entities.size() - 1);
-        } catch (InstantiationException | IllegalAccessException e) {
-            logger.error("Error when create an empty entity for the new row");
-            e.printStackTrace();
-        }
+    public void addRowAt(int index, T entity) {
+        entities.add(index, entity);
+        fireTableRowsInserted(entities.size() - 1, entities.size() - 1);
+    }
+
+    public void setEntities(Collection<T> entities) {
+        this.entities.removeAll(this.entities);
+        this.entities.addAll(entities);
+        fireTableDataChanged();
     }
 
     /**
@@ -143,7 +133,11 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return Solution3sClassUtils.getClassOfField(listDataModel.getColumns().get(columnIndex).getName(), clazz);
+        return SClassUtils.getClassOfField(listDataModel.getColumns().get(columnIndex).getName(), clazz);
+    }
+
+    public boolean isEditable() {
+        return isEditable;
     }
 
 }

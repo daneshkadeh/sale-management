@@ -22,6 +22,8 @@ import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListContractPaymentView extends AbstractListView<ContractPayment> {
+    private static final long serialVersionUID = 7916303467956738315L;
+
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListRendererType.TEXT);
