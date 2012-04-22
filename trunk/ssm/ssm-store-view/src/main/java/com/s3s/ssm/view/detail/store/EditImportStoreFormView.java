@@ -64,7 +64,7 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
         // listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
         listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
                 .referenceDataId(REF_LIST_PRODUCT).width(180);
-        listDataModel.addColumn("product.name", ListRendererType.TEXT).notEditable().width(290);
+        listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable().width(290);
         // TODO: Hoang the data should be updated after choosing the product
         listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
                 .width(205);
@@ -115,7 +115,7 @@ public class EditImportStoreFormView extends AbstractMasterDetailView<ImportStor
         detailDataModel.addAttribute("store", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_STORE);
         detailDataModel.addAttribute("shipPriceType", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_SHIP_PRICE_TYPE).newColumn();
-        detailDataModel.addAttribute("salesContract", DetailFieldType.DROPDOWN_AUTOCOMPLETE).cacheDataId(
+        detailDataModel.addAttribute("salesContract", DetailFieldType.DROPDOWN).cacheDataId(
                 CacheId.REF_LIST_SALES_CONTRACT);
         detailDataModel.addAttribute("shipPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY)
                 .newColumn();

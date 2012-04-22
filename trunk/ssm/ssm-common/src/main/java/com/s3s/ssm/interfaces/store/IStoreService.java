@@ -3,6 +3,7 @@ package com.s3s.ssm.interfaces.store;
 import java.util.List;
 
 import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.entity.store.ExportStoreStatus;
 import com.s3s.ssm.entity.store.ImportStoreStatus;
@@ -37,4 +38,6 @@ public interface IStoreService {
     public List<MoveStoreOrder> findMoveStoreOrderByStatus(MoveStoreStatus status);
 
     public ExportStoreForm getLatestExportStoreForm(Invoice invoice);
+
+    public List<DetailExportStore> getAllDetail(ExportStoreForm form);
 }
