@@ -47,7 +47,7 @@ public class EditInventoryStoreFormView extends AbstractSingleEditView<Inventory
 
     private IComponentInfo createMoveDetailsComponentInfo() {
         ListInventoryDetailComponent component = new ListInventoryDetailComponent(null, null, null);
-        return new ListComponentInfo(component);
+        return new ListComponentInfo(component, "inventoryForm");
     }
 
     @Override

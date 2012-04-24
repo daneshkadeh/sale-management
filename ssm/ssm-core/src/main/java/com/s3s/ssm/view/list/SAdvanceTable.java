@@ -37,6 +37,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.apache.poi.hssf.record.formula.functions.T;
+import org.eclipse.core.internal.utils.Assert;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
@@ -51,6 +52,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.component.MoneyComponent;
+import com.s3s.ssm.view.edit.SearchComponentInfo;
 
 /**
  * @author Phan Hong Phuc
@@ -188,6 +190,11 @@ public class SAdvanceTable extends JXTable {
                         refData.getValues());
                 editor = new MoneyCellEditor(moneyCom);
                 break;
+            case SEARCH_COMPONENT:
+                SearchComponentInfo searchCompInfo = (SearchComponentInfo) cm.getComponentInfo();
+                Assert.isTrue(searchCompInfo != null, "searchCompInfo must be not null");
+                editor = new SearchCellEditor<>(searchCompInfo.getSearchComponent());
+                break;
             default:
                 break;
             }
@@ -200,10 +207,13 @@ public class SAdvanceTable extends JXTable {
         if (!listDataModel.getColumn(column).isEditable()) {
             if (column == listDataModel.getColumns().size() - 1) {
                 column = 0;
-                row++;
+                if (row == getRowCount() - 1) {
+                    row = 0;
+                }
             } else {
                 column++;
             }
+
         }
         super.changeSelection(row, column, toggle, extend);
         // Place cell in edit mode when it 'gains focus'

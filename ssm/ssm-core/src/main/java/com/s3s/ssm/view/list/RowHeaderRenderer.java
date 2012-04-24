@@ -15,8 +15,11 @@
 
 package com.s3s.ssm.view.list;
 
+import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTable;
@@ -31,6 +34,12 @@ import javax.swing.table.JTableHeader;
  */
 public class RowHeaderRenderer extends JLabel implements ListCellRenderer<Object> {
     private static final long serialVersionUID = -1537178297118197956L;
+    private JButton newRowBtn;
+
+    public RowHeaderRenderer(JTable table, JButton newRowBtn) {
+        this(table);
+        this.newRowBtn = newRowBtn;
+    }
 
     public RowHeaderRenderer(JTable table) {
         JTableHeader header = table.getTableHeader();
@@ -48,7 +57,13 @@ public class RowHeaderRenderer extends JLabel implements ListCellRenderer<Object
     @Override
     public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index,
             boolean isSelected, boolean cellHasFocus) {
+        if ("+".equals(value)) {
+            return newRowBtn;
+        }
         setText((value == null) ? "" : value.toString());
+        // setBackground(new Color(200, 200, 255));
+        setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        setOpaque(true);
         return this;
     }
 

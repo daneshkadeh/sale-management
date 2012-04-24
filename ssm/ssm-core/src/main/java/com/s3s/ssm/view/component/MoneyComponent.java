@@ -66,7 +66,7 @@ public class MoneyComponent extends JPanel {
         ccf.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                fireMoneyChanged();
+                fireValueChanged();
             }
         });
         // TODO Phuc: This workaround for nimbus minimum width for Combobox
@@ -117,24 +117,24 @@ public class MoneyComponent extends JPanel {
             valueField.setValue(money.getValue());
         }
         currencyCodeField.setSelectedItem(money.getCurrencyCode());
-        fireMoneyChanged();
+        fireValueChanged();
     }
 
-    private void fireMoneyChanged() {
+    private void fireValueChanged() {
         for (Object l : listenerList.getListenerList()) {
             ChangeEvent ce = new ChangeEvent(MoneyComponent.this);
-            if (l instanceof IMoneyChangedListener) {
-                ((IMoneyChangedListener) l).doMoneyChanged(ce);
+            if (l instanceof IValueChangedListener) {
+                ((IValueChangedListener) l).doValueChanged(ce);
             }
         }
     }
 
-    public void addMoneyChangeListener(IMoneyChangedListener listener) {
-        listenerList.add(IMoneyChangedListener.class, listener);
+    public void addValueChangedListener(IValueChangedListener listener) {
+        listenerList.add(IValueChangedListener.class, listener);
     }
 
-    public void removeMoneyChangeListener(IMoneyChangedListener listener) {
-        listenerList.remove(IMoneyChangedListener.class, listener);
+    public void removeValueChangedListener(IValueChangedListener listener) {
+        listenerList.remove(IValueChangedListener.class, listener);
     }
 
     public void addActionListener(ActionListener l) {
@@ -149,7 +149,7 @@ public class MoneyComponent extends JPanel {
         try {
             valueField.commitEdit();
             if (!currentValue.equals(getMoney().getValue()) || !currentCode.equals(getMoney().getCurrencyCode())) {
-                fireMoneyChanged();
+                fireValueChanged();
                 resetCurrentMoney();
             }
         } catch (ParseException e1) {

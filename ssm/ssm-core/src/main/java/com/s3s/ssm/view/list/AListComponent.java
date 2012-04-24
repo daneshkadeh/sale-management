@@ -16,20 +16,29 @@
 package com.s3s.ssm.view.list;
 
 import java.awt.Color;
+import java.awt.Event;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.AbstractListModel;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.Icon;
+import javax.swing.InputMap;
+import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
@@ -61,10 +70,9 @@ import com.s3s.ssm.util.view.UIConstants;
  * @author Phan Hong Phuc
  * @since Apr 21, 2012
  */
-public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPanel {
-
+public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPanel implements TableModelListener {
     private static final long serialVersionUID = -1311942671249671111L;
-    // TODO It should get from the property "defPageRowNum" of BasicInformation in ssm-config
+    private static final int NUM_ROW_VISIBLE = 10;
     private static final Log logger = LogFactory.getLog(AbstractListView.class);
 
     private JTabbedPane tabPane;
@@ -74,9 +82,10 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
     private JXTable tblFooter;
     private JBusyComponent<JScrollPane> busyPane;
 
-    private AdvanceTableModel<T> mainTableModel;
+    private Action addAction;
+    private Action deleteAction;
 
-    protected List<T> entities = new ArrayList<>();
+    private AdvanceTableModel<T> mainTableModel;
 
     // This model is used by sub classes.
     protected ListDataModel listDataModel = new ListDataModel();
@@ -92,21 +101,54 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         this.setLayout(new MigLayout("ins 0", "grow, fill", "grow, fill"));
         this.add(tabPane, "grow");
 
+        addAction = new AddRowAction();
+        deleteAction = new DeleteRowAction();
+
         addComponents();
         addKeyBindings();
     }
 
     protected void addKeyBindings() {
-        // InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
-        //
-        // KeyStroke addShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK);
-        // KeyStroke deleteShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_D, Event.CTRL_MASK);
-        //
-        // inputMap.put(addShortkey, "addKeyAction");
-        // inputMap.put(deleteShortkey, "deleteKeyAction");
-        //
-        // ActionMap actionMap = getActionMap();
-        // actionMap.put("deleteKeyAction", deleteAction);
+        InputMap inputMap = mainTable.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        KeyStroke addShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.CTRL_MASK);
+        KeyStroke deleteShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_D, Event.CTRL_MASK);
+
+        inputMap.put(addShortkey, "addKeyAction");
+        inputMap.put(deleteShortkey, "delKeyAction");
+
+        ActionMap actionMap = mainTable.getActionMap();
+        actionMap.put("addKeyAction", addAction);
+        actionMap.put("delKeyAction", deleteAction);
+    }
+
+    private class AddRowAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mainTableModel.addRowAt(mainTable.getRowCount(), createNewEntity());
+        }
+    }
+
+    private class DeleteRowAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AListComponent.this),
+                    "Are you sure want to delete the selected row?", "Confirm delete", JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+            if (option == JOptionPane.OK_OPTION) {
+                int[] selectedRows = mainTable.getSelectedRows();
+                int[] selectedModelRows = new int[selectedRows.length];
+                for (int i = 0; i < selectedRows.length; i++) {
+                    int rowModelIndex = mainTable.convertRowIndexToModel(selectedRows[i]);
+                    selectedModelRows[i] = rowModelIndex;
+                }
+                mainTableModel.deleteRows(selectedRows);
+            }
+        }
     }
 
     /**
@@ -115,7 +157,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
      * @return a number of visible rows.
      */
     protected int getVisibleRowCount() {
-        return 10;
+        return NUM_ROW_VISIBLE;
     }
 
     @Override
@@ -136,18 +178,8 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
     protected void addComponents() {
         // ///////////////// Init main table ////////////////////////////////
-        mainTableModel = new AdvanceTableModel<T>(listDataModel, entities, getEntityClass(), true);
-        mainTable = new SAdvanceTable(mainTableModel, listDataModel, refDataModel) {
-
-            @Override
-            public void changeSelection(int row, int column, boolean toggle, boolean extend) {
-                if (row == getRowCount() - 1) {
-                    ((AdvanceTableModel) getModel()).addRowAt(getRowCount() - 1, createNewEntity());
-                }
-                super.changeSelection(row, column, toggle, extend);
-            }
-
-        };
+        mainTableModel = new AdvanceTableModel<T>(listDataModel, new ArrayList<T>(), getEntityClass(), true);
+        mainTable = new SAdvanceTable(mainTableModel, listDataModel, refDataModel);
         mainTable.setVisibleRowCount(getVisibleRowCount());
 
         mainTable.addMouseListener(new MouseAdapter() {
@@ -161,6 +193,8 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
                 // }
             }
         });
+
+        mainTableModel.addTableModelListener(this);
 
         // //////////////// Create footer table //////////////////////////////
         FooterTableModel footerModel = new FooterTableModel(mainTableModel);
@@ -202,19 +236,19 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
             @Override
             public int getSize() {
-                return entities.size() + 1;
+                return mainTableModel.getEntities().size() + 1;
             }
 
             @Override
             public String getElementAt(int index) {
-                if (index == entities.size()) {
+                if (index == mainTableModel.getEntities().size()) {
                     return "+";
                 }
                 return String.valueOf(index + 1);
             }
         });
 
-        rowHeader.setCellRenderer(new RowHeaderRenderer(mainTable));
+        rowHeader.setCellRenderer(new RowHeaderRenderer(mainTable, new JButton(addAction)));
         rowHeader.setFixedCellWidth(UIConstants.DEFAULT_ROW_HEADER_WIDTH);
         rowHeader.setFixedCellHeight(mainTable.getRowHeight());
         mainTableModel.addTableModelListener(new TableModelListener() {
@@ -247,6 +281,51 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         }
     }
 
+    @Override
+    public void tableChanged(TableModelEvent e) {
+        List<T> entities = mainTableModel.getEntities();
+        if (e.getType() == TableModelEvent.UPDATE) {
+            if (e.getColumn() == TableModelEvent.ALL_COLUMNS) {
+                return;
+            }
+            String attributeName = listDataModel.getColumn(e.getColumn()).getName();
+            doRowUpdated(attributeName, entities.get(e.getFirstRow()), entities);
+        } else if (e.getType() == TableModelEvent.INSERT) {
+            doRowInsert(entities.get(e.getFirstRow()), entities);
+        } else if (e.getType() == TableModelEvent.DELETE) {
+            doRowDelete(entities);
+        }
+        mainTable.repaint();
+        mainTable.revalidate();
+        rowHeader.repaint();
+        rowHeader.revalidate();
+    }
+
+    /**
+     * Perform when a row is inserted.
+     * 
+     * @param rowIndex
+     * @param entities
+     */
+    protected void doRowInsert(T entityInserted, List<T> entities) {
+        // Template method
+    }
+
+    /**
+     * 
+     * @param attributeName
+     *            the name of
+     * @param entityUpdated
+     * @param entities
+     */
+    protected void doRowUpdated(String attributeName, T entityUpdated, List<T> entities) {
+        // Template method
+    }
+
+    protected void doRowDelete(List<T> entities) {
+        // Template method
+    }
+
     /**
      * Override this method to add the footer panel to the list view.
      * 
@@ -263,19 +342,6 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         return bp;
     }
 
-    private void doDeleteRows() {
-        int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(this),
-                "Are you sure want to delete the selected row?", "Confirm delete", JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.WARNING_MESSAGE);
-        if (option == JOptionPane.OK_OPTION) {
-            int selectedRow = mainTable.getSelectedRow();
-            int rowModelIndex = mainTable.convertRowIndexToModel(selectedRow);
-            mainTableModel.deleteRows(rowModelIndex, rowModelIndex);
-            rowHeader.repaint();
-            rowHeader.revalidate();
-        }
-    }
-
     /**
      * Override this function to add some other attribute to the new entity. When new a row, a new entity is created and
      * initialize some field by this function.
@@ -289,7 +355,6 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("Fail to initialize new entity!");
         }
-
     }
 
     /**
@@ -390,7 +455,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
     }
 
     public List<T> getEntities() {
-        return entities;
+        return mainTableModel.getEntities();
     }
 
     public void setEntities(Collection<T> entities) {

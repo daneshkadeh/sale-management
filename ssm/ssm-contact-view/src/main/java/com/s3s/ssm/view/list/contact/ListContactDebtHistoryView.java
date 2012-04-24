@@ -19,6 +19,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * 
  */
 public class ListContactDebtHistoryView extends AbstractListView<ContactDebtHistory> {
+    private static final long serialVersionUID = 2097337075091174071L;
 
     public ListContactDebtHistoryView(Map<String, Object> request) {
         super(request);

@@ -15,6 +15,7 @@
 
 package com.s3s.ssm.view.list;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -53,14 +54,11 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public int getRowCount() {
-        return isEditable ? entities.size() + 1 : entities.size(); // An empty row to add a new entity.
+        return entities.size();
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if (rowIndex == entities.size()) {
-            return null;
-        }
         T entity = entities.get(rowIndex);
         beanWrapper = new BeanWrapperImpl(entity);
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
@@ -74,10 +72,7 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (isEditable && rowIndex != entities.size()) {
-            return listDataModel.getColumns().get(columnIndex).isEditable();
-        }
-        return false;
+        return isEditable && listDataModel.getColumns().get(columnIndex).isEditable();
     }
 
     @Override
@@ -88,9 +83,6 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        if (rowIndex == entities.size()) {
-            return;
-        }
         T entity = entities.get(rowIndex);
         beanWrapper = new BeanWrapperImpl(entity);
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
@@ -112,6 +104,10 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
         fireTableDataChanged();
     }
 
+    public List<T> getEntities() {
+        return entities;
+    }
+
     /**
      * Delete a range of rows.
      * 
@@ -120,11 +116,16 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
      * @param lastRow
      *            last index of row, inclusive
      */
-    public void deleteRows(int firstRow, int lastRow) {
-        for (int i = firstRow; i <= lastRow; i++) {
-            entities.remove(firstRow);
+    public void deleteRows(int[] deletedIndex) {
+        List<T> deletedEntities = new ArrayList<>(deletedIndex.length);
+        for (int i : deletedIndex) {
+            deletedEntities.add(entities.get(i));
         }
-        fireTableRowsDeleted(firstRow, lastRow);
+        entities.removeAll(deletedEntities);
+
+        // TODO Phuc
+        fireTableRowsDeleted(deletedIndex[0], deletedIndex[deletedIndex.length - 1]); // Just notify some rows was
+                                                                                      // deleted.
     }
 
     public T getEntity(int index) {

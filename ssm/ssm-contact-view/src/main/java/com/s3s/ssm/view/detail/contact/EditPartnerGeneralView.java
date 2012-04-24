@@ -31,9 +31,10 @@ import com.s3s.ssm.util.ImageConstants;
 import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.i18n.ControlConstants;
-import com.s3s.ssm.view.component.IMoneyChangedListener;
+import com.s3s.ssm.view.component.IValueChangedListener;
 import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
@@ -129,8 +130,8 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
     }
 
     // Just try to keep demo code from Phuc
-    protected void bindingValue(Partner entity, String name, boolean isRaw, Object value, boolean test) {
-        super.bindingValue(entity, name, isRaw, value);
+    protected void bindingValue(Partner entity, String name, Object value, DetailAttribute detailAttribute) {
+        super.bindingValue(entity, name, value, detailAttribute);
         if (name.equals("rawAttribute1")) {
             // entity.setPosition((String) value);
 
@@ -153,10 +154,10 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
         });
 
         MoneyComponent mc = (MoneyComponent) name2AttributeComponent.get("rawAttribute4").getComponent();
-        mc.addMoneyChangeListener(new IMoneyChangedListener() {
+        mc.addValueChangedListener(new IValueChangedListener() {
 
             @Override
-            public void doMoneyChanged(ChangeEvent e) {
+            public void doValueChanged(ChangeEvent e) {
                 MoneyComponent m = (MoneyComponent) e.getSource();
                 position.setText(m.getMoney().toString());
             }

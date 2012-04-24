@@ -8,7 +8,7 @@
 		<version>${ssm.version}</version>
 	</parent>
 
-	<artifactId>ssm-common</artifactId>
+	<artifactId>ssm-common-model</artifactId>
 	<version>${ssm.version}</version>
 	<packaging>jar</packaging>
 	<name>SuperSalesManagement common</name>

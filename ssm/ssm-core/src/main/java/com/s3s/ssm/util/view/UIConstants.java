@@ -91,4 +91,7 @@ public class UIConstants {
     public static final int NUMBER_FIELD_WIDTH = 125;
 
     public static final Font DEFAULT_BOLD_FONT = new Font("Arial", Font.BOLD, 12);
+    public static final Font DEFAULT_ITALIC_FONT = new Font("Arial", Font.ITALIC, 12);
+
+    public static final Color INFO_COLOR = new Color(252, 252, 209);
 }

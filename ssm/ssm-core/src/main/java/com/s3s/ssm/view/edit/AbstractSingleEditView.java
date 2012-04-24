@@ -374,7 +374,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             pnlEdit = new JXTaskPane();
             ((JXTaskPane) pnlEdit).setTitle(g.getName());
             ((JXTaskPane) pnlEdit).setIcon(g.getIcon());
-            pnlEdit.setLayout(new MigLayout("ins 0"));
+            pnlEdit.setLayout(new MigLayout("debug, ins 0"));
             fieldsPanel.add(pnlEdit, "newline, spanx");
         } else {
             pnlEdit = fieldsPanel;
@@ -558,6 +558,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 break;
             case ENTITY_CHOOSER:
                 dataField = new EntityChooser<>(referenceData.getValues(), value);
+                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 pnlEdit.add(lblLabel, newline);
                 break;
             case SALE_TARGET:
@@ -721,7 +722,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             JComponent component = name2AttributeComponent.get(attribute.getName()).getComponent();
             boolean isRaw = attribute.isRaw();
             Object value = getComponentValue(component, attribute.getType());
-            bindingValue(entity, attribute.getName(), isRaw, value);
+            bindingValue(entity, attribute.getName(), value, attribute);
         }
 
         validateMethods(entity);
@@ -741,11 +742,28 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
      *            is raw attribute or not
      * @param value
      *            the value of the component.
+     * @param type
      */
-    protected void bindingValue(T entity, String name, boolean isRaw, Object value) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    protected void bindingValue(T entity, String name, Object value, DetailAttribute attribute) {
+
         // The child class should override this
-        if (!isRaw) {
-            beanWrapper.setPropertyValue(name, value);
+        if (!attribute.isRaw()) {
+            if (attribute.getType() == DetailFieldType.LIST) {
+                Collection attributeValue = (Collection) beanWrapper.getPropertyValue(name);
+                Collection componentValue = (Collection) value;
+                String parentName = ((ListComponentInfo) attribute.getComponentInfo()).getParentFieldName();
+                for (Object object : componentValue) {
+                    BeanWrapper bw = new BeanWrapperImpl(object);
+                    bw.setPropertyValue(parentName, entity);
+                }
+                // For hibernate cascade, we should not change the reference of a collection. Just remove all and the
+                // re-add all value.
+                attributeValue.removeAll(attributeValue);
+                attributeValue.addAll(componentValue);
+            } else {
+                beanWrapper.setPropertyValue(name, value);
+            }
         }
     }
 
@@ -832,6 +850,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         return false;
     }
 
+    @SuppressWarnings("rawtypes")
     private Object getComponentValue(JComponent component, DetailFieldType type) {
         switch (type) {
         case LABEL:
@@ -971,7 +990,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
             boolean isRaw = attribute.isRaw();
             Object value = getComponentValue(component, attribute.getType());
-            bindingValue(entity, attribute.getName(), isRaw, value);
+            bindingValue(entity, attribute.getName(), value, attribute);
             if (!isRaw) {
                 Validator validator = getValidator();
                 Set<ConstraintViolation<T>> validateResult = validator.validateProperty(entity, attribute.getName());

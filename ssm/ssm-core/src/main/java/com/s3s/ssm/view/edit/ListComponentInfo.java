@@ -24,9 +24,11 @@ import com.s3s.ssm.view.list.AListComponent;
 @SuppressWarnings("rawtypes")
 public class ListComponentInfo implements IComponentInfo {
     private AListComponent listComponent;
+    private String parentFieldName;
 
-    public ListComponentInfo(AListComponent listComponent) {
+    public ListComponentInfo(AListComponent listComponent, String parentFieldName) {
         this.listComponent = listComponent;
+        this.setParentFieldName(parentFieldName);
     }
 
     public AListComponent getListComponent() {
@@ -35,5 +37,13 @@ public class ListComponentInfo implements IComponentInfo {
 
     public void setListComponent(AListComponent listComponent) {
         this.listComponent = listComponent;
+    }
+
+    public String getParentFieldName() {
+        return parentFieldName;
+    }
+
+    public void setParentFieldName(String parentFieldName) {
+        this.parentFieldName = parentFieldName;
     }
 }

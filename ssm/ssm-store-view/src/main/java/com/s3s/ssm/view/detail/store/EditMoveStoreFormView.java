@@ -65,7 +65,7 @@ public class EditMoveStoreFormView extends AbstractSingleEditView<MoveStoreForm>
 
     private IComponentInfo createMoveDetailsComponentInfo() {
         ListMoveDetailComponent component = new ListMoveDetailComponent(null, null, null);
-        return new ListComponentInfo(component);
+        return new ListComponentInfo(component, "moveForm");
     }
 
     /**

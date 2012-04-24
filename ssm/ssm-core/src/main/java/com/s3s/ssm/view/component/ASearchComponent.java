@@ -18,8 +18,8 @@ package com.s3s.ssm.view.component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -36,12 +37,14 @@ import javax.swing.JWindow;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -57,12 +60,14 @@ import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.SClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.view.UIConstants;
 
 /**
  * @author Phan Hong Phuc
  * @since Apr 18, 2012
  */
 public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends JPanel implements DocumentListener {
+    private static final int NUM_VISIBLE_ROWS = 10;
     private static final long serialVersionUID = -869806032147504253L;
     private static final int MAX_RESULT = 50;
     private JTextField textField;
@@ -77,6 +82,8 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
     private EntityLoader worker = new EntityLoader();
     private T selectedEntity;
     private Class<T> entityClass;
+    private JPanel suggestPanel;
+    private boolean isTableShown = false;
 
     /**
      * Default constructor.
@@ -87,36 +94,48 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
         this.searchOnAttributes = getSearchedOnAttributes();
         this.entityClass = (Class<T>) SClassUtils.getArgumentClass(getClass());
         this.dao = (IBaseDao<T>) ConfigProvider.getInstance().getDaoHelper().getDao(entityClass);
+        suggestPanel = new JPanel();
+        suggestPanel.setBackground(UIConstants.INFO_COLOR);
+        JLabel tipLabel = new JLabel(ControlConfigUtils.getString("SearchComponent.suggestion"));
+        tipLabel.setFont(UIConstants.DEFAULT_ITALIC_FONT);
+        suggestPanel.add(tipLabel);
         setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
         // ///////////// Table ///////////////////
         TableModel model = new MyTableModel();
         table = new JXTable(model);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setVisibleRowCount(NUM_VISIBLE_ROWS);
         tablePane = new JScrollPane(table);
 
         // ///////////// Text Field ////////////////
         textField = new JTextField(20);
         textField.getDocument().addDocumentListener(this);
-        textField.addFocusListener(new FocusAdapter() {
+        textField.addFocusListener(new FocusListener() {
 
             @Override
             public void focusLost(FocusEvent e) {
-                super.focusLost(e);
                 worker.cancel(true);
                 if (selectedEntity == null) {
                     textField.setText(null);
                 }
                 popup.setVisible(false);
-                // TODO Phuc: base on the text, find the selectedEntiy.
+                isTableShown = false;
+
             }
 
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (StringUtils.isNotBlank(textField.getText())) {
+                    showTipPanel();
+                }
+            }
         });
         // //////// PromptSupport for textField
         String promptText = createPromptText();
         PromptSupport.setPrompt(promptText, textField);
         PromptSupport.setFontStyle(Font.ITALIC, textField);
-        PromptSupport.setFocusBehavior(FocusBehavior.HIDE_PROMPT, textField);
+        PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, textField);
 
         // ////////// Key listener for textField
         InputMap inputMap = textField.getInputMap(WHEN_FOCUSED);
@@ -176,10 +195,13 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if (!popup.isVisible()) {
+            if (!isTableShown) {
                 popup.setLocation(textField.getLocationOnScreen().x,
                         textField.getLocationOnScreen().y + textField.getPreferredSize().height);
+                popup.remove(suggestPanel);
+                popup.add(tablePane);
                 popup.setVisible(true);
+                isTableShown = true;
                 doChangeText();
             }
             if (!entities.isEmpty()) {
@@ -226,11 +248,8 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
             }
             if (!entities.isEmpty()) {
                 int currentRow = table.getSelectedRow();
-                selectedEntity = entities.get(currentRow);
-                BeanWrapper wrapper = new BeanWrapperImpl(selectedEntity);
+                setSelectedEntity(entities.get(currentRow));
                 popup.setVisible(false);
-                String displayString = buildDisplayString(displayAttribute, wrapper);
-                textField.setText(displayString);
             }
         }
 
@@ -299,18 +318,33 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
      * Perform when insert, remove or change the text in textField
      */
     protected void doChangeText() {
-        // TODO Phuc wait 0.5 .....
-        if (popup.isVisible()) {
-            worker.cancel(true);
-            // SwingWorker is only designed to be executed once. Executing a SwingWorker more than once will not result
-            // in invoking the doInBackground method twice.
-            worker = new EntityLoader();
-            worker.run();
+        if (textField.hasFocus()) {
+            if (popup.isVisible() && isTableShown) {
+                // SwingWorker is only designed to be executed once. Executing a SwingWorker more than once will not
+                // result in invoking the doInBackground method twice.
+                // TODO Phuc wait 0.5 .....
+                worker.cancel(true);
+                worker = new EntityLoader();
+                worker.run();
+            } else {
+                showTipPanel();
+            }
         }
+    }
+
+    private void showTipPanel() {
+        popup.remove(tablePane);
+        isTableShown = false;
+        popup.setLocation(textField.getLocationOnScreen().x,
+                textField.getLocationOnScreen().y + textField.getPreferredSize().height);
+        popup.add(suggestPanel);
+        popup.setVisible(true);
+        popup.pack();
     }
 
     protected DetachedCriteria createSearchCriteria() {
         DetachedCriteria criteria = dao.getCriteria();
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         Criterion criterion = Restrictions.ilike(searchOnAttributes[0], textField.getText(), MatchMode.ANYWHERE);
         for (int i = 1; i < searchOnAttributes.length; i++) {
             criterion = Restrictions.or(criterion,
@@ -343,11 +377,34 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
 
     public void setSelectedEntity(T entity) {
         selectedEntity = entity;
-        BeanWrapper wrapper = new BeanWrapperImpl(selectedEntity);
-        textField.setText(buildDisplayString(displayAttribute, wrapper));
+        if (entity != null) {
+            BeanWrapper wrapper = new BeanWrapperImpl(selectedEntity);
+            textField.setText(buildDisplayString(displayAttribute, wrapper));
+        } else {
+            textField.setText("");
+        }
+        fireValueChanged();
     }
 
     public T getSelectedEntity() {
         return selectedEntity;
+    }
+
+    // ///////// Fire event ///////////////
+    private void fireValueChanged() {
+        for (Object l : listenerList.getListenerList()) {
+            ChangeEvent ce = new ChangeEvent(this);
+            if (l instanceof IValueChangedListener) {
+                ((IValueChangedListener) l).doValueChanged(ce);
+            }
+        }
+    }
+
+    public void addValueChangedListener(IValueChangedListener listener) {
+        listenerList.add(IValueChangedListener.class, listener);
+    }
+
+    public void removeValueChangedListener(IValueChangedListener listener) {
+        listenerList.remove(IValueChangedListener.class, listener);
     }
 }

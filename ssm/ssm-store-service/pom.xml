@@ -19,7 +19,7 @@
   <dependencies>
 <dependency>
 		<groupId>com.s3s</groupId>
-		<artifactId>ssm-common</artifactId>
+		<artifactId>ssm-common-model</artifactId>
 		<version>${ssm.version}</version>
 	</dependency>
   </dependencies>

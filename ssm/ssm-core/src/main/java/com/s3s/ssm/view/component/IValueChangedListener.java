@@ -20,14 +20,14 @@ import java.util.EventListener;
 import javax.swing.event.ChangeEvent;
 
 /**
- * The listener interface for receiving the value or currency code changed.
+ * The listener interface for receiving the value changed.
  * 
  * @author Phan Hong Phuc
  * @since Mar 23, 2012
  */
-public interface IMoneyChangedListener extends EventListener {
+public interface IValueChangedListener extends EventListener {
     /**
-     * Invoke when the value or currency code changed.
+     * Invoke when the value changed.
      */
-    public void doMoneyChanged(ChangeEvent e);
+    public void doValueChanged(ChangeEvent e);
 }

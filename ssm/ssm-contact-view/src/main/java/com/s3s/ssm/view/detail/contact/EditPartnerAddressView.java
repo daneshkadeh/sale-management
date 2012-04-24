@@ -6,6 +6,7 @@ import com.s3s.ssm.entity.config.Address;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.contact.PartnerAddressLink;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
@@ -40,8 +41,8 @@ public class EditPartnerAddressView extends AbstractSingleEditView<PartnerAddres
     }
 
     @Override
-    protected void bindingValue(PartnerAddressLink entity, String name, boolean isRaw, Object value) {
-        super.bindingValue(entity, name, isRaw, value);
+    protected void bindingValue(PartnerAddressLink entity, String name, Object value, DetailAttribute detailAttribute) {
+        super.bindingValue(entity, name, value, detailAttribute);
         entity.setPartner(daoHelper.getDao(Partner.class).findById((Long) request.get(PARAM_PARENT_ID)));
     }
 

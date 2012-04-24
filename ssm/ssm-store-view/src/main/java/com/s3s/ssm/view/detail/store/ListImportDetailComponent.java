@@ -16,6 +16,8 @@
 
 package com.s3s.ssm.view.detail.store;
 
+import java.util.List;
+
 import javax.swing.Icon;
 
 import com.s3s.ssm.entity.store.DetailImportStore;
@@ -25,6 +27,9 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.ServiceProvider;
 import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.component.ProductSearchComponent;
+import com.s3s.ssm.view.edit.IComponentInfo;
+import com.s3s.ssm.view.edit.SearchComponentInfo;
 import com.s3s.ssm.view.list.AListComponent;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
@@ -59,8 +64,8 @@ public class ListImportDetailComponent extends AListComponent<DetailImportStore>
         // TODO: Hoang must set max, min for column
         // listDataModel.setEditable(true);
         // listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
-        listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
-                .referenceDataId(REF_LIST_PRODUCT).width(180);
+        listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.SEARCH_COMPONENT)
+                .componentInfo(createProductComponentInfo()).width(180);
         listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable().width(290);
         // TODO: Hoang the data should be updated after choosing the product
         listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
@@ -75,6 +80,11 @@ public class ListImportDetailComponent extends AListComponent<DetailImportStore>
         listDataModel.addColumn("priceSubtotal", ListRendererType.TEXT, ListEditorType.MONEY)
                 .referenceDataId(REF_CURRENCY).width(UIConstants.AMT_COLUMN_WIDTH).summarized();
 
+    }
+
+    private IComponentInfo createProductComponentInfo() {
+        ProductSearchComponent psc = new ProductSearchComponent();
+        return new SearchComponentInfo(psc);
     }
 
     @Override
@@ -96,6 +106,15 @@ public class ListImportDetailComponent extends AListComponent<DetailImportStore>
     @Override
     protected DetailImportStore createNewEntity() {
         return super.createNewEntity();
+    }
+
+    @Override
+    protected void doRowUpdated(String attributeName, DetailImportStore entity, List<DetailImportStore> entities) {
+        super.doRowUpdated(attributeName, entity, entities);
+        if ("product".equals(attributeName)) {
+            // Hoang, Bang: Phuc suggests setProductName in entity
+            entity.setProductName(entity.getProduct().getName());
+        }
     }
 
 }
