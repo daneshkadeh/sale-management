@@ -34,8 +34,10 @@ import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
@@ -185,6 +187,19 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         mainTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    JMenuItem menuItem;
+
+                    // Create the popup menu.
+                    JPopupMenu popup = new JPopupMenu();
+                    menuItem = new JMenuItem("A popup menu item");
+                    // menuItem.addActionListener(this);
+                    popup.add(menuItem);
+                    menuItem = new JMenuItem("Another popup menu item");
+                    // menuItem.addActionListener(this);
+                    popup.add(menuItem);
+                    popup.show(mainTable, e.getX(), e.getY());
+                }
                 // if () {
                 // JXTable target = (JXTable)e.getSource();
                 // int row = target.getSelectedRow();
@@ -225,8 +240,10 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         // tblFooter.getPreferredScrollableViewportSize().width, tblFooter.getRowHeight()));
         tblFooter.setVisibleRowCount(1);
         tblFooter.setRowSelectionAllowed(false);
-        tblFooter.setShowGrid(false);
+        // tblFooter.setShowGrid(true);
+        tblFooter.setGridColor(Color.GRAY);
         tblFooter.setFont(UIConstants.DEFAULT_BOLD_FONT);
+        tblFooter.setRowHeight(mainTable.getRowHeight());
 
         mainTable.getColumnModel().addColumnModelListener(tblFooter);
 

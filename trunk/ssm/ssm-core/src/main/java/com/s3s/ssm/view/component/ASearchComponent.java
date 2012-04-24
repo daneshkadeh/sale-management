@@ -15,6 +15,7 @@
 
 package com.s3s.ssm.view.component;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -96,6 +98,7 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
         this.dao = (IBaseDao<T>) ConfigProvider.getInstance().getDaoHelper().getDao(entityClass);
         suggestPanel = new JPanel();
         suggestPanel.setBackground(UIConstants.INFO_COLOR);
+        suggestPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         JLabel tipLabel = new JLabel(ControlConfigUtils.getString("SearchComponent.suggestion"));
         tipLabel.setFont(UIConstants.DEFAULT_ITALIC_FONT);
         suggestPanel.add(tipLabel);
