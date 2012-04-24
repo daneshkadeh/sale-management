@@ -11,6 +11,7 @@ import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.DaoHelperImpl;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
@@ -39,8 +40,8 @@ public class EditCustomerGeneralView extends EditPartnerGeneralView<Partner> {
     }
 
     @Override
-    protected void bindingValue(Partner entity, String name, boolean isRaw, Object value) {
-        super.bindingValue(entity, name, isRaw, value);
+    protected void bindingValue(Partner entity, String name, Object value, DetailAttribute detailAttribute) {
+        super.bindingValue(entity, name, value, detailAttribute);
         if ("customerProfile.audienceCates".equals(name)) {
             CustomerProfile profile = DaoHelperImpl.downCast(CustomerProfile.class,
                     entity.getPartnerProfile(PartnerProfileTypeEnum.CUSTOMER));

@@ -83,55 +83,6 @@ public class EditExportStoreFormView extends AbstractSingleEditView<ExportStoreF
         }
     }
 
-    // /**
-    // * {@inheritDoc}
-    // */
-    // @Override
-    // protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-    // // TODO: Hoang must set max, min for column
-    // // listDataModel.setEditable(true);
-    // // listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
-    // listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
-    // .referenceDataId(REF_LIST_PRODUCT).width(180);
-    // listDataModel.addColumn("product.name", ListRendererType.TEXT).notEditable().width(290);
-    // // TODO: Hoang the data should be updated after choosing the product
-    // listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
-    // .width(205);
-    // listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM)
-    // .width(70);
-    // listDataModel.addColumn("baseUom", ListRendererType.TEXT, ListEditorType.TEXTFIELD).notEditable().width(70);
-    // listDataModel.addColumn("reqQuan", ListRendererType.NUMBER).notEditable().summarized()
-    // .width(UIConstants.QTY_COLUMN_WIDTH);
-    // listDataModel.addColumn("realQuan", ListRendererType.NUMBER).summarized().width(UIConstants.QTY_COLUMN_WIDTH);
-    // listDataModel.addColumn("remainQuan", ListRendererType.NUMBER).notEditable().summarized()
-    // .width(UIConstants.QTY_COLUMN_WIDTH);
-    // }
-
-    // /**
-    // * {@inheritDoc}
-    // */
-    // @Override
-    // protected Class<? extends AbstractEditView<DetailExportStore>> getChildDetailViewClass() {
-    // return EditDetailExportStoreView.class;
-    // }
-    //
-    // /**
-    // * {@inheritDoc}
-    // */
-    // @Override
-    // protected String getParentFieldName() {
-    // // TODO Auto-generated method stub
-    // return "exportForm";
-    // }
-    //
-    // /**
-    // * {@inheritDoc}
-    // */
-    // @Override
-    // protected String getChildFieldName() {
-    // return "exportDetails";
-    // }
-
     /**
      * {@inheritDoc}
      */
@@ -163,7 +114,7 @@ public class EditExportStoreFormView extends AbstractSingleEditView<ExportStoreF
 
     private IComponentInfo createExportDetailsComponentInfo() {
         ListExportDetailComponent component = new ListExportDetailComponent(null, null, null);
-        return new ListComponentInfo(component);
+        return new ListComponentInfo(component, "exportForm");
     }
 
     /**

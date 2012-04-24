@@ -19,6 +19,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
+import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
@@ -122,7 +123,7 @@ public class EditDetailInvoiceVirtualView extends AbstractSingleEditView<DetailI
     }
 
     @Override
-    protected void bindingValue(DetailInvoice entity, String name, boolean isRaw, Object value) {
+    protected void bindingValue(DetailInvoice entity, String name, Object value, DetailAttribute detailAttribute) {
         if (ProductFamilyType.PACKAGE.equals(getProductFamilyType(request))) {
             if (name.startsWith("itemPackageLine")) {
                 Long lineId = Long.valueOf(name.replaceFirst("itemPackageLine", ""));
@@ -143,7 +144,7 @@ public class EditDetailInvoiceVirtualView extends AbstractSingleEditView<DetailI
             }
 
         }
-        super.bindingValue(entity, name, isRaw, value);
+        super.bindingValue(entity, name, value, detailAttribute);
     }
 
     @Override

@@ -79,7 +79,8 @@
    <modules>
       <module>ssm-core</module>  
 	  
-      <module>ssm-common</module>
+      <module>ssm-common-model</module>
+	  <module>ssm-common-gui</module>
 	  	  
       <module>ssm-operator-service</module>
 	  <module>ssm-config-service</module>
@@ -108,7 +109,16 @@
    <properties>
 	<ssm.version>1.0-SNAPSHOT</ssm.version>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	
 	<spring.version>2.5.6</spring.version>
+	<!--spring-core.version>3.1.1.RELEASE</spring-core.version>
+	<spring-aop.version>3.1.1.RELEASE</spring-aop.version>
+	<spring-beans.version>3.1.1.RELEASE</spring-beans.version>
+	<spring-context.version>3.1.1.RELEASE</spring-context.version>
+	<spring-tx.version>3.1.1.RELEASE</spring-tx.version>
+	<spring-orm.version>3.1.1.RELEASE</spring-orm.version>
+	<spring-hibernate3.version>2.0.8</spring-hibernate3.version-->
+	
 	<cglib.version>2.2</cglib.version>
 	<aspectj.version>1.5.2</aspectj.version>
 	
@@ -129,6 +139,7 @@
 	<antlr.version>2.7.7</antlr.version>
 	
 	<swingx.version>1.6.3</swingx.version>
+	<seaglass.version>0.1.7.3</seaglass.version> <!-- Not working with java 7, see http://code.google.com/p/seaglass/issues/detail?id=77#makechanges -->
 	<miglayout.version>3.7.3.1</miglayout.version>
 	<testng.version>6.1.1</testng.version>
 	<beansbinding.version>1.2.1</beansbinding.version>
@@ -162,13 +173,49 @@
 			 <version>${testng.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+           
 		<!-- Spring framework -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring</artifactId>
 			<version>${spring.version}</version>
+		</dependency>	
+		<!--dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring-aop.version}</version>
+		</dependency>            
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>	
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring-beans.version}</version>
+		</dependency>	
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring-tx.version}</version>
+		</dependency>	
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-hibernate3</artifactId>
+			<version>${spring-hibernate3.version}</version>
 		</dependency>
+            
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring-context.version}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring-core.version}</version>
+		</dependency>       
 		
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -180,7 +227,7 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-acl</artifactId>
 			<version>2.0.4</version>
-		</dependency>
+		</dependency-->
 
 		<!-- Spring AOP dependency -->
 		<dependency>
@@ -320,6 +367,13 @@
 			<version>${miglayout.version}</version>
 			<classifier>swing</classifier>
 		</dependency>	
+		
+		<!-- seaglass look&feel -->
+		<dependency>
+			<groupId>com.seaglasslookandfeel</groupId>
+			<artifactId>seaglasslookandfeel</artifactId>
+			<version>${seaglass.version}</version>
+		</dependency>
 		
 		<!-- Beansbinding -->	
 		<dependency>

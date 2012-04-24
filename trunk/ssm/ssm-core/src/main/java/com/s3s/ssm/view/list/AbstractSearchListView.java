@@ -78,7 +78,7 @@ public abstract class AbstractSearchListView<T extends AbstractIdOLObject> exten
         JXTaskPane pane = new JXTaskPane();
         pane.setTitle(ControlConfigUtils.getString("label.search.searchTitle"));
         pane.setIcon(ImageUtils.getSmallIcon(ImageConstants.SEARCH_ICON));
-        pane.setCollapsed(true);
+        pane.setCollapsed(false);
         pane.getContentPane().setBackground(backgroundColor);
         JPanel searchPanel = createSearchPanel();
         searchPanel.setBackground(backgroundColor);

@@ -83,7 +83,7 @@ public class EditImportStoreFormView extends AbstractSingleEditView<ImportStoreF
 
     private IComponentInfo createImportDetailsComponentInfo() {
         ListImportDetailComponent component = new ListImportDetailComponent(null, null, null);
-        return new ListComponentInfo(component);
+        return new ListComponentInfo(component, "importStoreForm");
     }
 
     /**

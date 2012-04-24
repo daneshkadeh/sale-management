@@ -24,11 +24,11 @@ import java.util.List;
  */
 public class ListDataModel {
     public enum ListRendererType {
-        TEXT, BOOLEAN, NUMBER, DATE, LINK
+        TEXT, BOOLEAN, NUMBER, DATE, LINK, SEARCH_COMPONENT;
     }
 
     public enum ListEditorType {
-        TEXTFIELD, CHECKBOX, COMBOBOX, DATE_PICKER, MONEY
+        TEXTFIELD, CHECKBOX, COMBOBOX, DATE_PICKER, MONEY, SEARCH_COMPONENT;
     }
 
     private List<ColumnModel> columns = new ArrayList<>();

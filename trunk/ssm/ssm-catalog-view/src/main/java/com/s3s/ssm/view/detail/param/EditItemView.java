@@ -30,13 +30,14 @@ import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.util.DaoHelperImpl;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 /**
- * This view is only used to TEST. A list items should be shown on 1 product config. The entity tree view is required
+ * This view is only used to TEST. A list items should be sho wn on 1 product config. The entity tree view is required
  * for this case.
  * 
  * @author phamcongbang
@@ -83,8 +84,8 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
     }
 
     @Override
-    protected void bindingValue(Item entity, String name, boolean isRaw, Object value) {
-        super.bindingValue(entity, name, isRaw, value);
+    protected void bindingValue(Item entity, String name, Object value, DetailAttribute detailAttribute) {
+        super.bindingValue(entity, name, value, detailAttribute);
         if (isGoodProduct(entity)) {
             Goods good = DaoHelperImpl.downCast(Goods.class, entity.getProduct());
             for (ProductProperty property : good.getProperties()) {

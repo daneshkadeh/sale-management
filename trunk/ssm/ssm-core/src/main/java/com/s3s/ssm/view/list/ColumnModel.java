@@ -19,6 +19,7 @@ import javax.swing.SortOrder;
 
 import org.springframework.util.Assert;
 
+import com.s3s.ssm.view.edit.IComponentInfo;
 import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
@@ -36,6 +37,7 @@ public class ColumnModel {
     private boolean isEditable = true;
 
     private String referenceDataId;
+    private IComponentInfo componentInfo;
 
     // For sorting.
     private boolean isSorted;
@@ -209,6 +211,15 @@ public class ColumnModel {
 
     public ColumnModel searched() {
         this.isSearched = true;
+        return this;
+    }
+
+    public IComponentInfo getComponentInfo() {
+        return componentInfo;
+    }
+
+    public ColumnModel componentInfo(IComponentInfo componentInfo) {
+        this.componentInfo = componentInfo;
         return this;
     }
 }

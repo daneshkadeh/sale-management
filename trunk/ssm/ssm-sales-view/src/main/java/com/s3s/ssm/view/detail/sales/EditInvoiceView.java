@@ -49,6 +49,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.EntityDialog;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.list.ListDataModel;
@@ -277,8 +278,8 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     }
 
     @Override
-    protected void bindingValue(Invoice entity, String name, boolean isRaw, Object value) {
-        super.bindingValue(entity, name, isRaw, value);
+    protected void bindingValue(Invoice entity, String name, Object value, DetailAttribute detailAttribute) {
+        super.bindingValue(entity, name, value, detailAttribute);
         // TODO: bad override component! Should change later to handle attribute only.
         // This business is only applied when "contact" lost focus.
         if ("contact".equals(name)) {

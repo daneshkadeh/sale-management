@@ -569,15 +569,17 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 JOptionPane.WARNING_MESSAGE);
         if (option == JOptionPane.YES_OPTION) {
             int[] selectedRows = tblListEntities.getSelectedRows();
+            int[] selectedModelRows = new int[selectedRows.length];
             List<T> removedEntities = new ArrayList<>(selectedRows.length);
-            for (int i : selectedRows) {
-                int rowModelIndex = tblListEntities.convertRowIndexToModel(i);
+            for (int i = 0; i < selectedRows.length; i++) {
+                int rowModelIndex = tblListEntities.convertRowIndexToModel(selectedRows[i]);
                 removedEntities.add(entities.get(rowModelIndex));
+                selectedModelRows[i] = rowModelIndex;
             }
             // Remove row in database
             getDaoHelper().getDao(getEntityClass()).deleteAll(removedEntities);
             // Remove row in view
-            mainTableModel.deleteRows(selectedRows[0], selectedRows[selectedRows.length - 1]);
+            mainTableModel.deleteRows(selectedModelRows);
             rowHeader.repaint();
             rowHeader.revalidate();
         }
