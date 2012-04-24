@@ -460,6 +460,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
     public void setEntities(Collection<T> entities) {
         mainTableModel.setEntities(entities);
+        mainTable.packAll();
     }
 
     public JTabbedPane getTabbedPane() {
