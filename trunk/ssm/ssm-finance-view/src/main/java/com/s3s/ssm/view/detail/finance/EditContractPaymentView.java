@@ -25,13 +25,12 @@ import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.component.IValueChangedListener;
 import com.s3s.ssm.view.component.MoneyComponent;
-import com.s3s.ssm.view.component.PartnerSearchComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
-import com.s3s.ssm.view.edit.SearchComponentInfo;
 
 public class EditContractPaymentView extends AbstractSingleEditView<ContractPayment> {
     private static final long serialVersionUID = -3334854367548540471L;
@@ -48,7 +47,7 @@ public class EditContractPaymentView extends AbstractSingleEditView<ContractPaym
         detailDataModel.addAttribute("paymentDate", DetailFieldType.DATE).mandatory(true);
 
         detailDataModel.addAttribute("partner", DetailFieldType.SEARCHER).mandatory(true)
-                .componentInfo(createPartnerSearchInfo());
+                .componentInfo(ComponentFactory.createPartnerSearchInfo());
         detailDataModel.addAttribute("operator", DetailFieldType.ENTITY_CHOOSER).mandatory(true)
                 .cacheDataId(CacheId.REF_LIST_OPERATOR);
         detailDataModel.addAttribute("paymentContent", DetailFieldType.DROPDOWN).mandatory(true)
@@ -60,11 +59,6 @@ public class EditContractPaymentView extends AbstractSingleEditView<ContractPaym
         detailDataModel.addAttribute("amount", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("rate", DetailFieldType.TEXTBOX).newColumn();
         detailDataModel.addAttribute("notes", DetailFieldType.TEXTAREA);
-    }
-
-    private SearchComponentInfo createPartnerSearchInfo() {
-        PartnerSearchComponent psc = new PartnerSearchComponent();
-        return new SearchComponentInfo(psc);
     }
 
     @Override
