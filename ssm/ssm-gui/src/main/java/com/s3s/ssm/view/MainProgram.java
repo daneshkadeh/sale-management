@@ -42,6 +42,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.ColorUIResource;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -134,7 +135,12 @@ public class MainProgram {
             UIManager.getDefaults().addResourceBundle("i18n/swingx/DatePicker");
             UIManager.getDefaults().addResourceBundle("i18n/swingx/ErrorPane");
             // UIManager.put("ToggleButton.background", Color.BLUE);
-            // UIManager.put("nimbusBase", new ColorUIResource(0, 0, 120));
+            UIManager.put("control", new ColorUIResource(227, 236, 250));
+            UIManager.put("nimbusBase", new ColorUIResource(60, 60, 180));
+            UIManager.put("controlShadow", new ColorUIResource(217, 226, 240));
+            UIManager.put("controlDkShadow", new ColorUIResource(217, 226, 240));
+            UIManager.put("Menu.background", new ColorUIResource(217, 226, 240));
+            UIManager.put("ToolBar.background", new ColorUIResource(217, 226, 240));
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
                 | UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e.getCause());
