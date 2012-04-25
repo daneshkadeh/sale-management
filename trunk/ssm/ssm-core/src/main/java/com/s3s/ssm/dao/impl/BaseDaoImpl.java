@@ -17,6 +17,7 @@ package com.s3s.ssm.dao.impl;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -39,6 +40,7 @@ import org.springframework.util.Assert;
 import com.s3s.ssm.context.ContextProvider;
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.entity.IActiveObject;
 import com.s3s.ssm.interceptor.OptimisticLockingInterceptor;
 
 public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSupport implements IBaseDao<T> {
@@ -182,8 +184,23 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public List findAll() {
+    public List<T> findAll() {
         return getHibernateTemplate().loadAll(getEntityClass());
+    }
+
+    @Override
+    public List<T> findAllActive() {
+        List<T> entities = findAll();
+        List<T> removedList = new ArrayList<>();
+        if (IActiveObject.class.isAssignableFrom(getEntityClass())) {
+            for (T entity : entities) {
+                if (!((IActiveObject) entity).isActive()) {
+                    removedList.add(entity);
+                }
+            }
+        }
+        entities.removeAll(removedList);
+        return entities;
     }
 
     /**

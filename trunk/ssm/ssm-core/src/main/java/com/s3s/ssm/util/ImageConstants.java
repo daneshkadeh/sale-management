@@ -33,6 +33,8 @@ public class ImageConstants {
     public static final String EDIT_ICON = "/icons/editIcon.png";
     public static final String REFRESH_ICON = "/icons/refreshIcon.png";
     public static final String PRINT_ICON = "/icons/printIcon.png";
+    public static final String ACTIVATE_ICON = "/icons/activateIcon.png";
+    public static final String INACTIVATE_ICON = "/icons/inactivateIcon.png";
     public static final String EXPORT_ICON = "/icons/exportIcon.png";
     public static final String SAVE_NEW_ICON = "/icons/saveNewIcon.png";
     public static final String SAVE_ICON = "/icons/saveIcon.gif";
@@ -49,4 +51,5 @@ public class ImageConstants {
     public static final String SUPPLIED_PEOPLE_ICON = "/icons/suppliedPeopleIcon.png";
     public static final String SEARCH_ICON = "/icons/searchIcon.png";
     public static final String CLEAR_ICON = "/icons/clearIcon.png";
+
 }

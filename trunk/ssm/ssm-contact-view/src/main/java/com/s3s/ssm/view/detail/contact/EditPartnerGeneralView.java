@@ -62,7 +62,7 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
                 "Common information of supplier", ImageUtils.getMediumIcon(ImageConstants.USER_ICON));
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX).newColumn();
+        detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX).newColumn();
         addIndividualGroup(detailDataModel);
 
         detailDataModel.startGroup(ControlConfigUtils

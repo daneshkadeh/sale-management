@@ -63,7 +63,6 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     private static final String REF_PACKLINE = "packageLine";
     private static final String REF_INVOICE_TYPE = "type";
     private static final String REF_D_INVOICE_TYPE = "detailtype";
-    private static final String REF_CONTACT = "contact";
     private static final String REF_INVOICE_STATUS = "status";
     private static final String REF_D_INVOICE_STATUS = "detailstatus";
     private static final String REF_PAY_STATUS = "paymentStatus";
@@ -271,7 +270,7 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
                 .newColumn();
 
         // TODO: contact will be chosen from and listSearchView
-        detailDataModel.addAttribute("contact", DetailFieldType.DROPDOWN).referenceDataId(REF_CONTACT);
+        detailDataModel.addAttribute("contact", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_PARTNER);
         // TODO: editable = false not work for rawAttribute
         detailDataModel.addRawAttribute("contact.info", DetailFieldType.TEXTAREA)
                 .value(getContactInfo(entity.getContact())).editable(false);
@@ -312,7 +311,6 @@ public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInv
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, Invoice entity) {
         super.setReferenceDataModel(refDataModel, entity);
-        refDataModel.putRefDataList(REF_CONTACT, getDaoHelper().getDao(Partner.class).findAll());
         refDataModel.putRefDataList(REF_INVOICE_STATUS, InvoiceStatus.values());
         refDataModel.putRefDataList(REF_INVOICE_TYPE, InvoiceType.values());
         refDataModel.putRefDataList(REF_D_INVOICE_STATUS, DetailInvoiceStatus.values());

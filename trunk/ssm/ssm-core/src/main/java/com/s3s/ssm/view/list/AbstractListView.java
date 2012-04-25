@@ -81,6 +81,7 @@ import org.jdesktop.swingx.error.ErrorInfo;
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.IActiveObject;
 import com.s3s.ssm.export.exporter.DefaultExporterFactory;
 import com.s3s.ssm.export.exporter.Exporter;
 import com.s3s.ssm.export.exporter.ExporterFactory;
@@ -151,6 +152,8 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     protected JButton btnExport;
     protected JButton btnPrint;
     protected JButton btnRefresh;
+    protected JButton btnActivate;
+    protected JButton btnInactivate;
 
     // TODO use this flag temporarily to prevent init the view more than one time. --> Need to use the Proxy object
     // instead.
@@ -558,9 +561,38 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         buttonToolbar.add(btnDelete);
         buttonToolbar.add(btnExport);
         buttonToolbar.add(btnPrint);
+
+        // TODO: check security for this button
+        if (IActiveObject.class.isAssignableFrom(getEntityClass()) && showActivateButton()) {
+            btnActivate = new JButton(ImageUtils.getSmallIcon(ImageConstants.ACTIVATE_ICON));
+            btnActivate.setToolTipText(ControlConfigUtils.getString("default.button.activate"));
+            btnActivate.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    performActivateData();
+                }
+            });
+            buttonToolbar.add(btnActivate);
+
+            btnInactivate = new JButton(ImageUtils.getSmallIcon(ImageConstants.INACTIVATE_ICON));
+            btnInactivate.setToolTipText(ControlConfigUtils.getString("default.button.inactivate"));
+            btnInactivate.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    performInactivateData();
+                }
+            });
+
+            buttonToolbar.add(btnInactivate);
+        }
+
         buttonToolbar.add(Box.createHorizontalGlue());
         buttonToolbar.add(btnRefresh);
         return buttonToolbar;
+    }
+
+    protected boolean showActivateButton() {
+        return true;
     }
 
     private void doDeleteRows() {
@@ -817,6 +849,47 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 showEditView(entities.get(rowModel), EditActionEnum.EDIT);
             }
         }
+    }
+
+    private void performActivateData() {
+        int selectedRow = tblListEntities.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this),
+                    "Please select a row to activate", "Warning", JOptionPane.CLOSED_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            int rowModel = tblListEntities.convertRowIndexToModel(selectedRow);
+            IActiveObject activeObject = (IActiveObject) entities.get(rowModel);
+            if (!activeObject.isActive()) {
+                activeObject.setActive(true);
+                getDaoHelper().getDao(getEntityClass()).saveOrUpdate(entities.get(rowModel));
+            } else {
+                JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this),
+                        "The selected object has been active already.", "Warning", JOptionPane.CLOSED_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+
+    private void performInactivateData() {
+        int selectedRow = tblListEntities.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this),
+                    "Please select a row to inactivate", "Warning", JOptionPane.CLOSED_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            int rowModel = tblListEntities.convertRowIndexToModel(selectedRow);
+            IActiveObject activeObject = (IActiveObject) entities.get(rowModel);
+            if (activeObject.isActive()) {
+                activeObject.setActive(false);
+                getDaoHelper().getDao(getEntityClass()).saveOrUpdate(entities.get(rowModel));
+            } else {
+                JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AbstractListView.this),
+                        "The selected object has been inactive already.", "Warning", JOptionPane.CLOSED_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+
     }
 
     private void performExportAction() {

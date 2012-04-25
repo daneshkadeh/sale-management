@@ -76,13 +76,14 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<Partner> getPartners() {
-        List<Partner> partners = getDaoHelper().getDao(Partner.class).findAll();
+        List<Partner> partners = getDaoHelper().getDao(Partner.class).findAllActive();
         return partners;
     }
 
     public List<Partner> getSuppliers() {
         DetachedCriteria dc = getDaoHelper().getDao(Partner.class).getCriteria();
         dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dc.add(Restrictions.eq("active", true));
         dc.createCriteria("listProfiles").add(Restrictions.eq("type", PartnerProfileTypeEnum.SUPPLIER));
         return getDaoHelper().getDao(Partner.class).findByCriteria(dc);
     }
