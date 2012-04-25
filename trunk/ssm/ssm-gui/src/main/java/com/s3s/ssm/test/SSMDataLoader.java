@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.apache.commons.lang.time.DateUtils;
@@ -106,6 +107,7 @@ import com.s3s.ssm.model.Money;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
 import com.s3s.ssm.util.ServiceProvider;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
  * This data loader create a basic database so that the application can be tested. </br> NOTE: This class should only
@@ -129,11 +131,20 @@ public class SSMDataLoader {
 
     ServiceProvider serviceProvider = ConfigProvider.getInstance().getServiceProvider();
 
+    private static final String[] MESSSAGE_FILES = new String[] { "dataloader/test_messages",
+            "dataloader/test_config_messages", "dataloader/test_catalog_messages", "dataloader/test_finance_messages",
+            "dataloader/test_sales_messages", "dataloader/test_shipment_messages", "dataloader/test_contact_messages",
+            "dataloader/test_store_messages", "dataloader/test_supplychain_messages",
+            "dataloader/test_operator_messages" };
+
     public static void main(String[] args) {
         // Not find solution to get class path from ssm-core.
         // String classpath = MainProgram.class.getClassLoader().get
         DOMConfigurator.configure("src/main/resources/log4j.xml");
         s_logger.info("Starting data loader SSM...");
+        Locale.setDefault(new Locale("vi"));
+        ControlConfigUtils.init();
+        ControlConfigUtils.setLabelMessageBundle(Locale.getDefault(), MESSSAGE_FILES);
         // ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
         // AnnotationSessionFactoryBean sessionFactory = (AnnotationSessionFactoryBean) appContext
         // .getBean("sessionFactory");
@@ -237,6 +248,10 @@ public class SSMDataLoader {
         daoHelper.getDao(Bank.class).deleteAll(daoHelper.getDao(Bank.class).findAll());
 
         daoHelper.getDao(AudienceCategory.class).deleteAll(daoHelper.getDao(AudienceCategory.class).findAll());
+    }
+
+    private static String getMessage(String messageCode) {
+        return ControlConfigUtils.getString(messageCode);
     }
 
     private static void testInsertedData(DaoHelper daoHelper) {
@@ -1209,8 +1224,9 @@ public class SSMDataLoader {
         product.setOriginPrice(Money.create("VND", 9000L));
 
         DetachedCriteria uomDC = daoHelper.getDao(UnitOfMeasure.class).getCriteria();
-        uomDC.add(Restrictions.eq("code", UOM_KG));
-        product.setMainUom(daoHelper.getDao(UnitOfMeasure.class).findByCriteria(uomDC).get(0));
+        uomDC.add(Restrictions.eq("code", "Cai"));
+        UnitOfMeasure uom = daoHelper.getDao(UnitOfMeasure.class).findByCriteria(uomDC).get(0);
+        product.setMainUom(uom);
         ProductType type = daoHelper.getDao(ProductType.class).findAll().get(0);
 
         Manufacturer manufacturer = daoHelper.getDao(Manufacturer.class).findAll().get(0);
@@ -1220,6 +1236,83 @@ public class SSMDataLoader {
         product.addProperty(daoHelper.getDao(ProductProperty.class).findAll().get(0));
         daoHelper.getDao(Product.class).saveOrUpdate(product);
 
+        // TODO: will set real productType
+        Goods product1 = new Goods();
+        product1.setCode(getMessage("PRODUCT.product1.code"));
+        product1.setName(getMessage("PRODUCT.product1.name"));
+        product1.setMainUom(uom);
+        product1.setType(type);
+        daoHelper.getDao(Goods.class).saveOrUpdate(product1);
+
+        Goods product2 = new Goods();
+        product2.setCode(getMessage("PRODUCT.product2.code"));
+        product2.setName(getMessage("PRODUCT.product2.name"));
+        product2.setType(type);
+        product2.setMainUom(uom);
+        daoHelper.getDao(Goods.class).saveOrUpdate(product2);
+
+        Goods product3 = new Goods();
+        product3.setCode(getMessage("PRODUCT.product3.code"));
+        product3.setName(getMessage("PRODUCT.product3.name"));
+        product3.setType(type);
+        product3.setMainUom(uom);
+        daoHelper.getDao(Goods.class).saveOrUpdate(product3);
+
+        Goods product4 = new Goods();
+        product4.setCode(getMessage("PRODUCT.product4.code"));
+        product4.setName(getMessage("PRODUCT.product4.name"));
+        product4.setType(type);
+        product4.setMainUom(uom);
+        daoHelper.getDao(Goods.class).saveOrUpdate(product4);
+
+        Goods product5 = new Goods();
+        product5.setCode(getMessage("PRODUCT.product5.code"));
+        product5.setName(getMessage("PRODUCT.product5.name"));
+        product5.setType(type);
+        product5.setMainUom(uom);
+        daoHelper.getDao(Goods.class).saveOrUpdate(product5);
+
+        Goods product6 = new Goods();
+        product6.setCode(getMessage("PRODUCT.product6.code"));
+        product6.setName(getMessage("PRODUCT.product6.name"));
+        product6.setType(type);
+        product6.setMainUom(uom);
+        daoHelper.getDao(Goods.class).saveOrUpdate(product6);
+
+        Goods product7 = new Goods();
+        product7.setCode(getMessage("PRODUCT.product7.code"));
+        product7.setName(getMessage("PRODUCT.product7.name"));
+        product7.setType(type);
+        product7.setMainUom(uom);
+        daoHelper.getDao(Goods.class).saveOrUpdate(product7);
+
+        Goods product8 = new Goods();
+        product8.setCode(getMessage("PRODUCT.product8.code"));
+        product8.setName(getMessage("PRODUCT.product8.name"));
+        product8.setType(type);
+        product8.setMainUom(uom);
+        daoHelper.getDao(Goods.class).saveOrUpdate(product8);
+
+        Goods product9 = new Goods();
+        product9.setCode(getMessage("PRODUCT.product9.code"));
+        product9.setName(getMessage("PRODUCT.product9.name"));
+        product9.setType(type);
+        product9.setMainUom(uom);
+        daoHelper.getDao(Goods.class).saveOrUpdate(product9);
+
+        Goods product10 = new Goods();
+        product10.setCode(getMessage("PRODUCT.product10.code"));
+        product10.setName(getMessage("PRODUCT.product10.name"));
+        product10.setType(type);
+        product10.setMainUom(uom);
+        daoHelper.getDao(Goods.class).saveOrUpdate(product10);
+
+        Goods product11 = new Goods();
+        product11.setCode(getMessage("PRODUCT.product11.code"));
+        product11.setName(getMessage("PRODUCT.product11.name"));
+        product11.setType(type);
+        product11.setMainUom(uom);
+        daoHelper.getDao(Goods.class).saveOrUpdate(product11);
         return Arrays.asList(product);
     }
 
