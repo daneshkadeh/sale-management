@@ -65,8 +65,7 @@ public class Product extends AbstractCodeOLObject {
         this.name = name;
     }
 
-    @Column(name = "description", length = 128)
-    @NotNull
+    @Column(name = "description", length = 512)
     public String getDescription() {
         return description;
     }
