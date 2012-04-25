@@ -22,10 +22,17 @@ import java.util.Set;
 
 import org.apache.commons.lang.math.NumberUtils;
 
+import com.s3s.ssm.entity.catalog.Item;
+import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.store.ClosingStoreEntry;
+import com.s3s.ssm.entity.store.DetailClosingStore;
 import com.s3s.ssm.entity.store.DetailExportStore;
+import com.s3s.ssm.entity.store.DetailInventoryStore;
 import com.s3s.ssm.entity.store.ExportStoreForm;
+import com.s3s.ssm.entity.store.InventoryStoreForm;
+import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.interfaces.store.IStoreService;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.view.ViewHelper;
@@ -34,6 +41,7 @@ import com.s3s.ssm.view.ViewHelper;
  * @author Le Thanh Hoang
  * 
  */
+// TODO: Should improve performance. Which function is on service or client
 public class StoreHelper extends ViewHelper {
 
     public static Money calculatePriceSubtotal(String strQuantity, Money mPriceUnit) {
@@ -61,6 +69,22 @@ public class StoreHelper extends ViewHelper {
         return form;
     }
 
+    public static InventoryStoreForm initInventoryStoreForm(InventoryStoreForm form, Store store) {
+        form.setStore(store);
+        InventoryStoreForm latestForm = serviceProvider.getService(IStoreService.class).getLatestInventoryStoreForm(
+                store);
+        ClosingStoreEntry latestClosingEntry = serviceProvider.getService(IStoreService.class)
+                .getLatestClosingStoreEntry(store);
+        Set<DetailInventoryStore> detailSet = null;
+        if (latestForm.getCreatedDate().compareTo(latestClosingEntry.getClosingDate()) > 0) {
+            detailSet = initDetailInventoryStore(latestForm);
+        } else {
+            detailSet = initDetailInventoryStore(latestClosingEntry);
+        }
+        form.getDetailInventoryStores().addAll(detailSet);
+        return form;
+    }
+
     private static Set<DetailExportStore> initDetailExportStore(Invoice invoice) {
         Set<DetailExportStore> result = new HashSet<DetailExportStore>();
 
@@ -80,7 +104,7 @@ public class StoreHelper extends ViewHelper {
     }
 
     private static Set<DetailExportStore> initDetailExportStore(ExportStoreForm latestForm) {
-        Set<DetailExportStore> exDetalSet = new HashSet<DetailExportStore>();
+        Set<DetailExportStore> exDetailSet = new HashSet<DetailExportStore>();
         Integer lineNo = 0;
         List<DetailExportStore> detailList = serviceProvider.getService(IStoreService.class).getAllDetail(latestForm);
         for (DetailExportStore detail : detailList) {
@@ -95,10 +119,50 @@ public class StoreHelper extends ViewHelper {
                 exDetail.setBaseUom(detail.getBaseUom());
                 exDetail.setReqQuan(reqQty);
                 exDetail.setRemainQuan(reqQty);
-                exDetalSet.add(exDetail);
+                exDetailSet.add(exDetail);
                 lineNo++;
             }
         }
-        return exDetalSet;
+        return exDetailSet;
+    }
+
+    private static Set<DetailInventoryStore> initDetailInventoryStore(InventoryStoreForm latestForm) {
+        Set<DetailInventoryStore> result = new HashSet<>();
+        Integer lineNo = 0;
+        for (DetailInventoryStore latestDetail : latestForm.getDetailInventoryStores()) {
+            DetailInventoryStore detail = new DetailInventoryStore();
+            detail.setLineNo(lineNo);
+            detail.setProduct(latestDetail.getProduct());
+            detail.setItem(latestDetail.getItem());
+            detail.setBaseUom(latestDetail.getBaseUom());
+            detail.setCurQty(latestDetail.getCurQty());
+            detail.setPriceUnit(latestDetail.getPriceUnit());
+            detail.setCurPriceSubtotal(latestDetail.getCurPriceSubtotal());
+            result.add(detail);
+            lineNo++;
+        }
+        return result;
+    }
+
+    private static Set<DetailInventoryStore> initDetailInventoryStore(ClosingStoreEntry latestClosingEntry) {
+        Set<DetailInventoryStore> result = new HashSet<>();
+        Integer lineNo = 0;
+        for (DetailClosingStore closingDetail : latestClosingEntry.getClosingStoreSet()) {
+            DetailInventoryStore detail = new DetailInventoryStore();
+            Product product = closingDetail.getProduct();
+            Item item = closingDetail.getItem();
+            Money priceUnit = item.getOriginPrice();
+            Integer qty = closingDetail.getQty();
+            detail.setLineNo(lineNo);
+            detail.setProduct(product);
+            detail.setItem(closingDetail.getItem());
+            detail.setBaseUom(closingDetail.getBaseUom());
+            detail.setCurQty(qty);
+            detail.setPriceUnit(priceUnit);
+            detail.setCurPriceSubtotal(priceUnit.multiply(qty));
+            result.add(detail);
+            lineNo++;
+        }
+        return result;
     }
 }

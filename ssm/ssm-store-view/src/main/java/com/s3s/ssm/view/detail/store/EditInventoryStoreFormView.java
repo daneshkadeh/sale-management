@@ -17,6 +17,7 @@ package com.s3s.ssm.view.detail.store;
 import java.util.Map;
 
 import com.s3s.ssm.entity.store.InventoryStoreForm;
+import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
@@ -25,12 +26,25 @@ import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.edit.IComponentInfo;
 import com.s3s.ssm.view.edit.ListComponentInfo;
+import com.s3s.ssm.view.list.store.ListInventoryStoreFormView;
+import com.s3s.ssm.view.util.StoreHelper;
 
 public class EditInventoryStoreFormView extends AbstractSingleEditView<InventoryStoreForm> {
     private static final long serialVersionUID = -5213074051357171091L;
 
     public EditInventoryStoreFormView(Map<String, Object> entity) {
         super(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected InventoryStoreForm loadForCreate(Map<String, Object> request) {
+        InventoryStoreForm form = super.loadForCreate(request);
+        Store store = (Store) request.get(ListInventoryStoreFormView.STORE_ENTITY);
+        StoreHelper.initInventoryStoreForm(form, store);
+        return form;
     }
 
     @Override

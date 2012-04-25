@@ -12,10 +12,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.store.ClosingStoreEntry;
 import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.entity.store.ExportStoreStatus;
 import com.s3s.ssm.entity.store.ImportStoreStatus;
+import com.s3s.ssm.entity.store.InventoryStoreForm;
 import com.s3s.ssm.entity.store.MoveStoreOrder;
 import com.s3s.ssm.entity.store.MoveStoreStatus;
 import com.s3s.ssm.entity.store.ShipPrice;
@@ -134,5 +136,49 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
         dc.add(Restrictions.eq("exportForm.code", form.getCode()));
         List<DetailExportStore> details = getDaoHelper().getDao(DetailExportStore.class).findByCriteria(dc);
         return details;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public InventoryStoreForm getLatestInventoryStoreForm(Store store) {
+        DetachedCriteria subselectDc = getDaoHelper().getDao(InventoryStoreForm.class).getCriteria();
+        subselectDc.setProjection(Property.forName("createdDate").max());
+
+        DetachedCriteria dc = getDaoHelper().getDao(InventoryStoreForm.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dc.createAlias("store", "store");
+        dc.add(Property.forName("store.code").ge(store.getCode()));
+        dc.add(Property.forName("createdDate").eq(subselectDc));
+        InventoryStoreForm inventoryForm = getDaoHelper().getDao(InventoryStoreForm.class).findFirstByCriteria(dc);
+        return inventoryForm;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ClosingStoreEntry getLatestClosingStoreEntry(Store store) {
+        DetachedCriteria subselectDc = getDaoHelper().getDao(ClosingStoreEntry.class).getCriteria();
+        subselectDc.setProjection(Property.forName("closingDate").max());
+
+        DetachedCriteria dc = getDaoHelper().getDao(ClosingStoreEntry.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dc.createAlias("store", "store");
+        dc.add(Property.forName("store.code").ge(store.getCode()));
+        dc.add(Property.forName("closingDate").eq(subselectDc));
+        ClosingStoreEntry closingStoreEntry = getDaoHelper().getDao(ClosingStoreEntry.class).findFirstByCriteria(dc);
+        return closingStoreEntry;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Store getStoreByCode(String code) {
+        Store store = getDaoHelper().getDao(Store.class).findByCode(code);
+        return store;
     }
 }

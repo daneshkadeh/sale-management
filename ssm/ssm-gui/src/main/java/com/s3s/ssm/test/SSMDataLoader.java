@@ -1163,7 +1163,7 @@ public class SSMDataLoader {
         kg.setName("Kilogam");
         kg.setUomCategory(category);
         kg.setIsBaseMeasure(true);
-        kg.setChangeRate(1F);
+        kg.setExchangeRate(1F);
         daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(kg);
 
         UnitOfMeasure gam = new UnitOfMeasure();
@@ -1171,7 +1171,7 @@ public class SSMDataLoader {
         gam.setName("gam");
         gam.setUomCategory(category);
         gam.setIsBaseMeasure(false);
-        gam.setChangeRate(0.001F);
+        gam.setExchangeRate(0.001F);
         daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(gam);
 
         UomCategory category2 = new UomCategory();
@@ -1185,9 +1185,93 @@ public class SSMDataLoader {
         cai.setName("Cai");
         cai.setUomCategory(category2);
         cai.setIsBaseMeasure(true);
-        cai.setChangeRate(1F);
+        cai.setExchangeRate(1F);
         daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(cai);
+
+        // Vot tennis
+        UomCategory tennisCate = new UomCategory();
+        tennisCate.setCode("VOT TENNIS");
+        tennisCate.setName("Vot Tennis");
+        daoHelper.getDao(UomCategory.class).save(tennisCate);
+
+        UnitOfMeasure cay = new UnitOfMeasure();
+        cay.setCode("CAY");
+        cay.setName("cay");
+        cay.setUomCategory(tennisCate);
+        cay.setIsBaseMeasure(true);
+        daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(cay);
+
+        // Tennis ball
+        UomCategory tennisBallCate = new UomCategory();
+        tennisBallCate.setCode("BANH TENNIS");
+        tennisBallCate.setName("Banh tennis");
+        daoHelper.getDao(UomCategory.class).save(tennisBallCate);
+
+        UomCategory lonCate = new UomCategory();
+        lonCate.setCode("LON");
+        lonCate.setName("Lon");
+        lonCate.setParentUomCategory(tennisBallCate);
+        daoHelper.getDao(UomCategory.class).save(lonCate);
+
+        UnitOfMeasure banh = new UnitOfMeasure();
+        banh.setCode("BANH");
+        banh.setName("banh");
+        banh.setUomCategory(tennisBallCate);
+        banh.setIsBaseMeasure(true);
+        daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(banh);
+
+        UnitOfMeasure lon4trai = new UnitOfMeasure();
+        lon4trai.setCode("LON4TRAI");
+        lon4trai.setName("Lon 4 trai");
+        lon4trai.setUomCategory(lonCate);
+        lon4trai.setIsBaseMeasure(false);
+        lon4trai.setExchangeRate(4F);
+        daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(lon4trai);
+
+        UnitOfMeasure lon3trai = new UnitOfMeasure();
+        lon3trai.setCode("LON3TRAI");
+        lon3trai.setName("Lon 3 trai");
+        lon3trai.setUomCategory(lonCate);
+        lon3trai.setIsBaseMeasure(false);
+        lon3trai.setExchangeRate(3F);
+        daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(lon3trai);
+
+        UomCategory bichCate = new UomCategory();
+        bichCate.setCode("BICH");
+        bichCate.setName("Bich");
+        bichCate.setParentUomCategory(tennisBallCate);
+        daoHelper.getDao(UomCategory.class).save(bichCate);
+
+        UnitOfMeasure bich60trai = new UnitOfMeasure();
+        bich60trai.setCode("BICH60TRAI");
+        bich60trai.setName("Bich 60 trai");
+        bich60trai.setUomCategory(bichCate);
+        bich60trai.setIsBaseMeasure(false);
+        bich60trai.setExchangeRate(60F);
+        daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(bich60trai);
+
+        UomCategory ongCate = new UomCategory();
+        ongCate.setCode("ONG");
+        ongCate.setName("Ong");
+        ongCate.setParentUomCategory(tennisBallCate);
+        daoHelper.getDao(UomCategory.class).save(ongCate);
+
+        // Shoes
+        UomCategory shoesCate = new UomCategory();
+        shoesCate.setCode("GIAY");
+        shoesCate.setName("Giay");
+        daoHelper.getDao(UomCategory.class).save(shoesCate);
+
+        UnitOfMeasure pairOfShoes = new UnitOfMeasure();
+        pairOfShoes.setCode("DOIGIAY");
+        pairOfShoes.setName("Doi");
+        pairOfShoes.setUomCategory(shoesCate);
+        pairOfShoes.setIsBaseMeasure(true);
+        pairOfShoes.setExchangeRate(1F);
+        daoHelper.getDao(UnitOfMeasure.class).saveOrUpdate(pairOfShoes);
+
         return Arrays.asList(cai, gam, cai);
+
     }
 
     private static List<Item> initItem(DaoHelper daoHelper, List<UnitOfMeasure> listUom, List<Goods> goods) {
@@ -1236,83 +1320,6 @@ public class SSMDataLoader {
         product.addProperty(daoHelper.getDao(ProductProperty.class).findAll().get(0));
         daoHelper.getDao(Product.class).saveOrUpdate(product);
 
-        // TODO: will set real productType
-        Goods product1 = new Goods();
-        product1.setCode(getMessage("PRODUCT.product1.code"));
-        product1.setName(getMessage("PRODUCT.product1.name"));
-        product1.setMainUom(uom);
-        product1.setType(type);
-        daoHelper.getDao(Goods.class).saveOrUpdate(product1);
-
-        Goods product2 = new Goods();
-        product2.setCode(getMessage("PRODUCT.product2.code"));
-        product2.setName(getMessage("PRODUCT.product2.name"));
-        product2.setType(type);
-        product2.setMainUom(uom);
-        daoHelper.getDao(Goods.class).saveOrUpdate(product2);
-
-        Goods product3 = new Goods();
-        product3.setCode(getMessage("PRODUCT.product3.code"));
-        product3.setName(getMessage("PRODUCT.product3.name"));
-        product3.setType(type);
-        product3.setMainUom(uom);
-        daoHelper.getDao(Goods.class).saveOrUpdate(product3);
-
-        Goods product4 = new Goods();
-        product4.setCode(getMessage("PRODUCT.product4.code"));
-        product4.setName(getMessage("PRODUCT.product4.name"));
-        product4.setType(type);
-        product4.setMainUom(uom);
-        daoHelper.getDao(Goods.class).saveOrUpdate(product4);
-
-        Goods product5 = new Goods();
-        product5.setCode(getMessage("PRODUCT.product5.code"));
-        product5.setName(getMessage("PRODUCT.product5.name"));
-        product5.setType(type);
-        product5.setMainUom(uom);
-        daoHelper.getDao(Goods.class).saveOrUpdate(product5);
-
-        Goods product6 = new Goods();
-        product6.setCode(getMessage("PRODUCT.product6.code"));
-        product6.setName(getMessage("PRODUCT.product6.name"));
-        product6.setType(type);
-        product6.setMainUom(uom);
-        daoHelper.getDao(Goods.class).saveOrUpdate(product6);
-
-        Goods product7 = new Goods();
-        product7.setCode(getMessage("PRODUCT.product7.code"));
-        product7.setName(getMessage("PRODUCT.product7.name"));
-        product7.setType(type);
-        product7.setMainUom(uom);
-        daoHelper.getDao(Goods.class).saveOrUpdate(product7);
-
-        Goods product8 = new Goods();
-        product8.setCode(getMessage("PRODUCT.product8.code"));
-        product8.setName(getMessage("PRODUCT.product8.name"));
-        product8.setType(type);
-        product8.setMainUom(uom);
-        daoHelper.getDao(Goods.class).saveOrUpdate(product8);
-
-        Goods product9 = new Goods();
-        product9.setCode(getMessage("PRODUCT.product9.code"));
-        product9.setName(getMessage("PRODUCT.product9.name"));
-        product9.setType(type);
-        product9.setMainUom(uom);
-        daoHelper.getDao(Goods.class).saveOrUpdate(product9);
-
-        Goods product10 = new Goods();
-        product10.setCode(getMessage("PRODUCT.product10.code"));
-        product10.setName(getMessage("PRODUCT.product10.name"));
-        product10.setType(type);
-        product10.setMainUom(uom);
-        daoHelper.getDao(Goods.class).saveOrUpdate(product10);
-
-        Goods product11 = new Goods();
-        product11.setCode(getMessage("PRODUCT.product11.code"));
-        product11.setName(getMessage("PRODUCT.product11.name"));
-        product11.setType(type);
-        product11.setMainUom(uom);
-        daoHelper.getDao(Goods.class).saveOrUpdate(product11);
         return Arrays.asList(product);
     }
 
