@@ -47,7 +47,7 @@ public class DetailImportStore extends AbstractIdOLObject {
     private UnitOfMeasure baseUom;
     private Integer quantity = 0;
     private Money priceUnit = Money.create("VND", 0L);
-    private Money priceSubtotal = Money.create("VND", 0L);;
+    private Money priceSubtotal = Money.create("VND", 0L);
 
     @Column(name = "line_no")
     @DecimalMin(value = "1")

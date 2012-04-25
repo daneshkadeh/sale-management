@@ -14,9 +14,14 @@
  */
 package com.s3s.ssm.view.list.store;
 
+import java.util.Map;
+
 import javax.swing.Icon;
+import javax.swing.JOptionPane;
 
 import com.s3s.ssm.entity.store.InventoryStoreForm;
+import com.s3s.ssm.entity.store.Store;
+import com.s3s.ssm.interfaces.store.IStoreService;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.detail.store.EditInventoryStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -26,6 +31,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListInventoryStoreFormView extends AbstractListView<InventoryStoreForm> {
     private static final long serialVersionUID = 812018268092313237L;
+    public static final String STORE_ENTITY = "1";
 
     public ListInventoryStoreFormView(Icon icon, String label, String tooltip) {
         super(icon, label, tooltip);
@@ -50,5 +56,20 @@ public class ListInventoryStoreFormView extends AbstractListView<InventoryStoreF
     @Override
     protected Class<? extends AbstractEditView<InventoryStoreForm>> getEditViewClass() {
         return EditInventoryStoreFormView.class;
+    }
+
+    @Override
+    protected boolean
+            preShowEditView(InventoryStoreForm entity, EditActionEnum action, Map<String, Object> detailParams) {
+        if (action == EditActionEnum.NEW) {
+            String code = (String) JOptionPane.showInputDialog(this.getParent(), "Kiem ke kho", "Nhap ma kho",
+                    JOptionPane.PLAIN_MESSAGE, null, null, null);
+            if (code == null) {
+                return false;
+            }
+            Store store = (Store) serviceProvider.getService(IStoreService.class).getStoreByCode(code);
+            detailParams.put(STORE_ENTITY, store);
+        }
+        return true;
     }
 }

@@ -51,7 +51,7 @@ public class EditUnitOfMeasureView extends AbstractSingleEditView<UnitOfMeasure>
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("uomCategory", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_UOM_CATE);
         detailDataModel.addAttribute("isBaseMeasure", DetailFieldType.CHECKBOX);
-        detailDataModel.addAttribute("changeRate", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("exchangeRate", DetailFieldType.TEXTBOX);
         detailDataModel.addRawAttribute("baseUom", DetailFieldType.TEXTBOX).editable(false);
     }
 

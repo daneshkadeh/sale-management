@@ -33,11 +33,12 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 public class UnitOfMeasure extends AbstractCodeOLObject {
     private UomCategory uomCategory;
     private String name;
-    private Float changeRate = 1F;
+    private Float exchangeRate = 1F;
     private Boolean isBaseMeasure = false;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "uom_category_id", nullable = false)
+    @JoinColumn(name = "uom_category_id")
+    @NotNull
     public UomCategory getUomCategory() {
         return uomCategory;
     }
@@ -57,12 +58,12 @@ public class UnitOfMeasure extends AbstractCodeOLObject {
 
     @Column(name = "change_rate")
     @NotNull
-    public Float getChangeRate() {
-        return changeRate;
+    public Float getExchangeRate() {
+        return exchangeRate;
     }
 
-    public void setChangeRate(Float changeRate) {
-        this.changeRate = changeRate;
+    public void setExchangeRate(Float changeRate) {
+        this.exchangeRate = exchangeRate;
     }
 
     @Column(name = "is_base_measure", nullable = false)

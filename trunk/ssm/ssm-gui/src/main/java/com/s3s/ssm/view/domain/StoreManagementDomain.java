@@ -22,6 +22,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.list.shipment.ListTransportationTypeView;
+import com.s3s.ssm.view.list.store.ListClosingStoreEntryView;
 import com.s3s.ssm.view.list.store.ListExportStoreFormView;
 import com.s3s.ssm.view.list.store.ListImportStoreFormView;
 import com.s3s.ssm.view.list.store.ListInventoryStoreFormView;
@@ -71,6 +72,9 @@ public class StoreManagementDomain extends AbstractDomain {
         TreeNodeWithView invenStoreNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Store.InventoryStoreForm"), new ListInventoryStoreFormView(null,
                         ControlConfigUtils.getString("label.InventoryStoreForm.list.title"), null));
+        TreeNodeWithView closingStoreNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.Store.ClosingStoreEntry"), new ListClosingStoreEntryView(null,
+                        ControlConfigUtils.getString("label.ClosingStoreEntry.list.title"), null));
         rootNode.add(storeNode);
         rootNode.add(shipPriceTypeNode);
         rootNode.add(shipPriceNode);
@@ -80,5 +84,6 @@ public class StoreManagementDomain extends AbstractDomain {
         rootNode.add(moveNode);
         rootNode.add(moveOrderNode);
         rootNode.add(invenStoreNode);
+        rootNode.add(closingStoreNode);
     }
 }

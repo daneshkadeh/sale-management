@@ -35,6 +35,7 @@ public class ListUnitOfMeasureView extends AbstractListView<UnitOfMeasure> {
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListRendererType.TEXT);
         listDataModel.addColumn("name", ListRendererType.TEXT);
+        listDataModel.addColumn("exchangeRate", ListRendererType.NUMBER);
         listDataModel.addColumn("uomCategory", ListRendererType.TEXT);
         listDataModel.addColumn("isBaseMeasure", ListRendererType.BOOLEAN);
     }
