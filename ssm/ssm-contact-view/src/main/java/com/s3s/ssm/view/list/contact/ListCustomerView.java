@@ -60,6 +60,7 @@ public class ListCustomerView extends AbstractSearchListView<Partner> {
         listDataModel.addColumn("fax", ListRendererType.TEXT);
         listDataModel.addColumn("email", ListRendererType.TEXT);
         listDataModel.addColumn("website", ListRendererType.TEXT);
+        listDataModel.addColumn("active", ListRendererType.BOOLEAN);
     }
 
     @Override

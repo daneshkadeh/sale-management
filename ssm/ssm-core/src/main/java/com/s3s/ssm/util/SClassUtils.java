@@ -50,7 +50,12 @@ public final class SClassUtils extends ClassUtils {
      * @return
      */
     public static Method getGetterMethod(Class<?> clazz, String fieldName) {
-        return getGetterSetterMethod(clazz, fieldName, true);
+        try {
+            return getGetterSetterMethod(clazz, fieldName, true);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("field " + fieldName + " or its setter/getter method does not exist in class "
+                    + clazz.getName());
+        }
     }
 
     /**
@@ -63,25 +68,39 @@ public final class SClassUtils extends ClassUtils {
      * @return
      */
     public static Method getSetterMethod(Class<?> clazz, String fieldName) {
-        return getGetterSetterMethod(clazz, fieldName, false);
+        try {
+            return getGetterSetterMethod(clazz, fieldName, false);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("field " + fieldName + " or its setter/getter method does not exist in class "
+                    + clazz.getName());
+        }
+
     }
 
     /**
-     * Return getter or setter method base on <code>getter</code> parameter.
+     * Return getter or setter method base on <code>getter</code> parameter. TODO: this is just a work-around, maybe
+     * Spring has its wrapper method.
      * 
      * @param fieldName
      *            the name of property
      * @param getter
      *            <code>true</code> getter method, <code>false</code> setter method.
      * @return
+     * @throws SecurityException
+     * @throws NoSuchMethodException
      */
-    private static Method getGetterSetterMethod(Class<?> clazz, String fieldName, boolean getter) {
+    private static Method getGetterSetterMethod(Class<?> clazz, String fieldName, boolean getter)
+            throws NoSuchMethodException, SecurityException {
         try {
             String methodPrefix = getter ? "get" : "set";
             return clazz.getMethod(methodPrefix + StringUtils.capitalize(fieldName));
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException("field " + fieldName + " or its setter/getter method does not exist in class "
-                    + clazz.getName());
+            if (getter) {
+                return clazz.getMethod("is" + StringUtils.capitalize(fieldName));
+            }
+            throw e;
+            // throw new RuntimeException("field " + fieldName + " or its setter/getter method does not exist in class "
+            // + clazz.getName());
         }
     }
 

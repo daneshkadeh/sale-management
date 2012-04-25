@@ -26,8 +26,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.IActiveObject;
 
 /**
  * @author Le Thanh Hoang
@@ -35,7 +37,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
  */
 @Entity
 @Table(name = "s_partner_category")
-public class PartnerCategory extends AbstractCodeOLObject implements Serializable {
+public class PartnerCategory extends AbstractCodeOLObject implements Serializable, IActiveObject {
     private String name; // category name
     private PartnerCategory parentCategory;// Parent Category
     private Boolean isActive = true;
@@ -99,5 +101,17 @@ public class PartnerCategory extends AbstractCodeOLObject implements Serializabl
             parent = parent.parentCategory;
         }
         return fullname;
+    }
+
+    @Transient
+    @Override
+    public boolean isActive() {
+        return getIsActive();
+    }
+
+    @Transient
+    @Override
+    public void setActive(boolean isActive) {
+        setIsActive(isActive);
     }
 }

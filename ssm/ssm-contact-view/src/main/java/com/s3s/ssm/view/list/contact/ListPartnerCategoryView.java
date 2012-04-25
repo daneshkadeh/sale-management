@@ -36,6 +36,7 @@ public class ListPartnerCategoryView extends AbstractListView<PartnerCategory> {
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListRendererType.TEXT);
         listDataModel.addColumn("name", ListRendererType.TEXT);
+        listDataModel.addColumn("isActive", ListRendererType.BOOLEAN);
     }
 
     /**

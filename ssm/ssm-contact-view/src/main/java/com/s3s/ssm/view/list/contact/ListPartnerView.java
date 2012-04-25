@@ -21,6 +21,7 @@ public class ListPartnerView<T extends Partner> extends AbstractListView<T> {
         listDataModel.addColumn("fax", ListRendererType.TEXT);
         listDataModel.addColumn("email", ListRendererType.TEXT);
         listDataModel.addColumn("website", ListRendererType.TEXT);
+        listDataModel.addColumn("active", ListRendererType.BOOLEAN);
     }
 
     @Override

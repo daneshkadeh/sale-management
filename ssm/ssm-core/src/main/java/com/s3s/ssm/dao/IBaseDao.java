@@ -41,6 +41,8 @@ public interface IBaseDao<T> {
 
     List<T> findAll();
 
+    List<T> findAllActive();
+
     DetachedCriteria getCriteria();
 
     /**

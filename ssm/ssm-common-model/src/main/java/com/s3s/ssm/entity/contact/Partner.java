@@ -41,7 +41,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 import com.s3s.ssm.entity.config.Address;
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.BankAccount;
@@ -57,7 +57,7 @@ import com.s3s.ssm.model.Money;
 @Entity
 @Table(name = "co_partner")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Partner extends AbstractCodeOLObject {
+public class Partner extends AbstractActiveCodeOLObject {
     private static final long serialVersionUID = 1435468012252943876L;
     private String name;
     private Integer title; // Partner Form
@@ -68,7 +68,6 @@ public class Partner extends AbstractCodeOLObject {
     private String email;
     private Money debitLimit;// Payable Limit
     private UnitOfMeasure debitTimeUnit;// the unit of debit limit. Ex: date, month, year
-    private Boolean isActive = true;
     private BankAccount bankAccount;
     private Set<Individual> individuals = new HashSet<>();
     private Set<PartnerCategory> partnerCateSet = new HashSet<PartnerCategory>();
@@ -81,6 +80,9 @@ public class Partner extends AbstractCodeOLObject {
     private Set<PartnerProfile> listProfiles = new HashSet<>();
 
     public Partner() {
+        // always active Partner by default;
+        setActive(true);
+
         // always set mainIndividual and mainAddressLink into a partner
         Individual mainIndividual = new Individual();
         mainIndividual.setRole(IndividualRoleEnum.MAIN);
@@ -181,15 +183,6 @@ public class Partner extends AbstractCodeOLObject {
 
     public void setDebitTimeUnit(UnitOfMeasure debitTimeUnit) {
         this.debitTimeUnit = debitTimeUnit;
-    }
-
-    @Column(name = "is_active", nullable = false)
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
