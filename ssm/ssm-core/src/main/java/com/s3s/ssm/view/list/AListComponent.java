@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -41,6 +42,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -65,6 +67,7 @@ import org.divxdede.swing.busy.JBusyComponent;
 import org.jdesktop.swingx.JXTable;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.SClassUtils;
@@ -274,6 +277,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
         JScrollPane mainScrollpane = new JScrollPane(mainTable);
         mainScrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        mainScrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         mainScrollpane.getViewport().setBackground(Color.WHITE);
         mainScrollpane.setRowHeaderView(rowHeader);
         busyPane = createBusyPane(mainScrollpane);
@@ -282,6 +286,16 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         JScrollPane footerScrollpane = new JScrollPane(tblFooter);
         footerScrollpane.getHorizontalScrollBar().setModel(mainScrollpane.getHorizontalScrollBar().getModel());
         footerScrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        footerScrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        // The vertical dummy bar for footer table.
+        JScrollBar dummyBar = new JScrollBar() {
+            public void paint(Graphics g) {
+            }
+        };
+        dummyBar.setPreferredSize(footerScrollpane.getVerticalScrollBar().getPreferredSize());
+        footerScrollpane.setVerticalScrollBar(dummyBar);
+
         JLabel sumLabel = new JLabel();
         sumLabel.setPreferredSize(new Dimension(UIConstants.DEFAULT_ROW_HEADER_WIDTH, tblFooter.getRowHeight()));
         sumLabel.setOpaque(true);
@@ -409,7 +423,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
                 Class<?> fieldClass = SClassUtils.getClassOfField(column.getName(), getEntityClass());
                 if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
                     int sum = 0;
-                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
+                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
                         Object value = mainTableModel.getValueAt(i, columnIndex);
                         sum = sum + ((value == null) ? 0 : (int) value);
                     }
@@ -418,7 +432,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
                 if (ClassUtils.isAssignable(fieldClass, Long.class)) {
                     long sum = 0L;
-                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
+                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
                         Object value = mainTableModel.getValueAt(i, columnIndex);
                         sum = sum + ((value == null) ? 0 : (long) value);
                     }
@@ -427,7 +441,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
                 if (ClassUtils.isAssignable(fieldClass, Float.class)) {
                     float sum = 0f;
-                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
+                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
                         Object value = mainTableModel.getValueAt(i, columnIndex);
                         sum = sum + ((value == null) ? 0 : (float) value);
                     }
@@ -436,7 +450,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
                 if (ClassUtils.isAssignable(fieldClass, Double.class)) {
                     double sum = 0d;
-                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
+                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
                         Object value = mainTableModel.getValueAt(i, columnIndex);
                         sum = sum + ((value == null) ? 0 : (double) value);
                     }
@@ -444,9 +458,9 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
                 }
 
                 if (ClassUtils.isAssignable(fieldClass, Money.class)) {
-                    String currencyCode = "VND"; // TODO Phuc: get from organizationContext later
+                    CurrencyEnum currencyCode = CurrencyEnum.VND; // TODO Phuc: get from organizationContext later
                     Money sum = Money.zero(currencyCode);
-                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
+                    for (int i = 0; i < mainTableModel.getRowCount(); i++) {
                         Object value = mainTableModel.getValueAt(i, columnIndex);
                         sum = sum.plus(((value == null) ? Money.zero(currencyCode) : (Money) value));
                     }

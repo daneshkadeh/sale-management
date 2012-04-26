@@ -35,6 +35,7 @@ import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 
 @Entity
@@ -45,9 +46,9 @@ public class Invoice extends AbstractIdOLObject {
     private InvoiceType type;
     private Partner contact;
     private Date createdDate;
-    private Money moneyBeforeTax = Money.zero("VND");
-    private Money moneyOfTax = Money.zero("VND");
-    private Money moneyAfterTax = Money.zero("VND");
+    private Money moneyBeforeTax = Money.zero(CurrencyEnum.VND);
+    private Money moneyOfTax = Money.zero(CurrencyEnum.VND);
+    private Money moneyAfterTax = Money.zero(CurrencyEnum.VND);
     private InvoiceStatus status = InvoiceStatus.OPEN;
     private InvoicePaymentStatus paymentStatus = InvoicePaymentStatus.NO_PAYMENT;
     private Set<DetailInvoice> detailInvoices = new HashSet<>();

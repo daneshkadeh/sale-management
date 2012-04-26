@@ -90,6 +90,7 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.Assert;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
@@ -520,12 +521,13 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             case MONEY:
                 Money money = null;
                 if (value == null) {
-                    money = Money.zero((String) referenceData.getValues().get(0)); // TODO: get default currency from
-                                                                                   // context provider
+                    money = Money.zero((CurrencyEnum) referenceData.getValues().get(0)); // TODO: get default currency
+                                                                                         // from
+                    // context provider
                 } else {
                     money = (Money) value;
                 }
-                dataField = new MoneyComponent(money, referenceData.getValues());
+                dataField = new MoneyComponent(money);
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 pnlEdit.add(lblLabel, newline);
                 break;

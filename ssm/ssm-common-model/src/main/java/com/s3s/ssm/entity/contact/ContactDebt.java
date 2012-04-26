@@ -25,6 +25,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 
 @Entity
@@ -37,7 +38,7 @@ public class ContactDebt extends AbstractIdOLObject {
     private Partner partner;
     // If customer loans 100 VND, the value must be 100 VND.
     // If THU loans supplier 1000 VND, the value must be 1000 VND
-    private Money debtMoney = Money.create("VND", 0L);
+    private Money debtMoney = Money.create(CurrencyEnum.VND, 0L);
 
     @OneToOne
     @JoinColumn(name = "partner_id", nullable = false)
