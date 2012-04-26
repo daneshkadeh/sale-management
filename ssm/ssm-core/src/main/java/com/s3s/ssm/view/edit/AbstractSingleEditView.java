@@ -552,9 +552,10 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 AListComponent listComponent = listInfo.getListComponent();
                 Assert.isTrue(listComponent != null, "List component need the info to initialize");
                 listComponent.setEntities((Collection) value);
+                // listComponent.setMaximumSize(listComponent.getPreferredSize());
                 dataField = listComponent;
                 // dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
-                pnlEdit.add(dataField, "newline, spanx, growx");
+                pnlEdit.add(dataField, "newline, spanx");
                 break;
             case ENTITY_CHOOSER:
                 dataField = new EntityChooser<>(referenceData.getValues(), value);

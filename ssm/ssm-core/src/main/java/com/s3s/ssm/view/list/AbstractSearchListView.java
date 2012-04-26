@@ -15,6 +15,7 @@
 package com.s3s.ssm.view.list;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,16 +48,19 @@ public abstract class AbstractSearchListView<T extends AbstractIdOLObject> exten
     protected abstract void clearCriteria();
 
     protected JPanel createSearchButtonsPanel() {
-        JButton btnSearch = new JButton(ImageUtils.getMediumIcon(ImageConstants.SEARCH_ICON));
-        btnSearch.setToolTipText(ControlConfigUtils.getString("tooltip.search"));
+        JButton btnSearch = new JButton(ImageUtils.getSmallIcon(ImageConstants.SEARCH_ICON));
+        btnSearch.setText(ControlConfigUtils.getString("button.text.search"));
         btnSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 refreshData();
             }
         });
+        Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+        btnSearch.setCursor(handCursor);
 
-        JButton btnClear = new JButton(ImageUtils.getMediumIcon(ImageConstants.CLEAR_ICON));
+        JButton btnClear = new JButton(ImageUtils.getSmallIcon(ImageConstants.CLEAR_ICON));
+        btnClear.setText(ControlConfigUtils.getString("button.text.clearCriteria"));
         btnClear.setToolTipText(ControlConfigUtils.getString("tooltip.clearCriteria"));
         btnClear.addActionListener(new ActionListener() {
 
@@ -65,6 +69,7 @@ public abstract class AbstractSearchListView<T extends AbstractIdOLObject> exten
                 clearCriteria();
             }
         });
+        btnSearch.setCursor(handCursor);
 
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panel.add(btnSearch);

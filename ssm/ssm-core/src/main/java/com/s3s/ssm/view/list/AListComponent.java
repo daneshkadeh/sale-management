@@ -16,6 +16,7 @@
 package com.s3s.ssm.view.list;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -30,9 +31,11 @@ import javax.swing.AbstractAction;
 import javax.swing.AbstractListModel;
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -40,7 +43,9 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
@@ -224,6 +229,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
              */
             @Override
             public void columnMarginChanged(ChangeEvent event) {
+                super.columnMarginChanged(event);
                 final TableColumnModel eventModel = (DefaultTableColumnModel) event.getSource();
                 final TableColumnModel thisModel = getColumnModel();
                 final int columnCount = eventModel.getColumnCount();
@@ -234,19 +240,16 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
                 repaint();
             }
         };
+
+        tblFooter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tblFooter.setTableHeader(null); // Remove table header.
-        // Visible 1 row in footer table.
-        // tblFooter.setPreferredScrollableViewportSize(new Dimension(
-        // tblFooter.getPreferredScrollableViewportSize().width, tblFooter.getRowHeight()));
         tblFooter.setVisibleRowCount(1);
         tblFooter.setRowSelectionAllowed(false);
-        // tblFooter.setShowGrid(true);
         tblFooter.setGridColor(Color.GRAY);
         tblFooter.setFont(UIConstants.DEFAULT_BOLD_FONT);
         tblFooter.setRowHeight(mainTable.getRowHeight());
 
         mainTable.getColumnModel().addColumnModelListener(tblFooter);
-
         // The rowHeader show the order number for the rows of the main table.
         rowHeader = new JList<String>(new AbstractListModel<String>() {
             private static final long serialVersionUID = -771503812711976068L;
@@ -268,22 +271,22 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         rowHeader.setCellRenderer(new RowHeaderRenderer(mainTable, new JButton(addAction)));
         rowHeader.setFixedCellWidth(UIConstants.DEFAULT_ROW_HEADER_WIDTH);
         rowHeader.setFixedCellHeight(mainTable.getRowHeight());
-        mainTableModel.addTableModelListener(new TableModelListener() {
-
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                rowHeader.repaint();
-                rowHeader.revalidate();
-            }
-        });
 
         JScrollPane mainScrollpane = new JScrollPane(mainTable);
+        mainScrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         mainScrollpane.getViewport().setBackground(Color.WHITE);
         mainScrollpane.setRowHeaderView(rowHeader);
         busyPane = createBusyPane(mainScrollpane);
 
         contentPane.add(busyPane);
         JScrollPane footerScrollpane = new JScrollPane(tblFooter);
+        footerScrollpane.getHorizontalScrollBar().setModel(mainScrollpane.getHorizontalScrollBar().getModel());
+        footerScrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        JLabel sumLabel = new JLabel();
+        sumLabel.setPreferredSize(new Dimension(UIConstants.DEFAULT_ROW_HEADER_WIDTH, tblFooter.getRowHeight()));
+        sumLabel.setOpaque(true);
+        sumLabel.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+        footerScrollpane.setRowHeaderView(sumLabel);
 
         // Show the footer if existing a column summarized.
         for (ColumnModel column : listDataModel.getColumns()) {

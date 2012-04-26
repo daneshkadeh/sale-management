@@ -117,7 +117,7 @@ public class MainProgram {
         SplashScreen splashScreen = SplashScreen.getSplashScreen();
         try {
             // System L&F
-            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
             // Seaglass L&F (not working with java 7, see
             // http://code.google.com/p/seaglass/issues/detail?id=77#makechanges)
@@ -231,6 +231,7 @@ public class MainProgram {
         leftSplitPane.setTopComponent(treeMenuScrollPane);
         leftSplitPane.setBottomComponent(createDomainPane(domains));
         leftSplitPane.setResizeWeight(1);
+        leftSplitPane.setDividerSize(2);
         splitPane.setLeftComponent(leftSplitPane);
 
         splitPane.setLastDividerLocation(splitPane.getLastDividerLocation());
@@ -245,11 +246,11 @@ public class MainProgram {
 
     private static void initContextButtons() {
         institutionBtn = new JToggleButton(ImageUtils.getSmallIcon(ImageConstants.INSTITUTION_ICON));
-        institutionBtn.setToolTipText(ControlConfigUtils.getString("icon.tooltip.institution"));
+        institutionBtn.setText(ControlConfigUtils.getString("icon.tooltip.institution"));
         organizationBtn = new JToggleButton(ImageUtils.getSmallIcon(ImageConstants.ORGANIZATION_ICON));
-        organizationBtn.setToolTipText(ControlConfigUtils.getString("icon.tooltip.organization"));
+        organizationBtn.setText(ControlConfigUtils.getString("icon.tooltip.organization"));
         saleChannelBtn = new JToggleButton(ImageUtils.getSmallIcon(ImageConstants.SALECHANNEL_ICON));
-        saleChannelBtn.setToolTipText(ControlConfigUtils.getString("icon.tooltip.saleChannel"));
+        saleChannelBtn.setText(ControlConfigUtils.getString("icon.tooltip.saleChannel"));
         ButtonGroup contextGroup = new ButtonGroup();
         contextGroup.add(institutionBtn);
         contextGroup.add(organizationBtn);
