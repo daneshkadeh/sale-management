@@ -251,6 +251,9 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         tblFooter.setGridColor(Color.GRAY);
         tblFooter.setFont(UIConstants.DEFAULT_BOLD_FONT);
         tblFooter.setRowHeight(mainTable.getRowHeight());
+        FooterRenderer fRenderer = new FooterRenderer();
+        tblFooter.setDefaultRenderer(Money.class, fRenderer);
+        tblFooter.setDefaultRenderer(Number.class, fRenderer);
 
         mainTable.getColumnModel().addColumnModelListener(tblFooter);
         // The rowHeader show the order number for the rows of the main table.
