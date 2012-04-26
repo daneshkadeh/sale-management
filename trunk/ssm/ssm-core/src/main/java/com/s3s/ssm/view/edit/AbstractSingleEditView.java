@@ -521,9 +521,8 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             case MONEY:
                 Money money = null;
                 if (value == null) {
-                    money = Money.zero((CurrencyEnum) referenceData.getValues().get(0)); // TODO: get default currency
-                                                                                         // from
-                    // context provider
+                    money = Money.zero(CurrencyEnum.VND); // TODO: get default currency
+                                                          // from context provider
                 } else {
                     money = (Money) value;
                 }
