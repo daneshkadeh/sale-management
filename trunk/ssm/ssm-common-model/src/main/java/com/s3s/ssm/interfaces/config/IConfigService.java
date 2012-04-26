@@ -10,6 +10,7 @@ import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.model.CurrencyEnum;
 
 public interface IConfigService {
     /**
@@ -18,7 +19,7 @@ public interface IConfigService {
      * @param currency_code
      * @return
      */
-    public Double getExchangeRate(String currencyCode);
+    public Double getExchangeRate(CurrencyEnum currencyCode);
 
     /**
      * Get exchange rate based on currency code and date
@@ -26,7 +27,7 @@ public interface IConfigService {
      * @param currency_code
      * @return
      */
-    public Double getExchangeRate(String currencyCode, Date date);
+    public Double getExchangeRate(CurrencyEnum currencyCode, Date date);
 
     /**
      * Get exchange rate based on currency object of latest date

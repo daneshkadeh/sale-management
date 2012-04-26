@@ -41,6 +41,7 @@ import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.catalog.SPackage;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 
 @Entity
@@ -56,12 +57,12 @@ public class DetailInvoice extends AbstractIdOLObject {
     private Integer amount = 0;
 
     // TODO: don't know why we have a lot of properties for price?
-    private Money priceBeforeTax = Money.zero("VND");
-    private Money priceOfTax = Money.zero("VND");
-    private Money priceAfterTax = Money.zero("VND");
-    private Money moneyBeforeTax = Money.zero("VND");
-    private Money moneyOfTax = Money.zero("VND");
-    private Money moneyAfterTax = Money.zero("VND"); // is this totalAmount?
+    private Money priceBeforeTax = Money.zero(CurrencyEnum.VND);
+    private Money priceOfTax = Money.zero(CurrencyEnum.VND);
+    private Money priceAfterTax = Money.zero(CurrencyEnum.VND);
+    private Money moneyBeforeTax = Money.zero(CurrencyEnum.VND);
+    private Money moneyOfTax = Money.zero(CurrencyEnum.VND);
+    private Money moneyAfterTax = Money.zero(CurrencyEnum.VND); // is this totalAmount?
     private DetailInvoiceType type = DetailInvoiceType.SALES;
     private DetailInvoiceStatus status = DetailInvoiceStatus.OPEN;
 

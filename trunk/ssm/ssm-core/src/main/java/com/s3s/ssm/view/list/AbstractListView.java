@@ -88,6 +88,7 @@ import com.s3s.ssm.export.exporter.ExporterFactory;
 import com.s3s.ssm.export.exporter.ExporterNotFoundException;
 import com.s3s.ssm.export.exporter.ExportingException;
 import com.s3s.ssm.export.view.ExportDialog;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.security.ACLResourceEnum;
@@ -766,7 +767,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                 }
 
                 if (ClassUtils.isAssignable(fieldClass, Money.class)) {
-                    String currencyCode = "VND"; // TODO Phuc: get from organizationContext later
+                    CurrencyEnum currencyCode = CurrencyEnum.VND; // TODO Phuc: get from organizationContext later
                     Money sum = Money.zero(currencyCode);
                     for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
                         Object value = mainTableModel.getValueAt(i, columnIndex);

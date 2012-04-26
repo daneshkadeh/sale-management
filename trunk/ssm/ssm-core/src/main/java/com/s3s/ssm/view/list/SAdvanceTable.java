@@ -47,6 +47,7 @@ import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.renderer.HyperlinkProvider;
 import org.jdesktop.swingx.table.DatePickerCellEditor;
 
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
@@ -190,8 +191,8 @@ public class SAdvanceTable extends JXTable {
                 break;
             case MONEY:
                 ReferenceData refData = refDataModel.getRefDataListMap().get(cm.getReferenceDataId());
-                MoneyComponent moneyCom = new MoneyComponent(Money.zero(String.valueOf(refData.getValues().get(0))),
-                        refData.getValues());
+                MoneyComponent moneyCom = new MoneyComponent(Money.zero(CurrencyEnum.VND)); // TODO Phuc get from
+                                                                                            // organization context
                 editor = new MoneyCellEditor(moneyCom);
                 break;
             case SEARCH_COMPONENT:

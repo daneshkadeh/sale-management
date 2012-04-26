@@ -103,6 +103,7 @@ import com.s3s.ssm.entity.store.MoveStoreOrder;
 import com.s3s.ssm.entity.store.ShipPrice;
 import com.s3s.ssm.entity.store.ShipPriceType;
 import com.s3s.ssm.entity.store.Store;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
@@ -456,7 +457,7 @@ public class SSMDataLoader {
         form.setCustCode(custCode);
         form.setCustName(custName);
         form.setTransType(transType);
-        form.setTransPrice(Money.create("VND", 20000000L));
+        form.setTransPrice(Money.create(CurrencyEnum.VND, 20000000L));
 
         detail1.setExportForm(form);
         detail1.setLineNo(1);
@@ -537,7 +538,7 @@ public class SSMDataLoader {
         voucher.setCode("VOCHER01");
         voucher.setName("Voucher 01");
         voucher.setDescription("For B2B only");
-        voucher.setMinAmount(Money.create("VND", 500L));
+        voucher.setMinAmount(Money.create(CurrencyEnum.VND, 500L));
         voucher.setType(productType);
         daoHelper.getDao(Voucher.class).saveOrUpdate(voucher);
         return Arrays.asList(voucher);
@@ -603,7 +604,7 @@ public class SSMDataLoader {
         PackageLineItemPrice itemPrice = new PackageLineItemPrice();
         itemPrice.setItem(listItem.get(0));
         itemPrice.setAudienceCategory(daoHelper.getDao(AudienceCategory.class).findAll().get(0));
-        itemPrice.setSellPrice(Money.create("VND", 9000L));
+        itemPrice.setSellPrice(Money.create(CurrencyEnum.VND, 9000L));
         line.addItemPrice(itemPrice);
         daoHelper.getDao(PackageLine.class).saveOrUpdate(line);
         return Arrays.asList(pack);
@@ -612,7 +613,7 @@ public class SSMDataLoader {
     private static List<ContactDebt> initContactDebt(DaoHelper daoHelper, List<Partner> listContact) {
         ContactDebt contactDebt = new ContactDebt();
         contactDebt.setPartner(listContact.get(0));
-        contactDebt.setDebtMoney(Money.create("VND", 100000000L));
+        contactDebt.setDebtMoney(Money.create(CurrencyEnum.VND, 100000000L));
         daoHelper.getDao(ContactDebt.class).saveOrUpdate(contactDebt);
         return Arrays.asList(contactDebt);
     }
@@ -648,7 +649,7 @@ public class SSMDataLoader {
 
         // String code = serviceProvider.getService(IConfigService.class).generateCode(Payment.class);
         SCurrency defCurrency = daoHelper.getDao(SCurrency.class).findAll().get(0);
-        Money money = Money.create(defCurrency.getCode(), 1000000L);
+        Money money = Money.create(CurrencyEnum.valueOf(defCurrency.getCode()), 1000000L);
         Payment payment = new Payment();
         payment.setCode("001");
         payment.setPaymentContent(pc1);
@@ -698,9 +699,9 @@ public class SSMDataLoader {
         invoice1.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice1.setStatus(InvoiceStatus.OPEN);
         invoice1.setType(InvoiceType.SALES);
-        invoice1.setMoneyBeforeTax(Money.create("VND", 10000L));
-        invoice1.setMoneyOfTax(Money.zero("VND"));
-        invoice1.setMoneyAfterTax(Money.create("VND", 10000L));
+        invoice1.setMoneyBeforeTax(Money.create(CurrencyEnum.VND, 10000L));
+        invoice1.setMoneyOfTax(Money.zero(CurrencyEnum.VND));
+        invoice1.setMoneyAfterTax(Money.create(CurrencyEnum.VND, 10000L));
         daoHelper.getDao(Invoice.class).saveOrUpdate(invoice1);
 
         DetailInvoice detailInvoice = new DetailInvoice();
@@ -708,10 +709,10 @@ public class SSMDataLoader {
         detailInvoice.setItem(listItem.get(0));
         detailInvoice.setProduct(listItem.get(0).getProduct());
         detailInvoice.setAmount(2);
-        detailInvoice.setPriceBeforeTax(Money.create("VND", 5000L));
-        detailInvoice.setPriceAfterTax(Money.create("VND", 5000L));
-        detailInvoice.setMoneyBeforeTax(Money.create("VND", 10000L));
-        detailInvoice.setMoneyAfterTax(Money.create("VND", 10000L));
+        detailInvoice.setPriceBeforeTax(Money.create(CurrencyEnum.VND, 5000L));
+        detailInvoice.setPriceAfterTax(Money.create(CurrencyEnum.VND, 5000L));
+        detailInvoice.setMoneyBeforeTax(Money.create(CurrencyEnum.VND, 10000L));
+        detailInvoice.setMoneyAfterTax(Money.create(CurrencyEnum.VND, 10000L));
         daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice);
 
         // add a package to invoice1
@@ -722,10 +723,10 @@ public class SSMDataLoader {
             detailPack.setPackageLine(line);
             detailPack.setItem(line.getProduct().getListItems().iterator().next());
             detailPack.setAmount(line.getMinItemAmount());
-            detailPack.setPriceBeforeTax(Money.create("VND", 5000L));
-            detailPack.setPriceAfterTax(Money.create("VND", 5000L));
-            detailPack.setMoneyBeforeTax(Money.create("VND", 10000L));
-            detailPack.setMoneyAfterTax(Money.create("VND", 10000L));
+            detailPack.setPriceBeforeTax(Money.create(CurrencyEnum.VND, 5000L));
+            detailPack.setPriceAfterTax(Money.create(CurrencyEnum.VND, 5000L));
+            detailPack.setMoneyBeforeTax(Money.create(CurrencyEnum.VND, 10000L));
+            detailPack.setMoneyAfterTax(Money.create(CurrencyEnum.VND, 10000L));
             daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailPack);
         }
 
@@ -736,29 +737,29 @@ public class SSMDataLoader {
         invoice2.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice2.setStatus(InvoiceStatus.OPEN);
         invoice2.setType(InvoiceType.SALES);
-        invoice2.setMoneyBeforeTax(Money.create("VND", 22000L));
-        invoice2.setMoneyOfTax(Money.zero("VND"));
-        invoice2.setMoneyAfterTax(Money.create("VND", 22000L));
+        invoice2.setMoneyBeforeTax(Money.create(CurrencyEnum.VND, 22000L));
+        invoice2.setMoneyOfTax(Money.zero(CurrencyEnum.VND));
+        invoice2.setMoneyAfterTax(Money.create(CurrencyEnum.VND, 22000L));
         daoHelper.getDao(Invoice.class).saveOrUpdate(invoice2);
 
         DetailInvoice detailInvoice2 = new DetailInvoice();
         detailInvoice2.setInvoice(invoice2);
         detailInvoice2.setItem(listItem.get(0));
         detailInvoice2.setAmount(2);
-        detailInvoice2.setPriceBeforeTax(Money.create("VND", 6000L));
-        detailInvoice2.setPriceAfterTax(Money.create("VND", 6000L));
-        detailInvoice2.setMoneyBeforeTax(Money.create("VND", 12000L));
-        detailInvoice2.setMoneyAfterTax(Money.create("VND", 12000L));
+        detailInvoice2.setPriceBeforeTax(Money.create(CurrencyEnum.VND, 6000L));
+        detailInvoice2.setPriceAfterTax(Money.create(CurrencyEnum.VND, 6000L));
+        detailInvoice2.setMoneyBeforeTax(Money.create(CurrencyEnum.VND, 12000L));
+        detailInvoice2.setMoneyAfterTax(Money.create(CurrencyEnum.VND, 12000L));
         daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice2);
 
         DetailInvoice detailInvoice3 = new DetailInvoice();
         detailInvoice3.setInvoice(invoice2);
         detailInvoice3.setItem(listItem.get(0));
         detailInvoice3.setAmount(2);
-        detailInvoice3.setPriceBeforeTax(Money.create("VND", 5000L));
-        detailInvoice3.setPriceAfterTax(Money.create("VND", 5000L));
-        detailInvoice3.setMoneyBeforeTax(Money.create("VND", 10000L));
-        detailInvoice3.setMoneyAfterTax(Money.create("VND", 10000L));
+        detailInvoice3.setPriceBeforeTax(Money.create(CurrencyEnum.VND, 5000L));
+        detailInvoice3.setPriceAfterTax(Money.create(CurrencyEnum.VND, 5000L));
+        detailInvoice3.setMoneyBeforeTax(Money.create(CurrencyEnum.VND, 10000L));
+        detailInvoice3.setMoneyAfterTax(Money.create(CurrencyEnum.VND, 10000L));
         daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice3);
         return Arrays.asList(invoice1, invoice2);
     }
@@ -781,15 +782,15 @@ public class SSMDataLoader {
 
         ShipPrice shipPrice1 = new ShipPrice();
         shipPrice1.setShipPriceType(shipPriceType1);
-        shipPrice1.setPrice(Money.create("VND", 15000L));
+        shipPrice1.setPrice(Money.create(CurrencyEnum.VND, 15000L));
 
         ShipPrice shipPrice2 = new ShipPrice();
         shipPrice2.setShipPriceType(shipPriceType2);
-        shipPrice2.setPrice(Money.create("VND", 30000L));
+        shipPrice2.setPrice(Money.create(CurrencyEnum.VND, 30000L));
 
         ShipPrice shipPrice3 = new ShipPrice();
         shipPrice3.setShipPriceType(shipPriceType3);
-        shipPrice3.setPrice(Money.create("VND", 5000L));
+        shipPrice3.setPrice(Money.create(CurrencyEnum.VND, 5000L));
 
         List shipPriceList = Arrays.asList(shipPrice1, shipPrice2, shipPrice3);
         daoHelper.getDao(ShipPrice.class).saveOrUpdateAll(shipPriceList);
@@ -829,7 +830,7 @@ public class SSMDataLoader {
         ItemPrice itemPrice = new ItemPrice();
         List<AudienceCategory> listAudienceCate = daoHelper.getDao(AudienceCategory.class).findAll();
         itemPrice.setAudienceCategory(listAudienceCate.get(0));
-        itemPrice.setSellPrice(Money.create("VND", 100L));
+        itemPrice.setSellPrice(Money.create(CurrencyEnum.VND, 100L));
         itemPrice.setItem(listItem.get(0));
         daoHelper.getDao(ItemPrice.class).saveOrUpdate(itemPrice);
         listItem.get(0).getListItemPrices().add(itemPrice);
@@ -870,21 +871,21 @@ public class SSMDataLoader {
         salesContract.setSupplier(listSuppliers.get(0));
         salesContract.setSalesConfirm(salesConfirm);
         salesContract.setDateContract(new Date());
-        salesContract.setMoneyBeforeTax(Money.create("USD", 1000L));
-        salesContract.setMoneyOfTax(Money.create("USD", 10L));
-        salesContract.setMoneyAfterTax(Money.create("USD", 1010L));
+        salesContract.setMoneyBeforeTax(Money.create(CurrencyEnum.USD, 1000L));
+        salesContract.setMoneyOfTax(Money.create(CurrencyEnum.USD, 10L));
+        salesContract.setMoneyAfterTax(Money.create(CurrencyEnum.USD, 1010L));
 
         DetailSalesContract detail = new DetailSalesContract();
         detail.setProduct(listItem.get(0).getProduct());
         detail.setQuantity(5);
-        detail.setUnitPrice(Money.create("USD", 1010L));
-        detail.setTotalPrice(Money.create("USD", 5050L));
+        detail.setUnitPrice(Money.create(CurrencyEnum.USD, 1010L));
+        detail.setTotalPrice(Money.create(CurrencyEnum.USD, 5050L));
         salesContract.addDetailSalesContract(detail);
         salesContract.getListDocuments().add(document);
 
         PaymentSC paymentSC = new PaymentSC();
         paymentSC.setType(PaymentSCType.TT);
-        paymentSC.setAmount(Money.create("USD", 10L));
+        paymentSC.setAmount(Money.create(CurrencyEnum.USD, 10L));
         paymentSC.setSalesContract(salesContract);
         salesContract.addPaymentSC(paymentSC);
 
@@ -1130,9 +1131,9 @@ public class SSMDataLoader {
         ContactDebtHistory debtHitory = new ContactDebtHistory();
         debtHitory.setStartDate(new Date());
         debtHitory.setEndDate(new Date());
-        debtHitory.setStartDebtAmount(Money.create("VND", 0L));
-        debtHitory.setEndDebtAmount(Money.create("VND", 0L));
-        debtHitory.setPaidAmount(Money.create("VND", 0L));
+        debtHitory.setStartDebtAmount(Money.create(CurrencyEnum.VND, 0L));
+        debtHitory.setEndDebtAmount(Money.create(CurrencyEnum.VND, 0L));
+        debtHitory.setPaidAmount(Money.create(CurrencyEnum.VND, 0L));
         contact.addContactDebtHistory(debtHitory);
         daoHelper.getDao(Partner.class).saveOrUpdate(contact);
         return Arrays.asList(contact);
@@ -1277,8 +1278,8 @@ public class SSMDataLoader {
     private static List<Item> initItem(DaoHelper daoHelper, List<UnitOfMeasure> listUom, List<Goods> goods) {
         Item item = new Item();
         item.setProduct(goods.get(0));
-        item.setBaseSellPrice(Money.create("VND", 10000L));
-        item.setOriginPrice(Money.create("VND", 9000L));
+        item.setBaseSellPrice(Money.create(CurrencyEnum.VND, 10000L));
+        item.setOriginPrice(Money.create(CurrencyEnum.VND, 9000L));
         item.setListUom(Arrays.asList(listUom.get(0)));
         item.setSumUomName("size 39");
 
@@ -1304,8 +1305,8 @@ public class SSMDataLoader {
         product.setDescription("Giay nam choi tennis");
         product.setVatRate(5.5);
         product.setModel("Model100");
-        product.setBaseSellPrice(Money.create("VND", 10000L));
-        product.setOriginPrice(Money.create("VND", 9000L));
+        product.setBaseSellPrice(Money.create(CurrencyEnum.VND, 10000L));
+        product.setOriginPrice(Money.create(CurrencyEnum.VND, 9000L));
 
         DetachedCriteria uomDC = daoHelper.getDao(UnitOfMeasure.class).getCriteria();
         uomDC.add(Restrictions.eq("code", "Cai"));

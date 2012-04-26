@@ -16,13 +16,13 @@
 package com.s3s.ssm.view.list;
 
 import java.awt.Component;
-import java.util.Arrays;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.CellEditor;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.view.component.MoneyComponent;
 
@@ -35,8 +35,8 @@ public class MoneyCellEditor extends AbstractCellEditor implements TableCellEdit
     private MoneyComponent moneyComponent;
 
     public MoneyCellEditor(MoneyComponent moneyComponent) {
-        this.moneyComponent = (moneyComponent == null) ? new MoneyComponent(Money.zero("VND"), Arrays.asList("VND",
-                "USD")) : moneyComponent;
+        this.moneyComponent = (moneyComponent == null) ? new MoneyComponent(Money.zero(CurrencyEnum.VND))
+                : moneyComponent;
     }
 
     /**

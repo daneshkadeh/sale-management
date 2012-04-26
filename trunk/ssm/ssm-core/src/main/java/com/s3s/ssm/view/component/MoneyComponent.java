@@ -22,7 +22,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.ParseException;
-import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -35,6 +34,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.springframework.util.Assert;
 
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 
 /**
@@ -45,24 +45,24 @@ public class MoneyComponent extends JPanel {
     private static final long serialVersionUID = -7556079748704045405L;
 
     private JFormattedTextField valueField;
-    private JComboBox<String> currencyCodeField;
+    private JComboBox<CurrencyEnum> currencyCodeField;
     private Long currentValue;
-    private String currentCode;
+    private CurrencyEnum currentCode;
 
-    public MoneyComponent(Money money, List<String> currencyCodes) {
+    public MoneyComponent(Money money) {
         super();
         Assert.isTrue(money != null, "Money must not be null");
         setLayout(new MigLayout("ins 0", "[grow]0[]"));
         valueField = initValueField();
-        currencyCodeField = initCurrencyCodeField(currencyCodes);
+        currencyCodeField = initCurrencyCodeField();
         setMoney(money);
         resetCurrentMoney();
         add(valueField, "grow");
         add(currencyCodeField);
     }
 
-    private JComboBox<String> initCurrencyCodeField(List<String> currencyCodes) {
-        JComboBox<String> ccf = new JComboBox<>(currencyCodes.toArray(new String[currencyCodes.size()]));
+    private JComboBox<CurrencyEnum> initCurrencyCodeField() {
+        JComboBox<CurrencyEnum> ccf = new JComboBox<>(CurrencyEnum.values());
         ccf.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -101,7 +101,7 @@ public class MoneyComponent extends JPanel {
     }
 
     public Money getMoney() {
-        return Money.create((String) currencyCodeField.getSelectedItem(), (Long) valueField.getValue());
+        return Money.create((CurrencyEnum) currencyCodeField.getSelectedItem(), (Long) valueField.getValue());
     }
 
     @Override

@@ -22,6 +22,7 @@ import javax.swing.event.ChangeEvent;
 import com.s3s.ssm.entity.finance.ContractPayment;
 import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.interfaces.config.IConfigService;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
@@ -71,7 +72,7 @@ public class EditContractPaymentView extends AbstractSingleEditView<ContractPaym
             @Override
             public void doValueChanged(ChangeEvent e) {
                 Money money = mc.getMoney();
-                String currencyCode = money.getCurrencyCode();
+                CurrencyEnum currencyCode = money.getCurrencyCode();
                 Double rate = serviceProvider.getService(IConfigService.class).getExchangeRate(currencyCode,
                         entity.getPaymentDate());
                 tdfRate.setText(rate.toString());

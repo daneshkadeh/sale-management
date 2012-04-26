@@ -2,6 +2,10 @@ package com.s3s.ssm.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.springframework.util.Assert;
 
@@ -9,18 +13,18 @@ import org.springframework.util.Assert;
  * @author Phan Hong Phuc
  * @since Mar 16, 2012
  */
+@Embeddable
 public class Money implements Comparable<Money>, Serializable {
-    // TODO Bang: should we change currencyCode to enum type.
-    private String currencyCode;
+    private static final long serialVersionUID = -8273560720653337969L;
+    private CurrencyEnum currencyCode;
     private Long value;
 
-    // private int digit;
-
-    public String getCurrencyCode() {
+    @Enumerated(EnumType.STRING)
+    public CurrencyEnum getCurrencyCode() {
         return currencyCode;
     }
 
-    public void setCurrencyCode(String currencyCode) {
+    public void setCurrencyCode(CurrencyEnum currencyCode) {
         this.currencyCode = currencyCode;
     }
 
@@ -61,11 +65,11 @@ public class Money implements Comparable<Money>, Serializable {
         return result;
     }
 
-    public static Money zero(String currencyCode) {
+    public static Money zero(CurrencyEnum currencyCode) {
         return Money.create(currencyCode, 0L);
     }
 
-    public static Money create(String currencyCode, Long value) {
+    public static Money create(CurrencyEnum currencyCode, Long value) {
         Money money = new Money();
         money.setCurrencyCode(currencyCode);
         money.setValue(value);
@@ -76,7 +80,7 @@ public class Money implements Comparable<Money>, Serializable {
      * Operator +
      */
     public Money plus(Money money) {
-        if (!currencyCode.equalsIgnoreCase(money.getCurrencyCode())) {
+        if (currencyCode != money.getCurrencyCode()) {
             throw new IllegalArgumentException("To plus, the money codes must be the same");
         }
         return create(currencyCode, value + money.value);
@@ -86,7 +90,7 @@ public class Money implements Comparable<Money>, Serializable {
      * Operator -
      */
     public Money minus(Money money) {
-        if (!currencyCode.equalsIgnoreCase(money.getCurrencyCode())) {
+        if (currencyCode != money.getCurrencyCode()) {
             throw new IllegalArgumentException("To plus, the money codes must be the same");
         }
         return create(currencyCode, value - money.getValue());
@@ -120,8 +124,7 @@ public class Money implements Comparable<Money>, Serializable {
     @Override
     public String toString() {
         String v = (value == null) ? "" : value.toString();
-        String c = currencyCode == null ? "" : currencyCode;
-        return v + " " + c;
+        return v + " " + currencyCode.toString();
     }
 
     @Override

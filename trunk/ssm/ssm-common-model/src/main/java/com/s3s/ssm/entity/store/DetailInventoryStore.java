@@ -30,6 +30,7 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 
 @Entity
@@ -44,9 +45,9 @@ public class DetailInventoryStore extends AbstractIdOLObject {
     private Integer curQty = 0;
     private Integer realQty = 0;
     private Integer lostQty = 0;
-    private Money priceUnit = Money.create("VND", 0L);
-    private Money curPriceSubtotal = Money.create("VND", 0L);
-    private Money realPriceSubtotal = Money.create("VND", 0L);
+    private Money priceUnit = Money.create(CurrencyEnum.VND, 0L);
+    private Money curPriceSubtotal = Money.create(CurrencyEnum.VND, 0L);
+    private Money realPriceSubtotal = Money.create(CurrencyEnum.VND, 0L);
 
     @Column(name = "line_no")
     @DecimalMin(value = "1")

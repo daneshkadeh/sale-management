@@ -24,6 +24,7 @@ import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
 import com.s3s.ssm.interfaces.config.IConfigService;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.util.CacheId;
 
 @Transactional
@@ -98,7 +99,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
      */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public Double getExchangeRate(String currencyCode) {
+    public Double getExchangeRate(CurrencyEnum currencyCode) {
         return getExchangeRate(currencyCode, new Date(0));
     }
 
@@ -106,7 +107,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
      * {@inheritDoc}
      */
     @Override
-    public Double getExchangeRate(String currencyCode, Date date) {
+    public Double getExchangeRate(CurrencyEnum currencyCode, Date date) {
         if (date == null) {
             date = new Date();
         }
@@ -128,7 +129,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
      */
     @Override
     public Double getExchangeRate(SCurrency currency) {
-        return getExchangeRate(currency.getCode(), new Date(0));
+        return getExchangeRate(CurrencyEnum.valueOf(currency.getCode()), new Date(0));
     }
 
     //
