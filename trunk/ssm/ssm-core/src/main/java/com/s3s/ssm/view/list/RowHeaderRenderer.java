@@ -15,7 +15,6 @@
 
 package com.s3s.ssm.view.list;
 
-import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.BorderFactory;
@@ -62,9 +61,8 @@ public class RowHeaderRenderer extends JLabel implements ListCellRenderer<Object
         }
         setText((value == null) ? "" : value.toString());
         // setBackground(new Color(200, 200, 255));
-        setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        setBorder(BorderFactory.createRaisedSoftBevelBorder());
         setOpaque(true);
         return this;
     }
-
 }
