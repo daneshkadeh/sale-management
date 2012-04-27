@@ -18,25 +18,30 @@ package com.s3s.ssm.view.list;
 import java.awt.Component;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
 /**
  * @author Phan Hong Phuc
  * @since Apr 26, 2012
  */
-public class FooterRenderer extends DefaultTableCellRenderer {
+public class FooterRenderer extends JLabel implements TableCellRenderer {
     private static final long serialVersionUID = -6965018746139464733L;
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
             int row, int column) {
-        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        // setBackground(Color.LIGHT_GRAY);
         if (value != null) {
+            setText(value.toString());
             setHorizontalAlignment(SwingConstants.RIGHT);
-            setBorder(BorderFactory.createRaisedSoftBevelBorder());
+            setBorder(BorderFactory.createRaisedBevelBorder());
+        } else {
+            setText(null);
         }
+        setOpaque(true);
         return this;
     }
 
