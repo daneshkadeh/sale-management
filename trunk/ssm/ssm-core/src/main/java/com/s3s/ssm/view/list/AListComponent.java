@@ -106,7 +106,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         this.refDataModel = initReferenceDataModel();
 
         tabPane = new JTabbedPane();
-        contentPane = new JPanel(new MigLayout("wrap, ins 0, hidemode 2", "grow, fill", "[]0[]0[]0[][][]"));
+        contentPane = new JPanel(new MigLayout("wrap, ins 0, hidemode 2", "grow, fill", "[]0[]0[]0[]0[]0[]"));
         tabPane.addTab(label, icon, contentPane, tooltip);
         this.setLayout(new MigLayout("ins 0", "grow, fill", "grow, fill"));
         this.add(tabPane, "grow");
@@ -248,12 +248,12 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         tblFooter.setTableHeader(null); // Remove table header.
         tblFooter.setVisibleRowCount(1);
         tblFooter.setRowSelectionAllowed(false);
-        tblFooter.setGridColor(Color.GRAY);
+        tblFooter.setGridColor(Color.LIGHT_GRAY);
         tblFooter.setFont(UIConstants.DEFAULT_BOLD_FONT);
         tblFooter.setRowHeight(mainTable.getRowHeight());
-        FooterRenderer fRenderer = new FooterRenderer();
-        tblFooter.setDefaultRenderer(Money.class, fRenderer);
-        tblFooter.setDefaultRenderer(Number.class, fRenderer);
+        tblFooter.setDefaultRenderer(Money.class, new FooterRenderer());
+        tblFooter.setDefaultRenderer(Number.class, new FooterRenderer());
+        tblFooter.setDefaultRenderer(Object.class, new FooterRenderer());
 
         mainTable.getColumnModel().addColumnModelListener(tblFooter);
         // The rowHeader show the order number for the rows of the main table.
@@ -418,10 +418,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            if (columnIndex == listDataModel.getColumns().size()) {
-                return null;
-            }
-            ColumnModel column = listDataModel.getColumns().get(columnIndex); // decrease 1 because the hidden
+            ColumnModel column = listDataModel.getColumns().get(columnIndex);
             if (column.isSummarized()) {
                 Class<?> fieldClass = SClassUtils.getClassOfField(column.getName(), getEntityClass());
                 if (ClassUtils.isAssignable(fieldClass, Integer.class)) {

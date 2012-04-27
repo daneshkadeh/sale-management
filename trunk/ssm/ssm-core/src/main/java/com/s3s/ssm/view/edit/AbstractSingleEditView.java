@@ -112,6 +112,7 @@ import com.s3s.ssm.view.component.MultiSelectionTreeBox;
 import com.s3s.ssm.view.component.RadioButtonsGroup;
 import com.s3s.ssm.view.component.SaleTargetComp;
 import com.s3s.ssm.view.component.SaleTargetModel;
+import com.s3s.ssm.view.component.TimeComponent;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.edit.DetailDataModel.GroupInfoData;
 import com.s3s.ssm.view.edit.DetailDataModel.TabInfoData;
@@ -558,6 +559,13 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 // dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 pnlEdit.add(dataField, "newline, spanx");
                 break;
+            case TIME_COMPONENT:
+                TimeComponent tc = new TimeComponent();
+                tc.setValue((long) value);
+                dataField = tc;
+                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+                pnlEdit.add(lblLabel, newline);
+                break;
             case ENTITY_CHOOSER:
                 dataField = new EntityChooser<>(referenceData.getValues(), value);
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
@@ -903,6 +911,9 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         case LIST:
             AListComponent listComponent = (AListComponent) component;
             return listComponent.getEntities();
+        case TIME_COMPONENT:
+            TimeComponent timeComponent = (TimeComponent) component;
+            return timeComponent.getValue();
         case ENTITY_CHOOSER:
             EntityChooser<?> entityField = (EntityChooser<?>) component;
             return entityField.getSelectedEntity();
