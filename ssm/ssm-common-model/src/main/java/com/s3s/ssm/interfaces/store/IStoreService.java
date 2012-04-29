@@ -1,5 +1,6 @@
 package com.s3s.ssm.interfaces.store;
 
+import java.util.Date;
 import java.util.List;
 
 import com.s3s.ssm.entity.sales.Invoice;
@@ -48,4 +49,15 @@ public interface IStoreService {
     public InventoryStoreForm getLatestInventoryStoreForm(Store store);
 
     public ClosingStoreEntry getLatestClosingStoreEntry(Store store);
+
+    /**
+     * Processing closing entry for store
+     * 
+     * Note: This processing only performs once a day
+     */
+    public void processClosingStoreEntry();
+
+    public Date getDateOfLatestClosingStoreEntry(Store store);
+
+    public Date getDateOfLatestInventoryStoreForm(Store store);
 }

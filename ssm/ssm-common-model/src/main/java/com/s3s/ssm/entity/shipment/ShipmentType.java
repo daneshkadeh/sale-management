@@ -19,19 +19,21 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
 @Entity
-@Table(name = "s_shipment_type")
-public class ShipmentType extends AbstractCodeOLObject {
+@Table(name = "ship_shipment_type")
+public class ShipmentType extends AbstractActiveCodeOLObject {
+    private static final long serialVersionUID = -7071329368705780533L;
     private String name;
     private Double basePrice;
     private String currency;
-    private Boolean active;
 
-    @Column(name = "name", nullable = false, length = 128)
+    @Column(name = "name")
+    @Max(value = 256)
     @NotNull
     public String getName() {
         return name;
@@ -41,7 +43,7 @@ public class ShipmentType extends AbstractCodeOLObject {
         this.name = name;
     }
 
-    @Column(name = "base_price", nullable = false)
+    @Column(name = "base_price")
     @NotNull
     public Double getBasePrice() {
         return basePrice;
@@ -51,7 +53,7 @@ public class ShipmentType extends AbstractCodeOLObject {
         this.basePrice = basePrice;
     }
 
-    @Column(name = "currency", nullable = false)
+    @Column(name = "currency")
     @NotNull
     @Enumerated(EnumType.STRING)
     public String getCurrency() {
@@ -60,15 +62,5 @@ public class ShipmentType extends AbstractCodeOLObject {
 
     public void setCurrency(String currency) {
         this.currency = currency;
-    }
-
-    @Column(name = "active", nullable = false)
-    @NotNull
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 }

@@ -91,6 +91,8 @@ import com.s3s.ssm.entity.sales.PaymentSC.PaymentSCType;
 import com.s3s.ssm.entity.sales.SalesConfirm;
 import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.entity.shipment.TransportationType;
+import com.s3s.ssm.entity.store.ClosingStoreEntry;
+import com.s3s.ssm.entity.store.DetailClosingStore;
 import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.DetailImportStore;
 import com.s3s.ssm.entity.store.DetailInventoryStore;
@@ -320,6 +322,32 @@ public class SSMDataLoader {
 
         List<InventoryStoreForm> listInventoryStoreForm = initInventoryStore(daoHelper, listStore, listItem,
                 listOperator);
+
+        List<ClosingStoreEntry> closingEntryView = initClosingEntryView(daoHelper, listStore, listItem);
+    }
+
+    private static List<ClosingStoreEntry> initClosingEntryView(DaoHelper daoHelper, List<Store> listStore,
+            List<Item> listItem) {
+        ClosingStoreEntry closingEntry = new ClosingStoreEntry();
+        Date now = new Date();
+        closingEntry.setClosingDate(new Date(now.getYear(), now.getMonth() - 1, now.getDate()));
+        closingEntry.setStore(listStore.get(0));
+
+        Item item = listItem.get(0);
+        Product product = item.getProduct();
+        // TODO: Hoang must get based on product (after baseUom of product is defined on Product Category)
+        UnitOfMeasure unit = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
+
+        DetailClosingStore closingDetail = new DetailClosingStore();
+        closingDetail.setClosingEntry(closingEntry);
+        closingDetail.setProduct(product);
+        closingDetail.setItem(item);
+        closingDetail.setBaseUom(unit);
+        closingDetail.setQty(100);
+
+        closingEntry.setClosingStoreSet(new HashSet<>(Arrays.asList(closingDetail)));
+        daoHelper.getDao(ClosingStoreEntry.class).save(closingEntry);
+        return Arrays.asList(closingEntry);
     }
 
     private static List<InventoryStoreForm> initInventoryStore(DaoHelper daoHelper, List<Store> listStore,
@@ -910,14 +938,16 @@ public class SSMDataLoader {
         bank.setAddress("569A, Nguyen Dinh Chieu, Q3, HCM, Viet Nam");
         daoHelper.getDao(Bank.class).save(bank);
 
-        BankAccount USDBankAcct = new BankAccount();
-        USDBankAcct.setBank(bank);
-        USDBankAcct.setAccountNumber("1602 2010 19836");
+        BankAccount usdBankAcct = new BankAccount();
+        usdBankAcct.setCode("001");
+        usdBankAcct.setBank(bank);
+        usdBankAcct.setAccountNumber("1602 2010 19836");
 
-        BankAccount VNDBankAcct = new BankAccount();
-        VNDBankAcct.setBank(bank);
-        VNDBankAcct.setAccountNumber("1602 2010 19820");
-        List<BankAccount> result = Arrays.asList(VNDBankAcct, VNDBankAcct);
+        BankAccount vndBankAcct = new BankAccount();
+        vndBankAcct.setCode("001");
+        vndBankAcct.setBank(bank);
+        vndBankAcct.setAccountNumber("1602 2010 19820");
+        List<BankAccount> result = Arrays.asList(vndBankAcct, vndBankAcct);
         daoHelper.getDao(BankAccount.class).saveOrUpdateAll(result);
         return result;
     }
@@ -1035,6 +1065,7 @@ public class SSMDataLoader {
         store1.setPhone("(848) 38220541");
         store1.setFax("84 - 8 - 38220542");
         store1.setManager(listOperator.get(0));
+        store1.setActive(true);
 
         Store store2 = new Store();
         store2.setCode("K02");
@@ -1046,6 +1077,7 @@ public class SSMDataLoader {
         store2.setPhone("08.62809933");
         store2.setFax("08.37312964");
         store2.setManager(listOperator.get(0));
+        store2.setActive(true);
 
         daoHelper.getDao(Store.class).saveOrUpdateAll(Arrays.asList(store1, store2));
         return Arrays.asList(store1, store2);

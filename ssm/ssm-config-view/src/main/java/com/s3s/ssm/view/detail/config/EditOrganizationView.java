@@ -53,6 +53,7 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
 
         detailDataModel.tab(infoTab, infoTab, null);
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX).newColumn();
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("address", DetailFieldType.TEXTAREA).mandatory(true);
         detailDataModel.addAttribute("isDefault", DetailFieldType.CHECKBOX);

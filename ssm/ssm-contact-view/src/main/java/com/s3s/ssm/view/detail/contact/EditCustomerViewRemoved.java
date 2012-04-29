@@ -20,10 +20,10 @@ import java.util.Map;
 import javax.swing.DefaultListCellRenderer;
 
 import com.s3s.ssm.entity.config.Address;
-import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.contact.PartnerCategory;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.edit.AbstractMasterDetailView;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -34,7 +34,6 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 // This view will be removed. Just keep to refactor code
 public class EditCustomerViewRemoved extends AbstractMasterDetailView<Partner, Address> {
     private static final String PARTNER_CATE_REF_ID = "0";
-    private static final String REF_BANK = "1";
 
     public EditCustomerViewRemoved(Map<String, Object> entity) {
         super(entity);
@@ -96,16 +95,15 @@ public class EditCustomerViewRemoved extends AbstractMasterDetailView<Partner, A
         detailDataModel.addAttribute("fax", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("email", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("taxCode", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("bankAccount.bank", DetailFieldType.DROPDOWN).referenceDataId(REF_BANK);
+        detailDataModel.addAttribute("bankAccount.bank", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_BANK);
         detailDataModel.addAttribute("bankAccount.accountNumber", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("bankAccount.accountName", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX);
+        detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX);
     }
 
     @Override
     protected void setReferenceDataModel(ReferenceDataModel refDataModel, Partner entity) {
         super.setReferenceDataModel(refDataModel, entity);
-        refDataModel.putRefDataList(REF_BANK, getDaoHelper().getDao(Bank.class).findAll(), null);
         List<PartnerCategory> partnerCateList = getDaoHelper().getDao(PartnerCategory.class).findAll();
         refDataModel.putRefDataList(PARTNER_CATE_REF_ID, refDataModel.new ReferenceData(partnerCateList,
                 new DefaultListCellRenderer()));

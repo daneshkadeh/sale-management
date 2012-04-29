@@ -22,7 +22,7 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
 /**
  * @author Le Thanh Hoang
@@ -30,11 +30,10 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
  */
 @Entity
 @Table(name = "ship_transpor_type")
-public class TransportationType extends AbstractCodeOLObject {
+public class TransportationType extends AbstractActiveCodeOLObject {
     private static final long serialVersionUID = -8396367915476989336L;
     private String name;
     private String description;
-    private Boolean isActive = true;
 
     @Column(name = "name", unique = true)
     @NotBlank
@@ -53,15 +52,6 @@ public class TransportationType extends AbstractCodeOLObject {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    @Column(name = "is_active")
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
     }
 
     /**

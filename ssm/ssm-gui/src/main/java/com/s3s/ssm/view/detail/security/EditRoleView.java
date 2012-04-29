@@ -14,14 +14,9 @@
  */
 package com.s3s.ssm.view.detail.security;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
-import javax.swing.DefaultListCellRenderer;
-
 import com.s3s.ssm.entity.security.Role;
-import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -32,7 +27,6 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
  */
 public class EditRoleView extends AbstractSingleEditView<Role> {
     private static final long serialVersionUID = 1L;
-    private static final String BOOL_REF_ID = "1";
 
     public EditRoleView(Map<String, Object> entity) {
         super(entity);
@@ -42,18 +36,6 @@ public class EditRoleView extends AbstractSingleEditView<Role> {
     protected void initialPresentationView(DetailDataModel detailDataModel, Role entity, Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
-        // detailDataModel.addAttribute("name", FieldTypeEnum.CHECKBOX);
-        detailDataModel.addAttribute("isEnable", DetailFieldType.DROPDOWN).referenceDataId(BOOL_REF_ID);
+        detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void setReferenceDataModel(ReferenceDataModel refDataModel, Role entity) {
-        List<Boolean> boolList = Arrays.asList(Boolean.TRUE, Boolean.FALSE);
-        refDataModel.putRefDataList(BOOL_REF_ID,
-                refDataModel.new ReferenceData(boolList, new DefaultListCellRenderer()));
-    }
-
 }

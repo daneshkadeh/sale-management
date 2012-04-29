@@ -20,14 +20,13 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
 @Entity
 @Table(name = "config_currency")
-public class SCurrency extends AbstractCodeOLObject {
+public class SCurrency extends AbstractActiveCodeOLObject {
     private String name;
     private String symbol;
-    private Boolean isActive = true;
 
     @Column(name = "name", length = 128)
     @NotBlank
@@ -47,15 +46,6 @@ public class SCurrency extends AbstractCodeOLObject {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
-    }
-
-    @Column(name = "active")
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
     }
 
     /**

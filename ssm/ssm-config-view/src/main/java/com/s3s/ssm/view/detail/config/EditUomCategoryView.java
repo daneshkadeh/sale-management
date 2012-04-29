@@ -37,6 +37,7 @@ public class EditUomCategoryView extends AbstractSingleEditView<UomCategory> {
     protected void initialPresentationView(DetailDataModel detailDataModel, UomCategory entity,
             Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX).newColumn();
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("parentUomCategory", DetailFieldType.DROPDOWN).referenceDataId(CATE_REF_ID);
     }

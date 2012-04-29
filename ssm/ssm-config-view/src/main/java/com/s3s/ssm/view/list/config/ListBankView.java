@@ -35,6 +35,7 @@ public class ListBankView extends AbstractListView<Bank> {
         listDataModel.addColumn("code", ListRendererType.TEXT);
         listDataModel.addColumn("name", ListRendererType.TEXT);
         listDataModel.addColumn("address", ListRendererType.TEXT);
+        listDataModel.addColumn("active", ListRendererType.TEXT);
     }
 
     @Override

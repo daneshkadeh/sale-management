@@ -130,7 +130,6 @@ import com.s3s.ssm.view.list.AListComponent;
 
 public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> extends AbstractEditView<T> {
 
-    private static final int MAX_WIDTH_LABEL = 150;
     public static final int DEFAULT_WIDTH = 300;
 
     private static final long serialVersionUID = 1L;
@@ -632,11 +631,11 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         Dimension preferredSize = lb.getPreferredSize();
         // Use JXLabel to wrap the label, if just using the JXLable --> It is not work for Group panel, so I work around
         // by using the JLabel to measure and set the min width for JXTable.
-        if (preferredSize.width > MAX_WIDTH_LABEL) {
+        if (preferredSize.width > UIConstants.MAX_LABEL_WIDTH) {
             JXLabel jxlbl = new JXLabel(label);
             jxlbl.setLineWrap(true);
-            jxlbl.setMinimumSize(new Dimension(MAX_WIDTH_LABEL, preferredSize.height));
-            jxlbl.setMaxLineSpan(MAX_WIDTH_LABEL);
+            jxlbl.setMinimumSize(new Dimension(UIConstants.MAX_LABEL_WIDTH, preferredSize.height));
+            jxlbl.setMaxLineSpan(UIConstants.MAX_LABEL_WIDTH);
             return jxlbl;
         } else {
             return lb;

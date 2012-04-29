@@ -18,6 +18,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
 
 import org.hibernate.validator.constraints.Email;
 
@@ -32,7 +33,8 @@ public class Operator extends User {
     private String phone;
     private String address;
 
-    @Column(name = "full_name", length = 256)
+    @Column(name = "full_name")
+    @Max(value = 256)
     public String getFullName() {
         return fullName;
     }
@@ -41,7 +43,8 @@ public class Operator extends User {
         this.fullName = fullName;
     }
 
-    @Column(name = "email", length = 64)
+    @Column(name = "email")
+    @Max(value = 256)
     @Email
     public String getEmail() {
         return email;
@@ -51,7 +54,8 @@ public class Operator extends User {
         this.email = email;
     }
 
-    @Column(name = "phone", length = 32)
+    @Column(name = "phone")
+    @Max(value = 32)
     public String getPhone() {
         return phone;
     }
@@ -60,7 +64,8 @@ public class Operator extends User {
         this.phone = phone;
     }
 
-    @Column(name = "address", length = 256)
+    @Column(name = "address")
+    @Max(value = 256)
     public String getAddress() {
         return address;
     }

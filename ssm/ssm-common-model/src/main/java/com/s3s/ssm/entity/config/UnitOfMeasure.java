@@ -22,7 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
 /**
  * UnitOfMeasure is used to measure the quantity of product. Eg. Kilogam, gam, met, centimet, cap, doi, cai, bich
@@ -30,7 +30,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
  */
 @Entity
 @Table(name = "config_unit_of_measure")
-public class UnitOfMeasure extends AbstractCodeOLObject {
+public class UnitOfMeasure extends AbstractActiveCodeOLObject {
     private UomCategory uomCategory;
     private String name;
     private Float exchangeRate = 1F;
@@ -62,7 +62,7 @@ public class UnitOfMeasure extends AbstractCodeOLObject {
         return exchangeRate;
     }
 
-    public void setExchangeRate(Float changeRate) {
+    public void setExchangeRate(Float exchangeRate) {
         this.exchangeRate = exchangeRate;
     }
 

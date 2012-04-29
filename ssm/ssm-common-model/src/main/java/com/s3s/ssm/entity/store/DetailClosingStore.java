@@ -76,6 +76,9 @@ public class DetailClosingStore extends AbstractIdOLObject {
         this.item = item;
     }
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "uom_id")
+    @NotNull
     public UnitOfMeasure getBaseUom() {
         return baseUom;
     }

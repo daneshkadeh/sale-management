@@ -299,4 +299,9 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
     public void flush() {
         getHibernateTemplate().flush();
     }
+
+    @Override
+    public HibernateTemplate getHibernateTmpl() {
+        return getHibernateTemplate();
+    }
 }

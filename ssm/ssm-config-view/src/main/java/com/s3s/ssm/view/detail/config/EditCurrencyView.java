@@ -32,8 +32,8 @@ public class EditCurrencyView extends AbstractSingleEditView<SCurrency> {
     protected void initialPresentationView(DetailDataModel detailDataModel, SCurrency entity,
             Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX).newColumn();
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("symbol", DetailFieldType.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX);
     }
 }

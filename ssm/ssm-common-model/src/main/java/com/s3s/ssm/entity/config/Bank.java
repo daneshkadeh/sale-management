@@ -21,11 +21,11 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
 @Entity
 @Table(name = "config_bank")
-public class Bank extends AbstractCodeOLObject {
+public class Bank extends AbstractActiveCodeOLObject {
     private static final long serialVersionUID = -1834997390961013651L;
     private String name;
     private String address;

@@ -230,9 +230,9 @@ public class GuiStandardUtils {
      */
     public static void truncateLabelIfLong(JLabel label) {
         String originalText = label.getText();
-        if (originalText.length() > UIConstants.MAX_LABEL_LENGTH) {
+        if (originalText.length() > UIConstants.MAX_LABEL_WIDTH) {
             label.setToolTipText(originalText);
-            String truncatedText = originalText.substring(0, UIConstants.MAX_LABEL_LENGTH) + "...";
+            String truncatedText = originalText.substring(0, UIConstants.MAX_LABEL_WIDTH) + "...";
             label.setText(truncatedText);
         }
     }

@@ -23,44 +23,37 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Max;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.acls.sid.Sid;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
 @Entity
-@Table(name = "au_role")
-public class Role extends AbstractCodeOLObject implements Serializable, GrantedAuthority, Sid {
+@Table(name = "security_role")
+public class Role extends AbstractActiveCodeOLObject implements Serializable, GrantedAuthority, Sid {
     private static final long serialVersionUID = 1L;
     private String name;
-    private Boolean isEnable = true;
     private Set<User> users = new HashSet<User>();
 
     public Role() {
-
     }
 
     public Role(String name) {
         this.name = name;
     }
 
-    @Column(name = "name", nullable = false, length = 32, unique = true)
+    @Column(name = "name", unique = true)
+    @Max(value = 250)
+    @NotBlank
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Column(name = "isEnable")
-    public Boolean getIsEnable() {
-        return isEnable;
-    }
-
-    public void setIsEnable(Boolean isEnable) {
-        this.isEnable = isEnable;
     }
 
     @Transient

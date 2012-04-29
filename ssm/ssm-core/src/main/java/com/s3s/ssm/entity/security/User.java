@@ -29,14 +29,16 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Max;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.userdetails.UserDetails;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 
 @Entity
-@Table(name = "au_user")
+@Table(name = "security_user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends AbstractCodeOLObject implements Serializable, UserDetails {
     private static final long serialVersionUID = 1L;
@@ -82,22 +84,26 @@ public class User extends AbstractCodeOLObject implements Serializable, UserDeta
         return isEnabled;
     }
 
-    @Column(name = "password", nullable = true, length = 32)
+    @Column(name = "password")
+    @Max(value = 32)
+    @NotBlank
     public String getPassword() {
         return password;
     }
 
-    @Column(name = "username", nullable = false, length = 32, unique = true)
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Column(name = "username", unique = true)
+    @NotBlank
+    @Max(value = 256)
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void setIsAccountNonExpired(Boolean isAccountNonExpired) {
