@@ -56,15 +56,11 @@ import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -88,8 +84,6 @@ import com.s3s.ssm.export.exporter.ExporterFactory;
 import com.s3s.ssm.export.exporter.ExporterNotFoundException;
 import com.s3s.ssm.export.exporter.ExportingException;
 import com.s3s.ssm.export.view.ExportDialog;
-import com.s3s.ssm.model.CurrencyEnum;
-import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.security.CustomPermission;
@@ -141,7 +135,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
     private JToolBar toolbar;
     private JXTable tblListEntities;
     private JList<Integer> rowHeader;
-    private JXTable tblFooter;
     private JBusyComponent<JScrollPane> busyPane;
 
     private AdvanceTableModel<T> mainTableModel;
@@ -381,40 +374,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             }
         });
 
-        // //////////////// Create footer table //////////////////////////////
-        FooterTableModel footerModel = new FooterTableModel(mainTableModel);
-
-        tblFooter = new JXTable(footerModel, tblListEntities.getColumnModel()) {
-            private static final long serialVersionUID = -7685932666381447654L;
-
-            /**
-             * Sync column between 2 table when resize the column.
-             * <p>
-             * {@inheritDoc}
-             */
-            @Override
-            public void columnMarginChanged(ChangeEvent event) {
-                final TableColumnModel eventModel = (DefaultTableColumnModel) event.getSource();
-                final TableColumnModel thisModel = getColumnModel();
-                final int columnCount = eventModel.getColumnCount();
-
-                for (int i = 0; i < columnCount; i++) {
-                    thisModel.getColumn(i).setWidth(eventModel.getColumn(i).getWidth());
-                }
-                repaint();
-            }
-        };
-        tblFooter.setTableHeader(null); // Remove table header.
-        // Visible 1 row in footer table.
-        // tblFooter.setPreferredScrollableViewportSize(new Dimension(
-        // tblFooter.getPreferredScrollableViewportSize().width, tblFooter.getRowHeight()));
-        tblFooter.setVisibleRowCount(1);
-        // tblFooter.setEnabled(false);
-        tblFooter.setShowGrid(false);
-        tblFooter.setFont(UIConstants.DEFAULT_BOLD_FONT);
-
-        tblListEntities.getColumnModel().addColumnModelListener(tblFooter);
-
         // The rowHeader show the order number for the rows of the main table.
         rowHeader = new JList<Integer>(new AbstractListModel<Integer>() {
             private static final long serialVersionUID = -771503812711976068L;
@@ -448,15 +407,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         busyPane = createBusyPane(mainScrollpane);
 
         contentPane.add(busyPane);
-        JScrollPane footerScrollpane = new JScrollPane(tblFooter);
-
-        // Show the footer if existing a column summarized.
-        for (ColumnModel column : listDataModel.getColumns()) {
-            if (column.isSummarized()) {
-                contentPane.add(footerScrollpane);
-                break;
-            }
-        }
         JPanel footerPanel = createFooterPanel(mainTableModel);
         if (footerPanel != null) {
             contentPane.add(footerPanel, "grow");
@@ -511,7 +461,7 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
      * @return the model of the table.
      */
     protected TableModel createTableModel() {
-        return new AdvanceTableModel<T>(listDataModel, entities, getEntityClass(), false);
+        return new AdvanceTableModel<T>(listDataModel, entities, getEntityClass(), false, getVisibleRowCount());
     }
 
     /**
@@ -714,89 +664,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
         return (Class<T>) SClassUtils.getArgumentClass(getClass());
     }
 
-    private class FooterTableModel extends AbstractTableModel {
-        private static final long serialVersionUID = 1L;
-        private final TableModel mainTableModel;
-
-        public FooterTableModel(TableModel mainTableModel) {
-            this.mainTableModel = mainTableModel;
-        }
-
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            if (columnIndex == listDataModel.getColumns().size()) {
-                return null;
-            }
-            ColumnModel column = listDataModel.getColumns().get(columnIndex); // decrease 1 because the hidden
-            if (column.isSummarized()) {
-                Class<?> fieldClass = SClassUtils.getClassOfField(column.getName(), getEntityClass());
-                if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
-                    int sum = 0;
-                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
-                        Object value = mainTableModel.getValueAt(i, columnIndex);
-                        sum = sum + ((value == null) ? 0 : (int) value);
-                    }
-                    return sum;
-                }
-
-                if (ClassUtils.isAssignable(fieldClass, Long.class)) {
-                    long sum = 0L;
-                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
-                        Object value = mainTableModel.getValueAt(i, columnIndex);
-                        sum = sum + ((value == null) ? 0 : (long) value);
-                    }
-                    return sum;
-                }
-
-                if (ClassUtils.isAssignable(fieldClass, Float.class)) {
-                    float sum = 0f;
-                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
-                        Object value = mainTableModel.getValueAt(i, columnIndex);
-                        sum = sum + ((value == null) ? 0 : (float) value);
-                    }
-                    return sum;
-                }
-
-                if (ClassUtils.isAssignable(fieldClass, Double.class)) {
-                    double sum = 0d;
-                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
-                        Object value = mainTableModel.getValueAt(i, columnIndex);
-                        sum = sum + ((value == null) ? 0 : (double) value);
-                    }
-                    return sum;
-                }
-
-                if (ClassUtils.isAssignable(fieldClass, Money.class)) {
-                    CurrencyEnum currencyCode = CurrencyEnum.VND; // TODO Phuc: get from organizationContext later
-                    Money sum = Money.zero(currencyCode);
-                    for (int i = 0; i < mainTableModel.getRowCount() - 1; i++) {
-                        Object value = mainTableModel.getValueAt(i, columnIndex);
-                        sum = sum.plus(((value == null) ? Money.zero(currencyCode) : (Money) value));
-                    }
-                    return sum;
-                }
-
-            }
-            return null;
-        }
-
-        @Override
-        public int getRowCount() {
-            return 1;
-        }
-
-        @Override
-        public int getColumnCount() {
-            return mainTableModel.getColumnCount();
-        }
-
-        @Override
-        public Class<?> getColumnClass(int columnIndex) {
-            return mainTableModel.getColumnClass(columnIndex);
-        }
-
-    }
-
     /**
      * Entity was saved on AbstractDetailView and sent to AbstractListView to refresh data.
      * 
@@ -817,7 +684,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
             mainTableModel.fireTableRowsUpdated(index, index);
         }
 
-        ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
         rowHeader.repaint();
         rowHeader.revalidate();
     }
@@ -971,7 +837,6 @@ public abstract class AbstractListView<T extends AbstractBaseIdObject> extends A
                     entities.addAll(refreshedList);
                     // fireTableDataChanged to re-render the table.
                     mainTableModel.fireTableDataChanged();
-                    ((AbstractTableModel) tblFooter.getModel()).fireTableDataChanged();
                     rowHeader.repaint();
                     rowHeader.revalidate();
 
