@@ -36,9 +36,9 @@ public class Goods extends Product {
     private Set<ProductProperty> properties = new HashSet<>();
     private Money originPrice; // price of product is overriden by price of item
     private Money baseSellPrice;
-    private Long maintainPeriod; // Thoi han bao hanh
+    private Long maintainPeriod = 0L; // Thoi han bao hanh
     private Integer minNumberOfStoredProduct; // Luong ton toi thieu, tinh theo mainUOM
-    private Long mustSoldPeriod; // thoi gian toi thieu phai ban duoc 1 item
+    private Long mustSoldPeriod = 0L; // thoi gian toi thieu phai ban duoc 1 item
     private Integer minNumberSoldInMonth; // So luong ban toi thieu trong 1 thang, tinh theo mainUOM
     private Integer effectiveSoldInMonth; // So luong ban vuot muc
 

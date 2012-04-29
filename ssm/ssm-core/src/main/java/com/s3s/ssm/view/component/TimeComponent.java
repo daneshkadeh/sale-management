@@ -133,34 +133,34 @@ public class TimeComponent extends JPanel implements ChangeListener {
         }
     }
 
-    public void setValueByMinute(int minute) {
-        int minVal = minute % MINUTE_MAX;
-        minSpn.setValue(minVal);
+    public void setValueByMinute(long minute) {
+        long minVal = minute % MINUTE_MAX;
+        minSpn.setValue((int) minVal);
         setValueByHour(minute / MINUTE_MAX);
     }
 
-    public void setValueByHour(int hour) {
-        int hVal = hour % HOUR_MAX;
-        hourSpn.setValue(hVal);
+    public void setValueByHour(long hour) {
+        long hVal = hour % HOUR_MAX;
+        hourSpn.setValue((int) hVal);
         setValueByDay(hour / HOUR_MAX);
     }
 
-    public void setValueByDay(int day) {
-        int dVal = day % DAY_MAX;
-        daySpn.setValue(dVal);
+    public void setValueByDay(long day) {
+        long dVal = day % DAY_MAX;
+        daySpn.setValue((int) dVal);
         setValueByMonth(day / DAY_MAX);
 
     }
 
-    public void setValueByMonth(int month) {
-        int monVal = month % MONTH_MAX;
-        monthSpn.setValue(monVal);
-        setValueByYear(monVal / MONTH_MAX);
+    public void setValueByMonth(long month) {
+        long monVal = month % MONTH_MAX;
+        monthSpn.setValue((int) monVal);
+        setValueByYear(month / MONTH_MAX);
 
     }
 
-    public void setValueByYear(int year) {
-        yearSpn.setValue(year);
+    public void setValueByYear(long year) {
+        yearSpn.setValue((int) year);
     }
 
     /**
@@ -169,9 +169,9 @@ public class TimeComponent extends JPanel implements ChangeListener {
      * @return
      */
     public long getValue() {
-        return ((Integer) minSpn.getValue()) * 60 * 1000 + ((Integer) hourSpn.getValue()) * 60 * 60 * 1000
-                + ((Integer) daySpn.getValue()) * 24 * 60 * 60 * 1000 + ((Integer) monthSpn.getValue()) * 30 * 24 * 60
-                * 60 * 1000 + ((Integer) yearSpn.getValue()) * 12 * 24 * 60 * 60 * 1000;
+        return ((Integer) minSpn.getValue()) * 60 * 1000L + ((Integer) hourSpn.getValue()) * 60 * 60 * 1000L
+                + ((Integer) daySpn.getValue()) * 24 * 60 * 60 * 1000L + ((Integer) monthSpn.getValue()) * 30 * 24 * 60
+                * 60 * 1000L + ((Integer) yearSpn.getValue()) * 12 * 30 * 24 * 60 * 60 * 1000L;
     }
 
     /**
@@ -180,6 +180,6 @@ public class TimeComponent extends JPanel implements ChangeListener {
      * @param milisecond
      */
     public void setValue(long milisecond) {
-        setValueByMinute((int) milisecond / 1000 / 60);
+        setValueByMinute(milisecond / 1000 / 60);
     }
 }

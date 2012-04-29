@@ -37,9 +37,9 @@ public class EditGoodsGeneralView extends EditProductGeneralView<Goods> {
         detailDataModel.tab(ControlConfigUtils.getString("tab.EditGoodsGeneralView.sellInfo"), "Sell info", null);
         detailDataModel.addAttribute("originPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("baseSellPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
-        detailDataModel.addAttribute("maintainPeriod", DetailFieldType.TEXTBOX); // TODO: will use timespan component
+        detailDataModel.addAttribute("maintainPeriod", DetailFieldType.TIME_COMPONENT);
         detailDataModel.addAttribute("minNumberOfStoredProduct", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("mustSoldPeriod", DetailFieldType.TEXTBOX); // TODO: will use timespan component
+        detailDataModel.addAttribute("mustSoldPeriod", DetailFieldType.TIME_COMPONENT);
         detailDataModel.addAttribute("minNumberSoldInMonth", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("effectiveSoldInMonth", DetailFieldType.TEXTBOX);
 
