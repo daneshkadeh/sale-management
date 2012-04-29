@@ -35,7 +35,6 @@ import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.InputMap;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
@@ -137,7 +136,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            mainTableModel.addRowAt(mainTable.getRowCount(), createNewEntity());
+            mainTableModel.addRowAt(mainTableModel.getEntities().size(), createNewEntity());
         }
     }
 
@@ -188,7 +187,8 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
     protected void addComponents() {
         // ///////////////// Init main table ////////////////////////////////
-        mainTableModel = new AdvanceTableModel<T>(listDataModel, new ArrayList<T>(), getEntityClass(), true);
+        mainTableModel = new AdvanceTableModel<T>(listDataModel, new ArrayList<T>(), getEntityClass(), true,
+                getVisibleRowCount());
         mainTable = new SAdvanceTable(mainTableModel, listDataModel, refDataModel);
         mainTable.setVisibleRowCount(getVisibleRowCount());
 
@@ -262,21 +262,38 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
             @Override
             public int getSize() {
-                return mainTableModel.getEntities().size() + 1;
+                return getVisibleRowCount();
             }
 
             @Override
             public String getElementAt(int index) {
-                if (index == mainTableModel.getEntities().size()) {
+                int numOfEntities = mainTableModel.getEntities().size();
+                if (index == numOfEntities) {
                     return "+";
+                } else if (index > numOfEntities) {
+                    return "x";
                 }
                 return String.valueOf(index + 1);
             }
         });
 
-        rowHeader.setCellRenderer(new RowHeaderRenderer(mainTable, new JButton(addAction)));
+        rowHeader.setCellRenderer(new RowHeaderRenderer(mainTable));
         rowHeader.setFixedCellWidth(UIConstants.DEFAULT_ROW_HEADER_WIDTH);
         rowHeader.setFixedCellHeight(mainTable.getRowHeight());
+        rowHeader.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    JList<String> jList = (JList<String>) e.getSource();
+                    if (jList.isSelectedIndex(mainTableModel.getEntities().size())) {
+                        addAction.actionPerformed(null);
+                    }
+                }
+                super.mouseClicked(e);
+            }
+
+        });
 
         JScrollPane mainScrollpane = new JScrollPane(mainTable);
         mainScrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

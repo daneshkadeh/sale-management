@@ -23,6 +23,8 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
 
+import com.s3s.ssm.util.view.UIConstants;
+
 /**
  * @author Phan Hong Phuc
  * @since Apr 26, 2012
@@ -33,13 +35,14 @@ public class FooterRenderer extends JLabel implements TableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
             int row, int column) {
-        // setBackground(Color.LIGHT_GRAY);
         if (value != null) {
             setText(value.toString());
             setHorizontalAlignment(SwingConstants.RIGHT);
-            setBorder(BorderFactory.createRaisedBevelBorder());
+            setFont(UIConstants.DEFAULT_BOLD_FONT);
+            setBorder(BorderFactory.createEtchedBorder());
         } else {
             setText(null);
+            setBorder(BorderFactory.createEmptyBorder());
         }
         setOpaque(true);
         return this;

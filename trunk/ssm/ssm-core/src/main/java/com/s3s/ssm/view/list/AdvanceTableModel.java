@@ -43,22 +43,28 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
     private List<T> entities;
     private boolean isEditable;
     private Class<T> clazz;
+    private int visibleRowCount;
     protected BeanWrapper beanWrapper;
 
-    public AdvanceTableModel(ListDataModel listDataModel, List<T> entities, Class<T> clazz, boolean isEditable) {
+    public AdvanceTableModel(ListDataModel listDataModel, List<T> entities, Class<T> clazz, boolean isEditable,
+            int visibleRowCount) {
         this.listDataModel = listDataModel;
         this.entities = entities;
         this.isEditable = isEditable;
         this.clazz = clazz;
+        this.visibleRowCount = visibleRowCount;
     }
 
     @Override
     public int getRowCount() {
-        return entities.size();
+        return isEditable ? visibleRowCount : entities.size();
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        if (rowIndex >= entities.size()) {
+            return null;
+        }
         T entity = entities.get(rowIndex);
         beanWrapper = new BeanWrapperImpl(entity);
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
@@ -72,7 +78,7 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return isEditable && listDataModel.getColumns().get(columnIndex).isEditable();
+        return isEditable && listDataModel.getColumns().get(columnIndex).isEditable() && rowIndex < entities.size();
     }
 
     @Override
@@ -83,6 +89,10 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        if (rowIndex >= entities.size()) {
+            return;
+        }
+
         T entity = entities.get(rowIndex);
         beanWrapper = new BeanWrapperImpl(entity);
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
