@@ -467,7 +467,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 ((JPasswordField) dataField).setEditable(editable);
                 dataField.setEnabled(attribute.isEnable());
                 ((JTextField) dataField).setText(ObjectUtils.toString(value));
-                pnlEdit.add(lblLabel);
+                pnlEdit.add(lblLabel, newline);
                 break;
             case DROPDOWN:
                 dataField = createDropdownComponent(attribute, width, value, referenceData);
