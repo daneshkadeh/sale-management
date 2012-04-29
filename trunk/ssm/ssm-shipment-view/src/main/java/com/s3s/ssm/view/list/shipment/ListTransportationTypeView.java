@@ -44,7 +44,7 @@ public class ListTransportationTypeView extends AbstractListView<TransportationT
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListRendererType.TEXT);
         listDataModel.addColumn("name", ListRendererType.TEXT);
-        listDataModel.addColumn("isActive", ListRendererType.BOOLEAN);
+        listDataModel.addColumn("active", ListRendererType.BOOLEAN);
     }
 
     /**

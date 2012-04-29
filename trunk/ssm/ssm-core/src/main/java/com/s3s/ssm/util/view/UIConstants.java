@@ -77,7 +77,7 @@ public class UIConstants {
     /**
      * Maximum length for some <code>JLabel</code>s, beyond which the text will be truncated.
      */
-    public static final int MAX_LABEL_LENGTH = 35;
+    public static final int MAX_LABEL_WIDTH = 150;
 
     /**
      * Color of row when mouse over on a row.

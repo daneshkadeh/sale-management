@@ -44,10 +44,7 @@ public class ListStoreView extends AbstractListView<Store> {
         listDataModel.addColumn("name", ListRendererType.TEXT);
         listDataModel.addColumn("manager", ListRendererType.TEXT);
         listDataModel.addColumn("address", ListRendererType.TEXT);
-        // listDataModel.addColumn("storedAddress", ListRendererType.TEXT);
-        // listDataModel.addColumn("importAddress", ListRendererType.TEXT);
-        // listDataModel.addColumn("exportAddress", ListRendererType.TEXT);
-
+        listDataModel.addColumn("active", ListRendererType.TEXT);
     }
 
     /**

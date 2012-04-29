@@ -65,6 +65,10 @@ public abstract class AbstractBaseIdObject implements Serializable {
     @Override
     public boolean equals(Object obj) {
         // TODO just temporary solution -> fix later
+        if (obj == null) {
+            return false;
+        }
+
         if (this == obj) {
             return true;
         }

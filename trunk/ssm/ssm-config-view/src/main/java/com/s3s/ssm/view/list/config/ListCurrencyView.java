@@ -28,7 +28,7 @@ public class ListCurrencyView extends AbstractListView<SCurrency> {
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("name", ListRendererType.TEXT);
         listDataModel.addColumn("symbol", ListRendererType.TEXT);
-        listDataModel.addColumn("isActive", ListRendererType.BOOLEAN);
+        listDataModel.addColumn("active", ListRendererType.BOOLEAN);
 
     }
 

@@ -24,12 +24,12 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 import com.s3s.ssm.entity.operator.Operator;
 
 @Entity
 @Table(name = "store_store")
-public class Store extends AbstractCodeOLObject {
+public class Store extends AbstractActiveCodeOLObject {
     private String name;
     private String address;
     private String phone;
@@ -38,7 +38,6 @@ public class Store extends AbstractCodeOLObject {
     private String importAddress;
     private String exportAddress;
     private Operator manager;
-    private Boolean isActive = true;
 
     @Column(name = "store_name", nullable = false, length = 256)
     @NotBlank
@@ -117,15 +116,6 @@ public class Store extends AbstractCodeOLObject {
 
     public void setManager(Operator manager) {
         this.manager = manager;
-    }
-
-    @Column(name = "is_active")
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
     }
 
     /**

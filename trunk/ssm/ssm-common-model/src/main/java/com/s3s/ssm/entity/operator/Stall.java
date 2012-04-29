@@ -28,14 +28,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
 @Entity
 @Table(name = "operator_stall")
-public class Stall extends AbstractCodeOLObject {
+public class Stall extends AbstractActiveCodeOLObject {
     private String name;
     private Operator manager;
-    private Boolean isActive = true;
     private Set<Operator> staffs = new HashSet<Operator>();
     private Set<SaleTarget> salesTarget = new HashSet<SaleTarget>();
 
@@ -56,15 +55,6 @@ public class Stall extends AbstractCodeOLObject {
 
     public void setManager(Operator manager) {
         this.manager = manager;
-    }
-
-    @Column(name = "is_active", nullable = false)
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

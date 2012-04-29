@@ -33,7 +33,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.operator.Stall;
 
@@ -43,7 +43,7 @@ import com.s3s.ssm.entity.operator.Stall;
  */
 @Entity
 @Table(name = "config_organization")
-public class Organization extends AbstractCodeOLObject {
+public class Organization extends AbstractActiveCodeOLObject {
     private Institution institution;
     private String name;
     private String address;

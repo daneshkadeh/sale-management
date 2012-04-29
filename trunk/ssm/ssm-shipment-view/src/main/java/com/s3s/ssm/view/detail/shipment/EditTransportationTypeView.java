@@ -46,7 +46,7 @@ public class EditTransportationTypeView extends AbstractSingleEditView<Transport
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("description", DetailFieldType.TEXTAREA);
-        detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX);
+        detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX);
     }
 
     @Override

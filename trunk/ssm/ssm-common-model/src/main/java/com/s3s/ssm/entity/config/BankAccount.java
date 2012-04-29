@@ -19,23 +19,24 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
 @Entity
 @Table(name = "config_bank_account")
-public class BankAccount extends AbstractIdOLObject {
+public class BankAccount extends AbstractActiveCodeOLObject {
     private static final long serialVersionUID = 3551288465254593923L;
     private Bank bank;
     private String accountNumber;
     private String accountName;
 
     @ManyToOne
-    @JoinColumn(name = "bank_id", nullable = false)
-    @NotBlank
+    @JoinColumn(name = "bank_id")
+    @NotNull
     public Bank getBank() {
         return bank;
     }
@@ -44,8 +45,9 @@ public class BankAccount extends AbstractIdOLObject {
         this.bank = bank;
     }
 
-    @Column(name = "account_number", nullable = false, length = 32)
-    @Size(max = 32)
+    @Column(name = "account_number")
+    @Size(max = 256)
+    @NotBlank
     public String getAccountNumber() {
         return accountNumber;
     }
@@ -54,8 +56,9 @@ public class BankAccount extends AbstractIdOLObject {
         this.accountNumber = accountNumber;
     }
 
-    @Column(name = "account_name", length = 128)
+    @Column(name = "account_name")
     @Size(max = 128)
+    @NotBlank
     public String getAccountName() {
         return accountName;
     }

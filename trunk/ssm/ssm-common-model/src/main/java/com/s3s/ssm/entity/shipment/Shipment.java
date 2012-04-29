@@ -24,12 +24,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 
 @Entity
-@Table(name = "s_shipment")
-public class Shipment extends AbstractIdOLObject {
+@Table(name = "ship_shipment")
+public class Shipment extends AbstractActiveCodeOLObject {
     private ShipmentType shipmentType;
     private ExportStoreForm exportStoreForm;
     private Double money;
@@ -37,7 +37,7 @@ public class Shipment extends AbstractIdOLObject {
     private ShipmentStatus status;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "shipment_type_id", nullable = false)
+    @JoinColumn(name = "shipment_type_id")
     @NotNull
     public ShipmentType getShipmentType() {
         return shipmentType;
@@ -48,7 +48,7 @@ public class Shipment extends AbstractIdOLObject {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "exportstore_id", nullable = false)
+    @JoinColumn(name = "exportstore_id")
     @NotNull
     public ExportStoreForm getExportStoreForm() {
         return exportStoreForm;
@@ -58,7 +58,7 @@ public class Shipment extends AbstractIdOLObject {
         this.exportStoreForm = exportStoreForm;
     }
 
-    @Column(name = "money", nullable = false)
+    @Column(name = "money")
     @NotNull
     public Double getMoney() {
         return money;
@@ -68,7 +68,7 @@ public class Shipment extends AbstractIdOLObject {
         this.money = money;
     }
 
-    @Column(name = "currency", nullable = false)
+    @Column(name = "currency")
     @NotNull
     @Enumerated(EnumType.STRING)
     public String getCurrency() {
@@ -79,7 +79,7 @@ public class Shipment extends AbstractIdOLObject {
         this.currency = currency;
     }
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     @NotNull
     @Enumerated(EnumType.STRING)
     public ShipmentStatus getStatus() {

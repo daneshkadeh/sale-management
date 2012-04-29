@@ -26,11 +26,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
 @Entity
 @Table(name = "config_uom_category")
-public class UomCategory extends AbstractCodeOLObject {
+public class UomCategory extends AbstractActiveCodeOLObject {
     public static String UNIT_UOM_CATE = "Unit";
     public static String WEIGHT_UOM_CATE = "Weight";
     public static String TIME_UOM_CATE = "Time";

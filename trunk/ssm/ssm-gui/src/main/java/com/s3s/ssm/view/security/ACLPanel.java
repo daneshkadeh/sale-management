@@ -132,7 +132,7 @@ public class ACLPanel extends AbstractView {
         entityBoard.add(chkEnable);
 
         txtRole.setText(entity.getName());
-        chkEnable.setSelected(entity.getIsEnable());
+        chkEnable.setSelected(entity.isActive());
         txtRole.setColumns(10);
 
         aclBoard = new JPanel(new MigLayout("wrap 7"));
@@ -403,7 +403,7 @@ public class ACLPanel extends AbstractView {
     protected void saveOrUpdate(Role entity) {
         entity.setCode(codeRole.getText());
         entity.setName(txtRole.getText());
-        entity.setIsEnable(chkEnable.isSelected());
+        entity.setActive(chkEnable.isSelected());
         getDaoHelper().getDao(Role.class).saveOrUpdate(entity);
     }
 

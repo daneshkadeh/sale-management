@@ -16,6 +16,7 @@
 
 package com.s3s.ssm.view.util;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -71,15 +72,15 @@ public class StoreHelper extends ViewHelper {
 
     public static InventoryStoreForm initInventoryStoreForm(InventoryStoreForm form, Store store) {
         form.setStore(store);
-        InventoryStoreForm latestForm = serviceProvider.getService(IStoreService.class).getLatestInventoryStoreForm(
+        Date latestInventoryDate = serviceProvider.getService(IStoreService.class).getDateOfLatestInventoryStoreForm(
                 store);
-        ClosingStoreEntry latestClosingEntry = serviceProvider.getService(IStoreService.class)
-                .getLatestClosingStoreEntry(store);
+        Date latestClosingEntryDate = serviceProvider.getService(IStoreService.class).getDateOfLatestClosingStoreEntry(
+                store);
         Set<DetailInventoryStore> detailSet = null;
-        if (latestForm.getCreatedDate().compareTo(latestClosingEntry.getClosingDate()) > 0) {
-            detailSet = initDetailInventoryStore(latestForm);
+        if (latestInventoryDate.after(latestClosingEntryDate)) {
+            detailSet = initDetailInventoryStoreByInventory(store);
         } else {
-            detailSet = initDetailInventoryStore(latestClosingEntry);
+            detailSet = initDetailInventoryStoreByClosingEntry(store);
         }
         form.getDetailInventoryStores().addAll(detailSet);
         return form;
@@ -126,7 +127,9 @@ public class StoreHelper extends ViewHelper {
         return exDetailSet;
     }
 
-    private static Set<DetailInventoryStore> initDetailInventoryStore(InventoryStoreForm latestForm) {
+    private static Set<DetailInventoryStore> initDetailInventoryStoreByInventory(Store store) {
+        InventoryStoreForm latestForm = serviceProvider.getService(IStoreService.class).getLatestInventoryStoreForm(
+                store);
         Set<DetailInventoryStore> result = new HashSet<>();
         Integer lineNo = 0;
         for (DetailInventoryStore latestDetail : latestForm.getDetailInventoryStores()) {
@@ -144,7 +147,9 @@ public class StoreHelper extends ViewHelper {
         return result;
     }
 
-    private static Set<DetailInventoryStore> initDetailInventoryStore(ClosingStoreEntry latestClosingEntry) {
+    private static Set<DetailInventoryStore> initDetailInventoryStoreByClosingEntry(Store store) {
+        ClosingStoreEntry latestClosingEntry = serviceProvider.getService(IStoreService.class)
+                .getLatestClosingStoreEntry(store);
         Set<DetailInventoryStore> result = new HashSet<>();
         Integer lineNo = 0;
         for (DetailClosingStore closingDetail : latestClosingEntry.getClosingStoreSet()) {

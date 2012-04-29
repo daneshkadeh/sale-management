@@ -80,9 +80,6 @@ public class Partner extends AbstractActiveCodeOLObject {
     private Set<PartnerProfile> listProfiles = new HashSet<>();
 
     public Partner() {
-        // always active Partner by default;
-        setActive(true);
-
         // always set mainIndividual and mainAddressLink into a partner
         Individual mainIndividual = new Individual();
         mainIndividual.setRole(IndividualRoleEnum.MAIN);
