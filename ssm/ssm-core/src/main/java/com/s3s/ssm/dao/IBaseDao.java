@@ -25,8 +25,10 @@ public interface IBaseDao<T> {
 
     void setEntityClass(Class<T> clazz);
 
+    @Deprecated
     T save(T entity);
 
+    @Deprecated
     T update(T entity);
 
     void delete(T entity);

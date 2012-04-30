@@ -1,17 +1,3 @@
-/*
- * SimpleContextProvider
- * 
- * Project: SSM
- * 
- * Copyright 2010 by HBASoft
- * All rights reserved.
- *
- * This software is the confidential and proprietary information
- * of HBASoft. ("Confidential Information"). You
- * shall not disclose such Confidential Information and shall
- * use it only in accordance with the terms of the license
- * agreements you entered into with HBASoft.
- */
 package com.s3s.ssm.context;
 
 import java.util.HashSet;
@@ -19,26 +5,101 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
+import com.s3s.ssm.entity.config.Institution;
+import com.s3s.ssm.entity.config.Organization;
+import com.s3s.ssm.entity.config.SalesChannel;
+import com.s3s.ssm.entity.operator.Operator;
+import com.s3s.ssm.entity.operator.OperatorReferences;
+import com.s3s.ssm.entity.operator.Stall;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.security.CustomPermission;
+import com.s3s.ssm.util.DaoHelper;
 
-/**
- * This class is not implemented. TODO: move this implementation into common-model
- * 
- * @author phamcongbang
- * 
- */
-@Deprecated
-// @Service("contextProvider")
-public class SimpleContextProvider implements ContextProvider {
-    private static final Log logger = LogFactory.getLog(SimpleContextProvider.class);
+@Service("contextProvider")
+public class OrgSalesContextProviderImpl implements OrgSalesContextProvider {
+    private static final Log logger = LogFactory.getLog(OrgSalesContextProviderImpl.class);
+
+    @Autowired
+    private DaoHelper daoHelper;
+
+    private String username;
+    private Institution currInstitution;
+    private Organization currOrganization;
+    private SalesChannel currSalesChannel;
+    private Stall currStall;
+
+    public void loadContext() {
+        // First, clear the current context
+        clearContext();
+
+        String operatorUserName = getCurrentUser();
+        OperatorReferences references = getOperatorReferences(operatorUserName);
+        if (references == null) {
+            references = new OperatorReferences();
+
+            DetachedCriteria operatorDC = daoHelper.getDao(Operator.class).getCriteria();
+            operatorDC.add(Restrictions.eq("username", operatorUserName));
+            Operator currOperator = daoHelper.getDao(Operator.class).findFirstByCriteria(operatorDC);
+            if (currOperator == null) {
+                throw new RuntimeException("Can not find login user in current context.");
+            }
+            references.setOperator(currOperator);
+            try {
+                references.setCurrInstitution(daoHelper.getDao(Institution.class).findAll().get(0));
+                references.setCurrOrganization(daoHelper.getDao(Organization.class).findAll().get(0));
+                // TODO: setup SalesChannel, Stall into context
+            } catch (Exception e) {
+                throw new RuntimeException("Missing configuration institution, organization...", e);
+            }
+            daoHelper.getDao(OperatorReferences.class).saveOrUpdate(references);
+        }
+
+        currInstitution = references.getCurrInstitution();
+        currOrganization = references.getCurrOrganization();
+        currSalesChannel = references.getCurrSalesChannel();
+        currStall = references.getCurrStall();
+    }
+
+    private OperatorReferences getOperatorReferences(String operatorUserName) {
+        DetachedCriteria dc = daoHelper.getDao(OperatorReferences.class).getCriteria();
+        dc.createCriteria("operator").add(Restrictions.eq("username", operatorUserName));
+        OperatorReferences references = daoHelper.getDao(OperatorReferences.class).findFirstByCriteria(dc);
+        return references;
+    }
+
+    public void clearContext() {
+        // TODO: will be implemented
+    }
+
+    public void saveContext() {
+        String operatorUserName = getCurrentUser();
+        OperatorReferences references = getOperatorReferences(operatorUserName);
+        references.setCurrOrganization(currOrganization);
+        references.setCurrSalesChannel(currSalesChannel);
+        references.setCurrStall(currStall);
+        daoHelper.getDao(OperatorReferences.class).saveOrUpdate(references);
+    }
+
+    public void setCurrentOrganization(Organization organzation) {
+        currOrganization = organzation;
+    }
+
+    public void setCurrentSalesChannel(SalesChannel salesChannel) {
+        currSalesChannel = salesChannel;
+    }
 
     @Override
     public String getCurrentUser() {
-        String username;
+        if (username != null) {
+            return username;
+        }
 
         Object principal = null;
         try {
@@ -52,6 +113,7 @@ public class SimpleContextProvider implements ContextProvider {
             }
         }
 
+        // TODO: this code always return "admin" as username?
         if (principal instanceof UserDetails) {
             username = ((UserDetails) principal).getUsername();
         } else {
@@ -65,6 +127,7 @@ public class SimpleContextProvider implements ContextProvider {
         return 1L;
     }
 
+    @Deprecated
     @Override
     public Float getCurrencyRate() {
         // TODO Auto-generated method stub
@@ -171,21 +234,30 @@ public class SimpleContextProvider implements ContextProvider {
         return cusPermissionSet;
     }
 
-    @Override
-    public void loadContext() {
-        // TODO Auto-generated method stub
-
+    public static Log getLogger() {
+        return logger;
     }
 
     @Override
-    public void clearContext() {
-        // TODO Auto-generated method stub
-
+    public Institution getCurrentInstitution() {
+        return currInstitution;
     }
 
     @Override
-    public void saveContext() {
-        // TODO Auto-generated method stub
+    public Organization getCurrentOrganization() {
+        return currOrganization;
+    }
 
+    @Override
+    public SalesChannel getCurrentSalesChannel() {
+        return currSalesChannel;
+    }
+
+    public DaoHelper getDaoHelper() {
+        return daoHelper;
+    }
+
+    public void setDaoHelper(DaoHelper daoHelper) {
+        this.daoHelper = daoHelper;
     }
 }

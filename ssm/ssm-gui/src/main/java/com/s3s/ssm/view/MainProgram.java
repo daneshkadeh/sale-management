@@ -355,6 +355,16 @@ public class MainProgram {
         fileMenu.setMnemonic(KeyEvent.VK_F);
         JMenu helpMenu = new JMenu(ControlConfigUtils.getString("JMenuBar.Help"));
 
+        JMenuItem changeContextMenuItem = new JMenuItem(ControlConfigUtils.getString("JMenu.File.changeContext"));
+        changeContextMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Bang: add popup change context here.
+                // The authentication service always return "admin" currently. Should show this popup after fix
+                // authentication.
+            }
+        });
+
         JMenuItem userMenuItem = new JMenuItem(ControlConfigUtils.getString("JMenu.File.User"));
         userMenuItem.addActionListener(new ActionListener() {
 
@@ -445,13 +455,14 @@ public class MainProgram {
             }
         });
         // End test
-        fileMenu.add(userMenuItem);
-        fileMenu.add(customerMenuItem);
-        fileMenu.add(productMenuItem);
-        fileMenu.add(manufacturerMenuItem);
+        fileMenu.add(changeContextMenuItem);
+        // fileMenu.add(userMenuItem);
+        // fileMenu.add(customerMenuItem);
+        // fileMenu.add(productMenuItem);
+        // fileMenu.add(manufacturerMenuItem);
         fileMenu.addSeparator();
         fileMenu.add(statisticMenuItem);
-        fileMenu.add(invoiceMenuItem);
+        // fileMenu.add(invoiceMenuItem);
         fileMenu.addSeparator();
         fileMenu.add(exitMenuItem);
         fileMenu.add(loginItem);

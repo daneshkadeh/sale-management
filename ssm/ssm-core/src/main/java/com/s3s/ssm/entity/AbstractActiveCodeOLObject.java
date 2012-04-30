@@ -5,16 +5,16 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class AbstractActiveCodeOLObject extends AbstractCodeOLObject implements IActiveObject {
-    private boolean active = true;
+    private Boolean active = true;
 
     @Override
     @Column(name = "active")
-    public boolean isActive() {
+    public Boolean isActive() {
         return active;
     }
 
     @Override
-    public void setActive(boolean isActive) {
+    public void setActive(Boolean isActive) {
         active = isActive;
     }
 }

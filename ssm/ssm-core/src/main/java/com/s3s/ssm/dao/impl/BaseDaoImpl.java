@@ -37,7 +37,6 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
 
-import com.s3s.ssm.context.ContextProvider;
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.IActiveObject;
@@ -45,8 +44,8 @@ import com.s3s.ssm.interceptor.OptimisticLockingInterceptor;
 
 public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSupport implements IBaseDao<T> {
 
-    @Autowired
-    ContextProvider contextProvider;
+    // @Autowired
+    // ContextProvider contextProvider;
 
     private Class<T> clazz;
 
@@ -94,9 +93,9 @@ public class BaseDaoImpl<T extends AbstractBaseIdObject> extends HibernateDaoSup
     }
 
     /**
-     * 
-     * {@inheritDoc}
+     * Same function as saveOrUpdate => should not maintain {@inheritDoc}
      */
+    @Deprecated
     @Override
     public T save(T entity) {
         getHibernateTemplate().save(entity);

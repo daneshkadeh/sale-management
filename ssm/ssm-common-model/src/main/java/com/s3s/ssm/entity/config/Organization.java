@@ -16,6 +16,9 @@
 
 package com.s3s.ssm.entity.config;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,6 +26,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
@@ -31,6 +35,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
@@ -68,6 +74,8 @@ public class Organization extends AbstractActiveCodeOLObject {
     private String thousandsSeparator = ".";
     private String oddSeparator = ",";
     private Boolean isDefault = false;
+
+    private Set<SalesChannel> responsibleSalesChannels = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution_id")
@@ -275,5 +283,16 @@ public class Organization extends AbstractActiveCodeOLObject {
 
     public void setIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;
+    }
+
+    @OneToMany(mappedBy = "organization")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @Cascade({ CascadeType.ALL })
+    public Set<SalesChannel> getResponsibleSalesChannels() {
+        return responsibleSalesChannels;
+    }
+
+    public void setResponsibleSalesChannels(Set<SalesChannel> responsibleSalesChannels) {
+        this.responsibleSalesChannels = responsibleSalesChannels;
     }
 }
