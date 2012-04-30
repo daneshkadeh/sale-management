@@ -134,6 +134,9 @@ public class LoginDialog extends JDialog {
         try {
             authenticatedUser = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+
+            // reload context provider when login changes
+            ConfigProvider.getInstance().getContextProvider().loadContext();
             isLogin = true;
         } catch (BadCredentialsException e) {
             JOptionPane.showMessageDialog(this, ControlConfigUtils.getString("default.login.invalid.message"), "Error",

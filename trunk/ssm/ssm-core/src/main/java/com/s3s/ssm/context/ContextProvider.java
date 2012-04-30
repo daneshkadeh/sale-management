@@ -20,19 +20,26 @@ import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.security.CustomPermission;
 
 /**
- * This interface help to get current user and current point of sales.
+ * This interface help to get current user and current point of sales, current Institution, current Organization,
+ * security stuffs.
  * 
  * @author phamcongbang
  * 
  */
 public interface ContextProvider {
+    public void loadContext();
+
+    public void clearContext();
+
+    public void saveContext();
+
     public String getCurrentUser();
 
     public Long getCurrentPOS();
-    
+
     public Float getCurrencyRate();
-    
+
     public String getPaymentMethod();
-    
+
     Set<CustomPermission> getPermissions(ACLResourceEnum aclResource);
 }

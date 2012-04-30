@@ -51,4 +51,22 @@ public class DummyContextProvider implements ContextProvider {
         return null;
     }
 
+    @Override
+    public void loadContext() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void clearContext() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void saveContext() {
+        // TODO Auto-generated method stub
+
+    }
+
 }

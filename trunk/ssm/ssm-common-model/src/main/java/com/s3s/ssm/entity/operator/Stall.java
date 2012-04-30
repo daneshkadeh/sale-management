@@ -30,6 +30,10 @@ import javax.persistence.Table;
 
 import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
+/**
+ * This entity is Point Of Sales (POS)? 1 sales channel has multi-POS.
+ * 
+ */
 @Entity
 @Table(name = "operator_stall")
 public class Stall extends AbstractActiveCodeOLObject {
