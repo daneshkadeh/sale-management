@@ -262,7 +262,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
             @Override
             public int getSize() {
-                return getVisibleRowCount();
+                return mainTableModel.getRowCount();
             }
 
             @Override
