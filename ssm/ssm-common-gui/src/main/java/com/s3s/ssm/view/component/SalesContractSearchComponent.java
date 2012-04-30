@@ -15,13 +15,13 @@
 
 package com.s3s.ssm.view.component;
 
-import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.sales.SalesContract;
 
 /**
  * @author Phan Hong Phuc
  * @since Apr 24, 2012
  */
-public class InvoiceSearchComponent extends ASearchComponent<Invoice> {
+public class SalesContractSearchComponent extends ASearchComponent<SalesContract> {
     private static final long serialVersionUID = -7923869563577246501L;
 
     /**
@@ -29,7 +29,7 @@ public class InvoiceSearchComponent extends ASearchComponent<Invoice> {
      */
     @Override
     protected String[] getDisplayAttributes() {
-        return new String[] { "invoiceNumber" };
+        return new String[] { "code" };
     }
 
     /**
@@ -37,7 +37,7 @@ public class InvoiceSearchComponent extends ASearchComponent<Invoice> {
      */
     @Override
     protected String[] getAttributeColumns() {
-        return new String[] { "invoiceNumber", "contact.name", "createdDate" };
+        return new String[] { "code", "supplier.name", "dateContract" };
     }
 
     /**
@@ -45,6 +45,6 @@ public class InvoiceSearchComponent extends ASearchComponent<Invoice> {
      */
     @Override
     protected String[] getSearchedOnAttributes() {
-        return new String[] { "invoiceNumber" };
+        return new String[] { "code", "supplier.name", "dateContract" };
     }
 }

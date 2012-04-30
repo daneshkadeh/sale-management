@@ -56,13 +56,17 @@ public class TreeNodeWithView extends DefaultMutableTreeNode {
         this(label, view, null);
     }
 
+    public TreeNodeWithView(String label, Icon icon) {
+        this(label, null, icon);
+    }
+
     /**
      * Init the node with the label and no view.
      * 
      * @param label
      */
     public TreeNodeWithView(String label) {
-        this(label, null);
+        this(label, null, null);
     }
 
     public JPanel getView() {

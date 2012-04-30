@@ -20,11 +20,11 @@ package com.s3s.ssm.util;
  * 
  */
 public class ImageConstants {
-    public static final int SMALL_SIZE = 16;
+    public static final int SMALL_SIZE = 20;
     public static final int MEDIUM_SIZE = 32;
     public static final int BIG_SIZE = 64;
 
-    public static final String USER_ICON = "/icons/user.png";
+    // public static final String USER_ICON = "/icons/user.png";
     public static final String ERROR_ICON = "/icons/errorIcon.gif";
     public static final String INFO_ICON = "/icons/infoIcon.png";
     public static final String WARNING_ICON = "/icons/warningIcon.png";
@@ -51,5 +51,10 @@ public class ImageConstants {
     public static final String SUPPLIED_PEOPLE_ICON = "/icons/suppliedPeopleIcon.png";
     public static final String SEARCH_ICON = "/icons/searchIcon.png";
     public static final String CLEAR_ICON = "/icons/clearIcon.png";
-
+    // Config Icon
+    public static final String EXCHANGE_RATING_ICON = "/icons/exRateIcon.png";
+    public static final String CURRENCY_ICON = "/icons/currencyIcon.png";
+    public static final String MONEY_ICON = "/icons/moneyIcon.png";
+    // Operator Icon
+    public static final String USER_ICON = "/icons/userIcon.png";
 }

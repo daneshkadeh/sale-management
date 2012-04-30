@@ -5,6 +5,7 @@ public interface CacheId {
     public static String REF_LIST_PRODUCT = "referenceListProduct";
 
     // Config
+    public static String REF_LIST_ROLE = "referenceListRole";
     public static String REF_LIST_UNIT_UOM = "referenceListUnitUom";
     public static String REF_LIST_UOM_CATE = "referenceListUomCate";
     public static String REF_LIST_OPERATOR = "referenceListOperator";

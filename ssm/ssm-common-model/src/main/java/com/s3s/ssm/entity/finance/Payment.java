@@ -30,6 +30,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.contact.Partner;
@@ -52,6 +53,7 @@ public class Payment extends AbstractCodeOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "payment_content_id")
+    @NotNull
     public PaymentContent getPaymentContent() {
         return paymentContent;
     }
@@ -61,6 +63,7 @@ public class Payment extends AbstractCodeOLObject {
     }
 
     @Column(name = "payment_date")
+    @NotNull
     public Date getPaymentDate() {
         return paymentDate;
     }
@@ -101,6 +104,7 @@ public class Payment extends AbstractCodeOLObject {
 
     @ManyToOne
     @JoinColumn(name = "partner_id")
+    @NotNull
     public Partner getPartner() {
         return partner;
     }
@@ -111,6 +115,7 @@ public class Payment extends AbstractCodeOLObject {
 
     @ManyToOne
     @JoinColumn(name = "operator_id")
+    @NotNull
     public Operator getOperator() {
         return operator;
     }

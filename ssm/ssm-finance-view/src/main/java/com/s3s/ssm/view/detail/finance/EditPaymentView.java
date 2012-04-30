@@ -23,6 +23,7 @@ import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditPaymentView extends AbstractSingleEditView<Payment> {
+    private static final long serialVersionUID = -4763938512698675549L;
 
     public EditPaymentView(Map<String, Object> entity) {
         super(entity);

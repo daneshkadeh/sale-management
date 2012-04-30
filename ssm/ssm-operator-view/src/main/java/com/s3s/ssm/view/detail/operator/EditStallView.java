@@ -58,7 +58,7 @@ public class EditStallView extends AbstractSingleEditView<Stall> {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("manager", DetailFieldType.ENTITY_CHOOSER).referenceDataId(MANAGER_REF_ID);
-        detailDataModel.addAttribute("isActive", DetailFieldType.CHECKBOX);
+        detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX);
         detailDataModel.addAttribute("staffs", DetailFieldType.MULTI_SELECT_LIST_BOX).referenceDataId(STAFF_REF_ID);
         detailDataModel.addAttribute("salesTarget", DetailFieldType.SALE_TARGET).referenceDataId(
                 DEFAULT_SALE_TARGET_REF_ID);

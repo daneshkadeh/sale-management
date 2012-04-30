@@ -35,6 +35,8 @@ import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.operator.Operator;
+import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 
@@ -45,6 +47,8 @@ public class Invoice extends AbstractIdOLObject {
     private String invoiceNumber;
     private InvoiceType type;
     private Partner contact;
+    private Operator staff;
+    private Store exportStore;
     private Date createdDate;
     private Money moneyBeforeTax = Money.zero(CurrencyEnum.VND);
     private Money moneyOfTax = Money.zero(CurrencyEnum.VND);
@@ -87,7 +91,29 @@ public class Invoice extends AbstractIdOLObject {
         this.contact = contact;
     }
 
-    @Column(name = "created_date", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "staff_id")
+    @NotNull
+    public Operator getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Operator staff) {
+        this.staff = staff;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "export_store_id")
+    @NotNull
+    public Store getExportStore() {
+        return exportStore;
+    }
+
+    public void setExportStore(Store exportStore) {
+        this.exportStore = exportStore;
+    }
+
+    @Column(name = "created_date")
     @NotNull
     public Date getCreatedDate() {
         return createdDate;

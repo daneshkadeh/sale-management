@@ -72,15 +72,15 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
     private static final int NUM_VISIBLE_ROWS = 10;
     private static final long serialVersionUID = -869806032147504253L;
     private static final int MAX_RESULT = 50;
-    private JTextField textField;
+    protected JTextField textField;
     private JWindow popup;
     private JScrollPane tablePane;
     private JXTable table;
     private List<T> entities = new ArrayList<>();
     private String[] attributeColumns;
-    private String[] searchOnAttributes;
+    protected String[] searchOnAttributes;
     private String[] displayAttribute;
-    private IBaseDao<T> dao;
+    protected IBaseDao<T> dao;
     private EntityLoader worker = new EntityLoader();
     private T selectedEntity;
     private Class<T> entityClass;
@@ -183,10 +183,10 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
      */
     private String createPromptText() {
         StringBuilder sb = new StringBuilder();
-        sb.append(ControlConfigUtils.getString("SearchComponent.input")).append(' ');
+        sb.append(ControlConfigUtils.getString("SearchComponent.input")).append(UIConstants.BLANK);
         List<String> attributes = new ArrayList<>(searchOnAttributes.length);
         for (String attribute : searchOnAttributes) {
-            attributes.add(ControlConfigUtils.getString(entityClass.getSimpleName() + '.' + attribute));
+            attributes.add(ControlConfigUtils.getString("label." + entityClass.getSimpleName() + '.' + attribute));
         }
         sb.append(StringUtils.join(attributes, ", "));
         return sb.toString();
@@ -282,7 +282,8 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
 
         @Override
         public String getColumnName(int column) {
-            return ControlConfigUtils.getString(entityClass.getSimpleName() + '.' + attributeColumns[column]);
+            return ControlConfigUtils
+                    .getString("label." + entityClass.getSimpleName() + '.' + attributeColumns[column]);
         }
 
         @Override

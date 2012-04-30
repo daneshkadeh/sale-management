@@ -1,6 +1,7 @@
 package com.s3s.ssm.service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.catalog.Goods;
 import com.s3s.ssm.entity.catalog.Item;
+import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.store.ClosingStoreEntry;
 import com.s3s.ssm.entity.store.DetailClosingStore;
@@ -43,6 +45,7 @@ import com.s3s.ssm.util.CacheId;
 @Transactional
 @Service("storeServiceImpl")
 public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStoreService {
+    private static final String EXPORT_STORE_FORM_SEQ = "export_store_form_seq";
 
     @Override
     public void init() {
@@ -60,6 +63,12 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
         } catch (NoSuchMethodException | SecurityException e) {
             throw new RuntimeException("Cannot register method to cache service!", e);
         }
+    }
+
+    @Override
+    public String getNextExportStoreFormSeq() {
+        long nextNumber = getDaoHelper().getDao(ExportStoreForm.class).getNextSequence(EXPORT_STORE_FORM_SEQ);
+        return String.valueOf(nextNumber);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -242,6 +251,7 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
                     updateDetailClosingStoreByImportStore(newDetailSet, latestClosingEntryDate);
                     // get data from export store
                     updateDetailClosingStoreByExportStore(newDetailSet, latestClosingEntryDate);
+
                 }
                 newClosingEntry.setClosingStoreSet(newDetailSet);
                 getDaoHelper().getDao(ClosingStoreEntry.class).save(newClosingEntry);
@@ -251,7 +261,7 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
 
     public List getGroupedDetailImportList(final Date date) {
         if (date == null) {
-            return null;
+            return Collections.EMPTY_LIST;
         }
         final DetachedCriteria dc = getDaoHelper().getDao(DetailImportStore.class).getCriteria();
         List groupedDetailList = (List) getDaoHelper().getDao(DetailImportStore.class).getHibernateTmpl()
@@ -274,7 +284,7 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
 
     public List getGroupedDetailExportList(final Date date) {
         if (date == null) {
-            return null;
+            return Collections.EMPTY_LIST;
         }
         final DetachedCriteria dc = getDaoHelper().getDao(DetailExportStore.class).getCriteria();
         List groupedDetailList = (List) getDaoHelper().getDao(DetailExportStore.class).getHibernateTmpl()
@@ -293,6 +303,28 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
                     }
                 });
         return groupedDetailList;
+    }
+
+    @Override
+    public void createExportStoreForm(Invoice invoice) {
+        ExportStoreForm exportForm = new ExportStoreForm();
+        exportForm.setCode(getNextExportStoreFormSeq());
+        exportForm.setStaff(invoice.getStaff());
+        exportForm.setStore(invoice.getExportStore());
+        exportForm.setInvoice(invoice);
+        int lineNo = 0;
+        for (DetailInvoice invoiceDetail : invoice.getDetailInvoices()) {
+            DetailExportStore exportDetail = new DetailExportStore();
+            exportDetail.setLineNo(lineNo);
+            exportDetail.setExportForm(exportForm);
+            exportDetail.setProduct(invoiceDetail.getProduct());
+            exportDetail.setItem(invoiceDetail.getItem());
+            exportDetail.setUom(invoiceDetail.getUom());
+            exportDetail.setBaseUom(invoiceDetail.getBaseUom());
+            exportForm.getExportDetails().add(exportDetail);
+            lineNo++;
+        }
+        getDaoHelper().getDao(ExportStoreForm.class).save(exportForm);
     }
 
     private void updateDetailClosingStoreByLatestInventoryForm(ClosingStoreEntry newClosingEntry,
@@ -363,7 +395,7 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
                     Integer qty = (Integer) exportDetail[2];
                     if (initDetail.getProduct().equals(product) && initDetail.getItem().equals(item)) {
                         int oldValue = initDetail.getQty();
-                        int newValue = oldValue + qty;
+                        int newValue = oldValue - qty;
                         initDetail.setQty(newValue);
                     }
                 }

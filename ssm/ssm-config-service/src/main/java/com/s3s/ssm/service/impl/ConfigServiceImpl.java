@@ -23,6 +23,7 @@ import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
+import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.util.CacheId;
@@ -36,6 +37,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     public void init() {
         serviceProvider.register(IConfigService.class, this);
         try {
+            getCacheDataService().registerCache(CacheId.REF_LIST_ROLE, this, this.getClass().getMethod("getRoles"));
             getCacheDataService().registerCache(CacheId.REF_LIST_CURRENCY, this,
                     this.getClass().getMethod("getCurrencyCodes"));
             getCacheDataService().registerCache(CacheId.REF_LIST_BANK, this, this.getClass().getMethod("getBanks"));
@@ -131,27 +133,6 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     public Double getExchangeRate(SCurrency currency) {
         return getExchangeRate(CurrencyEnum.valueOf(currency.getCode()), new Date(0));
     }
-
-    //
-    // /**
-    // * {@inheritDoc}
-    // */
-    // @Override
-    // public String generateCode(Class clazz) {
-    // String genCode = "";
-    // Long maxId = getMaxId(Payment.class);
-    // String orgCode = getDefOrganization().getCode();
-    // Organization org = getDaoHelper().getDao(Organization.class).findByCode(orgCode);
-    // if (org == null) {
-    // return genCode;
-    // }
-    // String ruleCode = "";
-    // if (clazz.getName().equalsIgnoreCase(Payment.class.getName())) {
-    // ruleCode = org.getPaymentBillCodeRule();
-    // }
-    // genCode = generateCode(ruleCode, maxId);
-    // return genCode;
-    // }
 
     /**
      * 
@@ -277,5 +258,14 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
             return uom.getName();
         }
         return "";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Role> getRoles() {
+        List<Role> roles = getDaoHelper().getDao(Role.class).findAllActive();
+        return roles;
     }
 }

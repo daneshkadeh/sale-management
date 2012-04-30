@@ -22,4 +22,24 @@ public class ComponentFactory {
         InvoiceSearchComponent psc = new InvoiceSearchComponent();
         return new SearchComponentInfo(psc);
     }
+
+    public static IComponentInfo createSalesInvoiceComponentInfo() {
+        InvoiceSearchComponent psc = new InvoiceSearchComponent();
+        return new SearchComponentInfo(psc);
+    }
+
+    public static IComponentInfo createAccountingStaffComponentInfo() {
+        OperatorSearchComponent psc = new OperatorSearchComponent();
+        return new SearchComponentInfo(psc);
+    }
+
+    public static IComponentInfo createStorekeeperComponentInfo() {
+        OperatorSearchComponent psc = new OperatorSearchComponent();
+        return new SearchComponentInfo(psc);
+    }
+
+    public static IComponentInfo createSalesContractComponentInfo() {
+        SalesContractSearchComponent psc = new SalesContractSearchComponent();
+        return new SearchComponentInfo(psc);
+    }
 }

@@ -17,6 +17,9 @@ import com.s3s.ssm.entity.store.ShipPriceType;
 import com.s3s.ssm.entity.store.Store;
 
 public interface IStoreService {
+
+    public String getNextExportStoreFormSeq();
+
     public List<Store> getStores();
 
     public Store getStoreByCode(String code);
@@ -60,4 +63,6 @@ public interface IStoreService {
     public Date getDateOfLatestClosingStoreEntry(Store store);
 
     public Date getDateOfLatestInventoryStoreForm(Store store);
+
+    public void createExportStoreForm(Invoice invoice);
 }

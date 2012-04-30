@@ -306,7 +306,7 @@ public class SSMDataLoader {
         Set<ItemPrice> listItemPrices = initItemPrice(daoHelper, listItem, listContact);
         List<ItemOriginPrice> listItemOriginPrices = initItemOriginPrice(daoHelper, listItem, listSupplier);
         List<SalesContract> listSalesContracts = initSalesContracts(daoHelper, listSupplier, listItem);
-        List<Invoice> listInvoice = initInvoice(daoHelper, listItem, listContact);
+        List<Invoice> listInvoice = initInvoice(daoHelper, listItem, listContact, listOperator, listStore);
         // Init data for Store module
         List<ShipPrice> listShipPrice = initShipPrice(daoHelper);
         List<TransportationType> listTransportationType = initTransportationType(daoHelper);
@@ -719,10 +719,15 @@ public class SSMDataLoader {
     /**
      * create 2 invoices "0000001" without contact and "0000002" with contact.
      */
-    private static List<Invoice> initInvoice(DaoHelper daoHelper, List<Item> listItem, List<Partner> listContact) {
+    private static List<Invoice> initInvoice(DaoHelper daoHelper, List<Item> listItem, List<Partner> listContact,
+            List<Operator> listStaff, List<Store> listStore) {
+        // TODO: use another way to get the uom after product category have default uom
+        UnitOfMeasure unit = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
         Invoice invoice1 = new Invoice();
         invoice1.setContact(listContact.get(0));
+        invoice1.setStaff(listStaff.get(0));
         invoice1.setInvoiceNumber("0000001");
+        invoice1.setExportStore(listStore.get(0));
         invoice1.setCreatedDate(new Date());
         invoice1.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice1.setStatus(InvoiceStatus.OPEN);
@@ -736,6 +741,8 @@ public class SSMDataLoader {
         detailInvoice.setInvoice(invoice1);
         detailInvoice.setItem(listItem.get(0));
         detailInvoice.setProduct(listItem.get(0).getProduct());
+        detailInvoice.setUom(unit);
+        detailInvoice.setBaseUom(unit);
         detailInvoice.setAmount(2);
         detailInvoice.setPriceBeforeTax(Money.create(CurrencyEnum.VND, 5000L));
         detailInvoice.setPriceAfterTax(Money.create(CurrencyEnum.VND, 5000L));
@@ -750,6 +757,8 @@ public class SSMDataLoader {
             detailPack.setInvoice(invoice1);
             detailPack.setPackageLine(line);
             detailPack.setItem(line.getProduct().getListItems().iterator().next());
+            detailPack.setUom(unit);
+            detailPack.setBaseUom(unit);
             detailPack.setAmount(line.getMinItemAmount());
             detailPack.setPriceBeforeTax(Money.create(CurrencyEnum.VND, 5000L));
             detailPack.setPriceAfterTax(Money.create(CurrencyEnum.VND, 5000L));
@@ -760,7 +769,9 @@ public class SSMDataLoader {
 
         Invoice invoice2 = new Invoice();
         invoice2.setContact(listContact.get(0));
+        invoice2.setStaff(listStaff.get(0));
         invoice2.setInvoiceNumber("0000002");
+        invoice2.setExportStore(listStore.get(0));
         invoice2.setCreatedDate(new Date());
         invoice2.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice2.setStatus(InvoiceStatus.OPEN);
@@ -773,6 +784,8 @@ public class SSMDataLoader {
         DetailInvoice detailInvoice2 = new DetailInvoice();
         detailInvoice2.setInvoice(invoice2);
         detailInvoice2.setItem(listItem.get(0));
+        detailInvoice2.setUom(unit);
+        detailInvoice2.setBaseUom(unit);
         detailInvoice2.setAmount(2);
         detailInvoice2.setPriceBeforeTax(Money.create(CurrencyEnum.VND, 6000L));
         detailInvoice2.setPriceAfterTax(Money.create(CurrencyEnum.VND, 6000L));
@@ -783,6 +796,8 @@ public class SSMDataLoader {
         DetailInvoice detailInvoice3 = new DetailInvoice();
         detailInvoice3.setInvoice(invoice2);
         detailInvoice3.setItem(listItem.get(0));
+        detailInvoice3.setUom(unit);
+        detailInvoice3.setBaseUom(unit);
         detailInvoice3.setAmount(2);
         detailInvoice3.setPriceBeforeTax(Money.create(CurrencyEnum.VND, 5000L));
         detailInvoice3.setPriceAfterTax(Money.create(CurrencyEnum.VND, 5000L));
