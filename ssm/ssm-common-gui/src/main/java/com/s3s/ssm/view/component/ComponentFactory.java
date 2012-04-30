@@ -17,4 +17,9 @@ public class ComponentFactory {
         ProductSearchComponent psc = new ProductSearchComponent();
         return new SearchComponentInfo(psc);
     }
+
+    public static IComponentInfo createInvoiceComponentInfo() {
+        InvoiceSearchComponent psc = new InvoiceSearchComponent();
+        return new SearchComponentInfo(psc);
+    }
 }
