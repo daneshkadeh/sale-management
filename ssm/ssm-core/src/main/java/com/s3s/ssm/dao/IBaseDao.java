@@ -94,6 +94,4 @@ public interface IBaseDao<T> {
      * @return the next sequence of <code>name</code>
      */
     long getNextSequence(String name);
-
-    public HibernateTemplate getHibernateTmpl();
 }

@@ -57,7 +57,11 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     @Override
     public int getRowCount() {
-        return isEditable ? visibleRowCount : entities.size();
+        if (isEditable) {
+            return entities.size() < visibleRowCount ? visibleRowCount : entities.size() + 1; // add 1 new row
+        }
+        return entities.size();
+
     }
 
     @Override
@@ -105,7 +109,7 @@ public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractT
 
     public void addRowAt(int index, T entity) {
         entities.add(index, entity);
-        fireTableRowsInserted(entities.size() - 1, entities.size() - 1);
+        fireTableRowsInserted(index, index);
     }
 
     public void setEntities(Collection<T> entities) {
