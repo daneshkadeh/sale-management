@@ -13,7 +13,7 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.dto;
+package com.s3s.ssm.dto.store;
 
 import java.io.Serializable;
 
