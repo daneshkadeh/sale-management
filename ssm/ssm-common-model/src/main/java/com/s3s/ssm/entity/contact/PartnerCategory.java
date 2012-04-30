@@ -105,13 +105,13 @@ public class PartnerCategory extends AbstractCodeOLObject implements Serializabl
 
     @Transient
     @Override
-    public Boolean isActive() {
+    public boolean isActive() {
         return getIsActive();
     }
 
     @Transient
     @Override
-    public void setActive(Boolean isActive) {
+    public void setActive(boolean isActive) {
         setIsActive(isActive);
     }
 }

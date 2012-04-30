@@ -9,12 +9,12 @@ public class AbstractActiveIdOLObject extends AbstractIdOLObject implements IAct
 
     @Override
     @Column(name = "active")
-    public Boolean isActive() {
+    public boolean isActive() {
         return active;
     }
 
     @Override
-    public void setActive(Boolean isActive) {
+    public void setActive(boolean isActive) {
         active = isActive;
     }
 }

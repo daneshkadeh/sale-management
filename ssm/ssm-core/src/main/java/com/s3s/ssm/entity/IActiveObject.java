@@ -7,7 +7,7 @@ package com.s3s.ssm.entity;
  * 
  */
 public interface IActiveObject {
-    public Boolean isActive();
+    public boolean isActive();
 
-    public void setActive(Boolean isActive);
+    public void setActive(boolean isActive);
 }
