@@ -74,7 +74,8 @@ public class MainProgram {
             "i18n/finance_label", "i18n/sales_label", "i18n/shipment_label", "i18n/contact_label", "i18n/store_label",
             "i18n/supplychain_label", "i18n/operator_label", "i18n/gui_label", "i18n/error", "i18n/config_error",
             "i18n/catalog_error", "i18n/finance_error", "i18n/sales_error", "i18n/shipment_error",
-            "i18n/contact_error", "i18n/store_error", "i18n/supplychain_error", "i18n/operator_error", "i18n/gui_error" };
+            "i18n/contact_error", "i18n/store_error", "i18n/supplychain_error", "i18n/operator_error",
+            "i18n/gui_error", "i18n/common_gui_label" };
 
     private static JFrame frame;
     private static Container contentPane;
