@@ -61,15 +61,22 @@ public class SystemManagementDomain extends AbstractDomain {
         ImageIcon userIcon = ImageUtils.getSmallIcon(ImageConstants.USER_ICON);
         TreeNodeWithView userManagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.UserManagement"), userIcon);
+        ImageIcon userNodeIcon = ImageUtils.getSmallIcon(ImageConstants.USER_NODE_ICON);
         TreeNodeWithView userNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.UserManagement.User"),
-                new ListOperatorView());
+                new ListOperatorView(userNodeIcon, ControlConfigUtils.getString("label.Operator.list.title"), null),
+                userNodeIcon);
+        // Role
+        ImageIcon roleIcon = ImageUtils.getSmallIcon(ImageConstants.ROLE_ICON);
         TreeNodeWithView profilesNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.UserManagement.Profiles"), new ListRoleView(null,
-                        ControlConfigUtils.getString("label.Role.list.title"), null));
+                ControlConfigUtils.getString("JTree.UserManagement.Profiles"), new ListRoleView(roleIcon,
+                        ControlConfigUtils.getString("label.Role.list.title"), null), roleIcon);
         // TreeNodeWithView exceptionPrivilegeNode = new TreeNodeWithView(
         // ControlConfigUtils.getString("JTree.UserManagement.ExceptionPrivilege"));
+        // Stall
+        ImageIcon stallIcon = ImageUtils.getSmallIcon(ImageConstants.STALL_ICON);
         TreeNodeWithView operatorNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.UserManagement.Stall"), new ListStallView());
+                ControlConfigUtils.getString("JTree.UserManagement.Stall"), new ListStallView(stallIcon,
+                        ControlConfigUtils.getString("label.Stall.list.title"), null), stallIcon);
         rootNode.add(userManagementEntry);
         userManagementEntry.add(userNode);
         userManagementEntry.add(profilesNode);
@@ -77,18 +84,26 @@ public class SystemManagementDomain extends AbstractDomain {
         userManagementEntry.add(operatorNode);
 
         // Manufacturer management
+        ImageIcon manufacturerIcon = ImageUtils.getSmallIcon(ImageConstants.MANUFACTURER_ICON);
         TreeNodeWithView mfManagementEntry = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.System.Manufacturer"), new ListManufacturerView());
+                ControlConfigUtils.getString("JTree.System.Manufacturer"), new ListManufacturerView(manufacturerIcon,
+                        ControlConfigUtils.getString("label.Manufacturer.list.title"), null), manufacturerIcon);
         rootNode.add(mfManagementEntry);
 
         // Product management
         TreeNodeWithView productManagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.ProductManagement"));
+        // UOM Category
+        ImageIcon uomCateIcon = ImageUtils.getSmallIcon(ImageConstants.UOM_CATE_ICON);
         TreeNodeWithView uomCategoryNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.System.UomCategory"), new ListUomCategoryView());
-
-        TreeNodeWithView uomNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.UnitOfMeasure"),
-                new ListUnitOfMeasureView(null, ControlConfigUtils.getString("label.UnitOfMeasure.list.title"), null));
+                ControlConfigUtils.getString("JTree.System.UomCategory"), new ListUomCategoryView(uomCateIcon,
+                        ControlConfigUtils.getString("label.UnitOfMeasure.list.title"), null), uomCateIcon);
+        // UOM
+        ImageIcon uomIcon = ImageUtils.getSmallIcon(ImageConstants.UOM_ICON);
+        TreeNodeWithView uomNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.System.UnitOfMeasure"),
+                new ListUnitOfMeasureView(uomIcon, ControlConfigUtils.getString("label.UnitOfMeasure.list.title"), null),
+                uomIcon);
 
         TreeNodeWithView productPropertyNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.ProductProperty"), new ListProductPropertyView());
@@ -105,17 +120,17 @@ public class SystemManagementDomain extends AbstractDomain {
 
         TreeNodeWithView packageNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Package"),
                 new ListPackageView());
-
-        // TreeNodeWithView itemNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Item"),
-        // new ListItemView());
-        // Basic Information Management
-        // TreeNodeWithView basicInformationEntry = new TreeNodeWithView(
-        // ControlConfigUtils.getString("JTree.System.BasicInformation"), new ListBasicInformationView());
+        // Institution
+        ImageIcon institutionIcon = ImageUtils.getSmallIcon(ImageConstants.INSTITUTION_ICON);
         TreeNodeWithView institutionEntry = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.System.Institution"), new ListInstitutionView());
+                ControlConfigUtils.getString("JTree.System.Institution"), new ListInstitutionView(institutionIcon,
+                        ControlConfigUtils.getString("label.Institution.list.title"), null), institutionIcon);
         rootNode.add(institutionEntry);
+        // Organization
+        ImageIcon orgIcon = ImageUtils.getSmallIcon(ImageConstants.ORGANIZATION_ICON);
         TreeNodeWithView orgEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Organization"),
-                new ListOrganizationView());
+                new ListOrganizationView(orgIcon, ControlConfigUtils.getString("label.Organization.list.title"), null),
+                orgIcon);
         rootNode.add(orgEntry);
         // TODO: ListTaxGroupView
         TreeNodeWithView taxGroupNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.TaxGroup"));

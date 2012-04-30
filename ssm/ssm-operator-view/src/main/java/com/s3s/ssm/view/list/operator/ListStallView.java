@@ -15,6 +15,8 @@
 
 package com.s3s.ssm.view.list.operator;
 
+import javax.swing.Icon;
+
 import com.s3s.ssm.entity.operator.Stall;
 import com.s3s.ssm.view.detail.operator.EditStallView;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -32,6 +34,10 @@ public class ListStallView extends AbstractListView<Stall> {
      * 
      */
     private static final long serialVersionUID = -4623351888966805171L;
+
+    public ListStallView(Icon icon, String label, String tooltip) {
+        super(icon, label, tooltip);
+    }
 
     /**
      * {@inheritDoc}

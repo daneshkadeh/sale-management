@@ -15,6 +15,8 @@
 
 package com.s3s.ssm.view.list.operator;
 
+import javax.swing.Icon;
+
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.view.detail.operator.EditOperatorView;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -27,6 +29,11 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * 
  */
 public class ListOperatorView extends AbstractListView<Operator> {
+    private static final long serialVersionUID = 5896113196067552283L;
+
+    public ListOperatorView(Icon icon, String label, String tooltip) {
+        super(icon, label, tooltip);
+    }
 
     /**
      * {@inheritDoc}
