@@ -1285,13 +1285,13 @@
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <XPD:ATTR name="Left" type="integer">920</XPD:ATTR>
 <XPD:ATTR name="Top" type="integer">764</XPD:ATTR>
-<XPD:ATTR name="Width" type="integer">86</XPD:ATTR>
+<XPD:ATTR name="Width" type="integer">108</XPD:ATTR>
 <XPD:ATTR name="Height" type="integer">69</XPD:ATTR>
 <XPD:REF name="Model">PrZQDI21mEy1vXr2rl1m8AAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="wFiNo14Qj0eUxPWNEHNqmQAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="V7dn5+6oP0CxoRHC2/hJXQAA">
 <XPD:ATTR name="FontStyle" type="integer">1</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">SCFeeType</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">AddedSCFeeType</XPD:ATTR>
 </XPD:OBJ>
 <XPD:OBJ name="StereotypeLabel" type="LabelView" guid="Eb9RSZOjuk6ELTiHC4lH9QAA">
 <XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
@@ -3329,7 +3329,7 @@
 <XPD:REF name="Associations[2]">JStgacS4fUmvOyAmwoaO6QAA</XPD:REF>
 <XPD:REF name="Associations[3]">W55B8pK7ykqnsICojZ/oHwAA</XPD:REF>
 <XPD:REF name="Associations[4]">w2aTJVbRC0mokIDNRGC01gAA</XPD:REF>
-<XPD:ATTR name="#Attributes" type="integer">5</XPD:ATTR>
+<XPD:ATTR name="#Attributes" type="integer">4</XPD:ATTR>
 <XPD:OBJ name="Attributes[0]" type="UMLAttribute" guid="0oouAuS2+kuRrkSsedcStgAA">
 <XPD:ATTR name="Name" type="string">Code</XPD:ATTR>
 <XPD:REF name="Owner">d3VAjIQnO0y/e99gTfCVQQAA</XPD:REF>
@@ -3338,15 +3338,11 @@
 <XPD:ATTR name="Name" type="string">Date</XPD:ATTR>
 <XPD:REF name="Owner">d3VAjIQnO0y/e99gTfCVQQAA</XPD:REF>
 </XPD:OBJ>
-<XPD:OBJ name="Attributes[2]" type="UMLAttribute" guid="d20UqKz2bEmlXEqS26UVxwAA">
-<XPD:ATTR name="Name" type="string">ListOperations</XPD:ATTR>
-<XPD:REF name="Owner">d3VAjIQnO0y/e99gTfCVQQAA</XPD:REF>
-</XPD:OBJ>
-<XPD:OBJ name="Attributes[3]" type="UMLAttribute" guid="kPlZl8zWzEGSBdb7HsYUdAAA">
+<XPD:OBJ name="Attributes[2]" type="UMLAttribute" guid="kPlZl8zWzEGSBdb7HsYUdAAA">
 <XPD:ATTR name="Name" type="string">ImportDate</XPD:ATTR>
 <XPD:REF name="Owner">d3VAjIQnO0y/e99gTfCVQQAA</XPD:REF>
 </XPD:OBJ>
-<XPD:OBJ name="Attributes[4]" type="UMLAttribute" guid="qg6ietQ6nEi0FHsGeijXKQAA">
+<XPD:OBJ name="Attributes[3]" type="UMLAttribute" guid="qg6ietQ6nEi0FHsGeijXKQAA">
 <XPD:ATTR name="Name" type="string">State</XPD:ATTR>
 <XPD:REF name="Owner">d3VAjIQnO0y/e99gTfCVQQAA</XPD:REF>
 </XPD:OBJ>
@@ -3757,7 +3753,7 @@
 </XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[22]" type="UMLClass" guid="PrZQDI21mEy1vXr2rl1m8AAA">
-<XPD:ATTR name="Name" type="string">SCFeeType</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">AddedSCFeeType</XPD:ATTR>
 <XPD:REF name="Namespace">VbYbUVT7RU2twlTuViOATQAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
 <XPD:REF name="Views[0]">NeXMN2QghkquwYq/+8cFyAAA</XPD:REF>
