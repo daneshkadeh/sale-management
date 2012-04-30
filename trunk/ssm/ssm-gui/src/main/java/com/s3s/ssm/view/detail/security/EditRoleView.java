@@ -17,6 +17,8 @@ package com.s3s.ssm.view.detail.security;
 import java.util.Map;
 
 import com.s3s.ssm.entity.security.Role;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -37,5 +39,10 @@ public class EditRoleView extends AbstractSingleEditView<Role> {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX);
+    }
+
+    @Override
+    protected String getDefaultTitle(Role entity) {
+        return ControlConfigUtils.getString("label.Role.detail.title") + UIConstants.BLANK + entity.getCode();
     }
 }

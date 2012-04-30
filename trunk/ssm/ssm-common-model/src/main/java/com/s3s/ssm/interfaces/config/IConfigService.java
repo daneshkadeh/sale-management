@@ -10,6 +10,7 @@ import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.model.CurrencyEnum;
 
 public interface IConfigService {
@@ -69,4 +70,6 @@ public interface IConfigService {
     public UnitOfMeasure getBaseUom(UomCategory cate);
 
     public String getBaseUomName(UomCategory cate);
+
+    public List<Role> getRoles();
 }

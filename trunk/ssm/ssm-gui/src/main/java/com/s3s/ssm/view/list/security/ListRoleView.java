@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.list.security;
 
+import javax.swing.Icon;
+
 import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.view.detail.security.EditRoleView;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -23,6 +25,10 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListRoleView extends AbstractListView<Role> {
     private static final long serialVersionUID = 7072683198560551663L;
+
+    public ListRoleView(Icon icon, String label, String tooltip) {
+        super(icon, label, tooltip);
+    }
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {

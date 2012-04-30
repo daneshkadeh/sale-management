@@ -27,29 +27,29 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.s3s.ssm.entity.sales.SalesContract;
+import com.s3s.ssm.entity.sales.Invoice;
 
 /**
  * @author Le Thanh Hoang
  * 
  */
 @Entity
-@Table(name = "finance_contract_payment")
-@PrimaryKeyJoinColumn(name = "contract_payment_id")
-public class ContractPayment extends Payment {
+@Table(name = "finance_invoice_payment")
+@PrimaryKeyJoinColumn(name = "invoice_payment_id")
+public class InvoicePayment extends Payment {
     private static final long serialVersionUID = -1695893616913760376L;
-    private SalesContract salesContract;
+    private Invoice invoice;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @Cascade(value = CascadeType.SAVE_UPDATE)
-    @JoinColumn(name = "sales_contract_id")
+    @JoinColumn(name = "invoice_id")
     @NotNull
-    public SalesContract getSalesContract() {
-        return salesContract;
+    public Invoice getInvoice() {
+        return invoice;
     }
 
-    public void setSalesContract(SalesContract salesContract) {
-        this.salesContract = salesContract;
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 
 }

@@ -40,6 +40,8 @@ public class ListStallView extends AbstractListView<Stall> {
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListRendererType.TEXT);
         listDataModel.addColumn("name", ListRendererType.TEXT);
+        listDataModel.addColumn("manager", ListRendererType.TEXT);
+        listDataModel.addColumn("active", ListRendererType.BOOLEAN);
     }
 
     /**

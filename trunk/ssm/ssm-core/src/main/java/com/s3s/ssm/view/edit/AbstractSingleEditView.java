@@ -90,6 +90,7 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.Assert;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
+import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
@@ -1073,5 +1074,17 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         public void setErrorIcon(JLabel errorIcon) {
             this.errorIcon = errorIcon;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getDefaultTitle(T entity) {
+        if (entity instanceof AbstractCodeOLObject) {
+            return ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + ".detail.title")
+                    + UIConstants.BLANK + ((AbstractCodeOLObject) entity).getCode();
+        }
+        return entity.getId().toString();
     }
 }

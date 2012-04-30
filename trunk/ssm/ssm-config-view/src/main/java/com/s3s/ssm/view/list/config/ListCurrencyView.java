@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.list.config;
 
+import javax.swing.Icon;
+
 import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.view.detail.config.EditCurrencyView;
@@ -23,6 +25,9 @@ import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListCurrencyView extends AbstractListView<SCurrency> {
+    public ListCurrencyView(Icon icon, String label, String tooltip) {
+        super(icon, label, tooltip);
+    }
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
@@ -44,5 +49,4 @@ public class ListCurrencyView extends AbstractListView<SCurrency> {
     protected ACLResourceEnum registerACLResource() {
         return ACLResourceEnum.CURRENCY;
     }
-
 }

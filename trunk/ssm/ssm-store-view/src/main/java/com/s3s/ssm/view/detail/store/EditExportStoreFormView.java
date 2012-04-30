@@ -25,8 +25,7 @@ import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.interfaces.sales.InvoiceService;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
-import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -92,8 +91,8 @@ public class EditExportStoreFormView extends AbstractSingleEditView<ExportStoreF
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("printAfterSave", DetailFieldType.CHECKBOX).newColumn();
         detailDataModel.addAttribute("createdDate", DetailFieldType.DATE).mandatory(true);
-        detailDataModel.addAttribute("staff", DetailFieldType.ENTITY_CHOOSER).mandatory(true)
-                .cacheDataId(CacheId.REF_LIST_OPERATOR);
+        detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER).mandatory(true)
+                .componentInfo(ComponentFactory.createStorekeeperComponentInfo());
         detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_EXPORT_STORE_STATUS).newColumn();
 
@@ -102,8 +101,8 @@ public class EditExportStoreFormView extends AbstractSingleEditView<ExportStoreF
         detailDataModel.addAttribute("transType", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_TRANS_TYPE)
                 .newColumn();
         // TODO: Hoang should use SEARCH COMPONENT
-        detailDataModel.addAttribute("invoice", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_LIST)
-                .mandatory(true);
+        detailDataModel.addAttribute("invoice", DetailFieldType.SEARCHER).componentInfo(
+                ComponentFactory.createSalesInvoiceComponentInfo());
         detailDataModel.addAttribute("transPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY)
                 .newColumn();
         detailDataModel.addAttribute("custCode", DetailFieldType.LABEL);
@@ -129,11 +128,4 @@ public class EditExportStoreFormView extends AbstractSingleEditView<ExportStoreF
                 .getListProducts());
         refDataModel.putRefDataList(REF_LIST_ITEM, serviceProvider.getService(ICatalogService.class).getAllItem());
     }
-
-    @Override
-    protected String getDefaultTitle(ExportStoreForm entity) {
-        return ControlConfigUtils.getString("label.ExportStoreForm.detail.title") + UIConstants.BLANK
-                + entity.getCode();
-    }
-
 }

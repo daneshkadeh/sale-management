@@ -29,8 +29,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Max;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.userdetails.UserDetails;
@@ -85,7 +85,7 @@ public class User extends AbstractCodeOLObject implements Serializable, UserDeta
     }
 
     @Column(name = "password")
-    @Max(value = 32)
+    @Length(max = 32)
     @NotBlank
     public String getPassword() {
         return password;
@@ -97,7 +97,7 @@ public class User extends AbstractCodeOLObject implements Serializable, UserDeta
 
     @Column(name = "username", unique = true)
     @NotBlank
-    @Max(value = 256)
+    @Length(max = 256)
     public String getUsername() {
         return username;
     }

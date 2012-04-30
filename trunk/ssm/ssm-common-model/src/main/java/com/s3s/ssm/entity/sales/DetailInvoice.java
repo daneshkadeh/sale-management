@@ -41,6 +41,7 @@ import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.catalog.SPackage;
+import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 
@@ -54,6 +55,8 @@ public class DetailInvoice extends AbstractIdOLObject {
     private PackageLine packageLine;
     private DetailInvoice parent; // a package is parent detailInvoice, each line is a sub detailInvoice
     private Set<DetailInvoice> subs = new HashSet<>();
+    private UnitOfMeasure uom = new UnitOfMeasure();
+    private UnitOfMeasure baseUom = new UnitOfMeasure();
     private Integer amount = 0;
 
     // TODO: don't know why we have a lot of properties for price?
@@ -154,6 +157,26 @@ public class DetailInvoice extends AbstractIdOLObject {
 
     public void setSubs(Set<DetailInvoice> subs) {
         this.subs = subs;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "uom_id")
+    public UnitOfMeasure getUom() {
+        return uom;
+    }
+
+    public void setUom(UnitOfMeasure uom) {
+        this.uom = uom;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "base_uom_id")
+    public UnitOfMeasure getBaseUom() {
+        return baseUom;
+    }
+
+    public void setBaseUom(UnitOfMeasure baseUom) {
+        this.baseUom = baseUom;
     }
 
     @Column(name = "amount", nullable = false)

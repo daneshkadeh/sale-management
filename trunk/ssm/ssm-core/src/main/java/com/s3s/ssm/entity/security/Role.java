@@ -23,8 +23,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Max;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.acls.sid.Sid;
@@ -46,7 +46,7 @@ public class Role extends AbstractActiveCodeOLObject implements Serializable, Gr
     }
 
     @Column(name = "name", unique = true)
-    @Max(value = 250)
+    @Length(max = 250)
     @NotBlank
     public String getName() {
         return name;

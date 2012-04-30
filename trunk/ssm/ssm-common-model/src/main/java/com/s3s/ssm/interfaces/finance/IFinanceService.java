@@ -21,6 +21,8 @@ import java.util.List;
 import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.finance.PaymentType;
+import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.model.Money;
 
 /**
  * @author Le Thanh Hoang
@@ -35,5 +37,8 @@ public interface IFinanceService {
     public List<PaymentMode> getPaymentModes();
 
     public List<PaymentType> getPaymentTypes();
+
+    public void createInvoicePayment(Invoice invoice, PaymentContent paymentContent, PaymentMode paymentMode,
+            Money amount);
 
 }

@@ -14,14 +14,10 @@
  */
 package com.s3s.ssm.view.detail.security;
 
-import java.util.List;
 import java.util.Map;
 
-import javax.swing.DefaultListCellRenderer;
-
-import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.entity.security.User;
-import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -31,8 +27,7 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
  * 
  */
 public class EditUserView extends AbstractSingleEditView<User> {
-    private static final long serialVersionUID = 1L;
-    private static final String ROLE_REF_ID = "1";
+    private static final long serialVersionUID = -2701682654997129983L;
 
     public EditUserView(Map<String, Object> entity) {
         super(entity);
@@ -41,17 +36,9 @@ public class EditUserView extends AbstractSingleEditView<User> {
     @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, User entity, Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("isEnabled", DetailFieldType.CHECKBOX).newColumn();
         detailDataModel.addAttribute("username", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("password", DetailFieldType.PASSWORD).mandatory(true);
-        detailDataModel.addAttribute("roles", DetailFieldType.MULTI_SELECT_LIST_BOX).referenceDataId(ROLE_REF_ID);
-        detailDataModel.addAttribute("isEnabled", DetailFieldType.CHECKBOX);
-    }
-
-    @Override
-    protected void setReferenceDataModel(ReferenceDataModel refDataModel, User entity) {
-        super.setReferenceDataModel(refDataModel, entity);
-        List<Role> roleList = getDaoHelper().getDao(Role.class).findAll();
-        refDataModel.putRefDataList(ROLE_REF_ID,
-                refDataModel.new ReferenceData(roleList, new DefaultListCellRenderer()));
+        detailDataModel.addAttribute("roles", DetailFieldType.MULTI_SELECT_LIST_BOX).cacheDataId(CacheId.REF_LIST_ROLE);
     }
 }

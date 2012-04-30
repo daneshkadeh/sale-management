@@ -9,10 +9,13 @@ import org.hibernate.criterion.Property;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.s3s.ssm.entity.finance.InvoicePayment;
 import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.finance.PaymentType;
+import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.interfaces.finance.IFinanceService;
+import com.s3s.ssm.model.Money;
 import com.s3s.ssm.util.CacheId;
 
 @Transactional
@@ -74,5 +77,16 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
     @Override
     public List<PaymentType> getPaymentTypes() {
         return Arrays.asList(PaymentType.values());
+    }
+
+    public void createInvoicePayment(Invoice invoice, PaymentContent paymentContent, PaymentMode paymentMode,
+            Money amount) {
+        InvoicePayment payment = new InvoicePayment();
+        payment.setPaymentContent(paymentContent);
+        payment.setPartner(invoice.getContact());
+        payment.setOperator(invoice.getStaff());
+        payment.setPaymentMode(paymentMode);
+        payment.setAmount(amount);
+        getDaoHelper().getDao(InvoicePayment.class).save(payment);
     }
 }

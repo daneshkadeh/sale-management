@@ -5,7 +5,7 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class AbstractActiveCodeOLObject extends AbstractCodeOLObject implements IActiveObject {
-    private boolean active;
+    private boolean active = true;
 
     @Override
     @Column(name = "active")

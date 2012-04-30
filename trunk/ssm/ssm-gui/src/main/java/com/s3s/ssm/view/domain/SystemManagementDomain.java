@@ -58,20 +58,22 @@ public class SystemManagementDomain extends AbstractDomain {
     @Override
     protected void constructTreeView(TreeNodeWithView rootNode) {
         // User management
+        ImageIcon userIcon = ImageUtils.getSmallIcon(ImageConstants.USER_ICON);
         TreeNodeWithView userManagementEntry = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.UserManagement"));
+                ControlConfigUtils.getString("JTree.UserManagement"), userIcon);
         TreeNodeWithView userNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.UserManagement.User"),
                 new ListOperatorView());
         TreeNodeWithView profilesNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.UserManagement.Profiles"), new ListRoleView());
-        TreeNodeWithView exceptionPrivilegeNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.UserManagement.ExceptionPrivilege"));
+                ControlConfigUtils.getString("JTree.UserManagement.Profiles"), new ListRoleView(null,
+                        ControlConfigUtils.getString("label.Role.list.title"), null));
+        // TreeNodeWithView exceptionPrivilegeNode = new TreeNodeWithView(
+        // ControlConfigUtils.getString("JTree.UserManagement.ExceptionPrivilege"));
         TreeNodeWithView operatorNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.UserManagement.Stall"), new ListStallView());
         rootNode.add(userManagementEntry);
         userManagementEntry.add(userNode);
         userManagementEntry.add(profilesNode);
-        userManagementEntry.add(exceptionPrivilegeNode);
+        // userManagementEntry.add(exceptionPrivilegeNode);
         userManagementEntry.add(operatorNode);
 
         // Manufacturer management
@@ -138,14 +140,19 @@ public class SystemManagementDomain extends AbstractDomain {
 
         // Currency management
         // TODO: ListCurrencyView
+        ImageIcon moneyIcon = ImageUtils.getSmallIcon(ImageConstants.MONEY_ICON);
         TreeNodeWithView currencyManagementEntry = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.System.CurrencyManagement"));
-        TreeNodeWithView currenciesNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.System.CurrencyManagement.Currencies"), new ListCurrencyView());
+                ControlConfigUtils.getString("JTree.System.CurrencyManagement"), moneyIcon);
 
-        TreeNodeWithView exchangeRateNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.System.CurrencyManagement.ExchangeRate"),
-                new ListExchangeRateView());
+        ImageIcon currencyIcon = ImageUtils.getSmallIcon(ImageConstants.CURRENCY_ICON);
+        String currencyTitle = ControlConfigUtils.getString("JTree.System.CurrencyManagement.Currencies");
+        TreeNodeWithView currenciesNode = new TreeNodeWithView(currencyTitle, new ListCurrencyView(currencyIcon, null,
+                currencyTitle), currencyIcon);
+        // Exchange rating
+        ImageIcon exRateIcon = ImageUtils.getSmallIcon(ImageConstants.EXCHANGE_RATING_ICON);
+        String exRateTitle = ControlConfigUtils.getString("JTree.System.CurrencyManagement.ExchangeRate");
+        TreeNodeWithView exchangeRateNode = new TreeNodeWithView(exRateTitle, new ListExchangeRateView(exRateIcon,
+                null, exRateTitle), exRateIcon);
         rootNode.add(currencyManagementEntry);
         currencyManagementEntry.add(currenciesNode);
         currencyManagementEntry.add(exchangeRateNode);
