@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.view.list.config;
 
+import javax.swing.Icon;
+
 import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.view.detail.config.EditUomCategoryView;
@@ -23,6 +25,11 @@ import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class ListUomCategoryView extends AbstractListView<UomCategory> {
+    private static final long serialVersionUID = 959503437038525184L;
+
+    public ListUomCategoryView(Icon icon, String label, String tooltip) {
+        super(icon, label, tooltip);
+    }
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {

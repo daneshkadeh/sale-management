@@ -53,8 +53,16 @@ public class ImageConstants {
     public static final String CLEAR_ICON = "/icons/clearIcon.png";
     // Config Icon
     public static final String EXCHANGE_RATING_ICON = "/icons/exRateIcon.png";
+    public static final String STALL_ICON = "/icons/stallIcon.png";
     public static final String CURRENCY_ICON = "/icons/currencyIcon.png";
     public static final String MONEY_ICON = "/icons/moneyIcon.png";
+    public static final String MANUFACTURER_ICON = "/icons/manufacturerIcon.png";
+    public static final String UOM_ICON = "/icons/uomIcon.png";
+    public static final String UOM_CATE_ICON = "/icons/uomCateIcon.png";
     // Operator Icon
     public static final String USER_ICON = "/icons/userIcon.png";
+    public static final String USER_NODE_ICON = "/icons/userNodeIcon.png";
+    public static final String ROLE_ICON = "/icons/roleIcon.png";
+    // Catalog
+    public static final String PRODUCT_ICON = "/icons/productIcon.png";
 }
