@@ -97,7 +97,7 @@ public class User extends AbstractCodeOLObject implements Serializable, UserDeta
 
     @Column(name = "username", unique = true)
     @NotBlank
-    @Length(max = 256)
+    @Length(max = 50)
     public String getUsername() {
         return username;
     }

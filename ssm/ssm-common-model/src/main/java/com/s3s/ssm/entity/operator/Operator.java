@@ -28,6 +28,7 @@ import com.s3s.ssm.entity.security.User;
 @Table(name = "operator_operator")
 @PrimaryKeyJoinColumn(name = "operator_id")
 public class Operator extends User {
+    private static final long serialVersionUID = -313952441167958519L;
     private String fullName;
     private String email;
     private String phone;
@@ -44,7 +45,6 @@ public class Operator extends User {
     }
 
     @Column(name = "email")
-    @Length(max = 256)
     @Email
     public String getEmail() {
         return email;
@@ -65,7 +65,6 @@ public class Operator extends User {
     }
 
     @Column(name = "address")
-    @Length(max = 256)
     public String getAddress() {
         return address;
     }

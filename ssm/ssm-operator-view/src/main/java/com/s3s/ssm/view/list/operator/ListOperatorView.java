@@ -42,7 +42,9 @@ public class ListOperatorView extends AbstractListView<Operator> {
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListRendererType.TEXT);
         listDataModel.addColumn("username", ListRendererType.TEXT);
-        // listDataModel.addColumn("fullname", FieldTypeEnum.TEXTBOX));
+        listDataModel.addColumn("fullName", ListRendererType.TEXT);
+        listDataModel.addColumn("isEnabled", ListRendererType.BOOLEAN);
+        listDataModel.addColumn("address", ListRendererType.TEXT);
     }
 
     /**

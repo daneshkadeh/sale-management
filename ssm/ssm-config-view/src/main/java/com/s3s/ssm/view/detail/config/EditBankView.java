@@ -33,7 +33,6 @@ public class EditBankView extends AbstractSingleEditView<Bank> {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("address", DetailFieldType.TEXTAREA);
-        detailDataModel.addRawAttribute("test", DetailFieldType.TIME_COMPONENT).value(60000L);
     }
 
     @Override

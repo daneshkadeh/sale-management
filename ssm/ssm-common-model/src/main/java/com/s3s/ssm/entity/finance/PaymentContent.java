@@ -25,11 +25,12 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
 @Entity
 @Table(name = "finace_payment_content")
-public class PaymentContent extends AbstractCodeOLObject {
+public class PaymentContent extends AbstractActiveCodeOLObject {
+    private static final long serialVersionUID = -2057055414452621087L;
     private String name;
     private PaymentType paymentType;
     private PaymentContent parent;

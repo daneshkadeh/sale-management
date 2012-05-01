@@ -18,6 +18,7 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.finance.Payment;
 import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -34,10 +35,10 @@ public class EditPaymentView extends AbstractSingleEditView<Payment> {
             initialPresentationView(DetailDataModel detailDataModel, Payment entity, Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("paymentDate", DetailFieldType.DATE).mandatory(true);
-        detailDataModel.addAttribute("partner", DetailFieldType.ENTITY_CHOOSER).mandatory(true)
-                .cacheDataId(CacheId.REF_LIST_PARTNER);
-        detailDataModel.addAttribute("operator", DetailFieldType.ENTITY_CHOOSER).mandatory(true)
-                .cacheDataId(CacheId.REF_LIST_OPERATOR);
+        detailDataModel.addAttribute("partner", DetailFieldType.SEARCHER).mandatory(true)
+                .componentInfo(ComponentFactory.createPartnerSearchInfo());
+        detailDataModel.addAttribute("operator", DetailFieldType.SEARCHER).mandatory(true)
+                .componentInfo(ComponentFactory.createCashierComponentInfo());
         detailDataModel.addAttribute("paymentContent", DetailFieldType.DROPDOWN).mandatory(true)
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_CONTENT);
         detailDataModel.addAttribute("paymentMode", DetailFieldType.DROPDOWN)

@@ -18,9 +18,9 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.store.InventoryStoreForm;
 import com.s3s.ssm.entity.store.Store;
-import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -53,8 +53,8 @@ public class EditInventoryStoreFormView extends AbstractSingleEditView<Inventory
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("store", DetailFieldType.LABEL).newColumn();
         detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
-        detailDataModel.addAttribute("staff", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_OPERATOR)
-                .newColumn();
+        detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER)
+                .componentInfo(ComponentFactory.createStorekeeperComponentInfo()).newColumn();
         detailDataModel.addAttribute("detailInventoryStores", DetailFieldType.LIST).componentInfo(
                 createMoveDetailsComponentInfo());
     }

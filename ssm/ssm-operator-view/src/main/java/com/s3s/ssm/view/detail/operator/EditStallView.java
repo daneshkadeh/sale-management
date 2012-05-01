@@ -26,6 +26,8 @@ import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.entity.operator.SaleTarget;
 import com.s3s.ssm.entity.operator.Stall;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -57,11 +59,13 @@ public class EditStallView extends AbstractSingleEditView<Stall> {
     protected void initialPresentationView(DetailDataModel detailDataModel, Stall entity, Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("manager", DetailFieldType.ENTITY_CHOOSER).referenceDataId(MANAGER_REF_ID);
+        detailDataModel.addAttribute("manager", DetailFieldType.SEARCHER).componentInfo(
+                ComponentFactory.createSalerComponentInfo());
         detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX);
-        detailDataModel.addAttribute("staffs", DetailFieldType.MULTI_SELECT_LIST_BOX).referenceDataId(STAFF_REF_ID);
-        detailDataModel.addAttribute("salesTarget", DetailFieldType.SALE_TARGET).referenceDataId(
-                DEFAULT_SALE_TARGET_REF_ID);
+        detailDataModel.addAttribute("staffs", DetailFieldType.MULTI_SELECT_LIST_BOX).cacheDataId(
+                CacheId.REF_LIST_SALER);
+        // detailDataModel.addAttribute("salesTarget", DetailFieldType.SALE_TARGET).referenceDataId(
+        // DEFAULT_SALE_TARGET_REF_ID);
     }
 
     @Override

@@ -89,24 +89,20 @@ public class EditExportStoreFormView extends AbstractSingleEditView<ExportStoreF
     protected void initialPresentationView(DetailDataModel detailDataModel, ExportStoreForm entity,
             Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("printAfterSave", DetailFieldType.CHECKBOX).newColumn();
-        detailDataModel.addAttribute("createdDate", DetailFieldType.DATE).mandatory(true);
-        detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER).mandatory(true)
-                .componentInfo(ComponentFactory.createStorekeeperComponentInfo());
         detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_EXPORT_STORE_STATUS).newColumn();
-
-        detailDataModel.addAttribute("store", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_STORE)
-                .mandatory(true);
+        // detailDataModel.addAttribute("printAfterSave", DetailFieldType.CHECKBOX).newColumn();
+        detailDataModel.addAttribute("createdDate", DetailFieldType.DATE).mandatory(true);
         detailDataModel.addAttribute("transType", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_TRANS_TYPE)
                 .newColumn();
-        // TODO: Hoang should use SEARCH COMPONENT
-        detailDataModel.addAttribute("invoice", DetailFieldType.SEARCHER).componentInfo(
-                ComponentFactory.createSalesInvoiceComponentInfo());
+        detailDataModel.addAttribute("store", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_STORE)
+                .mandatory(true);
         detailDataModel.addAttribute("transPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY)
                 .newColumn();
-        detailDataModel.addAttribute("custCode", DetailFieldType.LABEL);
-        detailDataModel.addAttribute("custName", DetailFieldType.LABEL);
+        detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER).mandatory(true)
+                .componentInfo(ComponentFactory.createStorekeeperComponentInfo());
+        detailDataModel.addAttribute("invoice", DetailFieldType.SEARCHER).componentInfo(
+                ComponentFactory.createSalesInvoiceComponentInfo());
         detailDataModel.addAttribute("exportDetails", DetailFieldType.LIST).componentInfo(
                 createExportDetailsComponentInfo());
     }

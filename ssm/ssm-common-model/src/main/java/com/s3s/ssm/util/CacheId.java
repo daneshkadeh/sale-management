@@ -3,7 +3,8 @@ package com.s3s.ssm.util;
 public interface CacheId {
     // Catalog
     public static String REF_LIST_PRODUCT = "referenceListProduct";
-
+    // Operator
+    public static String REF_LIST_SALER = "referenceListSaler";
     // Config
     public static String REF_LIST_ROLE = "referenceListRole";
     public static String REF_LIST_UNIT_UOM = "referenceListUnitUom";

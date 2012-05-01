@@ -39,7 +39,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
         try {
             getCacheDataService().registerCache(CacheId.REF_LIST_ROLE, this, this.getClass().getMethod("getRoles"));
             getCacheDataService().registerCache(CacheId.REF_LIST_CURRENCY, this,
-                    this.getClass().getMethod("getCurrencyCodes"));
+                    this.getClass().getMethod("getCurrencies"));
             getCacheDataService().registerCache(CacheId.REF_LIST_BANK, this, this.getClass().getMethod("getBanks"));
             getCacheDataService().registerCache(CacheId.REF_LIST_PARTNER, this,
                     this.getClass().getMethod("getPartners"));
@@ -67,6 +67,13 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
             currencyCodes.add(currency.getCode());
         }
         return currencyCodes;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<SCurrency> getCurrencies() {
+        List<SCurrency> currencies = getDaoHelper().getDao(SCurrency.class).findAll();
+        return currencies;
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)

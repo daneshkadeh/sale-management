@@ -77,7 +77,7 @@ public class Organization extends AbstractActiveCodeOLObject {
 
     private Set<SalesChannel> responsibleSalesChannels = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "institution_id")
     @NotNull
     @Cascade({ CascadeType.SAVE_UPDATE })
@@ -130,7 +130,6 @@ public class Organization extends AbstractActiveCodeOLObject {
     }
 
     @Column(name = "benefice_name", length = 256)
-    @Size(max = 256)
     public String getBeneficeName() {
         return beneficeName;
     }
