@@ -74,10 +74,11 @@ public class LoginDialog extends JDialog {
         JPanel panel = new JPanel(new MigLayout("wrap 2"));
         lblUsername = new JLabel(ControlConfigUtils.getString("default.Login.label.username"));
         tflUsername = new JTextField(20);
+        // TODO: remove default username/password and apply the function "Remember me"
         tflUsername.setText("admin");
         lblPassword = new JLabel(ControlConfigUtils.getString("default.Login.label.password"));
         pflPassword = new JPasswordField(20);
-        pflPassword.setText("admin");
+        pflPassword.setText("123456");
         btnLogin = new JButton(ControlConfigUtils.getString("default.Login.button.ok"));
         btnCancel = new JButton(ControlConfigUtils.getString("default.Login.button.cancel"));
 

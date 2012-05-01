@@ -28,8 +28,7 @@ import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.interfaces.store.IStoreService;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
-import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -66,17 +65,15 @@ public class EditImportStoreFormView extends AbstractSingleEditView<ImportStoreF
         detailDataModel.addAttribute("store", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_STORE);
         detailDataModel.addAttribute("shipPriceType", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_SHIP_PRICE_TYPE).newColumn();
-        detailDataModel.addAttribute("salesContract", DetailFieldType.DROPDOWN).cacheDataId(
-                CacheId.REF_LIST_SALES_CONTRACT);
+        detailDataModel.addAttribute("receiver", DetailFieldType.SEARCHER).componentInfo(
+                ComponentFactory.createStorekeeperComponentInfo());
         detailDataModel.addAttribute("shipPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY)
                 .newColumn();
+        detailDataModel.addAttribute("salesContract", DetailFieldType.SEARCHER).componentInfo(
+                ComponentFactory.createSalesContractComponentInfo());
+        detailDataModel.addAttribute("receiptDate", DetailFieldType.DATE).newColumn();
         detailDataModel.addAttribute("supplierName", DetailFieldType.TEXTBOX);
-
-        detailDataModel.addAttribute("receiptDate", DetailFieldType.DATE);
-
-        detailDataModel.addAttribute("receiver", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_OPERATOR);
-
-        detailDataModel.addAttribute("sender", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("sender", DetailFieldType.TEXTBOX).newColumn();
         detailDataModel.addAttribute("detailImportStores", DetailFieldType.LIST).componentInfo(
                 createImportDetailsComponentInfo());
     }
@@ -113,11 +110,5 @@ public class EditImportStoreFormView extends AbstractSingleEditView<ImportStoreF
                 .getListProducts());
         refDataModel.putRefDataList(REF_LIST_ITEM, serviceProvider.getService(ICatalogService.class).getAllItem());
         refDataModel.putRefDataList(REF_CURRENCY, serviceProvider.getService(IConfigService.class).getCurrencyCodes());
-    }
-
-    @Override
-    protected String getDefaultTitle(ImportStoreForm entity) {
-        return ControlConfigUtils.getString("label.ImportStoreForm.detail.title") + UIConstants.BLANK
-                + entity.getCode();
     }
 }

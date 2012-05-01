@@ -19,8 +19,6 @@ package com.s3s.ssm.view.detail.shipment;
 import java.util.Map;
 
 import com.s3s.ssm.entity.shipment.TransportationType;
-import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -30,6 +28,8 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
  * 
  */
 public class EditTransportationTypeView extends AbstractSingleEditView<TransportationType> {
+    private static final long serialVersionUID = -9205072543771066649L;
+
     /**
      * @param entity
      */
@@ -44,14 +44,8 @@ public class EditTransportationTypeView extends AbstractSingleEditView<Transport
     protected void initialPresentationView(DetailDataModel detailDataModel, TransportationType entity,
             Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX).newColumn();
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("description", DetailFieldType.TEXTAREA);
-        detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX);
-    }
-
-    @Override
-    protected String getDefaultTitle(TransportationType entity) {
-        return ControlConfigUtils.getString("label.TransportationType.detail.title") + UIConstants.BLANK
-                + entity.getCode();
     }
 }

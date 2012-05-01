@@ -77,8 +77,9 @@ public class EditOrganizationView extends AbstractSingleEditView<Organization> {
                 .cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("defPaymentMethod", DetailFieldType.DROPDOWN).mandatory(true)
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_MODE);
-        detailDataModel.addAttribute("defStall", DetailFieldType.DROPDOWN).mandatory(true)
-                .cacheDataId(CacheId.REF_LIST_STALL);
+        detailDataModel.addAttribute("defStall", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_STALL)
+                .mandatory(true);
+
         detailDataModel.addAttribute("defDetailInvNum", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("defPageRowNum", DetailFieldType.TEXTBOX).mandatory(true);
 

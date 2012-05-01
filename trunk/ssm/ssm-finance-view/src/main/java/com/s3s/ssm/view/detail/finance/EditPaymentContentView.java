@@ -27,6 +27,7 @@ import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
 public class EditPaymentContentView extends AbstractSingleEditView<PaymentContent> {
+    private static final long serialVersionUID = -7769142106215343922L;
 
     public EditPaymentContentView(Map<String, Object> entity) {
         super(entity);
@@ -35,10 +36,11 @@ public class EditPaymentContentView extends AbstractSingleEditView<PaymentConten
     @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, PaymentContent entity,
             Map<String, Object> request) {
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
+        detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX).newColumn();
+        detailDataModel.addAttribute("name", DetailFieldType.TEXTAREA).mandatory(true);
         detailDataModel.addAttribute("paymentType", DetailFieldType.DROPDOWN).mandatory(true)
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_TYPE);
-        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX).mandatory(true);
-        detailDataModel.addAttribute("name", DetailFieldType.TEXTAREA).mandatory(true);
         detailDataModel.addAttribute("parent", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_PAYMENT_CONTENT);
     }
 

@@ -76,6 +76,7 @@ import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.finance.PaymentType;
 import com.s3s.ssm.entity.operator.Operator;
+import com.s3s.ssm.entity.operator.Stall;
 import com.s3s.ssm.entity.sales.ContractDocument;
 import com.s3s.ssm.entity.sales.ContractDocument.DocumentPlaceEnum;
 import com.s3s.ssm.entity.sales.DetailInvoice;
@@ -90,6 +91,7 @@ import com.s3s.ssm.entity.sales.PaymentSC;
 import com.s3s.ssm.entity.sales.PaymentSC.PaymentSCType;
 import com.s3s.ssm.entity.sales.SalesConfirm;
 import com.s3s.ssm.entity.sales.SalesContract;
+import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.entity.shipment.TransportationType;
 import com.s3s.ssm.entity.store.ClosingStoreEntry;
 import com.s3s.ssm.entity.store.DetailClosingStore;
@@ -190,7 +192,7 @@ public class SSMDataLoader {
         daoHelper.getDao(DetailSalesContract.class).deleteAll(daoHelper.getDao(DetailSalesContract.class).findAll());
         daoHelper.getDao(SalesContract.class).deleteAll(daoHelper.getDao(SalesContract.class).findAll());
         daoHelper.getDao(ContractDocument.class).deleteAll(daoHelper.getDao(ContractDocument.class).findAll());
-
+        // Store module
         daoHelper.getDao(DetailExportStore.class).deleteAll(daoHelper.getDao(DetailExportStore.class).findAll());
         daoHelper.getDao(ExportStoreForm.class).deleteAll(daoHelper.getDao(ExportStoreForm.class).findAll());
 
@@ -203,6 +205,9 @@ public class SSMDataLoader {
 
         daoHelper.getDao(DetailInventoryStore.class).deleteAll(daoHelper.getDao(DetailInventoryStore.class).findAll());
         daoHelper.getDao(InventoryStoreForm.class).deleteAll(daoHelper.getDao(InventoryStoreForm.class).findAll());
+
+        daoHelper.getDao(DetailClosingStore.class).deleteAll(daoHelper.getDao(DetailClosingStore.class).findAll());
+        daoHelper.getDao(ClosingStoreEntry.class).deleteAll(daoHelper.getDao(ClosingStoreEntry.class).findAll());
         // Sales module
         daoHelper.getDao(DetailInvoice.class).deleteAll(daoHelper.getDao(DetailInvoice.class).findAll());
         daoHelper.getDao(Invoice.class).deleteAll(daoHelper.getDao(Invoice.class).findAll());
@@ -234,10 +239,12 @@ public class SSMDataLoader {
         daoHelper.getDao(Partner.class).deleteAll(daoHelper.getDao(Partner.class).findAll());
         daoHelper.getDao(PartnerCategory.class).deleteAll(daoHelper.getDao(PartnerCategory.class).findAll());
         daoHelper.getDao(Store.class).deleteAll(daoHelper.getDao(Store.class).findAll());
-        daoHelper.getDao(Operator.class).deleteAll(daoHelper.getDao(Operator.class).findAll());
 
-        // Finance module
-        // daoHelper.getDao(PaymentContent.class).deleteAll(daoHelper.getDao(PaymentContent.class).findAll());
+        // Operator module
+        daoHelper.getDao(Stall.class).deleteAll(daoHelper.getDao(Stall.class).findAll());
+        daoHelper.getDao(Operator.class).deleteAll(daoHelper.getDao(Operator.class).findAll());
+        daoHelper.getDao(Role.class).deleteAll(daoHelper.getDao(Role.class).findAll());
+
         // Config module
         daoHelper.getDao(Organization.class).deleteAll(daoHelper.getDao(Organization.class).findAll());
         daoHelper.getDao(Institution.class).deleteAll(daoHelper.getDao(Institution.class).findAll());
@@ -1050,7 +1057,7 @@ public class SSMDataLoader {
         institution.setCompanyAddress(COMPANY_ADDRESS);
         institution.setTel("(848) 38220541");
         institution.setFax("84 - 8 - 38220542");
-        institution.setWebsite("www.thusport.com");
+        institution.setWebsite("http://thusport.com");
         institution.setEmail("support@thusport.com");
 
         institution.setOrderInvCodeRule("HDDH");
@@ -1187,16 +1194,128 @@ public class SSMDataLoader {
     }
 
     private static List<Operator> initOperator(DaoHelper daoHelper) {
-        Operator operator = new Operator();
-        // operator.setLogin("testOperator");
-        operator.setCode("admin"); // TODO: what is this?
-        operator.setUsername("admin");
-        operator.setPassword("admin");
-        operator.setEmail("test@solution3s.com");
-        operator.setFullName("Test Operator");
-        // operator.setActive(true);
-        daoHelper.getDao(Operator.class).saveOrUpdate(operator);
-        return Arrays.asList(operator);
+        // Role
+        Role adminRole = new Role();
+        adminRole.setCode(Role.ADMIN);
+        adminRole.setName("Administrator");
+
+        Role storekeeperRole = new Role();
+        storekeeperRole.setCode(Role.STOREKEEPER);
+        storekeeperRole.setName("Thu kho");
+
+        Role accountingRole = new Role();
+        accountingRole.setCode(Role.ACCOUNTANT);
+        accountingRole.setName("Ke toan");
+
+        Role cashierRole = new Role();
+        cashierRole.setCode(Role.CASHIER);
+        cashierRole.setName("Thu ngan");
+
+        Role salesRole = new Role();
+        salesRole.setCode(Role.SALER);
+        salesRole.setName("Ban hang");
+
+        daoHelper.getDao(Role.class).saveOrUpdateAll(
+                Arrays.asList(adminRole, storekeeperRole, accountingRole, cashierRole, salesRole));
+        // Set user for ADMIN role
+        Operator admin = new Operator();
+        admin.setRoles(new HashSet<>(Arrays.asList(adminRole)));
+        admin.setCode("01");
+        admin.setUsername("admin");
+        admin.setPassword("123456");
+        admin.setEmail("admin@thusport.com");
+        admin.setPhone("0903456289");
+        admin.setFullName("Administrator");
+        admin.setAddress("32/3 Ngo Be, Q.Tan Binh, TPHCM");
+
+        // Set user for STOREKEEPER role
+        Operator storekeeper1 = new Operator();
+        storekeeper1.setRoles(new HashSet<>(Arrays.asList(storekeeperRole)));
+        storekeeper1.setCode("02");
+        storekeeper1.setUsername("storekeeper1");
+        storekeeper1.setPassword("123456");
+        storekeeper1.setEmail("storekeeper1@thusport.com");
+        storekeeper1.setPhone("0903456289");
+        storekeeper1.setFullName("storekeeper1");
+        storekeeper1.setAddress("135B Tran Hung Dao, Q.1, TPHCM");
+
+        Operator storekeeper2 = new Operator();
+        storekeeper2.setRoles(new HashSet<>(Arrays.asList(storekeeperRole)));
+        storekeeper2.setCode("03");
+        storekeeper2.setUsername("storekeeper2");
+        storekeeper2.setPassword("123456");
+        storekeeper2.setEmail("storekeeper2@thusport.com");
+        storekeeper2.setPhone("0903456289");
+        storekeeper2.setFullName("storekeeper2");
+        storekeeper2.setAddress("135B Tran Hung Dao, Q.1, TPHCM");
+
+        // Set user for ACCOUNTANT role
+        Operator accountant1 = new Operator();
+        accountant1.setRoles(new HashSet<>(Arrays.asList(accountingRole)));
+        accountant1.setCode("04");
+        accountant1.setUsername("accountant1");
+        accountant1.setPassword("123456");
+        accountant1.setEmail("accountant1@thusport.com");
+        accountant1.setPhone("01679543632");
+        accountant1.setFullName("accountant1");
+        accountant1.setAddress("13A Tran Huy Lieu, Q.10, TPHCM");
+
+        Operator accountant2 = new Operator();
+        accountant2.setRoles(new HashSet<>(Arrays.asList(accountingRole)));
+        accountant2.setCode("05");
+        accountant2.setUsername("accountant2");
+        accountant2.setPassword("123456");
+        accountant2.setEmail("accountant2@thusport.com");
+        accountant2.setPhone("01679543632");
+        accountant2.setFullName("accountant2");
+        accountant2.setAddress("13A Tran Huy Lieu, Q.10, TPHCM");
+
+        // Set user for CASHIER role
+        Operator cashier1 = new Operator();
+        cashier1.setRoles(new HashSet<>(Arrays.asList(cashierRole)));
+        cashier1.setCode("04");
+        cashier1.setUsername("cashier1");
+        cashier1.setPassword("123456");
+        cashier1.setEmail("cashier1@thusport.com");
+        cashier1.setPhone("01679543765");
+        cashier1.setFullName("cashier1");
+        cashier1.setAddress("45 Truong Chinh, Q.Tan Phu, TPHCM");
+
+        Operator cashier2 = new Operator();
+        cashier2.setRoles(new HashSet<>(Arrays.asList(cashierRole)));
+        cashier2.setCode("04");
+        cashier2.setUsername("cashier2");
+        cashier2.setPassword("123456");
+        cashier2.setEmail("cashier2@thusport.com");
+        cashier2.setPhone("01679543765");
+        cashier2.setFullName("cashier2");
+        cashier2.setAddress("45 Truong Chinh, Q.Tan Phu, TPHCM");
+
+        // Set user for SALER role
+        Operator saler1 = new Operator();
+        saler1.setRoles(new HashSet<>(Arrays.asList(salesRole)));
+        saler1.setCode("05");
+        saler1.setUsername("saler1");
+        saler1.setPassword("123456");
+        saler1.setEmail("saler1@thusport.com");
+        saler1.setPhone("01679543765");
+        saler1.setFullName("saler1");
+        saler1.setAddress("45 Truong Chinh, Q.Tan Phu, TPHCM");
+
+        Operator saler2 = new Operator();
+        saler2.setRoles(new HashSet<>(Arrays.asList(salesRole)));
+        saler2.setCode("06");
+        saler2.setUsername("saler2");
+        saler2.setPassword("123456");
+        saler2.setEmail("saler2@thusport.com");
+        saler2.setPhone("01679543765");
+        saler2.setFullName("saler2");
+        saler2.setAddress("45 Truong Chinh, Q.Tan Phu, TPHCM");
+        daoHelper.getDao(Operator.class).saveOrUpdateAll(
+                Arrays.asList(admin, storekeeper1, accountant1, cashier1, saler1, storekeeper2, accountant2, cashier2,
+                        saler2));
+        return Arrays.asList(admin, storekeeper1, accountant1, cashier1, saler1, storekeeper2, accountant2, cashier2,
+                saler2);
     }
 
     private static List<UnitOfMeasure> initUOM(DaoHelper daoHelper) {

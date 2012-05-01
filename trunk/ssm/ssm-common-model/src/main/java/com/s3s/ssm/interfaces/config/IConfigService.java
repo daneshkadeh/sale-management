@@ -38,11 +38,9 @@ public interface IConfigService {
      */
     public Double getExchangeRate(SCurrency currency);
 
-    // public String generatePaymentCode(String orgCode);
-    //
-    // public String generateCode(Class clazz);
-
     public List<String> getCurrencyCodes();
+
+    public List<SCurrency> getCurrencies();
 
     public List<Bank> getBanks();
 
@@ -50,11 +48,6 @@ public interface IConfigService {
 
     public List<AudienceCategory> getAudienceCategories();
 
-    /**
-     * Get default organization
-     * 
-     * @return
-     */
     public Organization getDefOrganization();
 
     public List<Organization> getOrganizations();

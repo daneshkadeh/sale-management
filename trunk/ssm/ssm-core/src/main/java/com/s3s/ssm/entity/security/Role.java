@@ -20,6 +20,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -34,6 +35,13 @@ import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 @Entity
 @Table(name = "security_role")
 public class Role extends AbstractActiveCodeOLObject implements Serializable, GrantedAuthority, Sid {
+    // default roles
+    public static final String ADMIN = "ADMIN";
+    public static final String STOREKEEPER = "STOREKEEPER";
+    public static final String ACCOUNTANT = "ACCOUNTANT";
+    public static final String CASHIER = "CASHIER";
+    public static final String SALER = "SALER";
+
     private static final long serialVersionUID = 1L;
     private String name;
     private Set<User> users = new HashSet<User>();
@@ -62,7 +70,7 @@ public class Role extends AbstractActiveCodeOLObject implements Serializable, Gr
         return name;
     }
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     public Set<User> getUsers() {
         return users;
     }

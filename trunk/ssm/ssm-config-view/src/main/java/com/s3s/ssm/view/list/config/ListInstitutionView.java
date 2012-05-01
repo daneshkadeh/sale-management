@@ -35,7 +35,10 @@ public class ListInstitutionView extends AbstractListView<Institution> {
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListRendererType.TEXT);
         listDataModel.addColumn("companyName", ListRendererType.TEXT);
-
+        listDataModel.addColumn("agent", ListRendererType.TEXT);
+        listDataModel.addColumn("tel", ListRendererType.TEXT);
+        listDataModel.addColumn("website", ListRendererType.TEXT);
+        listDataModel.addColumn("companyAddress", ListRendererType.TEXT);
     }
 
     @Override

@@ -42,4 +42,14 @@ public class ComponentFactory {
         SalesContractSearchComponent psc = new SalesContractSearchComponent();
         return new SearchComponentInfo(psc);
     }
+
+    public static IComponentInfo createSalerComponentInfo() {
+        OperatorSearchComponent psc = new OperatorSearchComponent();
+        return new SearchComponentInfo(psc);
+    }
+
+    public static IComponentInfo createCashierComponentInfo() {
+        OperatorSearchComponent psc = new OperatorSearchComponent();
+        return new SearchComponentInfo(psc);
+    }
 }
