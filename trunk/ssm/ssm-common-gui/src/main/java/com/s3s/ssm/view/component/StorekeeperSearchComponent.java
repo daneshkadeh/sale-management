@@ -24,8 +24,8 @@ import com.s3s.ssm.entity.operator.Operator;
  * @author Le Thanh Hoang
  * @since May 1, 2012
  */
-public class CashierSearchComponent extends ASearchComponent<Operator> {
-    private static final long serialVersionUID = -9016141679921209248L;
+public class StorekeeperSearchComponent extends ASearchComponent<Operator> {
+    private static final long serialVersionUID = 6593259368661327564L;
 
     /**
      * {@inheritDoc}
@@ -58,7 +58,7 @@ public class CashierSearchComponent extends ASearchComponent<Operator> {
     protected DetachedCriteria createSearchCriteria() {
         DetachedCriteria criteria = super.createSearchCriteria();
         // TODO: Hoang avoid hard code
-        criteria.createCriteria("roles").add(Restrictions.eq("code", "CASHIER"));
+        criteria.createCriteria("roles").add(Restrictions.eq("code", "STOREKEEPER"));
         return criteria;
     }
 

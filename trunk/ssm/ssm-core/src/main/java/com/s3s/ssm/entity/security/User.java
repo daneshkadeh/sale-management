@@ -47,7 +47,7 @@ public class User extends AbstractCodeOLObject implements Serializable, UserDeta
 
     private String password;
 
-    Set<Role> roles = new HashSet<Role>();
+    private Set<Role> roles = new HashSet<Role>();
 
     private Boolean isAccountNonExpired = true;
 

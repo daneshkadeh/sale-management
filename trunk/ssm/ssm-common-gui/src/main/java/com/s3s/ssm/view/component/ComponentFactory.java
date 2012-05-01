@@ -28,28 +28,28 @@ public class ComponentFactory {
         return new SearchComponentInfo(psc);
     }
 
-    public static IComponentInfo createAccountingStaffComponentInfo() {
-        OperatorSearchComponent psc = new OperatorSearchComponent();
-        return new SearchComponentInfo(psc);
-    }
-
-    public static IComponentInfo createStorekeeperComponentInfo() {
-        OperatorSearchComponent psc = new OperatorSearchComponent();
-        return new SearchComponentInfo(psc);
-    }
-
     public static IComponentInfo createSalesContractComponentInfo() {
         SalesContractSearchComponent psc = new SalesContractSearchComponent();
         return new SearchComponentInfo(psc);
     }
 
+    public static IComponentInfo createAccountantComponentInfo() {
+        AccountantSearchComponent psc = new AccountantSearchComponent();
+        return new SearchComponentInfo(psc);
+    }
+
+    public static IComponentInfo createStorekeeperComponentInfo() {
+        StorekeeperSearchComponent psc = new StorekeeperSearchComponent();
+        return new SearchComponentInfo(psc);
+    }
+
     public static IComponentInfo createSalerComponentInfo() {
-        OperatorSearchComponent psc = new OperatorSearchComponent();
+        SalerSearchComponent psc = new SalerSearchComponent();
         return new SearchComponentInfo(psc);
     }
 
     public static IComponentInfo createCashierComponentInfo() {
-        OperatorSearchComponent psc = new OperatorSearchComponent();
+        CashierSearchComponent psc = new CashierSearchComponent();
         return new SearchComponentInfo(psc);
     }
 }
