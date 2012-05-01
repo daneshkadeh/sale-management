@@ -51,6 +51,7 @@ public class PagingNavigator extends JPanel {
     private JButton btnEnding;
     private JLabel lblTotalPageNumber;
     private int totalPage = 1;
+    private int currentPage = 1;
     private JFormattedTextField txtCurrentPageNumber;
 
     private List<IPageChangeListener> pageChangeListeners = new ArrayList<>();
@@ -118,6 +119,7 @@ public class PagingNavigator extends JPanel {
         });
 
         this.totalPage = totalPage;
+        this.currentPage = currentPage;
         NumberFormatter numFormatter = new NumberFormatter();
         numFormatter.setValueClass(Integer.class);
         txtCurrentPageNumber = new JFormattedTextField(numFormatter);
@@ -165,6 +167,7 @@ public class PagingNavigator extends JPanel {
      *            the currentPage.
      */
     public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
         checkCurrentPage(totalPage, currentPage);
         enableDisableButtons(currentPage, totalPage);
         txtCurrentPageNumber.setValue(currentPage);
@@ -236,8 +239,11 @@ public class PagingNavigator extends JPanel {
         try {
             currentPageNumberField.commitEdit();
             int value = (int) currentPageNumberField.getValue();
+
             if ((value >= 1) && (value <= totalPage)) {
-                setCurrentPage(value);
+                if (currentPage != value) {
+                    setCurrentPage(value);
+                }
                 currentPageNumberField.setBackground(Color.WHITE);
                 return true;
             } else {

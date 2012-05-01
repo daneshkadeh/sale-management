@@ -15,6 +15,7 @@
 package com.s3s.ssm.util;
 
 import com.s3s.ssm.dao.IBaseDao;
+import com.s3s.ssm.entity.AbstractBaseIdObject;
 
 /**
  * 
@@ -22,5 +23,5 @@ import com.s3s.ssm.dao.IBaseDao;
  * 
  */
 public interface DaoHelper {
-    public <T> IBaseDao<T> getDao(Class<T> clazz);
+    public <T extends AbstractBaseIdObject> IBaseDao<T> getDao(Class<T> clazz);
 }

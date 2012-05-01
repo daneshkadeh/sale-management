@@ -27,7 +27,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
-import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.util.SClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
@@ -35,7 +34,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
  * @author Phan Hong Phuc
  * @since Apr 3, 2012
  */
-public class AdvanceTableModel<T extends AbstractBaseIdObject> extends AbstractTableModel {
+public class AdvanceTableModel<T> extends AbstractTableModel {
     private static final long serialVersionUID = -4720974982417224609L;
 
     private static final Log logger = LogFactory.getLog(AdvanceTableModel.class);

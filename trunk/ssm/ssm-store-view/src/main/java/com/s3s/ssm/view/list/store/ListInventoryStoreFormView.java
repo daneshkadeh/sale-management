@@ -25,11 +25,11 @@ import com.s3s.ssm.interfaces.store.IStoreService;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.detail.store.EditInventoryStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListInventoryStoreFormView extends AbstractListView<InventoryStoreForm> {
+public class ListInventoryStoreFormView extends AListEntityView<InventoryStoreForm> {
     private static final long serialVersionUID = 812018268092313237L;
     public static final String STORE_ENTITY = "1";
 

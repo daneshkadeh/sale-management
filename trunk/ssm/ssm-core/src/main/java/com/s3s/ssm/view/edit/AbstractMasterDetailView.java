@@ -36,7 +36,7 @@ import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.AdvanceTableModel;
 import com.s3s.ssm.view.list.ListDataModel;
 
@@ -154,7 +154,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
      * the screen.
      * 
      */
-    private class ChildListView extends AbstractListView<E> {
+    private class ChildListView extends AListEntityView<E> {
         private static final long serialVersionUID = -8455234397691564647L;
 
         public ChildListView(Map<String, Object> params, Icon icon, String label, String tooltip) {
@@ -165,7 +165,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
 
         @SuppressWarnings("unchecked")
         @Override
-        protected List<E> loadData(int pageNumber) {
+        protected List<E> loadData(int firstIndex, int maxResults) {
             BeanWrapper beanWrapper = new BeanWrapperImpl(entity);
             // TODO Phuc: should be load from DB.
             detailEntities = new ArrayList<E>((Collection<E>) beanWrapper.getPropertyValue(getChildFieldName()));
@@ -179,7 +179,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
         };
 
         @Override
-        protected Class<E> getEntityClass() {
+        protected Class<E> getGenericClass() {
             return getDetailClass();
         }
 

@@ -37,7 +37,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
  * 
  * @param <T>
  */
-public abstract class AbstractSearchListView<T extends AbstractIdOLObject> extends AbstractListView<T> {
+public abstract class AbstractSearchListView<T extends AbstractIdOLObject> extends AListEntityView<T> {
     private static final long serialVersionUID = -2256837250215615557L;
 
     protected abstract JPanel createSearchPanel();

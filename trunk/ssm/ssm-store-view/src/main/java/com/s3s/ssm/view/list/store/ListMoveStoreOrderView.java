@@ -19,11 +19,11 @@ import javax.swing.Icon;
 import com.s3s.ssm.entity.store.MoveStoreOrder;
 import com.s3s.ssm.view.detail.store.EditMoveStoreOrderView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListMoveStoreOrderView extends AbstractListView<MoveStoreOrder> {
+public class ListMoveStoreOrderView extends AListEntityView<MoveStoreOrder> {
     private static final long serialVersionUID = 6005266949770871881L;
 
     public ListMoveStoreOrderView(Icon icon, String label, String tooltip) {
