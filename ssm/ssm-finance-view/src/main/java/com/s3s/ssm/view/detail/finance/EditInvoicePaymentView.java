@@ -47,7 +47,7 @@ public class EditInvoicePaymentView extends AbstractSingleEditView<InvoicePaymen
         detailDataModel.addAttribute("partner", DetailFieldType.SEARCHER).mandatory(true)
                 .componentInfo(ComponentFactory.createPartnerSearchInfo());
         detailDataModel.addAttribute("operator", DetailFieldType.SEARCHER).mandatory(true)
-                .componentInfo(ComponentFactory.createAccountingStaffComponentInfo());
+                .componentInfo(ComponentFactory.createAccountantComponentInfo());
         detailDataModel.addAttribute("paymentContent", DetailFieldType.DROPDOWN).mandatory(true)
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_CONTENT);
         detailDataModel.addAttribute("invoice", DetailFieldType.SEARCHER).mandatory(true)

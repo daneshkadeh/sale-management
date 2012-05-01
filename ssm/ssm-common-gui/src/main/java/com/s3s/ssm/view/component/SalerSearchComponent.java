@@ -15,35 +15,50 @@
 
 package com.s3s.ssm.view.component;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+
+import com.s3s.ssm.entity.operator.Operator;
 
 /**
  * @author Le Thanh Hoang
  * @since May 1, 2012
  */
-public class SalerSearchComponent extends OperatorSearchComponent {
+public class SalerSearchComponent extends ASearchComponent<Operator> {
     private static final long serialVersionUID = -9016141679921209248L;
 
     /**
      * {@inheritDoc}
      */
     @Override
+    protected String[] getDisplayAttributes() {
+        return new String[] { "username" };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String[] getAttributeColumns() {
+        return new String[] { "code", "username", "fullName" };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String[] getSearchedOnAttributes() {
+        return new String[] { "code", "username", "fullName" };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected DetachedCriteria createSearchCriteria() {
-        DetachedCriteria criteria = dao.getCriteria();
-        criteria = criteria.createCriteria("roles");
-        Criterion salerRole = Restrictions.eq("code", "SALER");
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        Criterion criterion = Restrictions.ilike(searchOnAttributes[0], textField.getText(), MatchMode.ANYWHERE);
-        for (int i = 1; i < searchOnAttributes.length; i++) {
-            criterion = Restrictions.or(criterion,
-                    Restrictions.ilike(searchOnAttributes[i], textField.getText(), MatchMode.ANYWHERE));
-        }
-        criterion = Restrictions.and(criterion, salerRole);
-        criteria.add(criterion);
+        DetachedCriteria criteria = super.createSearchCriteria();
+        // TODO: Hoang avoid hard code
+        criteria.createCriteria("roles").add(Restrictions.eq("code", "SALER"));
         return criteria;
     }
 
