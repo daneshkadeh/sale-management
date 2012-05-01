@@ -29,12 +29,12 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
  * </ul>
  * 
  * @see AbstractCommonListView
- * @see AbstractListView
+ * @see AListEntityView
  * @author Phan Hong Phuc
  * 
  * @param <T>
  */
-public abstract class AbstractStatisticListView<T extends AbstractIdOLObject> extends AbstractListView<T> {
+public abstract class AbstractStatisticListView<T extends AbstractIdOLObject> extends AListEntityView<T> {
     private static final long serialVersionUID = -1081095962690319904L;
 
     @Override

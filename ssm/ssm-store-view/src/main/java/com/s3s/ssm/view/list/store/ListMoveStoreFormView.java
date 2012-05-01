@@ -20,11 +20,11 @@ import com.s3s.ssm.entity.store.MoveStoreForm;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.detail.store.EditMoveStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListMoveStoreFormView extends AbstractListView<MoveStoreForm> {
+public class ListMoveStoreFormView extends AListEntityView<MoveStoreForm> {
     private static final long serialVersionUID = -4434930101205700627L;
 
     public ListMoveStoreFormView(Icon icon, String label, String tooltip) {

@@ -17,14 +17,17 @@ package com.s3s.ssm.dto.store;
 
 import java.io.Serializable;
 
+import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
 
 /**
+ * TODO Phuc: The class extend {@link AbstractBaseIdObject} to work-around show the list of DTO in list view
+ * 
  * @author Phan Hong Phuc
  * @since Apr 30, 2012
  */
-public class GroupDetailExportData implements Serializable {
+public class GroupDetailExportData extends AbstractBaseIdObject implements Serializable {
     private static final long serialVersionUID = -2889698358659809510L;
     private Product product;
     private Item item;

@@ -33,7 +33,7 @@ import com.s3s.ssm.util.SClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.WindowUtilities;
 import com.s3s.ssm.view.AbstractView;
-import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AListEntityView;
 
 /**
  * @author Phan Hong Phuc
@@ -103,12 +103,12 @@ public abstract class AbstractEditView<T extends AbstractBaseIdObject> extends A
         return requestFocusInWindow();
     }
 
-    public void setListView(AbstractListView<T> listView) {
+    public void setListView(AListEntityView<T> listView) {
         this.request.put(PARAM_LIST_VIEW, listView);
     }
 
-    public AbstractListView<T> getListView() {
-        return (AbstractListView<T>) request.get(PARAM_LIST_VIEW);
+    public AListEntityView<T> getListView() {
+        return (AListEntityView<T>) request.get(PARAM_LIST_VIEW);
     }
 
     @SuppressWarnings("unchecked")

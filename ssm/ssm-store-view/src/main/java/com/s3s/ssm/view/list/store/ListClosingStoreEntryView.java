@@ -22,11 +22,11 @@ import com.s3s.ssm.entity.store.ClosingStoreEntry;
 import com.s3s.ssm.interfaces.store.IStoreService;
 import com.s3s.ssm.view.detail.store.EditClosingStoreEntryView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListClosingStoreEntryView extends AbstractListView<ClosingStoreEntry> {
+public class ListClosingStoreEntryView extends AListEntityView<ClosingStoreEntry> {
     private static final long serialVersionUID = 812018268092313237L;
 
     public ListClosingStoreEntryView(Icon icon, String label, String tooltip) {

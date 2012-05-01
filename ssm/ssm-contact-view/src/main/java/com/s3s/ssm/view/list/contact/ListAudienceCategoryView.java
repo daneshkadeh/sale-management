@@ -3,11 +3,11 @@ package com.s3s.ssm.view.list.contact;
 import com.s3s.ssm.entity.contact.AudienceCategory;
 import com.s3s.ssm.view.detail.contact.EditAudienceCategoryView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListAudienceCategoryView extends AbstractListView<AudienceCategory> {
+public class ListAudienceCategoryView extends AListEntityView<AudienceCategory> {
 
     /**
      * 

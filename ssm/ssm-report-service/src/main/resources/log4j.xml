@@ -27,7 +27,7 @@
 	</logger>
 	
 	<!-- Log just the SQL (equivalent to property hibernate.show_sql) -->
-	<logger name="org.hibernate.SQL">
+	<logger name="org.hibernate.sql">
 		<level value="INFO" />
 	</logger>
     

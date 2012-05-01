@@ -3,11 +3,11 @@ package com.s3s.ssm.view.list.sales;
 import com.s3s.ssm.entity.sales.SalesConfirm;
 import com.s3s.ssm.view.detail.sales.EditSalesConfirmMultiView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListSalesConfirmView extends AbstractListView<SalesConfirm> {
+public class ListSalesConfirmView extends AListEntityView<SalesConfirm> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {

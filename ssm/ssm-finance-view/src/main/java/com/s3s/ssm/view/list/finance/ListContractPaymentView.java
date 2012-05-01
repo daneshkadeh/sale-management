@@ -17,11 +17,11 @@ package com.s3s.ssm.view.list.finance;
 import com.s3s.ssm.entity.finance.ContractPayment;
 import com.s3s.ssm.view.detail.finance.EditContractPaymentView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListContractPaymentView extends AbstractListView<ContractPayment> {
+public class ListContractPaymentView extends AListEntityView<ContractPayment> {
     private static final long serialVersionUID = 7916303467956738315L;
 
     @Override

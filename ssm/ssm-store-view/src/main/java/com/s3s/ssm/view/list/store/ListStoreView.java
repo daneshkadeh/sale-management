@@ -20,7 +20,7 @@ import javax.swing.Icon;
 import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.view.detail.store.EditStoreView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
@@ -28,7 +28,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * @author Le Thanh Hoang
  * 
  */
-public class ListStoreView extends AbstractListView<Store> {
+public class ListStoreView extends AListEntityView<Store> {
     private static final long serialVersionUID = 7456457534037829894L;
 
     public ListStoreView(Icon icon, String label, String tooltip) {

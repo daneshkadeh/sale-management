@@ -2,11 +2,11 @@ package com.s3s.ssm.view.list.contact;
 
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListPartnerView<T extends Partner> extends AbstractListView<T> {
+public class ListPartnerView<T extends Partner> extends AListEntityView<T> {
 
     /**
      * 

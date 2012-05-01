@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import com.s3s.ssm.entity.contact.PartnerAddressLink;
 import com.s3s.ssm.view.detail.contact.EditPartnerAddressView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
@@ -18,7 +18,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * @author phamcongbang
  * 
  */
-public class ListPartnerAddressView extends AbstractListView<PartnerAddressLink> {
+public class ListPartnerAddressView extends AListEntityView<PartnerAddressLink> {
 
     /**
      * 

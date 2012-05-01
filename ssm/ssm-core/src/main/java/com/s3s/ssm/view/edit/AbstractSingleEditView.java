@@ -597,7 +597,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 throw new RuntimeException("FieldType does not supported!");
             }
             // Validate the field when lost focus.
-            dataField.addFocusListener(new ValidationListener(attribute));
+            dataField.addFocusListener(new DirtyCheckListener(attribute));
             dataField.setEnabled(!isReadOnly());
             JLabel errorIcon = new JLabel(ImageUtils.getIcon(ImageConstants.ERROR_ICON));
             errorIcon.setVisible(false);
@@ -665,12 +665,9 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                     at.getErrorIcon().setVisible(false);
                 }
 
-                // Show information save success.
-                notifyPanel.setNotifyKind(NotifyKind.INFORMATION);
-                notifyPanel.setMessage(ControlConfigUtils.getString("edit.message.saveSuccess"));
-                notifyPanel.setVisible(true);
-
                 btnNew.setEnabled(true);
+                btnSave.setEnabled(false);
+                btnSaveNew.setEnabled(false);
                 return true;
             } catch (Exception e) {
                 for (StackTraceElement st : e.getStackTrace()) {
@@ -838,7 +835,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
     private void doCloseOrNew(boolean isNew) {
         if (isNew) {
-            getListView().performAddAction();
+            getListView().performNewAction();
         } else {
             JTabbedPane tabbedPane = getListView().getTabbedPane();
             tabbedPane.remove(tabbedPane.indexOfComponent(this));
@@ -926,6 +923,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         }
     }
 
+    @Override
     public boolean requestFocusInWindow() {
         return name2AttributeComponent.get(detailDataModel.getDetailAttributes().get(0).getName()).getComponent()
                 .requestFocusInWindow();
@@ -976,7 +974,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
      * @author Phan Hong Phuc
      * @since Apr 5, 2012
      */
-    private final class ValidationListener implements FocusListener {
+    private final class DirtyCheckListener implements FocusListener {
         /**
          * 
          */
@@ -985,7 +983,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         /**
          * @param attribute
          */
-        private ValidationListener(DetailAttribute attribute) {
+        private DirtyCheckListener(DetailAttribute attribute) {
             this.attribute = attribute;
         }
 
@@ -1001,24 +999,11 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 }
             }
 
-            boolean isRaw = attribute.isRaw();
             Object value = getComponentValue(component, attribute.getType());
-            bindingValue(entity, attribute.getName(), value, attribute);
-            if (!isRaw) {
-                Validator validator = getValidator();
-                Set<ConstraintViolation<T>> validateResult = validator.validateProperty(entity, attribute.getName());
-                JLabel label = attributeComponent.getLabel();
-                JLabel errorIcon = attributeComponent.getErrorIcon();
-                if (CollectionUtils.isNotEmpty(validateResult)) {
-                    label.setForeground(Color.RED);
-                    errorIcon.setVisible(true);
-                    ConstraintViolation<T> cv = validateResult.iterator().next();
-                    // errorIcon.setToolTipText(ControlConfigUtils.getString(cv.getMessageTemplate()));
-                    errorIcon.setToolTipText(cv.getMessage());
-                } else {
-                    label.setForeground(Color.BLACK);
-                    errorIcon.setVisible(false);
-                }
+            boolean isDirty = !ObjectUtils.equals(value, beanWrapper.getPropertyValue(attribute.getName()));
+            if (isDirty) {
+                btnSave.setEnabled(true);
+                btnSaveNew.setEnabled(true);
             }
         }
 
