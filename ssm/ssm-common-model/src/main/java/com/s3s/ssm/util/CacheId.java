@@ -33,6 +33,7 @@ public interface CacheId {
     public static String REF_LIST_AUDIENCE_CATE = "referenceListAudienceCategory";
     public static String REF_LIST_PARTNER = "referenceListPartner";
     public static String REF_LIST_SUPPLIER = "referenceListSupplier";
+    public static String REF_LIST_CUSTOMER = "referenceListCustomer";
 
     // Sale
     public static String REF_LIST_SALES_CONTRACT = "referenceListSalesContract";
