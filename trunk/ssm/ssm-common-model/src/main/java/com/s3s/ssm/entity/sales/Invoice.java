@@ -55,6 +55,8 @@ public class Invoice extends AbstractIdOLObject {
     private Money moneyAfterTax = Money.zero(CurrencyEnum.VND);
     private InvoiceStatus status = InvoiceStatus.OPEN;
     private InvoicePaymentStatus paymentStatus = InvoicePaymentStatus.NO_PAYMENT;
+    private InvoiceStoreStatus storeStatus = InvoiceStoreStatus.NO_ACTION;
+
     private Set<DetailInvoice> detailInvoices = new HashSet<>();
 
     @Column(name = "invoice_number", nullable = false, length = 32)
@@ -181,6 +183,17 @@ public class Invoice extends AbstractIdOLObject {
         this.paymentStatus = paymentStatus;
     }
 
+    @Column(name = "store_status", nullable = false)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    public InvoiceStoreStatus getStoreStatus() {
+        return storeStatus;
+    }
+
+    public void setStoreStatus(InvoiceStoreStatus storeStatus) {
+        this.storeStatus = storeStatus;
+    }
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "invoice")
     public Set<DetailInvoice> getDetailInvoices() {
         return detailInvoices;
@@ -188,5 +201,13 @@ public class Invoice extends AbstractIdOLObject {
 
     public void setDetailInvoices(Set<DetailInvoice> detailInvoices) {
         this.detailInvoices = detailInvoices;
+    }
+
+    /**
+     * To know the status goods of the invoice.
+     * 
+     */
+    public enum InvoiceStoreStatus {
+        NO_ACTION, EXPORTING, EXPORTED, IMPORTING, IMPORTED
     }
 }

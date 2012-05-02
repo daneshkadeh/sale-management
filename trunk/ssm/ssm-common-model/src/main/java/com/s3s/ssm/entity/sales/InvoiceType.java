@@ -15,5 +15,5 @@
 package com.s3s.ssm.entity.sales;
 
 public enum InvoiceType {
-    SALES, MAINTAINANCE, SUPPORT, REFUND
+    SALES, MAINTAINANCE, SUPPORT, REFUND, TRIAL
 }

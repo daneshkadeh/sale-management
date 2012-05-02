@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
+import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.interfaces.catalog.ICatalogService;
 import com.s3s.ssm.util.CacheId;
 
@@ -20,6 +21,8 @@ public class CatalogServiceImpl extends AbstractModuleServiceImpl implements ICa
         try {
             getCacheDataService().registerCache(CacheId.REF_LIST_PRODUCT, this,
                     this.getClass().getMethod("getListProducts"));
+            getCacheDataService().registerCache(CacheId.REF_PRODUCT_TYPE, this,
+                    this.getClass().getMethod("getActiveProductTypes"));
         } catch (NoSuchMethodException | SecurityException e) {
             throw new RuntimeException("Cannot register method to cache service!", e);
         }
@@ -31,6 +34,10 @@ public class CatalogServiceImpl extends AbstractModuleServiceImpl implements ICa
     @Override
     public List<Product> getListProducts() {
         return getDaoHelper().getDao(Product.class).findAll();
+    }
+
+    public List<ProductType> getActiveProductTypes() {
+        return getDaoHelper().getDao(ProductType.class).findAllActive();
     }
 
     /**
