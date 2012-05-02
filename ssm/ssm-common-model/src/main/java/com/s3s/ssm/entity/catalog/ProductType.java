@@ -18,16 +18,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
 @Entity
 @Table(name = "ca_product_type")
-public class ProductType extends AbstractCodeOLObject {
+public class ProductType extends AbstractActiveCodeOLObject {
     private ProductFamilyType productFamilyType;
     private String name;
+    private ProductType parent;
 
     @Column(name = "product_family_type", nullable = false, length = 32)
     @NotNull
@@ -48,6 +51,16 @@ public class ProductType extends AbstractCodeOLObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    public ProductType getParent() {
+        return parent;
+    }
+
+    public void setParent(ProductType parent) {
+        this.parent = parent;
     }
 
 }

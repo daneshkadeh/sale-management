@@ -29,11 +29,12 @@ import org.hibernate.criterion.Restrictions;
 import org.jdesktop.swingx.JXDatePicker;
 
 import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.sales.Invoice.InvoiceStoreStatus;
 import com.s3s.ssm.entity.sales.InvoicePaymentStatus;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.detail.sales.EditInvoiceView;
+import com.s3s.ssm.view.detail.sales.EditInvoiceView2;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AbstractSearchListView;
 import com.s3s.ssm.view.list.ListDataModel;
@@ -48,6 +49,7 @@ public class ListInvoiceView extends AbstractSearchListView<Invoice> {
     private JXDatePicker toDate;
     private JComboBox<InvoiceStatus> invoiceStatus;
     private JComboBox<InvoicePaymentStatus> invoicePaymentStatus;
+    private JComboBox<InvoiceStoreStatus> invoiceStoreStatus;
 
     /**
      * {@inheritDoc}
@@ -64,6 +66,10 @@ public class ListInvoiceView extends AbstractSearchListView<Invoice> {
         InvoicePaymentStatus[] paymentStatuses = (InvoicePaymentStatus[]) ArrayUtils.add(InvoicePaymentStatus.values(),
                 0, null);
         invoicePaymentStatus = new JComboBox<>(paymentStatuses);
+
+        InvoiceStoreStatus[] storeStatuses = (InvoiceStoreStatus[]) ArrayUtils
+                .add(InvoiceStoreStatus.values(), 0, null);
+        invoiceStoreStatus = new JComboBox<InvoiceStoreStatus>(storeStatuses);
         JPanel panel = new JPanel(new MigLayout("ins 0, fill", "grow"));
         panel.add(new JLabel(ControlConfigUtils.getString("label.Invoice.invoiceNumber")), "right");
         panel.add(invoiceNumber, "grow");
@@ -77,6 +83,8 @@ public class ListInvoiceView extends AbstractSearchListView<Invoice> {
         panel.add(invoiceStatus, "grow");
         panel.add(new JLabel(ControlConfigUtils.getString("label.Invoice.paymentStatus")), "right");
         panel.add(invoicePaymentStatus, "grow");
+        panel.add(new JLabel(ControlConfigUtils.getString("label.Invoice.storeStatus")), "right");
+        panel.add(invoiceStoreStatus, "grow");
         return panel;
     }
 
@@ -114,6 +122,9 @@ public class ListInvoiceView extends AbstractSearchListView<Invoice> {
         if (invoicePaymentStatus.getSelectedItem() != null) {
             criteria.add(Restrictions.eq("paymentStatus", invoicePaymentStatus.getSelectedItem()));
         }
+        if (invoiceStoreStatus.getSelectedItem() != null) {
+            criteria.add(Restrictions.eq("storeStatus", invoiceStoreStatus.getSelectedItem()));
+        }
         return criteria;
     }
 
@@ -126,12 +137,13 @@ public class ListInvoiceView extends AbstractSearchListView<Invoice> {
         listDataModel.addColumn("moneyAfterTax", ListRendererType.TEXT);
         listDataModel.addColumn("status", ListRendererType.TEXT);
         listDataModel.addColumn("paymentStatus", ListRendererType.TEXT);
+        listDataModel.addColumn("storeStatus", ListRendererType.TEXT);
 
     }
 
     @Override
     protected Class<? extends AbstractEditView<Invoice>> getEditViewClass() {
-        return EditInvoiceView.class;
+        return EditInvoiceView2.class;
     }
 
 }

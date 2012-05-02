@@ -29,6 +29,10 @@ public class ListProductTypeView extends AListEntityView<ProductType> {
         listDataModel.addColumn("code", ListRendererType.TEXT);
         listDataModel.addColumn("name", ListRendererType.TEXT);
         listDataModel.addColumn("productFamilyType", ListRendererType.TEXT);
+
+        // TODO: Parent list must base on productFamilyType, and not itself.
+        listDataModel.addColumn("parent", ListRendererType.TEXT);
+        listDataModel.addColumn("active", ListRendererType.BOOLEAN);
     }
 
     @Override

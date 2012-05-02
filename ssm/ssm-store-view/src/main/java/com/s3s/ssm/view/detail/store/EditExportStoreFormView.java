@@ -17,7 +17,7 @@ package com.s3s.ssm.view.detail.store;
 import java.util.Map;
 
 import com.s3s.ssm.entity.sales.Invoice;
-import com.s3s.ssm.entity.sales.InvoiceStatus;
+import com.s3s.ssm.entity.sales.Invoice.InvoiceStoreStatus;
 import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.interfaces.catalog.ICatalogService;
@@ -76,9 +76,9 @@ public class EditExportStoreFormView extends AbstractSingleEditView<ExportStoreF
             }
         }
         if (isCompleted) {
-            invoice.setStatus(InvoiceStatus.EXPORTED);
+            invoice.setStoreStatus(InvoiceStoreStatus.EXPORTED);
         } else {
-            invoice.setStatus(InvoiceStatus.EXPORTING);
+            invoice.setStoreStatus(InvoiceStoreStatus.EXPORTING);
         }
     }
 

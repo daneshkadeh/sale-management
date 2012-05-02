@@ -83,6 +83,7 @@ import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.DetailSalesContract;
 import com.s3s.ssm.entity.sales.ImportationSC;
 import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.sales.Invoice.InvoiceStoreStatus;
 import com.s3s.ssm.entity.sales.InvoicePaymentStatus;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.sales.InvoiceType;
@@ -518,7 +519,9 @@ public class SSMDataLoader {
 
         form.setExportDetails(new HashSet<>(Arrays.asList(detail2, detail1)));
 
-        invoice.setStatus(InvoiceStatus.EXPORTING);
+        invoice.setStatus(InvoiceStatus.CLOSED);
+        invoice.setPaymentStatus(InvoicePaymentStatus.BALANCED);
+        invoice.setStoreStatus(InvoiceStoreStatus.EXPORTING);
         daoHelper.getDao(ExportStoreForm.class).save(form);
         daoHelper.getDao(Invoice.class).saveOrUpdate(invoice);
         return Arrays.asList(form);

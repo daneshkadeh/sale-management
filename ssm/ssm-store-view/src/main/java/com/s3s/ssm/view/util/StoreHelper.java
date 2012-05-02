@@ -55,8 +55,8 @@ public class StoreHelper extends ViewHelper {
         form.setInvoice(invoice);
         form.setCustCode(invoice.getContact().getCode());
         form.setCustName(invoice.getContact().getName());
-        switch (invoice.getStatus()) {
-        case OPEN:
+        switch (invoice.getStoreStatus()) {
+        case NO_ACTION:
             form.getExportDetails().addAll(initDetailExportStore(invoice));
             break;
         case EXPORTING:

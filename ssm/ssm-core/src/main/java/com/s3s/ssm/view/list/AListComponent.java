@@ -69,6 +69,8 @@ import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.util.ConfigProvider;
+import com.s3s.ssm.util.DaoHelper;
 import com.s3s.ssm.util.SClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
@@ -83,6 +85,8 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
     private static final long serialVersionUID = -1311942671249671111L;
     private static final int NUM_ROW_VISIBLE = 10;
     private static final Log logger = LogFactory.getLog(AListEntityView.class);
+
+    protected DaoHelper daoHelper = ConfigProvider.getInstance().getDaoHelper();
 
     private JTabbedPane tabPane;
     protected JPanel contentPane;
@@ -516,5 +520,9 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
     public JTabbedPane getTabbedPane() {
         return tabPane;
+    }
+
+    public DaoHelper getDaoHelper() {
+        return daoHelper;
     }
 }

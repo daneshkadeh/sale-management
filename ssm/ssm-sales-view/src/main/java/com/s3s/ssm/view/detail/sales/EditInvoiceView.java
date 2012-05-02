@@ -56,6 +56,12 @@ import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
+/**
+ * TODO: This class uses old abstract class for view. Will be move business into EditInvoiceView2 to edit detail
+ * directly. Keep this view because we did not find out solution to sell advantage, package directly.
+ * 
+ */
+@Deprecated
 public class EditInvoiceView extends AbstractMasterDetailView<Invoice, DetailInvoice> {
 
     private static final String REF_CURRENCY = "REF_CURRENCY";
