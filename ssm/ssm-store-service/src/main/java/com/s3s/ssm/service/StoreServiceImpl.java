@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.s3s.ssm.context.OrgSalesContextProvider;
 import com.s3s.ssm.dto.store.GroupDetailExportData;
 import com.s3s.ssm.dto.store.ImportStoreReportData;
 import com.s3s.ssm.entity.catalog.Item;
@@ -264,7 +265,8 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
         ExportStoreForm exportForm = new ExportStoreForm();
         exportForm.setCode(getNextExportStoreFormSeq());
         exportForm.setStaff(invoice.getStaff());
-        exportForm.setStore(invoice.getExportStore());
+        OrgSalesContextProvider orgSalesContextProvider = (OrgSalesContextProvider) getContextProvider();
+        exportForm.setStore(orgSalesContextProvider.getDefaultStore());
         exportForm.setInvoice(invoice);
         int lineNo = 0;
         for (DetailInvoice invoiceDetail : invoice.getDetailInvoices()) {

@@ -19,6 +19,7 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
+import com.s3s.ssm.context.ContextProvider;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.util.CacheDataService;
@@ -48,6 +49,8 @@ public abstract class AbstractView extends JPanel {
     protected ServiceProvider serviceProvider = ConfigProvider.getInstance().getServiceProvider();
 
     protected CacheDataService cacheDataService = ConfigProvider.getInstance().getCacheDataService();
+
+    protected ContextProvider contextProvider = ConfigProvider.getInstance().getContextProvider();
 
     protected DaoHelper getDaoHelper() {
         return daoHelper;

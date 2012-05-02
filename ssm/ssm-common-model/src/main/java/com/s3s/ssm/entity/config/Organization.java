@@ -42,6 +42,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.operator.Stall;
+import com.s3s.ssm.entity.store.Store;
 
 /**
  * @author Le Thanh Hoang
@@ -63,6 +64,7 @@ public class Organization extends AbstractActiveCodeOLObject {
     private Integer defPageRowNum = 10; // number of rows on a page
     private PaymentMode defPaymentMethod;
     private Stall defStall;
+    private Store defStore;
     private Integer enableChangeInvDate; // 0: not accept, 1: accept when inserting, 0: accept when creating
     // sell on credit
     private Integer sellOnCredit; // 0: cho phep ban am, 1: hoi neu ban am, 2: ko cho phep ban am
@@ -190,6 +192,16 @@ public class Organization extends AbstractActiveCodeOLObject {
 
     public void setDefStall(Stall defStall) {
         this.defStall = defStall;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "def_store_id")
+    public Store getDefStore() {
+        return defStore;
+    }
+
+    public void setDefStore(Store defStore) {
+        this.defStore = defStore;
     }
 
     @Column(name = "enable_chg_inv_date", length = 1)
