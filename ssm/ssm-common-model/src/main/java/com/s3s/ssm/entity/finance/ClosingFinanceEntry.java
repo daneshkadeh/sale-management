@@ -1,5 +1,5 @@
 /*
- * ClosingEntry
+ * ClosingFinanceEntry
  * 
  * Project: SSM
  * 
@@ -14,7 +14,7 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.entity.store;
+package com.s3s.ssm.entity.finance;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -23,8 +23,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -37,26 +35,13 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
 /**
  * @author Le Thanh Hoang
  * 
- *         One of the final entries made at year-end to close accounts and transfer the amounts to financial statements.
  */
 @Entity
-@Table(name = "store_store_closing_entry")
-public class ClosingStoreEntry extends AbstractIdOLObject {
-    private static final long serialVersionUID = 3307270397994078601L;
-    private Store store;
+@Table(name = "finance_finance_closing_entry")
+public class ClosingFinanceEntry extends AbstractIdOLObject {
+    private static final long serialVersionUID = -8568641623738107930L;
     private Date closingDate = new Date();
-    private Set<DetailClosingStore> closingStoreSet = new HashSet<DetailClosingStore>();
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "store_id")
-    @NotNull
-    public Store getStore() {
-        return store;
-    }
-
-    public void setStore(Store store) {
-        this.store = store;
-    }
+    private Set<DetailClosingFinance> closingFinanceSet = new HashSet<DetailClosingFinance>();
 
     @Column(name = "closing_date")
     @NotNull
@@ -70,12 +55,12 @@ public class ClosingStoreEntry extends AbstractIdOLObject {
 
     @OneToMany(mappedBy = "closingEntry", fetch = FetchType.EAGER)
     @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
-    public Set<DetailClosingStore> getClosingStoreSet() {
-        return closingStoreSet;
+    public Set<DetailClosingFinance> getClosingFinanceSet() {
+        return closingFinanceSet;
     }
 
-    public void setClosingStoreSet(Set<DetailClosingStore> closingStoreSet) {
-        this.closingStoreSet = closingStoreSet;
+    public void setClosingFinanceSet(Set<DetailClosingFinance> closingFinanceSet) {
+        this.closingFinanceSet = closingFinanceSet;
     }
 
 }

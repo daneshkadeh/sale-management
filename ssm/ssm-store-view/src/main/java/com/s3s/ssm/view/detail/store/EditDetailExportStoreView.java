@@ -33,7 +33,7 @@ import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
-import com.s3s.ssm.view.util.StoreHelper;
+import com.s3s.ssm.view.util.StoreViewHelper;
 
 public class EditDetailExportStoreView extends AbstractSingleEditView<DetailExportStore> {
     private static String REF_ITEM_LIST = "0";
@@ -78,7 +78,7 @@ public class EditDetailExportStoreView extends AbstractSingleEditView<DetailExpo
         tfdQuantity.addFocusListener(new FocusListener() {
             @Override
             public void focusLost(FocusEvent e) {
-                mSubtotal.setMoney(StoreHelper.calculatePriceSubtotal(tfdQuantity.getText(), mPriceUnit.getMoney()));
+                mSubtotal.setMoney(StoreViewHelper.calculatePriceSubtotal(tfdQuantity.getText(), mPriceUnit.getMoney()));
             }
 
             @Override
@@ -89,7 +89,7 @@ public class EditDetailExportStoreView extends AbstractSingleEditView<DetailExpo
 
             @Override
             public void doValueChanged(ChangeEvent e) {
-                mSubtotal.setMoney(StoreHelper.calculatePriceSubtotal(tfdQuantity.getText(), mPriceUnit.getMoney()));
+                mSubtotal.setMoney(StoreViewHelper.calculatePriceSubtotal(tfdQuantity.getText(), mPriceUnit.getMoney()));
             }
         });
 

@@ -1,7 +1,9 @@
 package com.s3s.ssm.service.impl;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
@@ -9,11 +11,15 @@ import org.hibernate.criterion.Property;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.finance.ClosingFinanceEntry;
+import com.s3s.ssm.entity.finance.DetailClosingFinance;
 import com.s3s.ssm.entity.finance.InvoicePayment;
 import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.finance.PaymentType;
 import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.interfaces.contact.IContactService;
 import com.s3s.ssm.interfaces.finance.IFinanceService;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.util.CacheId;
@@ -79,6 +85,7 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
         return Arrays.asList(PaymentType.values());
     }
 
+    @Override
     public void createInvoicePayment(Invoice invoice, PaymentContent paymentContent, PaymentMode paymentMode,
             Money amount) {
         InvoicePayment payment = new InvoicePayment();
@@ -88,5 +95,32 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
         payment.setPaymentMode(paymentMode);
         payment.setAmount(amount);
         getDaoHelper().getDao(InvoicePayment.class).save(payment);
+    }
+
+    public void processClosingFinanceEntry() {
+        List<Partner> partnerList = serviceProvider.getService(IContactService.class).getPartners();
+        ClosingFinanceEntry newClosingEntry = new ClosingFinanceEntry();
+        Set<DetailClosingFinance> newDetailSet = new HashSet<DetailClosingFinance>();
+        for (Partner partner : partnerList) {
+            DetailClosingFinance newDetail = new DetailClosingFinance();
+            newDetail.setClosingEntry(newClosingEntry);
+            newDetail.setPartner(partner);
+        }
+    }
+
+    private ClosingFinanceEntry getLatestClosingFinanceEntry() {
+        DetachedCriteria subselectDc = getDaoHelper().getDao(ClosingFinanceEntry.class).getCriteria();
+        subselectDc.setProjection(Property.forName("closingDate").max());
+
+        DetachedCriteria dc = getDaoHelper().getDao(ClosingFinanceEntry.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dc.add(Property.forName("closingDate").eq(subselectDc));
+        ClosingFinanceEntry closingFinanceEntry = getDaoHelper().getDao(ClosingFinanceEntry.class).findFirstByCriteria(
+                dc);
+        return closingFinanceEntry;
+    }
+
+    private void updateDetailClosingFinanceByPayment() {
+
     }
 }

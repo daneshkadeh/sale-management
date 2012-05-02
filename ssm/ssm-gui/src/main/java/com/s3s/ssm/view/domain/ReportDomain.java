@@ -31,7 +31,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.SSMReportViewer;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
-import com.s3s.ssm.view.list.report.ListGroupExportStoreDataView;
+import com.s3s.ssm.view.statistic.store.ListImportStoreReportDataView;
 
 /**
  * All views of report and warning alerts.
@@ -82,8 +82,9 @@ public class ReportDomain extends AbstractDomain {
 
         reportTestNode.setView(jviewer);
 
-        TreeNodeWithView reportTestNode1 = new TreeNodeWithView("List DTO");
-        reportTestNode1.setView(new ListGroupExportStoreDataView());
+        TreeNodeWithView importStoreNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.Report.ImportStore")); // "Bao dong kich cau"
+        importStoreNode.setView(new ListImportStoreReportDataView());
 
         rootNode.add(baoDongKichCauNode);
         rootNode.add(baoDongHetHangNode);
@@ -91,8 +92,7 @@ public class ReportDomain extends AbstractDomain {
         rootNode.add(hangTonQuaLauNode);
         rootNode.add(thongKeHangBanNode);
         rootNode.add(thongKeDoanhThuChiPhiNode);
-        rootNode.add(reportTestNode);
-        rootNode.add(reportTestNode1);
+        rootNode.add(importStoreNode);
     }
 
 }
