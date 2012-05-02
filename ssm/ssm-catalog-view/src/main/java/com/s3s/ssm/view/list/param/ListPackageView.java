@@ -3,11 +3,11 @@ package com.s3s.ssm.view.list.param;
 import com.s3s.ssm.entity.catalog.SPackage;
 import com.s3s.ssm.view.detail.param.EditPackageView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListPackageView extends AListEntityView<SPackage> {
+public class ListPackageView extends ANonSearchListEntityView<SPackage> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {

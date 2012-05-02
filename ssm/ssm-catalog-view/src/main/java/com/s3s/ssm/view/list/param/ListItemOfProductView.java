@@ -22,11 +22,11 @@ import org.hibernate.criterion.Restrictions;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.view.detail.param.EditItemView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListItemOfProductView extends AListEntityView<Item> {
+public class ListItemOfProductView extends ANonSearchListEntityView<Item> {
     private static final long serialVersionUID = -9117809072273053963L;
 
     public ListItemOfProductView(Map<String, Object> request) {

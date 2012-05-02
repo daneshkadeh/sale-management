@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.view.detail.sales.EditSalesContractView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
@@ -18,7 +18,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * @author phamcongbang
  * 
  */
-public class ListSalesContractOfConfirmView extends AListEntityView<SalesContract> {
+public class ListSalesContractOfConfirmView extends ANonSearchListEntityView<SalesContract> {
 
     public ListSalesContractOfConfirmView(Map<String, Object> request) {
         super(request);

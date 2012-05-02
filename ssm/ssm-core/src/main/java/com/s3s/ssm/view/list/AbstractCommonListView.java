@@ -46,12 +46,12 @@ import com.s3s.ssm.view.edit.AbstractSingleEditView;
  * </ul>
  * 
  * @see AbstractStatisticListView
- * @see AListEntityView
+ * @see ANonSearchListEntityView
  * @author Phan Hong Phuc
  * 
  * @param <T>
  */
-public abstract class AbstractCommonListView<T extends AbstractIdOLObject> extends AListEntityView<T> {
+public abstract class AbstractCommonListView<T extends AbstractIdOLObject> extends ANonSearchListEntityView<T> {
     private static final long serialVersionUID = -7157596822400727053L;
     JFrame detailFrame = new JFrame();
 

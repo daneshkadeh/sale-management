@@ -20,11 +20,11 @@ import com.s3s.ssm.entity.store.ImportStoreForm;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.detail.store.EditImportStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListImportStoreFormView extends AListEntityView<ImportStoreForm> {
+public class ListImportStoreFormView extends ANonSearchListEntityView<ImportStoreForm> {
     private static final long serialVersionUID = 4982188114504157451L;
 
     public ListImportStoreFormView(Icon icon, String label, String tooltip) {

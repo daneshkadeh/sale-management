@@ -33,11 +33,11 @@ import com.s3s.ssm.entity.sales.SalesContractStatus;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.detail.sales.EditSalesContractView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractSearchListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListSalesContractView extends AbstractSearchListView<SalesContract> {
+public class ListSalesContractView extends AListEntityView<SalesContract> {
 
     private JTextField contractCode;
     private JTextField supplierCode; // TODO: will be changed to searchComponent

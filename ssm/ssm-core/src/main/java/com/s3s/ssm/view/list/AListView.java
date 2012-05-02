@@ -16,6 +16,7 @@
 package com.s3s.ssm.view.list;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Event;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -60,6 +61,7 @@ import org.divxdede.swing.busy.DefaultBusyModel;
 import org.divxdede.swing.busy.JBusyComponent;
 import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.error.ErrorInfo;
 
 import com.s3s.ssm.entity.IActiveObject;
@@ -90,7 +92,7 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
     // TODO It should get from the property "defPageRowNum" of BasicInformation in ssm-config
     protected static final int DEFAULT_PAGE_SIZE = 30;
 
-    private static final Log logger = LogFactory.getLog(AListEntityView.class);
+    private static final Log logger = LogFactory.getLog(ANonSearchListEntityView.class);
 
     protected JTabbedPane tabPane;
     protected JPanel contentPane;
@@ -235,7 +237,7 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
     }
 
     protected void addComponents() {
-
+        addSearchPanel();
         // //////////////////// Button panel /////////////////////////////////
         toolbar = createButtonToolBar();
         contentPane.add(toolbar, "grow x, split 2");
@@ -423,6 +425,67 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
         buttonToolbar.add(Box.createHorizontalGlue());
         buttonToolbar.add(btnRefresh);
         return buttonToolbar;
+    }
+
+    /**
+     * Create the search panel.
+     * 
+     * @return the search panel, hide the search panel if return null.
+     */
+    protected abstract JPanel createSearchPanel();
+
+    /**
+     * Clear the criteria on the search panel.
+     */
+    protected abstract void clearCriteria();
+
+    protected JPanel createSearchButtonsPanel() {
+        JButton btnSearch = new JButton(ImageUtils.getSmallIcon(ImageConstants.SEARCH_ICON));
+        btnSearch.setText(ControlConfigUtils.getString("button.text.search"));
+        btnSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshData();
+            }
+        });
+        Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+        btnSearch.setCursor(handCursor);
+
+        JButton btnClear = new JButton(ImageUtils.getSmallIcon(ImageConstants.CLEAR_ICON));
+        btnClear.setText(ControlConfigUtils.getString("button.text.clearCriteria"));
+        btnClear.setToolTipText(ControlConfigUtils.getString("tooltip.clearCriteria"));
+        btnClear.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearCriteria();
+            }
+        });
+        btnSearch.setCursor(handCursor);
+
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panel.add(btnSearch);
+        panel.add(btnClear);
+        return panel;
+    }
+
+    protected void addSearchPanel() {
+        if (createSearchPanel() == null) {
+            return;
+        }
+        Color backgroundColor = new Color(200, 200, 255);
+        JXTaskPane pane = new JXTaskPane();
+        pane.setTitle(ControlConfigUtils.getString("label.search.searchTitle"));
+        pane.setIcon(ImageUtils.getSmallIcon(ImageConstants.SEARCH_ICON));
+        pane.setCollapsed(false);
+        pane.getContentPane().setBackground(backgroundColor);
+        JPanel searchPanel = createSearchPanel();
+        searchPanel.setBackground(backgroundColor);
+        pane.add(searchPanel);
+        JPanel searchButtonsPanel = createSearchButtonsPanel();
+        searchButtonsPanel.setBackground(backgroundColor);
+        pane.add(searchButtonsPanel);
+        contentPane.add(pane);
     }
 
     // //////////////// Show / Hide buttons /////////////////////

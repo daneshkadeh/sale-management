@@ -86,7 +86,7 @@ import com.s3s.ssm.view.list.renderer.RowHeaderRenderer;
 public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPanel implements TableModelListener {
     private static final long serialVersionUID = -1311942671249671111L;
     private static final int NUM_ROW_VISIBLE = 10;
-    private static final Log logger = LogFactory.getLog(AListEntityView.class);
+    private static final Log logger = LogFactory.getLog(ANonSearchListEntityView.class);
 
     protected DaoHelper daoHelper = ConfigProvider.getInstance().getDaoHelper();
 

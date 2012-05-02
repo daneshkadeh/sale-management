@@ -18,6 +18,8 @@ package com.s3s.ssm.view.list.report;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JPanel;
+
 import com.s3s.ssm.dto.store.GroupDetailExportData;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
@@ -73,5 +75,23 @@ public class ListGroupExportStoreDataView extends AListDataView<GroupDetailExpor
     @Override
     protected int calculateTotalPages() {
         return 1;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected JPanel createSearchPanel() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void clearCriteria() {
+        // TODO Auto-generated method stub
+
     }
 }
