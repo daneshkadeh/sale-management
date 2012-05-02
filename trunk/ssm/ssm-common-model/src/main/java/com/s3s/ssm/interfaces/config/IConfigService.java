@@ -9,7 +9,6 @@ import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.config.UomCategory;
 import com.s3s.ssm.entity.contact.AudienceCategory;
-import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.security.Role;
 import com.s3s.ssm.model.CurrencyEnum;
 
@@ -43,8 +42,6 @@ public interface IConfigService {
     public List<SCurrency> getCurrencies();
 
     public List<Bank> getBanks();
-
-    public List<Partner> getPartners();
 
     public List<AudienceCategory> getAudienceCategories();
 

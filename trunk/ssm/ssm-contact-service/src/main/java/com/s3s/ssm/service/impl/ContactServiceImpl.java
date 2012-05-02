@@ -1,12 +1,16 @@
 package com.s3s.ssm.service.impl;
 
-import java.util.Collections;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
 import com.s3s.ssm.interfaces.contact.IContactService;
 import com.s3s.ssm.interfaces.finance.IFinanceService;
 import com.s3s.ssm.util.CacheId;
@@ -21,27 +25,40 @@ public class ContactServiceImpl extends AbstractModuleServiceImpl implements ICo
         try {
             getCacheDataService().registerCache(CacheId.REF_LIST_PARTNER, this,
                     this.getClass().getMethod("getPartners"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_SUPPLIER, this,
+                    this.getClass().getMethod("getSuppliers"));
+            getCacheDataService().registerCache(CacheId.REF_LIST_CUSTOMER, this,
+                    this.getClass().getMethod("getCustomers"));
         } catch (NoSuchMethodException | SecurityException e) {
             throw new RuntimeException("Cannot register method to cache service!", e);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<Partner> getPartners() {
-        return getDaoHelper().getDao(Partner.class).findAllActive();
+        List<Partner> partners = getDaoHelper().getDao(Partner.class).findAllActive();
+        return partners;
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
     public List<Partner> getSuppliers() {
-        // TODO: Bang implement this
-        return Collections.EMPTY_LIST;
+        DetachedCriteria dc = getDaoHelper().getDao(Partner.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dc.add(Restrictions.eq("active", true));
+        dc.createCriteria("listProfiles").add(Restrictions.eq("type", PartnerProfileTypeEnum.SUPPLIER));
+        return getDaoHelper().getDao(Partner.class).findByCriteria(dc);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
     public List<Partner> getCustomers() {
-        // TODO: Bang implement this
-        return Collections.EMPTY_LIST;
+        DetachedCriteria dc = getDaoHelper().getDao(Partner.class).getCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dc.add(Restrictions.eq("active", true));
+        dc.createCriteria("listProfiles").add(Restrictions.eq("type", PartnerProfileTypeEnum.CUSTOMER));
+        return getDaoHelper().getDao(Partner.class).findByCriteria(dc);
     }
 
 }
