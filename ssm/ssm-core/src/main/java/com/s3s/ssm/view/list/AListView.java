@@ -78,6 +78,7 @@ import com.s3s.ssm.view.AbstractView;
 import com.s3s.ssm.view.IViewLazyLoadable;
 import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.PagingNavigator;
+import com.s3s.ssm.view.list.renderer.RowHeaderRenderer;
 
 /**
  * @author Phan Hong Phuc

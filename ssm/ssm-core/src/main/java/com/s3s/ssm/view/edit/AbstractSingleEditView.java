@@ -21,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -54,11 +56,16 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.NumberFormatter;
 import javax.validation.Configuration;
@@ -129,7 +136,8 @@ import com.s3s.ssm.view.list.AListComponent;
  * @param <T>
  */
 
-public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> extends AbstractEditView<T> {
+public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> extends AbstractEditView<T> implements
+        ItemListener, TableModelListener, DocumentListener, ActionListener, ChangeListener {
 
     public static final int DEFAULT_WIDTH = 300;
 
@@ -376,7 +384,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             pnlEdit = new JXTaskPane();
             ((JXTaskPane) pnlEdit).setTitle(g.getName());
             ((JXTaskPane) pnlEdit).setIcon(g.getIcon());
-            pnlEdit.setLayout(new MigLayout("debug, ins 0"));
+            pnlEdit.setLayout(new MigLayout("ins 0"));
             fieldsPanel.add(pnlEdit, "newline, spanx");
         } else {
             pnlEdit = fieldsPanel;
@@ -416,58 +424,28 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
             switch (attribute.getType()) {
             case LABEL:
-                dataField = new JLabel(String.valueOf(value));
-                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+                JLabel jLabel = new JLabel(String.valueOf(value));
+                jLabel.setPreferredSize(new Dimension(width, jLabel.getPreferredSize().height));
+
+                dataField = jLabel;
                 pnlEdit.add(lblLabel, newline);
                 break;
             case TEXTBOX:
-                Class<?> propertyReturnType = null;
-                if (isRaw) {
-                    // Assert.isTrue(value != null, "The value for the raw attribute must be set for TEXTBOX type");
-                    if (value == null) {
-                        value = "";
-                    }
-                    propertyReturnType = value.getClass();
-                } else {
-                    propertyReturnType = beanWrapper.getPropertyType(attribute.getName());
-                }
-                if (ClassUtils.isAssignable(propertyReturnType, Number.class)) {
-                    NumberFormatter numFormatter = new NumberFormatter();
-                    numFormatter.setValueClass(propertyReturnType);
-                    dataField = new JFormattedTextField(numFormatter);
-                    ((JFormattedTextField) dataField).setHorizontalAlignment(JFormattedTextField.RIGHT);
-                    width = UIConstants.NUMBER_FIELD_WIDTH;
-                } else {
-                    // The format type is String
-                    dataField = new JFormattedTextField("");
-                    ((DefaultFormatter) ((JFormattedTextField) dataField).getFormatter()).setOverwriteMode(false);
+                JFormattedTextField formattedTextField = createTextBox(attribute, width, isRaw, editable, value);
 
-                }
-                ((JFormattedTextField) dataField).setEditable(editable);
-                dataField.setPreferredSize(new Dimension(width, dataField.getHeight()));
-
-                dataField.setEnabled(attribute.isEnable());
-                ((JFormattedTextField) dataField).setValue(value);
+                dataField = formattedTextField;
                 pnlEdit.add(lblLabel, newline);
                 break;
             case TEXTAREA:
-                JTextArea ta = new JTextArea();
-                ta.setRows(UIConstants.DEFAUL_TEXTAREA_ROWS);
-                ta.setLineWrap(true);
-                ta.setEditable(true);
-                String txtValue = value != null ? StringUtils.trimToEmpty(String.valueOf(value)) : "";
-                ta.setText(txtValue);
-                ta.setEnabled(!isReadOnly());
-                dataField = new JScrollPane(ta);
-                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+                JScrollPane scrollPane = createTextArea(width, value);
+
+                dataField = scrollPane;
                 pnlEdit.add(lblLabel, newline + "top ");
                 break;
             case PASSWORD:
-                dataField = new JPasswordField();
-                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
-                ((JPasswordField) dataField).setEditable(editable);
-                dataField.setEnabled(attribute.isEnable());
-                ((JTextField) dataField).setText(ObjectUtils.toString(value));
+                JPasswordField pwField = createPasswordField(attribute, width, editable, value);
+
+                dataField = pwField;
                 pnlEdit.add(lblLabel, newline);
                 break;
             case DROPDOWN:
@@ -475,15 +453,16 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 pnlEdit.add(lblLabel, newline);
                 break;
             case DROPDOWN_AUTOCOMPLETE:
-                dataField = createDropdownComponent(attribute, width, value, referenceData);
-                AutoCompleteDecorator.decorate((JComboBox) dataField);
+                JComboBox<?> comboBoxAc = createDropdownComponent(attribute, width, value, referenceData);
+                AutoCompleteDecorator.decorate(comboBoxAc);
+
+                dataField = comboBoxAc;
                 pnlEdit.add(lblLabel, newline);
                 break;
             case MULTI_SELECT_LIST_BOX:
-                List desValues = value != null ? new ArrayList((Collection<?>) value) : Collections.EMPTY_LIST;
-                List scrValues = new ArrayList<>(ListUtils.removeAll(referenceData.getValues(), desValues));
-                dataField = new MultiSelectionListBox<>(scrValues, desValues, referenceData.getRenderer());
-                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+                MultiSelectionListBox<?> mulStListBox = createMultiSelectionListBox(width, value, referenceData);
+
+                dataField = mulStListBox;
                 pnlEdit.add(lblLabel, newline + "top");
                 break;
             case MULTI_SELECT_TREE_BOX:
@@ -503,11 +482,9 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 pnlEdit.add(lblLabel, newline + "top");
                 break;
             case DATE:
-                Date date = (Date) value;
-                dataField = new JXDatePicker();
-                if (date != null) {
-                    ((JXDatePicker) dataField).setDate(date);
-                }
+                JXDatePicker dp = createDateComponent(value);
+
+                dataField = dp;
                 pnlEdit.add(lblLabel, newline);
                 break;
             case RADIO_BUTTON_GROUP:
@@ -515,20 +492,14 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 pnlEdit.add(lblLabel, newline);
                 break;
             case IMAGE:
-                byte[] bytes = (byte[]) value;
-                dataField = new ImageChooser(bytes);
+                ImageChooser ic = createImageChooser(value);
+                dataField = ic;
                 pnlEdit.add(lblLabel, newline + "top");
                 break;
             case MONEY:
-                Money money = null;
-                if (value == null) {
-                    money = Money.zero(CurrencyEnum.VND); // TODO: get default currency
-                                                          // from context provider
-                } else {
-                    money = (Money) value;
-                }
-                dataField = new MoneyComponent(money);
-                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+                MoneyComponent mc = createMoneyComponent(width, value);
+
+                dataField = mc;
                 pnlEdit.add(lblLabel, newline);
                 break;
             case FILE_CHOOSER:
@@ -537,33 +508,25 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 pnlEdit.add(lblLabel, newline + "top");
                 break;
             case CHECKBOX:
-                Boolean isSelected = BooleanUtils.isTrue((Boolean) value);
-                dataField = new JCheckBox("", isSelected);
+                JCheckBox cb = createCheckbox(value);
+
+                dataField = cb;
                 pnlEdit.add(lblLabel, newline);
                 break;
             case SEARCHER:
-                SearchComponentInfo info = (SearchComponentInfo) attribute.getComponentInfo();
-                Assert.isTrue(info != null, "Search component need the info to initialize");
-                dataField = info.getSearchComponent();
-                ((ASearchComponent) dataField).setSelectedEntity((AbstractBaseIdObject) value);
-                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
+                ASearchComponent<? extends AbstractBaseIdObject> sc = createSearchComponent(attribute, width, value);
+
+                dataField = sc;
                 pnlEdit.add(lblLabel, newline);
                 break;
             case LIST:
-                ListComponentInfo listInfo = (ListComponentInfo) attribute.getComponentInfo();
-                AListComponent listComponent = listInfo.getListComponent();
-                Assert.isTrue(listComponent != null, "List component need the info to initialize");
-                listComponent.setEntities((Collection) value);
-                // listComponent.setMaximumSize(listComponent.getPreferredSize());
+                AListComponent listComponent = createListComponent(attribute, value);
                 dataField = listComponent;
-                // dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 pnlEdit.add(dataField, "newline, spanx");
                 break;
             case TIME_COMPONENT:
-                TimeComponent tc = new TimeComponent();
-                tc.setValue((long) value);
+                TimeComponent tc = createTimeComponent(width, value);
                 dataField = tc;
-                dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
                 pnlEdit.add(lblLabel, newline);
                 break;
             case ENTITY_CHOOSER:
@@ -610,21 +573,155 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         return pnlEdit;
     }
 
-    private JComponent createDropdownComponent(final DetailAttribute attribute, int width, Object value,
+    private TimeComponent createTimeComponent(int width, Object value) {
+        TimeComponent tc = new TimeComponent();
+        tc.setValue((long) value);
+        tc.setPreferredSize(new Dimension(width, tc.getPreferredSize().height));
+        tc.addChangeListener(this);
+        return tc;
+    }
+
+    private AListComponent<? extends AbstractBaseIdObject> createListComponent(final DetailAttribute attribute,
+            Object value) {
+        ListComponentInfo listInfo = (ListComponentInfo) attribute.getComponentInfo();
+        AListComponent<? extends AbstractBaseIdObject> listComponent = listInfo.getListComponent();
+        Assert.isTrue(listComponent != null, "List component need the info to initialize");
+        listComponent.setEntities((Collection) value);
+        listComponent.addTableModelListener(this);
+        // listComponent.setMaximumSize(listComponent.getPreferredSize());
+        return listComponent;
+    }
+
+    private ASearchComponent<? extends AbstractBaseIdObject> createSearchComponent(final DetailAttribute attribute,
+            int width, Object value) {
+        SearchComponentInfo info = (SearchComponentInfo) attribute.getComponentInfo();
+        Assert.isTrue(info != null, "Search component need the info to initialize");
+        ASearchComponent sc = info.getSearchComponent();
+        sc.setSelectedEntity((AbstractBaseIdObject) value);
+        sc.setPreferredSize(new Dimension(width, sc.getPreferredSize().height));
+
+        // TODO Phuc: add listener to check dirty
+        return sc;
+    }
+
+    private JCheckBox createCheckbox(Object value) {
+        Boolean isSelected = BooleanUtils.isTrue((Boolean) value);
+        JCheckBox cb = new JCheckBox("", isSelected);
+        cb.addItemListener(this);
+        return cb;
+    }
+
+    private MoneyComponent createMoneyComponent(int width, Object value) {
+        Money money = null;
+        if (value == null) {
+            money = Money.zero(CurrencyEnum.VND); // TODO: get default currency
+                                                  // from context provider
+        } else {
+            money = (Money) value;
+        }
+        MoneyComponent mc = new MoneyComponent(money);
+        mc.setPreferredSize(new Dimension(width, mc.getPreferredSize().height));
+        mc.addDocumentListener(this);
+        mc.addItemListener(this);
+        return mc;
+    }
+
+    private ImageChooser createImageChooser(Object value) {
+        byte[] bytes = (byte[]) value;
+        ImageChooser ic = new ImageChooser(bytes);
+        // TODO Phuc: add listener to check dirty
+        return ic;
+    }
+
+    private JXDatePicker createDateComponent(Object value) {
+        Date date = (Date) value;
+        JXDatePicker dp = new JXDatePicker();
+        if (date != null) {
+            dp.setDate(date);
+        }
+        dp.addActionListener(this);
+        return dp;
+    }
+
+    private MultiSelectionListBox<?> createMultiSelectionListBox(int width, Object value, ReferenceData referenceData) {
+        List desValues = value != null ? new ArrayList((Collection<?>) value) : Collections.EMPTY_LIST;
+        List scrValues = new ArrayList<>(ListUtils.removeAll(referenceData.getValues(), desValues));
+        MultiSelectionListBox mulStListBox = new MultiSelectionListBox<>(scrValues, desValues,
+                referenceData.getRenderer());
+        mulStListBox.setPreferredSize(new Dimension(width, mulStListBox.getPreferredSize().height));
+
+        // TODO Phuc: add listener to check dirty
+        return mulStListBox;
+    }
+
+    private JPasswordField createPasswordField(final DetailAttribute attribute, int width, boolean editable,
+            Object value) {
+        JPasswordField pwField = new JPasswordField();
+        pwField.setPreferredSize(new Dimension(width, pwField.getPreferredSize().height));
+        pwField.setEditable(editable);
+        pwField.setEnabled(attribute.isEnable());
+        pwField.setText(ObjectUtils.toString(value));
+        pwField.getDocument().addDocumentListener(this);
+        return pwField;
+    }
+
+    private JScrollPane createTextArea(int width, Object value) {
+        JTextArea ta = new JTextArea();
+        ta.setRows(UIConstants.DEFAUL_TEXTAREA_ROWS);
+        ta.setLineWrap(true);
+        ta.setEditable(true);
+        String txtValue = value != null ? StringUtils.trimToEmpty(String.valueOf(value)) : null;
+        ta.setText(txtValue);
+        ta.setEnabled(!isReadOnly());
+        ta.getDocument().addDocumentListener(this);
+        JScrollPane scrollPane = new JScrollPane(ta);
+        scrollPane.setPreferredSize(new Dimension(width, scrollPane.getPreferredSize().height));
+        return scrollPane;
+    }
+
+    private JFormattedTextField createTextBox(final DetailAttribute attribute, int width, boolean isRaw,
+            boolean editable, Object value) {
+        JFormattedTextField formattedTextField;
+        Class<?> propertyReturnType = null;
+        if (isRaw) {
+            Assert.isTrue(value != null, "The value for the raw attribute must be set for TEXTBOX type");
+            propertyReturnType = value.getClass();
+        } else {
+            propertyReturnType = beanWrapper.getPropertyType(attribute.getName());
+        }
+        if (ClassUtils.isAssignable(propertyReturnType, Number.class)) {
+            NumberFormatter numFormatter = new NumberFormatter();
+            numFormatter.setValueClass(propertyReturnType);
+            formattedTextField = new JFormattedTextField(numFormatter);
+            formattedTextField.setHorizontalAlignment(JFormattedTextField.RIGHT);
+            width = UIConstants.NUMBER_FIELD_WIDTH;
+        } else {
+            // The format type is String
+            DefaultFormatter df = new DefaultFormatter();
+            df.setOverwriteMode(false);
+            df.setValueClass(String.class);
+            formattedTextField = new JFormattedTextField(df);
+        }
+        formattedTextField.setEditable(editable);
+        formattedTextField.setPreferredSize(new Dimension(width, formattedTextField.getHeight()));
+        formattedTextField.setEnabled(attribute.isEnable());
+        formattedTextField.setValue(value);
+        formattedTextField.getDocument().addDocumentListener(this); // TODO Phuc: not work correctly with document
+                                                                    // listener
+        return formattedTextField;
+    }
+
+    private JComboBox<?> createDropdownComponent(DetailAttribute attribute, int width, Object value,
             ReferenceData referenceData) {
-        JComponent dataField;
         if (!attribute.isMandatory()) {
             referenceData.getValues().add(0, null);
         }
-        dataField = new JComboBox<>(referenceData.getValues().toArray());
-        dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
-        ((JComboBox<?>) dataField).setRenderer(referenceData.getRenderer());
-        ((JComboBox<?>) dataField).setSelectedItem(value);
-        return dataField;
-    }
-
-    private boolean isReadOnly() {
-        return Boolean.TRUE.equals(request.get(PARAM_READONLY));
+        JComboBox<?> comboBox = new JComboBox<>(referenceData.getValues().toArray());
+        comboBox.setPreferredSize(new Dimension(width, comboBox.getPreferredSize().height));
+        comboBox.setRenderer(referenceData.getRenderer());
+        comboBox.setSelectedItem(value);
+        comboBox.addItemListener(this);
+        return comboBox;
     }
 
     private JLabel createLabel(String label) {
@@ -641,6 +738,45 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         } else {
             return lb;
         }
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        enableSaveButtons();
+    }
+
+    @Override
+    public void tableChanged(TableModelEvent e) {
+        enableSaveButtons();
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        enableSaveButtons();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        // enableSaveButtons();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        enableSaveButtons();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        enableSaveButtons();
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        enableSaveButtons();
+    }
+
+    private boolean isReadOnly() {
+        return Boolean.TRUE.equals(request.get(PARAM_READONLY));
     }
 
     protected void btnSaveActionPerformed(ActionEvent evt) {
@@ -1002,8 +1138,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             Object value = getComponentValue(component, attribute.getType());
             boolean isDirty = !ObjectUtils.equals(value, beanWrapper.getPropertyValue(attribute.getName()));
             if (isDirty) {
-                btnSave.setEnabled(true);
-                btnSaveNew.setEnabled(true);
+                enableSaveButtons();
             }
         }
 
@@ -1071,5 +1206,10 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                     + UIConstants.BLANK + ((AbstractCodeOLObject) entity).getCode();
         }
         return entity.getId().toString();
+    }
+
+    public void enableSaveButtons() {
+        btnSave.setEnabled(true);
+        btnSaveNew.setEnabled(true);
     }
 }

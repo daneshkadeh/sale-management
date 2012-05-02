@@ -15,25 +15,25 @@
 
 package com.s3s.ssm.view.edit;
 
+import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.view.component.ASearchComponent;
 
 /**
  * @author Phan Hong Phuc
  * @since Apr 20, 2012
  */
-@SuppressWarnings("rawtypes")
 public class SearchComponentInfo implements IComponentInfo {
-    private ASearchComponent searchComponent;
+    private ASearchComponent<? extends AbstractBaseIdObject> searchComponent;
 
-    public SearchComponentInfo(ASearchComponent searchComponent) {
+    public SearchComponentInfo(ASearchComponent<? extends AbstractBaseIdObject> searchComponent) {
         this.searchComponent = searchComponent;
     }
 
-    public ASearchComponent getSearchComponent() {
+    public ASearchComponent<? extends AbstractBaseIdObject> getSearchComponent() {
         return searchComponent;
     }
 
-    public void setSearchComponent(ASearchComponent searchComponent) {
+    public void setSearchComponent(ASearchComponent<? extends AbstractBaseIdObject> searchComponent) {
         this.searchComponent = searchComponent;
     }
 }

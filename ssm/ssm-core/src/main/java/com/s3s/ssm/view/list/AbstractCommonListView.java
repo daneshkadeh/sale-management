@@ -62,7 +62,6 @@ public abstract class AbstractCommonListView<T extends AbstractIdOLObject> exten
         JButton btnDisplayAll = new JButton(ControlConfigUtils.getString("ListView.Common.Button.DisplayAll"));
         btnDisplayAll.addActionListener(new ActionListener() {
             @Override
-            @SuppressWarnings("unchecked")
             public void actionPerformed(ActionEvent e) {
                 // AdvanceTableModel tableModel = (AdvanceTableModel) table.getModel();
                 // tableModel.showAllRows();
@@ -73,7 +72,6 @@ public abstract class AbstractCommonListView<T extends AbstractIdOLObject> exten
                 ControlConfigUtils.getString("ListView.Common.Button.DisplaySelectedRow"));
         btnDisplaySelectedRow.addActionListener(new ActionListener() {
             @Override
-            @SuppressWarnings("unchecked")
             public void actionPerformed(ActionEvent e) {
                 // AdvanceTableModel tableModel = (AdvanceTableModel) table.getModel();
                 // tableModel.hideRows(getUnselectedRows(table));

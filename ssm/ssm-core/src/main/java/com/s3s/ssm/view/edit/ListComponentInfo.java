@@ -15,27 +15,27 @@
 
 package com.s3s.ssm.view.edit;
 
+import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.view.list.AListComponent;
 
 /**
  * @author Phan Hong Phuc
  * @since Apr 22, 2012
  */
-@SuppressWarnings("rawtypes")
 public class ListComponentInfo implements IComponentInfo {
-    private AListComponent listComponent;
+    private AListComponent<? extends AbstractBaseIdObject> listComponent;
     private String parentFieldName;
 
-    public ListComponentInfo(AListComponent listComponent, String parentFieldName) {
+    public ListComponentInfo(AListComponent<? extends AbstractBaseIdObject> listComponent, String parentFieldName) {
         this.listComponent = listComponent;
         this.setParentFieldName(parentFieldName);
     }
 
-    public AListComponent getListComponent() {
+    public AListComponent<? extends AbstractBaseIdObject> getListComponent() {
         return listComponent;
     }
 
-    public void setListComponent(AListComponent listComponent) {
+    public void setListComponent(AListComponent<? extends AbstractBaseIdObject> listComponent) {
         this.listComponent = listComponent;
     }
 
