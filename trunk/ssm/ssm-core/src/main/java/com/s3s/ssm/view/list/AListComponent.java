@@ -74,6 +74,8 @@ import com.s3s.ssm.util.DaoHelper;
 import com.s3s.ssm.util.SClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.list.renderer.FooterRenderer;
+import com.s3s.ssm.view.list.renderer.RowHeaderRenderer;
 
 /**
  * The list component, turn off the break page function.

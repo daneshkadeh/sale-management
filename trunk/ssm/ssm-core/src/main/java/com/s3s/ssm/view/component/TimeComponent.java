@@ -182,4 +182,12 @@ public class TimeComponent extends JPanel implements ChangeListener {
     public void setValue(long milisecond) {
         setValueByMinute(milisecond / 1000 / 60);
     }
+
+    public void addChangeListener(ChangeListener listener) {
+        yearSpn.addChangeListener(listener);
+        monthSpn.addChangeListener(listener);
+        daySpn.addChangeListener(listener);
+        hourSpn.addChangeListener(listener);
+        minSpn.addChangeListener(listener);
+    }
 }

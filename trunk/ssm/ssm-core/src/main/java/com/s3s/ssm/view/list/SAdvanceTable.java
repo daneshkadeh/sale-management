@@ -54,6 +54,9 @@ import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.SearchComponentInfo;
+import com.s3s.ssm.view.list.editor.MoneyCellEditor;
+import com.s3s.ssm.view.list.editor.SBooleanCellRenderer;
+import com.s3s.ssm.view.list.editor.SearchCellEditor;
 
 /**
  * @author Phan Hong Phuc
@@ -64,9 +67,9 @@ public class SAdvanceTable extends JXTable {
     private static final int EDITOR_HEIGHT = 25;
     private ListDataModel listDataModel;
     private ReferenceDataModel refDataModel;
-    private AdvanceTableModel tableModel;
+    private AdvanceTableModel<?> tableModel;
 
-    public SAdvanceTable(AdvanceTableModel tableModel, ListDataModel listDataModel, ReferenceDataModel refDataModel) {
+    public SAdvanceTable(AdvanceTableModel<?> tableModel, ListDataModel listDataModel, ReferenceDataModel refDataModel) {
         super(tableModel);
         this.tableModel = tableModel;
         this.listDataModel = listDataModel;
@@ -95,6 +98,8 @@ public class SAdvanceTable extends JXTable {
             // Highlight the row when mouse over.
             addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW,
                     UIManager.getColor("Table.dropLineColor"), null));
+            setDefaultRenderer(boolean.class, new SBooleanCellRenderer());
+            setDefaultRenderer(Boolean.class, new SBooleanCellRenderer());
         }
     }
 
@@ -227,6 +232,7 @@ public class SAdvanceTable extends JXTable {
         }
     }
 
+    @Override
     protected void configureColumnControl() {
         Container p = getParent();
         if (p instanceof JViewport) {

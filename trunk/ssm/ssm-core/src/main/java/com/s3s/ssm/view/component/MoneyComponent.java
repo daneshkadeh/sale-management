@@ -28,6 +28,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.NumberFormatter;
 
 import net.miginfocom.swing.MigLayout;
@@ -141,8 +142,17 @@ public class MoneyComponent extends JPanel {
         listenerList.add(ActionListener.class, l);
     }
 
+    @Override
     public boolean requestFocusInWindow() {
         return valueField.requestFocusInWindow();
+    }
+
+    public void addDocumentListener(DocumentListener listener) {
+        valueField.getDocument().addDocumentListener(listener);
+    }
+
+    public void addItemListener(ItemListener listener) {
+        currencyCodeField.addItemListener(listener);
     }
 
     public void commitEdit() {

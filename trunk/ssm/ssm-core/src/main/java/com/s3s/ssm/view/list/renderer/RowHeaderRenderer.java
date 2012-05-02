@@ -13,7 +13,7 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.view.list;
+package com.s3s.ssm.view.list.renderer;
 
 import java.awt.Component;
 
