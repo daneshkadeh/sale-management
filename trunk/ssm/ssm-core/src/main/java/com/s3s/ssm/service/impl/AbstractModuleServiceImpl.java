@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.s3s.ssm.context.ContextProvider;
 import com.s3s.ssm.util.CacheDataService;
 import com.s3s.ssm.util.DaoHelper;
 import com.s3s.ssm.util.ServiceProvider;
@@ -17,6 +18,9 @@ public abstract class AbstractModuleServiceImpl {
 
     @Autowired
     private CacheDataService cacheDataService;
+
+    @Autowired
+    private ContextProvider contextProvider;
 
     @PostConstruct
     public abstract void init();
@@ -45,5 +49,13 @@ public abstract class AbstractModuleServiceImpl {
 
     public void setCacheDataService(CacheDataService cacheDataService) {
         this.cacheDataService = cacheDataService;
+    }
+
+    public ContextProvider getContextProvider() {
+        return contextProvider;
+    }
+
+    public void setContextProvider(ContextProvider contextProvider) {
+        this.contextProvider = contextProvider;
     }
 }

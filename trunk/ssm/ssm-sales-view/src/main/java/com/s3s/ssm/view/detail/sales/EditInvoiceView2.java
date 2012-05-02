@@ -1,11 +1,13 @@
 package com.s3s.ssm.view.detail.sales;
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JViewport;
 
+import com.s3s.ssm.context.OrgSalesContextProvider;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.config.Address;
@@ -18,8 +20,10 @@ import com.s3s.ssm.entity.sales.InvoicePaymentStatus;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.interfaces.config.IConfigService;
+import com.s3s.ssm.interfaces.sales.InvoiceService;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -66,9 +70,21 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         detailDataModel.addRawAttribute("contact.info", DetailFieldType.TEXTAREA)
                 .value(getContactInfo(entity.getContact())).editable(false);
 
+        detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER).mandatory(true)
+                .componentInfo(ComponentFactory.createOperatorComponentInfo());
+
         detailDataModel.addAttribute("detailInvoices", DetailFieldType.LIST).componentInfo(
                 createInvoiceDetailsComponentInfo());
 
+    }
+
+    @Override
+    protected Invoice loadForCreate(Map<String, Object> request) {
+        Invoice invoice = super.loadForCreate(request);
+        invoice.setCreatedDate(new Date());
+        invoice.setInvoiceNumber(serviceProvider.getService(InvoiceService.class).getNextInvoiceNumber());
+        invoice.setStaff(((OrgSalesContextProvider) contextProvider).getCurrentOperator());
+        return invoice;
     }
 
     private IComponentInfo createInvoiceDetailsComponentInfo() {

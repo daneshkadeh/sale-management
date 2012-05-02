@@ -52,4 +52,9 @@ public class ComponentFactory {
         CashierSearchComponent psc = new CashierSearchComponent();
         return new SearchComponentInfo(psc);
     }
+
+    public static IComponentInfo createOperatorComponentInfo() {
+        OperatorSearchComponent psc = new OperatorSearchComponent();
+        return new SearchComponentInfo(psc);
+    }
 }

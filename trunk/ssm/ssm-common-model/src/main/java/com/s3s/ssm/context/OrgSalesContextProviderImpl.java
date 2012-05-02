@@ -1,6 +1,7 @@
 package com.s3s.ssm.context;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -18,6 +19,7 @@ import com.s3s.ssm.entity.config.SalesChannel;
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.entity.operator.OperatorReferences;
 import com.s3s.ssm.entity.operator.Stall;
+import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.security.CustomPermission;
 import com.s3s.ssm.util.DaoHelper;
@@ -33,6 +35,7 @@ public class OrgSalesContextProviderImpl implements OrgSalesContextProvider {
     private Institution currInstitution;
     private Organization currOrganization;
     private SalesChannel currSalesChannel;
+    private Operator currOperator;
     private Stall currStall;
 
     public void loadContext() {
@@ -40,16 +43,16 @@ public class OrgSalesContextProviderImpl implements OrgSalesContextProvider {
         clearContext();
 
         String operatorUserName = getCurrentUser();
+        DetachedCriteria operatorDC = daoHelper.getDao(Operator.class).getCriteria();
+        operatorDC.add(Restrictions.eq("username", operatorUserName));
+        this.currOperator = daoHelper.getDao(Operator.class).findFirstByCriteria(operatorDC);
+        if (currOperator == null) {
+            throw new RuntimeException("Can not find login user in current context.");
+        }
+
         OperatorReferences references = getOperatorReferences(operatorUserName);
         if (references == null) {
             references = new OperatorReferences();
-
-            DetachedCriteria operatorDC = daoHelper.getDao(Operator.class).getCriteria();
-            operatorDC.add(Restrictions.eq("username", operatorUserName));
-            Operator currOperator = daoHelper.getDao(Operator.class).findFirstByCriteria(operatorDC);
-            if (currOperator == null) {
-                throw new RuntimeException("Can not find login user in current context.");
-            }
             references.setOperator(currOperator);
             try {
                 references.setCurrInstitution(daoHelper.getDao(Institution.class).findAll().get(0));
@@ -65,6 +68,7 @@ public class OrgSalesContextProviderImpl implements OrgSalesContextProvider {
         currOrganization = references.getCurrOrganization();
         currSalesChannel = references.getCurrSalesChannel();
         currStall = references.getCurrStall();
+
     }
 
     private OperatorReferences getOperatorReferences(String operatorUserName) {
@@ -75,7 +79,11 @@ public class OrgSalesContextProviderImpl implements OrgSalesContextProvider {
     }
 
     public void clearContext() {
-        // TODO: will be implemented
+        currOperator = null;
+        currInstitution = null;
+        currOrganization = null;
+        currSalesChannel = null;
+        currStall = null;
     }
 
     public void saveContext() {
@@ -259,5 +267,25 @@ public class OrgSalesContextProviderImpl implements OrgSalesContextProvider {
 
     public void setDaoHelper(DaoHelper daoHelper) {
         this.daoHelper = daoHelper;
+    }
+
+    @Override
+    public Store getDefaultStore() {
+        if (currOrganization != null && currOrganization.getDefStore() != null) {
+            return currOrganization.getDefStore();
+        } else {
+            // TODO: return first store of institution
+            List<Store> stores = daoHelper.getDao(Store.class).findAll();
+            if (!stores.isEmpty()) {
+                stores.get(0);
+            }
+        }
+        return null;
+
+    }
+
+    @Override
+    public Operator getCurrentOperator() {
+        return currOperator;
     }
 }

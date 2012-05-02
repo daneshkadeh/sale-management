@@ -737,7 +737,6 @@ public class SSMDataLoader {
         invoice1.setContact(listContact.get(0));
         invoice1.setStaff(listStaff.get(0));
         invoice1.setInvoiceNumber("0000001");
-        invoice1.setExportStore(listStore.get(0));
         invoice1.setCreatedDate(new Date());
         invoice1.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice1.setStatus(InvoiceStatus.OPEN);
@@ -781,7 +780,6 @@ public class SSMDataLoader {
         invoice2.setContact(listContact.get(0));
         invoice2.setStaff(listStaff.get(0));
         invoice2.setInvoiceNumber("0000002");
-        invoice2.setExportStore(listStore.get(0));
         invoice2.setCreatedDate(new Date());
         invoice2.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice2.setStatus(InvoiceStatus.OPEN);
