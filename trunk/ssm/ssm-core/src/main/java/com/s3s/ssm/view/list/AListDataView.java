@@ -20,7 +20,7 @@ import java.util.List;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 
 /**
- * TODO Phuc Just work-around list of DTO. It should be the parent of {@link AListEntityView}
+ * TODO Phuc Just work-around list of DTO. It should be the parent of {@link ANonSearchListEntityView}
  * 
  * @author Phan Hong Phuc
  * @since May 1, 2012

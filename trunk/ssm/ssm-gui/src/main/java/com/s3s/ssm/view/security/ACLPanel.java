@@ -50,7 +50,7 @@ import com.s3s.ssm.security.CustomPermission;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.AbstractView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 
 public class ACLPanel extends AbstractView {
     private final String SPACE = "   ";
@@ -70,7 +70,7 @@ public class ACLPanel extends AbstractView {
 
     private CustomJdbcMutableAclService mutableAclService;
     // get reference to fire event to ListRoleView
-    private AListEntityView<Role> listView;
+    private ANonSearchListEntityView<Role> listView;
     private JTextField codeRole;
     private JTextField txtRole;
     private JCheckBox chkEnable;
@@ -440,7 +440,7 @@ public class ACLPanel extends AbstractView {
 
     }
 
-    public void setListView(AListEntityView<Role> listView) {
+    public void setListView(ANonSearchListEntityView<Role> listView) {
         this.listView = listView;
     }
 

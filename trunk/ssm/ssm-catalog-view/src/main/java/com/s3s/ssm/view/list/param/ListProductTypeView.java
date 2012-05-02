@@ -17,11 +17,11 @@ package com.s3s.ssm.view.list.param;
 import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.view.detail.param.EditProductTypeView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListProductTypeView extends AListEntityView<ProductType> {
+public class ListProductTypeView extends ANonSearchListEntityView<ProductType> {
 
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {

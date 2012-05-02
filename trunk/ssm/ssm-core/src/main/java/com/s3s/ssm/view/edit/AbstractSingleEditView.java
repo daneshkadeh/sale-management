@@ -253,6 +253,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         btnSave = new JButton(ImageUtils.getSmallIcon(ImageConstants.SAVE_ICON));
         btnSave.setToolTipText(ControlConfigUtils.getString("default.button.save"));
         btnSave.addActionListener(saveAction);
+        btnSave.setEnabled(false);
 
         // btnSaveClose = new JButton("Luu va dong");
         // btnSaveClose.addActionListener(new ActionListener() {
@@ -274,6 +275,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 }
             }
         });
+        btnSaveNew.setEnabled(false);
 
         btnNew = new JButton(ImageUtils.getSmallIcon(ImageConstants.NEW_ICON));
         btnNew.setEnabled(entity.isPersisted());
@@ -621,7 +623,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         }
         MoneyComponent mc = new MoneyComponent(money);
         mc.setPreferredSize(new Dimension(width, mc.getPreferredSize().height));
-        mc.addDocumentListener(this);
+        // mc.addDocumentListener(this);
         mc.addItemListener(this);
         return mc;
     }
@@ -706,8 +708,8 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         formattedTextField.setPreferredSize(new Dimension(width, formattedTextField.getHeight()));
         formattedTextField.setEnabled(attribute.isEnable());
         formattedTextField.setValue(value);
-        formattedTextField.getDocument().addDocumentListener(this); // TODO Phuc: not work correctly with document
-                                                                    // listener
+        // formattedTextField.getDocument().addDocumentListener(this); // TODO Phuc: not work correctly with document
+        // listener
         return formattedTextField;
     }
 

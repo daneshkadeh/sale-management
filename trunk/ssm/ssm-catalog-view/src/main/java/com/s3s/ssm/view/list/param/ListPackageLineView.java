@@ -14,11 +14,11 @@ import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.view.component.EntityDialog;
 import com.s3s.ssm.view.detail.param.EditPackageLineView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListPackageLineView extends AListEntityView<PackageLine> {
+public class ListPackageLineView extends ANonSearchListEntityView<PackageLine> {
 
     public static final String PRODUCT_OF_PACKAGE_LINE = "PRODUCT_OF_PACKAGE_LINE";
 

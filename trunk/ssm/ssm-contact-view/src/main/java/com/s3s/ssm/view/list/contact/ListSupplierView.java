@@ -21,7 +21,7 @@ import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
 import com.s3s.ssm.view.detail.contact.EditMultiSupplierView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
@@ -30,7 +30,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * @author phamcongbang
  * 
  */
-public class ListSupplierView extends AListEntityView<Partner> {
+public class ListSupplierView extends ANonSearchListEntityView<Partner> {
     private static final long serialVersionUID = -1414670444682843015L;
 
     @Override

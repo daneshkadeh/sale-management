@@ -1,5 +1,5 @@
 /*
- * AbstractListView
+ * AListEntityView1
  * 
  * Project: SSM
  * 
@@ -12,6 +12,7 @@
  * use it only in accordance with the terms of the license
  * agreements you entered into with HBASoft.
  */
+
 package com.s3s.ssm.view.list;
 
 import java.awt.Dialog;
@@ -76,7 +77,7 @@ public abstract class AListEntityView<T extends AbstractBaseIdObject> extends AL
 
     private static final long serialVersionUID = -1311942671249671111L;
 
-    private static final Log logger = LogFactory.getLog(AListEntityView.class);
+    private static final Log logger = LogFactory.getLog(ANonSearchListEntityView.class);
 
     public AListEntityView() {
         super();
@@ -346,8 +347,8 @@ public abstract class AListEntityView<T extends AbstractBaseIdObject> extends AL
         if (permissionSet.contains(CustomPermission.ADMINISTRATION) || permissionSet.contains(CustomPermission.READ)) {
             int selectedRow = tblListEntities.getSelectedRow();
             if (selectedRow == -1) {
-                JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AListEntityView.this),
-                        "Please select a row to edit", "Warning", JOptionPane.OK_OPTION, JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showConfirmDialog(SwingUtilities.getRoot(this), "Please select a row to edit", "Warning",
+                        JOptionPane.OK_OPTION, JOptionPane.WARNING_MESSAGE);
             } else {
                 int rowModel = tblListEntities.convertRowIndexToModel(selectedRow);
                 showEditView(entities.get(rowModel), EditActionEnum.EDIT);
@@ -359,17 +360,18 @@ public abstract class AListEntityView<T extends AbstractBaseIdObject> extends AL
     protected void performActivateData() {
         int selectedRow = tblListEntities.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AListEntityView.this),
-                    "Please select a row to activate", "Warning", JOptionPane.CLOSED_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showConfirmDialog(SwingUtilities.getRoot(this), "Please select a row to activate", "Warning",
+                    JOptionPane.CLOSED_OPTION, JOptionPane.INFORMATION_MESSAGE);
         } else {
             int rowModel = tblListEntities.convertRowIndexToModel(selectedRow);
             IActiveObject activeObject = (IActiveObject) entities.get(rowModel);
             if (!activeObject.isActive()) {
                 activeObject.setActive(true);
                 getDaoHelper().getDao(getGenericClass()).saveOrUpdate(entities.get(rowModel));
+                tblListEntities.repaint();
+                tblListEntities.revalidate();
             } else {
-                JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AListEntityView.this),
+                JOptionPane.showConfirmDialog(SwingUtilities.getRoot(this),
                         "The selected object has been active already.", "Warning", JOptionPane.CLOSED_OPTION,
                         JOptionPane.INFORMATION_MESSAGE);
             }
@@ -380,17 +382,18 @@ public abstract class AListEntityView<T extends AbstractBaseIdObject> extends AL
     protected void performInactivateData() {
         int selectedRow = tblListEntities.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AListEntityView.this),
-                    "Please select a row to inactivate", "Warning", JOptionPane.CLOSED_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showConfirmDialog(SwingUtilities.getRoot(this), "Please select a row to inactivate", "Warning",
+                    JOptionPane.CLOSED_OPTION, JOptionPane.INFORMATION_MESSAGE);
         } else {
             int rowModel = tblListEntities.convertRowIndexToModel(selectedRow);
             IActiveObject activeObject = (IActiveObject) entities.get(rowModel);
             if (activeObject.isActive()) {
                 activeObject.setActive(false);
                 getDaoHelper().getDao(getGenericClass()).saveOrUpdate(entities.get(rowModel));
+                tblListEntities.repaint();
+                tblListEntities.revalidate();
             } else {
-                JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AListEntityView.this),
+                JOptionPane.showConfirmDialog(SwingUtilities.getRoot(this),
                         "The selected object has been inactive already.", "Warning", JOptionPane.CLOSED_OPTION,
                         JOptionPane.INFORMATION_MESSAGE);
             }
@@ -401,7 +404,7 @@ public abstract class AListEntityView<T extends AbstractBaseIdObject> extends AL
     @Override
     protected void performExportAction() {
         try {
-            Window parentContainer = (Window) SwingUtilities.getRoot(AListEntityView.this);
+            Window parentContainer = (Window) SwingUtilities.getRoot(this);
 
             ExportDialog exportDialog = new ExportDialog(parentContainer, Dialog.ModalityType.APPLICATION_MODAL);
             exportDialog.setVisible(true);
@@ -469,4 +472,5 @@ public abstract class AListEntityView<T extends AbstractBaseIdObject> extends AL
         // TODO Phuc: consider add abstractListView as a listerner of EditView to make a clear code.
         notifyFromDetailView(e.getEntity(), e.isNew());
     }
+
 }

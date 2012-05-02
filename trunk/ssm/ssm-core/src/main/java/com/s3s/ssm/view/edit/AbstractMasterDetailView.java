@@ -36,7 +36,7 @@ import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.model.ReferenceDataModel;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.AdvanceTableModel;
 import com.s3s.ssm.view.list.ListDataModel;
 
@@ -154,7 +154,7 @@ public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E e
      * the screen.
      * 
      */
-    private class ChildListView extends AListEntityView<E> {
+    private class ChildListView extends ANonSearchListEntityView<E> {
         private static final long serialVersionUID = -8455234397691564647L;
 
         public ChildListView(Map<String, Object> params, Icon icon, String label, String tooltip) {

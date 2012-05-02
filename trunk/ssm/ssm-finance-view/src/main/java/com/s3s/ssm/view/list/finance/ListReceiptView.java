@@ -21,11 +21,11 @@ import com.s3s.ssm.entity.finance.Payment;
 import com.s3s.ssm.entity.finance.PaymentType;
 import com.s3s.ssm.view.detail.finance.EditReceiptView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListReceiptView extends AListEntityView<Payment> {
+public class ListReceiptView extends ANonSearchListEntityView<Payment> {
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("code", ListRendererType.TEXT);

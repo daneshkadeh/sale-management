@@ -25,11 +25,11 @@ import com.s3s.ssm.interfaces.sales.InvoiceService;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.detail.store.EditExportStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListExportStoreFormView extends AListEntityView<ExportStoreForm> {
+public class ListExportStoreFormView extends ANonSearchListEntityView<ExportStoreForm> {
     private static final long serialVersionUID = 7393197060716188079L;
     public static final String DETAIL_SET = "detailSet";
     public static final String INVOICE_FORM = "invoiceForm";

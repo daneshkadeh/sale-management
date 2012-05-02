@@ -31,7 +31,7 @@ import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.detail.contact.EditMultiCustomerView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractSearchListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
@@ -40,7 +40,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * @author phamcongbang
  * 
  */
-public class ListCustomerView extends AbstractSearchListView<Partner> {
+public class ListCustomerView extends AListEntityView<Partner> {
     /**
      * 
      */

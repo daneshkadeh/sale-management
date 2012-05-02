@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import com.s3s.ssm.entity.contact.ContactDebtHistory;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
@@ -18,7 +18,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * @author phamcongbang
  * 
  */
-public class ListContactDebtHistoryView extends AListEntityView<ContactDebtHistory> {
+public class ListContactDebtHistoryView extends ANonSearchListEntityView<ContactDebtHistory> {
     private static final long serialVersionUID = 2097337075091174071L;
 
     public ListContactDebtHistoryView(Map<String, Object> request) {

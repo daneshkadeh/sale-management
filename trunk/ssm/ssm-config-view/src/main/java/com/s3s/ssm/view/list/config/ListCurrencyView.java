@@ -20,11 +20,11 @@ import com.s3s.ssm.entity.config.SCurrency;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.view.detail.config.EditCurrencyView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListCurrencyView extends AListEntityView<SCurrency> {
+public class ListCurrencyView extends ANonSearchListEntityView<SCurrency> {
     public ListCurrencyView(Icon icon, String label, String tooltip) {
         super(icon, label, tooltip);
     }

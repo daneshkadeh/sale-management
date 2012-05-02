@@ -36,11 +36,11 @@ import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.detail.sales.EditInvoiceView2;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AbstractSearchListView;
+import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListInvoiceView extends AbstractSearchListView<Invoice> {
+public class ListInvoiceView extends AListEntityView<Invoice> {
     private static final long serialVersionUID = -8516587352442289723L;
     private JTextField invoiceNumber;
     private JComboBox<InvoiceType> type;

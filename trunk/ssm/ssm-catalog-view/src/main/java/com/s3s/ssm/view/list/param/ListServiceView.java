@@ -3,11 +3,11 @@ package com.s3s.ssm.view.list.param;
 import com.s3s.ssm.entity.catalog.Service;
 import com.s3s.ssm.view.detail.param.EditServiceView;
 import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.list.AListEntityView;
+import com.s3s.ssm.view.list.ANonSearchListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListServiceView extends AListEntityView<Service> {
+public class ListServiceView extends ANonSearchListEntityView<Service> {
     private static final long serialVersionUID = 1L;
 
     @Override
