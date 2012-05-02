@@ -10,6 +10,7 @@ import java.util.Set;
 import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.dto.store.GroupDetailExportData;
-import com.s3s.ssm.dto.store.GroupDetailImportData;
+import com.s3s.ssm.dto.store.ImportStoreReportData;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.sales.DetailInvoice;
@@ -235,7 +236,6 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
             Date latestClosingEntryDate = getDateOfLatestClosingStoreEntry(store);
             Date latestInvenStoreForm = getDateOfLatestInventoryStoreForm(store);
             if (latestClosingEntryDate != null && !DateUtils.isSameDay(latestClosingEntryDate, new Date())) {
-                // if (closingEntryDate.compareTo(latestInvenStoreForm) > 0) {
                 if (latestClosingEntryDate.after(latestInvenStoreForm)) {
                     // get the latest closing entry
                     updateDetailClosingStoreByLatestClosingStoreEntry(newClosingEntry, newDetailSet);
@@ -259,67 +259,6 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
         }
     }
 
-    private List<GroupDetailImportData> getGroupedDetailImportList(final Date date) {
-        if (date == null) {
-            return Collections.EMPTY_LIST;
-        }
-
-        DetachedCriteria dc = getDaoHelper().getDao(DetailImportStore.class).getCriteria();
-        dc.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("product"))
-                .add(Projections.property("item")).add(Projections.property("quantity"))));
-        dc.add(Restrictions.ge("importStoreForm.createdDate", date));
-        dc.setResultTransformer(new AliasToBeanResultTransformer(GroupDetailImportData.class));
-        return (List) getDaoHelper().getDao(DetailImportStore.class).findByCriteria(dc);
-        // final DetachedCriteria dc = getDaoHelper().getDao(DetailImportStore.class).getCriteria();
-        // List groupedDetailList = (List) getDaoHelper().getDao(DetailImportStore.class).getHibernateTmpl()
-        // .executeWithNativeSession(new HibernateCallback() {
-        // @Override
-        // public Object doInHibernate(Session session) throws HibernateException {
-        // Criteria executableCriteria = dc.getExecutableCriteria(session);
-        // executableCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        // executableCriteria.setProjection(Projections.projectionList()
-        // .add(Projections.alias(Projections.groupProperty("product"), "pro"))
-        // .add(Projections.alias(Projections.groupProperty("item"), "i"))
-        // .add(Projections.alias(Projections.sum(("quantity")), "qty")));
-        // dc.createAlias("importStoreForm", "importStoreForm");
-        // dc.add(Property.forName("importStoreForm.createdDate").ge(date));
-        // return executableCriteria.list();
-        // }
-        // });
-        // return groupedDetailList;
-    }
-
-    private List<GroupDetailExportData> getGroupedDetailExportList(final Date date) {
-        if (date == null) {
-            return Collections.EMPTY_LIST;
-        }
-
-        DetachedCriteria dc = getDaoHelper().getDao(DetailExportStore.class).getCriteria();
-        dc.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("product"))
-                .add(Projections.property("item")).add(Projections.sum("realQuan"))));
-        dc.add(Restrictions.ge("exportForm.createdDate", date));
-        dc.setResultTransformer(new AliasToBeanResultTransformer(GroupDetailExportData.class));
-        return (List) getDaoHelper().getDao(DetailExportStore.class).findByCriteria(dc);
-
-        // final DetachedCriteria dc = getDaoHelper().getDao(DetailExportStore.class).getCriteria();
-        // List groupedDetailList = (List) getDaoHelper().getDao(DetailExportStore.class).getHibernateTmpl()
-        // .executeWithNativeSession(new HibernateCallback() {
-        // @Override
-        // public Object doInHibernate(Session session) throws HibernateException {
-        // Criteria executableCriteria = dc.getExecutableCriteria(session);
-        // executableCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        // executableCriteria.setProjection(Projections.projectionList()
-        // .add(Projections.alias(Projections.groupProperty("product"), "pro"))
-        // .add(Projections.alias(Projections.groupProperty("item"), "i"))
-        // .add(Projections.alias(Projections.sum(("realQuan")), "qty")));
-        // dc.createAlias("exportForm", "exportForm");
-        // dc.add(Property.forName("exportForm.createdDate").ge(date));
-        // return executableCriteria.list();
-        // }
-        // });
-        // return groupedDetailList;
-    }
-
     @Override
     public void createExportStoreForm(Invoice invoice) {
         ExportStoreForm exportForm = new ExportStoreForm();
@@ -340,6 +279,70 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
             lineNo++;
         }
         getDaoHelper().getDao(ExportStoreForm.class).save(exportForm);
+    }
+
+    public List<ImportStoreReportData> statisticImportStoreData(String salesContractCode, String storeCode,
+            String productCode, Date fromDate, Date toDate) {
+        DetachedCriteria dc = getDaoHelper().getDao(DetailImportStore.class).getCriteria();
+        ProjectionList projectionList = Projections.projectionList();
+        dc.createAlias("importStoreForm", "form");
+        dc.createAlias("importStoreForm.salesContract", "salesContract");
+        dc.createAlias("importStoreForm.store", "store");
+        dc.createAlias("importStoreForm.salesContract.supplier", "supplier");
+        dc.createAlias("product", "p");
+        dc.createAlias("item", "i");
+        dc.createAlias("uom", "u");
+        projectionList.add(Projections.property("form.createdDate"), "importingDate");
+        projectionList.add(Projections.property("salesContract.code"), "salesContractCode");
+        projectionList.add(Projections.property("store.name"), "storeName");
+        projectionList.add(Projections.property("supplier.name"), "supplierName");
+        projectionList.add(Projections.property("p.name").as("productName"));
+        projectionList.add(Projections.property("i.sumUomName").as("itemName"));
+        projectionList.add(Projections.property("u.name").as("uomName"));
+        projectionList.add(Projections.property("quantity").as("quantity"));
+
+        if (!salesContractCode.equals("")) {
+            dc.add(Restrictions.eq("salesContract.code", salesContractCode));
+        }
+        if (storeCode != null) {
+            dc.add(Restrictions.eq("store.code", storeCode));
+        }
+        if (fromDate != null && toDate != null) {
+            dc.add(Restrictions.between("form.createdDate", fromDate, toDate));
+        }
+        if (productCode != null) {
+            dc.add(Restrictions.eq("p.code", productCode));
+        }
+        dc.setProjection(projectionList);
+        dc.setResultTransformer(new AliasToBeanResultTransformer(ImportStoreReportData.class));
+        List result = (List) getDaoHelper().getDao(DetailImportStore.class).findByCriteria(dc);
+        return result;
+    }
+
+    private List<ImportStoreReportData> getGroupedDetailImportList(final Date date) {
+        if (date == null) {
+            return Collections.EMPTY_LIST;
+        }
+
+        DetachedCriteria dc = getDaoHelper().getDao(DetailImportStore.class).getCriteria();
+        dc.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("product"))
+                .add(Projections.property("item")).add(Projections.property("quantity"))));
+        dc.add(Restrictions.ge("importStoreForm.createdDate", date));
+        dc.setResultTransformer(new AliasToBeanResultTransformer(ImportStoreReportData.class));
+        return (List) getDaoHelper().getDao(DetailImportStore.class).findByCriteria(dc);
+    }
+
+    private List<GroupDetailExportData> getGroupedDetailExportList(final Date date) {
+        if (date == null) {
+            return Collections.EMPTY_LIST;
+        }
+
+        DetachedCriteria dc = getDaoHelper().getDao(DetailExportStore.class).getCriteria();
+        dc.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("product"))
+                .add(Projections.property("item")).add(Projections.sum("realQuan"))));
+        dc.add(Restrictions.ge("exportForm.createdDate", date));
+        dc.setResultTransformer(new AliasToBeanResultTransformer(GroupDetailExportData.class));
+        return (List) getDaoHelper().getDao(DetailExportStore.class).findByCriteria(dc);
     }
 
     private void updateDetailClosingStoreByLatestInventoryForm(ClosingStoreEntry newClosingEntry,
@@ -379,19 +382,19 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
     private void
             updateDetailClosingStoreByImportStore(Set<DetailClosingStore> newDetailSet, Date latestClosingEntryDate) {
         // get data from import store
-        List<GroupDetailImportData> groupDetailList = getGroupedDetailImportList(latestClosingEntryDate);
+        List<ImportStoreReportData> groupDetailList = getGroupedDetailImportList(latestClosingEntryDate);
 
         for (DetailClosingStore initDetail : newDetailSet) {
-            for (GroupDetailImportData groupDetail : groupDetailList) {
-                Product product = groupDetail.getProduct();
-                Item item = groupDetail.getItem();
-                Integer qty = groupDetail.getQuantity();
-                if (initDetail.getProduct().equals(product) && initDetail.getItem().equals(item)) {
-                    int oldValue = initDetail.getQty();
-                    int newValue = oldValue + qty;
-                    initDetail.setQty(newValue);
-                }
-            }
+            // for (ImportStoreReportData groupDetail : groupDetailList) {
+            // Product product = groupDetail.getProduct();
+            // Item item = groupDetail.getItem();
+            // Integer qty = groupDetail.getQuantity();
+            // if (initDetail.getProduct().equals(product) && initDetail.getItem().equals(item)) {
+            // int oldValue = initDetail.getQty();
+            // int newValue = oldValue + qty;
+            // initDetail.setQty(newValue);
+            // }
+            // }
         }
     }
 

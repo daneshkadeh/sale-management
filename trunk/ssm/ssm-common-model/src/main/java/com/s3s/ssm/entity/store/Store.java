@@ -39,7 +39,7 @@ public class Store extends AbstractActiveCodeOLObject {
     private String exportAddress;
     private Operator manager;
 
-    @Column(name = "store_name", nullable = false, length = 256)
+    @Column(name = "store_name", nullable = false, unique = true)
     @NotBlank
     public String getName() {
         return name;

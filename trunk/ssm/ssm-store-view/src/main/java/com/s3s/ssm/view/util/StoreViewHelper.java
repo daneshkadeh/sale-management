@@ -43,7 +43,7 @@ import com.s3s.ssm.view.ViewHelper;
  * 
  */
 // TODO: Should improve performance. Which function is on service or client
-public class StoreHelper extends ViewHelper {
+public class StoreViewHelper extends ViewHelper {
 
     public static Money calculatePriceSubtotal(String strQuantity, Money mPriceUnit) {
         int quan = NumberUtils.toInt(strQuantity);

@@ -854,10 +854,11 @@ public class SSMDataLoader {
     private static List<ImportStoreForm> initImportStore(DaoHelper daoHelper, List<Store> listStore,
             List<Item> listItem, List<SalesContract> listSalesContact, List<Operator> listOperator) {
         ImportStoreForm form1 = new ImportStoreForm();
+        SalesContract salesContract = listSalesContact.get(0);
         form1.setCode("00000001");// TODO: get according to common rule
         form1.setStore(listStore.get(0));
-        form1.setSalesContract(listSalesContact.get(0));
-        form1.setSupplierName("KHACHHANG01");
+        form1.setSalesContract(salesContract);
+        form1.setSupplierName(salesContract.getSupplier().getName());
         form1.setReceiver(listOperator.get(0));
         form1.setSender("Nguyen Van A");
 

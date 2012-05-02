@@ -32,7 +32,7 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.edit.IComponentInfo;
 import com.s3s.ssm.view.edit.ListComponentInfo;
 import com.s3s.ssm.view.list.store.ListExportStoreFormView;
-import com.s3s.ssm.view.util.StoreHelper;
+import com.s3s.ssm.view.util.StoreViewHelper;
 
 public class EditExportStoreFormView extends AbstractSingleEditView<ExportStoreForm> {
     private static final long serialVersionUID = -7472571972492175768L;
@@ -57,7 +57,7 @@ public class EditExportStoreFormView extends AbstractSingleEditView<ExportStoreF
     protected ExportStoreForm loadForCreate(Map<String, Object> request) {
         ExportStoreForm form = super.loadForCreate(request);
         Invoice invoice = (Invoice) request.get(ListExportStoreFormView.INVOICE_FORM);
-        StoreHelper.initExportStoreForm(form, invoice);
+        StoreViewHelper.initExportStoreForm(form, invoice);
         return form;
     }
 
