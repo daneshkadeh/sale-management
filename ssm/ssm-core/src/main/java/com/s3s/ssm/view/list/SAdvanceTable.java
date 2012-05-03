@@ -286,6 +286,8 @@ public class SAdvanceTable extends JXTable {
                 label.setHorizontalAlignment(SwingConstants.LEFT);
             } else if (ClassUtils.isAssignable(columnClass, Number.class)) {
                 label.setHorizontalAlignment(SwingConstants.RIGHT);
+            } else {
+                label.setHorizontalAlignment(SwingConstants.LEFT);
             }
             return label;
         }
