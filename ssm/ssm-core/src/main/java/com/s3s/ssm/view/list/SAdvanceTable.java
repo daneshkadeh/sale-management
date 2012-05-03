@@ -16,6 +16,7 @@
 package com.s3s.ssm.view.list;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -25,18 +26,22 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.poi.hssf.record.formula.functions.T;
 import org.eclipse.core.internal.utils.Assert;
 import org.jdesktop.swingx.JXTable;
@@ -82,9 +87,6 @@ public class SAdvanceTable extends JXTable {
         setColumnControlVisible(true);
         getTableHeader().setFont(UIConstants.DEFAULT_BOLD_FONT);
 
-        setRenderer();
-        setEditor();
-
         // The table is already sorted by Hibernate (done in AbstractListView)
 
         if (tableModel.isEditable()) {
@@ -101,6 +103,9 @@ public class SAdvanceTable extends JXTable {
             setDefaultRenderer(boolean.class, new SBooleanCellRenderer());
             setDefaultRenderer(Boolean.class, new SBooleanCellRenderer());
         }
+        setRenderer();
+        setHeaderRenderer();
+        setEditor();
     }
 
     @Override
@@ -170,6 +175,13 @@ public class SAdvanceTable extends JXTable {
             default:
                 break;
             }
+        }
+    }
+
+    private void setHeaderRenderer() {
+        for (int i = 0; i < getColumnCount(); i++) {
+            TableColumn tc = getColumns().get(i);
+            tc.setHeaderRenderer(new STableHeaderRenderer(tableModel.getColumnClass(i)));
         }
     }
 
@@ -251,5 +263,32 @@ public class SAdvanceTable extends JXTable {
                 }
             }
         }
+    }
+
+    private class STableHeaderRenderer implements TableCellRenderer {
+        private Class<?> columnClass;
+
+        public STableHeaderRenderer(Class<?> columnClass) {
+            super();
+            this.columnClass = columnClass;
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                boolean hasFocus, int row, int column) {
+            TableCellRenderer defaultRenderer = getTableHeader().getDefaultRenderer();
+            JLabel label = (JLabel) defaultRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus,
+                    row, column);
+            if (ClassUtils.isAssignable(columnClass, Boolean.class)
+                    || ClassUtils.isAssignable(columnClass, boolean.class)) {
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+            } else if (ClassUtils.isAssignable(columnClass, String.class)) {
+                label.setHorizontalAlignment(SwingConstants.LEFT);
+            } else if (ClassUtils.isAssignable(columnClass, Number.class)) {
+                label.setHorizontalAlignment(SwingConstants.RIGHT);
+            }
+            return label;
+        }
+
     }
 }
