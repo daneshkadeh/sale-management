@@ -57,7 +57,7 @@ public class AdvanceTableModel<T> extends AbstractTableModel {
     @Override
     public int getRowCount() {
         if (isEditable) {
-            return entities.size() < visibleRowCount ? visibleRowCount : entities.size() + 1; // add 1 new row
+            return entities.size() < visibleRowCount ? visibleRowCount : entities.size();
         }
         return entities.size();
 

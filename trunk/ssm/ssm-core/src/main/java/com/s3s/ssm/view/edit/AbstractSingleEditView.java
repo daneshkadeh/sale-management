@@ -170,7 +170,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     // private JButton btnSaveClose;
     private JButton btnSaveNew;
     private JButton btnNew;
-    private JButton btnExit;
+    // private JButton btnExit;
 
     private Action newAction;
     private Action saveAction;
@@ -282,14 +282,14 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         btnNew.setToolTipText(ControlConfigUtils.getString("edit.button.new"));
         btnNew.addActionListener(newAction);
 
-        btnExit = new JButton(ImageUtils.getSmallIcon(ImageConstants.EXIT_ICON));
-        btnExit.setToolTipText(ControlConfigUtils.getString("edit.button.exit"));
-        btnExit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                doClose();
-            }
-        });
+        // btnExit = new JButton(ImageUtils.getSmallIcon(ImageConstants.EXIT_ICON));
+        // btnExit.setToolTipText(ControlConfigUtils.getString("edit.button.exit"));
+        // btnExit.addActionListener(new ActionListener() {
+        // @Override
+        // public void actionPerformed(ActionEvent evt) {
+        // doClose();
+        // }
+        // });
 
         // JButton btnFullScreen = new JButton(ImageUtils.getIcon(ImageConstants.FULLSCREEN_ICON));
         // btnFullScreen.setToolTipText(ControlConfigUtils.getString("edit.button.fullscreen"));
@@ -316,7 +316,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         toolbar.add(Box.createHorizontalGlue());
         // toolbar.add(btnMinimize);
         // toolbar.add(btnFullScreen);
-        toolbar.add(btnExit);
+        // toolbar.add(btnExit);
         return toolbar;
     }
 
@@ -601,8 +601,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         ASearchComponent sc = info.getSearchComponent();
         sc.setSelectedEntity((AbstractBaseIdObject) value);
         sc.setPreferredSize(new Dimension(width, sc.getPreferredSize().height));
-
-        // TODO Phuc: add listener to check dirty
+        sc.addChangeListener(this);
         return sc;
     }
 
@@ -625,13 +624,14 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         mc.setPreferredSize(new Dimension(width, mc.getPreferredSize().height));
         // mc.addDocumentListener(this);
         mc.addItemListener(this);
+        mc.addChangeListener(this);
         return mc;
     }
 
     private ImageChooser createImageChooser(Object value) {
         byte[] bytes = (byte[]) value;
         ImageChooser ic = new ImageChooser(bytes);
-        // TODO Phuc: add listener to check dirty
+        ic.addChangeListener(this);
         return ic;
     }
 
@@ -651,8 +651,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         MultiSelectionListBox mulStListBox = new MultiSelectionListBox<>(scrValues, desValues,
                 referenceData.getRenderer());
         mulStListBox.setPreferredSize(new Dimension(width, mulStListBox.getPreferredSize().height));
-
-        // TODO Phuc: add listener to check dirty
+        mulStListBox.addItemListener(this);
         return mulStListBox;
     }
 
@@ -963,11 +962,11 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         }
     }
 
-    protected void doNew() {
+    public void doNew() {
         doCloseOrNewWithDirtyCheck(true);
     }
 
-    protected void doClose() {
+    public void doClose() {
         doCloseOrNewWithDirtyCheck(false);
     }
 
@@ -981,18 +980,18 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     }
 
     protected boolean isDirty() {
-        for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
-            JComponent component = name2AttributeComponent.get(attribute.getName()).getComponent();
-            Object oldValue = attribute.isRaw() ? attribute.getValue() : beanWrapper.getPropertyValue(attribute
-                    .getName());
-            Object newValue = getComponentValue(component, attribute.getType());
-
-            if (!ObjectUtils.equals(oldValue, newValue)) {
-                // TODO not right in all case of field type. Check again.
-                return true;
-            }
-        }
-        return false;
+        // for (DetailAttribute attribute : detailDataModel.getDetailAttributes()) {
+        // JComponent component = name2AttributeComponent.get(attribute.getName()).getComponent();
+        // Object oldValue = attribute.isRaw() ? attribute.getValue() : beanWrapper.getPropertyValue(attribute
+        // .getName());
+        // Object newValue = getComponentValue(component, attribute.getType());
+        //
+        // if (!ObjectUtils.equals(oldValue, newValue)) {
+        // // TODO not right in all case of field type. Check again.
+        // return true;
+        // }
+        // }
+        return btnSave.isEnabled();
     }
 
     @SuppressWarnings("rawtypes")

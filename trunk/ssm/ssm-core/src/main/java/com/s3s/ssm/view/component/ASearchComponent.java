@@ -40,6 +40,7 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
@@ -95,7 +96,7 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
         this.attributeColumns = getAttributeColumns();
         this.searchOnAttributes = getSearchedOnAttributes();
         this.entityClass = (Class<T>) SClassUtils.getArgumentClass(getClass());
-        this.dao = (IBaseDao<T>) ConfigProvider.getInstance().getDaoHelper().getDao(entityClass);
+        this.dao = ConfigProvider.getInstance().getDaoHelper().getDao(entityClass);
         suggestPanel = new JPanel();
         suggestPanel.setBackground(UIConstants.INFO_COLOR);
         suggestPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
@@ -252,7 +253,10 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
             if (!entities.isEmpty()) {
                 int currentRow = table.getSelectedRow();
                 setSelectedEntity(entities.get(currentRow));
-                popup.setVisible(false);
+                popup.remove(tablePane);
+                popup.add(suggestPanel);
+                popup.pack();
+                isTableShown = false;
             }
         }
 
@@ -362,7 +366,7 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
 
         @Override
         protected List<T> doInBackground() throws Exception {
-            return (List<T>) dao.findByCriteria(createSearchCriteria(), 0, MAX_RESULT);
+            return dao.findByCriteria(createSearchCriteria(), 0, MAX_RESULT);
         }
 
         @Override
@@ -398,17 +402,17 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
     private void fireValueChanged() {
         for (Object l : listenerList.getListenerList()) {
             ChangeEvent ce = new ChangeEvent(this);
-            if (l instanceof IValueChangedListener) {
-                ((IValueChangedListener) l).doValueChanged(ce);
+            if (l instanceof ChangeListener) {
+                ((ChangeListener) l).stateChanged(ce);
             }
         }
     }
 
-    public void addValueChangedListener(IValueChangedListener listener) {
-        listenerList.add(IValueChangedListener.class, listener);
+    public void addChangeListener(ChangeListener listener) {
+        listenerList.add(ChangeListener.class, listener);
     }
 
-    public void removeValueChangedListener(IValueChangedListener listener) {
-        listenerList.remove(IValueChangedListener.class, listener);
+    public void removeChangeListener(ChangeListener listener) {
+        listenerList.remove(ChangeListener.class, listener);
     }
 }

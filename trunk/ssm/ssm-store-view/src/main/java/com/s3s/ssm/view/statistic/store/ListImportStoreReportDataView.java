@@ -92,8 +92,8 @@ public class ListImportStoreReportDataView extends AListDataView<ImportStoreRepo
      */
     @Override
     protected JPanel createSearchPanel() {
-        List<Store> stores = (List<Store>) serviceProvider.getService(IStoreService.class).getStores();
-        List<Product> products = (List<Product>) serviceProvider.getService(ICatalogService.class).getListProducts();
+        List<Store> stores = serviceProvider.getService(IStoreService.class).getStores();
+        List<Product> products = serviceProvider.getService(ICatalogService.class).getListProducts();
 
         JPanel panel = new JPanel(new MigLayout("ins 0, fill", "grow"));
         salesContactComp = new JTextField();

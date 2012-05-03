@@ -181,9 +181,11 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
 
         KeyStroke addShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK);
         KeyStroke deleteShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_D, Event.CTRL_MASK);
+        KeyStroke refreshShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
 
         inputMap.put(addShortkey, ADD_ACTION_KEY);
         inputMap.put(deleteShortkey, "deleteKeyAction");
+        inputMap.put(refreshShortkey, "refreshKeyAction");
 
         ActionMap actionMap = getActionMap();
         if (isShowNewButton()) {
@@ -192,6 +194,15 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
         if (isShowDeleteButton()) {
             actionMap.put("deleteKeyAction", deleteAction);
         }
+        actionMap.put("refreshKeyAction", new AbstractAction() {
+            private static final long serialVersionUID = -710427087087670747L;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshData();
+            }
+        });
+
     }
 
     /**

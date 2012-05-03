@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
@@ -28,7 +29,6 @@ import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
-import com.s3s.ssm.view.component.IValueChangedListener;
 import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -85,10 +85,10 @@ public class EditDetailExportStoreView extends AbstractSingleEditView<DetailExpo
             public void focusGained(FocusEvent e) {
             }
         });
-        mPriceUnit.addValueChangedListener(new IValueChangedListener() {
+        mPriceUnit.addChangeListener(new ChangeListener() {
 
             @Override
-            public void doValueChanged(ChangeEvent e) {
+            public void stateChanged(ChangeEvent e) {
                 mSubtotal.setMoney(StoreViewHelper.calculatePriceSubtotal(tfdQuantity.getText(), mPriceUnit.getMoney()));
             }
         });

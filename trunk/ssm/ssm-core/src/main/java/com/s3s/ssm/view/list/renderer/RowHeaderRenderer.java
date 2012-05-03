@@ -25,8 +25,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.table.JTableHeader;
 
-import com.s3s.ssm.util.i18n.ControlConfigUtils;
-
 /**
  * @author Phan Hong Phuc
  * @since Dec 9, 2011
@@ -54,13 +52,6 @@ public class RowHeaderRenderer extends JLabel implements ListCellRenderer<Object
         setText((value == null) ? "" : value.toString());
         // setBackground(new Color(200, 200, 255));
         setBorder(BorderFactory.createRaisedSoftBevelBorder());
-        if ("+".equals(value)) {
-            setBorder(BorderFactory.createRaisedBevelBorder());
-            setToolTipText(ControlConfigUtils.getString("RowHeaderRenderer.newRow"));
-        } else {
-            setToolTipText(null);
-        }
-
         setOpaque(true);
         return this;
     }

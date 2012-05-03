@@ -77,7 +77,7 @@ public abstract class AListEntityView<T extends AbstractBaseIdObject> extends AL
 
     private static final long serialVersionUID = -1311942671249671111L;
 
-    private static final Log logger = LogFactory.getLog(ANonSearchListEntityView.class);
+    private static final Log logger = LogFactory.getLog(AListEntityView.class);
 
     public AListEntityView() {
         super();

@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.s3s.ssm.entity.contact.IndividualTitleEnum;
 import com.s3s.ssm.entity.contact.Partner;
@@ -31,7 +32,6 @@ import com.s3s.ssm.util.ImageConstants;
 import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.i18n.ControlConstants;
-import com.s3s.ssm.view.component.IValueChangedListener;
 import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailAttribute;
@@ -130,6 +130,7 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
     }
 
     // Just try to keep demo code from Phuc
+    @Override
     protected void bindingValue(Partner entity, String name, Object value, DetailAttribute detailAttribute) {
         super.bindingValue(entity, name, value, detailAttribute);
         if (name.equals("rawAttribute1")) {
@@ -154,10 +155,10 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
         });
 
         MoneyComponent mc = (MoneyComponent) name2AttributeComponent.get("rawAttribute4").getComponent();
-        mc.addValueChangedListener(new IValueChangedListener() {
+        mc.addChangeListener(new ChangeListener() {
 
             @Override
-            public void doValueChanged(ChangeEvent e) {
+            public void stateChanged(ChangeEvent e) {
                 MoneyComponent m = (MoneyComponent) e.getSource();
                 position.setText(m.getMoney().toString());
             }

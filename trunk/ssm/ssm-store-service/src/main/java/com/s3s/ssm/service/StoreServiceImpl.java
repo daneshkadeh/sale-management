@@ -98,6 +98,7 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
         return Arrays.asList(ExportStoreStatus.values());
     }
 
+    @Override
     public List<MoveStoreStatus> getMoveStoreStatusList() {
         return Arrays.asList(MoveStoreStatus.values());
     }
@@ -123,6 +124,7 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
         return shipPrice;
     }
 
+    @Override
     public List<MoveStoreOrder> findMoveStoreOrderByStatus(MoveStoreStatus status) {
         DetachedCriteria dc = getDaoHelper().getDao(MoveStoreOrder.class).getCriteria();
         dc.add(Restrictions.eq("status", status));

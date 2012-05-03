@@ -35,6 +35,7 @@ import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.InputMap;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
@@ -43,8 +44,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
@@ -71,6 +72,8 @@ import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
+import com.s3s.ssm.util.ImageConstants;
+import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.SClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
@@ -86,18 +89,16 @@ import com.s3s.ssm.view.list.renderer.RowHeaderRenderer;
 public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPanel implements TableModelListener {
     private static final long serialVersionUID = -1311942671249671111L;
     private static final int NUM_ROW_VISIBLE = 10;
-    private static final Log logger = LogFactory.getLog(ANonSearchListEntityView.class);
+    private static final Log logger = LogFactory.getLog(AListComponent.class);
 
     protected DaoHelper daoHelper = ConfigProvider.getInstance().getDaoHelper();
 
-    private JTabbedPane tabPane;
-    protected JPanel contentPane;
     private SAdvanceTable mainTable;
     private JList<String> rowHeader;
     private JXTable tblFooter;
     private JBusyComponent<JScrollPane> busyPane;
 
-    private Action addAction;
+    private Action insAction;
     private Action deleteAction;
 
     private AdvanceTableModel<T> mainTableModel;
@@ -110,13 +111,10 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         initialPresentationView(listDataModel);
         this.refDataModel = initReferenceDataModel();
 
-        tabPane = new JTabbedPane();
-        contentPane = new JPanel(new MigLayout("wrap, ins 0, hidemode 2", "grow, fill", "[]0[]0[]0[]0[]0[]"));
-        tabPane.addTab(label, icon, contentPane, tooltip);
-        this.setLayout(new MigLayout("ins 0", "grow, fill", "grow, fill"));
-        this.add(tabPane, "grow");
-
-        addAction = new AddRowAction();
+        this.setLayout(new MigLayout("ins 0, wrap", "grow, fill", "[]0[]0[]0[]"));
+        // setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Test", TitledBorder.LEFT,
+        // TitledBorder.TOP));
+        insAction = new InsertRowAction();
         deleteAction = new DeleteRowAction();
 
         addComponents();
@@ -126,18 +124,18 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
     protected void addKeyBindings() {
         InputMap inputMap = mainTable.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        KeyStroke addShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.CTRL_MASK);
+        KeyStroke addShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_I, Event.CTRL_MASK);
         KeyStroke deleteShortkey = KeyStroke.getKeyStroke(KeyEvent.VK_D, Event.CTRL_MASK);
 
-        inputMap.put(addShortkey, "addKeyAction");
+        inputMap.put(addShortkey, "insKeyAction");
         inputMap.put(deleteShortkey, "delKeyAction");
 
         ActionMap actionMap = mainTable.getActionMap();
-        actionMap.put("addKeyAction", addAction);
+        actionMap.put("insKeyAction", insAction);
         actionMap.put("delKeyAction", deleteAction);
     }
 
-    private class AddRowAction extends AbstractAction {
+    private class InsertRowAction extends AbstractAction {
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -193,6 +191,9 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
     protected void addComponents() {
         // ///////////////// Init main table ////////////////////////////////
+
+        add(createButtonsPanel());
+
         mainTableModel = new AdvanceTableModel<T>(listDataModel, new ArrayList<T>(), getEntityClass(), true,
                 getVisibleRowCount());
         mainTable = new SAdvanceTable(mainTableModel, listDataModel, refDataModel);
@@ -274,9 +275,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
             @Override
             public String getElementAt(int index) {
                 int numOfEntities = mainTableModel.getEntities().size();
-                if (index == numOfEntities) {
-                    return "+";
-                } else if (index > numOfEntities) {
+                if (index >= numOfEntities) {
                     return "x";
                 }
                 return String.valueOf(index + 1);
@@ -286,20 +285,6 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         rowHeader.setCellRenderer(new RowHeaderRenderer(mainTable));
         rowHeader.setFixedCellWidth(UIConstants.DEFAULT_ROW_HEADER_WIDTH);
         rowHeader.setFixedCellHeight(mainTable.getRowHeight());
-        rowHeader.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    JList<String> jList = (JList<String>) e.getSource();
-                    if (jList.isSelectedIndex(mainTableModel.getEntities().size())) {
-                        addAction.actionPerformed(null);
-                    }
-                }
-                super.mouseClicked(e);
-            }
-
-        });
 
         JScrollPane mainScrollpane = new JScrollPane(mainTable);
         mainScrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -308,7 +293,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         mainScrollpane.setRowHeaderView(rowHeader);
         busyPane = createBusyPane(mainScrollpane);
 
-        contentPane.add(busyPane);
+        add(busyPane);
         JScrollPane footerScrollpane = new JScrollPane(tblFooter);
         footerScrollpane.getHorizontalScrollBar().setModel(mainScrollpane.getHorizontalScrollBar().getModel());
         footerScrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -316,6 +301,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
         // The vertical dummy bar for footer table.
         JScrollBar dummyBar = new JScrollBar() {
+            @Override
             public void paint(Graphics g) {
             }
         };
@@ -331,14 +317,33 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         // Show the footer if existing a column summarized.
         for (ColumnModel column : listDataModel.getColumns()) {
             if (column.isSummarized()) {
-                contentPane.add(footerScrollpane);
+                add(footerScrollpane);
                 break;
             }
         }
         JPanel footerPanel = createFooterPanel(mainTableModel);
         if (footerPanel != null) {
-            contentPane.add(footerPanel, "grow");
+            add(footerPanel, "grow");
         }
+    }
+
+    /**
+     * @return
+     */
+    private JToolBar createButtonsPanel() {
+        JToolBar tb = new JToolBar();
+        tb.setFloatable(false);
+        JButton insBtn = new JButton(insAction);
+        insBtn.setIcon(ImageUtils.getSmallIcon(ImageConstants.INSERT_ROW_ICON));
+        insBtn.setText(ControlConfigUtils.getString("AListComponent.insertRow"));
+        insBtn.setToolTipText(ControlConfigUtils.getString("AListComponent.insertRow") + " (Ctrl+I)");
+        JButton delBtn = new JButton(deleteAction);
+        delBtn.setIcon(ImageUtils.getSmallIcon(ImageConstants.DEL_ROW_ICON));
+        delBtn.setText(ControlConfigUtils.getString("AListComponent.delRow"));
+        delBtn.setToolTipText(ControlConfigUtils.getString("AListComponent.delRow") + " (Ctrl+D)");
+        tb.add(insBtn);
+        tb.add(delBtn);
+        return tb;
     }
 
     @Override
@@ -518,10 +523,6 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
     public void setEntities(Collection<T> entities) {
         mainTableModel.setEntities(entities);
         mainTable.packAll();
-    }
-
-    public JTabbedPane getTabbedPane() {
-        return tabPane;
     }
 
     public DaoHelper getDaoHelper() {

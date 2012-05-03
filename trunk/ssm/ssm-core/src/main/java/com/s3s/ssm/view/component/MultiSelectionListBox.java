@@ -14,6 +14,7 @@
  */
 package com.s3s.ssm.view.component;
 
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -86,6 +87,7 @@ public class MultiSelectionListBox<T> extends AbstractMultiSelectionBox {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     move(lstSource, lstDest, false);
+                    fireItemChanged(ItemEvent.SELECTED);
                 }
             }
         });
@@ -94,6 +96,7 @@ public class MultiSelectionListBox<T> extends AbstractMultiSelectionBox {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     move(lstDest, lstSource, false);
+                    fireItemChanged(ItemEvent.DESELECTED);
                 }
             }
         });
@@ -227,5 +230,10 @@ public class MultiSelectionListBox<T> extends AbstractMultiSelectionBox {
         super.setEnabled(enabled);
         lstSource.setEnabled(enabled);
         lstDest.setEnabled(enabled);
+    }
+
+    @Override
+    public Object[] getSelectedObjects() {
+        return getDestinationValues().toArray();
     }
 }
