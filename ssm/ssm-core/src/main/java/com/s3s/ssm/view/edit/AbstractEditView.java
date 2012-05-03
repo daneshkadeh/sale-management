@@ -33,7 +33,7 @@ import com.s3s.ssm.util.SClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.WindowUtilities;
 import com.s3s.ssm.view.AbstractView;
-import com.s3s.ssm.view.list.ANonSearchListEntityView;
+import com.s3s.ssm.view.list.AListEntityView;
 
 /**
  * @author Phan Hong Phuc
@@ -81,7 +81,7 @@ public abstract class AbstractEditView<T extends AbstractBaseIdObject> extends A
      */
     protected T loadForEdit(List<String> eagerLoadedProperties) {
         DetachedCriteria dc = getDaoHelper().getDao(getEntityClass()).getCriteria();
-        dc.add(Restrictions.eq("id", (Long) request.get(PARAM_ENTITY_ID)));
+        dc.add(Restrictions.eq("id", request.get(PARAM_ENTITY_ID)));
         for (String path : eagerLoadedProperties) {
             dc.setFetchMode(path, FetchMode.JOIN);
         }
@@ -103,12 +103,12 @@ public abstract class AbstractEditView<T extends AbstractBaseIdObject> extends A
         return requestFocusInWindow();
     }
 
-    public void setListView(ANonSearchListEntityView<T> listView) {
+    public void setListView(AListEntityView<T> listView) {
         this.request.put(PARAM_LIST_VIEW, listView);
     }
 
-    public ANonSearchListEntityView<T> getListView() {
-        return (ANonSearchListEntityView<T>) request.get(PARAM_LIST_VIEW);
+    public AListEntityView<T> getListView() {
+        return (AListEntityView<T>) request.get(PARAM_LIST_VIEW);
     }
 
     @SuppressWarnings("unchecked")

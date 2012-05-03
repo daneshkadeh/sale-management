@@ -17,15 +17,12 @@ package com.s3s.ssm.view.list;
 
 import java.util.List;
 
-import com.s3s.ssm.entity.AbstractBaseIdObject;
-
 /**
- * TODO Phuc Just work-around list of DTO. It should be the parent of {@link ANonSearchListEntityView}
  * 
  * @author Phan Hong Phuc
  * @since May 1, 2012
  */
-public abstract class AListDataView<T extends AbstractBaseIdObject> extends AListView<T> {
+public abstract class AListDataView<T> extends AListView<T> {
     private static final long serialVersionUID = -7995535532858732146L;
 
     @Override

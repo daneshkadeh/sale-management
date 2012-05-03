@@ -18,6 +18,7 @@ import java.util.Map;
 
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.s3s.ssm.entity.finance.ContractPayment;
 import com.s3s.ssm.entity.sales.SalesContract;
@@ -27,7 +28,6 @@ import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.component.ComponentFactory;
-import com.s3s.ssm.view.component.IValueChangedListener;
 import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -68,9 +68,9 @@ public class EditContractPaymentView extends AbstractSingleEditView<ContractPaym
         super.customizeComponents(name2AttributeComponent, entity);
         final JTextField tdfRate = (JTextField) name2AttributeComponent.get("rate").getComponent();
         final MoneyComponent mc = (MoneyComponent) name2AttributeComponent.get("amount").getComponent();
-        mc.addValueChangedListener(new IValueChangedListener() {
+        mc.addChangeListener(new ChangeListener() {
             @Override
-            public void doValueChanged(ChangeEvent e) {
+            public void stateChanged(ChangeEvent e) {
                 Money money = mc.getMoney();
                 CurrencyEnum currencyCode = money.getCurrencyCode();
                 Double rate = serviceProvider.getService(IConfigService.class).getExchangeRate(currencyCode,

@@ -159,4 +159,12 @@ public class MultiSelectionTreeBox extends AbstractMultiSelectionBox {
         tree.setEnabled(enabled);
         list.setEnabled(enabled);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Object[] getSelectedObjects() {
+        return getSelectedValues().toArray();
+    }
 }

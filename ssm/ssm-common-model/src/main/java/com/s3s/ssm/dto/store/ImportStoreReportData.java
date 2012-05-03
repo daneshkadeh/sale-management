@@ -18,13 +18,11 @@ package com.s3s.ssm.dto.store;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.s3s.ssm.entity.AbstractIdOLObject;
-
 /**
  * @author Le Thanh Hoang
  * @since May 02, 2012
  */
-public class ImportStoreReportData extends AbstractIdOLObject implements Serializable {
+public class ImportStoreReportData implements Serializable {
     private static final long serialVersionUID = 1035013656255140818L;
     private Date importingDate;
     private String salesContractCode;

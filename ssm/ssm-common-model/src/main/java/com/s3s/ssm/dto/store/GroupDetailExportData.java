@@ -27,7 +27,7 @@ import com.s3s.ssm.entity.catalog.Product;
  * @author Phan Hong Phuc
  * @since Apr 30, 2012
  */
-public class GroupDetailExportData extends AbstractBaseIdObject implements Serializable {
+public class GroupDetailExportData implements Serializable {
     private static final long serialVersionUID = -2889698358659809510L;
     private Product product;
     private Item item;

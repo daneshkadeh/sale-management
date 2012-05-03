@@ -28,6 +28,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.NumberFormatter;
 
@@ -124,18 +125,18 @@ public class MoneyComponent extends JPanel {
     private void fireValueChanged() {
         for (Object l : listenerList.getListenerList()) {
             ChangeEvent ce = new ChangeEvent(MoneyComponent.this);
-            if (l instanceof IValueChangedListener) {
-                ((IValueChangedListener) l).doValueChanged(ce);
+            if (l instanceof ChangeListener) {
+                ((ChangeListener) l).stateChanged(ce);
             }
         }
     }
 
-    public void addValueChangedListener(IValueChangedListener listener) {
-        listenerList.add(IValueChangedListener.class, listener);
+    public void addChangeListener(ChangeListener listener) {
+        listenerList.add(ChangeListener.class, listener);
     }
 
-    public void removeValueChangedListener(IValueChangedListener listener) {
-        listenerList.remove(IValueChangedListener.class, listener);
+    public void removeChangeListener(ChangeListener listener) {
+        listenerList.remove(ChangeListener.class, listener);
     }
 
     public void addActionListener(ActionListener l) {

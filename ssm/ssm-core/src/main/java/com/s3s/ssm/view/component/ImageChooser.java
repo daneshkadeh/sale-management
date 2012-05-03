@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -32,6 +34,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -61,6 +65,8 @@ public class ImageChooser extends JPanel {
     private JXHyperlink hyperLinkBrowseImg;
     private JButton btnRemoveImg;
     private byte[] imageData;
+
+    private List<ChangeListener> listeners = new ArrayList<>();
 
     public ImageChooser() {
         this(null);
@@ -124,6 +130,7 @@ public class ImageChooser extends JPanel {
                     ImageChooser.this.add(btnRemoveImg, "cell 1 0");
                     ImageChooser.this.repaint();
                     ImageChooser.this.revalidate();
+                    fireChangeEvent();
                 } catch (IOException e1) {
                     // TODO HPP
                     e1.printStackTrace();
@@ -149,6 +156,7 @@ public class ImageChooser extends JPanel {
                 ImageChooser.this.remove(btnRemoveImg);
                 SwingUtilities.getRoot(ImageChooser.this).repaint();
                 SwingUtilities.getRoot(ImageChooser.this).revalidate();
+                fireChangeEvent();
             }
         }
     }
@@ -157,9 +165,24 @@ public class ImageChooser extends JPanel {
         return imageData;
     }
 
+    private void fireChangeEvent() {
+        ChangeEvent e = new ChangeEvent(this);
+        for (ChangeListener cl : listeners) {
+            cl.stateChanged(e);
+        }
+    }
+
     @Override
     public void setEnabled(boolean enabled) {
         hyperLinkBrowseImg.setEnabled(enabled);
         btnRemoveImg.setEnabled(enabled);
+    }
+
+    public void addChangeListener(ChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeChangeListener(ChangeListener listener) {
+        listeners.remove(listener);
     }
 }

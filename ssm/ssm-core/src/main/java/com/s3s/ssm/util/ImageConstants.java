@@ -51,6 +51,9 @@ public class ImageConstants {
     public static final String SUPPLIED_PEOPLE_ICON = "/icons/suppliedPeopleIcon.png";
     public static final String SEARCH_ICON = "/icons/searchIcon.png";
     public static final String CLEAR_ICON = "/icons/clearIcon.png";
+    public static final String INSERT_ROW_ICON = "/icons/insertRowIcon.png";
+    public static final String DEL_ROW_ICON = "/icons/deleteRowIcon.png";
+
     // Config Icon
     public static final String EXCHANGE_RATING_ICON = "/icons/exRateIcon.png";
     public static final String STALL_ICON = "/icons/stallIcon.png";
