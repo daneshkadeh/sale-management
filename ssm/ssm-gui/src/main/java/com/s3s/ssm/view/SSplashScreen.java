@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JWindow;
+import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -32,17 +33,20 @@ import com.s3s.ssm.util.ImageUtils;
 public class SSplashScreen extends JWindow {
     private static final long serialVersionUID = 9219296900804342289L;
     private JProgressBar progressBar;
+    private JLabel loadingInfo;
 
     public SSplashScreen() {
         super();
-        JPanel panel = new JPanel(new MigLayout("ins 0, fill", "fill, grow"));
-        JLabel versionLabel = new JLabel("Version 1.3.4.0 - Realease Date: 05/05/2012");
+        JPanel panel = new JPanel(new MigLayout("ins 0, fill, wrap", "fill, grow"));
         JLabel image = new JLabel(ImageUtils.getIcon("/images/RetailBusinessActive.jpg"));
         progressBar = new JProgressBar(0, 100);
         progressBar.setStringPainted(true);
-        panel.add(image, "grow, wrap");
-        panel.add(progressBar, "grow, wrap");
-        panel.add(versionLabel);
+        loadingInfo = new JLabel("Loading");
+        JLabel versionLabel = new JLabel("Version 1.3.4.0 - Realease Date: 05/05/2012", SwingConstants.RIGHT);
+        panel.add(image, "grow");
+        panel.add(progressBar, "grow");
+        panel.add(loadingInfo, "grow");
+        panel.add(versionLabel, "grow");
         panel.setBorder(BorderFactory.createRaisedBevelBorder());
         add(panel);
         pack();
@@ -53,7 +57,7 @@ public class SSplashScreen extends JWindow {
      */
     public void setValue(int value, String string) {
         progressBar.setValue(value);
-        progressBar.setString(string);
+        loadingInfo.setText(string);
     }
 
 }

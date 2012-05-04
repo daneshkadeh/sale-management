@@ -93,6 +93,13 @@ public class MainProgram {
         // String classpath = MainProgram.class.getClassLoader().get
         // DOMConfigurator.configure("log4j.xml");
         s_logger.info("Starting super sales management application...");
+        setLooknFeel();
+        // ///////////// Splash screen///////////////////
+        splashScreen = new SSplashScreen();
+        splashScreen.setLocationRelativeTo(null);
+        splashScreen.setVisible(true);
+        splashScreen.toFront();
+
         // ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
         // ConfigProvider configProvider = ConfigProvider.getInstance();
         Locale.setDefault(new Locale("vi"));
@@ -112,6 +119,37 @@ public class MainProgram {
      * Create the GUI and show it. For thread safety, this method should be invoked from the event-dispatching thread.
      */
     private static void createAndShowGUI() {
+
+        // Create and set up the window.
+        frame = new JFrame("Business Active" + " - " + getCustomerName() + " demo version 1.0");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setMinimumSize(WINDOW_MIN_SIZE);
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        initCenterPanes();
+        contentPane = createContentPane();
+        frame.setJMenuBar(createMenuBar());
+        frame.setContentPane(contentPane);
+        frame.pack();
+        frame.setVisible(true);
+        // splashScreen.close();
+        // login
+        LoginDialog loginDialog = new LoginDialog(frame, new Runnable() {
+
+            @Override
+            public void run() {
+            }
+        }, new Runnable() {
+
+            @Override
+            public void run() {
+                // frame.dispose();
+            }
+        });
+        loginDialog.setVisible(true);
+        splashScreen.dispose();
+    }
+
+    public static void setLooknFeel() {
         // Set System L&F
         try {
             // System L&F
@@ -143,40 +181,6 @@ public class MainProgram {
                 | UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e.getCause());
         }
-
-        // ///////////// Splash screen///////////////////
-        splashScreen = new SSplashScreen();
-        splashScreen.setLocationRelativeTo(null);
-        splashScreen.setVisible(true);
-        splashScreen.toFront();
-
-        // Create and set up the window.
-        frame = new JFrame("Business Active" + " - " + getCustomerName() + " demo version 1.0");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(WINDOW_MIN_SIZE);
-        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-        initCenterPanes();
-        contentPane = createContentPane();
-        frame.setJMenuBar(createMenuBar());
-        frame.setContentPane(contentPane);
-        frame.pack();
-        frame.setVisible(true);
-        // splashScreen.close();
-        // login
-        LoginDialog loginDialog = new LoginDialog(frame, new Runnable() {
-
-            @Override
-            public void run() {
-            }
-        }, new Runnable() {
-
-            @Override
-            public void run() {
-                // frame.dispose();
-            }
-        });
-        loginDialog.setVisible(true);
-        splashScreen.dispose();
     }
 
     private static String getCustomerName() {
