@@ -14,6 +14,15 @@
  */
 package com.s3s.ssm.entity.store;
 
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
 public enum ExportStoreStatus {
     NEW, SENDING, FINISHED, CANCELLED;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+    }
 }

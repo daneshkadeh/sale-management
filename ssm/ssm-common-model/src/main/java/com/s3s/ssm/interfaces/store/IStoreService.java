@@ -3,7 +3,9 @@ package com.s3s.ssm.interfaces.store;
 import java.util.Date;
 import java.util.List;
 
-import com.s3s.ssm.dto.store.ImportStoreReportData;
+import com.s3s.ssm.dto.store.GroupDetailImportData;
+import com.s3s.ssm.dto.store.UnsoldProductDTO;
+import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.store.ClosingStoreEntry;
 import com.s3s.ssm.entity.store.DetailExportStore;
@@ -67,6 +69,8 @@ public interface IStoreService {
 
     void createExportStoreForm(Invoice invoice);
 
-    public List<ImportStoreReportData> statisticImportStoreData(String salesContractCode, String storeCode,
+    public List<GroupDetailImportData> statisticImportStoreData(String salesContractCode, String storeCode,
             String productCode, Date fromDate, Date toDate);
+
+    List<UnsoldProductDTO> statisticUnsoldProduct(List<Product> products, Store store, Date fromDate, Date toDate);
 }

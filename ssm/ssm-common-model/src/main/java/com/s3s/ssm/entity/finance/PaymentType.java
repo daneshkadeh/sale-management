@@ -16,10 +16,19 @@
 
 package com.s3s.ssm.entity.finance;
 
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
 /**
  * @author Le Thanh Hoang
  * 
  */
 public enum PaymentType {
-    PAY, RECEIPT
+    PAY, RECEIPT;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+    }
 }

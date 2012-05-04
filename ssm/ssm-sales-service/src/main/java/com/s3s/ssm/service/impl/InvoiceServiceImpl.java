@@ -1,5 +1,6 @@
 package com.s3s.ssm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -36,6 +37,18 @@ public class InvoiceServiceImpl extends AbstractModuleServiceImpl implements Inv
         dc.addOrder(Order.desc("createdDate"));
         List<Invoice> result = getDaoHelper().getDao(Invoice.class).findByCriteria(dc);
         return result;
+    }
+
+    public List<Invoice> getAllInvoiceBy(Date fromDate, Date toDate) {
+        DetachedCriteria dc = getDaoHelper().getDao(Invoice.class).getCriteria();
+        dc.add(Restrictions.not(Restrictions.eq("status", InvoiceStatus.ABANDONED)));
+        dc.add(Restrictions.between("createdDate", fromDate, toDate));
+        List<Invoice> result = getDaoHelper().getDao(Invoice.class).findByCriteria(dc);
+        return result;
+    }
+
+    public List<Invoice> getAllInvoiceBy(Date fromDate) {
+        return getAllInvoiceBy(fromDate, new Date());
     }
 
     /**

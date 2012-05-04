@@ -16,6 +16,8 @@
 
 package com.s3s.ssm.entity.store;
 
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
 /**
  * It contains all status of ImportStore
  * 
@@ -23,5 +25,12 @@ package com.s3s.ssm.entity.store;
  * 
  */
 public enum ImportStoreStatus {
-    NEW, PROCESSED, DRAFT, CANCELLED
+    NEW, PROCESSED, DRAFT, CANCELLED;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+    }
 }

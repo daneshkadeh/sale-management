@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
 import com.s3s.ssm.interfaces.contact.IContactService;
-import com.s3s.ssm.interfaces.finance.IFinanceService;
 import com.s3s.ssm.util.CacheId;
 
 @Transactional
@@ -21,7 +20,7 @@ public class ContactServiceImpl extends AbstractModuleServiceImpl implements ICo
 
     @Override
     public void init() {
-        serviceProvider.register(IFinanceService.class, this);
+        serviceProvider.register(IContactService.class, this);
         try {
             getCacheDataService().registerCache(CacheId.REF_LIST_PARTNER, this,
                     this.getClass().getMethod("getPartners"));

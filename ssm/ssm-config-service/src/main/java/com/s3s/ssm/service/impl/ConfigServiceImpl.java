@@ -227,8 +227,8 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     public UnitOfMeasure getBaseUom(UomCategory cate) {
         DetachedCriteria dc = getDaoHelper().getDao(UnitOfMeasure.class).getCriteria();
         dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        dc.createAlias("uomCategory", "uomCategory");
-        dc.add(Restrictions.eq("uomCategory.code", cate.getCode()));
+        dc.createAlias("uomCategory", "uomCate");
+        dc.add(Restrictions.eq("uomCate.code", cate.getCode()));
         dc.add(Restrictions.eq("isBaseMeasure", true));
         List<UnitOfMeasure> uomList = getDaoHelper().getDao(UnitOfMeasure.class).findByCriteria(dc);
         return uomList.size() > 0 ? uomList.get(0) : null;

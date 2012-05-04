@@ -28,7 +28,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXDatePicker;
 
-import com.s3s.ssm.dto.store.ImportStoreReportData;
+import com.s3s.ssm.dto.store.GroupDetailImportData;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.interfaces.catalog.ICatalogService;
@@ -43,7 +43,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * @author Le Thanh Hoang
  * 
  */
-public class ListImportStoreReportDataView extends AListDataView<ImportStoreReportData> {
+public class ListImportStoreReportDataView extends AListDataView<GroupDetailImportData> {
     private static final long serialVersionUID = -4763495750566322036L;
 
     private JTextField salesContactComp;
@@ -68,7 +68,7 @@ public class ListImportStoreReportDataView extends AListDataView<ImportStoreRepo
     }
 
     @Override
-    protected List<ImportStoreReportData> loadData(int fistIndex, int maxResults) {
+    protected List<GroupDetailImportData> loadData(int fistIndex, int maxResults) {
         Date fromDate = fromDateComp.getDate();
         Date toDate = toDateComp.getDate();
         String salesContractCode = salesContactComp.getText();
@@ -102,16 +102,16 @@ public class ListImportStoreReportDataView extends AListDataView<ImportStoreRepo
         cbStore = new JComboBox(stores.toArray());
         cbProduct = new JComboBox(products.toArray());
 
-        panel.add(new JLabel(ControlConfigUtils.getString("label.ImportStoreReportData.productName")), "right");
+        panel.add(new JLabel(ControlConfigUtils.getString("label.GroupDetailImportData.productName")), "right");
         panel.add(cbProduct, "grow");
-        panel.add(new JLabel(ControlConfigUtils.getString("label.ImportStoreReportData.storeName")), "right");
+        panel.add(new JLabel(ControlConfigUtils.getString("label.GroupDetailImportData.storeName")), "right");
         panel.add(cbStore, "grow,wrap");
 
-        panel.add(new JLabel(ControlConfigUtils.getString("label.ImportStoreReportData.fromDate")), "right");
+        panel.add(new JLabel(ControlConfigUtils.getString("label.GroupDetailImportData.fromDate")), "right");
         panel.add(fromDateComp, "grow");
-        panel.add(new JLabel(ControlConfigUtils.getString("label.ImportStoreReportData.toDate")), "right");
+        panel.add(new JLabel(ControlConfigUtils.getString("label.GroupDetailImportData.toDate")), "right");
         panel.add(toDateComp, "grow,wrap");
-        panel.add(new JLabel(ControlConfigUtils.getString("label.ImportStoreReportData.salesContractCode")), "right");
+        panel.add(new JLabel(ControlConfigUtils.getString("label.GroupDetailImportData.salesContractCode")), "right");
         panel.add(salesContactComp, "grow");
 
         return panel;

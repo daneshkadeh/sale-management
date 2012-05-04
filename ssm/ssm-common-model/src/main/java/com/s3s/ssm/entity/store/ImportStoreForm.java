@@ -39,6 +39,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.operator.Operator;
+import com.s3s.ssm.entity.sales.ImportationSC;
 import com.s3s.ssm.entity.sales.SalesContract;
 import com.s3s.ssm.model.Money;
 
@@ -50,6 +51,7 @@ public class ImportStoreForm extends AbstractCodeOLObject {
     private Date modifiedDate;
     private Store store;
     private SalesContract salesContract;
+    private ImportationSC importationSC;
     private String supplierName;
     private Date receiptDate = new Date();
     private Operator receiver;
@@ -106,6 +108,16 @@ public class ImportStoreForm extends AbstractCodeOLObject {
 
     public void setSalesContract(SalesContract salesContract) {
         this.salesContract = salesContract;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "importationSC_id")
+    public ImportationSC getImportationSC() {
+        return importationSC;
+    }
+
+    public void setImportationSC(ImportationSC importationSC) {
+        this.importationSC = importationSC;
     }
 
     @Column(name = "supplier_name")

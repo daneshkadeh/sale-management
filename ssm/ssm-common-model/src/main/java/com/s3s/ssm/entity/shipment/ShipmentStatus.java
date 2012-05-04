@@ -14,6 +14,15 @@
  */
 package com.s3s.ssm.entity.shipment;
 
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
 public enum ShipmentStatus {
     UN_SENT, SENDING, RECEIVED, CANCELLED;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+    }
 }
