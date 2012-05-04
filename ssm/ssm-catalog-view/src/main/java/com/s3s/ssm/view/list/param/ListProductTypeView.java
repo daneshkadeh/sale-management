@@ -32,6 +32,7 @@ public class ListProductTypeView extends ANonSearchListEntityView<ProductType> {
 
         // TODO: Parent list must base on productFamilyType, and not itself.
         listDataModel.addColumn("parent", ListRendererType.TEXT);
+        listDataModel.addColumn("uomCategory", ListRendererType.TEXT);
         listDataModel.addColumn("active", ListRendererType.BOOLEAN);
     }
 
