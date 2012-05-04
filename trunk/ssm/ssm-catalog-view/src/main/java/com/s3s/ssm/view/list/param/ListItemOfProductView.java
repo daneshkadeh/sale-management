@@ -36,6 +36,7 @@ public class ListItemOfProductView extends ANonSearchListEntityView<Item> {
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("product", ListRendererType.TEXT);
+        listDataModel.addColumn("code", ListRendererType.TEXT);
         listDataModel.addColumn("sumUomName", ListRendererType.TEXT);
         listDataModel.addColumn("baseSellPrice", ListRendererType.TEXT);
         listDataModel.addColumn("originPrice", ListRendererType.TEXT);

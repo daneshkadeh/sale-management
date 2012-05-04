@@ -1448,9 +1448,9 @@ public class SSMDataLoader {
         item.setProduct(goods.get(0));
         item.setBaseSellPrice(Money.create(CurrencyEnum.VND, 10000L));
         item.setOriginPrice(Money.create(CurrencyEnum.VND, 9000L));
-        item.setListUom(Arrays.asList(listUom.get(0)));
+        item.setUom(listUom.get(0));
         item.setSumUomName("size 39");
-
+        item.setCode(goods.get(0).getCode() + "-39");
         ItemPropertyValue propertyValue = new ItemPropertyValue();
         List<ProductProperty> properties = new ArrayList<>(goods.get(0).getProperties());
         propertyValue.setProperty(properties.get(0));

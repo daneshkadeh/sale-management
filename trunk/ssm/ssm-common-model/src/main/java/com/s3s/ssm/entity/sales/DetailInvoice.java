@@ -73,8 +73,11 @@ public class DetailInvoice extends AbstractIdOLObject {
     @Transient
     private Money totalAmount;
 
+    // Product name is get from product by default.
+    private String productName;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id")
     public Product getProduct() {
         return product;
     }
@@ -277,4 +280,12 @@ public class DetailInvoice extends AbstractIdOLObject {
         this.status = status;
     }
 
+    @Column(name = "product_name")
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 }

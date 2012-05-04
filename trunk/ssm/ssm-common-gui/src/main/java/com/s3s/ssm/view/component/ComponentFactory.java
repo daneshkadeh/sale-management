@@ -57,4 +57,9 @@ public class ComponentFactory {
         OperatorSearchComponent psc = new OperatorSearchComponent();
         return new SearchComponentInfo(psc);
     }
+
+    public static IComponentInfo createItemComponentInfo() {
+        ItemSearchComponent psc = new ItemSearchComponent();
+        return new SearchComponentInfo(psc);
+    }
 }
