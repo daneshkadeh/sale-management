@@ -40,6 +40,7 @@ public class EditProductTypeView extends AbstractSingleEditView<ProductType> {
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("productFamilyType", DetailFieldType.DROPDOWN).referenceDataId(REF_PRODUCT_FAMILY);
         detailDataModel.addAttribute("parent", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_PRODUCT_TYPE);
+        detailDataModel.addAttribute("uomCategory", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_UOM_CATE);
         detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX);
 
     }

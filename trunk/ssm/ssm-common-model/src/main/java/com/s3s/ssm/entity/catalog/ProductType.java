@@ -24,6 +24,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
+import com.s3s.ssm.entity.config.UomCategory;
 
 @Entity
 @Table(name = "ca_product_type")
@@ -31,6 +32,7 @@ public class ProductType extends AbstractActiveCodeOLObject {
     private ProductFamilyType productFamilyType;
     private String name;
     private ProductType parent;
+    private UomCategory uomCategory;
 
     @Column(name = "product_family_type", nullable = false, length = 32)
     @NotNull
@@ -61,6 +63,17 @@ public class ProductType extends AbstractActiveCodeOLObject {
 
     public void setParent(ProductType parent) {
         this.parent = parent;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "uom_category_id")
+    @NotNull
+    public UomCategory getUomCategory() {
+        return uomCategory;
+    }
+
+    public void setUomCategory(UomCategory uomCategory) {
+        this.uomCategory = uomCategory;
     }
 
 }

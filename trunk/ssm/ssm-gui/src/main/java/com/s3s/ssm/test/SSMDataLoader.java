@@ -1538,6 +1538,7 @@ public class SSMDataLoader {
         productType.setCode(PRODUCT_TYPE_SHOES);
         productType.setName("Giay dep");
         productType.setProductFamilyType(ProductFamilyType.GOODS);
+        productType.setUomCategory(daoHelper.getDao(UomCategory.class).findAll().get(0));
         daoHelper.getDao(ProductType.class).saveOrUpdate(productType);
         return Arrays.asList(productType);
     }
