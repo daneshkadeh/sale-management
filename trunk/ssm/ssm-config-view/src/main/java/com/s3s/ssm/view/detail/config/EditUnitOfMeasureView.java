@@ -47,12 +47,16 @@ public class EditUnitOfMeasureView extends AbstractSingleEditView<UnitOfMeasure>
     @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, UnitOfMeasure entity,
             Map<String, Object> request) {
+        String baseUomName = "";
+        if (entity.getUomCategory() != null) {
+            baseUomName = serviceProvider.getService(IConfigService.class).getBaseUomName(entity.getUomCategory());
+        }
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX).mandatory(true);
         detailDataModel.addAttribute("uomCategory", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_UOM_CATE);
         detailDataModel.addAttribute("isBaseMeasure", DetailFieldType.CHECKBOX);
         detailDataModel.addAttribute("exchangeRate", DetailFieldType.TEXTBOX);
-        detailDataModel.addRawAttribute("baseUom", DetailFieldType.TEXTBOX).editable(false);
+        detailDataModel.addRawAttribute("baseUom", DetailFieldType.TEXTBOX).value(baseUomName);
     }
 
     @Override
@@ -60,10 +64,7 @@ public class EditUnitOfMeasureView extends AbstractSingleEditView<UnitOfMeasure>
         super.customizeComponents(name2AttributeComponent, entity);
         final JComboBox<UomCategory> cbUomCate = (JComboBox<UomCategory>) name2AttributeComponent.get("uomCategory")
                 .getComponent();
-        UomCategory cate = (UomCategory) cbUomCate.getSelectedItem();
         final JTextField tfdBaseUom = (JTextField) name2AttributeComponent.get("baseUom").getComponent();
-        String baseUomName = serviceProvider.getService(IConfigService.class).getBaseUomName(cate);
-        tfdBaseUom.setText(baseUomName);
         cbUomCate.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
