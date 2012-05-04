@@ -37,6 +37,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -119,9 +120,9 @@ public class MainProgram {
      * Create the GUI and show it. For thread safety, this method should be invoked from the event-dispatching thread.
      */
     private static void createAndShowGUI() {
-
+        ToolTipManager.sharedInstance().setInitialDelay(200);
         // Create and set up the window.
-        frame = new JFrame("Business Active" + " - " + getCustomerName() + " demo version 1.0");
+        frame = new JFrame("Business Active" + " - " + getCustomerName());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(WINDOW_MIN_SIZE);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);

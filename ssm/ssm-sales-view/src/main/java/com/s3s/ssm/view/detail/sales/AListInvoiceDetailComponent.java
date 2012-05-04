@@ -10,6 +10,8 @@ import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.DetailInvoiceStatus;
 import com.s3s.ssm.entity.sales.DetailInvoiceType;
 import com.s3s.ssm.interfaces.config.IConfigService;
+import com.s3s.ssm.model.CurrencyEnum;
+import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.ServiceProvider;
@@ -20,12 +22,13 @@ import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
-
+    private static final long serialVersionUID = 7509501589404634796L;
     private static final String REF_PACKLINE = "REF_PACKLINE";
     private static final String REF_CURRENCY = "REF_CURRENCY";
     private static final String REF_D_INVOICE_TYPE = "REF_D_INVOICE_TYPE";
     private static final String REF_D_INVOICE_STATUS = "REF_D_INVOICE_STATUS";
     private static final String REF_ITEM = "REF_ITEM";
+    private Money totalAmounts;
 
     public AListInvoiceDetailComponent(Icon icon, String label, String tooltip) {
         super(icon, label, tooltip);
@@ -73,7 +76,17 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
             entityUpdated.setBaseUom(item.getUom());
             entityUpdated.setUom(item.getUom());
 
+        } else if ("amount".equals(attributeName)) {
+            Money sum = Money.zero(CurrencyEnum.VND);
+            for (DetailInvoice detailInvoice : entities) {
+                sum = sum.plus(detailInvoice.getTotalAmount());
+            }
+            totalAmounts = sum;
         }
+    }
+
+    public Money getTotalAmounts() {
+        return totalAmounts;
     }
 
     @Override

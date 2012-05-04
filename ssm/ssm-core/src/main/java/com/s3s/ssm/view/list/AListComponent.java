@@ -50,6 +50,7 @@ import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
@@ -102,6 +103,8 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
     private Action deleteAction;
 
     private AdvanceTableModel<T> mainTableModel;
+
+    private List<ChangeListener> listeners = new ArrayList<>();
 
     // This model is used by sub classes.
     protected ListDataModel listDataModel = new ListDataModel();
@@ -360,6 +363,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         } else if (e.getType() == TableModelEvent.DELETE) {
             doRowDelete(entities);
         }
+        fireStateChange();
         mainTable.repaint();
         mainTable.revalidate();
         rowHeader.repaint();
@@ -429,6 +433,21 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
      */
     public void addTableModelListener(TableModelListener tableModelListener) {
         mainTableModel.addTableModelListener(tableModelListener);
+    }
+
+    private void fireStateChange() {
+        ChangeEvent e = new ChangeEvent(this);
+        for (ChangeListener listener : listeners) {
+            listener.stateChanged(e);
+        }
+    }
+
+    public void addChangeListener(ChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeChangeListener(ChangeListener listener) {
+        listeners.remove(listener);
     }
 
     @SuppressWarnings("unchecked")
