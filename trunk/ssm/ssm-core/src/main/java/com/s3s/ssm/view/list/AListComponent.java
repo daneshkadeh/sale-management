@@ -323,7 +323,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         }
         JPanel footerPanel = createFooterPanel(mainTableModel);
         if (footerPanel != null) {
-            add(footerPanel, "grow");
+            add(footerPanel, "growx");
         }
     }
 

@@ -92,7 +92,7 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
     // TODO It should get from the property "defPageRowNum" of BasicInformation in ssm-config
     protected static final int DEFAULT_PAGE_SIZE = 30;
 
-    private static final Log logger = LogFactory.getLog(ANonSearchListEntityView.class);
+    private static final Log logger = LogFactory.getLog(AListView.class);
 
     protected JTabbedPane tabPane;
     protected JPanel contentPane;
@@ -603,7 +603,8 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
                     rowHeader.repaint();
                     rowHeader.revalidate();
 
-                    tblListEntities.packAll(); // resize all column fit to their contents
+                    // resize all column fit to their contents.
+                    tblListEntities.packAll();
                 } catch (InterruptedException | ExecutionException e) {
                     logger.error(e.getMessage());
                     isInitialized = false;

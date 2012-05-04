@@ -18,7 +18,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.SplashScreen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -38,7 +37,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -77,6 +75,8 @@ public class MainProgram {
             "i18n/contact_error", "i18n/store_error", "i18n/supplychain_error", "i18n/operator_error",
             "i18n/gui_error", "i18n/common_gui_label" };
 
+    private static SSplashScreen splashScreen;
+
     private static JFrame frame;
     private static Container contentPane;
 
@@ -89,7 +89,6 @@ public class MainProgram {
     private static JToggleButton saleChannelBtn;
 
     public static void main(String[] args) {
-
         // Not find solution to get class path from ssm-core.
         // String classpath = MainProgram.class.getClassLoader().get
         // DOMConfigurator.configure("log4j.xml");
@@ -101,12 +100,12 @@ public class MainProgram {
         ControlConfigUtils.setLabelMessageBundle(Locale.getDefault(), MESSSAGE_FILES);
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's GUI.
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                createAndShowGUI();
-            }
-        });
+        // SwingUtilities.invokeLater(new Runnable() {
+        // @Override
+        // public void run() {
+        createAndShowGUI();
+        // }
+        // });
     }
 
     /**
@@ -114,8 +113,6 @@ public class MainProgram {
      */
     private static void createAndShowGUI() {
         // Set System L&F
-        // Splash screen
-        SplashScreen splashScreen = SplashScreen.getSplashScreen();
         try {
             // System L&F
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -147,6 +144,12 @@ public class MainProgram {
             throw new RuntimeException(e.getCause());
         }
 
+        // ///////////// Splash screen///////////////////
+        splashScreen = new SSplashScreen();
+        splashScreen.setLocationRelativeTo(null);
+        splashScreen.setVisible(true);
+        splashScreen.toFront();
+
         // Create and set up the window.
         frame = new JFrame("Business Active" + " - " + getCustomerName() + " demo version 1.0");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -173,6 +176,7 @@ public class MainProgram {
             }
         });
         loginDialog.setVisible(true);
+        splashScreen.dispose();
     }
 
     private static String getCustomerName() {
@@ -185,7 +189,11 @@ public class MainProgram {
      */
     protected static void initCenterPanes() {
         institutionPane = createInstitutionPanel();
+
+        splashScreen.setValue(60, "Loading organization context ...");
         organizationPane = createOrganizationPanel();
+
+        splashScreen.setValue(80, "Loading sale channel context ...");
         saleChannelPane = createSaleChannelPanel();
     }
 
@@ -293,7 +301,11 @@ public class MainProgram {
             JScrollPane contentSrollPane) {
         List<AbstractDomain> domains = new ArrayList<>();
         ButtonGroup buttonGroup = new ButtonGroup();
+
+        splashScreen.setValue(20, "Loading institution: System domain ...");
         SystemManagementDomain systemDomain = new SystemManagementDomain(treeScrollPane, contentSrollPane);
+
+        splashScreen.setValue(30, "Loading institution: Report domain ...");
         ReportDomain reportDomain = new ReportDomain(treeScrollPane, contentSrollPane);
         buttonGroup.add(systemDomain);
         buttonGroup.add(reportDomain);
@@ -307,8 +319,14 @@ public class MainProgram {
             JScrollPane contentSrollPane) {
         List<AbstractDomain> domains = new ArrayList<>();
         ButtonGroup buttonGroup = new ButtonGroup();
+
+        splashScreen.setValue(40, "Loading organization: Contact domain ...");
         ContactManagementDomain contactDomain = new ContactManagementDomain(treeScrollPane, contentSrollPane);
+
+        splashScreen.setValue(50, "Loading organization: Store domain ...");
         StoreManagementDomain storeDomain = new StoreManagementDomain(treeScrollPane, contentSrollPane);
+
+        splashScreen.setValue(60, "Loading organization: Supplier chain domain ...");
         SupplyChainDomain supplyChainDomain = new SupplyChainDomain(treeScrollPane, contentSrollPane);
         buttonGroup.add(contactDomain);
         buttonGroup.add(storeDomain);
@@ -325,9 +343,14 @@ public class MainProgram {
             JScrollPane contentSrollPane) {
         List<AbstractDomain> domains = new ArrayList<>();
         ButtonGroup buttonGroup = new ButtonGroup();
+
+        splashScreen.setValue(70, "Loading sale channel: Buy management domain ...");
         BuyManagementDomain buyDomain = new BuyManagementDomain(treeScrollPane, contentSrollPane);
+        splashScreen.setValue(80, "Loading sale channel: Sales management domain ...");
         SalesManagementDomain salesDomain = new SalesManagementDomain(treeScrollPane, contentSrollPane);
+        splashScreen.setValue(90, "Loading sale channel: Finance management domain ...");
         FinanceManagementDomain financeDomain = new FinanceManagementDomain(treeScrollPane, contentSrollPane);
+        splashScreen.setValue(95, "Loading sale channel: Resource management domain ...");
         ResourceManagementDomain resourceDomain = new ResourceManagementDomain(treeScrollPane, contentSrollPane);
         buttonGroup.add(buyDomain);
         buttonGroup.add(salesDomain);
@@ -447,6 +470,7 @@ public class MainProgram {
 
                     }
                 }, new Runnable() {
+                    @Override
                     public void run() {
 
                     }
