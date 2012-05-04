@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JViewport;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.s3s.ssm.context.OrgSalesContextProvider;
 import com.s3s.ssm.entity.catalog.Item;
@@ -24,6 +26,7 @@ import com.s3s.ssm.interfaces.sales.InvoiceService;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.component.ComponentFactory;
+import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -76,6 +79,21 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         detailDataModel.addAttribute("detailInvoices", DetailFieldType.LIST).componentInfo(
                 createInvoiceDetailsComponentInfo());
 
+    }
+
+    @Override
+    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, Invoice entity) {
+        super.customizeComponents(name2AttributeComponent, entity);
+        final MoneyComponent mc = (MoneyComponent) name2AttributeComponent.get("moneyAfterTax").getComponent();
+        final AListInvoiceDetailComponent list = (AListInvoiceDetailComponent) name2AttributeComponent.get(
+                "detailInvoices").getComponent();
+        list.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                mc.setMoney(list.getTotalAmounts());
+            }
+        });
     }
 
     @Override
