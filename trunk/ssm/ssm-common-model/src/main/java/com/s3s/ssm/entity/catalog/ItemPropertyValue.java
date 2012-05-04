@@ -20,8 +20,10 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
+mport com.s3s.ssm.entity.AbstractIdOLObject;
 
 /**
  * A value links to a product. Either element or value must be defined.
@@ -37,6 +39,7 @@ public class ItemPropertyValue extends AbstractIdOLObject {
     private ProductPropertyElement element;
     private String value;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", nullable = false)
     public Item getItem() {
@@ -47,6 +50,7 @@ public class ItemPropertyValue extends AbstractIdOLObject {
         this.item = item;
     }
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "property_id", nullable = false)
     public ProductProperty getProperty() {

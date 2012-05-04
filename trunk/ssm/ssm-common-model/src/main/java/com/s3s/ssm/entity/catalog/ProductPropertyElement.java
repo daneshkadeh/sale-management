@@ -38,6 +38,7 @@ public class ProductPropertyElement extends AbstractIdOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "property_id", nullable = false)
+    @NotNull
     public ProductProperty getProperty() {
         return property;
     }

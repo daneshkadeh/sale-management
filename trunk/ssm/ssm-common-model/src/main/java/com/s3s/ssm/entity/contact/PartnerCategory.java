@@ -27,6 +27,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.IActiveObject;
@@ -64,6 +65,7 @@ public class PartnerCategory extends AbstractCodeOLObject implements Serializabl
         this.parentCategory = parentCategory;
     }
 
+    @NotNull
     @Column(name = "is_active", nullable = false)
     public Boolean getIsActive() {
         return isActive;

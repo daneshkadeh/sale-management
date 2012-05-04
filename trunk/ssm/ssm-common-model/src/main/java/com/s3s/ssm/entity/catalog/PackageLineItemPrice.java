@@ -39,6 +39,7 @@ public class PackageLineItemPrice extends AbstractIdOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", nullable = false)
+    @NotNull
     public Item getItem() {
         return item;
     }
@@ -72,6 +73,7 @@ public class PackageLineItemPrice extends AbstractIdOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "package_line_id", nullable = false)
+    @NotNull
     public PackageLine getPackageLine() {
         return packageLine;
     }

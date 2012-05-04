@@ -26,6 +26,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.model.Money;
@@ -63,6 +64,7 @@ public class ShipPrice extends AbstractIdOLObject {
     }
 
     @Column(name = "update_date", nullable = false)
+    @NotNull
     public Date getUpdateDate() {
         return updateDate;
     }

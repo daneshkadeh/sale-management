@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.config.Address;
@@ -28,6 +29,7 @@ public class PartnerAddressLink extends AbstractBaseIdObject {
     private Address address;
     private Boolean isMain = false;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "partner_id", nullable = false)
     public Partner getPartner() {
@@ -38,6 +40,7 @@ public class PartnerAddressLink extends AbstractBaseIdObject {
         this.partner = partner;
     }
 
+    @NotNull
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id", nullable = false)
     public Address getAddress() {

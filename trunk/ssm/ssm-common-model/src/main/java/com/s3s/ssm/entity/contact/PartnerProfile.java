@@ -10,6 +10,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -33,6 +34,7 @@ public class PartnerProfile extends AbstractIdOLObject {
     private Partner partner;
     private PartnerProfileTypeEnum type;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "partner_id", nullable = false)
     public Partner getPartner() {

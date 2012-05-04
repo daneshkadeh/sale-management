@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.model.Money;
@@ -67,6 +68,7 @@ public class Goods extends Product {
 
     @ManyToOne
     @JoinColumn(name = "main_uom_id", nullable = false)
+    @NotNull
     public UnitOfMeasure getMainUom() {
         return mainUom;
     }

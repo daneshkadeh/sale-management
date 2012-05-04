@@ -19,6 +19,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.view.component.SaleTargetModel;
@@ -43,6 +44,7 @@ public class SaleTarget extends AbstractIdOLObject implements SaleTargetModel {
 
     @ManyToOne
     @JoinColumn(name = "id_stall", nullable = false)
+    @NotNull
     public Stall getStall() {
         return stall;
     }

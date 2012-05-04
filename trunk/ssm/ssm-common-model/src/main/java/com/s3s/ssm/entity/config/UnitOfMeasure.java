@@ -22,6 +22,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
 /**
@@ -48,6 +50,7 @@ public class UnitOfMeasure extends AbstractActiveCodeOLObject {
     }
 
     @Column(name = "uom_name", nullable = false, length = 128)
+    @NotBlank
     public String getName() {
         return name;
     }
@@ -67,6 +70,7 @@ public class UnitOfMeasure extends AbstractActiveCodeOLObject {
     }
 
     @Column(name = "is_base_measure", nullable = false)
+    @NotNull
     public Boolean getIsBaseMeasure() {
         return isBaseMeasure;
     }

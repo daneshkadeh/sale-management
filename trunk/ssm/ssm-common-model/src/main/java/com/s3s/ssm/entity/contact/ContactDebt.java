@@ -42,6 +42,7 @@ public class ContactDebt extends AbstractIdOLObject {
 
     @OneToOne
     @JoinColumn(name = "partner_id", nullable = false)
+    @NotNull
     public Partner getPartner() {
         return partner;
     }
