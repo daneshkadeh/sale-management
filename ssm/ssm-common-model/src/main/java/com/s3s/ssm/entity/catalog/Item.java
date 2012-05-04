@@ -14,9 +14,7 @@
  */
 package com.s3s.ssm.entity.catalog;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -27,22 +25,24 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.model.Money;
 
+/**
+ * Item code is the barcode to identify the product.
+ * 
+ */
 @Entity
 @Table(name = "ca_item")
-public class Item extends AbstractIdOLObject {
+public class Item extends AbstractCodeOLObject {
     private Product product;
     private String sumUomName;
-    private List<UnitOfMeasure> listUom = new ArrayList<>(); // TODO: this should be move to product?
+    private UnitOfMeasure uom;
     private Set<ItemPropertyValue> listPropertyValue = new HashSet<>();
     private Set<ItemPrice> listItemPrices = new HashSet<>();
 
@@ -69,18 +69,6 @@ public class Item extends AbstractIdOLObject {
 
     public void setSumUomName(String sumUomName) {
         this.sumUomName = sumUomName;
-    }
-
-    // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
-    @JoinTable(name = "at_item_uom", joinColumns = { @JoinColumn(name = "item_id") }, inverseJoinColumns = { @JoinColumn(name = "uom_id") })
-    public
-            List<UnitOfMeasure> getListUom() {
-        return listUom;
-    }
-
-    public void setListUom(List<UnitOfMeasure> listUom) {
-        this.listUom = listUom;
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "item")
@@ -125,14 +113,6 @@ public class Item extends AbstractIdOLObject {
     // this.mainOriginPrice = mainOriginPrice;
     // }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return sumUomName;
-    }
-
     @Embedded
     @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "base_sell_price")),
             @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code_sell")) })
@@ -153,6 +133,16 @@ public class Item extends AbstractIdOLObject {
 
     public void setOriginPrice(Money originPrice) {
         this.originPrice = originPrice;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "uom_id")
+    public UnitOfMeasure getUom() {
+        return uom;
+    }
+
+    public void setUom(UnitOfMeasure uom) {
+        this.uom = uom;
     }
 
 }

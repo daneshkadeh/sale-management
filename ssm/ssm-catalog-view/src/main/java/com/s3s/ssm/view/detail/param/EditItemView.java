@@ -63,6 +63,7 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
             detailDataModel.addAttribute("product", DetailFieldType.DROPDOWN).referenceDataId(REF_PRODUCT_ID);
         }
 
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("sumUomName", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("originPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("baseSellPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);

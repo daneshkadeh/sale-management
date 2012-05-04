@@ -58,6 +58,7 @@ public class SalesConfirm extends AbstractCodeOLObject {
         OPEN, PROCESSING, CLOSED, CANCELLED
     }
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id", nullable = false)
     public Partner getSupplier() {
