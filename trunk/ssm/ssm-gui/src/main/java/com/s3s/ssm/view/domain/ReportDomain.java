@@ -31,7 +31,9 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.SSMReportViewer;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
+import com.s3s.ssm.view.statistic.store.ListDebtHistoryView;
 import com.s3s.ssm.view.statistic.store.ListImportStoreReportDataView;
+import com.s3s.ssm.view.statistic.store.ListUnsoldProductStatisticView;
 
 /**
  * All views of report and warning alerts.
@@ -83,8 +85,16 @@ public class ReportDomain extends AbstractDomain {
         reportTestNode.setView(jviewer);
 
         TreeNodeWithView importStoreNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.Report.ImportStore")); // "Bao dong kich cau"
+                ControlConfigUtils.getString("JTree.Report.ImportStore"));
         importStoreNode.setView(new ListImportStoreReportDataView());
+
+        TreeNodeWithView debtHistoryNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.Report.DebtHistory"));
+        debtHistoryNode.setView(new ListDebtHistoryView());
+        // Manage Unsold product
+        TreeNodeWithView unsoldProductNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.Report.UnsoldProductStatistic"));
+        unsoldProductNode.setView(new ListUnsoldProductStatisticView());
 
         rootNode.add(baoDongKichCauNode);
         rootNode.add(baoDongHetHangNode);
@@ -93,6 +103,8 @@ public class ReportDomain extends AbstractDomain {
         rootNode.add(thongKeHangBanNode);
         rootNode.add(thongKeDoanhThuChiPhiNode);
         rootNode.add(importStoreNode);
+        rootNode.add(debtHistoryNode);
+        rootNode.add(unsoldProductNode);
     }
 
 }

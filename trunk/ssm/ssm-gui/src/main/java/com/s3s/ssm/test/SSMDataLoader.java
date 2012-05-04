@@ -682,7 +682,13 @@ public class SSMDataLoader {
         pc4.setPaymentType(PaymentType.RECEIPT);
         pc4.setName("Thu lai khi xuat tra hang nha cung cap");
         pc4.setParent(null);
-        List<PaymentContent> listPaymentContent = Arrays.asList(pc1, pc2, pc3, pc4);
+
+        PaymentContent pc5 = new PaymentContent();
+        pc5.setCode("05"); // TODO: should use code rule of organization
+        pc5.setPaymentType(PaymentType.PAY);
+        pc5.setName("Tam ung cho khach hang");
+        pc5.setParent(null);
+        List<PaymentContent> listPaymentContent = Arrays.asList(pc1, pc2, pc3, pc4, pc5);
         daoHelper.getDao(PaymentContent.class).saveOrUpdateAll(listPaymentContent);
 
         // String code = serviceProvider.getService(IConfigService.class).generateCode(Payment.class);
@@ -723,6 +729,18 @@ public class SSMDataLoader {
         contractPayment.setAmount(money);
         contractPayment.setSalesContract(listSalesContract.get(0));
         daoHelper.getDao(Payment.class).saveOrUpdate(contractPayment);
+
+        Payment payment1 = new Payment();
+        payment1.setCode("004");
+        payment1.setPaymentContent(pc5);
+        payment1.setPaymentDate(new Date());
+        payment1.setPartner(listContact.get(0));
+        payment1.setOperator(listOperator.get(0));
+        payment1.setPaymentMode(PaymentMode.CASH);
+        payment1.setRate(21000);
+        payment1.setAmount(Money.create(CurrencyEnum.VND, 1000000L));
+        daoHelper.getDao(Payment.class).saveOrUpdate(payment1);
+
         return Arrays.asList(payment, receipt, contractPayment);
     }
 

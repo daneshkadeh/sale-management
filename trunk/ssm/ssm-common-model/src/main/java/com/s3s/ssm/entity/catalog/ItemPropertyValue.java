@@ -23,7 +23,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
-mport com.s3s.ssm.entity.AbstractIdOLObject;
 
 /**
  * A value links to a product. Either element or value must be defined.

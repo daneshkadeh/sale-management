@@ -22,12 +22,13 @@ import java.util.Date;
  * @author Le Thanh Hoang
  * @since May 02, 2012
  */
-public class ImportStoreReportData implements Serializable {
+public class GroupDetailImportData implements Serializable {
     private static final long serialVersionUID = 1035013656255140818L;
     private Date importingDate;
     private String salesContractCode;
     private String storeName;
     private String supplierName;
+    private String productCode;
     private String productName;
     private String itemName;
     private String uomName;
@@ -63,6 +64,14 @@ public class ImportStoreReportData implements Serializable {
 
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
     public String getProductName() {

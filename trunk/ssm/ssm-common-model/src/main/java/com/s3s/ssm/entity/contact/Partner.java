@@ -349,4 +349,24 @@ public class Partner extends AbstractActiveCodeOLObject {
         individual.setPartner(this);
         individuals.add(individual);
     }
+
+    @Transient
+    public boolean isSupplier() {
+        for (PartnerProfile profile : listProfiles) {
+            if (PartnerProfileTypeEnum.SUPPLIER.equals(profile.getType())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Transient
+    public boolean isCustomer() {
+        for (PartnerProfile profile : listProfiles) {
+            if (PartnerProfileTypeEnum.CUSTOMER.equals(profile.getType())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

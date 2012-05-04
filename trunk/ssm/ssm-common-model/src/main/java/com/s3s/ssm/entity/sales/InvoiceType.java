@@ -14,6 +14,15 @@
  */
 package com.s3s.ssm.entity.sales;
 
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
 public enum InvoiceType {
-    SALES, MAINTAINANCE, SUPPORT, REFUND, TRIAL
+    SALES, MAINTAINANCE, SUPPORT, REFUND, TRIAL;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+    }
 }

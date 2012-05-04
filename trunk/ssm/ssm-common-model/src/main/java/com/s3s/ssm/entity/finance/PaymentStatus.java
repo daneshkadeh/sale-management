@@ -14,6 +14,15 @@
  */
 package com.s3s.ssm.entity.finance;
 
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
 public enum PaymentStatus {
-    OPEN, CLOSED, CANCELLED, DRAFT
+    OPEN, CLOSED, CANCELLED, DRAFT;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+    }
 }

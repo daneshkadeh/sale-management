@@ -20,6 +20,7 @@ import java.io.Serializable;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
+import com.s3s.ssm.entity.config.UnitOfMeasure;
 
 /**
  * TODO Phuc: The class extend {@link AbstractBaseIdObject} to work-around show the list of DTO in list view
@@ -32,6 +33,7 @@ public class GroupDetailExportData implements Serializable {
     private Product product;
     private Item item;
     private Integer quantity;
+    private UnitOfMeasure uom;
 
     public Product getProduct() {
         return product;
@@ -47,6 +49,14 @@ public class GroupDetailExportData implements Serializable {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public UnitOfMeasure getUom() {
+        return uom;
+    }
+
+    public void setUom(UnitOfMeasure uom) {
+        this.uom = uom;
     }
 
     public Integer getQuantity() {

@@ -41,6 +41,7 @@ import com.s3s.ssm.model.Money;
 @Table(name = "finance_payment")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Payment extends AbstractCodeOLObject {
+    private static final long serialVersionUID = 4824284933146267482L;
     private PaymentContent paymentContent;
     private Date paymentDate = new Date();
     private Partner partner;
