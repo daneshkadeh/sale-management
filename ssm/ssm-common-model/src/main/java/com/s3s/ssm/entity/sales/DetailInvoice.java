@@ -183,6 +183,7 @@ public class DetailInvoice extends AbstractIdOLObject {
     }
 
     @Column(name = "amount", nullable = false)
+    @NotNull
     public Integer getAmount() {
         return amount;
     }
@@ -260,6 +261,7 @@ public class DetailInvoice extends AbstractIdOLObject {
         this.moneyAfterTax = moneyAfterTax;
     }
 
+    @NotNull
     @Column(name = "detail_invoice_type", nullable = false)
     @Enumerated(EnumType.STRING)
     public DetailInvoiceType getType() {
@@ -270,6 +272,7 @@ public class DetailInvoice extends AbstractIdOLObject {
         this.type = type;
     }
 
+    @NotNull
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     public DetailInvoiceStatus getStatus() {

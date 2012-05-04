@@ -36,6 +36,7 @@ public class ItemPrice extends AbstractIdOLObject {
     private AudienceCategory audienceCategory;
     private Money sellPrice;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", nullable = false)
     public Item getItem() {

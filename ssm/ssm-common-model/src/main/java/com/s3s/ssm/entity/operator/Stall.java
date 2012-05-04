@@ -27,6 +27,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 
@@ -43,6 +44,7 @@ public class Stall extends AbstractActiveCodeOLObject {
     private Set<SaleTarget> salesTarget = new HashSet<SaleTarget>();
 
     @Column(name = "name", nullable = false, length = 50)
+    @NotNull
     public String getName() {
         return name;
     }
@@ -53,6 +55,7 @@ public class Stall extends AbstractActiveCodeOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "manager_id", nullable = false)
+    @NotNull
     public Operator getManager() {
         return manager;
     }

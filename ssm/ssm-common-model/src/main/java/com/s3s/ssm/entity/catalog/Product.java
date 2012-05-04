@@ -74,6 +74,7 @@ public class Product extends AbstractCodeOLObject {
         this.description = description;
     }
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "producttype_id", nullable = false)
     public ProductType getType() {

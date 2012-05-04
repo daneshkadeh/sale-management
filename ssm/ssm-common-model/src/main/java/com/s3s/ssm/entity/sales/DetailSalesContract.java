@@ -40,6 +40,7 @@ public class DetailSalesContract extends AbstractIdOLObject {
     private String stockCode;
     private String description;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "salescon_id", nullable = false)
     public SalesContract getSalesContract() {
@@ -50,6 +51,7 @@ public class DetailSalesContract extends AbstractIdOLObject {
         this.salesContract = salesContract;
     }
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     public Product getProduct() {

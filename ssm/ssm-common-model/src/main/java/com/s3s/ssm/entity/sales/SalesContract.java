@@ -78,6 +78,7 @@ public class SalesContract extends AbstractCodeOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sales_confirm_id", nullable = false)
+    @NotNull
     public SalesConfirm getSalesConfirm() {
         return salesConfirm;
     }

@@ -28,6 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
@@ -51,7 +52,7 @@ public class Item extends AbstractCodeOLObject {
 
     // private ItemOriginPrice mainOriginPrice;
 
-    // @ManyToOne
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", nullable = false)
     public Product getProduct() {
