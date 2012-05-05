@@ -35,8 +35,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.entity.sales.ImportationSC;
@@ -52,7 +50,6 @@ public class ImportStoreForm extends AbstractCodeOLObject {
     private Store store;
     private SalesContract salesContract;
     private ImportationSC importationSC;
-    private String supplierName;
     private Date receiptDate = new Date();
     private Operator receiver;
     private String sender;
@@ -65,7 +62,6 @@ public class ImportStoreForm extends AbstractCodeOLObject {
     private Double shipNum = 0D;
     private Integer qtyTotal;
     private Money amtTotal;
-    private Money taxTotal;
     private Set<DetailImportStore> detailImportStores = new HashSet<DetailImportStore>();
 
     @Column(name = "created_date")
@@ -118,16 +114,6 @@ public class ImportStoreForm extends AbstractCodeOLObject {
 
     public void setImportationSC(ImportationSC importationSC) {
         this.importationSC = importationSC;
-    }
-
-    @Column(name = "supplier_name")
-    @NotBlank
-    public String getSupplierName() {
-        return supplierName;
-    }
-
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
     }
 
     @Column(name = "receipt_date")
@@ -244,17 +230,6 @@ public class ImportStoreForm extends AbstractCodeOLObject {
 
     public void setAmtTotal(Money amtTotal) {
         this.amtTotal = amtTotal;
-    }
-
-    @Embedded
-    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "tax_total")),
-            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_code1")) })
-    public Money getTaxTotal() {
-        return taxTotal;
-    }
-
-    public void setTaxTotal(Money taxTotal) {
-        this.taxTotal = taxTotal;
     }
 
     @Embedded

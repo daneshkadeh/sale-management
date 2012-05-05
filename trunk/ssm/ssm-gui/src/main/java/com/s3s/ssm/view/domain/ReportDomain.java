@@ -31,8 +31,9 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.SSMReportViewer;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
-import com.s3s.ssm.view.statistic.store.ListDebtHistoryView;
+import com.s3s.ssm.view.statistic.store.ListCustDebtHistoryView;
 import com.s3s.ssm.view.statistic.store.ListImportStoreReportDataView;
+import com.s3s.ssm.view.statistic.store.ListSupDebtHistoryView;
 import com.s3s.ssm.view.statistic.store.ListUnsoldProductStatisticView;
 
 /**
@@ -88,9 +89,14 @@ public class ReportDomain extends AbstractDomain {
                 ControlConfigUtils.getString("JTree.Report.ImportStore"));
         importStoreNode.setView(new ListImportStoreReportDataView());
 
-        TreeNodeWithView debtHistoryNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.Report.DebtHistory"));
-        debtHistoryNode.setView(new ListDebtHistoryView());
+        TreeNodeWithView custDebtHistNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.Report.custDebtHistory"));
+        custDebtHistNode.setView(new ListCustDebtHistoryView());
+
+        TreeNodeWithView supDebtHistNode = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.Report.supDebtHistory"));
+        supDebtHistNode.setView(new ListSupDebtHistoryView());
+
         // Manage Unsold product
         TreeNodeWithView unsoldProductNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Report.UnsoldProductStatistic"));
@@ -103,7 +109,8 @@ public class ReportDomain extends AbstractDomain {
         rootNode.add(thongKeHangBanNode);
         rootNode.add(thongKeDoanhThuChiPhiNode);
         rootNode.add(importStoreNode);
-        rootNode.add(debtHistoryNode);
+        rootNode.add(custDebtHistNode);
+        rootNode.add(supDebtHistNode);
         rootNode.add(unsoldProductNode);
     }
 

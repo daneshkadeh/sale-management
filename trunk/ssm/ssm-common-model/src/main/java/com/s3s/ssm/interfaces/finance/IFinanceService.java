@@ -19,7 +19,7 @@ package com.s3s.ssm.interfaces.finance;
 import java.util.Date;
 import java.util.List;
 
-import com.s3s.ssm.dto.finance.CustomerDebtHistoryDTO;
+import com.s3s.ssm.dto.finance.CustDebtHistoryDTO;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.entity.finance.PaymentMode;
@@ -44,7 +44,7 @@ public interface IFinanceService {
     public void createInvoicePayment(Invoice invoice, PaymentContent paymentContent, PaymentMode paymentMode,
             Money amount);
 
-    public List<CustomerDebtHistoryDTO> getDebtHistory(String partnerCode, Date fromDate, Date toDate);
+    public List<CustDebtHistoryDTO> getDebtHistory(String partnerCode, Date fromDate, Date toDate);
 
     public Money getFirstTermDebt(Partner partner, Date date);
 }

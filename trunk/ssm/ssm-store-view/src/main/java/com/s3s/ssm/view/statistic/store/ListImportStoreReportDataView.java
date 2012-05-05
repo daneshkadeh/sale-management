@@ -16,6 +16,7 @@
 
 package com.s3s.ssm.view.statistic.store;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -74,7 +75,9 @@ public class ListImportStoreReportDataView extends AListDataView<GroupDetailImpo
         String salesContractCode = salesContactComp.getText();
         Store selectedStore = (Store) cbStore.getSelectedItem();
         Product selectedProduct = (Product) cbProduct.getSelectedItem();
-
+        if (selectedStore == null || selectedProduct == null) {
+            return Collections.EMPTY_LIST;
+        }
         return serviceProvider.getService(IStoreService.class).statisticImportStoreData(salesContractCode,
                 selectedStore.getCode(), selectedProduct.getCode(), fromDate, toDate);
     }
@@ -93,7 +96,9 @@ public class ListImportStoreReportDataView extends AListDataView<GroupDetailImpo
     @Override
     protected JPanel createSearchPanel() {
         List<Store> stores = serviceProvider.getService(IStoreService.class).getStores();
+        stores.add(0, null);
         List<Product> products = serviceProvider.getService(ICatalogService.class).getListProducts();
+        products.add(0, null);
 
         JPanel panel = new JPanel(new MigLayout("ins 0, fill", "grow"));
         salesContactComp = new JTextField();

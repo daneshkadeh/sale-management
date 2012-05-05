@@ -1,6 +1,7 @@
 package com.s3s.ssm.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +36,8 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
     public void init() {
         serviceProvider.register(IConfigService.class, this);
         try {
+            getCacheDataService()
+                    .registerCache(CacheId.REF_LIST_EMPTY, this, this.getClass().getMethod("getEmptyList"));
             getCacheDataService().registerCache(CacheId.REF_LIST_ROLE, this, this.getClass().getMethod("getRoles"));
             getCacheDataService().registerCache(CacheId.REF_LIST_CURRENCY, this,
                     this.getClass().getMethod("getCurrencies"));
@@ -50,6 +53,10 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
         } catch (NoSuchMethodException | SecurityException e) {
             throw new RuntimeException("Cannot register method to cache service!", e);
         }
+    }
+
+    public List getEmptyList() {
+        return Collections.EMPTY_LIST;
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)

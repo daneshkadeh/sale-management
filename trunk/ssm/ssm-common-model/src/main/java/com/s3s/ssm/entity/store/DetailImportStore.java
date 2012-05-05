@@ -32,7 +32,6 @@ import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
-import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 
 @Entity
@@ -41,14 +40,14 @@ public class DetailImportStore extends AbstractIdOLObject {
     private static final long serialVersionUID = 193415641537228770L;
     private Integer lineNo;
     private ImportStoreForm importStoreForm;
-    private Product product = new Product();
+    private Product product;
     private String productName;
-    private Item item = new Item();
+    private Item item;
     private UnitOfMeasure uom;
     private UnitOfMeasure baseUom;
     private Integer quantity = 0;
-    private Money priceUnit = Money.create(CurrencyEnum.VND, 0L);
-    private Money priceSubtotal = Money.create(CurrencyEnum.VND, 0L);
+    private Money priceUnit;
+    private Money priceSubtotal;
 
     @Column(name = "line_no")
     @DecimalMin(value = "1")

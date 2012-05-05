@@ -66,7 +66,7 @@ public class ListUnsoldProductStatisticView extends AListDataView<UnsoldProductD
         listDataModel.addColumn("exportQty", ListRendererType.NUMBER).width(UIConstants.QTY_COLUMN_WIDTH);
         listDataModel.addColumn("lastQty", ListRendererType.NUMBER).width(UIConstants.QTY_COLUMN_WIDTH);
         listDataModel.addColumn("priceUnit", ListRendererType.NUMBER).width(UIConstants.AMT_COLUMN_WIDTH);
-        listDataModel.addColumn("priceUnitTotal", ListRendererType.NUMBER).width(UIConstants.AMT_COLUMN_WIDTH);
+        listDataModel.addColumn("priceUnitTotal", ListRendererType.NUMBER);
     }
 
     @Override

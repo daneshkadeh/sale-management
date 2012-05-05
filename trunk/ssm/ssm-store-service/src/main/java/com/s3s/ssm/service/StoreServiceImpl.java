@@ -141,13 +141,22 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public ExportStoreForm getLatestExportStoreForm(Invoice invoice) {
+        return getLatestExportStoreForm(invoice.getInvoiceNumber());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public ExportStoreForm getLatestExportStoreForm(String invoiceNumber) {
         DetachedCriteria subselectDc = getDaoHelper().getDao(ExportStoreForm.class).getCriteria();
         subselectDc.setProjection(Property.forName("createdDate").max());
 
         DetachedCriteria dc = getDaoHelper().getDao(ExportStoreForm.class).getCriteria();
         dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dc.createAlias("invoice", "inv");
-        dc.add(Property.forName("invoice.invoiceNumber").ge(invoice.getInvoiceNumber()));
+        dc.add(Property.forName("inv.invoiceNumber").eq(invoiceNumber));
         dc.add(Property.forName("createdDate").eq(subselectDc));
         ExportStoreForm exportForm = getDaoHelper().getDao(ExportStoreForm.class).findFirstByCriteria(dc);
         return exportForm;
@@ -190,13 +199,22 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
      */
     @Override
     public ClosingStoreEntry getLatestClosingStoreEntry(Store store) {
+        return getLatestClosingStoreEntry(store, new Date());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ClosingStoreEntry getLatestClosingStoreEntry(Store store, Date date) {
         DetachedCriteria subselectDc = getDaoHelper().getDao(ClosingStoreEntry.class).getCriteria();
         subselectDc.setProjection(Property.forName("closingDate").max());
+        subselectDc.add(Restrictions.le("closingDate", date));
 
         DetachedCriteria dc = getDaoHelper().getDao(ClosingStoreEntry.class).getCriteria();
         dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dc.createAlias("store", "store");
-        dc.add(Property.forName("store.code").ge(store.getCode()));
+        dc.add(Restrictions.ge("store.code", store.getCode()));
         dc.add(Property.forName("closingDate").eq(subselectDc));
         ClosingStoreEntry closingStoreEntry = getDaoHelper().getDao(ClosingStoreEntry.class).findFirstByCriteria(dc);
         return closingStoreEntry;
@@ -213,18 +231,27 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
 
     @Override
     public Date getDateOfLatestClosingStoreEntry(Store store) {
-        if (getLatestClosingStoreEntry(store) == null) {
-            return null;
+        return getDateOfLatestClosingStoreEntry(store, new Date());
+    }
+
+    @Override
+    public Date getDateOfLatestClosingStoreEntry(Store store, Date date) {
+        ClosingStoreEntry closingEntry = getLatestClosingStoreEntry(store, date);
+        if (closingEntry != null) {
+            // TODO: use another way to get unique value not entity
+            getLatestClosingStoreEntry(store, date).getClosingDate();
         }
-        return getLatestClosingStoreEntry(store).getClosingDate();
+        return null;
     }
 
     @Override
     public Date getDateOfLatestInventoryStoreForm(Store store) {
-        if (getLatestInventoryStoreForm(store) == null) {
-            return new Date(0, 0, 0);
+        InventoryStoreForm form = getLatestInventoryStoreForm(store);
+        if (form != null) {
+            // TODO: use another way to get unique value not entity
+            return form.getCreatedDate();
         }
-        return getLatestInventoryStoreForm(store).getCreatedDate();
+        return null;
     }
 
     /**
@@ -288,6 +315,70 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
             lineNo++;
         }
         getDaoHelper().getDao(ExportStoreForm.class).saveOrUpdate(exportForm);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UnsoldProductDTO>
+            statisticUnsoldProduct(List<Product> products, Store store, Date fromDate, Date toDate) {
+        List<UnsoldProductDTO> result = new ArrayList<UnsoldProductDTO>();
+        // Lay hang ton o lan kiem ke hoac lan ket xuat truoc
+        for (Product product : products) {
+            for (Item item : product.getListItems()) {
+                UnitOfMeasure uom = item.getUom();
+                Integer firstQty = getProductByClosingStoreEntry(product, item, uom, store, fromDate);
+                // TODO: should use HQL or native query for performance by joining together entities
+                Integer importQty = getProductByImportStore(product, item, uom, store, fromDate, toDate);
+                Integer exportQty = getProductByExportStore(product, item, uom, store, fromDate, toDate);
+                Integer lastQty = firstQty + importQty - exportQty;
+                Long priceUnit = item.getOriginPrice().getValue();
+                Long priceUnitTotal = lastQty * priceUnit;
+                UnsoldProductDTO dto = new UnsoldProductDTO();
+                dto.setProductCode(product.getCode());
+                dto.setProductName(product.getName());
+                dto.setItemName(item.getSumUomName());
+                dto.setUom(uom.getName());
+                dto.setFirstQty(firstQty);
+                dto.setImportQty(importQty);
+                dto.setExportQty(exportQty);
+                dto.setLastQty(lastQty);
+                dto.setPriceUnit(priceUnit);
+                dto.setPriceUnitTotal(priceUnitTotal);
+                result.add(dto);
+            }
+        }
+        return result;
+    }
+
+    public Integer getProductByClosingStoreEntry(Product product, Item item, UnitOfMeasure uom, Store store, Date date) {
+        Integer result = 0;
+
+        DetachedCriteria subselectDc = getDaoHelper().getDao(DetailClosingStore.class).getCriteria();
+        subselectDc.createAlias("closingEntry", "closingEntry");
+        subselectDc.setProjection(Property.forName("closingEntry.closingDate").max());
+        subselectDc.add(Restrictions.le("closingEntry.closingDate", date));
+
+        DetachedCriteria dc = getDaoHelper().getDao(DetailClosingStore.class).getCriteria();
+
+        dc.createAlias("closingEntry", "closingEntry");
+        dc.add(Restrictions.eq("product", product));
+        dc.add(Restrictions.eq("item", item));
+        dc.add(Restrictions.eq("baseUom", uom));
+        dc.add(Restrictions.eq("closingEntry.store", store));
+        dc.add(Property.forName("closingEntry.closingDate").eq(subselectDc));
+
+        DetailClosingStore detailClosingEntry = getDaoHelper().getDao(DetailClosingStore.class).findFirstByCriteria(dc);
+
+        Date latestClosingEntryDate = detailClosingEntry.getClosingEntry().getClosingDate();
+
+        Integer closingEntryQty = detailClosingEntry.getQty();
+        Integer importQty = getProductByImportStore(product, item, uom, store, latestClosingEntryDate, date);
+        Integer exportQty = getProductByExportStore(product, item, uom, store, latestClosingEntryDate, date);
+
+        result = closingEntryQty + importQty - exportQty;
+        return result;
     }
 
     @Override
@@ -436,41 +527,6 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<UnsoldProductDTO>
-            statisticUnsoldProduct(List<Product> products, Store store, Date fromDate, Date toDate) {
-        List<UnsoldProductDTO> result = new ArrayList<UnsoldProductDTO>();
-        // Lay hang ton o lan kiem ke hoac lan ket xuat truoc
-        for (Product product : products) {
-            for (Item item : product.getListItems()) {
-                Integer firstQty = 0;
-                // TODO: should use HQL or native query for performance by join together entities
-                UnitOfMeasure uom = item.getUom();
-                Integer importQty = getProductByImportStore(product, item, uom, store, fromDate, toDate);
-                Integer exportQty = getProductByExportStore(product, item, uom, store, fromDate, toDate);
-                Integer lastQty = firstQty + importQty - exportQty;
-                Long priceUnit = item.getOriginPrice().getValue();
-                Long priceUnitTotal = lastQty * priceUnit;
-                UnsoldProductDTO dto = new UnsoldProductDTO();
-                dto.setProductCode(product.getCode());
-                dto.setProductName(product.getName());
-                dto.setItemName(item.getSumUomName());
-                dto.setUom(uom.getName());
-                dto.setFirstQty(firstQty);
-                dto.setImportQty(importQty);
-                dto.setExportQty(exportQty);
-                dto.setLastQty(lastQty);
-                dto.setPriceUnit(priceUnit);
-                dto.setPriceUnitTotal(priceUnitTotal);
-                result.add(dto);
-            }
-        }
-        return result;
     }
 
     private Integer getProductByImportStore(Product product, Item item, UnitOfMeasure uom, Store store, Date fromDate,

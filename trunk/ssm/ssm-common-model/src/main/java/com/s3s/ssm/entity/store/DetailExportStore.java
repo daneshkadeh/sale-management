@@ -36,11 +36,11 @@ public class DetailExportStore extends AbstractIdOLObject {
     private static final long serialVersionUID = 6567804203919738639L;
     private Integer lineNo;
     private ExportStoreForm exportForm;
-    private Product product = new Product();
+    private Product product;
     private String productName;
-    private Item item = new Item();
-    private UnitOfMeasure uom = new UnitOfMeasure();
-    private UnitOfMeasure baseUom = new UnitOfMeasure();
+    private Item item;
+    private UnitOfMeasure uom;
+    private UnitOfMeasure baseUom;
     private Integer reqQuan = 0;
     private Integer realQuan = 0;
     private Integer remainQuan = 0;
@@ -138,7 +138,6 @@ public class DetailExportStore extends AbstractIdOLObject {
 
     public void setRealQuan(Integer realQuan) {
         this.realQuan = realQuan;
-        updateRemainQuan();
     }
 
     @Column(name = "remain_quan")
@@ -149,9 +148,5 @@ public class DetailExportStore extends AbstractIdOLObject {
 
     public void setRemainQuan(Integer remainQuan) {
         this.remainQuan = remainQuan;
-    }
-
-    private void updateRemainQuan() {
-        remainQuan = reqQuan - realQuan;
     }
 }

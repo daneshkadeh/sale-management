@@ -37,13 +37,12 @@ public class ListImportStoreFormView extends ANonSearchListEntityView<ImportStor
         listDataModel.addColumn("createdDate", ListRendererType.DATE);
         listDataModel.addColumn("status", ListRendererType.TEXT);
         listDataModel.addColumn("salesContract", ListRendererType.TEXT);
-        listDataModel.addColumn("supplierName", ListRendererType.TEXT);
+        listDataModel.addColumn("salesContract.supplier.name", ListRendererType.TEXT);
         listDataModel.addColumn("receiptDate", ListRendererType.DATE);
         listDataModel.addColumn("receiver", ListRendererType.TEXT);
         listDataModel.addColumn("sender", ListRendererType.TEXT);
         listDataModel.addColumn("isProcessed", ListRendererType.BOOLEAN);
         listDataModel.addColumn("qtyTotal", ListRendererType.NUMBER).summarized().width(UIConstants.QTY_COLUMN_WIDTH);
-        listDataModel.addColumn("taxTotal", ListRendererType.NUMBER).summarized().width(UIConstants.AMT_COLUMN_WIDTH);
         listDataModel.addColumn("amtTotal", ListRendererType.NUMBER).summarized().width(UIConstants.AMT_COLUMN_WIDTH);
     }
 
