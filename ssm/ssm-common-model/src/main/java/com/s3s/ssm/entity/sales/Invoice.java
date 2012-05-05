@@ -33,6 +33,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.operator.Operator;
@@ -182,6 +184,8 @@ public class Invoice extends AbstractIdOLObject {
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "invoice")
+    @Cascade(value = { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+            org.hibernate.annotations.CascadeType.DELETE_ORPHAN, org.hibernate.annotations.CascadeType.DELETE })
     public Set<DetailInvoice> getDetailInvoices() {
         return detailInvoices;
     }

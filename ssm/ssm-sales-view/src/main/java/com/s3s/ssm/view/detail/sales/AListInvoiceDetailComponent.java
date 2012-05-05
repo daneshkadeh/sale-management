@@ -77,12 +77,22 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
             entityUpdated.setUom(item.getUom());
 
         } else if ("amount".equals(attributeName)) {
-            Money sum = Money.zero(CurrencyEnum.VND);
-            for (DetailInvoice detailInvoice : entities) {
-                sum = sum.plus(detailInvoice.getTotalAmount());
-            }
-            totalAmounts = sum;
+            calcuSumAmount(entities);
         }
+    }
+
+    private void calcuSumAmount(List<DetailInvoice> entities) {
+        Money sum = Money.zero(CurrencyEnum.VND);
+        for (DetailInvoice detailInvoice : entities) {
+            sum = sum.plus(detailInvoice.getTotalAmount());
+        }
+        totalAmounts = sum;
+    }
+
+    @Override
+    protected void doRowDelete(List<DetailInvoice> entities) {
+        super.doRowDelete(entities);
+        calcuSumAmount(entities);
     }
 
     public Money getTotalAmounts() {
