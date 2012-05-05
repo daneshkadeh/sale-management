@@ -47,6 +47,7 @@ import org.eclipse.core.internal.utils.Assert;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
+import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.hyperlink.AbstractHyperlinkAction;
 import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.renderer.HyperlinkProvider;
@@ -69,7 +70,7 @@ import com.s3s.ssm.view.list.editor.SearchCellEditor;
  */
 public class SAdvanceTable extends JXTable {
     private static final long serialVersionUID = 6141561051329763125L;
-    private static final int EDITOR_HEIGHT = 25;
+    private static final int ROW_HEIGHT = 25;
     private ListDataModel listDataModel;
     private ReferenceDataModel refDataModel;
     private AdvanceTableModel<?> tableModel;
@@ -86,17 +87,17 @@ public class SAdvanceTable extends JXTable {
         setSelectionMode(selectionMode);
         setColumnControlVisible(true);
         getTableHeader().setFont(UIConstants.DEFAULT_BOLD_FONT);
+        setRowHeight(ROW_HEIGHT);
 
         // The table is already sorted by Hibernate (done in AbstractListView)
 
         if (tableModel.isEditable()) {
             setSorter();
-            setRowHeight(EDITOR_HEIGHT);
             setShowGrid(true);
             setGridColor(Color.GRAY);
             // setIntercellSpacing(new Dimension(3, 3));
         } else {
-            // addHighlighter(HighlighterFactory.createSimpleStriping());
+            addHighlighter(HighlighterFactory.createSimpleStriping(UIManager.getColor("control")));
             // Highlight the row when mouse over.
             addHighlighter(new ColorHighlighter(HighlightPredicate.ROLLOVER_ROW,
                     UIManager.getColor("Table.dropLineColor"), null));

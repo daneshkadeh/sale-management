@@ -35,7 +35,7 @@ import com.s3s.ssm.view.edit.IComponentInfo;
 import com.s3s.ssm.view.edit.ListComponentInfo;
 
 public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
-
+    private static final long serialVersionUID = -7849498072868923918L;
     private static final String REF_CURRENCY = "REF_CURRENCY";
     private static final String REF_ITEM = "item";
     private static final String REF_PACKLINE = "packageLine";
