@@ -19,7 +19,7 @@ package com.s3s.ssm.view.util;
 import java.util.Date;
 import java.util.List;
 
-import com.s3s.ssm.dto.finance.CustomerDebtHistoryDTO;
+import com.s3s.ssm.dto.finance.CustDebtHistoryDTO;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.interfaces.finance.IFinanceService;
 import com.s3s.ssm.model.Money;
@@ -30,9 +30,9 @@ import com.s3s.ssm.view.ViewHelper;
  * 
  */
 public class FinanceViewHelper extends ViewHelper {
-    public static void transformDebtHistory(List<CustomerDebtHistoryDTO> debtHistDTOList, Partner partner,
+    public static void transformDebtHistory(List<CustDebtHistoryDTO> debtHistDTOList, Partner partner,
             Date fromDate, Date toDate) {
-        CustomerDebtHistoryDTO firstPeriodDebt = new CustomerDebtHistoryDTO();
+        CustDebtHistoryDTO firstPeriodDebt = new CustDebtHistoryDTO();
 
         Money firstPeriodDebtAmt = serviceProvider.getService(IFinanceService.class)
                 .getFirstTermDebt(partner, fromDate);
@@ -43,7 +43,7 @@ public class FinanceViewHelper extends ViewHelper {
         debtHistDTOList.add(0, firstPeriodDebt);
         for (int i = 1; i < debtHistDTOList.size(); i++) {
             Long preDebt = debtHistDTOList.get(i - 1).getDebtAmt();
-            CustomerDebtHistoryDTO dto = debtHistDTOList.get(i);
+            CustDebtHistoryDTO dto = debtHistDTOList.get(i);
             if (partner.isCustomer()) {
                 Long curDebt = preDebt + dto.getAmt() - dto.getPayAmt() + dto.getAdvanceAmt();
                 dto.setDebtAmt(curDebt);
@@ -52,7 +52,7 @@ public class FinanceViewHelper extends ViewHelper {
 
             }
         }
-        CustomerDebtHistoryDTO lastPeriodDebt = new CustomerDebtHistoryDTO();
+        CustDebtHistoryDTO lastPeriodDebt = new CustDebtHistoryDTO();
         lastPeriodDebt.setHisDate(toDate);
         // TODO: must use i18n
         lastPeriodDebt.setContent("Cong no cuoi ki");

@@ -84,9 +84,15 @@ public class UIConstants {
      */
     public static final Color HIGHLIGHT_ROW_COLOR = new Color(133, 205, 255);
 
+    public static final int PRODUCT_CODE_COLUMN_WIDTH = 180;
+
+    public static final int PRODUCT_NAME_COLUMN_WIDTH = 250;
+
+    public static final int UOM_COLUMN_WIDTH = 60;
+
     public static final int QTY_COLUMN_WIDTH = 93;
 
-    public static final int AMT_COLUMN_WIDTH = 93;
+    public static final int AMT_COLUMN_WIDTH = 110;
 
     public static final int NUMBER_FIELD_WIDTH = 125;
 

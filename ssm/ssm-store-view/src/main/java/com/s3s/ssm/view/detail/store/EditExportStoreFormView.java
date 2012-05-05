@@ -67,6 +67,18 @@ public class EditExportStoreFormView extends AbstractSingleEditView<ExportStoreF
     @Override
     protected void preSaveOrUpdate(ExportStoreForm masterEntity) {
         super.preSaveOrUpdate(masterEntity);
+        // set quantity
+        long reqQuanTotal = 0;
+        long realQuanTotal = 0;
+        long remainQuanTotal = 0;
+        for (DetailExportStore detail : masterEntity.getExportDetails()) {
+            reqQuanTotal += detail.getReqQuan();
+            realQuanTotal += detail.getRealQuan();
+            remainQuanTotal += detail.getRemainQuan();
+        }
+        masterEntity.setReqQuanTotal(reqQuanTotal);
+        masterEntity.setRealQuanTotal(realQuanTotal);
+        masterEntity.setRemainQuanTotal(remainQuanTotal);
         // setting status of the invoice
         Invoice invoice = masterEntity.getInvoice();
         boolean isCompleted = true;
@@ -80,6 +92,7 @@ public class EditExportStoreFormView extends AbstractSingleEditView<ExportStoreF
         } else {
             invoice.setStoreStatus(InvoiceStoreStatus.EXPORTING);
         }
+
     }
 
     /**

@@ -15,6 +15,8 @@
 
 package com.s3s.ssm.view.detail.store;
 
+import java.util.List;
+
 import javax.swing.Icon;
 
 import com.s3s.ssm.entity.store.DetailExportStore;
@@ -24,6 +26,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.ServiceProvider;
 import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.list.AListComponent;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
@@ -57,18 +60,20 @@ public class ListExportDetailComponent extends AListComponent<DetailExportStore>
         // TODO: Hoang must set max, min for column
         // listDataModel.setEditable(true);
         // listDataModel.addColumn("lineNo", ListRendererType.TEXT).notEditable();
-        listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
-                .referenceDataId(REF_LIST_PRODUCT).width(180);
-        listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable().width(290);
+        // listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
+        // .referenceDataId(REF_LIST_PRODUCT).width(180);
+        // listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable().width(290);
         // TODO: Hoang the data should be updated after choosing the product
-        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
-                .width(205);
-        listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM)
-                .width(70);
-        listDataModel.addColumn("baseUom", ListRendererType.TEXT, ListEditorType.TEXTFIELD).notEditable().width(70);
+        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.SEARCH_COMPONENT)
+                .componentInfo(ComponentFactory.createItemComponentInfo()).width(UIConstants.PRODUCT_CODE_COLUMN_WIDTH);
+        listDataModel.addColumn("item.sumUomName", ListRendererType.TEXT).notEditable()
+                .width(UIConstants.PRODUCT_NAME_COLUMN_WIDTH);
+        listDataModel.addColumn("item.uom", ListRendererType.TEXT).notEditable().width(UIConstants.UOM_COLUMN_WIDTH);
+        // listDataModel.addColumn("baseUom", ListRendererType.TEXT, ListEditorType.TEXTFIELD).notEditable().width(70);
         listDataModel.addColumn("reqQuan", ListRendererType.NUMBER).notEditable().summarized()
                 .width(UIConstants.QTY_COLUMN_WIDTH);
-        listDataModel.addColumn("realQuan", ListRendererType.NUMBER).summarized().width(UIConstants.QTY_COLUMN_WIDTH);
+        listDataModel.addColumn("realQuan", ListRendererType.NUMBER, ListEditorType.TEXTFIELD).summarized()
+                .width(UIConstants.QTY_COLUMN_WIDTH);
         listDataModel.addColumn("remainQuan", ListRendererType.NUMBER).notEditable().summarized()
                 .width(UIConstants.QTY_COLUMN_WIDTH);
 
@@ -86,12 +91,13 @@ public class ListExportDetailComponent extends AListComponent<DetailExportStore>
         return refDataModel;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected DetailExportStore createNewEntity() {
-        return super.createNewEntity();
+    protected void doRowUpdated(String attributeName, DetailExportStore entity, List<DetailExportStore> entities) {
+        super.doRowUpdated(attributeName, entity, entities);
+        if ("realQuan".equals(attributeName)) {
+            int remainQty = entity.getReqQuan() - entity.getRealQuan();
+            entity.setRemainQuan(remainQty);
+        }
     }
 
 }

@@ -19,6 +19,7 @@ package com.s3s.ssm.view.statistic.store;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -28,7 +29,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXDatePicker;
 
-import com.s3s.ssm.dto.finance.CustomerDebtHistoryDTO;
+import com.s3s.ssm.dto.finance.CustDebtHistoryDTO;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.interfaces.contact.IContactService;
 import com.s3s.ssm.interfaces.finance.IFinanceService;
@@ -43,7 +44,7 @@ import com.s3s.ssm.view.util.FinanceViewHelper;
  * @author Le Thanh Hoang
  * 
  */
-public class ListDebtHistoryView extends AListDataView<CustomerDebtHistoryDTO> {
+public class ListCustDebtHistoryView extends AListDataView<CustDebtHistoryDTO> {
     private JXDatePicker fromDateComp;
     private JXDatePicker toDateComp;
     private JComboBox<Partner> cbPartner;
@@ -64,7 +65,7 @@ public class ListDebtHistoryView extends AListDataView<CustomerDebtHistoryDTO> {
     }
 
     @Override
-    protected List<CustomerDebtHistoryDTO> loadData(int fistIndex, int maxResults) {
+    protected List<CustDebtHistoryDTO> loadData(int fistIndex, int maxResults) {
         Date fromDate = fromDateComp.getDate();
         Date toDate = toDateComp.getDate();
         Partner partner = (Partner) cbPartner.getSelectedItem();
@@ -72,7 +73,7 @@ public class ListDebtHistoryView extends AListDataView<CustomerDebtHistoryDTO> {
             return Collections.EMPTY_LIST;
         }
         String partnerCode = "";
-        List<CustomerDebtHistoryDTO> debtHistoryDTOList = (List<CustomerDebtHistoryDTO>) serviceProvider.getService(
+        List<CustDebtHistoryDTO> debtHistoryDTOList = (List<CustDebtHistoryDTO>) serviceProvider.getService(
                 IFinanceService.class).getDebtHistory(partnerCode, fromDate, toDate);
         FinanceViewHelper.transformDebtHistory(debtHistoryDTOList, partner, fromDate, toDate);
         return debtHistoryDTOList;
@@ -91,19 +92,21 @@ public class ListDebtHistoryView extends AListDataView<CustomerDebtHistoryDTO> {
      */
     @Override
     protected JPanel createSearchPanel() {
-        List<Partner> partners = (List<Partner>) serviceProvider.getService(IContactService.class).getPartners();
+        List<Partner> partners = (List<Partner>) serviceProvider.getService(IContactService.class).getCustomers();
         partners.add(0, null);
         JPanel panel = new JPanel(new MigLayout("ins 0, fill", "grow"));
         cbPartner = new JComboBox(partners.toArray());
         fromDateComp = new JXDatePicker();
         fromDateComp.setDate(new Date());
+        fromDateComp.setLocale(new Locale("vi"));
         toDateComp = new JXDatePicker();
         toDateComp.setDate(new Date());
-        panel.add(new JLabel(ControlConfigUtils.getString("label.CustomerDebtHistoryDTO.partner")), "right");
+        toDateComp.setLocale(new Locale("vi"));
+        panel.add(new JLabel(ControlConfigUtils.getString("label.CustDebtHistoryDTO.partner")), "right");
         panel.add(cbPartner, "grow,wrap");
-        panel.add(new JLabel(ControlConfigUtils.getString("label.CustomerDebtHistoryDTO.fromDate")), "right");
+        panel.add(new JLabel(ControlConfigUtils.getString("label.CustDebtHistoryDTO.fromDate")), "right");
         panel.add(fromDateComp, "grow");
-        panel.add(new JLabel(ControlConfigUtils.getString("label.CustomerDebtHistoryDTO.toDate")), "right");
+        panel.add(new JLabel(ControlConfigUtils.getString("label.CustDebtHistoryDTO.toDate")), "right");
         panel.add(toDateComp, "grow");
         return panel;
     }

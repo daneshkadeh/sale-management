@@ -21,6 +21,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+
 import org.apache.commons.lang.math.NumberUtils;
 
 import com.s3s.ssm.entity.catalog.Item;
@@ -33,10 +36,14 @@ import com.s3s.ssm.entity.store.DetailExportStore;
 import com.s3s.ssm.entity.store.DetailInventoryStore;
 import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.entity.store.InventoryStoreForm;
+import com.s3s.ssm.entity.store.ShipPrice;
+import com.s3s.ssm.entity.store.ShipPriceType;
 import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.interfaces.store.IStoreService;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.view.ViewHelper;
+import com.s3s.ssm.view.component.MoneyComponent;
 
 /**
  * @author Le Thanh Hoang
@@ -61,7 +68,7 @@ public class StoreViewHelper extends ViewHelper {
             break;
         case EXPORTING:
             ExportStoreForm latestForm = serviceProvider.getService(IStoreService.class).getLatestExportStoreForm(
-                    invoice);
+                    invoice.getInvoiceNumber());
             form.getExportDetails().addAll(initDetailExportStore(latestForm));
             break;
         default:
@@ -84,6 +91,19 @@ public class StoreViewHelper extends ViewHelper {
         }
         form.getDetailInventoryStores().addAll(detailSet);
         return form;
+    }
+
+    public static void updateShipPrice(JComboBox cbShipPriceType, JTextField tfdShipNum, MoneyComponent mShipPrice) {
+        ShipPriceType type = (ShipPriceType) cbShipPriceType.getSelectedItem();
+        if (type != null) {
+            Double shipnum = NumberUtils.createDouble(tfdShipNum.getText());
+
+            ShipPrice shipPrice = serviceProvider.getService(IStoreService.class).getLatestShipPrice(type.getCode());
+            Money shipPriceValue = shipPrice.getPrice();
+            mShipPrice.setMoney(shipPriceValue.multiply(shipnum));
+        } else {
+            mShipPrice.setMoney(Money.create(CurrencyEnum.VND, 0L));
+        }
     }
 
     private static Set<DetailExportStore> initDetailExportStore(Invoice invoice) {

@@ -24,7 +24,7 @@ import com.s3s.ssm.entity.AbstractBaseIdObject;
  * @author Le Thanh Hoang
  * 
  */
-public class SupplierDebtHistoryDTO extends AbstractBaseIdObject {
+public class SupDebtHistoryDTO extends AbstractBaseIdObject {
     private static final long serialVersionUID = -5152325366226117473L;
     private Date hisDate;
     private String code;

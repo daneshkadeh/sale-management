@@ -56,6 +56,8 @@ public interface IStoreService {
 
     ClosingStoreEntry getLatestClosingStoreEntry(Store store);
 
+    Date getDateOfLatestClosingStoreEntry(Store store, Date date);
+
     /**
      * Processing closing entry for store
      * 
@@ -69,8 +71,12 @@ public interface IStoreService {
 
     void createExportStoreForm(Invoice invoice);
 
+    public ExportStoreForm getLatestExportStoreForm(String invoiceNumber);
+
     public List<GroupDetailImportData> statisticImportStoreData(String salesContractCode, String storeCode,
             String productCode, Date fromDate, Date toDate);
 
     List<UnsoldProductDTO> statisticUnsoldProduct(List<Product> products, Store store, Date fromDate, Date toDate);
+
+    ClosingStoreEntry getLatestClosingStoreEntry(Store store, Date date);
 }

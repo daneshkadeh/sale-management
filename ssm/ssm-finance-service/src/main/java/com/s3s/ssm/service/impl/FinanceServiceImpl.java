@@ -17,7 +17,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.s3s.ssm.dto.finance.CustomerDebtHistoryDTO;
+import com.s3s.ssm.dto.finance.CustDebtHistoryDTO;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.finance.ClosingFinanceEntry;
 import com.s3s.ssm.entity.finance.DetailClosingFinance;
@@ -129,8 +129,8 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
     }
 
     @Override
-    public List<CustomerDebtHistoryDTO> getDebtHistory(String partnerCode, Date fromDate, Date toDate) {
-        List<CustomerDebtHistoryDTO> result = new ArrayList<CustomerDebtHistoryDTO>();
+    public List<CustDebtHistoryDTO> getDebtHistory(String partnerCode, Date fromDate, Date toDate) {
+        List<CustDebtHistoryDTO> result = new ArrayList<CustDebtHistoryDTO>();
         // get data from invoice
         DetachedCriteria invoiceDc = getDaoHelper().getDao(Invoice.class).getCriteria();
         ProjectionList invoiceProjList = Projections.projectionList();
@@ -140,7 +140,7 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
         invoiceProjList.add(Projections.property("type"), "contentType");
         invoiceProjList.add(Projections.property("moneyAfterTax.value"), "amt");
         invoiceDc.setProjection(invoiceProjList);
-        invoiceDc.setResultTransformer(new AliasToBeanResultTransformer(CustomerDebtHistoryDTO.class));
+        invoiceDc.setResultTransformer(new AliasToBeanResultTransformer(CustDebtHistoryDTO.class));
         List resultFromInvoice = (List) getDaoHelper().getDao(Invoice.class).findByCriteria(invoiceDc);
         result.addAll(resultFromInvoice);
 
@@ -155,7 +155,7 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
         paymentProjList.add(Projections.property("amount.value"), "payAmt");
         paymentDc.add(Restrictions.eq("paymentContent.paymentType", PaymentType.RECEIPT));
         paymentDc.setProjection(paymentProjList);
-        paymentDc.setResultTransformer(new AliasToBeanResultTransformer(CustomerDebtHistoryDTO.class));
+        paymentDc.setResultTransformer(new AliasToBeanResultTransformer(CustDebtHistoryDTO.class));
         List resultFromPayment = (List) getDaoHelper().getDao(Payment.class).findByCriteria(paymentDc);
         result.addAll(resultFromPayment);
 
@@ -170,7 +170,7 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
         receiptProjList.add(Projections.property("amount.value"), "advanceAmt");
         receiptDc.add(Restrictions.eq("paymentContent.paymentType", PaymentType.PAY));
         receiptDc.setProjection(receiptProjList);
-        receiptDc.setResultTransformer(new AliasToBeanResultTransformer(CustomerDebtHistoryDTO.class));
+        receiptDc.setResultTransformer(new AliasToBeanResultTransformer(CustDebtHistoryDTO.class));
         List resultFromReceipt = (List) getDaoHelper().getDao(Payment.class).findByCriteria(receiptDc);
         result.addAll(resultFromReceipt);
         return result;

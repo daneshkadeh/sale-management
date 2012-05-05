@@ -494,6 +494,9 @@ public class SSMDataLoader {
         form.setCustName(custName);
         form.setTransType(transType);
         form.setTransPrice(Money.create(CurrencyEnum.VND, 20000000L));
+        form.setReqQuanTotal(400L);
+        form.setRealQuanTotal(270L);
+        form.setRemainQuanTotal(130L);
 
         detail1.setExportForm(form);
         detail1.setLineNo(1);
@@ -517,13 +520,13 @@ public class SSMDataLoader {
         detail2.setRealQuan(200);
         detail2.setRemainQuan(100);
 
-        form.setExportDetails(new HashSet<>(Arrays.asList(detail2, detail1)));
-
         invoice.setStatus(InvoiceStatus.CLOSED);
         invoice.setPaymentStatus(InvoicePaymentStatus.BALANCED);
         invoice.setStoreStatus(InvoiceStoreStatus.EXPORTING);
-        daoHelper.getDao(ExportStoreForm.class).save(form);
-        daoHelper.getDao(Invoice.class).saveOrUpdate(invoice);
+
+        form.setExportDetails(new HashSet<>(Arrays.asList(detail2, detail1)));
+
+        daoHelper.getDao(ExportStoreForm.class).saveOrUpdate(form);
         return Arrays.asList(form);
     }
 
@@ -874,7 +877,6 @@ public class SSMDataLoader {
         form1.setCode("00000001");// TODO: get according to common rule
         form1.setStore(listStore.get(0));
         form1.setSalesContract(salesContract);
-        form1.setSupplierName(salesContract.getSupplier().getName());
         form1.setReceiver(listOperator.get(0));
         form1.setSender("Nguyen Van A");
 

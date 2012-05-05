@@ -31,5 +31,4 @@ public class SalesContractServiceImpl extends AbstractModuleServiceImpl implemen
     public List<SalesContract> getAllSalesContract() {
         return getDaoHelper().getDao(SalesContract.class).findAll();
     }
-
 }
