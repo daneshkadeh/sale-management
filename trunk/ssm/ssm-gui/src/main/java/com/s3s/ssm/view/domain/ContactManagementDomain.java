@@ -25,6 +25,7 @@ import com.s3s.ssm.view.list.contact.ListAudienceCategoryView;
 import com.s3s.ssm.view.list.contact.ListCustomerView;
 import com.s3s.ssm.view.list.contact.ListPartnerCategoryView;
 import com.s3s.ssm.view.list.contact.ListSupplierView;
+import com.s3s.ssm.view.list.contact.ListSupporteeView;
 
 /**
  * All views of contact.
@@ -50,7 +51,7 @@ public class ContactManagementDomain extends AbstractDomain {
         TreeNodeWithView supplierNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Contact.SupplierContact"), new ListSupplierView()); // "Supplier"
         TreeNodeWithView nguoiDuocTaiTroNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.Contact.SupportedContact")); // "Nguoi duoc tai tro"
+                ControlConfigUtils.getString("JTree.Contact.SupportedContact"), new ListSupporteeView()); // "Nguoi duoc tai tro"
         TreeNodeWithView audienceCateNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Contact.AudienceCategory"), new ListAudienceCategoryView()); //
 
