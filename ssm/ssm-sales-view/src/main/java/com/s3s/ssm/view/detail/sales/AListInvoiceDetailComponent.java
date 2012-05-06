@@ -28,6 +28,7 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
     private static final String REF_D_INVOICE_TYPE = "REF_D_INVOICE_TYPE";
     private static final String REF_D_INVOICE_STATUS = "REF_D_INVOICE_STATUS";
     private static final String REF_ITEM = "REF_ITEM";
+    private static final String REF_UOM = "REF_UOM";
     private Money totalAmounts = Money.zero(CurrencyEnum.VND);
 
     public AListInvoiceDetailComponent(Icon icon, String label, String tooltip) {
@@ -51,6 +52,8 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
         // listDataModel.addColumn("packageLine", ListRendererType.TEXT, ListEditorType.COMBOBOX)
         // .referenceDataId(REF_PACKLINE).notEditable();
         listDataModel.addColumn("amount", ListRendererType.TEXT).summarized();
+        listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UOM)
+                .notEditable();
         listDataModel.addColumn("priceAfterTax", ListRendererType.TEXT, ListEditorType.MONEY)
                 .referenceDataId(REF_CURRENCY).width(120);
         listDataModel.addColumn("moneyAfterTax", ListRendererType.TEXT, ListEditorType.MONEY)
@@ -111,6 +114,7 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
         refDataModel.putRefDataList(REF_D_INVOICE_STATUS, DetailInvoiceStatus.values());
         refDataModel.putRefDataList(REF_D_INVOICE_TYPE, DetailInvoiceType.values());
         refDataModel.putRefDataList(REF_CURRENCY, serviceProvider.getService(IConfigService.class).getCurrencyCodes());
+        refDataModel.putRefDataList(REF_UOM, serviceProvider.getService(IConfigService.class).getUnitUom());
         return refDataModel;
     }
 }

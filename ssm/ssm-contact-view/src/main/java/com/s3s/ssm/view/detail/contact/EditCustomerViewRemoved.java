@@ -32,6 +32,7 @@ import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
 // This view will be removed. Just keep to refactor code
+@Deprecated
 public class EditCustomerViewRemoved extends AbstractMasterDetailView<Partner, Address> {
     private static final String PARTNER_CATE_REF_ID = "0";
 

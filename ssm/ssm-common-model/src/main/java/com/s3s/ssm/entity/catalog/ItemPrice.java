@@ -27,6 +27,7 @@ import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.contact.AudienceCategory;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 
 @Entity
@@ -34,7 +35,7 @@ import com.s3s.ssm.model.Money;
 public class ItemPrice extends AbstractIdOLObject {
     private Item item;
     private AudienceCategory audienceCategory;
-    private Money sellPrice;
+    private Money sellPrice = Money.zero(CurrencyEnum.VND);
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)

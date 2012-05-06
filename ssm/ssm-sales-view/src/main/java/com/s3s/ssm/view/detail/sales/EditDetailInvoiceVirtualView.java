@@ -30,6 +30,7 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
  * @author phamcongbang
  * 
  */
+@Deprecated
 public class EditDetailInvoiceVirtualView extends AbstractSingleEditView<DetailInvoice> {
 
     private static final String REF_ITEM = "item";

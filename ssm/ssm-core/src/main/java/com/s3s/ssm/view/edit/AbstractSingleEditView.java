@@ -1224,8 +1224,10 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     @Override
     protected String getDefaultTitle(T entity) {
         if (entity instanceof AbstractCodeOLObject) {
-            return ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + ".detail.title")
-                    + UIConstants.BLANK + ((AbstractCodeOLObject) entity).getCode();
+            // TODO: only get code for pretty title. Should remove this default message key?
+            // return ControlConfigUtils.getString("label." + getEntityClass().getSimpleName() + ".detail.title")
+            // + UIConstants.BLANK + ((AbstractCodeOLObject) entity).getCode();
+            return ((AbstractCodeOLObject) entity).getCode();
         }
         return entity.getId().toString();
     }
