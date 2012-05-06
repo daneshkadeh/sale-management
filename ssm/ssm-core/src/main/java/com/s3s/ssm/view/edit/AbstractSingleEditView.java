@@ -712,12 +712,28 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         return formattedTextField;
     }
 
+    @SuppressWarnings("unchecked")
     private JComboBox<?> createDropdownComponent(DetailAttribute attribute, int width, Object value,
             ReferenceData referenceData) {
         if (!attribute.isMandatory()) {
             referenceData.getValues().add(0, null);
         }
-        JComboBox<?> comboBox = new JComboBox<>(referenceData.getValues().toArray());
+        final JComboBox<?> comboBox = new JComboBox<>(referenceData.getValues().toArray());
+        comboBox.getInputMap(WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "showPopup");
+        comboBox.getActionMap().put("showPopup", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!comboBox.isPopupVisible()) {
+                    comboBox.showPopup();
+                    System.err.println(comboBox.getSelectedIndex());
+                    comboBox.setSelectedIndex(0);
+                } else {
+                    System.err.println(comboBox.getSelectedIndex());
+                    comboBox.setSelectedIndex(comboBox.getSelectedIndex() + 1);
+                }
+            }
+        });
+
         comboBox.setPreferredSize(new Dimension(width, comboBox.getPreferredSize().height));
         comboBox.setRenderer(referenceData.getRenderer());
         comboBox.setSelectedItem(value);
@@ -1137,7 +1153,12 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             }
 
             Object value = getComponentValue(component, attribute.getType());
-            boolean isDirty = !ObjectUtils.equals(value, beanWrapper.getPropertyValue(attribute.getName()));
+            boolean isDirty = false;
+            if (attribute.isRaw()) {
+                isDirty = !ObjectUtils.equals(value, attribute.getValue());
+            } else {
+                isDirty = !ObjectUtils.equals(value, beanWrapper.getPropertyValue(attribute.getName()));
+            }
             if (isDirty) {
                 enableSaveButtons();
             }

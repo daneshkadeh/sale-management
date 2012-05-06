@@ -134,8 +134,12 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         inputMap.put(deleteShortkey, "delKeyAction");
 
         ActionMap actionMap = mainTable.getActionMap();
-        actionMap.put("insKeyAction", insAction);
-        actionMap.put("delKeyAction", deleteAction);
+        if (isInsertRowAllowed()) {
+            actionMap.put("insKeyAction", insAction);
+        }
+        if (isDeleteRowAllowed()) {
+            actionMap.put("delKeyAction", deleteAction);
+        }
     }
 
     private class InsertRowAction extends AbstractAction {
@@ -304,6 +308,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
         // The vertical dummy bar for footer table.
         JScrollBar dummyBar = new JScrollBar() {
+
             @Override
             public void paint(Graphics g) {
             }
@@ -330,6 +335,16 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         }
     }
 
+    protected boolean isInsertRowAllowed() {
+        // Template method
+        return true;
+    }
+
+    protected boolean isDeleteRowAllowed() {
+        // Template method
+        return true;
+    }
+
     /**
      * @return
      */
@@ -344,8 +359,12 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         delBtn.setIcon(ImageUtils.getSmallIcon(ImageConstants.DEL_ROW_ICON));
         delBtn.setText(ControlConfigUtils.getString("AListComponent.delRow"));
         delBtn.setToolTipText(ControlConfigUtils.getString("AListComponent.delRow") + " (Ctrl+D)");
-        tb.add(insBtn);
-        tb.add(delBtn);
+        if (isInsertRowAllowed()) {
+            tb.add(insBtn);
+        }
+        if (isDeleteRowAllowed()) {
+            tb.add(delBtn);
+        }
         return tb;
     }
 

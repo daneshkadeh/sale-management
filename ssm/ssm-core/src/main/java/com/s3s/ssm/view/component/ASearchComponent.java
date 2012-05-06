@@ -22,12 +22,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.InputMap;
@@ -86,6 +89,7 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
     private T selectedEntity;
     private Class<T> entityClass;
     private JPanel suggestPanel;
+    private Action enterAction;
     private boolean isTableShown = false;
 
     /**
@@ -104,12 +108,24 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
         tipLabel.setFont(UIConstants.DEFAULT_ITALIC_FONT);
         suggestPanel.add(tipLabel);
         setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        enterAction = new EnterAction();
 
         // ///////////// Table ///////////////////
         TableModel model = new MyTableModel();
         table = new JXTable(model);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setVisibleRowCount(NUM_VISIBLE_ROWS);
+        table.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    enterAction.actionPerformed(null);
+                }
+            }
+
+        });
+
         tablePane = new JScrollPane(table);
 
         // ///////////// Text Field ////////////////
@@ -141,6 +157,15 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
         PromptSupport.setFontStyle(Font.ITALIC, textField);
         PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, textField);
 
+        addKeyMapping();
+        add(textField);
+
+        // /////////////// Window ////////////////
+        popup = new JWindow();
+        popup.add(tablePane);
+    }
+
+    public void addKeyMapping() {
         // ////////// Key listener for textField
         InputMap inputMap = textField.getInputMap(WHEN_FOCUSED);
         KeyStroke downKey = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
@@ -152,12 +177,7 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
         ActionMap actionMap = textField.getActionMap();
         actionMap.put("downAction", new DownAction());
         actionMap.put("upAction", new UpAction());
-        actionMap.put("enterAction", new EnterAction());
-        add(textField);
-
-        // /////////////// Window ////////////////
-        popup = new JWindow();
-        popup.add(tablePane);
+        actionMap.put("enterAction", enterAction);
     }
 
     /**
