@@ -77,6 +77,7 @@ import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.finance.PaymentType;
 import com.s3s.ssm.entity.operator.Operator;
+import com.s3s.ssm.entity.operator.OperatorReferences;
 import com.s3s.ssm.entity.operator.Stall;
 import com.s3s.ssm.entity.sales.Commission;
 import com.s3s.ssm.entity.sales.CommissionType;
@@ -234,6 +235,8 @@ public class SSMDataLoader {
         daoHelper.getDao(Manufacturer.class).deleteAll(daoHelper.getDao(Manufacturer.class).findAll());
         daoHelper.getDao(ProductType.class).deleteAll(daoHelper.getDao(ProductType.class).findAll());
 
+        daoHelper.getDao(CommissionType.class).deleteAll(daoHelper.getDao(CommissionType.class).findAll());
+
         daoHelper.getDao(ProductProperty.class).deleteAll(daoHelper.getDao(ProductProperty.class).findAll());
         daoHelper.getDao(ProductPropertyElement.class).deleteAll(
                 daoHelper.getDao(ProductPropertyElement.class).findAll());
@@ -245,24 +248,29 @@ public class SSMDataLoader {
         daoHelper.getDao(PartnerCategory.class).deleteAll(daoHelper.getDao(PartnerCategory.class).findAll());
         daoHelper.getDao(Store.class).deleteAll(daoHelper.getDao(Store.class).findAll());
 
+        daoHelper.getDao(UploadFile.class).deleteAll(daoHelper.getDao(UploadFile.class).findAll());
+        daoHelper.getDao(UnitOfMeasure.class).deleteAll(daoHelper.getDao(UnitOfMeasure.class).findAll());
+        daoHelper.getDao(UomCategory.class).deleteAll(daoHelper.getDao(UomCategory.class).findAll());
+
+        daoHelper.getDao(AudienceCategory.class).deleteAll(daoHelper.getDao(AudienceCategory.class).findAll());
+
         // Operator module
+        daoHelper.getDao(OperatorReferences.class).deleteAll(daoHelper.getDao(OperatorReferences.class).findAll());
         daoHelper.getDao(Stall.class).deleteAll(daoHelper.getDao(Stall.class).findAll());
         daoHelper.getDao(Operator.class).deleteAll(daoHelper.getDao(Operator.class).findAll());
         daoHelper.getDao(Role.class).deleteAll(daoHelper.getDao(Role.class).findAll());
 
         // Config module
         daoHelper.getDao(Organization.class).deleteAll(daoHelper.getDao(Organization.class).findAll());
-        daoHelper.getDao(Institution.class).deleteAll(daoHelper.getDao(Institution.class).findAll());
 
-        daoHelper.getDao(UploadFile.class).deleteAll(daoHelper.getDao(UploadFile.class).findAll());
-        daoHelper.getDao(UnitOfMeasure.class).deleteAll(daoHelper.getDao(UnitOfMeasure.class).findAll());
-        daoHelper.getDao(UomCategory.class).deleteAll(daoHelper.getDao(UomCategory.class).findAll());
-        daoHelper.getDao(ExchangeRate.class).deleteAll(daoHelper.getDao(ExchangeRate.class).findAll());
-        daoHelper.getDao(SCurrency.class).deleteAll(daoHelper.getDao(SCurrency.class).findAll());
         daoHelper.getDao(BankAccount.class).deleteAll(daoHelper.getDao(BankAccount.class).findAll());
         daoHelper.getDao(Bank.class).deleteAll(daoHelper.getDao(Bank.class).findAll());
 
-        daoHelper.getDao(AudienceCategory.class).deleteAll(daoHelper.getDao(AudienceCategory.class).findAll());
+        daoHelper.getDao(ExchangeRate.class).deleteAll(daoHelper.getDao(ExchangeRate.class).findAll());
+        daoHelper.getDao(SCurrency.class).deleteAll(daoHelper.getDao(SCurrency.class).findAll());
+
+        daoHelper.getDao(Institution.class).deleteAll(daoHelper.getDao(Institution.class).findAll());
+
     }
 
     private static String getMessage(String messageCode) {
