@@ -27,6 +27,8 @@ import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.interfaces.sales.InvoiceService;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+import com.s3s.ssm.util.i18n.ControlConstants;
 import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
@@ -55,6 +57,7 @@ public class EditInvoiceRefundView extends AbstractSingleEditView<Invoice> {
     @Override
     protected void
             initialPresentationView(DetailDataModel detailDataModel, Invoice entity, Map<String, Object> request) {
+        detailDataModel.tab(ControlConfigUtils.getString(ControlConstants.MESSAGE_KEY_GENERAL), null, null);
         detailDataModel.addAttribute("invoiceNumber", DetailFieldType.TEXTBOX).editable(false);
         detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_TYPE).newColumn();
         detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
@@ -81,7 +84,7 @@ public class EditInvoiceRefundView extends AbstractSingleEditView<Invoice> {
         detailDataModel.addAttribute("detailInvoices", DetailFieldType.LIST).componentInfo(
                 createInvoiceDetailsComponentInfo());
 
-        // detailDataModel.tab(ControlConfigUtils.getString("tab.EditInvoiceView.commissions"), null, null);
+        detailDataModel.tab(ControlConfigUtils.getString("tab.EditInvoiceView.commissions"), null, null);
         detailDataModel.addAttribute("commissions", DetailFieldType.LIST)
                 .componentInfo(createCommissionComponentInfo());
 
