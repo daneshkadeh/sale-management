@@ -16,6 +16,8 @@ package com.s3s.ssm.view.domain;
 
 import javax.swing.JScrollPane;
 
+import com.s3s.ssm.util.ImageConstants;
+import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
@@ -35,6 +37,7 @@ public class BuyManagementDomain extends AbstractDomain {
     public BuyManagementDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         super(treeScrollPane, contentScrollPane);
         setText(ControlConfigUtils.getString("JTree.SalesContract"));
+        setIcon(ImageUtils.getMediumIcon(ImageConstants.MENU_BUY_CONTRACT_ICON));
     }
 
     @Override
