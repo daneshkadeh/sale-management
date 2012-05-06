@@ -100,4 +100,20 @@ public class ListExportDetailComponent extends AListComponent<DetailExportStore>
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isInsertRowAllowed() {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isDeleteRowAllowed() {
+        return false;
+    }
+
 }

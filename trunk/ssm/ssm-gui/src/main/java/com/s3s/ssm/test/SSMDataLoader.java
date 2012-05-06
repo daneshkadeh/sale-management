@@ -725,7 +725,7 @@ public class SSMDataLoader {
         payment.setPartner(listContact.get(0));
         payment.setOperator(listOperator.get(0));
         payment.setPaymentMode(PaymentMode.CASH);
-        payment.setRate(21000);
+        payment.setRate(1);
         payment.setAmount(money);
         daoHelper.getDao(Payment.class).saveOrUpdate(payment);
 
@@ -737,7 +737,7 @@ public class SSMDataLoader {
         receipt.setPartner(listContact.get(0));
         receipt.setOperator(listOperator.get(0));
         receipt.setPaymentMode(PaymentMode.BANK_TRANSFER);
-        receipt.setRate(21000);
+        receipt.setRate(1);
         receipt.setAmount(money);
         daoHelper.getDao(Payment.class).saveOrUpdate(receipt);
 
@@ -749,7 +749,7 @@ public class SSMDataLoader {
         contractPayment.setPartner(listContact.get(0));
         contractPayment.setOperator(listOperator.get(0));
         contractPayment.setPaymentMode(PaymentMode.BANK_TRANSFER);
-        contractPayment.setRate(21000);
+        contractPayment.setRate(1);
         contractPayment.setAmount(money);
         contractPayment.setSalesContract(listSalesContract.get(0));
         daoHelper.getDao(Payment.class).saveOrUpdate(contractPayment);
@@ -761,7 +761,7 @@ public class SSMDataLoader {
         payment1.setPartner(listContact.get(0));
         payment1.setOperator(listOperator.get(0));
         payment1.setPaymentMode(PaymentMode.CASH);
-        payment1.setRate(21000);
+        payment1.setRate(1);
         payment1.setAmount(Money.create(CurrencyEnum.VND, 1000000L));
         daoHelper.getDao(Payment.class).saveOrUpdate(payment1);
 
@@ -1085,7 +1085,12 @@ public class SSMDataLoader {
         ExchangeRate USDExRate = new ExchangeRate();
         USDExRate.setCurrency(USDCurrency);
         USDExRate.setRate(21000D);
-        daoHelper.getDao(ExchangeRate.class).save(USDExRate);
+        daoHelper.getDao(ExchangeRate.class).saveOrUpdate(USDExRate);
+
+        ExchangeRate VNDExRate = new ExchangeRate();
+        VNDExRate.setCurrency(VNDCurrency);
+        VNDExRate.setRate(1D);
+        daoHelper.getDao(ExchangeRate.class).saveOrUpdate(VNDExRate);
 
         return result;
     }

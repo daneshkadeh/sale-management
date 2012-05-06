@@ -35,6 +35,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.entity.sales.ImportationSC;
@@ -173,9 +175,9 @@ public class ImportStoreForm extends AbstractCodeOLObject {
     }
 
     @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "importStoreForm", fetch = FetchType.EAGER)
-    // @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
-            public
-            Set<DetailImportStore> getDetailImportStores() {
+    @Cascade(value = { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+            org.hibernate.annotations.CascadeType.DELETE_ORPHAN, org.hibernate.annotations.CascadeType.DELETE })
+    public Set<DetailImportStore> getDetailImportStores() {
         return detailImportStores;
     }
 

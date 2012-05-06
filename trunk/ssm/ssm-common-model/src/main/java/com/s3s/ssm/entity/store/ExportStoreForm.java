@@ -217,7 +217,8 @@ public class ExportStoreForm extends AbstractCodeOLObject {
     }
 
     @OneToMany(mappedBy = "exportForm", fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
+    @Cascade(value = { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+            org.hibernate.annotations.CascadeType.DELETE_ORPHAN, org.hibernate.annotations.CascadeType.DELETE })
     public Set<DetailExportStore> getExportDetails() {
         return exportDetails;
     }

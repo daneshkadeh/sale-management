@@ -24,6 +24,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.ServiceProvider;
 import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.list.AListComponent;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
@@ -54,14 +55,19 @@ public class ListClosingStoreDetailComponent extends AListComponent<DetailClosin
      */
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
-                .referenceDataId(REF_LIST_PRODUCT).width(180);
-        // TODO: Hoang the data should be updated after choosing the product
-        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
-                .width(205);
-        listDataModel.addColumn("baseUom", ListRendererType.TEXT, ListEditorType.TEXTFIELD).notEditable().width(70);
-        listDataModel.addColumn("qty", ListRendererType.NUMBER).notEditable().summarized()
-                .width(UIConstants.QTY_COLUMN_WIDTH);
+        // listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
+        // .referenceDataId(REF_LIST_PRODUCT).width(180);
+        // // TODO: Hoang the data should be updated after choosing the product
+        // listDataModel.addColumn("item", ListRendererType.TEXT,
+        // ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
+        // .width(205);
+        // listDataModel.addColumn("baseUom", ListRendererType.TEXT, ListEditorType.TEXTFIELD).notEditable().width(70);
+        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.SEARCH_COMPONENT)
+                .componentInfo(ComponentFactory.createItemComponentInfo()).width(UIConstants.PRODUCT_CODE_COLUMN_WIDTH);
+        listDataModel.addColumn("item.sumUomName", ListRendererType.TEXT).notEditable()
+                .width(UIConstants.PRODUCT_NAME_COLUMN_WIDTH);
+        listDataModel.addColumn("item.uom", ListRendererType.TEXT).notEditable().width(UIConstants.UOM_COLUMN_WIDTH);
+        listDataModel.addColumn("qty", ListRendererType.NUMBER).summarized().width(UIConstants.QTY_COLUMN_WIDTH);
     }
 
     @Override

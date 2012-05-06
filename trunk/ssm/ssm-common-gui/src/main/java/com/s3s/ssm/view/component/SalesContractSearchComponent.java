@@ -37,7 +37,7 @@ public class SalesContractSearchComponent extends ASearchComponent<SalesContract
      */
     @Override
     protected String[] getAttributeColumns() {
-        return new String[] { "code", "supplier.name", "dateContract" };
+        return new String[] { "code", "supplier", "dateContract" };
     }
 
     /**
@@ -45,6 +45,6 @@ public class SalesContractSearchComponent extends ASearchComponent<SalesContract
      */
     @Override
     protected String[] getSearchedOnAttributes() {
-        return new String[] { "code", "supplier.name", "dateContract" };
+        return new String[] { "code", "supplier", "dateContract" };
     }
 }

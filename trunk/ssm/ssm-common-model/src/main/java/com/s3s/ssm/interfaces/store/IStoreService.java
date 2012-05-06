@@ -79,4 +79,6 @@ public interface IStoreService {
     List<UnsoldProductDTO> statisticUnsoldProduct(List<Product> products, Store store, Date fromDate, Date toDate);
 
     ClosingStoreEntry getLatestClosingStoreEntry(Store store, Date date);
+
+    List<MoveStoreOrder> getMoveStoreOrders();
 }

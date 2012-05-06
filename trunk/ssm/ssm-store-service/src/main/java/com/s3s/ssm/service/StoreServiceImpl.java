@@ -56,6 +56,8 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
     public void init() {
         serviceProvider.register(IStoreService.class, this);
         try {
+            getCacheDataService().registerCache(CacheId.REF_LIST_MOVE_STORE, this,
+                    this.getClass().getMethod("getMoveStoreOrders"));
             getCacheDataService().registerCache(CacheId.REF_LIST_STORE, this, this.getClass().getMethod("getStores"));
             getCacheDataService().registerCache(CacheId.REF_LIST_SHIP_PRICE_TYPE, this,
                     this.getClass().getMethod("getShipPriceTypes"));
@@ -188,7 +190,7 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
         DetachedCriteria dc = getDaoHelper().getDao(InventoryStoreForm.class).getCriteria();
         dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dc.createAlias("store", "store");
-        dc.add(Property.forName("store.code").ge(store.getCode()));
+        dc.add(Property.forName("store.code").eq(store.getCode()));
         dc.add(Property.forName("createdDate").eq(subselectDc));
         InventoryStoreForm inventoryForm = getDaoHelper().getDao(InventoryStoreForm.class).findFirstByCriteria(dc);
         return inventoryForm;
@@ -239,7 +241,7 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
         ClosingStoreEntry closingEntry = getLatestClosingStoreEntry(store, date);
         if (closingEntry != null) {
             // TODO: use another way to get unique value not entity
-            getLatestClosingStoreEntry(store, date).getClosingDate();
+            return getLatestClosingStoreEntry(store, date).getClosingDate();
         }
         return null;
     }
@@ -620,5 +622,15 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
         }
 
         return result;
+    }
+
+    @Override
+    public List<MoveStoreOrder> getMoveStoreOrders() {
+        DetachedCriteria dc = getDaoHelper().getDao(MoveStoreOrder.class).getCriteria();
+        dc.add(Restrictions.in("status", Arrays.asList(MoveStoreStatus.NEW, MoveStoreStatus.MOVING)));
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<MoveStoreOrder> resultList = (List<MoveStoreOrder>) getDaoHelper().getDao(MoveStoreOrder.class)
+                .findByCriteria(dc);
+        return resultList;
     }
 }

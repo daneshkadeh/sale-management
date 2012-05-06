@@ -16,8 +16,13 @@
 
 package com.s3s.ssm.view.detail.store;
 
+import java.util.List;
+
 import javax.swing.Icon;
 
+import com.s3s.ssm.entity.catalog.Item;
+import com.s3s.ssm.entity.catalog.Product;
+import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.entity.store.DetailMoveStore;
 import com.s3s.ssm.interfaces.catalog.ICatalogService;
 import com.s3s.ssm.interfaces.config.IConfigService;
@@ -25,6 +30,7 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.ServiceProvider;
 import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.list.AListComponent;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
@@ -56,14 +62,20 @@ public class ListMoveDetailComponent extends AListComponent<DetailMoveStore> {
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
         // TODO: Hoang must set max, min for column
-        listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
-                .referenceDataId(REF_LIST_PRODUCT).width(180);
-        listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable().width(290);
-        // TODO: Hoang the data should be updated after choosing the product
-        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
-                .width(205);
-        listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM)
-                .width(70);
+        // listDataModel.addColumn("product", ListRendererType.TEXT, ListEditorType.COMBOBOX)
+        // .referenceDataId(REF_LIST_PRODUCT).width(180);
+        // listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable().width(290);
+        // // TODO: Hoang the data should be updated after choosing the product
+        // listDataModel.addColumn("item", ListRendererType.TEXT,
+        // ListEditorType.COMBOBOX).referenceDataId(REF_LIST_ITEM)
+        // .width(205);
+        // listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UNIT_UOM)
+        // .width(70);
+        listDataModel.addColumn("item", ListRendererType.TEXT, ListEditorType.SEARCH_COMPONENT)
+                .componentInfo(ComponentFactory.createItemComponentInfo()).width(UIConstants.PRODUCT_CODE_COLUMN_WIDTH);
+        listDataModel.addColumn("item.sumUomName", ListRendererType.TEXT).notEditable()
+                .width(UIConstants.PRODUCT_NAME_COLUMN_WIDTH);
+        listDataModel.addColumn("item.uom", ListRendererType.TEXT).notEditable().width(UIConstants.UOM_COLUMN_WIDTH);
         listDataModel.addColumn("exportQty", ListRendererType.NUMBER, ListEditorType.TEXTFIELD)
                 .width(UIConstants.QTY_COLUMN_WIDTH).summarized();
         listDataModel.addColumn("importQty", ListRendererType.NUMBER, ListEditorType.TEXTFIELD)
@@ -83,12 +95,15 @@ public class ListMoveDetailComponent extends AListComponent<DetailMoveStore> {
         return refDataModel;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected DetailMoveStore createNewEntity() {
-        return super.createNewEntity();
+    protected void doRowUpdated(String attributeName, DetailMoveStore entity, List<DetailMoveStore> entities) {
+        super.doRowUpdated(attributeName, entity, entities);
+        if ("item".equals(attributeName)) {
+            Item item = entity.getItem();
+            Product product = item.getProduct();
+            UnitOfMeasure uom = item.getUom();
+            entity.setProduct(product);
+            entity.setUom(uom);
+        }
     }
-
 }

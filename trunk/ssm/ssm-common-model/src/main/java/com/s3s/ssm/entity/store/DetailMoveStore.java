@@ -34,10 +34,10 @@ import com.s3s.ssm.entity.config.UnitOfMeasure;
 public class DetailMoveStore extends AbstractIdOLObject {
     private static final long serialVersionUID = 6554328977277943730L;
     private MoveStoreForm moveForm;
-    private Product product = new Product();
+    private Product product;
     private String productName;
-    private Item item = new Item();
-    private UnitOfMeasure uom = new UnitOfMeasure();
+    private Item item;
+    private UnitOfMeasure uom;
     private Integer exportQty = 0;
     private Integer importQty = 0;
 
