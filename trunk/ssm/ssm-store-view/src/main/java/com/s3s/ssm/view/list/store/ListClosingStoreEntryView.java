@@ -14,12 +14,9 @@
  */
 package com.s3s.ssm.view.list.store;
 
-import java.util.Map;
-
 import javax.swing.Icon;
 
 import com.s3s.ssm.entity.store.ClosingStoreEntry;
-import com.s3s.ssm.interfaces.store.IStoreService;
 import com.s3s.ssm.view.detail.store.EditClosingStoreEntryView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.ANonSearchListEntityView;
@@ -44,17 +41,17 @@ public class ListClosingStoreEntryView extends ANonSearchListEntityView<ClosingS
         return EditClosingStoreEntryView.class;
     }
 
-    @Override
-    protected boolean
-            preShowEditView(ClosingStoreEntry entity, EditActionEnum action, Map<String, Object> detailParams) {
-        if (action == EditActionEnum.NEW) {
-            // String code = (String) JOptionPane.showInputDialog(this.getParent(), "Kiem ke kho", "Nhap ma kho",
-            // JOptionPane.PLAIN_MESSAGE, null, null, null);
-            // if (code == null) {
-            // return false;
-            // }
-            serviceProvider.getService(IStoreService.class).processClosingStoreEntry();
-        }
-        return true;
-    }
+    // @Override
+    // protected boolean
+    // preShowEditView(ClosingStoreEntry entity, EditActionEnum action, Map<String, Object> detailParams) {
+    // if (action == EditActionEnum.NEW) {
+    // // String code = (String) JOptionPane.showInputDialog(this.getParent(), "Kiem ke kho", "Nhap ma kho",
+    // // JOptionPane.PLAIN_MESSAGE, null, null, null);
+    // // if (code == null) {
+    // // return false;
+    // // }
+    // serviceProvider.getService(IStoreService.class).processClosingStoreEntry();
+    // }
+    // return true;
+    // }
 }

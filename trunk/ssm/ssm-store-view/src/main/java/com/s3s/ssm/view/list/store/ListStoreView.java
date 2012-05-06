@@ -44,7 +44,8 @@ public class ListStoreView extends ANonSearchListEntityView<Store> {
         listDataModel.addColumn("name", ListRendererType.TEXT);
         listDataModel.addColumn("manager", ListRendererType.TEXT);
         listDataModel.addColumn("address", ListRendererType.TEXT);
-        listDataModel.addColumn("active", ListRendererType.TEXT);
+        listDataModel.addColumn("isIntermediate", ListRendererType.BOOLEAN);
+        listDataModel.addColumn("active", ListRendererType.BOOLEAN);
     }
 
     /**

@@ -80,8 +80,8 @@ public class EditImportStoreFormView extends AbstractSingleEditView<ImportStoreF
                 .cacheDataId(CacheId.REF_LIST_SHIP_PRICE_TYPE).newColumn();
         detailDataModel.addAttribute("receiver", DetailFieldType.SEARCHER).componentInfo(
                 ComponentFactory.createStorekeeperComponentInfo());
-        detailDataModel.addAttribute("shipPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY)
-                .newColumn();
+        detailDataModel.addAttribute("shipPrice", DetailFieldType.MONEY).editable(false)
+                .cacheDataId(CacheId.REF_LIST_CURRENCY).newColumn();
         detailDataModel.addAttribute("salesContract", DetailFieldType.DROPDOWN).cacheDataId(
                 CacheId.REF_LIST_SALES_CONTRACT);
         detailDataModel.addAttribute("receiptDate", DetailFieldType.DATE).newColumn();

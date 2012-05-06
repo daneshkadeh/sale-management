@@ -31,6 +31,7 @@ import com.s3s.ssm.view.edit.ListComponentInfo;
  * 
  */
 public class EditClosingStoreEntryView extends AbstractSingleEditView<ClosingStoreEntry> {
+    private static final long serialVersionUID = -2248781528000413406L;
 
     public EditClosingStoreEntryView(Map<String, Object> entity) {
         super(entity);
@@ -52,10 +53,5 @@ public class EditClosingStoreEntryView extends AbstractSingleEditView<ClosingSto
     private IComponentInfo createClosingStoreComponentInfo() {
         ListClosingStoreDetailComponent component = new ListClosingStoreDetailComponent(null, null, null);
         return new ListComponentInfo(component, "closingEntry");
-    }
-
-    @Override
-    protected String getDefaultTitle(ClosingStoreEntry entity) {
-        return "";
     }
 }

@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import com.s3s.ssm.entity.store.InventoryStoreForm;
 import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.interfaces.store.IStoreService;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.detail.store.EditInventoryStoreFormView;
 import com.s3s.ssm.view.edit.AbstractEditView;
@@ -62,7 +63,9 @@ public class ListInventoryStoreFormView extends ANonSearchListEntityView<Invento
     protected boolean
             preShowEditView(InventoryStoreForm entity, EditActionEnum action, Map<String, Object> detailParams) {
         if (action == EditActionEnum.NEW) {
-            String code = (String) JOptionPane.showInputDialog(this.getParent(), "Kiem ke kho", "Nhap ma kho",
+            String message = ControlConfigUtils.getString("label.InventoryStoreForm.message");
+            String title = ControlConfigUtils.getString("label.InventoryStoreForm.title");
+            String code = (String) JOptionPane.showInputDialog(this.getParent(), title, message,
                     JOptionPane.PLAIN_MESSAGE, null, null, null);
             if (code == null) {
                 return false;
