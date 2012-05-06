@@ -40,6 +40,7 @@ import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 @Entity
 @Table(name = "s_invoice")
@@ -58,6 +59,14 @@ public class Invoice extends AbstractIdOLObject {
     private InvoiceStoreStatus storeStatus = InvoiceStoreStatus.NO_ACTION;
 
     private Set<DetailInvoice> detailInvoices = new HashSet<>();
+
+    // list commissions which are apply to this invoice
+    private Set<Commission> commissions = new HashSet<>();
+
+    // Invoice type SUPPORTEE, TRIAL, RENT, customers must return the goods at usedEndDate.
+    private Long usedTimeSpan = 0L;
+    private Date usedStartDate = new Date();
+    private Date usedEndDate;
 
     @Column(name = "invoice_number", nullable = false, length = 32)
     @NotNull
@@ -194,11 +203,54 @@ public class Invoice extends AbstractIdOLObject {
         this.detailInvoices = detailInvoices;
     }
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "invoice")
+    @Cascade(value = { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+            org.hibernate.annotations.CascadeType.DELETE_ORPHAN, org.hibernate.annotations.CascadeType.DELETE })
+    public Set<Commission> getCommissions() {
+        return commissions;
+    }
+
+    public void setCommissions(Set<Commission> commissions) {
+        this.commissions = commissions;
+    }
+
+    @Column(name = "used_timespan")
+    public Long getUsedTimeSpan() {
+        return usedTimeSpan;
+    }
+
+    public void setUsedTimeSpan(Long usedTimeSpan) {
+        this.usedTimeSpan = usedTimeSpan;
+    }
+
+    @Column(name = "used_start_date")
+    public Date getUsedStartDate() {
+        return usedStartDate;
+    }
+
+    public void setUsedStartDate(Date usedStartDate) {
+        this.usedStartDate = usedStartDate;
+    }
+
+    @Column(name = "used_end_date")
+    public Date getUsedEndDate() {
+        return usedEndDate;
+    }
+
+    public void setUsedEndDate(Date usedEndDate) {
+        this.usedEndDate = usedEndDate;
+    }
+
     /**
      * To know the status goods of the invoice.
      * 
      */
     public enum InvoiceStoreStatus {
-        NO_ACTION, EXPORTING, EXPORTED, IMPORTING, IMPORTED
+        NO_ACTION, EXPORTING, EXPORTED, IMPORTING, IMPORTED;
+
+        @Override
+        public String toString() {
+            return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+        }
     }
 }

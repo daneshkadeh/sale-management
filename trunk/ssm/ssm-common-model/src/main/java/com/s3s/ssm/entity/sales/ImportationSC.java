@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.store.ImportStoreForm;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
  * 1 sales contract has multi importationSCs. Each shipment of supplier will create an importationSC at THU.
@@ -44,7 +45,11 @@ public class ImportationSC extends AbstractCodeOLObject {
     private Set<AddedSCFee> addedSCFees = new HashSet<>();
 
     public enum ImportationSCStatus {
-        OPEN, RECEIVED, CLOSED, CANCELLED
+        OPEN, RECEIVED, CLOSED, CANCELLED;
+        @Override
+        public String toString() {
+            return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+        }
     }
 
     @ManyToOne(fetch = FetchType.EAGER)

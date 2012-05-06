@@ -6,8 +6,6 @@ import java.util.Map;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JViewport;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import com.s3s.ssm.context.OrgSalesContextProvider;
 import com.s3s.ssm.entity.catalog.Item;
@@ -26,7 +24,6 @@ import com.s3s.ssm.interfaces.sales.InvoiceService;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.component.ComponentFactory;
-import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -34,14 +31,7 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.edit.IComponentInfo;
 import com.s3s.ssm.view.edit.ListComponentInfo;
 
-/**
- * This is sales invoice view.
- * 
- * @author phamcongbang
- * 
- */
-public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
-    private static final long serialVersionUID = -7849498072868923918L;
+public class EditInvoiceSupporteeView extends AbstractSingleEditView<Invoice> {
     private static final String REF_CURRENCY = "REF_CURRENCY";
     private static final String REF_ITEM = "item";
     private static final String REF_PACKLINE = "packageLine";
@@ -52,7 +42,7 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
     private static final String REF_PAY_STATUS = "paymentStatus";
     private static final String REF_STORE_STATUS = "REF_STORE_STATUS";
 
-    public EditInvoiceView2(Map<String, Object> entity) {
+    public EditInvoiceSupporteeView(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -82,45 +72,37 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER).mandatory(true)
                 .componentInfo(ComponentFactory.createOperatorComponentInfo());
 
+        detailDataModel.addAttribute("usedTimeSpan", DetailFieldType.TIME_COMPONENT);
+        detailDataModel.addAttribute("usedStartDate", DetailFieldType.DATE);
+        detailDataModel.addAttribute("usedEndDate", DetailFieldType.DATE);
+
         detailDataModel.addAttribute("detailInvoices", DetailFieldType.LIST).componentInfo(
                 createInvoiceDetailsComponentInfo());
 
-        // TODO: Tab not work before LIST
-        // detailDataModel.tab(ControlConfigUtils.getString("tab.EditInvoiceView.commissions"), null, null);
-        detailDataModel.addAttribute("commissions", DetailFieldType.LIST)
-                .componentInfo(createCommissionComponentInfo());
     }
 
     @Override
     protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, Invoice entity) {
         super.customizeComponents(name2AttributeComponent, entity);
-        final MoneyComponent mc = (MoneyComponent) name2AttributeComponent.get("moneyAfterTax").getComponent();
-        final AListInvoiceDetailComponent listDetailCom = (AListInvoiceDetailComponent) name2AttributeComponent.get(
-                "detailInvoices").getComponent();
-        // TODO: Commission percent must be added after invoice is done.
-        final ListCommissionComponent listCommissionCom = (ListCommissionComponent) name2AttributeComponent.get(
-                "commissions").getComponent();
+        // InvoiceSupportee always has totalAmount=0 VND
 
-        listDetailCom.addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                mc.setMoney(listDetailCom.getTotalAmounts().plus(listCommissionCom.getSumCommissionAmount()));
-            }
-        });
-
-        listCommissionCom.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                mc.setMoney(listDetailCom.getTotalAmounts().plus(listCommissionCom.getSumCommissionAmount()));
-            }
-        });
+        // final MoneyComponent mc = (MoneyComponent) name2AttributeComponent.get("moneyAfterTax").getComponent();
+        // final AListInvoiceDetailComponent list = (AListInvoiceDetailComponent) name2AttributeComponent.get(
+        // "detailInvoices").getComponent();
+        // list.addChangeListener(new ChangeListener() {
+        //
+        // @Override
+        // public void stateChanged(ChangeEvent e) {
+        // mc.setMoney(list.getTotalAmounts());
+        // }
+        // });
     }
 
     @Override
     protected Invoice loadForCreate(Map<String, Object> request) {
         Invoice invoice = super.loadForCreate(request);
-        invoice.setType(InvoiceType.SALES);
+        invoice.setType(InvoiceType.SUPPORT);
+        invoice.setUsedStartDate(new Date());
         invoice.setCreatedDate(new Date());
         invoice.setInvoiceNumber(serviceProvider.getService(InvoiceService.class).getNextInvoiceNumber());
         invoice.setStaff(((OrgSalesContextProvider) contextProvider).getCurrentOperator());
@@ -129,11 +111,6 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
 
     private IComponentInfo createInvoiceDetailsComponentInfo() {
         AListInvoiceDetailComponent component = new AListInvoiceDetailComponent(null, null, null);
-        return new ListComponentInfo(component, "invoice");
-    }
-
-    private IComponentInfo createCommissionComponentInfo() {
-        ListCommissionComponent component = new ListCommissionComponent(null, null, null);
         return new ListComponentInfo(component, "invoice");
     }
 

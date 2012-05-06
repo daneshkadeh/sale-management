@@ -36,6 +36,13 @@ public class Money implements Comparable<Money>, Serializable {
         this.value = value;
     }
 
+    public Money negate() {
+        Money negative = new Money();
+        negative.setCurrencyCode(this.getCurrencyCode());
+        negative.setValue(this.getValue() * -1);
+        return negative;
+    }
+
     /**
      * This method currently use Math.round to round the value. TODO: define how to round later in configuration of
      * sofware.

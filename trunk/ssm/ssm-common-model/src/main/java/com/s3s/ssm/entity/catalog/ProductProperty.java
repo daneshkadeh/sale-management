@@ -28,6 +28,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
  * Property of a product. Eg. Product T-SHIRT has following properties: COLOR, SIZE
@@ -43,7 +44,11 @@ public class ProductProperty extends AbstractCodeOLObject {
     private List<ProductPropertyElement> elements = new ArrayList<>();
 
     public enum PropertyType {
-        LIST, SIMPLE
+        LIST, SIMPLE;
+        @Override
+        public String toString() {
+            return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+        }
     }
 
     @Column(name = "name", nullable = false, length = 128)

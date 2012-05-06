@@ -14,6 +14,12 @@
  */
 package com.s3s.ssm.entity.sales;
 
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
 public enum DetailInvoiceStatus {
     OPEN, CLOSED, ABANDONED, EXPORTING, EXPORTED;
+    @Override
+    public String toString() {
+        return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+    }
 }

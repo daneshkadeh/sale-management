@@ -14,9 +14,12 @@
  */
 package com.s3s.ssm.entity.sales;
 
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
 public enum DetailInvoiceType {
-    SALES /* sold to customer, price = item price */, REFUND /* tra hang */, GIFT /* Gift to customer, price = 0 */, COMISSION /*
-                                                                                                                                * Giam
-                                                                                                                                * gia
-                                                                                                                                */
+    SALES /* sold to customer, price = item price */, REFUND /* tra hang */, GIFT /* Gift to customer, price = 0 */, COMISSION;
+    @Override
+    public String toString() {
+        return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+    }
 }

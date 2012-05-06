@@ -17,7 +17,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 
 /**
- * PartnerProfile shows that a partner is a customer, supplier, supportee, employee
+ * PartnerProfile shows that a partner is a customer, supplier, supportee or employee
  * 
  * @author phamcongbang
  * 

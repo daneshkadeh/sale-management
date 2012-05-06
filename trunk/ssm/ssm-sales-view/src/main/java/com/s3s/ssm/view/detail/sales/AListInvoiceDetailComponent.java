@@ -28,10 +28,13 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
     private static final String REF_D_INVOICE_TYPE = "REF_D_INVOICE_TYPE";
     private static final String REF_D_INVOICE_STATUS = "REF_D_INVOICE_STATUS";
     private static final String REF_ITEM = "REF_ITEM";
-    private Money totalAmounts;
+    private Money totalAmounts = Money.zero(CurrencyEnum.VND);
 
     public AListInvoiceDetailComponent(Icon icon, String label, String tooltip) {
         super(icon, label, tooltip);
+
+        // TODO: need method document on ready. When first time load invoice view, totalAmounts is not init
+        calcuSumAmount(getEntities());
     }
 
     @Override
