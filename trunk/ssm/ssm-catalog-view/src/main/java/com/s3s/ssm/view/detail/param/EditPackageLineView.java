@@ -20,6 +20,8 @@ import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 import com.s3s.ssm.view.list.param.ListPackageLineView;
 
+// TODO: will change to SingleEditView
+//public class EditPackageLineView extends AbstractSingleEditView<PackageLine> {
 public class EditPackageLineView extends AbstractMasterDetailView<PackageLine, PackageLineItemPrice> {
 
     private static final String REF_ITEMS = "REF_ITEMS";

@@ -44,10 +44,11 @@ public class ContactManagementDomain extends AbstractDomain {
     @Override
     protected void constructTreeView(TreeNodeWithView rootNode) {
         // CRM Contact management
-        TreeNodeWithView customerNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Contact.Customer"),
-                new ListCustomerView(), ImageUtils.getMediumIcon(ImageConstants.USER_ICON)); // "Customer"
         TreeNodeWithView partnerCateNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Contact.PartnerCategory"), new ListPartnerCategoryView()); // "Customer"
+
+        TreeNodeWithView customerNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Contact.Customer"),
+                new ListCustomerView(), ImageUtils.getMediumIcon(ImageConstants.USER_ICON)); // "Customer"
         TreeNodeWithView supplierNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Contact.SupplierContact"), new ListSupplierView()); // "Supplier"
         TreeNodeWithView nguoiDuocTaiTroNode = new TreeNodeWithView(

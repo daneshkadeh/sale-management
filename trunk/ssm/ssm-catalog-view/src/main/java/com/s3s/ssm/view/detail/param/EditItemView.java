@@ -18,7 +18,6 @@ import java.util.Map;
 
 import com.s3s.ssm.entity.catalog.Goods;
 import com.s3s.ssm.entity.catalog.Item;
-import com.s3s.ssm.entity.catalog.ItemPrice;
 import com.s3s.ssm.entity.catalog.ItemPropertyValue;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.catalog.ProductFamilyType;
@@ -28,22 +27,21 @@ import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.util.DaoHelperImpl;
-import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
-import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
+import com.s3s.ssm.view.edit.IComponentInfo;
+import com.s3s.ssm.view.edit.ListComponentInfo;
 
 /**
- * This view is only used to TEST. A list items should be sho wn on 1 product config. The entity tree view is required
+ * This view is only used to TEST. A list items should be shown on 1 product config. The entity tree view is required
  * for this case.
  * 
  * @author phamcongbang
  * 
  */
-public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
+public class EditItemView extends AbstractSingleEditView<Item> {
 
     private static final String REF_PRODUCT_ID = "REF_PRODUCT_ID";
     private static final String REF_UOM_ID = "REF_UOM_ID";
@@ -77,6 +75,13 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
                         .label(property.getName()).referenceDataId("REF_" + property.getId()).value(selectedElement);
             }
         }
+        detailDataModel.addAttribute("listItemPrices", DetailFieldType.LIST).componentInfo(
+                createListItemPriceComponent());
+    }
+
+    private IComponentInfo createListItemPriceComponent() {
+        ListItemPriceComponent component = new ListItemPriceComponent(null, null, null);
+        return new ListComponentInfo(component, "item");
     }
 
     private boolean isGoodProduct(Item entity) {
@@ -118,28 +123,6 @@ public class EditItemView extends AbstractMasterDetailView<Item, ItemPrice> {
                 refDataModel.putRefDataList("REF_" + property.getId(), property.getElements());
             }
         }
-    }
-
-    @Override
-    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("audienceCategory", ListRendererType.TEXT);
-        listDataModel.addColumn("sellPrice", ListRendererType.TEXT);
-
-    }
-
-    @Override
-    protected Class<? extends AbstractEditView<ItemPrice>> getChildDetailViewClass() {
-        return EditItemPriceVirtualView.class;
-    }
-
-    @Override
-    protected String getParentFieldName() {
-        return "item";
-    }
-
-    @Override
-    protected String getChildFieldName() {
-        return "listItemPrices";
     }
 
 }

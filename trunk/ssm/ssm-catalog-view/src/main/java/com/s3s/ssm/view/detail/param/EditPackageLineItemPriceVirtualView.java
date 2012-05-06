@@ -12,6 +12,7 @@ import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 
+@Deprecated
 public class EditPackageLineItemPriceVirtualView extends AbstractSingleEditView<PackageLineItemPrice> {
 
     private static final String REF_ITEMS = "REF_ITEMS";

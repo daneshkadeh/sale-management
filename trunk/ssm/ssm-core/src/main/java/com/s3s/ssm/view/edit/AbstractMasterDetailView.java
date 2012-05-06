@@ -53,6 +53,7 @@ import com.s3s.ssm.view.list.ListDataModel;
  * @param <E>
  *            child entity type
  */
+@Deprecated
 public abstract class AbstractMasterDetailView<T extends AbstractIdOLObject, E extends AbstractIdOLObject> extends
         AbstractSingleEditView<T> implements TableModelListener {
     private static final long serialVersionUID = 5571051971772731048L;

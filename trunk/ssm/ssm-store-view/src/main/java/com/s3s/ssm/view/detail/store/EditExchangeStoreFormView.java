@@ -23,6 +23,7 @@ import com.s3s.ssm.view.edit.AbstractMasterDetailView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.list.ListDataModel;
 
+@Deprecated
 public class EditExchangeStoreFormView extends AbstractMasterDetailView<MoveStoreForm, DetailMoveStore> {
 
     public EditExchangeStoreFormView(Map<String, Object> entity) {
