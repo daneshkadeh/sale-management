@@ -72,7 +72,7 @@ public class DetailInvoice extends AbstractIdOLObject {
 
     // Transient field
     @Transient
-    private Money totalAmount;
+    private Money totalAmount = Money.create(CurrencyEnum.VND, 0L);
 
     // Product name is get from product by default.
     private String productName;

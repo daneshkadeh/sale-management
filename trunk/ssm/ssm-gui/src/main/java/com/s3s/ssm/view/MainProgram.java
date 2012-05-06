@@ -94,6 +94,8 @@ public class MainProgram {
         // String classpath = MainProgram.class.getClassLoader().get
         // DOMConfigurator.configure("log4j.xml");
         s_logger.info("Starting super sales management application...");
+        Locale.setDefault(new Locale("vi"));
+
         setLooknFeel();
         // ///////////// Splash screen///////////////////
         splashScreen = new SSplashScreen();
@@ -103,9 +105,9 @@ public class MainProgram {
 
         // ApplicationContext appContext = new ClassPathXmlApplicationContext("config/BeanLocations.xml");
         // ConfigProvider configProvider = ConfigProvider.getInstance();
-        Locale.setDefault(new Locale("vi"));
         ControlConfigUtils.init();
         ControlConfigUtils.setLabelMessageBundle(Locale.getDefault(), MESSSAGE_FILES);
+
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's GUI.
         // SwingUtilities.invokeLater(new Runnable() {
