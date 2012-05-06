@@ -41,6 +41,7 @@ import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.entity.sales.ImportationSC;
 import com.s3s.ssm.entity.sales.SalesContract;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 
 @Entity
@@ -60,10 +61,10 @@ public class ImportStoreForm extends AbstractCodeOLObject {
     private Boolean printAfterSave = false;
     private ImportStoreStatus status = ImportStoreStatus.NEW;
     private ShipPriceType shipPriceType;
-    private Money shipPrice;
+    private Money shipPrice = Money.create(CurrencyEnum.VND, 0L);
     private Double shipNum = 0D;
     private Integer qtyTotal;
-    private Money amtTotal;
+    private Money amtTotal = Money.create(CurrencyEnum.VND, 0L);
     private Set<DetailImportStore> detailImportStores = new HashSet<DetailImportStore>();
 
     @Column(name = "created_date")

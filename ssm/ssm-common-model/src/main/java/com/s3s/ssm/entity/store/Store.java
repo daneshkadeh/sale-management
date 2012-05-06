@@ -34,6 +34,7 @@ public class Store extends AbstractActiveCodeOLObject {
     private String address;
     private String phone;
     private String fax;
+    private Boolean isIntermediate = false;
     private String storedAddress;
     private String importAddress;
     private String exportAddress;
@@ -76,6 +77,15 @@ public class Store extends AbstractActiveCodeOLObject {
 
     public void setFax(String fax) {
         this.fax = fax;
+    }
+
+    @Column(name = "is_intermediate")
+    public Boolean getIsIntermediate() {
+        return isIntermediate;
+    }
+
+    public void setIsIntermediate(Boolean isIntermediate) {
+        this.isIntermediate = isIntermediate;
     }
 
     @Column(name = "stored_address")

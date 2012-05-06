@@ -46,7 +46,6 @@ public class PaymentContent extends AbstractActiveCodeOLObject {
     }
 
     @Column(name = "payment_type")
-    @NotBlank
     @Enumerated(EnumType.STRING)
     public PaymentType getPaymentType() {
         return paymentType;
