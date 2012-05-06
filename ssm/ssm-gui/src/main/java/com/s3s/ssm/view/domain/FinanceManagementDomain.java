@@ -16,6 +16,8 @@ package com.s3s.ssm.view.domain;
 
 import javax.swing.JScrollPane;
 
+import com.s3s.ssm.util.ImageConstants;
+import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
@@ -36,6 +38,7 @@ public class FinanceManagementDomain extends AbstractDomain {
     public FinanceManagementDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         super(treeScrollPane, contentScrollPane);
         setText(ControlConfigUtils.getString("JTree.Finance.Management"));
+        setIcon(ImageUtils.getMediumIcon(ImageConstants.MENU_FINANCE_ICON));
     }
 
     @Override

@@ -68,4 +68,10 @@ public class ImageConstants {
     public static final String ROLE_ICON = "/icons/roleIcon.png";
     // Catalog
     public static final String PRODUCT_ICON = "/icons/productIcon.png";
+
+    // Menu Icon
+    public static final String MENU_CATALOG_ICON = "/icons/menu_catalogIcon.png";
+    public static final String MENU_BUY_CONTRACT_ICON = "/icons/menu_buyContractIcon.png";
+    public static final String MENU_SALES_INVOICE_ICON = "/icons/menu_salesInvoiceIcon.png";
+    public static final String MENU_FINANCE_ICON = "/icons/menu_financeIcon.png";
 }

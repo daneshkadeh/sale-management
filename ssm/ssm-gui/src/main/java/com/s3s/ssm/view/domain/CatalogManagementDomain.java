@@ -22,6 +22,7 @@ public class CatalogManagementDomain extends AbstractDomain {
     public CatalogManagementDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         super(treeScrollPane, contentScrollPane);
         setText(ControlConfigUtils.getString("JTree.CatalogDomain"));
+        setIcon(ImageUtils.getMediumIcon(ImageConstants.MENU_CATALOG_ICON));
     }
 
     @Override
