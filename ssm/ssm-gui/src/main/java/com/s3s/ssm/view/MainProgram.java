@@ -53,13 +53,12 @@ import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.domain.BuyManagementDomain;
+import com.s3s.ssm.view.domain.CatalogManagementDomain;
 import com.s3s.ssm.view.domain.ContactManagementDomain;
 import com.s3s.ssm.view.domain.FinanceManagementDomain;
 import com.s3s.ssm.view.domain.ReportDomain;
-import com.s3s.ssm.view.domain.ResourceManagementDomain;
 import com.s3s.ssm.view.domain.SalesManagementDomain;
 import com.s3s.ssm.view.domain.StoreManagementDomain;
-import com.s3s.ssm.view.domain.SupplyChainDomain;
 import com.s3s.ssm.view.domain.SystemManagementDomain;
 import com.s3s.ssm.view.security.LoginDialog;
 
@@ -311,12 +310,15 @@ public class MainProgram {
 
         splashScreen.setValue(20, "Loading institution: System domain ...");
         SystemManagementDomain systemDomain = new SystemManagementDomain(treeScrollPane, contentSrollPane);
+        CatalogManagementDomain catalogDomain = new CatalogManagementDomain(treeScrollPane, contentSrollPane);
 
         splashScreen.setValue(30, "Loading institution: Report domain ...");
         ReportDomain reportDomain = new ReportDomain(treeScrollPane, contentSrollPane);
         buttonGroup.add(systemDomain);
+        buttonGroup.add(catalogDomain);
         buttonGroup.add(reportDomain);
         domains.add(systemDomain);
+        domains.add(catalogDomain);
         domains.add(reportDomain);
         systemDomain.doClick();
         return domains;
@@ -334,13 +336,13 @@ public class MainProgram {
         StoreManagementDomain storeDomain = new StoreManagementDomain(treeScrollPane, contentSrollPane);
 
         splashScreen.setValue(60, "Loading organization: Supplier chain domain ...");
-        SupplyChainDomain supplyChainDomain = new SupplyChainDomain(treeScrollPane, contentSrollPane);
+        // SupplyChainDomain supplyChainDomain = new SupplyChainDomain(treeScrollPane, contentSrollPane);
         buttonGroup.add(contactDomain);
         buttonGroup.add(storeDomain);
-        buttonGroup.add(supplyChainDomain);
+        // buttonGroup.add(supplyChainDomain);
         domains.add(contactDomain);
         domains.add(storeDomain);
-        domains.add(supplyChainDomain);
+        // domains.add(supplyChainDomain);
 
         contactDomain.doClick();
         return domains;
@@ -358,15 +360,15 @@ public class MainProgram {
         splashScreen.setValue(90, "Loading sale channel: Finance management domain ...");
         FinanceManagementDomain financeDomain = new FinanceManagementDomain(treeScrollPane, contentSrollPane);
         splashScreen.setValue(95, "Loading sale channel: Resource management domain ...");
-        ResourceManagementDomain resourceDomain = new ResourceManagementDomain(treeScrollPane, contentSrollPane);
+        // ResourceManagementDomain resourceDomain = new ResourceManagementDomain(treeScrollPane, contentSrollPane);
         buttonGroup.add(buyDomain);
         buttonGroup.add(salesDomain);
         buttonGroup.add(financeDomain);
-        buttonGroup.add(resourceDomain);
+        // buttonGroup.add(resourceDomain);
         domains.add(buyDomain);
         domains.add(salesDomain);
         domains.add(financeDomain);
-        domains.add(resourceDomain);
+        // domains.add(resourceDomain);
         buyDomain.doClick();
         return domains;
     }

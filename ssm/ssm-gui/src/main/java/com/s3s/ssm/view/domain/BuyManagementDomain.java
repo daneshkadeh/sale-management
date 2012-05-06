@@ -45,12 +45,12 @@ public class BuyManagementDomain extends AbstractDomain {
         TreeNodeWithView buyContractNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SalesContract.buyContract"), new ListSalesContractView()); // "Hop dong mua hang"
 
-        TreeNodeWithView ttManageNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.SalesContract.TTmanagement"));
-        TreeNodeWithView lcManageNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.SalesContract.LCmanagement"));
-        TreeNodeWithView declareContractNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.SalesContract.importNote")); // "Quan ly to khai"
+        // TreeNodeWithView ttManageNode = new TreeNodeWithView(
+        // ControlConfigUtils.getString("JTree.SalesContract.TTmanagement"));
+        // TreeNodeWithView lcManageNode = new TreeNodeWithView(
+        // ControlConfigUtils.getString("JTree.SalesContract.LCmanagement"));
+        // TreeNodeWithView declareContractNode = new TreeNodeWithView(
+        // ControlConfigUtils.getString("JTree.SalesContract.importNote")); // "Quan ly to khai"
         TreeNodeWithView contractDocumentNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SalesContract.contractDocument"), new ListContractDocumentView());
         TreeNodeWithView addedSCFeeTypeNode = new TreeNodeWithView(
@@ -58,9 +58,9 @@ public class BuyManagementDomain extends AbstractDomain {
 
         rootNode.add(salesConfirmNode);
         rootNode.add(buyContractNode);
-        rootNode.add(ttManageNode);
-        rootNode.add(lcManageNode);
-        rootNode.add(declareContractNode);
+        // rootNode.add(ttManageNode);
+        // rootNode.add(lcManageNode);
+        // rootNode.add(declareContractNode);
         rootNode.add(contractDocumentNode);
         rootNode.add(addedSCFeeTypeNode);
     }
