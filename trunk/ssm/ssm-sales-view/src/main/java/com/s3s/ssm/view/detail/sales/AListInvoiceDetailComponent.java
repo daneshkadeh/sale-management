@@ -50,7 +50,7 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
         // listDataModel.addColumn("package", ListRendererType.TEXT);
         // listDataModel.addColumn("packageLine", ListRendererType.TEXT, ListEditorType.COMBOBOX)
         // .referenceDataId(REF_PACKLINE).notEditable();
-        listDataModel.addColumn("amount", ListRendererType.TEXT);
+        listDataModel.addColumn("amount", ListRendererType.TEXT).summarized();
         listDataModel.addColumn("priceAfterTax", ListRendererType.TEXT, ListEditorType.MONEY)
                 .referenceDataId(REF_CURRENCY).width(120);
         listDataModel.addColumn("moneyAfterTax", ListRendererType.TEXT, ListEditorType.MONEY)
@@ -59,7 +59,7 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
                 REF_D_INVOICE_TYPE);
         listDataModel.addColumn("status", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
                 REF_D_INVOICE_STATUS);
-        listDataModel.addColumn("totalAmount", ListRendererType.TEXT).notEditable();
+        listDataModel.addColumn("totalAmount", ListRendererType.TEXT).notEditable().summarized();
 
     }
 

@@ -39,7 +39,7 @@ public class ListCommissionComponent extends AListComponent<Commission> {
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("type", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_COM_TYPE);
         listDataModel.addColumn("commissionMoney", ListRendererType.TEXT, ListEditorType.MONEY)
-                .referenceDataId(REF_CURRENCY).width(120);
+                .referenceDataId(REF_CURRENCY).width(120).summarized();
         listDataModel.addColumn("remark", ListRendererType.TEXT).width(UIConstants.REMARK_COLUMN_WIDTH_300);
 
     }
@@ -49,6 +49,12 @@ public class ListCommissionComponent extends AListComponent<Commission> {
         super.doRowUpdated(attributeName, entityUpdated, entities);
         if ("commissionMoney".equals(attributeName)) {
             calSumCommission(entities);
+        } else if ("type".equals(attributeName)) {
+            CommissionType commissionType = entityUpdated.getType();
+            if (commissionType != null) {
+                // TODO: If is percent, calculate commissionMoney base on DetailInvoices
+                entityUpdated.setCommissionMoney(commissionType.getCommissionMoney());
+            }
         }
     }
 
