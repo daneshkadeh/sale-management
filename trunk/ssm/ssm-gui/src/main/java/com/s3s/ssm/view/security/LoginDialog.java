@@ -90,12 +90,14 @@ public class LoginDialog extends JDialog {
         // add action
         btnLogin.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent event) {
                 btnOKActionPerformed(event);
             }
         });
 
         btnCancel.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent event) {
                 btnCancelActionPerformed(event);
             }

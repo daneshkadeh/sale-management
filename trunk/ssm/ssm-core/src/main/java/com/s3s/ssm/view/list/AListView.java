@@ -90,7 +90,7 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
     private static final long serialVersionUID = -1311942671249671111L;
     private static final String ADD_ACTION_KEY = "addAction";
     // TODO It should get from the property "defPageRowNum" of BasicInformation in ssm-config
-    protected static final int DEFAULT_PAGE_SIZE = 30;
+    protected static final int DEFAULT_PAGE_SIZE = 22;
 
     private static final Log logger = LogFactory.getLog(AListView.class);
 

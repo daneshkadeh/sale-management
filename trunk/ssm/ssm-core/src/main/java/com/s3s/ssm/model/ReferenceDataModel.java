@@ -27,8 +27,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import com.s3s.ssm.util.i18n.ControlConfigUtils;
-
 /**
  * This class represent the model on the AbstractDetailView for reference data. Eg. ComboBox, MultiSelectBox
  * 
@@ -69,12 +67,12 @@ public class ReferenceDataModel {
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
                     boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (value == null) {
-                    setText(ControlConfigUtils.getString("label.dropdown.pleaseSelect"));
-                } else if (value instanceof Enum) {
-                    Enum tempValue = (Enum) value;
-                    setText(ControlConfigUtils.getEnumString(tempValue.getDeclaringClass(), tempValue));
-                }
+                // if (value == null) {
+                // setText(ControlConfigUtils.getString("label.dropdown.pleaseSelect"));
+                // } else if (value instanceof Enum) {
+                // Enum tempValue = (Enum) value;
+                // setText(ControlConfigUtils.getEnumString(tempValue.getDeclaringClass(), tempValue));
+                // }
                 return this;
             }
         };
