@@ -100,4 +100,6 @@ public class UIConstants {
     public static final Font DEFAULT_ITALIC_FONT = new Font("Arial", Font.ITALIC, 12);
 
     public static final Color INFO_COLOR = new Color(252, 252, 209);
+
+    public static final Integer REMARK_COLUMN_WIDTH_300 = 300;
 }

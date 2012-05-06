@@ -1,17 +1,3 @@
-/*
- * ListInvoiceView
- * 
- * Project: SSM
- * 
- * Copyright 2010 by HBASoft
- * All rights reserved.
- *
- * This software is the confidential and proprietary information
- * of HBASoft. ("Confidential Information"). You
- * shall not disclose such Confidential Information and shall
- * use it only in accordance with the terms of the license
- * agreements you entered into with HBASoft.
- */
 package com.s3s.ssm.view.list.sales;
 
 import javax.swing.JComboBox;
@@ -34,14 +20,17 @@ import com.s3s.ssm.entity.sales.InvoicePaymentStatus;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.detail.sales.EditInvoiceView2;
+import com.s3s.ssm.view.detail.sales.EditInvoiceSupporteeView;
 import com.s3s.ssm.view.edit.AbstractEditView;
 import com.s3s.ssm.view.list.AListEntityView;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
 
-public class ListInvoiceView extends AListEntityView<Invoice> {
-    private static final long serialVersionUID = -8516587352442289723L;
+public class ListInvoiceSupporteeView extends AListEntityView<Invoice> {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private JTextField invoiceNumber;
     // private JComboBox<InvoiceType> type;
     // private EntityChooser customer;
@@ -107,7 +96,7 @@ public class ListInvoiceView extends AListEntityView<Invoice> {
         if (StringUtils.isNotBlank(invoiceNumber.getText())) {
             criteria.add(Restrictions.ilike("invoiceNumber", invoiceNumber.getText(), MatchMode.ANYWHERE));
         }
-        criteria.add(Restrictions.eq("type", InvoiceType.SALES));
+        criteria.add(Restrictions.eq("type", InvoiceType.SUPPORT));
         // if (type.getSelectedItem() != null) {
         // criteria.add(Restrictions.eq("type", type.getSelectedItem()));
         // }
@@ -145,7 +134,7 @@ public class ListInvoiceView extends AListEntityView<Invoice> {
 
     @Override
     protected Class<? extends AbstractEditView<Invoice>> getEditViewClass() {
-        return EditInvoiceView2.class;
+        return EditInvoiceSupporteeView.class;
     }
 
 }

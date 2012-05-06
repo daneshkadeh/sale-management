@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 @Entity
 @Table(name = "s_contract_document")
@@ -41,6 +42,11 @@ public class ContractDocument extends AbstractCodeOLObject {
     }
 
     public enum DocumentPlaceEnum {
-        IN_COUNTRY, IN_FOREIGN
+        IN_COUNTRY, IN_FOREIGN;
+
+        @Override
+        public String toString() {
+            return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+        }
     }
 }

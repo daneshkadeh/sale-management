@@ -19,6 +19,9 @@ import javax.swing.JScrollPane;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
+import com.s3s.ssm.view.list.sales.ListCommissionTypeView;
+import com.s3s.ssm.view.list.sales.ListInvoiceRefundView;
+import com.s3s.ssm.view.list.sales.ListInvoiceSupporteeView;
 import com.s3s.ssm.view.list.sales.ListInvoiceView;
 
 /**
@@ -39,7 +42,19 @@ public class SalesManagementDomain extends AbstractDomain {
         TreeNodeWithView listInvoiceEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SalesManagement.Invoice"), new ListInvoiceView());
 
+        TreeNodeWithView listInvoiceRefundEntry = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.SalesManagement.InvoiceRefund"), new ListInvoiceRefundView());
+
+        TreeNodeWithView listInvoiceSupporteeEntry = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.SalesManagement.InvoiceSupportee"), new ListInvoiceSupporteeView());
+
+        TreeNodeWithView listCommissionTypeEntry = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.SalesManagement.CommissionType"), new ListCommissionTypeView());
+
         rootNode.add(listInvoiceEntry);
+        rootNode.add(listInvoiceRefundEntry);
+        rootNode.add(listInvoiceSupporteeEntry);
+        rootNode.add(listCommissionTypeEntry);
     }
 
 }

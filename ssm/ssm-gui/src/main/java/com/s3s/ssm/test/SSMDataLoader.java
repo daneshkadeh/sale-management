@@ -70,6 +70,7 @@ import com.s3s.ssm.entity.contact.PartnerCategory;
 import com.s3s.ssm.entity.contact.PartnerProfile;
 import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
 import com.s3s.ssm.entity.contact.SupplierProfile;
+import com.s3s.ssm.entity.contact.SupporteeProfile;
 import com.s3s.ssm.entity.finance.ContractPayment;
 import com.s3s.ssm.entity.finance.Payment;
 import com.s3s.ssm.entity.finance.PaymentContent;
@@ -77,6 +78,9 @@ import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.finance.PaymentType;
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.entity.operator.Stall;
+import com.s3s.ssm.entity.sales.Commission;
+import com.s3s.ssm.entity.sales.CommissionType;
+import com.s3s.ssm.entity.sales.CommissionType.CommissionMethod;
 import com.s3s.ssm.entity.sales.ContractDocument;
 import com.s3s.ssm.entity.sales.ContractDocument.DocumentPlaceEnum;
 import com.s3s.ssm.entity.sales.DetailInvoice;
@@ -296,6 +300,8 @@ public class SSMDataLoader {
         List<ContactDebt> listContactDebt = initContactDebt(daoHelper, listContact);
         List<Partner> listSupplier = initSupplier(daoHelper, listContact, listBankAccount);
 
+        List<Partner> listSupportee = initSupportee(daoHelper);
+
         List<ProductProperty> properties = initProductProperty(daoHelper);
         List<ProductPropertyElement> elements = initProductPropertyElements(daoHelper, properties);
 
@@ -314,7 +320,14 @@ public class SSMDataLoader {
         Set<ItemPrice> listItemPrices = initItemPrice(daoHelper, listItem, listContact);
         List<ItemOriginPrice> listItemOriginPrices = initItemOriginPrice(daoHelper, listItem, listSupplier);
         List<SalesContract> listSalesContracts = initSalesContracts(daoHelper, listSupplier, listItem);
-        List<Invoice> listInvoice = initInvoice(daoHelper, listItem, listContact, listOperator, listStore);
+
+        List<CommissionType> commissionType = initCommissionType(daoHelper);
+
+        List<Invoice> listInvoice = initInvoice(daoHelper, listItem, listContact, listOperator, listStore,
+                commissionType);
+
+        List<Invoice> supporteeInvoices = initSupporteeInvoice(daoHelper, listOperator, listSupportee, listItem);
+
         // Init data for Store module
         List<ShipPrice> listShipPrice = initShipPrice(daoHelper);
         List<TransportationType> listTransportationType = initTransportationType(daoHelper);
@@ -747,11 +760,22 @@ public class SSMDataLoader {
         return Arrays.asList(payment, receipt, contractPayment);
     }
 
+    private static List<CommissionType> initCommissionType(DaoHelper daoHelper) {
+        CommissionType commissionType = new CommissionType();
+        commissionType.setCode("GIAM_TIEN001");
+        commissionType.setName("Khach mua nhieu");
+        commissionType.setCommissionMethod(CommissionMethod.MONEY);
+        commissionType.setCommissionMoney(Money.zero(CurrencyEnum.VND));
+        daoHelper.getDao(CommissionType.class).saveOrUpdate(commissionType);
+
+        return Arrays.asList(commissionType);
+    }
+
     /**
      * create 2 invoices "0000001" without contact and "0000002" with contact.
      */
     private static List<Invoice> initInvoice(DaoHelper daoHelper, List<Item> listItem, List<Partner> listContact,
-            List<Operator> listStaff, List<Store> listStore) {
+            List<Operator> listStaff, List<Store> listStore, List<CommissionType> listCommissionTypes) {
         // TODO: use another way to get the uom after product category have default uom
         UnitOfMeasure unit = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
         Invoice invoice1 = new Invoice();
@@ -762,9 +786,9 @@ public class SSMDataLoader {
         invoice1.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
         invoice1.setStatus(InvoiceStatus.OPEN);
         invoice1.setType(InvoiceType.SALES);
-        invoice1.setMoneyBeforeTax(Money.create(CurrencyEnum.VND, 10000L));
+        invoice1.setMoneyBeforeTax(Money.create(CurrencyEnum.VND, 9000L));
         invoice1.setMoneyOfTax(Money.zero(CurrencyEnum.VND));
-        invoice1.setMoneyAfterTax(Money.create(CurrencyEnum.VND, 10000L));
+        invoice1.setMoneyAfterTax(Money.create(CurrencyEnum.VND, 9000L));
         daoHelper.getDao(Invoice.class).saveOrUpdate(invoice1);
 
         DetailInvoice detailInvoice = new DetailInvoice();
@@ -780,6 +804,11 @@ public class SSMDataLoader {
         detailInvoice.setMoneyAfterTax(Money.create(CurrencyEnum.VND, 10000L));
         daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice);
 
+        Commission commission = new Commission();
+        commission.setCommissionMoney(Money.create(CurrencyEnum.VND, 1000L));
+        commission.setInvoice(invoice1);
+        commission.setType(listCommissionTypes.get(0));
+        commission.setRemark("Chu Thu da xac nhan ngay 02-03-2012");
         // add a package to invoice1
         SPackage pack = daoHelper.getDao(SPackage.class).findAll().get(0);
         for (PackageLine line : pack.getPackageLines()) {
@@ -834,6 +863,41 @@ public class SSMDataLoader {
         detailInvoice3.setMoneyAfterTax(Money.create(CurrencyEnum.VND, 10000L));
         daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice3);
         return Arrays.asList(invoice1, invoice2);
+    }
+
+    private static List<Invoice> initSupporteeInvoice(DaoHelper daoHelper, List<Operator> listStaff,
+            List<Partner> listSupportee, List<Item> items) {
+        UnitOfMeasure unit = daoHelper.getDao(UnitOfMeasure.class).findByCode("Cai");
+        Invoice invoiceSupportee = new Invoice();
+        invoiceSupportee.setContact(listSupportee.get(0));
+        invoiceSupportee.setStaff(listStaff.get(0));
+        invoiceSupportee.setInvoiceNumber("SUPPORT_0000001");
+        invoiceSupportee.setCreatedDate(new Date());
+        invoiceSupportee.setPaymentStatus(InvoicePaymentStatus.NO_PAYMENT);
+        invoiceSupportee.setStatus(InvoiceStatus.OPEN);
+        invoiceSupportee.setType(InvoiceType.SUPPORT);
+        invoiceSupportee.setUsedTimeSpan(365L * 24 * 60 * 60 * 60 * 1000);
+        invoiceSupportee.setUsedStartDate(new Date());
+        invoiceSupportee.setUsedEndDate(new Date());
+        invoiceSupportee.setMoneyBeforeTax(Money.create(CurrencyEnum.VND, 10000L));
+        invoiceSupportee.setMoneyOfTax(Money.zero(CurrencyEnum.VND));
+        invoiceSupportee.setMoneyAfterTax(Money.create(CurrencyEnum.VND, 10000L));
+        daoHelper.getDao(Invoice.class).saveOrUpdate(invoiceSupportee);
+
+        DetailInvoice detailInvoice = new DetailInvoice();
+        detailInvoice.setInvoice(invoiceSupportee);
+        detailInvoice.setItem(items.get(0));
+        detailInvoice.setProduct(items.get(0).getProduct());
+        detailInvoice.setUom(unit);
+        detailInvoice.setBaseUom(unit);
+        detailInvoice.setAmount(2);
+        detailInvoice.setPriceBeforeTax(Money.create(CurrencyEnum.VND, 5000L));
+        detailInvoice.setPriceAfterTax(Money.create(CurrencyEnum.VND, 5000L));
+        detailInvoice.setMoneyBeforeTax(Money.create(CurrencyEnum.VND, 10000L));
+        detailInvoice.setMoneyAfterTax(Money.create(CurrencyEnum.VND, 10000L));
+        daoHelper.getDao(DetailInvoice.class).saveOrUpdate(detailInvoice);
+
+        return Arrays.asList(invoiceSupportee);
     }
 
     private static List<ShipPrice> initShipPrice(DaoHelper daoHelper) {
@@ -1132,11 +1196,6 @@ public class SSMDataLoader {
         Partner supplier = new Partner();
         supplier.setCode("NIKE");
         supplier.setName("Nike company");
-        // supplier.setSex(true); // TODO: why supplier has sex? I think Sex should only be applied on individual
-        // supplier.setPhoneNumber("0909825783");
-        // supplier.setMainContact(listContact.get(0));
-
-        // supplier.setBankAccount(listBankAccount.get(0));
         PartnerProfile profile = new SupplierProfile();
         profile.setPartner(supplier);
         profile.setType(PartnerProfileTypeEnum.SUPPLIER);
@@ -1152,6 +1211,28 @@ public class SSMDataLoader {
         supplier.getMainAddressLink().getAddress().setDistrict("1");
         daoHelper.getDao(Partner.class).saveOrUpdate(supplier);
         return Arrays.asList(supplier);
+    }
+
+    private static List<Partner> initSupportee(DaoHelper daoHelper) {
+        Partner supportee = new Partner();
+        supportee.setCode("Supportee001");
+        supportee.setName("Do minh quan");
+        supportee.setPhone("0909123456");
+        PartnerProfile profile = new SupporteeProfile();
+        profile.setPartner(supportee);
+        profile.setType(PartnerProfileTypeEnum.SUPPORTEE);
+        supportee.addPartnerProfile(profile);
+
+        supportee.getMainIndividual().setFirstName("Do");
+        supportee.getMainIndividual().setLastName("Min Quan");
+        supportee.getMainIndividual().setFullName("Do Minh Quan");
+        supportee.getMainIndividual().setPosition("Van dong vien");
+        supportee.getMainAddressLink().getAddress().setName("Ba Dinh, Ha Noi");
+        supportee.getMainAddressLink().getAddress().setAddress("1, Hoa Ngoc Ha");
+        supportee.getMainAddressLink().getAddress().setCity("Ha Noi");
+        supportee.getMainAddressLink().getAddress().setDistrict("Ba Dinh");
+        daoHelper.getDao(Partner.class).saveOrUpdate(supportee);
+        return Arrays.asList(supportee);
     }
 
     private static List<Partner> initCustomer(DaoHelper daoHelper, List<BankAccount> listBankAccounts) {

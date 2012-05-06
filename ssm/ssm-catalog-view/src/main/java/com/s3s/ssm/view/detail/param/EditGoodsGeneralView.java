@@ -42,7 +42,6 @@ public class EditGoodsGeneralView extends EditProductGeneralView<Goods> {
         detailDataModel.addAttribute("mustSoldPeriod", DetailFieldType.TIME_COMPONENT);
         detailDataModel.addAttribute("minNumberSoldInMonth", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("effectiveSoldInMonth", DetailFieldType.TEXTBOX);
-
     }
 
     @Override

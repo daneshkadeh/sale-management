@@ -16,8 +16,17 @@ package com.s3s.ssm.entity.sales;
 
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
+/**
+ * Type of invoice is used to identify actions on goods. Eg. Goods of SUPPORT, TRIAL must be returned to THU after 1
+ * year. <li>SALES: payments are positive. <li>REFUND: payments are negative. <li>MAINTAINANCE, SUPPORT, TRIAL: there is
+ * no payment.</li> <li>RENT: payments is positive, the money of invoice is not total money of goods. Goods are for
+ * rent.</li>
+ * 
+ * @author phamcongbang
+ * 
+ */
 public enum InvoiceType {
-    SALES, MAINTAINANCE, SUPPORT, REFUND, TRIAL;
+    SALES, REFUND, MAINTAINANCE, SUPPORT, TRIAL, RENT;
     /**
      * {@inheritDoc}
      */

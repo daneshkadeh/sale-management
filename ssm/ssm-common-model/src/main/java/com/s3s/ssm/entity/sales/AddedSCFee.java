@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.model.Money;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 @Entity
 @Table(name = "s_added_sc_fee")
@@ -31,7 +32,11 @@ public class AddedSCFee extends AbstractIdOLObject {
     private ImportationSC importationSC;
 
     public enum AddedSCFeeStatus {
-        OPEN, PAID, ABANDONED
+        OPEN, PAID, ABANDONED;
+        @Override
+        public String toString() {
+            return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+        }
     }
 
     @Column(name = "name", nullable = false, length = 128)

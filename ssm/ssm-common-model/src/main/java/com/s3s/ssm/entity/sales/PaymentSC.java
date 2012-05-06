@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractIdOLObject;
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.model.Money;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
  * When THU pays for contract, they can create many paymentSC. If paymentSC is LC, there is only 1 payment SC. If
@@ -35,7 +36,11 @@ public class PaymentSC extends AbstractIdOLObject {
     private String remark;
 
     public enum PaymentSCType {
-        LC, TT
+        LC, TT;
+        @Override
+        public String toString() {
+            return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+        }
     }
 
     @ManyToOne(fetch = FetchType.EAGER)

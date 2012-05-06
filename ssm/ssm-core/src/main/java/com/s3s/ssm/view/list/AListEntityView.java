@@ -28,6 +28,7 @@ import java.util.Map;
 
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 
@@ -124,6 +125,15 @@ public abstract class AListEntityView<T extends AbstractBaseIdObject> extends AL
         setFetchMode(dc, columns);
         setSortOrder(dc, columns);
         return dc;
+    }
+
+    @Override
+    protected JPanel createSearchPanel() {
+        return null;
+    }
+
+    @Override
+    protected void clearCriteria() {
     }
 
     private void setSortOrder(DetachedCriteria dc, List<ColumnModel> columns) {

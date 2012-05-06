@@ -14,6 +14,8 @@
  */
 package com.s3s.ssm.entity.sales;
 
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
+
 /**
  * OPEN: only create data, not send sales contract to customer. </br> SENT: sent to customer. </br> PROCESSING:
  * receiving products. </br> CLOSED: SalesContract is done. All products has been imported. </br> SalesContract is
@@ -23,5 +25,9 @@ package com.s3s.ssm.entity.sales;
  * 
  */
 public enum SalesContractStatus {
-    OPEN, SENT, PROCESSING, CLOSED, CANCELLED
+    OPEN, SENT, PROCESSING, CLOSED, CANCELLED;
+    @Override
+    public String toString() {
+        return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+    }
 }

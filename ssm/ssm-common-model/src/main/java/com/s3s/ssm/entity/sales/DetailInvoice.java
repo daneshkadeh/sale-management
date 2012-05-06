@@ -33,6 +33,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -291,5 +292,15 @@ public class DetailInvoice extends AbstractIdOLObject {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public DetailInvoice duplicate() {
+        DetailInvoice detailInvoice = new DetailInvoice();
+        try {
+            BeanUtils.copyProperties(detailInvoice, this);
+        } catch (Exception e) {
+            throw new RuntimeException("Unexpected error: Can not copy detailInvoice!");
+        }
+        return detailInvoice;
     }
 }

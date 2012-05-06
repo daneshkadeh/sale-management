@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
  * When THU requests a set of products, supplier will send a sales confirm about the quantity of products which they can
@@ -55,7 +56,11 @@ public class SalesConfirm extends AbstractCodeOLObject {
      * 
      */
     public enum SalesConfirmStatus {
-        OPEN, PROCESSING, CLOSED, CANCELLED
+        OPEN, PROCESSING, CLOSED, CANCELLED;
+        @Override
+        public String toString() {
+            return ControlConfigUtils.getEnumString(getDeclaringClass(), this);
+        }
     }
 
     @NotNull

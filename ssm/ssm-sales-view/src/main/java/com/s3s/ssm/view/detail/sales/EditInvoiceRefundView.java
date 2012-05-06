@@ -14,6 +14,8 @@ import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.config.Address;
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.sales.Commission;
+import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.DetailInvoiceStatus;
 import com.s3s.ssm.entity.sales.DetailInvoiceType;
 import com.s3s.ssm.entity.sales.Invoice;
@@ -33,15 +35,9 @@ import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.edit.IComponentInfo;
 import com.s3s.ssm.view.edit.ListComponentInfo;
+import com.s3s.ssm.view.list.sales.ListInvoiceRefundView;
 
-/**
- * This is sales invoice view.
- * 
- * @author phamcongbang
- * 
- */
-public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
-    private static final long serialVersionUID = -7849498072868923918L;
+public class EditInvoiceRefundView extends AbstractSingleEditView<Invoice> {
     private static final String REF_CURRENCY = "REF_CURRENCY";
     private static final String REF_ITEM = "item";
     private static final String REF_PACKLINE = "packageLine";
@@ -52,7 +48,7 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
     private static final String REF_PAY_STATUS = "paymentStatus";
     private static final String REF_STORE_STATUS = "REF_STORE_STATUS";
 
-    public EditInvoiceView2(Map<String, Object> entity) {
+    public EditInvoiceRefundView(Map<String, Object> entity) {
         super(entity);
     }
 
@@ -60,10 +56,10 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
     protected void
             initialPresentationView(DetailDataModel detailDataModel, Invoice entity, Map<String, Object> request) {
         detailDataModel.addAttribute("invoiceNumber", DetailFieldType.TEXTBOX).editable(false);
-        // detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_TYPE).newColumn();
+        detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_TYPE).newColumn();
         detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
-        detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_STATUS)
-                .newColumn();
+        // detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_STATUS)
+        // .newColumn();
 
         detailDataModel.addAttribute("moneyAfterTax", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("paymentStatus", DetailFieldType.DROPDOWN).referenceDataId(REF_PAY_STATUS)
@@ -85,14 +81,14 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         detailDataModel.addAttribute("detailInvoices", DetailFieldType.LIST).componentInfo(
                 createInvoiceDetailsComponentInfo());
 
-        // TODO: Tab not work before LIST
         // detailDataModel.tab(ControlConfigUtils.getString("tab.EditInvoiceView.commissions"), null, null);
         detailDataModel.addAttribute("commissions", DetailFieldType.LIST)
                 .componentInfo(createCommissionComponentInfo());
+
     }
 
     @Override
-    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, Invoice entity) {
+    protected void customizeComponents(Map<String, AttributeComponent> name2AttributeComponent, final Invoice entity) {
         super.customizeComponents(name2AttributeComponent, entity);
         final MoneyComponent mc = (MoneyComponent) name2AttributeComponent.get("moneyAfterTax").getComponent();
         final AListInvoiceDetailComponent listDetailCom = (AListInvoiceDetailComponent) name2AttributeComponent.get(
@@ -115,15 +111,39 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
                 mc.setMoney(listDetailCom.getTotalAmounts().plus(listCommissionCom.getSumCommissionAmount()));
             }
         });
+
     }
 
     @Override
     protected Invoice loadForCreate(Map<String, Object> request) {
         Invoice invoice = super.loadForCreate(request);
-        invoice.setType(InvoiceType.SALES);
+        invoice.setType(InvoiceType.REFUND);
         invoice.setCreatedDate(new Date());
         invoice.setInvoiceNumber(serviceProvider.getService(InvoiceService.class).getNextInvoiceNumber());
         invoice.setStaff(((OrgSalesContextProvider) contextProvider).getCurrentOperator());
+
+        Invoice salesInvoice = (Invoice) request.get(ListInvoiceRefundView.INVOICE_FORM);
+        invoice.setContact(salesInvoice.getContact());
+        for (DetailInvoice detail : salesInvoice.getDetailInvoices()) {
+            DetailInvoice refundDetail = detail.duplicate();
+            refundDetail.setInvoice(invoice);
+            refundDetail.setType(DetailInvoiceType.REFUND);
+            refundDetail.setPriceAfterTax(refundDetail.getPriceAfterTax().negate());
+            refundDetail.setPriceBeforeTax(refundDetail.getPriceBeforeTax().negate());
+            refundDetail.setMoneyAfterTax(refundDetail.getMoneyAfterTax().negate());
+            refundDetail.setMoneyBeforeTax(refundDetail.getMoneyBeforeTax().negate());
+            invoice.getDetailInvoices().add(refundDetail);
+        }
+
+        for (Commission commission : salesInvoice.getCommissions()) {
+            Commission refundCommission = commission.duplicate();
+            refundCommission.setInvoice(invoice);
+            refundCommission.setCommissionMoney(commission.getCommissionMoney().negate());
+            invoice.getCommissions().add(refundCommission);
+        }
+
+        invoice.setMoneyAfterTax(salesInvoice.getMoneyAfterTax().negate());
+        invoice.setMoneyBeforeTax(salesInvoice.getMoneyBeforeTax().negate());
         return invoice;
     }
 
