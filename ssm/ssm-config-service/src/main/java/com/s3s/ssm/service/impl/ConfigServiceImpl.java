@@ -109,7 +109,7 @@ public class ConfigServiceImpl extends AbstractModuleServiceImpl implements ICon
         DetachedCriteria exRateDC = getDaoHelper().getDao(ExchangeRate.class).getCriteria();
         exRateDC.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         exRateDC.createAlias("currency", "currency");
-        exRateDC.add(Restrictions.eq("currency.code", currencyCode));
+        exRateDC.add(Restrictions.eq("currency.code", currencyCode.toString()));
         exRateDC.add(Restrictions.le("updateDate", date));
         exRateDC.addOrder(Order.desc("updateDate"));
         List<ExchangeRate> exRateList = getDaoHelper().getDao(ExchangeRate.class).findByCriteria(exRateDC, 0, 1);

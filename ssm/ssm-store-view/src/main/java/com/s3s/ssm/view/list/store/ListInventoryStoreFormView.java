@@ -43,7 +43,7 @@ public class ListInventoryStoreFormView extends ANonSearchListEntityView<Invento
         listDataModel.addColumn("createdDate", ListRendererType.DATE);
         listDataModel.addColumn("store.code", ListRendererType.TEXT);
         listDataModel.addColumn("store.name", ListRendererType.TEXT);
-        listDataModel.addColumn("notes", ListRendererType.TEXT);
+        // listDataModel.addColumn("notes", ListRendererType.TEXT);
         listDataModel.addColumn("curQtyTotal", ListRendererType.NUMBER).summarized()
                 .width(UIConstants.QTY_COLUMN_WIDTH);
         listDataModel.addColumn("realQtyTotal", ListRendererType.NUMBER).summarized()
@@ -68,6 +68,9 @@ public class ListInventoryStoreFormView extends ANonSearchListEntityView<Invento
                 return false;
             }
             Store store = (Store) serviceProvider.getService(IStoreService.class).getStoreByCode(code);
+            if (store == null) {
+                return false;
+            }
             detailParams.put(STORE_ENTITY, store);
         }
         return true;

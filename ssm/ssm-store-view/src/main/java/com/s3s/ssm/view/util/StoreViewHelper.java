@@ -84,10 +84,15 @@ public class StoreViewHelper extends ViewHelper {
         Date latestClosingEntryDate = serviceProvider.getService(IStoreService.class).getDateOfLatestClosingStoreEntry(
                 store);
         Set<DetailInventoryStore> detailSet = null;
-        if (latestInventoryDate.after(latestClosingEntryDate)) {
-            detailSet = initDetailInventoryStoreByInventory(store);
-        } else {
+
+        if (latestInventoryDate == null) {
             detailSet = initDetailInventoryStoreByClosingEntry(store);
+        } else {
+            if (latestInventoryDate.after(latestClosingEntryDate)) {
+                detailSet = initDetailInventoryStoreByInventory(store);
+            } else {
+                detailSet = initDetailInventoryStoreByClosingEntry(store);
+            }
         }
         form.getDetailInventoryStores().addAll(detailSet);
         return form;
@@ -161,6 +166,7 @@ public class StoreViewHelper extends ViewHelper {
             detail.setCurQty(latestDetail.getCurQty());
             detail.setPriceUnit(latestDetail.getPriceUnit());
             detail.setCurPriceSubtotal(latestDetail.getCurPriceSubtotal());
+            detail.setLostQty(latestDetail.getCurQty());
             result.add(detail);
             lineNo++;
         }

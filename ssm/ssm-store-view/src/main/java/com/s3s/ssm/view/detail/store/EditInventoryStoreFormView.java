@@ -16,10 +16,12 @@ package com.s3s.ssm.view.detail.store;
 
 import java.util.Map;
 
+import com.s3s.ssm.entity.store.DetailInventoryStore;
 import com.s3s.ssm.entity.store.InventoryStoreForm;
 import com.s3s.ssm.entity.store.Store;
-import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.model.CurrencyEnum;
+import com.s3s.ssm.model.Money;
+import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -47,11 +49,34 @@ public class EditInventoryStoreFormView extends AbstractSingleEditView<Inventory
         return form;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void preSaveOrUpdate(InventoryStoreForm entity) {
+        super.preSaveOrUpdate(entity);
+        int curQtyTotal = 0;
+        int realQtyTotal = 0;
+        Money curAmtTotal = Money.create(CurrencyEnum.VND, 0L);
+        Money realAmtTotal = Money.create(CurrencyEnum.VND, 0L);
+        for (DetailInventoryStore detail : entity.getDetailInventoryStores()) {
+            curQtyTotal += detail.getCurQty();
+            realQtyTotal += detail.getRealQty();
+            curAmtTotal = curAmtTotal.plus(detail.getCurPriceSubtotal());
+            realAmtTotal = realAmtTotal.plus(detail.getRealPriceSubtotal());
+        }
+        entity.setCurQtyTotal(curQtyTotal);
+        entity.setRealQtyTotal(realQtyTotal);
+        entity.setCurAmtTotal(curAmtTotal);
+        entity.setRealAmtTotal(realAmtTotal);
+    }
+
     @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, InventoryStoreForm entity,
             Map<String, Object> request) {
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("store", DetailFieldType.LABEL).newColumn();
+        detailDataModel.addAttribute("store", DetailFieldType.DROPDOWN).enable(false).newColumn()
+                .cacheDataId(CacheId.REF_LIST_STORE);
         detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
         detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER)
                 .componentInfo(ComponentFactory.createStorekeeperComponentInfo()).newColumn();
@@ -64,8 +89,4 @@ public class EditInventoryStoreFormView extends AbstractSingleEditView<Inventory
         return new ListComponentInfo(component, "inventoryForm");
     }
 
-    @Override
-    protected String getDefaultTitle(InventoryStoreForm entity) {
-        return ControlConfigUtils.getString("label.MoveStoreForm.detail.title") + UIConstants.BLANK + entity.getCode();
-    }
 }

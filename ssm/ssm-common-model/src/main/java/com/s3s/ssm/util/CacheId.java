@@ -24,6 +24,7 @@ public interface CacheId {
     public static String REF_LIST_PAYMENT_MODE = "referenceListPaymentMode";
 
     // Store
+    public static String REF_LIST_MOVE_STORE = "referenceListMoveStore";
     public static String REF_LIST_STORE = "referenceListStore";
     public static String REF_LIST_SHIP_PRICE_TYPE = "referenceListShipPriceType";
     public static String REF_LIST_IMPORT_STORE_STATUS = "referenceListImportStoreStatus";

@@ -53,8 +53,8 @@ public class EditContractPaymentView extends AbstractSingleEditView<ContractPaym
                 .componentInfo(ComponentFactory.createCashierComponentInfo());
         detailDataModel.addAttribute("paymentContent", DetailFieldType.DROPDOWN).mandatory(true)
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_CONTENT);
-        detailDataModel.addAttribute("salesContract", DetailFieldType.SEARCHER).mandatory(true)
-                .componentInfo(ComponentFactory.createSalesContractComponentInfo());
+        detailDataModel.addAttribute("salesContract", DetailFieldType.DROPDOWN).mandatory(true)
+                .cacheDataId(CacheId.REF_LIST_SALES_CONTRACT);
         detailDataModel.addAttribute("paymentMode", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_MODE);
         detailDataModel.addAttribute("amount", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);

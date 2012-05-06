@@ -30,7 +30,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.operator.Operator;
@@ -190,7 +189,8 @@ public class MoveStoreForm extends AbstractCodeOLObject {
     }
 
     @OneToMany(mappedBy = "moveForm", fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
+    @Cascade(value = { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+            org.hibernate.annotations.CascadeType.DELETE_ORPHAN, org.hibernate.annotations.CascadeType.DELETE })
     public Set<DetailMoveStore> getDetailSet() {
         return detailSet;
     }

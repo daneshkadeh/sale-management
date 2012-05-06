@@ -21,15 +21,14 @@ import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import com.s3s.ssm.entity.store.DetailMoveStore;
 import com.s3s.ssm.entity.store.MoveStoreForm;
 import com.s3s.ssm.entity.store.MoveStoreOrder;
-import com.s3s.ssm.entity.store.MoveStoreStatus;
 import com.s3s.ssm.entity.store.Store;
-import com.s3s.ssm.interfaces.store.IStoreService;
-import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
+import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
@@ -38,44 +37,65 @@ import com.s3s.ssm.view.edit.ListComponentInfo;
 
 public class EditMoveStoreFormView extends AbstractSingleEditView<MoveStoreForm> {
     // TODO:Hoang remove bellow after ListDataModel support caching
-    private static String REF_LIST_MOVE_ORDER = "1";
 
     public EditMoveStoreFormView(Map<String, Object> entity) {
         super(entity);
-    }
-
-    @Override
-    protected void initialPresentationView(DetailDataModel detailDataModel, MoveStoreForm entity,
-            Map<String, Object> request) {
-        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
-        detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN)
-                .cacheDataId(CacheId.REF_LIST_MOVE_STORE_STATUS).newColumn();
-        detailDataModel.addAttribute("moveStoreOrder", DetailFieldType.DROPDOWN).referenceDataId(REF_LIST_MOVE_ORDER);
-        detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
-        detailDataModel.addAttribute("transType", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_TRANS_TYPE)
-                .newColumn();
-        detailDataModel.addAttribute("staff", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_OPERATOR);
-        detailDataModel.addAttribute("transporter", DetailFieldType.TEXTBOX).newColumn();
-        detailDataModel.addAttribute("sentDate", DetailFieldType.DATE);
-        detailDataModel.addRawAttribute("fromStore", DetailFieldType.LABEL).editable(false).newColumn();
-        detailDataModel.addAttribute("receivedDate", DetailFieldType.DATE);
-        detailDataModel.addRawAttribute("destStore", DetailFieldType.LABEL).editable(false).newColumn();
-        detailDataModel.addAttribute("detailSet", DetailFieldType.LIST).componentInfo(createMoveDetailsComponentInfo());
-    }
-
-    private IComponentInfo createMoveDetailsComponentInfo() {
-        ListMoveDetailComponent component = new ListMoveDetailComponent(null, null, null);
-        return new ListComponentInfo(component, "moveForm");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void setReferenceDataModel(ReferenceDataModel refDataModel, MoveStoreForm entity) {
-        super.setReferenceDataModel(refDataModel, entity);
-        refDataModel.putRefDataList(REF_LIST_MOVE_ORDER, serviceProvider.getService(IStoreService.class)
-                .findMoveStoreOrderByStatus(MoveStoreStatus.NEW));
+    protected void preSaveOrUpdate(MoveStoreForm entity) {
+        super.preSaveOrUpdate(entity);
+        int exportQtyTotal = 0;
+        int importQtyTotal = 0;
+        for (DetailMoveStore detail : entity.getDetailSet()) {
+            if (detail.getItem() != null) {
+                importQtyTotal += detail.getImportQty();
+                exportQtyTotal += detail.getExportQty();
+            } else {
+                entity.getDetailSet().remove(detail);
+            }
+        }
+        entity.setImportQtyTotal(importQtyTotal);
+        entity.setExportQtyTotal(exportQtyTotal);
+    }
+
+    @Override
+    protected void initialPresentationView(DetailDataModel detailDataModel, MoveStoreForm entity,
+            Map<String, Object> request) {
+        MoveStoreOrder moveOrder = entity.getMoveStoreOrder();
+        String fromStore = "";
+        String destStore = "";
+        if (moveOrder != null) {
+            fromStore = moveOrder.getFromStore().getName();
+            destStore = moveOrder.getDestStore().getName();
+
+        }
+        detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN)
+                .cacheDataId(CacheId.REF_LIST_MOVE_STORE_STATUS).newColumn();
+        detailDataModel.addAttribute("moveStoreOrder", DetailFieldType.DROPDOWN)
+                .cacheDataId(CacheId.REF_LIST_MOVE_STORE).mandatory(true);
+        detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
+        detailDataModel.addAttribute("transType", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_TRANS_TYPE)
+                .newColumn();
+        detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER).componentInfo(
+                ComponentFactory.createStorekeeperComponentInfo());
+        detailDataModel.addAttribute("transporter", DetailFieldType.TEXTBOX).newColumn();
+        detailDataModel.addAttribute("sentDate", DetailFieldType.DATE);
+        detailDataModel.addRawAttribute("fromStore", DetailFieldType.LABEL).editable(false).newColumn()
+                .value(fromStore);
+        detailDataModel.addAttribute("receivedDate", DetailFieldType.DATE);
+        detailDataModel.addRawAttribute("destStore", DetailFieldType.LABEL).editable(false).newColumn()
+                .value(destStore);
+        detailDataModel.addAttribute("detailSet", DetailFieldType.LIST).componentInfo(createMoveDetailsComponentInfo());
+    }
+
+    private IComponentInfo createMoveDetailsComponentInfo() {
+        ListMoveDetailComponent component = new ListMoveDetailComponent(null, null, null);
+        return new ListComponentInfo(component, "moveForm");
     }
 
     @Override
