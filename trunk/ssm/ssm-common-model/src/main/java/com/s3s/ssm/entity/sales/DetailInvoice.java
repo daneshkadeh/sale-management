@@ -48,6 +48,7 @@ import com.s3s.ssm.model.Money;
 @Entity
 @Table(name = "s_detail_invoice")
 public class DetailInvoice extends AbstractIdOLObject {
+    private static final long serialVersionUID = 2668714126906577378L;
     private Invoice invoice;
     private Product product;
     private Item item;
