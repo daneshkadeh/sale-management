@@ -451,6 +451,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 pnlEdit.add(lblLabel, newline);
                 break;
             case DROPDOWN:
+                // TODO Phuc change dropdown to dropdown autocomplete
                 dataField = createDropdownComponent(attribute, width, value, referenceData);
                 pnlEdit.add(lblLabel, newline);
                 break;
@@ -499,7 +500,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 pnlEdit.add(lblLabel, newline + "top");
                 break;
             case MONEY:
-                MoneyComponent mc = createMoneyComponent(width, value);
+                MoneyComponent mc = createMoneyComponent(width, value, editable);
 
                 dataField = mc;
                 pnlEdit.add(lblLabel, newline);
@@ -612,7 +613,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         return cb;
     }
 
-    private MoneyComponent createMoneyComponent(int width, Object value) {
+    private MoneyComponent createMoneyComponent(int width, Object value, boolean editable) {
         Money money = null;
         if (value == null) {
             money = Money.zero(CurrencyEnum.VND); // TODO: get default currency
@@ -621,10 +622,12 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             money = (Money) value;
         }
         MoneyComponent mc = new MoneyComponent(money);
+        mc.setEditable(editable);
         mc.setPreferredSize(new Dimension(width, mc.getPreferredSize().height));
         // mc.addDocumentListener(this);
         mc.addItemListener(this);
         mc.addChangeListener(this);
+
         return mc;
     }
 
@@ -719,20 +722,20 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             referenceData.getValues().add(0, null);
         }
         final JComboBox<?> comboBox = new JComboBox<>(referenceData.getValues().toArray());
-        comboBox.getInputMap(WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "showPopup");
-        comboBox.getActionMap().put("showPopup", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!comboBox.isPopupVisible()) {
-                    comboBox.showPopup();
-                    System.err.println(comboBox.getSelectedIndex());
-                    comboBox.setSelectedIndex(0);
-                } else {
-                    System.err.println(comboBox.getSelectedIndex());
-                    comboBox.setSelectedIndex(comboBox.getSelectedIndex() + 1);
-                }
-            }
-        });
+        // comboBox.getInputMap(WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "showPopup");
+        // comboBox.getActionMap().put("showPopup", new AbstractAction() {
+        // @Override
+        // public void actionPerformed(ActionEvent e) {
+        // if (!comboBox.isPopupVisible()) {
+        // comboBox.showPopup();
+        // System.err.println(comboBox.getSelectedIndex());
+        // comboBox.setSelectedIndex(0);
+        // } else {
+        // System.err.println(comboBox.getSelectedIndex());
+        // comboBox.setSelectedIndex(comboBox.getSelectedIndex() + 1);
+        // }
+        // }
+        // });
 
         comboBox.setPreferredSize(new Dimension(width, comboBox.getPreferredSize().height));
         comboBox.setRenderer(referenceData.getRenderer());

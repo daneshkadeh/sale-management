@@ -112,6 +112,11 @@ public class MoneyComponent extends JPanel {
         currencyCodeField.setEnabled(enabled);
     }
 
+    public void setEditable(boolean editable) {
+        valueField.setEditable(editable);
+        currencyCodeField.setEditable(editable);
+    }
+
     public void setMoney(Money money) {
         if (money == null) {
             valueField.setValue(0L);

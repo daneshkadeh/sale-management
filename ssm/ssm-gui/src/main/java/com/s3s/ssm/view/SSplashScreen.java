@@ -38,7 +38,7 @@ public class SSplashScreen extends JWindow {
     public SSplashScreen() {
         super();
         JPanel panel = new JPanel(new MigLayout("ins 0, fill, wrap", "fill, grow"));
-        JLabel image = new JLabel(ImageUtils.getIcon("/images/RetailBusinessActive.jpg"));
+        JLabel image = new JLabel(ImageUtils.getIcon("/images/iziRMS.png"));
         progressBar = new JProgressBar(0, 100);
         progressBar.setStringPainted(true);
         loadingInfo = new JLabel("Loading");
