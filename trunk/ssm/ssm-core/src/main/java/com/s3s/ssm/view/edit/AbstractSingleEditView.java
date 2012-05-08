@@ -113,6 +113,7 @@ import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
 import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.ImageChooser;
+import com.s3s.ssm.view.component.MarkEntireTextOnFocusListener;
 import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.component.MultiSelectableTreeNode;
 import com.s3s.ssm.view.component.MultiSelectionListBox;
@@ -670,7 +671,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     }
 
     private JScrollPane createTextArea(int width, Object value) {
-        JTextArea ta = new JTextArea();
+        final JTextArea ta = new JTextArea();
         ta.setRows(UIConstants.DEFAUL_TEXTAREA_ROWS);
         ta.setLineWrap(true);
         ta.setEditable(true);
@@ -685,7 +686,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
     private JFormattedTextField createTextBox(final DetailAttribute attribute, int width, boolean isRaw,
             boolean editable, Object value) {
-        JFormattedTextField formattedTextField;
+        final JFormattedTextField formattedTextField;
         Class<?> propertyReturnType = null;
         if (isRaw) {
             Assert.isTrue(value != null, "The value for the raw attribute must be set for TEXTBOX type");
@@ -712,6 +713,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         formattedTextField.setValue(value);
         // formattedTextField.getDocument().addDocumentListener(this); // TODO Phuc: not work correctly with document
         // listener
+        formattedTextField.addFocusListener(new MarkEntireTextOnFocusListener(formattedTextField));
         return formattedTextField;
     }
 
@@ -777,7 +779,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
     @Override
     public void removeUpdate(DocumentEvent e) {
-        // enableSaveButtons();
+        enableSaveButtons();
     }
 
     @Override

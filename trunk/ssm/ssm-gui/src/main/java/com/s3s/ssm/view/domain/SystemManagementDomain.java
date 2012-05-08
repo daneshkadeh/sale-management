@@ -50,22 +50,22 @@ public class SystemManagementDomain extends AbstractDomain {
     @Override
     protected void constructTreeView(TreeNodeWithView rootNode) {
         // User management
-        ImageIcon userIcon = ImageUtils.getSmallIcon(ImageConstants.USER_ICON);
+        ImageIcon userIcon = ImageUtils.getMediumIcon(ImageConstants.USER_ICON);
         TreeNodeWithView userManagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.UserManagement"), userIcon);
-        ImageIcon userNodeIcon = ImageUtils.getSmallIcon(ImageConstants.USER_NODE_ICON);
+        ImageIcon userNodeIcon = ImageUtils.getMediumIcon(ImageConstants.USER_NODE_ICON);
         TreeNodeWithView userNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.UserManagement.User"),
                 new ListOperatorView(userNodeIcon, ControlConfigUtils.getString("label.Operator.list.title"), null),
                 userNodeIcon);
         // Role
-        ImageIcon roleIcon = ImageUtils.getSmallIcon(ImageConstants.ROLE_ICON);
+        ImageIcon roleIcon = ImageUtils.getMediumIcon(ImageConstants.ROLE_ICON);
         TreeNodeWithView profilesNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.UserManagement.Profiles"), new ListRoleView(roleIcon,
                         ControlConfigUtils.getString("label.Role.list.title"), null), roleIcon);
         // TreeNodeWithView exceptionPrivilegeNode = new TreeNodeWithView(
         // ControlConfigUtils.getString("JTree.UserManagement.ExceptionPrivilege"));
         // Stall
-        ImageIcon stallIcon = ImageUtils.getSmallIcon(ImageConstants.STALL_ICON);
+        ImageIcon stallIcon = ImageUtils.getMediumIcon(ImageConstants.STALL_ICON);
         TreeNodeWithView operatorNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.UserManagement.Stall"), new ListStallView(stallIcon,
                         ControlConfigUtils.getString("label.Stall.list.title"), null), stallIcon);
@@ -76,27 +76,27 @@ public class SystemManagementDomain extends AbstractDomain {
         userManagementEntry.add(operatorNode);
 
         // Manufacturer management
-        ImageIcon manufacturerIcon = ImageUtils.getSmallIcon(ImageConstants.MANUFACTURER_ICON);
+        ImageIcon manufacturerIcon = ImageUtils.getMediumIcon(ImageConstants.MANUFACTURER_ICON);
         TreeNodeWithView mfManagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.Manufacturer"), new ListManufacturerView(manufacturerIcon,
                         ControlConfigUtils.getString("label.Manufacturer.list.title"), null), manufacturerIcon);
         rootNode.add(mfManagementEntry);
 
         // Institution
-        ImageIcon institutionIcon = ImageUtils.getSmallIcon(ImageConstants.INSTITUTION_ICON);
+        ImageIcon institutionIcon = ImageUtils.getMediumIcon(ImageConstants.INSTITUTION_ICON);
         TreeNodeWithView institutionEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.Institution"), new ListInstitutionView(institutionIcon,
                         ControlConfigUtils.getString("label.Institution.list.title"), null), institutionIcon);
         rootNode.add(institutionEntry);
         // Organization
-        ImageIcon orgIcon = ImageUtils.getSmallIcon(ImageConstants.ORGANIZATION_ICON);
+        ImageIcon orgIcon = ImageUtils.getMediumIcon(ImageConstants.ORGANIZATION_ICON);
         TreeNodeWithView orgEntry = new TreeNodeWithView(ControlConfigUtils.getString("JTree.System.Organization"),
                 new ListOrganizationView(orgIcon, ControlConfigUtils.getString("label.Organization.list.title"), null),
                 orgIcon);
         rootNode.add(orgEntry);
 
         // Bank
-        ImageIcon bankIcon = ImageUtils.getSmallIcon(ImageConstants.BANK_ICON);
+        ImageIcon bankIcon = ImageUtils.getMediumIcon(ImageConstants.BANK_ICON);
         String bankTitle = ControlConfigUtils.getString("JTree.System.Bank");
         TreeNodeWithView bankEntry = new TreeNodeWithView(bankTitle, new ListBankView(bankIcon, null, bankTitle),
                 bankIcon);
@@ -104,16 +104,16 @@ public class SystemManagementDomain extends AbstractDomain {
 
         // Currency management
         // TODO: ListCurrencyView
-        ImageIcon moneyIcon = ImageUtils.getSmallIcon(ImageConstants.MONEY_ICON);
+        ImageIcon moneyIcon = ImageUtils.getMediumIcon(ImageConstants.MONEY_ICON);
         TreeNodeWithView currencyManagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.CurrencyManagement"), moneyIcon);
 
-        ImageIcon currencyIcon = ImageUtils.getSmallIcon(ImageConstants.CURRENCY_ICON);
+        ImageIcon currencyIcon = ImageUtils.getMediumIcon(ImageConstants.CURRENCY_ICON);
         String currencyTitle = ControlConfigUtils.getString("JTree.System.CurrencyManagement.Currencies");
         TreeNodeWithView currenciesNode = new TreeNodeWithView(currencyTitle, new ListCurrencyView(currencyIcon, null,
                 currencyTitle), currencyIcon);
         // Exchange rating
-        ImageIcon exRateIcon = ImageUtils.getSmallIcon(ImageConstants.EXCHANGE_RATING_ICON);
+        ImageIcon exRateIcon = ImageUtils.getMediumIcon(ImageConstants.EXCHANGE_RATING_ICON);
         String exRateTitle = ControlConfigUtils.getString("JTree.System.CurrencyManagement.ExchangeRate");
         TreeNodeWithView exchangeRateNode = new TreeNodeWithView(exRateTitle, new ListExchangeRateView(exRateIcon,
                 null, exRateTitle), exRateIcon);

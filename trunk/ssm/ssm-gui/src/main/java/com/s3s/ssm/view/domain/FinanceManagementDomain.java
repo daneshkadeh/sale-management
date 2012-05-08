@@ -34,6 +34,7 @@ import com.s3s.ssm.view.list.finance.ListReceiptView;
  * 
  */
 public class FinanceManagementDomain extends AbstractDomain {
+    private static final long serialVersionUID = 5291531871545628278L;
 
     public FinanceManagementDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         super(treeScrollPane, contentScrollPane);
