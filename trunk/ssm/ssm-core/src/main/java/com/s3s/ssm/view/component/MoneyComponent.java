@@ -94,6 +94,7 @@ public class MoneyComponent extends JPanel {
             }
 
         });
+        vf.addFocusListener(new MarkEntireTextOnFocusListener(vf));
         return vf;
     }
 

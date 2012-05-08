@@ -25,6 +25,7 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeSelectionModel;
@@ -113,10 +114,13 @@ public class TreeView extends JTree implements TreeSelectionListener {
             }
             if (!leaf) {
                 c.setFont(UIConstants.DEFAULT_BOLD_FONT);
-                c.setForeground(Color.BLUE);
+                if (sel) {
+                    c.setForeground(((DefaultTreeCellRenderer) defaultRenderer).getTextSelectionColor());
+                } else {
+                    c.setForeground(Color.BLUE);
+                }
             } else {
                 c.setFont(UIConstants.DEFAULT_FONT);
-                c.setForeground(Color.BLACK);
             }
 
             return c;
