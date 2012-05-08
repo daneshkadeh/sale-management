@@ -18,6 +18,7 @@ import com.s3s.ssm.view.list.param.ListServiceView;
 import com.s3s.ssm.view.list.param.ListVoucherView;
 
 public class CatalogManagementDomain extends AbstractDomain {
+    private static final long serialVersionUID = -6435473154809599757L;
 
     public CatalogManagementDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         super(treeScrollPane, contentScrollPane);
@@ -34,12 +35,12 @@ public class CatalogManagementDomain extends AbstractDomain {
         TreeNodeWithView productManagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.ProductManagement"));
         // UOM Category
-        ImageIcon uomCateIcon = ImageUtils.getSmallIcon(ImageConstants.UOM_CATE_ICON);
+        ImageIcon uomCateIcon = ImageUtils.getMediumIcon(ImageConstants.UOM_CATE_ICON);
         TreeNodeWithView uomCategoryNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.UomCategory"), new ListUomCategoryView(uomCateIcon,
                         ControlConfigUtils.getString("label.UnitOfMeasure.list.title"), null), uomCateIcon);
         // UOM
-        ImageIcon uomIcon = ImageUtils.getSmallIcon(ImageConstants.UOM_ICON);
+        ImageIcon uomIcon = ImageUtils.getMediumIcon(ImageConstants.UOM_ICON);
         TreeNodeWithView uomNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.UnitOfMeasure"),
                 new ListUnitOfMeasureView(uomIcon, ControlConfigUtils.getString("label.UnitOfMeasure.list.title"), null),

@@ -25,11 +25,12 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 import com.s3s.ssm.util.ImageUtils;
+import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.TreeNodeWithView.NodeValue;
 
 /**
@@ -43,6 +44,7 @@ public class TreeView extends JTree implements TreeSelectionListener {
     private static final long serialVersionUID = -3487864445665189571L;
     private JScrollPane contentScrollPane;
     private JPanel currentView;
+    private TreeCellRenderer defaultRenderer;
 
     /**
      * Init the treeView with the contentScrollPane, by default the tree expands all node.
@@ -54,6 +56,7 @@ public class TreeView extends JTree implements TreeSelectionListener {
         super(treeModel);
         this.contentScrollPane = contentScrollPane;
         addTreeSelectionListener(this);
+        defaultRenderer = getCellRenderer();
         setCellRenderer(new TreeViewRenderer());
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         expandAll();
@@ -97,19 +100,26 @@ public class TreeView extends JTree implements TreeSelectionListener {
         return currentView;
     }
 
-    private class TreeViewRenderer extends DefaultTreeCellRenderer {
-        private static final long serialVersionUID = -3765500551785294524L;
-
+    private class TreeViewRenderer implements TreeCellRenderer {
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
                 boolean leaf, int row, boolean hasFocus) {
-            super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+            JLabel c = (JLabel) defaultRenderer.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row,
+                    hasFocus);
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
             NodeValue nodeValue = (NodeValue) node.getUserObject();
             if (nodeValue.getIcon() != null) {
-                setIcon(nodeValue.getIcon());
+                c.setIcon(nodeValue.getIcon());
             }
-            return this;
+            if (!leaf) {
+                c.setFont(UIConstants.DEFAULT_BOLD_FONT);
+                c.setForeground(Color.BLUE);
+            } else {
+                c.setFont(UIConstants.DEFAULT_FONT);
+                c.setForeground(Color.BLACK);
+            }
+
+            return c;
         }
     }
 }

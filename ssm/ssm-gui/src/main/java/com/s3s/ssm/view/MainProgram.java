@@ -214,6 +214,7 @@ public class MainProgram {
 
     private static JSplitPane createInstitutionPanel() {
         JScrollPane treeMenuScrollPane = new JScrollPane();
+        // treeMenuScrollPane.setBorder(BorderFactory.createRaisedSoftBevelBorder());
         JScrollPane contentViewScrollPane = new JScrollPane();
         List<AbstractDomain> institutionDomains = createInstitutionDomains(treeMenuScrollPane, contentViewScrollPane);
         return createMainSplitPane(treeMenuScrollPane, contentViewScrollPane, institutionDomains);
@@ -221,6 +222,7 @@ public class MainProgram {
 
     private static JSplitPane createOrganizationPanel() {
         JScrollPane treeMenuScrollPane = new JScrollPane();
+        // treeMenuScrollPane.setBorder(BorderFactory.createRaisedSoftBevelBorder());
         JScrollPane contentViewScrollPane = new JScrollPane();
         List<AbstractDomain> organizationDomains = createOrganizationDomains(treeMenuScrollPane, contentViewScrollPane);
         return createMainSplitPane(treeMenuScrollPane, contentViewScrollPane, organizationDomains);
@@ -228,6 +230,7 @@ public class MainProgram {
 
     private static JSplitPane createSaleChannelPanel() {
         JScrollPane treeMenuScrollPane = new JScrollPane();
+        // treeMenuScrollPane.setBorder(BorderFactory.createRaisedSoftBevelBorder());
         JScrollPane contentViewScrollPane = new JScrollPane();
         List<AbstractDomain> saleChannelDomains = createSaleChannelDomains(treeMenuScrollPane, contentViewScrollPane);
         return createMainSplitPane(treeMenuScrollPane, contentViewScrollPane, saleChannelDomains);
