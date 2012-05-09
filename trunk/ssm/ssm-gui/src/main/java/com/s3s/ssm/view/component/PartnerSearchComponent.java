@@ -21,7 +21,7 @@ import com.s3s.ssm.entity.contact.Partner;
  * @author Phan Hong Phuc
  * @since Apr 22, 2012
  */
-public class PartnerSearchComponent extends ASearchComponent<Partner> {
+public class PartnerSearchComponent<T extends Partner> extends ASearchComponent<Partner> {
     private static final long serialVersionUID = -8050158314408650710L;
 
     /**

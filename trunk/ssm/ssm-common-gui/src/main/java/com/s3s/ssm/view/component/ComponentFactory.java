@@ -13,6 +13,16 @@ public class ComponentFactory {
         return new SearchComponentInfo(psc);
     }
 
+    public static SearchComponentInfo createSupplierSearchInfo() {
+        SupplierSearchComponent ssc = new SupplierSearchComponent();
+        return new SearchComponentInfo(ssc);
+    }
+
+    public static SearchComponentInfo createCustomerSearchInfo() {
+        CustomerSearchComponent csc = new CustomerSearchComponent();
+        return new SearchComponentInfo(csc);
+    }
+
     public static IComponentInfo createProductComponentInfo() {
         ProductSearchComponent psc = new ProductSearchComponent();
         return new SearchComponentInfo(psc);
