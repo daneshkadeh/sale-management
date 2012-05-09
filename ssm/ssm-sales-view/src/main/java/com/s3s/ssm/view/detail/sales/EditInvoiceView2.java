@@ -73,7 +73,8 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
                 .newColumn();
 
         // TODO: contact will be chosen from and listSearchView
-        detailDataModel.addAttribute("contact", DetailFieldType.DROPDOWN).cacheDataId(CacheId.REF_LIST_PARTNER);
+        detailDataModel.addAttribute("contact", DetailFieldType.SEARCHER).componentInfo(
+                ComponentFactory.createCustomerSearchInfo());
 
         detailDataModel.addAttribute("storeStatus", DetailFieldType.DROPDOWN).referenceDataId(REF_STORE_STATUS)
                 .newColumn();
@@ -150,6 +151,8 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
             AttributeComponent contactComponent = getName2AttributeComponent().get("contact.info");
             JScrollPane contactNameCom = (JScrollPane) contactComponent.getComponent();
             ((JTextArea) ((JViewport) contactNameCom.getComponent(0)).getView()).setText(getContactInfo(contact));
+
+            // TODO: add paymentAmount, contactDebt, newContactDebt
         }
     }
 

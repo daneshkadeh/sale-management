@@ -15,12 +15,22 @@
 
 package com.s3s.ssm.view.component;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
 
 /**
- * @author Phan Hong Phuc
- * @since Apr 22, 2012
+ * Search only partners which have profile supplier
  */
-public class SupplierSearchComponent extends PartnerSearchComponent {
-
+public class SupplierSearchComponent extends PartnerSearchComponent<Partner> {
+    @Override
+    protected DetachedCriteria createSearchCriteria() {
+        DetachedCriteria dc = super.createSearchCriteria();
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dc.createCriteria("listProfiles").add(Restrictions.eq("type", PartnerProfileTypeEnum.SUPPLIER));
+        return dc;
+    }
 }
