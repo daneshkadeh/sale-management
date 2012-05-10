@@ -16,15 +16,14 @@
 
 package com.s3s.ssm.dto.finance;
 
+import java.io.Serializable;
 import java.util.Date;
-
-import com.s3s.ssm.entity.AbstractBaseIdObject;
 
 /**
  * @author Le Thanh Hoang
  * 
  */
-public class CustDebtHistoryDTO extends AbstractBaseIdObject {
+public class CustDebtHistoryDTO implements Serializable {
     private static final Long serialVersionUID = -5048309040005476810L;
     private Date hisDate;
     private String code;

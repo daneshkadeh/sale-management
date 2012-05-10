@@ -35,7 +35,7 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
         super(icon, label, tooltip);
 
         // TODO: need method document on ready. When first time load invoice view, totalAmounts is not init
-        calcuSumAmount(getEntities());
+        calcuSumAmount(getData());
     }
 
     @Override

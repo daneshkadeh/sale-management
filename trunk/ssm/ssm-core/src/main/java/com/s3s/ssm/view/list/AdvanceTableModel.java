@@ -111,13 +111,13 @@ public class AdvanceTableModel<T> extends AbstractTableModel {
         fireTableRowsInserted(index, index);
     }
 
-    public void setEntities(Collection<T> entities) {
+    public void setData(Collection<T> entities) {
         this.entities.removeAll(this.entities);
         this.entities.addAll(entities);
         fireTableDataChanged();
     }
 
-    public List<T> getEntities() {
+    public List<T> getData() {
         return entities;
     }
 

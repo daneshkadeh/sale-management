@@ -25,14 +25,14 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * 
  */
 public class ListCommissionComponent extends AListComponent<Commission> {
-
+    private static final long serialVersionUID = 5336927585382407587L;
     private static final String REF_CURRENCY = "REF_CURRENCY";
     private static final String REF_COM_TYPE = "REF_COM_TYPE";
     private Money sumCommissionAmount = Money.zero(CurrencyEnum.VND);
 
     public ListCommissionComponent(Icon icon, String label, String tooltip) {
         super(icon, label, tooltip);
-        calSumCommission(getEntities());
+        calSumCommission(getData());
     }
 
     @Override

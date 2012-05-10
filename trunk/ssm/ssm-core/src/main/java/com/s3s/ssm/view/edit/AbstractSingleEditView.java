@@ -524,7 +524,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 pnlEdit.add(lblLabel, newline);
                 break;
             case LIST:
-                AListComponent listComponent = createListComponent(attribute, value);
+                AListComponent listComponent = createListComponent(attribute, value, editable);
                 dataField = listComponent;
                 pnlEdit.add(dataField, "newline, spanx");
                 break;
@@ -585,12 +585,12 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         return tc;
     }
 
-    private AListComponent<? extends AbstractBaseIdObject> createListComponent(final DetailAttribute attribute,
-            Object value) {
+    private AListComponent<?> createListComponent(final DetailAttribute attribute, Object value, boolean editable) {
         ListComponentInfo listInfo = (ListComponentInfo) attribute.getComponentInfo();
-        AListComponent<? extends AbstractBaseIdObject> listComponent = listInfo.getListComponent();
+        AListComponent<?> listComponent = listInfo.getListComponent();
         Assert.isTrue(listComponent != null, "List component need the info to initialize");
-        listComponent.setEntities((Collection) value);
+        listComponent.setData((Collection) value);
+        listComponent.setEditable(editable);
         listComponent.addTableModelListener(this);
         // listComponent.setMaximumSize(listComponent.getPreferredSize());
         return listComponent;
@@ -684,8 +684,8 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         return scrollPane;
     }
 
-    private JFormattedTextField createTextBox(final DetailAttribute attribute, int width, boolean isRaw,
-            boolean editable, Object value) {
+    private JFormattedTextField createTextBox(DetailAttribute attribute, int width, boolean isRaw, boolean editable,
+            Object value) {
         final JFormattedTextField formattedTextField;
         Class<?> propertyReturnType = null;
         if (isRaw) {
@@ -764,37 +764,37 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
     @Override
     public void itemStateChanged(ItemEvent e) {
-        enableSaveButtons();
+        setSaveButtonsEnabled(true);
     }
 
     @Override
     public void tableChanged(TableModelEvent e) {
-        enableSaveButtons();
+        setSaveButtonsEnabled(true);
     }
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-        enableSaveButtons();
+        setSaveButtonsEnabled(true);
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
-        enableSaveButtons();
+        setSaveButtonsEnabled(true);
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-        enableSaveButtons();
+        setSaveButtonsEnabled(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        enableSaveButtons();
+        setSaveButtonsEnabled(true);
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        enableSaveButtons();
+        setSaveButtonsEnabled(true);
     }
 
     private boolean isReadOnly() {
@@ -824,8 +824,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 }
 
                 btnNew.setEnabled(true);
-                btnSave.setEnabled(false);
-                btnSaveNew.setEnabled(false);
+                setSaveButtonsEnabled(false);
                 return true;
             } catch (Exception e) {
                 for (StackTraceElement st : e.getStackTrace()) {
@@ -1065,7 +1064,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             return searchComponent.getSelectedEntity();
         case LIST:
             AListComponent listComponent = (AListComponent) component;
-            return listComponent.getEntities();
+            return listComponent.getData();
         case TIME_COMPONENT:
             TimeComponent timeComponent = (TimeComponent) component;
             return timeComponent.getValue();
@@ -1088,6 +1087,8 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     }
 
     private class SaveAction extends AbstractAction {
+        private static final long serialVersionUID = -5708037888530296878L;
+
         @Override
         public void actionPerformed(ActionEvent evt) {
             doSave();
@@ -1095,6 +1096,8 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     }
 
     private class NewAction extends AbstractAction {
+        private static final long serialVersionUID = 274591266008792195L;
+
         @Override
         public void actionPerformed(ActionEvent evt) {
             doNew();
@@ -1102,6 +1105,8 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
     }
 
     private class SaveNewAction extends AbstractAction {
+        private static final long serialVersionUID = 2434613301386503571L;
+
         @Override
         public void actionPerformed(ActionEvent evt) {
             if (doSave()) {
@@ -1164,9 +1169,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             } else {
                 isDirty = !ObjectUtils.equals(value, beanWrapper.getPropertyValue(attribute.getName()));
             }
-            if (isDirty) {
-                enableSaveButtons();
-            }
+            setSaveButtonsEnabled(isDirty);
         }
 
         @Override
@@ -1237,7 +1240,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         return entity.getId().toString();
     }
 
-    public void enableSaveButtons() {
+    private void setSaveButtonsEnabled(boolean enabled) {
         btnSave.setEnabled(true);
         btnSaveNew.setEnabled(true);
     }
