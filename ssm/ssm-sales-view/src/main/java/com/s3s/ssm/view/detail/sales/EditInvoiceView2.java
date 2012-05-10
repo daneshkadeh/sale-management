@@ -1,6 +1,8 @@
 package com.s3s.ssm.view.detail.sales;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JScrollPane;
@@ -10,6 +12,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.s3s.ssm.context.OrgSalesContextProvider;
+import com.s3s.ssm.dto.finance.TestDTO;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.config.Address;
@@ -89,10 +92,27 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         detailDataModel.addAttribute("detailInvoices", DetailFieldType.LIST).componentInfo(
                 createInvoiceDetailsComponentInfo());
 
-        // TODO: Tab not work before LIST
         detailDataModel.tab(ControlConfigUtils.getString("tab.EditInvoiceView.commissions"), null, null);
         detailDataModel.addAttribute("commissions", DetailFieldType.LIST)
                 .componentInfo(createCommissionComponentInfo());
+        detailDataModel.addRawAttribute("rawList", DetailFieldType.LIST).componentInfo(createPaymentComponentInfo())
+                .value(createPaymentComponentData()).editable(false);
+
+    }
+
+    private List<TestDTO> createPaymentComponentData() {
+        TestDTO t1 = new TestDTO("value 1", "value 2", "value 3");
+        TestDTO t2 = new TestDTO("value 4", "value 5", "value 6");
+        TestDTO t3 = new TestDTO("value 7", "value 8", "value 9");
+        return Arrays.asList(t1, t2, t3);
+    }
+
+    /**
+     * @return
+     */
+    private IComponentInfo createPaymentComponentInfo() {
+        ListTestDTOComponent t = new ListTestDTOComponent(null, null, null);
+        return new ListComponentInfo(t, null);
     }
 
     @Override

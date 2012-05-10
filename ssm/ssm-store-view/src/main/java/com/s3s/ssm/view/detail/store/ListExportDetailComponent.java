@@ -50,6 +50,8 @@ public class ListExportDetailComponent extends AListComponent<DetailExportStore>
      */
     public ListExportDetailComponent(Icon icon, String label, String tooltip) {
         super(icon, label, tooltip);
+        setInsertRowAllowed(false);
+        setDeleteRowAllowed(false);
     }
 
     /**
@@ -99,21 +101,4 @@ public class ListExportDetailComponent extends AListComponent<DetailExportStore>
             entity.setRemainQuan(remainQty);
         }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean isInsertRowAllowed() {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean isDeleteRowAllowed() {
-        return false;
-    }
-
 }

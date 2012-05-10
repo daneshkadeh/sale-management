@@ -51,6 +51,8 @@ public class ListInventoryDetailComponent extends AListComponent<DetailInventory
      */
     public ListInventoryDetailComponent(Icon icon, String label, String tooltip) {
         super(icon, label, tooltip);
+        setInsertRowAllowed(false);
+        setDeleteRowAllowed(false);
     }
 
     /**
@@ -116,21 +118,4 @@ public class ListInventoryDetailComponent extends AListComponent<DetailInventory
             }
         }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean isInsertRowAllowed() {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean isDeleteRowAllowed() {
-        return false;
-    }
-
 }

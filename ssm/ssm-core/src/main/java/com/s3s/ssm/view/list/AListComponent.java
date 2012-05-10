@@ -67,7 +67,6 @@ import org.divxdede.swing.busy.DefaultBusyModel;
 import org.divxdede.swing.busy.JBusyComponent;
 import org.jdesktop.swingx.JXTable;
 
-import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
@@ -87,7 +86,7 @@ import com.s3s.ssm.view.list.renderer.RowHeaderRenderer;
  * @author Phan Hong Phuc
  * @since Apr 21, 2012
  */
-public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPanel implements TableModelListener {
+public abstract class AListComponent<T> extends JPanel implements TableModelListener {
     private static final long serialVersionUID = -1311942671249671111L;
     private static final int NUM_ROW_VISIBLE = 10;
     private static final Log logger = LogFactory.getLog(AListComponent.class);
@@ -101,6 +100,12 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
     private Action insAction;
     private Action deleteAction;
+
+    private boolean isInsertRowAllowed = true;
+    private boolean isDeleteRowAllowed = true;
+
+    private JButton insBtn;
+    private JButton delBtn;
 
     private AdvanceTableModel<T> mainTableModel;
 
@@ -134,12 +139,8 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         inputMap.put(deleteShortkey, "delKeyAction");
 
         ActionMap actionMap = mainTable.getActionMap();
-        if (isInsertRowAllowed()) {
-            actionMap.put("insKeyAction", insAction);
-        }
-        if (isDeleteRowAllowed()) {
-            actionMap.put("delKeyAction", deleteAction);
-        }
+        actionMap.put("insKeyAction", insAction);
+        actionMap.put("delKeyAction", deleteAction);
     }
 
     private class InsertRowAction extends AbstractAction {
@@ -147,7 +148,9 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            mainTableModel.addRowAt(mainTableModel.getEntities().size(), createNewEntity());
+            if (isInsertRowAllowed) {
+                mainTableModel.addRowAt(mainTableModel.getData().size(), createNewEntity());
+            }
         }
     }
 
@@ -156,17 +159,19 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AListComponent.this),
-                    "Are you sure want to delete the selected row?", "Confirm delete", JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.WARNING_MESSAGE);
-            if (option == JOptionPane.OK_OPTION) {
-                int[] selectedRows = mainTable.getSelectedRows();
-                int[] selectedModelRows = new int[selectedRows.length];
-                for (int i = 0; i < selectedRows.length; i++) {
-                    int rowModelIndex = mainTable.convertRowIndexToModel(selectedRows[i]);
-                    selectedModelRows[i] = rowModelIndex;
+            if (isDeleteRowAllowed) {
+                int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(AListComponent.this),
+                        "Are you sure want to delete the selected row?", "Confirm delete",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (option == JOptionPane.OK_OPTION) {
+                    int[] selectedRows = mainTable.getSelectedRows();
+                    int[] selectedModelRows = new int[selectedRows.length];
+                    for (int i = 0; i < selectedRows.length; i++) {
+                        int rowModelIndex = mainTable.convertRowIndexToModel(selectedRows[i]);
+                        selectedModelRows[i] = rowModelIndex;
+                    }
+                    mainTableModel.deleteRows(selectedRows);
                 }
-                mainTableModel.deleteRows(selectedRows);
             }
         }
     }
@@ -281,7 +286,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
             @Override
             public String getElementAt(int index) {
-                int numOfEntities = mainTableModel.getEntities().size();
+                int numOfEntities = mainTableModel.getData().size();
                 if (index >= numOfEntities) {
                     return "x";
                 }
@@ -308,6 +313,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
         // The vertical dummy bar for footer table.
         JScrollBar dummyBar = new JScrollBar() {
+            private static final long serialVersionUID = 8512878657569440966L;
 
             @Override
             public void paint(Graphics g) {
@@ -335,42 +341,28 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         }
     }
 
-    protected boolean isInsertRowAllowed() {
-        // Template method
-        return true;
-    }
-
-    protected boolean isDeleteRowAllowed() {
-        // Template method
-        return true;
-    }
-
     /**
      * @return
      */
     private JToolBar createButtonsPanel() {
         JToolBar tb = new JToolBar();
         tb.setFloatable(false);
-        JButton insBtn = new JButton(insAction);
+        insBtn = new JButton(insAction);
         insBtn.setIcon(ImageUtils.getSmallIcon(ImageConstants.INSERT_ROW_ICON));
         insBtn.setText(ControlConfigUtils.getString("AListComponent.insertRow"));
         insBtn.setToolTipText(ControlConfigUtils.getString("AListComponent.insertRow") + " (Ctrl+I)");
-        JButton delBtn = new JButton(deleteAction);
+        delBtn = new JButton(deleteAction);
         delBtn.setIcon(ImageUtils.getSmallIcon(ImageConstants.DEL_ROW_ICON));
         delBtn.setText(ControlConfigUtils.getString("AListComponent.delRow"));
         delBtn.setToolTipText(ControlConfigUtils.getString("AListComponent.delRow") + " (Ctrl+D)");
-        if (isInsertRowAllowed()) {
-            tb.add(insBtn);
-        }
-        if (isDeleteRowAllowed()) {
-            tb.add(delBtn);
-        }
+        tb.add(insBtn);
+        tb.add(delBtn);
         return tb;
     }
 
     @Override
     public void tableChanged(TableModelEvent e) {
-        List<T> entities = mainTableModel.getEntities();
+        List<T> entities = mainTableModel.getData();
         if (e.getType() == TableModelEvent.UPDATE) {
             if (e.getColumn() == TableModelEvent.ALL_COLUMNS) {
                 return;
@@ -390,7 +382,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
     }
 
     /**
-     * Perform when a row is inserted.
+     * Perform after a row is inserted.
      * 
      * @param rowIndex
      * @param entities
@@ -400,6 +392,7 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
     }
 
     /**
+     * Perform after a row is updated.
      * 
      * @param attributeName
      *            the name of
@@ -410,8 +403,23 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
         // Template method
     }
 
+    /**
+     * Perform after a row is deleted.
+     * 
+     * @param entities
+     */
     protected void doRowDelete(List<T> entities) {
         // Template method
+    }
+
+    public void setInsertRowAllowed(boolean allowed) {
+        isInsertRowAllowed = allowed;
+        insBtn.setVisible(allowed);
+    }
+
+    public void setDeleteRowAllowed(boolean allowed) {
+        isDeleteRowAllowed = allowed;
+        delBtn.setVisible(allowed);
     }
 
     /**
@@ -554,12 +562,18 @@ public abstract class AListComponent<T extends AbstractBaseIdObject> extends JPa
 
     }
 
-    public List<T> getEntities() {
-        return mainTableModel.getEntities();
+    public void setEditable(boolean editable) {
+        mainTable.setEditable(editable);
+        setInsertRowAllowed(editable);
+        setDeleteRowAllowed(editable);
     }
 
-    public void setEntities(Collection<T> entities) {
-        mainTableModel.setEntities(entities);
+    public List<T> getData() {
+        return mainTableModel.getData();
+    }
+
+    public void setData(Collection<T> data) {
+        mainTableModel.setData(data);
         mainTable.packAll();
     }
 
