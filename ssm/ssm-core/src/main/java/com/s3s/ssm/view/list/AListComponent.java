@@ -32,7 +32,6 @@ import javax.swing.AbstractAction;
 import javax.swing.AbstractListModel;
 import javax.swing.Action;
 import javax.swing.ActionMap;
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
@@ -252,9 +251,9 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
             @Override
             public void columnMarginChanged(ChangeEvent event) {
                 super.columnMarginChanged(event);
-                final TableColumnModel eventModel = (DefaultTableColumnModel) event.getSource();
-                final TableColumnModel thisModel = getColumnModel();
-                final int columnCount = eventModel.getColumnCount();
+                TableColumnModel eventModel = (DefaultTableColumnModel) event.getSource();
+                TableColumnModel thisModel = getColumnModel();
+                int columnCount = eventModel.getColumnCount();
 
                 for (int i = 0; i < columnCount; i++) {
                     thisModel.getColumn(i).setWidth(eventModel.getColumn(i).getWidth());
@@ -324,16 +323,22 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
 
         JLabel sumLabel = new JLabel();
         sumLabel.setPreferredSize(new Dimension(UIConstants.DEFAULT_ROW_HEADER_WIDTH, tblFooter.getRowHeight()));
-        sumLabel.setOpaque(true);
-        sumLabel.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+        // sumLabel.setOpaque(true);
+        // sumLabel.setBorder(BorderFactory.createRaisedSoftBevelBorder());
         footerScrollpane.setRowHeaderView(sumLabel);
 
         // Show the footer if existing a column summarized.
+        boolean isFooterShown = false;
         for (ColumnModel column : listDataModel.getColumns()) {
             if (column.isSummarized()) {
                 add(footerScrollpane);
+                isFooterShown = true;
                 break;
             }
+        }
+        if (!isFooterShown) {
+            mainScrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            mainScrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         }
         JPanel footerPanel = createFooterPanel(mainTableModel);
         if (footerPanel != null) {

@@ -111,6 +111,7 @@ import com.s3s.ssm.view.SavedEvent;
 import com.s3s.ssm.view.component.ASearchComponent;
 import com.s3s.ssm.view.component.EntityChooser;
 import com.s3s.ssm.view.component.FileChooser;
+import com.s3s.ssm.view.component.HourMinuteSecondComponent;
 import com.s3s.ssm.view.component.IPageChangeListener;
 import com.s3s.ssm.view.component.ImageChooser;
 import com.s3s.ssm.view.component.MarkEntireTextOnFocusListener;
@@ -122,6 +123,7 @@ import com.s3s.ssm.view.component.RadioButtonsGroup;
 import com.s3s.ssm.view.component.SaleTargetComp;
 import com.s3s.ssm.view.component.SaleTargetModel;
 import com.s3s.ssm.view.component.TimeComponent;
+import com.s3s.ssm.view.component.YearMonthDayComponent;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.edit.DetailDataModel.GroupInfoData;
 import com.s3s.ssm.view.edit.DetailDataModel.TabInfoData;
@@ -533,6 +535,16 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 dataField = tc;
                 pnlEdit.add(lblLabel, newline);
                 break;
+            case YEAR_MON_DAY:
+                YearMonthDayComponent ymdc = createYearMonDayComponent(width, value, editable);
+                dataField = ymdc;
+                pnlEdit.add(lblLabel, newline);
+                break;
+            case HOUR_MIN_SEC:
+                HourMinuteSecondComponent hmsc = createHourMinuteSecondComponent(width, value, editable);
+                dataField = hmsc;
+                pnlEdit.add(lblLabel, newline);
+                break;
             case ENTITY_CHOOSER:
                 dataField = new EntityChooser<>(referenceData.getValues(), value);
                 dataField.setPreferredSize(new Dimension(width, dataField.getPreferredSize().height));
@@ -583,6 +595,24 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         tc.setPreferredSize(new Dimension(width, tc.getPreferredSize().height));
         tc.addChangeListener(this);
         return tc;
+    }
+
+    private YearMonthDayComponent createYearMonDayComponent(int width, Object value, boolean editable) {
+        YearMonthDayComponent ymdc = new YearMonthDayComponent();
+        ymdc.setValue((long) value);
+        ymdc.setPreferredSize(new Dimension(width, ymdc.getPreferredSize().height));
+        ymdc.setEditable(editable);
+        ymdc.addChangeListener(this);
+        return ymdc;
+    }
+
+    private HourMinuteSecondComponent createHourMinuteSecondComponent(int width, Object value, boolean editable) {
+        HourMinuteSecondComponent hmsc = new HourMinuteSecondComponent();
+        hmsc.setValue((long) value);
+        hmsc.setPreferredSize(new Dimension(width, hmsc.getPreferredSize().height));
+        hmsc.setEditable(editable);
+        hmsc.addChangeListener(this);
+        return hmsc;
     }
 
     private AListComponent<?> createListComponent(final DetailAttribute attribute, Object value, boolean editable) {
@@ -1068,6 +1098,12 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         case TIME_COMPONENT:
             TimeComponent timeComponent = (TimeComponent) component;
             return timeComponent.getValue();
+        case YEAR_MON_DAY:
+            YearMonthDayComponent ymdc = (YearMonthDayComponent) component;
+            return ymdc.getValue();
+        case HOUR_MIN_SEC:
+            HourMinuteSecondComponent hmsc = (HourMinuteSecondComponent) component;
+            return hmsc.getValue();
         case ENTITY_CHOOSER:
             EntityChooser<?> entityField = (EntityChooser<?>) component;
             return entityField.getSelectedEntity();
@@ -1138,14 +1174,8 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
      * @since Apr 5, 2012
      */
     private final class DirtyCheckListener implements FocusListener {
-        /**
-         * 
-         */
         private final DetailAttribute attribute;
 
-        /**
-         * @param attribute
-         */
         private DirtyCheckListener(DetailAttribute attribute) {
             this.attribute = attribute;
         }
