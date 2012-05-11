@@ -3,12 +3,14 @@ package com.s3s.ssm.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.s3s.ssm.entity.finance.InvoicePayment;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.interfaces.sales.InvoiceService;
@@ -61,5 +63,12 @@ public class InvoiceServiceImpl extends AbstractModuleServiceImpl implements Inv
         dc.add(Restrictions.eq("invoiceNumber", code));
         Invoice invoice = getDaoHelper().getDao(Invoice.class).findFirstByCriteria(dc);
         return invoice;
+    }
+
+    public List<InvoicePayment> getInvoicePayments(Invoice invoice) {
+        DetachedCriteria dc = getDaoHelper().getDao(InvoicePayment.class).getCriteria();
+        dc.add(Restrictions.eq("invoice", invoice));
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        return getDaoHelper().getDao(InvoicePayment.class).findByCriteria(dc);
     }
 }

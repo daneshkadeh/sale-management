@@ -48,6 +48,7 @@ import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.entity.catalog.SPackage;
 import com.s3s.ssm.entity.catalog.Service;
 import com.s3s.ssm.entity.catalog.Voucher;
+import com.s3s.ssm.entity.catalog.WarrantyForm;
 import com.s3s.ssm.entity.config.Address;
 import com.s3s.ssm.entity.config.Bank;
 import com.s3s.ssm.entity.config.BankAccount;
@@ -1044,6 +1045,11 @@ public class SSMDataLoader {
         good.setStore(listStore.get(0));
         good.setFirstMaintainDate(DateTime.now().plusMonths(6).toDate());
         daoHelper.getDao(Article.class).saveOrUpdate(good);
+
+        WarrantyForm warrantyForm = new WarrantyForm();
+        warrantyForm.setArticle(good);
+        warrantyForm.setStartMaintainDate(new Date());
+        warrantyForm.setEndMaintainDate(DateUtils.addYears(new Date(), 1));
         return Arrays.asList(good);
     }
 

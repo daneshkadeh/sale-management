@@ -41,6 +41,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 public class ProductProperty extends AbstractCodeOLObject {
     private String name;
     private PropertyType type;
+    private ProductFamilyType productFamilyType = ProductFamilyType.GOODS;
     private List<ProductPropertyElement> elements = new ArrayList<>();
 
     public enum PropertyType {
@@ -84,5 +85,16 @@ public class ProductProperty extends AbstractCodeOLObject {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Column(name = "product_family_type", nullable = false, length = 32)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    public ProductFamilyType getProductFamilyType() {
+        return productFamilyType;
+    }
+
+    public void setProductFamilyType(ProductFamilyType productFamilyType) {
+        this.productFamilyType = productFamilyType;
     }
 }

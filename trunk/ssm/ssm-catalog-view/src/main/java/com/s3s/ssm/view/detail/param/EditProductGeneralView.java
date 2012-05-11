@@ -22,6 +22,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.catalog.ProductFamilyType;
+import com.s3s.ssm.entity.catalog.ProductProperty;
 import com.s3s.ssm.entity.catalog.ProductType;
 import com.s3s.ssm.entity.config.UploadFile;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
@@ -33,6 +34,8 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 public abstract class EditProductGeneralView<T extends Product> extends AbstractSingleEditView<T> {
     private static final long serialVersionUID = 4375985070956587330L;
     private static final String TYPE_REF_ID = "1";
+
+    private static final String REF_PROPERTIES_ID = "REF_PROPERTIES_ID";
 
     public EditProductGeneralView(Map<String, Object> entity) {
         super(entity);
@@ -53,6 +56,8 @@ public abstract class EditProductGeneralView<T extends Product> extends Abstract
         detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).referenceDataId(TYPE_REF_ID);
         detailDataModel.addAttribute("vatRate", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("description", DetailFieldType.TEXTAREA).editable(true);
+        detailDataModel.addAttribute("properties", DetailFieldType.MULTI_SELECT_LIST_BOX)
+                .referenceDataId(REF_PROPERTIES_ID).width(300);
     }
 
     protected void setReferenceDataModel(com.s3s.ssm.model.ReferenceDataModel refDataModel, T entity) {
@@ -60,6 +65,11 @@ public abstract class EditProductGeneralView<T extends Product> extends Abstract
         DetachedCriteria dc = getDaoHelper().getDao(ProductType.class).getCriteria();
         dc.add(Restrictions.eq("productFamilyType", getProductFamilyType()));
         refDataModel.putRefDataList(TYPE_REF_ID, getDaoHelper().getDao(ProductType.class).findByCriteria(dc), null);
+
+        DetachedCriteria goodPropertyDC = getDaoHelper().getDao(ProductProperty.class).getCriteria();
+        goodPropertyDC.add(Restrictions.eq("productFamilyType", getProductFamilyType()));
+        refDataModel.putRefDataList(REF_PROPERTIES_ID,
+                getDaoHelper().getDao(ProductProperty.class).findByCriteria(goodPropertyDC), null);
 
     };
 
@@ -74,6 +84,7 @@ public abstract class EditProductGeneralView<T extends Product> extends Abstract
 
     @Override
     protected T loadForEdit(List<String> eagerLoadedProperties) {
+        eagerLoadedProperties.add("properties");
         T product = super.loadForEdit(eagerLoadedProperties);
         if (product.getUploadFile() == null) {
             product.setUploadFile(new UploadFile());

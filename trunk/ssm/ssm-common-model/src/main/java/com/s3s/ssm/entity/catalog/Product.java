@@ -21,9 +21,12 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -42,14 +45,14 @@ import com.s3s.ssm.entity.config.UploadFile;
 public class Product extends AbstractCodeOLObject {
     private static final long serialVersionUID = 242255088169346711L;
     private String name;
-    // TODO: we should have a method to get and set id directly (with AOP approach)
-    // private Long manufacturerId;
 
     private ProductType type;
 
     private String description;
 
     private UploadFile uploadFile;
+
+    private Set<ProductProperty> properties = new HashSet<>();
 
     private Set<Item> listItems = new HashSet<>();
 
@@ -93,6 +96,21 @@ public class Product extends AbstractCodeOLObject {
 
     public void setUploadFile(UploadFile uploadFile) {
         this.uploadFile = uploadFile;
+    }
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(name = "at_product_property", joinColumns = { @JoinColumn(name = "product_id") }, inverseJoinColumns = { @JoinColumn(name = "property_id") })
+    public
+            Set<ProductProperty> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Set<ProductProperty> properties) {
+        this.properties = properties;
+    }
+
+    public void addProperty(ProductProperty property) {
+        properties.add(property);
     }
 
     // Can not use FetchType.EAGER. Refer to
