@@ -72,7 +72,7 @@ public class Partner extends AbstractActiveCodeOLObject {
     private Set<Individual> individuals = new HashSet<>();
     private Set<PartnerCategory> partnerCateSet = new HashSet<PartnerCategory>();
 
-    private ContactDebt contactDebt;
+    private ContactDebt contactDebt; // TODO: Add list contact debt for each currency, 1 default
     private Set<ContactDebtHistory> contactDebtHistories = new HashSet<ContactDebtHistory>();
 
     private Set<PartnerAddressLink> listAddressLinks = new HashSet<>();

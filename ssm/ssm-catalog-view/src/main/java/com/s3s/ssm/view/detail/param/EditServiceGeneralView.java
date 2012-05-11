@@ -16,6 +16,7 @@ public class EditServiceGeneralView extends EditProductGeneralView<Service> {
     @Override
     protected void addTabGeneral(DetailDataModel detailDataModel) {
         super.addTabGeneral(detailDataModel);
+
     }
 
     @Override

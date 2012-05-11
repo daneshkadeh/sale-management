@@ -33,7 +33,7 @@ public class Article extends AbstractIdOLObject {
     private String barcode;
     private Date firstMaintainDate;
     private Date secondMaintainDate;
-    private Store store;
+    private Store store; // This should be POS instead of store.
 
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)

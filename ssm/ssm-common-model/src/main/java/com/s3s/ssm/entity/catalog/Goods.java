@@ -1,18 +1,11 @@
 package com.s3s.ssm.entity.catalog;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -31,10 +24,12 @@ import com.s3s.ssm.model.Money;
 @Table(name = "ca_goods")
 @PrimaryKeyJoinColumn(name = "goods_id")
 public class Goods extends Product {
+    // TODO: we should have a method to get and set id directly (with AOP approach)
+    // private Long manufacturerId;
     private Manufacturer manufacturer;
     private String model;
     private UnitOfMeasure mainUom;
-    private Set<ProductProperty> properties = new HashSet<>();
+
     private Money originPrice; // price of product is overriden by price of item
     private Money baseSellPrice;
     private Long maintainPeriod = 0L; // Thoi han bao hanh
@@ -75,21 +70,6 @@ public class Goods extends Product {
 
     public void setMainUom(UnitOfMeasure mainUom) {
         this.mainUom = mainUom;
-    }
-
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    @JoinTable(name = "at_product_property", joinColumns = { @JoinColumn(name = "product_id") }, inverseJoinColumns = { @JoinColumn(name = "property_id") })
-    public
-            Set<ProductProperty> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Set<ProductProperty> properties) {
-        this.properties = properties;
-    }
-
-    public void addProperty(ProductProperty property) {
-        properties.add(property);
     }
 
     @Embedded

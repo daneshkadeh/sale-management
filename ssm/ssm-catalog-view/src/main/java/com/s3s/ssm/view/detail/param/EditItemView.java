@@ -16,7 +16,6 @@ package com.s3s.ssm.view.detail.param;
 
 import java.util.Map;
 
-import com.s3s.ssm.entity.catalog.Goods;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.ItemPropertyValue;
 import com.s3s.ssm.entity.catalog.Product;
@@ -26,7 +25,6 @@ import com.s3s.ssm.entity.catalog.ProductPropertyElement;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
-import com.s3s.ssm.util.DaoHelperImpl;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -66,8 +64,8 @@ public class EditItemView extends AbstractSingleEditView<Item> {
         detailDataModel.addAttribute("originPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
         detailDataModel.addAttribute("baseSellPrice", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
 
-        if (isGoodProduct(entity)) {
-            Goods good = DaoHelperImpl.downCast(Goods.class, entity.getProduct());
+        if (isProductWithProperties(entity)) {
+            Product good = entity.getProduct();
             for (ProductProperty property : good.getProperties()) {
                 ProductPropertyElement selectedElement = entity.getPropertyValue(property) != null ? entity
                         .getPropertyValue(property).getElement() : null;
@@ -84,16 +82,18 @@ public class EditItemView extends AbstractSingleEditView<Item> {
         return new ListComponentInfo(component, "item");
     }
 
-    private boolean isGoodProduct(Item entity) {
+    private boolean isProductWithProperties(Item entity) {
         return entity.getProduct() != null
-                && entity.getProduct().getType().getProductFamilyType() == ProductFamilyType.GOODS;
+                && (entity.getProduct().getType().getProductFamilyType() == ProductFamilyType.GOODS
+                        || entity.getProduct().getType().getProductFamilyType() == ProductFamilyType.SERVICE || entity
+                        .getProduct().getType().getProductFamilyType() == ProductFamilyType.VOUCHER);
     }
 
     @Override
     protected void bindingValue(Item entity, String name, Object value, DetailAttribute detailAttribute) {
         super.bindingValue(entity, name, value, detailAttribute);
-        if (isGoodProduct(entity)) {
-            Goods good = DaoHelperImpl.downCast(Goods.class, entity.getProduct());
+        if (isProductWithProperties(entity)) {
+            Product good = entity.getProduct();
             for (ProductProperty property : good.getProperties()) {
                 if (name.equals("FIELD_" + property.getId())) {
                     ItemPropertyValue propertyValue = entity.getPropertyValue(property);
@@ -117,8 +117,8 @@ public class EditItemView extends AbstractSingleEditView<Item> {
         // refDataModel.putRefDataList(REF_UOM_ID, Arrays.asList("0", "1", "2"), null);
 
         // put all references to properties
-        if (isGoodProduct(entity)) {
-            Goods good = DaoHelperImpl.downCast(Goods.class, entity.getProduct());
+        if (isProductWithProperties(entity)) {
+            Product good = entity.getProduct();
             for (ProductProperty property : good.getProperties()) {
                 refDataModel.putRefDataList("REF_" + property.getId(), property.getElements());
             }

@@ -61,6 +61,9 @@ public class EditInvoiceRefundView extends AbstractSingleEditView<Invoice> {
         detailDataModel.addAttribute("invoiceNumber", DetailFieldType.TEXTBOX).editable(false);
         detailDataModel.addAttribute("type", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_TYPE).newColumn();
         detailDataModel.addAttribute("createdDate", DetailFieldType.DATE);
+        detailDataModel.addRawAttribute("originInvoice", DetailFieldType.LABEL)
+                .value(entity.getOriginInvoice() != null ? entity.getOriginInvoice().getInvoiceNumber() : null)
+                .newColumn();
         // detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_STATUS)
         // .newColumn();
 
@@ -125,8 +128,10 @@ public class EditInvoiceRefundView extends AbstractSingleEditView<Invoice> {
         invoice.setInvoiceNumber(serviceProvider.getService(InvoiceService.class).getNextInvoiceNumber());
         invoice.setStaff(((OrgSalesContextProvider) contextProvider).getCurrentOperator());
 
+        // TODO: bug - detail invoice of service is not count in?
         Invoice salesInvoice = (Invoice) request.get(ListInvoiceRefundView.INVOICE_FORM);
         invoice.setContact(salesInvoice.getContact());
+        invoice.setOriginInvoice(salesInvoice);
         for (DetailInvoice detail : salesInvoice.getDetailInvoices()) {
             DetailInvoice refundDetail = detail.duplicate();
             refundDetail.setInvoice(invoice);

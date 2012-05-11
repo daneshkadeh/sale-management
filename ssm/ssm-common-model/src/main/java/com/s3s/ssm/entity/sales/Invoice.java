@@ -48,6 +48,7 @@ public class Invoice extends AbstractIdOLObject {
     private static final long serialVersionUID = 5993442648457138659L;
     private String invoiceNumber;
     private InvoiceType type;
+    private Invoice originInvoice;
     private Partner contact;
     private Operator staff;
     private Date createdDate;
@@ -90,6 +91,16 @@ public class Invoice extends AbstractIdOLObject {
 
     public void setType(InvoiceType type) {
         this.type = type;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "origin_invoice_id")
+    public Invoice getOriginInvoice() {
+        return originInvoice;
+    }
+
+    public void setOriginInvoice(Invoice originInvoice) {
+        this.originInvoice = originInvoice;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -38,6 +38,7 @@ import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.edit.IComponentInfo;
 import com.s3s.ssm.view.edit.ListComponentInfo;
+import com.s3s.ssm.view.util.SalesViewHelper;
 
 /**
  * This is sales invoice view.
@@ -92,15 +93,23 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         detailDataModel.addAttribute("detailInvoices", DetailFieldType.LIST).componentInfo(
                 createInvoiceDetailsComponentInfo());
 
-        detailDataModel.tab(ControlConfigUtils.getString("tab.EditInvoiceView.commissions"), null, null);
+        // detailDataModel.tab(ControlConfigUtils.getString("tab.EditInvoiceView.commissions"), null, null);
         detailDataModel.addAttribute("commissions", DetailFieldType.LIST)
                 .componentInfo(createCommissionComponentInfo());
-        detailDataModel.addRawAttribute("rawList", DetailFieldType.LIST).componentInfo(createPaymentComponentInfo())
-                .value(createPaymentComponentData()).editable(false);
 
+        detailDataModel.tab(ControlConfigUtils.getString("tab.EditInvoiceView.listPayments"), null, null);
+        detailDataModel.addRawAttribute("paymentList", DetailFieldType.LIST)
+                .componentInfo(SalesViewHelper.createPaymentComponentInfo())
+                .value(SalesViewHelper.createPaymentComponentData(entity)).editable(false);
+
+        // TODO: remove - Testing from Phuc
+        detailDataModel.tab(ControlConfigUtils.getString("Testing"), null, null);
+        detailDataModel.addRawAttribute("rawList", DetailFieldType.LIST)
+                .componentInfo(createTestPaymentComponentInfo()).value(createTestPaymentComponentData())
+                .editable(false);
     }
 
-    private List<TestDTO> createPaymentComponentData() {
+    private List<TestDTO> createTestPaymentComponentData() {
         TestDTO t1 = new TestDTO("value 1", "value 2", "value 3");
         TestDTO t2 = new TestDTO("value 4", "value 5", "value 6");
         TestDTO t3 = new TestDTO("value 7", "value 8", "value 9");
@@ -110,7 +119,7 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
     /**
      * @return
      */
-    private IComponentInfo createPaymentComponentInfo() {
+    private IComponentInfo createTestPaymentComponentInfo() {
         ListTestDTOComponent t = new ListTestDTOComponent(null, null, null);
         return new ListComponentInfo(t, null);
     }
