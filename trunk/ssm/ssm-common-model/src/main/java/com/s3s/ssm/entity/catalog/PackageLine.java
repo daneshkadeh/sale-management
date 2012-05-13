@@ -29,6 +29,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+
 import com.s3s.ssm.entity.AbstractIdOLObject;
 
 @Entity
@@ -129,6 +131,8 @@ public class PackageLine extends AbstractIdOLObject {
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "packageLine")
+    @Cascade(value = { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+            org.hibernate.annotations.CascadeType.DELETE_ORPHAN, org.hibernate.annotations.CascadeType.DELETE })
     public Set<PackageLineItemPrice> getItemPrices() {
         return itemPrices;
     }

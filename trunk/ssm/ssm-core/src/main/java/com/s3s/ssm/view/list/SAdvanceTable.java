@@ -57,6 +57,8 @@ import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
+import com.s3s.ssm.util.CacheDataService;
+import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.component.MoneyComponent;
 import com.s3s.ssm.view.edit.SearchComponentInfo;
@@ -74,6 +76,7 @@ public class SAdvanceTable extends JXTable {
     private ListDataModel listDataModel;
     private ReferenceDataModel refDataModel;
     private AdvanceTableModel<?> tableModel;
+    private CacheDataService cacheDataService = ConfigProvider.getInstance().getCacheDataService();
 
     public SAdvanceTable(AdvanceTableModel<?> tableModel, ListDataModel listDataModel, ReferenceDataModel refDataModel) {
         super(tableModel);
@@ -192,6 +195,15 @@ public class SAdvanceTable extends JXTable {
             TableColumn tc = getColumnModel().getColumn(i);
             ColumnModel cm = columnModels.get(i);
             TableCellEditor editor = null;
+            ReferenceData refData = null;
+            if (cm.getCacheDataId() != null) {
+                refData = refDataModel.new ReferenceData(cacheDataService.getReferenceDataList(cm.getCacheDataId()),
+                        null);
+                refDataModel.putRefDataList("CACHE_ID_" + cm.getCacheDataId(), refData);
+            } else {
+                refData = refDataModel.getRefDataListMap().get(cm.getReferenceDataId());
+            }
+
             switch (cm.getEditorType()) {
             case TEXTFIELD:
                 editor = new DefaultCellEditor(new JFormattedTextField());
@@ -203,14 +215,13 @@ public class SAdvanceTable extends JXTable {
                 editor = new DatePickerCellEditor();
                 break;
             case COMBOBOX:
-                Object[] listData = refDataModel.getRefDataListMap().get(cm.getReferenceDataId()).getValues().toArray();
+                Object[] listData = refData.getValues().toArray();
                 JComboBox<?> comboBox = new JComboBox<>(listData);
                 editor = new DefaultCellEditor(comboBox);
                 break;
             case MONEY:
-                ReferenceData refData = refDataModel.getRefDataListMap().get(cm.getReferenceDataId());
-                MoneyComponent moneyCom = new MoneyComponent(Money.zero(CurrencyEnum.VND)); // TODO Phuc get from
-                                                                                            // organization context
+                // TODO Phuc get from organization context
+                MoneyComponent moneyCom = new MoneyComponent(Money.zero(CurrencyEnum.VND));
                 editor = new MoneyCellEditor(moneyCom);
                 break;
             case SEARCH_COMPONENT:
