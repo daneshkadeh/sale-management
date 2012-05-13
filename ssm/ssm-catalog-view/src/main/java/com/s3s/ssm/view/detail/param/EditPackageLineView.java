@@ -1,5 +1,6 @@
 package com.s3s.ssm.view.detail.param;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -7,49 +8,25 @@ import org.hibernate.criterion.Restrictions;
 
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
-import com.s3s.ssm.entity.catalog.PackageLineItemPrice;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.catalog.SPackage;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
-import com.s3s.ssm.view.edit.AbstractEditView;
-import com.s3s.ssm.view.edit.AbstractMasterDetailView;
+import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
-import com.s3s.ssm.view.list.ListDataModel;
-import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
+import com.s3s.ssm.view.edit.IComponentInfo;
+import com.s3s.ssm.view.edit.ListComponentInfo;
 import com.s3s.ssm.view.list.param.ListPackageLineView;
 
 // TODO: will change to SingleEditView
 //public class EditPackageLineView extends AbstractSingleEditView<PackageLine> {
-public class EditPackageLineView extends AbstractMasterDetailView<PackageLine, PackageLineItemPrice> {
+public class EditPackageLineView extends AbstractSingleEditView<PackageLine> {
 
     private static final String REF_ITEMS = "REF_ITEMS";
 
     public EditPackageLineView(Map<String, Object> entity) {
         super(entity);
-    }
-
-    @Override
-    protected void initialListDetailPresentationView(ListDataModel listDataModel) {
-        listDataModel.addColumn("item", ListRendererType.TEXT);
-        listDataModel.addColumn("audienceCategory", ListRendererType.TEXT);
-        listDataModel.addColumn("sellPrice", ListRendererType.TEXT);
-    }
-
-    @Override
-    protected Class<? extends AbstractEditView<PackageLineItemPrice>> getChildDetailViewClass() {
-        return EditPackageLineItemPriceVirtualView.class;
-    }
-
-    @Override
-    protected String getParentFieldName() {
-        return "packageLine";
-    }
-
-    @Override
-    protected String getChildFieldName() {
-        return "itemPrices";
     }
 
     /**
@@ -65,6 +42,15 @@ public class EditPackageLineView extends AbstractMasterDetailView<PackageLine, P
         detailDataModel.addAttribute("maxItemAmount", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("explicitLinkItems", DetailFieldType.MULTI_SELECT_LIST_BOX).referenceDataId(
                 REF_ITEMS);
+        detailDataModel.addAttribute("itemPrices", DetailFieldType.LIST).componentInfo(
+                createListPLItemPriceElementInfo(entity));
+    }
+
+    private IComponentInfo createListPLItemPriceElementInfo(PackageLine entity) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("parent", entity);
+        ListPackageLineItemPriceComponent component = new ListPackageLineItemPriceComponent(params, null, null, null);
+        return new ListComponentInfo(component, "packageLine");
     }
 
     @Override

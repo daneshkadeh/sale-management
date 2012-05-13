@@ -37,6 +37,8 @@ public class ColumnModel {
     private boolean isEditable = true;
 
     private String referenceDataId;
+    private String cacheDataId;
+
     private IComponentInfo componentInfo;
 
     // For sorting.
@@ -144,6 +146,15 @@ public class ColumnModel {
                 "Reference data is now just supported for " + ListEditorType.COMBOBOX.toString() + " and "
                         + ListEditorType.MONEY + " type");
         this.referenceDataId = referenceDataId;
+        return this;
+    }
+
+    public String getCacheDataId() {
+        return cacheDataId;
+    }
+
+    public ColumnModel cacheDataId(String cacheDataId) {
+        this.cacheDataId = cacheDataId;
         return this;
     }
 

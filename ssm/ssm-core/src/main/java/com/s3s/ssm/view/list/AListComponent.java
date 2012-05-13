@@ -26,7 +26,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractListModel;
@@ -113,7 +115,24 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
     // This model is used by sub classes.
     protected ListDataModel listDataModel = new ListDataModel();
     private ReferenceDataModel refDataModel = new ReferenceDataModel();
+    private Map<String, Object> request = new HashMap<>();
 
+    public AListComponent(Map<String, Object> params, Icon icon, String label, String tooltip) {
+        this.request = params;
+        initialPresentationView(listDataModel);
+        this.refDataModel = initReferenceDataModel();
+
+        this.setLayout(new MigLayout("ins 0, wrap", "grow, fill", "[]0[]0[]0[]"));
+        // setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Test", TitledBorder.LEFT,
+        // TitledBorder.TOP));
+        insAction = new InsertRowAction();
+        deleteAction = new DeleteRowAction();
+
+        addComponents();
+        addKeyBindings();
+    }
+
+    @Deprecated
     public AListComponent(Icon icon, String label, String tooltip) {
         initialPresentationView(listDataModel);
         this.refDataModel = initReferenceDataModel();
@@ -580,6 +599,10 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
     public void setData(Collection<T> data) {
         mainTableModel.setData(data);
         mainTable.packAll();
+    }
+
+    protected Map<String, Object> getRequest() {
+        return request;
     }
 
     public DaoHelper getDaoHelper() {
