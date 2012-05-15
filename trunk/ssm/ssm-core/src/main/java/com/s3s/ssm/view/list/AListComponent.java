@@ -222,7 +222,7 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
     protected void addComponents() {
         // ///////////////// Init main table ////////////////////////////////
 
-        add(createButtonsPanel());
+        add(createButtonsToolbar());
 
         mainTableModel = new AdvanceTableModel<T>(listDataModel, new ArrayList<T>(), getEntityClass(), true,
                 getVisibleRowCount());
@@ -368,7 +368,7 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
     /**
      * @return
      */
-    private JToolBar createButtonsPanel() {
+    protected JToolBar createButtonsToolbar() {
         JToolBar tb = new JToolBar();
         tb.setFloatable(false);
         insBtn = new JButton(insAction);
@@ -583,7 +583,6 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
         public Class<?> getColumnClass(int columnIndex) {
             return mainTableModel.getColumnClass(columnIndex);
         }
-
     }
 
     public void setEditable(boolean editable) {

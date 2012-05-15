@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -15,6 +16,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.interfaces.report.IReportService;
 
 /*
@@ -60,10 +62,38 @@ public class ReportServiceImpl extends AbstractModuleServiceImpl implements IRep
         return getReport("/reports/report2.jasper", new HashMap<String, Object>());
     }
 
+    @Override
+    public JasperPrint getInvoicePrint(Long invoiceId) throws JRException, SQLException {
+        Invoice invoice = getDaoHelper().getDao(Invoice.class).findById(invoiceId);
+        Map<String, Object> param = new HashMap<>();
+        param.put("INVOICE_ID", invoiceId);
+        param.put("INVOICE_CODE", invoice.getInvoiceNumber());
+        param.put("INVOICE_DATE", invoice.getCreatedDate());
+        // DetailInvoice di = new DetailInvoice();
+        // di.setAmount(5);
+        // di.setProductName("productName1");
+        // DetailInvoice di1 = new DetailInvoice();
+        // di1.setAmount(2);
+        // di1.setProductName("productName2");
+        // DetailInvoice di2 = new DetailInvoice();
+        // di2.setAmount(4);
+        // di2.setProductName("productName3");
+        //
+        // JRDataSource ds = new JRBeanCollectionDataSource(Arrays.asList(di, di1, di2));
+
+        return getReport("/reports/invoice.jasper", param);
+
+    }
+
     private JasperPrint getReport(String filePath, Map<String, Object> reportParameters) throws JRException,
             SQLException {
         return JasperFillManager.fillReport(getClass().getResourceAsStream(filePath), reportParameters,
                 dataSource.getConnection());
+    }
+
+    private JasperPrint getReport(String filePath, Map<String, Object> reportParameters, JRDataSource ds)
+            throws JRException, SQLException {
+        return JasperFillManager.fillReport(getClass().getResourceAsStream(filePath), reportParameters, ds);
     }
 
     public DataSource getDataSource() {

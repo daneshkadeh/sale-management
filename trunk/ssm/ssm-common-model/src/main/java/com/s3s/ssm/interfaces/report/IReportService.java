@@ -26,4 +26,12 @@ import net.sf.jasperreports.engine.JasperPrint;
  */
 public interface IReportService {
     JasperPrint getBankingReport() throws JRException, SQLException;
+
+    /**
+     * @param invoiceId
+     * @return
+     * @throws SQLException
+     * @throws JRException
+     */
+    JasperPrint getInvoicePrint(Long invoiceId) throws JRException, SQLException;
 }

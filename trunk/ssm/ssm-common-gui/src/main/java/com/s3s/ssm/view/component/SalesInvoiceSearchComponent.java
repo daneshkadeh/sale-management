@@ -29,6 +29,7 @@ import com.s3s.ssm.entity.sales.InvoiceType;
  */
 
 public class SalesInvoiceSearchComponent extends InvoiceSearchComponent {
+    private static final long serialVersionUID = 6019569194341327903L;
 
     /**
      * {@inheritDoc}
