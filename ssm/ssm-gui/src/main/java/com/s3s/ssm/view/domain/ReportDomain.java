@@ -75,7 +75,7 @@ public class ReportDomain extends AbstractDomain {
             @Override
             protected JasperPrint getJasperPrint() {
                 try {
-                    return sp.getService(IReportService.class).getBankingReport();
+                    return sp.getService(IReportService.class).getInvoicePrint(1L);
                 } catch (JRException | SQLException e) {
                     e.printStackTrace();
                 }
@@ -112,6 +112,7 @@ public class ReportDomain extends AbstractDomain {
         rootNode.add(custDebtHistNode);
         rootNode.add(supDebtHistNode);
         rootNode.add(unsoldProductNode);
+        rootNode.add(reportTestNode);
     }
 
 }

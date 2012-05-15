@@ -42,7 +42,6 @@ import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
-import javax.swing.Box;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -316,7 +315,6 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         toolbar.add(btnSave);
         toolbar.add(btnSaveNew);
         // toolbar.add(btnSaveClose);
-        toolbar.add(Box.createHorizontalGlue());
         // toolbar.add(btnMinimize);
         // toolbar.add(btnFullScreen);
         // toolbar.add(btnExit);
@@ -855,6 +853,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
 
                 btnNew.setEnabled(true);
                 setSaveButtonsEnabled(false);
+                notifyPanel.setVisible(false);
                 return true;
             } catch (Exception e) {
                 for (StackTraceElement st : e.getStackTrace()) {

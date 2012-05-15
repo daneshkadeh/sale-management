@@ -1,15 +1,35 @@
 package com.s3s.ssm.view.detail.sales;
 
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTextArea;
+import javax.swing.JToolBar;
 import javax.swing.JViewport;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.swing.JRViewer;
 
 import com.s3s.ssm.context.OrgSalesContextProvider;
 import com.s3s.ssm.dto.finance.TestDTO;
@@ -17,6 +37,7 @@ import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.config.Address;
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.DetailInvoiceStatus;
 import com.s3s.ssm.entity.sales.DetailInvoiceType;
 import com.s3s.ssm.entity.sales.Invoice;
@@ -27,7 +48,10 @@ import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.interfaces.sales.InvoiceService;
 import com.s3s.ssm.model.ReferenceDataModel;
+import com.s3s.ssm.reports.bean.DetailInvoiceDataBean;
 import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.util.ImageConstants;
+import com.s3s.ssm.util.ImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.i18n.ControlConstants;
 import com.s3s.ssm.view.component.ComponentFactory;
@@ -210,6 +234,53 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         refDataModel.putRefDataList(REF_ITEM, getDaoHelper().getDao(Item.class).findAll());
         refDataModel.putRefDataList(REF_PACKLINE, getDaoHelper().getDao(PackageLine.class).findAll());
         refDataModel.putRefDataList(REF_CURRENCY, serviceProvider.getService(IConfigService.class).getCurrencyCodes());
+    }
+
+    @Override
+    protected JToolBar createToolBar() {
+        JToolBar tb = super.createToolBar();
+        tb.add(new JSeparator(SwingConstants.VERTICAL));
+
+        JButton printBtn = new JButton(ImageUtils.getSmallIcon(ImageConstants.PRINT_ICON));
+        printBtn.setText(ControlConfigUtils.getString("EditInvoiceView.print"));
+        printBtn.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog dialog = new JDialog(SwingUtilities.getWindowAncestor(EditInvoiceView2.this));
+                dialog.setModal(true);
+                Map<String, Object> param = new HashMap<>();
+                param.put("INVOICE_ID", entity.getId());
+                param.put("INVOICE_CODE", entity.getInvoiceNumber());
+                param.put("INVOICE_DATE", entity.getCreatedDate());
+                Collection<DetailInvoiceDataBean> data = createDetailInvoiceDataBean(entity.getDetailInvoices());
+                JRDataSource ds = new JRBeanCollectionDataSource(data);
+                try {
+                    JasperPrint jp = JasperFillManager.fillReport(
+                            getClass().getResourceAsStream("/reports/invoiceBeanDataResource.jasper"), param, ds);
+                    JRViewer jv = new JRViewer(jp);
+                    dialog.add(jv);
+                    dialog.setSize(new Dimension(500, 500));
+                    dialog.setLocationRelativeTo(null);
+                    dialog.setVisible(true);
+                } catch (JRException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+
+            }
+
+            private Collection<DetailInvoiceDataBean> createDetailInvoiceDataBean(Set<DetailInvoice> detailInvoices) {
+                List<DetailInvoiceDataBean> diDB = new ArrayList<DetailInvoiceDataBean>(detailInvoices.size());
+                for (DetailInvoice di : detailInvoices) {
+                    diDB.add(new DetailInvoiceDataBean(di));
+                }
+                return diDB;
+            }
+        });
+
+        tb.add(printBtn);
+        return tb;
     }
 
 }
