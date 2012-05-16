@@ -49,6 +49,10 @@ public abstract class AbstractEditView<T extends AbstractBaseIdObject> extends A
     public AbstractEditView(Map<String, Object> inputParams) {
         super(inputParams);
         EditActionEnum action = (EditActionEnum) request.get(PARAM_ACTION);
+        if (action == null) {
+            action = EditActionEnum.NEW;
+            request.put(PARAM_ACTION, action);
+        }
         if (action == EditActionEnum.NEW) {
             entity = loadForCreate(request);
         } else if (action == EditActionEnum.EDIT) {

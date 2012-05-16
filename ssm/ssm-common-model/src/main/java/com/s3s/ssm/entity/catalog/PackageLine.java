@@ -39,7 +39,7 @@ public class PackageLine extends AbstractIdOLObject {
     private SPackage pack;
     private PackageLine parentPackageLine; // will be implement later
     private Product product;
-    private Boolean isAllItem = false;
+    private Boolean isAllItem = true;
     private Set<Item> explicitLinkItems = new HashSet<>();
     private Boolean optional = false;
     private Integer minItemAmount = 1;

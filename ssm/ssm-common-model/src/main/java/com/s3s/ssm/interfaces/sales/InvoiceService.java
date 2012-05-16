@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.s3s.ssm.entity.finance.InvoicePayment;
 import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.store.ExportStoreForm;
 
 public interface InvoiceService {
     String getNextInvoiceNumber();
@@ -18,4 +19,6 @@ public interface InvoiceService {
     Invoice findInvoiceByCode(String code);
 
     List<InvoicePayment> getInvoicePayments(Invoice invoice);
+
+    List<ExportStoreForm> getInvoiceExportStores(Invoice invoice);
 }

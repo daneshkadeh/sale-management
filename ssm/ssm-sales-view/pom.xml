@@ -17,5 +17,15 @@
 			<artifactId>ssm-common-gui</artifactId>
 			<version>${ssm.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-store-view</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-finance-view</artifactId>
+			<version>${ssm.version}</version>
+		</dependency>
 	</dependencies>
 </project>

@@ -56,12 +56,15 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.i18n.ControlConstants;
 import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.component.MoneyComponent;
+import com.s3s.ssm.view.detail.finance.EditInvoicePaymentView;
+import com.s3s.ssm.view.detail.store.EditExportStoreFormView;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.edit.IComponentInfo;
 import com.s3s.ssm.view.edit.ListComponentInfo;
+import com.s3s.ssm.view.list.store.ListExportStoreFormView;
 import com.s3s.ssm.view.util.SalesViewHelper;
 
 /**
@@ -111,8 +114,8 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         detailDataModel.addRawAttribute("contact.info", DetailFieldType.TEXTAREA)
                 .value(getContactInfo(entity.getContact())).editable(false);
 
-        detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER).mandatory(true)
-                .componentInfo(ComponentFactory.createOperatorComponentInfo());
+        // detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER).mandatory(true)
+        // .componentInfo(ComponentFactory.createOperatorComponentInfo());
 
         detailDataModel.addAttribute("detailInvoices", DetailFieldType.LIST).componentInfo(
                 createInvoiceDetailsComponentInfo());
@@ -125,6 +128,11 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         detailDataModel.addRawAttribute("paymentList", DetailFieldType.LIST)
                 .componentInfo(SalesViewHelper.createPaymentComponentInfo())
                 .value(SalesViewHelper.createPaymentComponentData(entity)).editable(false);
+
+        detailDataModel.tab(ControlConfigUtils.getString("tab.EditInvoiceView.listExportStores"), null, null);
+        detailDataModel.addRawAttribute("exportStoreList", DetailFieldType.LIST)
+                .componentInfo(SalesViewHelper.createInvoiceExportStoreComponentInfo())
+                .value(SalesViewHelper.createExportStoreComponentData(entity)).editable(false);
 
         // TODO: remove - Testing from Phuc
         detailDataModel.tab(ControlConfigUtils.getString("Testing"), null, null);
@@ -279,8 +287,41 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
             }
         });
 
+        JButton createExStoreBtn = new JButton(ControlConfigUtils.getString("EditInvoice.createExportStoreBtn"));
+        createExStoreBtn.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Map<String, Object> params = new HashMap<>();
+                params.put(ListExportStoreFormView.INVOICE_FORM, getEntity());
+                EditExportStoreFormView exportStoreForm = new EditExportStoreFormView(params);
+                JDialog frame = new JDialog();
+                frame.add(exportStoreForm);
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
+
+        JButton createPayment = new JButton(ControlConfigUtils.getString("EditInvoice.createPaymentBtn"));
+        createPayment.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Map<String, Object> params = new HashMap<>();
+                params.put("invoice", getEntity());
+                EditInvoicePaymentView invoicePaymentForm = new EditInvoicePaymentView(params);
+                JDialog frame = new JDialog();
+                frame.add(invoicePaymentForm);
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
+
         tb.add(printBtn);
+        if (getEntity().isPersisted()) {
+            tb.add(createExStoreBtn);
+            tb.add(createPayment);
+        }
         return tb;
     }
-
 }
