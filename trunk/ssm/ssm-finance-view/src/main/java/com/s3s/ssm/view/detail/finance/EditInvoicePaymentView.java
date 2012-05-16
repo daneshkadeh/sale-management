@@ -21,6 +21,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.s3s.ssm.entity.finance.InvoicePayment;
+import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
@@ -50,8 +51,12 @@ public class EditInvoicePaymentView extends AbstractSingleEditView<InvoicePaymen
                 .componentInfo(ComponentFactory.createAccountantComponentInfo());
         detailDataModel.addAttribute("paymentContent", DetailFieldType.DROPDOWN).mandatory(true)
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_CONTENT);
+        boolean editableInvoice = true;
+        if (entity.getInvoice() != null) {
+            editableInvoice = false;
+        }
         detailDataModel.addAttribute("invoice", DetailFieldType.SEARCHER).mandatory(true)
-                .componentInfo(ComponentFactory.createInvoiceComponentInfo());
+                .componentInfo(ComponentFactory.createInvoiceComponentInfo()).editable(editableInvoice);
         detailDataModel.addAttribute("paymentMode", DetailFieldType.DROPDOWN)
                 .cacheDataId(CacheId.REF_LIST_PAYMENT_MODE);
         detailDataModel.addAttribute("amount", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
@@ -76,5 +81,17 @@ public class EditInvoicePaymentView extends AbstractSingleEditView<InvoicePaymen
             }
         });
 
+    }
+
+    @Override
+    protected InvoicePayment loadForCreate(Map<String, Object> request) {
+        InvoicePayment entity = super.loadForCreate(request);
+        if (request.get("invoice") != null) {
+            entity.setInvoice((Invoice) request.get("invoice"));
+        }
+        if (entity.getInvoice() != null) {
+            entity.setPartner(entity.getInvoice().getContact());
+        }
+        return entity;
     }
 }

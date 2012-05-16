@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.s3s.ssm.entity.finance.InvoicePayment;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
+import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.interfaces.sales.InvoiceService;
 
 @Transactional
@@ -70,5 +71,13 @@ public class InvoiceServiceImpl extends AbstractModuleServiceImpl implements Inv
         dc.add(Restrictions.eq("invoice", invoice));
         dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return getDaoHelper().getDao(InvoicePayment.class).findByCriteria(dc);
+    }
+
+    @Override
+    public List<ExportStoreForm> getInvoiceExportStores(Invoice invoice) {
+        DetachedCriteria dc = getDaoHelper().getDao(ExportStoreForm.class).getCriteria();
+        dc.add(Restrictions.eq("invoice", invoice));
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        return getDaoHelper().getDao(ExportStoreForm.class).findByCriteria(dc);
     }
 }
