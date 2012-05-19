@@ -396,7 +396,7 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
         } else if (e.getType() == TableModelEvent.INSERT) {
             doRowInsert(entities.get(e.getFirstRow()), entities);
         } else if (e.getType() == TableModelEvent.DELETE) {
-            doRowDelete(entities);
+            doRowDelete(entities.get(e.getFirstRow()), entities);
         }
         fireStateChange();
         mainTable.repaint();
@@ -432,7 +432,7 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
      * 
      * @param entities
      */
-    protected void doRowDelete(List<T> entities) {
+    protected void doRowDelete(T entity, List<T> entities) {
         // Template method
     }
 
@@ -606,5 +606,9 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
 
     public DaoHelper getDaoHelper() {
         return daoHelper;
+    }
+
+    public AdvanceTableModel<T> getMainTableModel() {
+        return mainTableModel;
     }
 }

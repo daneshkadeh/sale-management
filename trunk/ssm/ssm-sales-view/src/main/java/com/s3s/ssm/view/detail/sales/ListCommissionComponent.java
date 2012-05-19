@@ -59,8 +59,8 @@ public class ListCommissionComponent extends AListComponent<Commission> {
     }
 
     @Override
-    protected void doRowDelete(List<Commission> entities) {
-        super.doRowDelete(entities);
+    protected void doRowDelete(Commission entity, List<Commission> entities) {
+        super.doRowDelete(entity, entities);
         calSumCommission(entities);
     }
 

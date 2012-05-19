@@ -34,6 +34,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -57,8 +58,8 @@ public class DetailInvoice extends AbstractIdOLObject {
     private PackageLine packageLine;
     private DetailInvoice parent; // a package is parent detailInvoice, each line is a sub detailInvoice
     private Set<DetailInvoice> subs = new HashSet<>();
-    private UnitOfMeasure uom = new UnitOfMeasure();
-    private UnitOfMeasure baseUom = new UnitOfMeasure();
+    private UnitOfMeasure uom;
+    private UnitOfMeasure baseUom;
     private Integer amount = 0;
 
     // TODO: don't know why we have a lot of properties for price?
@@ -78,7 +79,6 @@ public class DetailInvoice extends AbstractIdOLObject {
     // Product name is get from product by default.
     private String productName;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     public Product getProduct() {
         return product;
@@ -156,6 +156,8 @@ public class DetailInvoice extends AbstractIdOLObject {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
     @LazyCollection(LazyCollectionOption.FALSE)
+    @Cascade(value = { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+            org.hibernate.annotations.CascadeType.DELETE_ORPHAN, org.hibernate.annotations.CascadeType.DELETE })
     public Set<DetailInvoice> getSubs() {
         return subs;
     }

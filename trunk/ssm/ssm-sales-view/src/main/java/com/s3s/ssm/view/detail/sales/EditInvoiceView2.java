@@ -193,7 +193,9 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
     }
 
     private IComponentInfo createInvoiceDetailsComponentInfo() {
-        AListInvoiceDetailComponent component = new AListInvoiceDetailComponent(null, null, null);
+        Map<String, Object> params = new HashMap<>();
+        params.put("parentObject", getEntity());
+        AListInvoiceDetailComponent component = new AListInvoiceDetailComponent(params, null, null, null);
         return new ListComponentInfo(component, "invoice");
     }
 
