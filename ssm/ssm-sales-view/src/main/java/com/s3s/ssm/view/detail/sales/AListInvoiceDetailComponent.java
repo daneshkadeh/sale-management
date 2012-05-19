@@ -1,11 +1,25 @@
 package com.s3s.ssm.view.detail.sales;
 
+import java.awt.Dialog;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JSeparator;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
+import com.s3s.ssm.entity.catalog.SPackage;
 import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.DetailInvoiceStatus;
 import com.s3s.ssm.entity.sales.DetailInvoiceType;
@@ -15,7 +29,9 @@ import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.ServiceProvider;
+import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.ComponentFactory;
+import com.s3s.ssm.view.component.EntityDialog;
 import com.s3s.ssm.view.list.AListComponent;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
@@ -38,6 +54,13 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
         calcuSumAmount(getData());
     }
 
+    public AListInvoiceDetailComponent(Map<String, Object> request, Icon icon, String label, String tooltip) {
+        super(request, icon, label, tooltip);
+
+        // TODO: need method document on ready. When first time load invoice view, totalAmounts is not init
+        calcuSumAmount(getData());
+    }
+
     @Override
     protected void initialPresentationView(ListDataModel listDataModel) {
         // TODO: must be search component for product or item?
@@ -48,9 +71,8 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
         listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable();
 
         // TODO: first work on item, do not apply package.
-        // listDataModel.addColumn("package", ListRendererType.TEXT);
-        // listDataModel.addColumn("packageLine", ListRendererType.TEXT, ListEditorType.COMBOBOX)
-        // .referenceDataId(REF_PACKLINE).notEditable();
+        listDataModel.addColumn("package", ListRendererType.TEXT).setRaw(true);
+        listDataModel.addColumn("packageLine", ListRendererType.TEXT).setRaw(true);
         listDataModel.addColumn("amount", ListRendererType.TEXT).summarized();
         listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UOM)
                 .notEditable();
@@ -96,8 +118,20 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
     }
 
     @Override
-    protected void doRowDelete(List<DetailInvoice> entities) {
-        super.doRowDelete(entities);
+    protected void doRowDelete(DetailInvoice entity, List<DetailInvoice> entities) {
+        if (entity != null && entity.getPackage() != null) {
+            if (entity.getParent() != null) {
+                entities.remove(entity.getParent());
+                entities.removeAll(entity.getParent().getSubs());
+            }
+            if (CollectionUtils.isNotEmpty(entity.getSubs())) {
+                entities.remove(entity);
+                entities.removeAll(entity.getSubs());
+            }
+        } else {
+            super.doRowDelete(entity, entities);
+        }
+
         calcuSumAmount(entities);
     }
 
@@ -116,5 +150,63 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
         refDataModel.putRefDataList(REF_CURRENCY, serviceProvider.getService(IConfigService.class).getCurrencyCodes());
         refDataModel.putRefDataList(REF_UOM, serviceProvider.getService(IConfigService.class).getUnitUom());
         return refDataModel;
+    }
+
+    @Override
+    protected JToolBar createButtonsToolbar() {
+        JToolBar tb = super.createButtonsToolbar();
+        tb.add(new JSeparator(SwingConstants.VERTICAL));
+        JButton packageBtn = new JButton(ControlConfigUtils.getString("AListInvoiceDetailComponent.packageBtn"));
+        packageBtn.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Open a popup to select package, then open sales package screen
+                // after finish input sales package, add packageLines to the listEntities (this table)
+
+                EntityDialog<SPackage> packageDialog = new EntityDialog<>(null, Dialog.ModalityType.APPLICATION_MODAL,
+                        daoHelper.getDao(SPackage.class).findAll());
+                packageDialog.setLocationRelativeTo(SwingUtilities.getRootPane(AListInvoiceDetailComponent.this));
+                packageDialog.setVisible(true);
+
+                Map<String, Object> detailParams = new HashMap<String, Object>();
+                if (packageDialog.isPressedOK() == 1) {
+                    SPackage selectedPackage = packageDialog.getSelectedEntity();
+                    detailParams.put("package", selectedPackage);
+                    detailParams.put("parentObject", getRequest().get("parentObject")); // parent object is invoice
+                } else {
+                    return; // do nothing
+                }
+
+                JDialog frame = new JDialog();
+                detailParams.put("parentDialog", frame);
+                EditDetailInvoicePackageView invoicePackageView = new EditDetailInvoicePackageView(detailParams);
+                frame.setLocationRelativeTo(SwingUtilities.getRootPane(AListInvoiceDetailComponent.this));
+                frame.add(invoicePackageView);
+                frame.pack();
+                frame.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                frame.setVisible(true);
+                if (invoicePackageView.isSaved()) {
+                    // add list detail invoices to the invoice view
+                    if (invoicePackageView.getEntity() != null) {
+                        getMainTableModel().addRowAt(getMainTableModel().getData().size(),
+                                invoicePackageView.getEntity());
+                        for (DetailInvoice sub : invoicePackageView.getEntity().getSubs()) {
+                            getMainTableModel().addRowAt(getMainTableModel().getData().size(), sub);
+                        }
+                    }
+                }
+
+                // Map<String, Object> params = new HashMap<>();
+                // params.put("invoice", getEntity());
+                // EditInvoicePaymentView invoicePaymentForm = new EditInvoicePaymentView(params);
+                // JDialog frame = new JDialog();
+                // frame.add(invoicePaymentForm);
+                // frame.pack();
+                // frame.setVisible(true);
+            }
+        });
+        tb.add(packageBtn);
+        return tb;
     }
 }

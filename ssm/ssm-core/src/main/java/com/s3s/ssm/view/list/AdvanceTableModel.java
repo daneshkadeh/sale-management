@@ -99,11 +99,15 @@ public class AdvanceTableModel<T> extends AbstractTableModel {
         T entity = entities.get(rowIndex);
         beanWrapper = new BeanWrapperImpl(entity);
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
-        Object value = beanWrapper.getPropertyValue(dataModel.getName());
-        if (!ObjectUtils.equals(value, aValue)) {
-            beanWrapper.setPropertyValue(dataModel.getName(), aValue);
-            fireTableCellUpdated(rowIndex, columnIndex);
+        // do not bind the property if it's raw. The sub class must bind this property manual
+        if (!dataModel.isRaw()) {
+            Object value = beanWrapper.getPropertyValue(dataModel.getName());
+            if (!ObjectUtils.equals(value, aValue)) {
+                beanWrapper.setPropertyValue(dataModel.getName(), aValue);
+                fireTableCellUpdated(rowIndex, columnIndex);
+            }
         }
+
     }
 
     public void addRowAt(int index, T entity) {
