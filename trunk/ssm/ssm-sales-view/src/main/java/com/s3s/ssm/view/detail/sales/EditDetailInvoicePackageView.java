@@ -100,7 +100,7 @@ public class EditDetailInvoicePackageView extends AbstractSingleEditView<DetailI
         detail.setPackage(line.getPackage());
         detail.setParent(entity);
 
-        // TODO: Price must get from Item and contact.
+        // TODO: Price must get from Item and contact. (not only Goods, but also Service)
         if (line.getProduct().getType().getProductFamilyType() == ProductFamilyType.GOODS) {
             Goods goods = DaoHelperImpl.downCast(Goods.class, line.getProduct());
             detail.setPriceAfterTax(goods.getBaseSellPrice());

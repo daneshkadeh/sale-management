@@ -25,7 +25,6 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.util.SClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
@@ -44,14 +43,16 @@ public class AdvanceTableModel<T> extends AbstractTableModel {
     private Class<T> clazz;
     private int visibleRowCount;
     protected BeanWrapper beanWrapper;
+    protected ICallbackAdvanceTableModel<T> iCallback;
 
     public AdvanceTableModel(ListDataModel listDataModel, List<T> entities, Class<T> clazz, boolean isEditable,
-            int visibleRowCount) {
+            int visibleRowCount, ICallbackAdvanceTableModel<T> iCallbackAdvanceTableModel) {
         this.listDataModel = listDataModel;
         this.entities = entities;
         this.isEditable = isEditable;
         this.clazz = clazz;
         this.visibleRowCount = visibleRowCount;
+        iCallback = iCallbackAdvanceTableModel;
     }
 
     @Override
@@ -69,9 +70,9 @@ public class AdvanceTableModel<T> extends AbstractTableModel {
             return null;
         }
         T entity = entities.get(rowIndex);
-        beanWrapper = new BeanWrapperImpl(entity);
+
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
-        return beanWrapper.getPropertyValue(dataModel.getName());
+        return iCallback.getAttributeValueCallback(entity, dataModel);
     }
 
     @Override
@@ -97,15 +98,13 @@ public class AdvanceTableModel<T> extends AbstractTableModel {
         }
 
         T entity = entities.get(rowIndex);
-        beanWrapper = new BeanWrapperImpl(entity);
+
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
-        // do not bind the property if it's raw. The sub class must bind this property manual
-        if (!dataModel.isRaw()) {
-            Object value = beanWrapper.getPropertyValue(dataModel.getName());
-            if (!ObjectUtils.equals(value, aValue)) {
-                beanWrapper.setPropertyValue(dataModel.getName(), aValue);
-                fireTableCellUpdated(rowIndex, columnIndex);
-            }
+
+        Object value = iCallback.getAttributeValueCallback(entity, dataModel);
+        if (!ObjectUtils.equals(value, aValue)) {
+            iCallback.setAttributeValueCallback(entity, dataModel, aValue);
+            fireTableCellUpdated(rowIndex, columnIndex);
         }
 
     }

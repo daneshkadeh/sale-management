@@ -67,6 +67,8 @@ import org.apache.commons.logging.LogFactory;
 import org.divxdede.swing.busy.DefaultBusyModel;
 import org.divxdede.swing.busy.JBusyComponent;
 import org.jdesktop.swingx.JXTable;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
@@ -109,7 +111,7 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
     private JButton delBtn;
 
     private AdvanceTableModel<T> mainTableModel;
-
+    private BeanWrapper beanWrapper;
     private List<ChangeListener> listeners = new ArrayList<>();
 
     // This model is used by sub classes.
@@ -145,6 +147,21 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
 
         addComponents();
         addKeyBindings();
+    }
+
+    public Object getAttributeValue(T entity, ColumnModel dataModel) {
+        BeanWrapper beanWrapper = new BeanWrapperImpl(entity);
+        return dataModel.isRaw() ? dataModel.getValue() : beanWrapper.getPropertyValue(dataModel.getName());
+    }
+
+    public void setAttributeValue(T entity, ColumnModel dataModel, Object aValue) {
+        // do not bind the property if it's raw. The sub class must bind this property manual
+        if (!dataModel.isRaw()) {
+            BeanWrapper beanWrapper = new BeanWrapperImpl(entity);
+            beanWrapper.setPropertyValue(dataModel.getName(), aValue);
+        } else {
+            dataModel.value(aValue);
+        }
     }
 
     protected void addKeyBindings() {
@@ -225,7 +242,18 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
         add(createButtonsToolbar());
 
         mainTableModel = new AdvanceTableModel<T>(listDataModel, new ArrayList<T>(), getEntityClass(), true,
-                getVisibleRowCount());
+                getVisibleRowCount(), new ICallbackAdvanceTableModel<T>() {
+
+                    @Override
+                    public Object getAttributeValueCallback(T entity, ColumnModel dataModel) {
+                        return getAttributeValue(entity, dataModel);
+                    }
+
+                    @Override
+                    public void setAttributeValueCallback(T entity, ColumnModel dataModel, Object aValue) {
+                        setAttributeValue(entity, dataModel, aValue);
+                    }
+                });
         mainTable = new SAdvanceTable(mainTableModel, listDataModel, refDataModel);
         mainTable.setVisibleRowCount(getVisibleRowCount());
 
