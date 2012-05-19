@@ -33,6 +33,7 @@ import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.ComponentFactory;
 import com.s3s.ssm.view.component.EntityDialog;
 import com.s3s.ssm.view.list.AListComponent;
+import com.s3s.ssm.view.list.ColumnModel;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
@@ -86,6 +87,17 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
                 REF_D_INVOICE_STATUS);
         listDataModel.addColumn("totalAmount", ListRendererType.TEXT).notEditable().summarized();
 
+    }
+
+    @Override
+    public Object getAttributeValue(DetailInvoice entity, ColumnModel dataModel) {
+        if ("package".equals(dataModel.getName())) {
+            return entity.getPackage() != null ? entity.getPackage().getCode() : "";
+        } else if ("packageLine".equals(dataModel.getName())) {
+            return entity.getPackageLine() != null ? entity.getPackageLine().getId() : "";
+        } else {
+            return super.getAttributeValue(entity, dataModel);
+        }
     }
 
     @Override
@@ -181,7 +193,7 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
                 JDialog frame = new JDialog();
                 detailParams.put("parentDialog", frame);
                 EditDetailInvoicePackageView invoicePackageView = new EditDetailInvoicePackageView(detailParams);
-                frame.setLocationRelativeTo(SwingUtilities.getRootPane(AListInvoiceDetailComponent.this));
+                // frame.setLocationRelativeTo(SwingUtilities.getRootPane(AListInvoiceDetailComponent.this));
                 frame.add(invoicePackageView);
                 frame.pack();
                 frame.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);

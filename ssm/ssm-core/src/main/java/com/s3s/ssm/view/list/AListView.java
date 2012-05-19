@@ -63,6 +63,8 @@ import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.error.ErrorInfo;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 import com.s3s.ssm.entity.IActiveObject;
 import com.s3s.ssm.export.exporter.DefaultExporterFactory;
@@ -357,7 +359,34 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
      * @return the model of the table.
      */
     protected TableModel createTableModel() {
-        return new AdvanceTableModel<T>(listDataModel, entities, getGenericClass(), false, getVisibleRowCount());
+        return new AdvanceTableModel<T>(listDataModel, entities, getGenericClass(), false, getVisibleRowCount(),
+                new ICallbackAdvanceTableModel<T>() {
+
+                    @Override
+                    public Object getAttributeValueCallback(T entity, ColumnModel dataModel) {
+                        return getAttributeValue(entity, dataModel);
+                    }
+
+                    @Override
+                    public void setAttributeValueCallback(T entity, ColumnModel dataModel, Object aValue) {
+                        setAttributeValue(entity, dataModel, aValue);
+                    }
+                });
+    }
+
+    public Object getAttributeValue(T entity, ColumnModel dataModel) {
+        BeanWrapper beanWrapper = new BeanWrapperImpl(entity);
+        return dataModel.isRaw() ? dataModel.getValue() : beanWrapper.getPropertyValue(dataModel.getName());
+    }
+
+    public void setAttributeValue(T entity, ColumnModel dataModel, Object aValue) {
+        // do not bind the property if it's raw. The sub class must bind this property manual
+        if (!dataModel.isRaw()) {
+            BeanWrapper beanWrapper = new BeanWrapperImpl(entity);
+            beanWrapper.setPropertyValue(dataModel.getName(), aValue);
+        } else {
+            dataModel.value(aValue);
+        }
     }
 
     /**

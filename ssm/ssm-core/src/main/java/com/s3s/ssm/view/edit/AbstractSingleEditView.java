@@ -413,7 +413,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             JComponent dataField = null;
             boolean isRaw = attribute.isRaw();
             boolean editable = attribute.isEditable();
-            Object value = isRaw ? attribute.getValue() : beanWrapper.getPropertyValue(attribute.getName());
+            Object value = getAttributeValue(getEntity(), attribute);
 
             ReferenceData referenceData = null;
             // cacheDataId is priority than referenceDataId
@@ -585,6 +585,18 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             }
         }
         return pnlEdit;
+    }
+
+    protected Object getAttributeValue(T entity, final DetailAttribute attribute) {
+        return attribute.isRaw() ? attribute.getValue() : beanWrapper.getPropertyValue(attribute.getName());
+    }
+
+    protected void setAttributeValue(T entity, DetailAttribute attribute, String name, Object value) {
+        if (!attribute.isRaw()) {
+            beanWrapper.setPropertyValue(name, value);
+        } else {
+            attribute.value(value);
+        }
     }
 
     private TimeComponent createTimeComponent(int width, Object value) {
@@ -943,7 +955,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         // The child class should override this
         if (!attribute.isRaw()) {
             if (attribute.getType() == DetailFieldType.LIST) {
-                Collection attributeValue = (Collection) beanWrapper.getPropertyValue(name);
+                Collection attributeValue = (Collection) getAttributeValue(getEntity(), attribute);
                 Collection componentValue = (Collection) value;
                 String parentName = ((ListComponentInfo) attribute.getComponentInfo()).getParentFieldName();
                 for (Object object : componentValue) {
@@ -955,7 +967,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 attributeValue.removeAll(attributeValue);
                 attributeValue.addAll(componentValue);
             } else {
-                beanWrapper.setPropertyValue(name, value);
+                setAttributeValue(getEntity(), attribute, name, value);
             }
         }
     }
@@ -1196,7 +1208,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             if (attribute.isRaw()) {
                 isDirty = !ObjectUtils.equals(value, attribute.getValue());
             } else {
-                isDirty = !ObjectUtils.equals(value, beanWrapper.getPropertyValue(attribute.getName()));
+                isDirty = !ObjectUtils.equals(value, getAttributeValue(getEntity(), attribute));
             }
             setSaveButtonsEnabled(isDirty);
         }
