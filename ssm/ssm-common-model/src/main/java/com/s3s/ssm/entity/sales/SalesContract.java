@@ -89,6 +89,7 @@ public class SalesContract extends AbstractCodeOLObject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id", nullable = false)
+    @NotNull
     public Partner getSupplier() {
         return supplier;
     }

@@ -64,12 +64,12 @@ public class ListImportStoreReportDataView extends AListDataView<GroupDetailImpo
         listDataModel.addColumn("supplierName", ListRendererType.TEXT);
         listDataModel.addColumn("productName", ListRendererType.TEXT);
         listDataModel.addColumn("itemName", ListRendererType.TEXT);
-        listDataModel.addColumn("storeName", ListRendererType.TEXT);
+        // listDataModel.addColumn("storeName", ListRendererType.TEXT);
         listDataModel.addColumn("quantity", ListRendererType.NUMBER).width(UIConstants.QTY_COLUMN_WIDTH);
     }
 
     @Override
-    protected List<GroupDetailImportData> loadData(int fistIndex, int maxResults) {
+    protected List<GroupDetailImportData> loadData(int firstIndex, int maxResults) {
         Date fromDate = fromDateComp.getDate();
         Date toDate = toDateComp.getDate();
         String salesContractCode = salesContactComp.getText();
@@ -87,6 +87,7 @@ public class ListImportStoreReportDataView extends AListDataView<GroupDetailImpo
      */
     @Override
     protected int calculateTotalPages() {
+        // TODO Phuc
         return 1;
     }
 
@@ -130,4 +131,10 @@ public class ListImportStoreReportDataView extends AListDataView<GroupDetailImpo
         fromDateComp.setDate(null);
         toDateComp.setDate(null);
     }
+
+    @Override
+    protected void performPrintAction() {
+        // TODO Phuc
+    }
+
 }

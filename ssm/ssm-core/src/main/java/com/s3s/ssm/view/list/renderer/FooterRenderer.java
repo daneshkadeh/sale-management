@@ -47,5 +47,4 @@ public class FooterRenderer extends JLabel implements TableCellRenderer {
         setOpaque(true);
         return this;
     }
-
 }

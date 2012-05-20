@@ -3,8 +3,8 @@ package com.s3s.ssm.view.domain;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
-import com.s3s.ssm.util.ImageConstants;
-import com.s3s.ssm.util.ImageUtils;
+import com.s3s.ssm.util.IziImageConstants;
+import com.s3s.ssm.util.IziImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
@@ -23,7 +23,7 @@ public class CatalogManagementDomain extends AbstractDomain {
     public CatalogManagementDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         super(treeScrollPane, contentScrollPane);
         setText(ControlConfigUtils.getString("JTree.CatalogDomain"));
-        setIcon(ImageUtils.getMediumIcon(ImageConstants.MENU_CATALOG_ICON));
+        setIcon(IziImageUtils.getMediumIcon(IziImageConstants.MENU_CATALOG_ICON));
     }
 
     @Override
@@ -35,12 +35,12 @@ public class CatalogManagementDomain extends AbstractDomain {
         TreeNodeWithView productManagementEntry = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.ProductManagement"));
         // UOM Category
-        ImageIcon uomCateIcon = ImageUtils.getMediumIcon(ImageConstants.UOM_CATE_ICON);
+        ImageIcon uomCateIcon = IziImageUtils.getMediumIcon(IziImageConstants.UOM_CATE_ICON);
         TreeNodeWithView uomCategoryNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.UomCategory"), new ListUomCategoryView(uomCateIcon,
                         ControlConfigUtils.getString("label.UnitOfMeasure.list.title"), null), uomCateIcon);
         // UOM
-        ImageIcon uomIcon = ImageUtils.getMediumIcon(ImageConstants.UOM_ICON);
+        ImageIcon uomIcon = IziImageUtils.getMediumIcon(IziImageConstants.UOM_ICON);
         TreeNodeWithView uomNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.System.UnitOfMeasure"),
                 new ListUnitOfMeasureView(uomIcon, ControlConfigUtils.getString("label.UnitOfMeasure.list.title"), null),

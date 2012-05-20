@@ -24,7 +24,7 @@ import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.s3s.ssm.util.ImageUtils;
+import com.s3s.ssm.util.IziImageUtils;
 
 /**
  * @author Phan Hong Phuc
@@ -38,7 +38,7 @@ public class SSplashScreen extends JWindow {
     public SSplashScreen() {
         super();
         JPanel panel = new JPanel(new MigLayout("ins 0, fill, wrap", "fill, grow"));
-        JLabel image = new JLabel(ImageUtils.getIcon("/images/iziRMS.png"));
+        JLabel image = new JLabel(IziImageUtils.getIcon("/images/iziRMS.png"));
         progressBar = new JProgressBar(0, 100);
         progressBar.setStringPainted(true);
         loadingInfo = new JLabel("Loading");

@@ -16,8 +16,8 @@ package com.s3s.ssm.view.domain;
 
 import javax.swing.JScrollPane;
 
-import com.s3s.ssm.util.ImageConstants;
-import com.s3s.ssm.util.ImageUtils;
+import com.s3s.ssm.util.IziImageConstants;
+import com.s3s.ssm.util.IziImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
@@ -38,7 +38,7 @@ public class ContactManagementDomain extends AbstractDomain {
     public ContactManagementDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         super(treeScrollPane, contentScrollPane);
         setText(ControlConfigUtils.getString("JTree.Contact.Management"));
-        setIcon(ImageUtils.getMediumIcon(ImageConstants.USER_ICON));
+        setIcon(IziImageUtils.getMediumIcon(IziImageConstants.USER_ICON));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ContactManagementDomain extends AbstractDomain {
                 ControlConfigUtils.getString("JTree.Contact.PartnerCategory"), new ListPartnerCategoryView()); // "Customer"
 
         TreeNodeWithView customerNode = new TreeNodeWithView(ControlConfigUtils.getString("JTree.Contact.Customer"),
-                new ListCustomerView(), ImageUtils.getMediumIcon(ImageConstants.USER_ICON)); // "Customer"
+                new ListCustomerView(), IziImageUtils.getMediumIcon(IziImageConstants.USER_ICON)); // "Customer"
         TreeNodeWithView supplierNode = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.Contact.SupplierContact"), new ListSupplierView()); // "Supplier"
         TreeNodeWithView nguoiDuocTaiTroNode = new TreeNodeWithView(

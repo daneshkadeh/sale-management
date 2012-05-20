@@ -23,9 +23,9 @@ import javax.swing.ImageIcon;
  * @author Phan Hong Phuc
  * 
  */
-public class ImageUtils {
+public class IziImageUtils {
 
-    private ImageUtils() {
+    private IziImageUtils() {
     }
 
     /**
@@ -35,7 +35,7 @@ public class ImageUtils {
      * @return
      */
     public static ImageIcon getIcon(String imagePath) {
-        return new ImageIcon(ImageUtils.class.getResource(imagePath));
+        return new ImageIcon(IziImageUtils.class.getResource(imagePath));
     }
 
     /**
@@ -45,19 +45,19 @@ public class ImageUtils {
      * @return
      */
     public static ImageIcon getSmallIcon(String imagePath) {
-        return getIcon(imagePath, ImageConstants.SMALL_SIZE);
+        return getIcon(imagePath, IziImageConstants.SMALL_SIZE);
     }
 
     public static ImageIcon getMediumIcon(String imagePath) {
-        return getIcon(imagePath, ImageConstants.MEDIUM_SIZE);
+        return getIcon(imagePath, IziImageConstants.MEDIUM_SIZE);
     }
 
     public static ImageIcon getBigIcon(String imagePath) {
-        return getIcon(imagePath, ImageConstants.BIG_SIZE);
+        return getIcon(imagePath, IziImageConstants.BIG_SIZE);
     }
 
     public static ImageIcon getIcon(String imagePath, int size) {
-        Image image = new ImageIcon(ImageUtils.class.getResource(imagePath)).getImage();
+        Image image = new ImageIcon(IziImageUtils.class.getResource(imagePath)).getImage();
         return new ImageIcon(image.getScaledInstance(size, size, Image.SCALE_SMOOTH));
     }
 

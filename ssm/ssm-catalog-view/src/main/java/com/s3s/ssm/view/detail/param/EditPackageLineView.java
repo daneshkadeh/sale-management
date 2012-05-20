@@ -22,7 +22,7 @@ import com.s3s.ssm.view.list.param.ListPackageLineView;
 // TODO: will change to SingleEditView
 //public class EditPackageLineView extends AbstractSingleEditView<PackageLine> {
 public class EditPackageLineView extends AbstractSingleEditView<PackageLine> {
-
+    private static final long serialVersionUID = 7174608379561854311L;
     private static final String REF_ITEMS = "REF_ITEMS";
 
     public EditPackageLineView(Map<String, Object> entity) {

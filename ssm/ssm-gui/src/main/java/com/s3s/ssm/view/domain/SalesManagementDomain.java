@@ -16,8 +16,8 @@ package com.s3s.ssm.view.domain;
 
 import javax.swing.JScrollPane;
 
-import com.s3s.ssm.util.ImageConstants;
-import com.s3s.ssm.util.ImageUtils;
+import com.s3s.ssm.util.IziImageConstants;
+import com.s3s.ssm.util.IziImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
@@ -37,7 +37,7 @@ public class SalesManagementDomain extends AbstractDomain {
     public SalesManagementDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         super(treeScrollPane, contentScrollPane);
         setText(ControlConfigUtils.getString("JTree.SalesManagement"));
-        setIcon(ImageUtils.getMediumIcon(ImageConstants.MENU_SALES_INVOICE_ICON));
+        setIcon(IziImageUtils.getMediumIcon(IziImageConstants.MENU_SALES_INVOICE_ICON));
     }
 
     @Override

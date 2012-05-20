@@ -21,9 +21,9 @@ import java.lang.reflect.Type;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 
-public final class SClassUtils extends ClassUtils {
+public final class IziClassUtils extends ClassUtils {
 
-    private SClassUtils() {
+    private IziClassUtils() {
     }
 
     /**
@@ -108,7 +108,7 @@ public final class SClassUtils extends ClassUtils {
         String[] paths = StringUtils.split(fieldName, '.');
         Class<?> c = clazz; // original class is class of current entity.
         for (String path : paths) {
-            c = SClassUtils.getGetterMethod(c, path).getReturnType();
+            c = IziClassUtils.getGetterMethod(c, path).getReturnType();
         }
         return c;
     }

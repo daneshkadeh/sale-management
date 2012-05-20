@@ -48,8 +48,8 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.s3s.ssm.util.ImageConstants;
-import com.s3s.ssm.util.ImageUtils;
+import com.s3s.ssm.util.IziImageConstants;
+import com.s3s.ssm.util.IziImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.domain.BuyManagementDomain;
@@ -263,11 +263,11 @@ public class MainProgram {
     }
 
     private static void initContextButtons() {
-        institutionBtn = new JToggleButton(ImageUtils.getSmallIcon(ImageConstants.INSTITUTION_ICON));
+        institutionBtn = new JToggleButton(IziImageUtils.getSmallIcon(IziImageConstants.INSTITUTION_ICON));
         institutionBtn.setText(ControlConfigUtils.getString("icon.tooltip.institution"));
-        organizationBtn = new JToggleButton(ImageUtils.getSmallIcon(ImageConstants.ORGANIZATION_ICON));
+        organizationBtn = new JToggleButton(IziImageUtils.getSmallIcon(IziImageConstants.ORGANIZATION_ICON));
         organizationBtn.setText(ControlConfigUtils.getString("icon.tooltip.organization"));
-        saleChannelBtn = new JToggleButton(ImageUtils.getSmallIcon(ImageConstants.SALECHANNEL_ICON));
+        saleChannelBtn = new JToggleButton(IziImageUtils.getSmallIcon(IziImageConstants.SALECHANNEL_ICON));
         saleChannelBtn.setText(ControlConfigUtils.getString("icon.tooltip.saleChannel"));
         ButtonGroup contextGroup = new ButtonGroup();
         contextGroup.add(institutionBtn);
