@@ -64,7 +64,7 @@ import org.springframework.beans.BeanWrapperImpl;
 import com.s3s.ssm.dao.IBaseDao;
 import com.s3s.ssm.entity.AbstractBaseIdObject;
 import com.s3s.ssm.util.ConfigProvider;
-import com.s3s.ssm.util.SClassUtils;
+import com.s3s.ssm.util.IziClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
 
@@ -99,7 +99,7 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
         this.displayAttribute = getDisplayAttributes();
         this.attributeColumns = getAttributeColumns();
         this.searchOnAttributes = getSearchedOnAttributes();
-        this.entityClass = (Class<T>) SClassUtils.getArgumentClass(getClass());
+        this.entityClass = (Class<T>) IziClassUtils.getArgumentClass(getClass());
         this.dao = ConfigProvider.getInstance().getDaoHelper().getDao(entityClass);
         suggestPanel = new JPanel();
         suggestPanel.setBackground(UIConstants.INFO_COLOR);
@@ -312,7 +312,7 @@ public abstract class ASearchComponent<T extends AbstractBaseIdObject> extends J
 
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            return SClassUtils.getClassOfField(attributeColumns[columnIndex], entityClass);
+            return IziClassUtils.getClassOfField(attributeColumns[columnIndex], entityClass);
         }
 
         @Override

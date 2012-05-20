@@ -75,9 +75,9 @@ import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.ConfigProvider;
 import com.s3s.ssm.util.DaoHelper;
-import com.s3s.ssm.util.ImageConstants;
-import com.s3s.ssm.util.ImageUtils;
-import com.s3s.ssm.util.SClassUtils;
+import com.s3s.ssm.util.IziClassUtils;
+import com.s3s.ssm.util.IziImageConstants;
+import com.s3s.ssm.util.IziImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.list.renderer.FooterRenderer;
@@ -89,7 +89,7 @@ import com.s3s.ssm.view.list.renderer.RowHeaderRenderer;
  * @author Phan Hong Phuc
  * @since Apr 21, 2012
  */
-public abstract class AListComponent<T> extends JPanel implements TableModelListener {
+public abstract class AListComponent<T> extends JPanel implements TableModelListener, ICallbackAdvanceTableModel<T> {
     private static final long serialVersionUID = -1311942671249671111L;
     private static final int NUM_ROW_VISIBLE = 10;
     private static final Log logger = LogFactory.getLog(AListComponent.class);
@@ -149,11 +149,13 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
         addKeyBindings();
     }
 
+    @Override
     public Object getAttributeValue(T entity, ColumnModel dataModel) {
         BeanWrapper beanWrapper = new BeanWrapperImpl(entity);
         return dataModel.isRaw() ? dataModel.getValue() : beanWrapper.getPropertyValue(dataModel.getName());
     }
 
+    @Override
     public void setAttributeValue(T entity, ColumnModel dataModel, Object aValue) {
         // do not bind the property if it's raw. The sub class must bind this property manual
         if (!dataModel.isRaw()) {
@@ -184,9 +186,14 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
         @Override
         public void actionPerformed(ActionEvent e) {
             if (isInsertRowAllowed) {
-                mainTableModel.addRowAt(mainTableModel.getData().size(), createNewEntity());
+                addRowAt(mainTableModel.getData().size(), createNewEntity());
             }
         }
+
+    }
+
+    protected void addRowAt(int index, T entity) {
+        mainTableModel.addRowAt(index, entity);
     }
 
     private class DeleteRowAction extends AbstractAction {
@@ -201,11 +208,12 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
                 if (option == JOptionPane.OK_OPTION) {
                     int[] selectedRows = mainTable.getSelectedRows();
                     int[] selectedModelRows = new int[selectedRows.length];
+
                     for (int i = 0; i < selectedRows.length; i++) {
                         int rowModelIndex = mainTable.convertRowIndexToModel(selectedRows[i]);
                         selectedModelRows[i] = rowModelIndex;
                     }
-                    mainTableModel.deleteRows(selectedRows);
+                    doRowDelete(selectedModelRows);
                 }
             }
         }
@@ -242,18 +250,7 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
         add(createButtonsToolbar());
 
         mainTableModel = new AdvanceTableModel<T>(listDataModel, new ArrayList<T>(), getEntityClass(), true,
-                getVisibleRowCount(), new ICallbackAdvanceTableModel<T>() {
-
-                    @Override
-                    public Object getAttributeValueCallback(T entity, ColumnModel dataModel) {
-                        return getAttributeValue(entity, dataModel);
-                    }
-
-                    @Override
-                    public void setAttributeValueCallback(T entity, ColumnModel dataModel, Object aValue) {
-                        setAttributeValue(entity, dataModel, aValue);
-                    }
-                });
+                getVisibleRowCount(), this);
         mainTable = new SAdvanceTable(mainTableModel, listDataModel, refDataModel);
         mainTable.setVisibleRowCount(getVisibleRowCount());
 
@@ -400,11 +397,11 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
         JToolBar tb = new JToolBar();
         tb.setFloatable(false);
         insBtn = new JButton(insAction);
-        insBtn.setIcon(ImageUtils.getSmallIcon(ImageConstants.INSERT_ROW_ICON));
+        insBtn.setIcon(IziImageUtils.getSmallIcon(IziImageConstants.INSERT_ROW_ICON));
         insBtn.setText(ControlConfigUtils.getString("AListComponent.insertRow"));
         insBtn.setToolTipText(ControlConfigUtils.getString("AListComponent.insertRow") + " (Ctrl+I)");
         delBtn = new JButton(deleteAction);
-        delBtn.setIcon(ImageUtils.getSmallIcon(ImageConstants.DEL_ROW_ICON));
+        delBtn.setIcon(IziImageUtils.getSmallIcon(IziImageConstants.DEL_ROW_ICON));
         delBtn.setText(ControlConfigUtils.getString("AListComponent.delRow"));
         delBtn.setToolTipText(ControlConfigUtils.getString("AListComponent.delRow") + " (Ctrl+D)");
         tb.add(insBtn);
@@ -423,9 +420,10 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
             doRowUpdated(attributeName, entities.get(e.getFirstRow()), entities);
         } else if (e.getType() == TableModelEvent.INSERT) {
             doRowInsert(entities.get(e.getFirstRow()), entities);
-        } else if (e.getType() == TableModelEvent.DELETE) {
-            doRowDelete(entities.get(e.getFirstRow()), entities);
         }
+        // else if (e.getType() == TableModelEvent.DELETE) {
+        // doRowDelete(entities.get(e.getFirstRow()), entities);
+        // }
         fireStateChange();
         mainTable.repaint();
         mainTable.revalidate();
@@ -456,12 +454,13 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
     }
 
     /**
-     * Perform after a row is deleted.
+     * Perform delete rows.
      * 
-     * @param entities
+     * @param deletedIndex
+     *            the index of rows to delete
      */
-    protected void doRowDelete(T entity, List<T> entities) {
-        // Template method
+    protected void doRowDelete(int[] deletedIndex) {
+        mainTableModel.deleteRows(deletedIndex);
     }
 
     public void setInsertRowAllowed(boolean allowed) {
@@ -531,7 +530,7 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
 
     @SuppressWarnings("unchecked")
     protected Class<T> getEntityClass() {
-        return (Class<T>) SClassUtils.getArgumentClass(getClass());
+        return (Class<T>) IziClassUtils.getArgumentClass(getClass());
     }
 
     private class FooterTableModel extends AbstractTableModel {
@@ -546,7 +545,7 @@ public abstract class AListComponent<T> extends JPanel implements TableModelList
         public Object getValueAt(int rowIndex, int columnIndex) {
             ColumnModel column = listDataModel.getColumns().get(columnIndex);
             if (column.isSummarized()) {
-                Class<?> fieldClass = SClassUtils.getClassOfField(column.getName(), getEntityClass());
+                Class<?> fieldClass = IziClassUtils.getClassOfField(column.getName(), getEntityClass());
                 if (ClassUtils.isAssignable(fieldClass, Integer.class)) {
                     int sum = 0;
                     for (int i = 0; i < mainTableModel.getRowCount(); i++) {

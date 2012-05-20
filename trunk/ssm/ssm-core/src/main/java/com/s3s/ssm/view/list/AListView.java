@@ -73,9 +73,9 @@ import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.security.ACLResourceEnum;
 import com.s3s.ssm.security.CustomPermission;
 import com.s3s.ssm.util.ConfigProvider;
-import com.s3s.ssm.util.ImageConstants;
-import com.s3s.ssm.util.ImageUtils;
-import com.s3s.ssm.util.SClassUtils;
+import com.s3s.ssm.util.IziClassUtils;
+import com.s3s.ssm.util.IziImageConstants;
+import com.s3s.ssm.util.IziImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.AbstractView;
@@ -88,7 +88,8 @@ import com.s3s.ssm.view.list.renderer.RowHeaderRenderer;
  * @author Phan Hong Phuc
  * @since May 1, 2012
  */
-public abstract class AListView<T> extends AbstractView implements IPageChangeListener, IViewLazyLoadable {
+public abstract class AListView<T> extends AbstractView implements IPageChangeListener, IViewLazyLoadable,
+        ICallbackAdvanceTableModel<T> {
     private static final long serialVersionUID = -1311942671249671111L;
     private static final String ADD_ACTION_KEY = "addAction";
     // TODO It should get from the property "defPageRowNum" of BasicInformation in ssm-config
@@ -359,26 +360,16 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
      * @return the model of the table.
      */
     protected TableModel createTableModel() {
-        return new AdvanceTableModel<T>(listDataModel, entities, getGenericClass(), false, getVisibleRowCount(),
-                new ICallbackAdvanceTableModel<T>() {
-
-                    @Override
-                    public Object getAttributeValueCallback(T entity, ColumnModel dataModel) {
-                        return getAttributeValue(entity, dataModel);
-                    }
-
-                    @Override
-                    public void setAttributeValueCallback(T entity, ColumnModel dataModel, Object aValue) {
-                        setAttributeValue(entity, dataModel, aValue);
-                    }
-                });
+        return new AdvanceTableModel<T>(listDataModel, entities, getGenericClass(), false, getVisibleRowCount(), this);
     }
 
+    @Override
     public Object getAttributeValue(T entity, ColumnModel dataModel) {
         BeanWrapper beanWrapper = new BeanWrapperImpl(entity);
         return dataModel.isRaw() ? dataModel.getValue() : beanWrapper.getPropertyValue(dataModel.getName());
     }
 
+    @Override
     public void setAttributeValue(T entity, ColumnModel dataModel, Object aValue) {
         // do not bind the property if it's raw. The sub class must bind this property manual
         if (!dataModel.isRaw()) {
@@ -398,32 +389,32 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
         JToolBar buttonToolbar = new JToolBar();
         buttonToolbar.setRollover(true);
         buttonToolbar.setFloatable(false);
-        btnNew = new JButton(ImageUtils.getSmallIcon(ImageConstants.NEW_ICON));
+        btnNew = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.NEW_ICON));
         btnNew.setToolTipText(ControlConfigUtils.getString("default.button.create"));
         btnNew.addActionListener(newAction);
         btnNew.setVisible(isShowNewButton());
 
-        btnDelete = new JButton(ImageUtils.getSmallIcon(ImageConstants.DELETE_ICON));
+        btnDelete = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.DELETE_ICON));
         btnDelete.setToolTipText(ControlConfigUtils.getString("default.button.delete"));
         btnDelete.addActionListener(deleteAction);
         btnDelete.setVisible(isShowDeleteButton());
 
-        btnEdit = new JButton(ImageUtils.getSmallIcon(ImageConstants.EDIT_ICON));
+        btnEdit = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.EDIT_ICON));
         btnEdit.setToolTipText(ControlConfigUtils.getString("default.button.edit"));
         btnEdit.addActionListener(editAction);
         btnEdit.setVisible(isShowEditButton());
 
-        btnExport = new JButton(ImageUtils.getSmallIcon(ImageConstants.EXPORT_ICON));
+        btnExport = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.EXPORT_ICON));
         btnExport.setToolTipText(ControlConfigUtils.getString("default.button.export"));
         btnExport.addActionListener(exportAction);
         btnExport.setVisible(isShowExportButton());
 
-        btnPrint = new JButton(ImageUtils.getSmallIcon(ImageConstants.PRINT_ICON));
+        btnPrint = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.PRINT_ICON));
         btnPrint.setToolTipText(ControlConfigUtils.getString("default.button.print"));
         btnPrint.addActionListener(printAction);
         btnPrint.setVisible(isShowPrintButton());
 
-        btnRefresh = new JButton(ImageUtils.getSmallIcon(ImageConstants.REFRESH_ICON));
+        btnRefresh = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.REFRESH_ICON));
         btnRefresh.setToolTipText(ControlConfigUtils.getString("default.button.refresh"));
         btnRefresh.addActionListener(new ActionListener() {
             @Override
@@ -440,7 +431,7 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
 
         // TODO: check security for this button
         if (IActiveObject.class.isAssignableFrom(getGenericClass()) && isShowActivateButton()) {
-            btnActivate = new JButton(ImageUtils.getSmallIcon(ImageConstants.ACTIVATE_ICON));
+            btnActivate = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.ACTIVATE_ICON));
             btnActivate.setToolTipText(ControlConfigUtils.getString("default.button.activate"));
             btnActivate.addActionListener(new ActionListener() {
                 @Override
@@ -450,7 +441,7 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
             });
             buttonToolbar.add(btnActivate);
 
-            btnInactivate = new JButton(ImageUtils.getSmallIcon(ImageConstants.INACTIVATE_ICON));
+            btnInactivate = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.INACTIVATE_ICON));
             btnInactivate.setToolTipText(ControlConfigUtils.getString("default.button.inactivate"));
             btnInactivate.addActionListener(new ActionListener() {
                 @Override
@@ -480,7 +471,7 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
     protected abstract void clearCriteria();
 
     protected JPanel createSearchButtonsPanel() {
-        JButton btnSearch = new JButton(ImageUtils.getSmallIcon(ImageConstants.SEARCH_ICON));
+        JButton btnSearch = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.SEARCH_ICON));
         btnSearch.setText(ControlConfigUtils.getString("button.text.search"));
         btnSearch.addActionListener(new ActionListener() {
             @Override
@@ -491,7 +482,7 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
         Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
         btnSearch.setCursor(handCursor);
 
-        JButton btnClear = new JButton(ImageUtils.getSmallIcon(ImageConstants.CLEAR_ICON));
+        JButton btnClear = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.CLEAR_ICON));
         btnClear.setText(ControlConfigUtils.getString("button.text.clearCriteria"));
         btnClear.setToolTipText(ControlConfigUtils.getString("tooltip.clearCriteria"));
         btnClear.addActionListener(new ActionListener() {
@@ -516,7 +507,7 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
         Color backgroundColor = new Color(200, 200, 255);
         JXTaskPane pane = new JXTaskPane();
         pane.setTitle(ControlConfigUtils.getString("label.search.searchTitle"));
-        pane.setIcon(ImageUtils.getSmallIcon(ImageConstants.SEARCH_ICON));
+        pane.setIcon(IziImageUtils.getSmallIcon(IziImageConstants.SEARCH_ICON));
         pane.setCollapsed(false);
         pane.getContentPane().setBackground(backgroundColor);
         JPanel searchPanel = createSearchPanel();
@@ -583,7 +574,7 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
 
     @SuppressWarnings("unchecked")
     protected Class<T> getGenericClass() {
-        return (Class<T>) SClassUtils.getArgumentClass(getClass());
+        return (Class<T>) IziClassUtils.getArgumentClass(getClass());
     }
 
     protected void performNewAction() {

@@ -28,8 +28,8 @@ import com.s3s.ssm.entity.contact.IndividualTitleEnum;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
-import com.s3s.ssm.util.ImageConstants;
-import com.s3s.ssm.util.ImageUtils;
+import com.s3s.ssm.util.IziImageConstants;
+import com.s3s.ssm.util.IziImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.i18n.ControlConstants;
 import com.s3s.ssm.view.component.MoneyComponent;
@@ -59,7 +59,7 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
     protected void
             initialPresentationView(DetailDataModel detailDataModel, Partner entity, Map<String, Object> request) {
         detailDataModel.tab(ControlConfigUtils.getString(ControlConstants.MESSAGE_KEY_GENERAL),
-                "Common information of supplier", ImageUtils.getMediumIcon(ImageConstants.USER_ICON));
+                "Common information of supplier", IziImageUtils.getMediumIcon(IziImageConstants.USER_ICON));
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX).newColumn();

@@ -26,7 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
 
-import com.s3s.ssm.util.SClassUtils;
+import com.s3s.ssm.util.IziClassUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 
 /**
@@ -72,7 +72,7 @@ public class AdvanceTableModel<T> extends AbstractTableModel {
         T entity = entities.get(rowIndex);
 
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
-        return iCallback.getAttributeValueCallback(entity, dataModel);
+        return iCallback.getAttributeValue(entity, dataModel);
     }
 
     @Override
@@ -101,9 +101,9 @@ public class AdvanceTableModel<T> extends AbstractTableModel {
 
         ColumnModel dataModel = listDataModel.getColumns().get(columnIndex);
 
-        Object value = iCallback.getAttributeValueCallback(entity, dataModel);
+        Object value = iCallback.getAttributeValue(entity, dataModel);
         if (!ObjectUtils.equals(value, aValue)) {
-            iCallback.setAttributeValueCallback(entity, dataModel, aValue);
+            iCallback.setAttributeValue(entity, dataModel, aValue);
             fireTableCellUpdated(rowIndex, columnIndex);
         }
 
@@ -150,7 +150,7 @@ public class AdvanceTableModel<T> extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return SClassUtils.getClassOfField(listDataModel.getColumns().get(columnIndex).getName(), clazz);
+        return IziClassUtils.getClassOfField(listDataModel.getColumns().get(columnIndex).getName(), clazz);
     }
 
     public boolean isEditable() {

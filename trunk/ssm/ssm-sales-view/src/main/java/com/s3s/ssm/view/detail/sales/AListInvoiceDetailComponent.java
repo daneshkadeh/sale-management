@@ -130,7 +130,10 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
     }
 
     @Override
-    protected void doRowDelete(DetailInvoice entity, List<DetailInvoice> entities) {
+    protected void doRowDelete(int[] deletedIndex) {
+        List<DetailInvoice> entities = getData();
+        // TODO Bang: remove all deleted rows instead of the first row
+        DetailInvoice entity = entities.get(deletedIndex[0]);
         if (entity != null && entity.getPackage() != null) {
             if (entity.getParent() != null) {
                 entities.remove(entity.getParent());
@@ -141,9 +144,8 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
                 entities.removeAll(entity.getSubs());
             }
         } else {
-            super.doRowDelete(entity, entities);
+            super.doRowDelete(deletedIndex);
         }
-
         calcuSumAmount(entities);
     }
 

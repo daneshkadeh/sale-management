@@ -19,7 +19,7 @@ package com.s3s.ssm.util;
  * @author Phan Hong Phuc
  * 
  */
-public class ImageConstants {
+public class IziImageConstants {
     public static final int SMALL_SIZE = 20;
     public static final int MEDIUM_SIZE = 32;
     public static final int BIG_SIZE = 64;

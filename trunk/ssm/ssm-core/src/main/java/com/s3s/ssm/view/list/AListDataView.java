@@ -55,7 +55,7 @@ public abstract class AListDataView<T> extends AListView<T> {
 
     @Override
     protected boolean isShowPrintButton() {
-        return false;
+        return true;
     }
 
 }

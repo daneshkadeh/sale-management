@@ -24,8 +24,8 @@ import javax.swing.border.LineBorder;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.s3s.ssm.util.ImageConstants;
-import com.s3s.ssm.util.ImageUtils;
+import com.s3s.ssm.util.IziImageConstants;
+import com.s3s.ssm.util.IziImageUtils;
 
 /**
  * The panel to show the notify message.
@@ -50,7 +50,7 @@ public class NotifyPanel extends JPanel {
         FlowLayout flowLayout = (FlowLayout) getLayout();
         flowLayout.setAlignment(FlowLayout.LEFT);
         label = new JLabel();
-        label.setIcon(ImageUtils.getIcon(ImageConstants.INFO_ICON));
+        label.setIcon(IziImageUtils.getIcon(IziImageConstants.INFO_ICON));
         label.setForeground(Color.GREEN);
         setBorder(new LineBorder(Color.GREEN, 1, true));
         add(label);
@@ -82,16 +82,16 @@ public class NotifyPanel extends JPanel {
 
     public void setNotifyKind(NotifyKind kind) {
         if (kind == NotifyKind.INFORMATION) {
-            label.setIcon(ImageUtils.getIcon(ImageConstants.INFO_ICON));
+            label.setIcon(IziImageUtils.getIcon(IziImageConstants.INFO_ICON));
             label.setForeground(Color.GREEN);
             setBorder(new LineBorder(Color.GREEN, 1, true));
         } else if (kind == NotifyKind.WARNING) {
             // TODO Phuc: Change info icon to warning icon
-            label.setIcon(ImageUtils.getIcon(ImageConstants.INFO_ICON));
+            label.setIcon(IziImageUtils.getIcon(IziImageConstants.INFO_ICON));
             label.setForeground(Color.YELLOW);
             setBorder(new LineBorder(Color.YELLOW, 1, true));
         } else if (kind == NotifyKind.ERROR) {
-            label.setIcon(ImageUtils.getIcon(ImageConstants.ERROR_ICON));
+            label.setIcon(IziImageUtils.getIcon(IziImageConstants.ERROR_ICON));
             label.setForeground(Color.RED);
             setBorder(new LineBorder(Color.RED, 1, true));
         }

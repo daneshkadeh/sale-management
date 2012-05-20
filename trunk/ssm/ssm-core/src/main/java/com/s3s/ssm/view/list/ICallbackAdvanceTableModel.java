@@ -8,7 +8,7 @@ package com.s3s.ssm.view.list;
  * @param <T>
  */
 public interface ICallbackAdvanceTableModel<T> {
-    public Object getAttributeValueCallback(T entity, ColumnModel dataModel);
+    Object getAttributeValue(T entity, ColumnModel dataModel);
 
-    public void setAttributeValueCallback(T entity, ColumnModel dataModel, Object aValue);
+    void setAttributeValue(T entity, ColumnModel dataModel, Object aValue);
 }

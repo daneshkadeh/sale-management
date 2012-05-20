@@ -101,8 +101,8 @@ import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.model.ReferenceDataModel.ReferenceData;
-import com.s3s.ssm.util.ImageConstants;
-import com.s3s.ssm.util.ImageUtils;
+import com.s3s.ssm.util.IziImageConstants;
+import com.s3s.ssm.util.IziImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.ISavedListener;
@@ -252,7 +252,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
         toolbar.setFloatable(false);
-        btnSave = new JButton(ImageUtils.getSmallIcon(ImageConstants.SAVE_ICON));
+        btnSave = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.SAVE_ICON));
         btnSave.setToolTipText(ControlConfigUtils.getString("default.button.save"));
         btnSave.addActionListener(saveAction);
         btnSave.setEnabled(false);
@@ -267,7 +267,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         // }
         // });
 
-        btnSaveNew = new JButton(ImageUtils.getSmallIcon(ImageConstants.SAVE_NEW_ICON));
+        btnSaveNew = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.SAVE_NEW_ICON));
         btnSaveNew.setToolTipText(ControlConfigUtils.getString("edit.button.saveNew"));
         btnSaveNew.addActionListener(new ActionListener() {
             @Override
@@ -279,7 +279,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         });
         btnSaveNew.setEnabled(false);
 
-        btnNew = new JButton(ImageUtils.getSmallIcon(ImageConstants.NEW_ICON));
+        btnNew = new JButton(IziImageUtils.getSmallIcon(IziImageConstants.NEW_ICON));
         btnNew.setEnabled(entity.isPersisted());
         btnNew.setToolTipText(ControlConfigUtils.getString("edit.button.new"));
         btnNew.addActionListener(newAction);
@@ -413,7 +413,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             JComponent dataField = null;
             boolean isRaw = attribute.isRaw();
             boolean editable = attribute.isEditable();
-            Object value = getAttributeValue(getEntity(), attribute);
+            Object value = isRaw ? attribute.getValue() : beanWrapper.getPropertyValue(attribute.getName());
 
             ReferenceData referenceData = null;
             // cacheDataId is priority than referenceDataId
@@ -576,7 +576,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             // Validate the field when lost focus.
             dataField.addFocusListener(new DirtyCheckListener(attribute));
             dataField.setEnabled(!isReadOnly());
-            JLabel errorIcon = new JLabel(ImageUtils.getIcon(ImageConstants.ERROR_ICON));
+            JLabel errorIcon = new JLabel(IziImageUtils.getIcon(IziImageConstants.ERROR_ICON));
             errorIcon.setVisible(false);
             name2AttributeComponent.put(attribute.getName(), new AttributeComponent(lblLabel, dataField, errorIcon));
             if (attribute.getType() != DetailFieldType.LIST) {
@@ -585,18 +585,6 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             }
         }
         return pnlEdit;
-    }
-
-    protected Object getAttributeValue(T entity, final DetailAttribute attribute) {
-        return attribute.isRaw() ? attribute.getValue() : beanWrapper.getPropertyValue(attribute.getName());
-    }
-
-    protected void setAttributeValue(T entity, DetailAttribute attribute, String name, Object value) {
-        if (!attribute.isRaw()) {
-            beanWrapper.setPropertyValue(name, value);
-        } else {
-            attribute.value(value);
-        }
     }
 
     private TimeComponent createTimeComponent(int width, Object value) {
@@ -955,7 +943,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
         // The child class should override this
         if (!attribute.isRaw()) {
             if (attribute.getType() == DetailFieldType.LIST) {
-                Collection attributeValue = (Collection) getAttributeValue(getEntity(), attribute);
+                Collection attributeValue = (Collection) beanWrapper.getPropertyValue(name);
                 Collection componentValue = (Collection) value;
                 String parentName = ((ListComponentInfo) attribute.getComponentInfo()).getParentFieldName();
                 for (Object object : componentValue) {
@@ -967,7 +955,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
                 attributeValue.removeAll(attributeValue);
                 attributeValue.addAll(componentValue);
             } else {
-                setAttributeValue(getEntity(), attribute, name, value);
+                beanWrapper.setPropertyValue(name, value);
             }
         }
     }
@@ -1208,7 +1196,7 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             if (attribute.isRaw()) {
                 isDirty = !ObjectUtils.equals(value, attribute.getValue());
             } else {
-                isDirty = !ObjectUtils.equals(value, getAttributeValue(getEntity(), attribute));
+                isDirty = !ObjectUtils.equals(value, beanWrapper.getPropertyValue(attribute.getName()));
             }
             setSaveButtonsEnabled(isDirty);
         }

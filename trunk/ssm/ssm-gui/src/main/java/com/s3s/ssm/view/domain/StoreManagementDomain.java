@@ -16,8 +16,8 @@ package com.s3s.ssm.view.domain;
 
 import javax.swing.JScrollPane;
 
-import com.s3s.ssm.util.ImageConstants;
-import com.s3s.ssm.util.ImageUtils;
+import com.s3s.ssm.util.IziImageConstants;
+import com.s3s.ssm.util.IziImageUtils;
 import com.s3s.ssm.util.i18n.ControlConfigUtils;
 import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.component.AbstractDomain;
@@ -43,7 +43,7 @@ public class StoreManagementDomain extends AbstractDomain {
     public StoreManagementDomain(JScrollPane treeScrollPane, JScrollPane contentScrollPane) {
         super(treeScrollPane, contentScrollPane);
         setText(ControlConfigUtils.getString("JTree.Store.InventoryManagement"));
-        setIcon(ImageUtils.getMediumIcon(ImageConstants.WAREHOUSE_ICON));
+        setIcon(IziImageUtils.getMediumIcon(IziImageConstants.WAREHOUSE_ICON));
     }
 
     @Override

@@ -30,7 +30,7 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
-import com.s3s.ssm.util.ImageUtils;
+import com.s3s.ssm.util.IziImageUtils;
 import com.s3s.ssm.util.view.UIConstants;
 import com.s3s.ssm.view.TreeNodeWithView.NodeValue;
 
@@ -83,7 +83,7 @@ public class TreeView extends JTree implements TreeSelectionListener {
         if (node.isLeaf() && viewOfNode == null) {
             viewOfNode = new JPanel();
             viewOfNode.setBackground(Color.WHITE);
-            viewOfNode.add(new JLabel(ImageUtils.getIcon("/icons/Under-Construction.jpg")));
+            viewOfNode.add(new JLabel(IziImageUtils.getIcon("/icons/Under-Construction.jpg")));
         }
         if (viewOfNode instanceof IViewLazyLoadable) {
             ((IViewLazyLoadable) viewOfNode).loadView();
