@@ -28,6 +28,7 @@ import org.apache.commons.lang.math.NumberUtils;
 
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
+import com.s3s.ssm.entity.finance.InvoicePayment;
 import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.store.ClosingStoreEntry;
@@ -39,6 +40,7 @@ import com.s3s.ssm.entity.store.InventoryStoreForm;
 import com.s3s.ssm.entity.store.ShipPrice;
 import com.s3s.ssm.entity.store.ShipPriceType;
 import com.s3s.ssm.entity.store.Store;
+import com.s3s.ssm.interfaces.finance.IFinanceService;
 import com.s3s.ssm.interfaces.store.IStoreService;
 import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
@@ -58,7 +60,7 @@ public class StoreViewHelper extends ViewHelper {
         return mPriceSubtotal;
     }
 
-    public static ExportStoreForm initExportStoreForm(ExportStoreForm form, Invoice invoice) {
+    public static void initExportStoreForm(ExportStoreForm form, final Invoice invoice) {
         form.setInvoice(invoice);
         form.setCustCode(invoice.getContact().getCode());
         form.setCustName(invoice.getContact().getName());
@@ -74,7 +76,13 @@ public class StoreViewHelper extends ViewHelper {
         default:
             break;
         }
-        return form;
+    }
+
+    public static void initInvoicePayment(InvoicePayment invPayment, final Invoice invoice) {
+        // get all of last payment for invoice
+        Money lastPaidAmt = serviceProvider.getService(IFinanceService.class).getPayAmt4Invoice(invoice);
+        invPayment.setAmount(lastPaidAmt);
+        invPayment.setInvoice(invoice);
     }
 
     public static InventoryStoreForm initInventoryStoreForm(InventoryStoreForm form, Store store) {

@@ -45,7 +45,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * @author Le Thanh Hoang
  * 
  */
-public class ListUnsoldProductStatisticView extends AListDataView<UnsoldProductDTO> {
+public class ListUnsoldProductStatistic extends AListDataView<UnsoldProductDTO> {
     private static final long serialVersionUID = -1244668202484079391L;
     private MultiSelectionListBox mulStListBox;
     private JXDatePicker fromDateComp;

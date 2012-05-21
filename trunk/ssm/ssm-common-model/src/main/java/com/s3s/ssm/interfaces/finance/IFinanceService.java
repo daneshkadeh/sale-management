@@ -47,4 +47,6 @@ public interface IFinanceService {
     public List<CustDebtHistoryDTO> getDebtHistory(String partnerCode, Date fromDate, Date toDate);
 
     public Money getFirstTermDebt(Partner partner, Date date);
+
+    public Money getPayAmt4Invoice(Invoice invoice);
 }

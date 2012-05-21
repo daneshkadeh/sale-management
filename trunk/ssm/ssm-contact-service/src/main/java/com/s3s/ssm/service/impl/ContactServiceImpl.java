@@ -1,5 +1,6 @@
 package com.s3s.ssm.service.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.s3s.ssm.dto.contact.CustEncouragementDTO;
+import com.s3s.ssm.dto.contact.LongDebtCustDTO;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.contact.PartnerProfileTypeEnum;
 import com.s3s.ssm.interfaces.contact.IContactService;
@@ -60,4 +63,21 @@ public class ContactServiceImpl extends AbstractModuleServiceImpl implements ICo
         return getDaoHelper().getDao(Partner.class).findByCriteria(dc);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    // TODO: Bang implement bellow function
+    @Override
+    public List<CustEncouragementDTO> statisticCustEncouragement(Partner customer) {
+        return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    // TODO: Bang implement bellow function
+    @Override
+    public List<LongDebtCustDTO> statisticLongDebtCust(Partner customer) {
+        return Collections.EMPTY_LIST;
+    }
 }
