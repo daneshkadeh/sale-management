@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.entity.store.ExportStoreForm;
 import com.s3s.ssm.interfaces.report.IReportService;
 
 /*
@@ -83,6 +84,27 @@ public class ReportServiceImpl extends AbstractModuleServiceImpl implements IRep
 
         return getReport("/reports/invoice.jasper", param);
 
+    }
+
+    public JasperPrint getExportStoreFormPrint(Long formId) throws JRException, SQLException {
+        ExportStoreForm form = getDaoHelper().getDao(ExportStoreForm.class).findById(formId);
+        Map<String, Object> param = new HashMap<>();
+        param.put("ID", formId);
+        param.put("CODE", form);
+        param.put("DATE", form.getCreatedDate());
+        // DetailInvoice di = new DetailInvoice();
+        // di.setAmount(5);
+        // di.setProductName("productName1");
+        // DetailInvoice di1 = new DetailInvoice();
+        // di1.setAmount(2);
+        // di1.setProductName("productName2");
+        // DetailInvoice di2 = new DetailInvoice();
+        // di2.setAmount(4);
+        // di2.setProductName("productName3");
+        //
+        // JRDataSource ds = new JRBeanCollectionDataSource(Arrays.asList(di, di1, di2));
+
+        return getReport("/reports/invoice.jasper", param);
     }
 
     private JasperPrint getReport(String filePath, Map<String, Object> reportParameters) throws JRException,

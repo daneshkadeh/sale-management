@@ -34,7 +34,6 @@ import com.s3s.ssm.view.component.AbstractDomain;
 import com.s3s.ssm.view.statistic.store.ListCustDebtHistoryView;
 import com.s3s.ssm.view.statistic.store.ListImportStoreReportDataView;
 import com.s3s.ssm.view.statistic.store.ListSupDebtHistoryView;
-import com.s3s.ssm.view.statistic.store.ListUnsoldProductStatisticView;
 
 /**
  * All views of report and warning alerts.
@@ -98,9 +97,9 @@ public class ReportDomain extends AbstractDomain {
         supDebtHistNode.setView(new ListSupDebtHistoryView());
 
         // Manage Unsold product
-        TreeNodeWithView unsoldProductNode = new TreeNodeWithView(
-                ControlConfigUtils.getString("JTree.Report.UnsoldProductStatistic"));
-        unsoldProductNode.setView(new ListUnsoldProductStatisticView());
+        // TreeNodeWithView unsoldProductNode = new TreeNodeWithView(
+        // ControlConfigUtils.getString("JTree.Report.UnsoldProductStatistic"));
+        // unsoldProductNode.setView(new ListUnsoldProductStatisticView());
 
         rootNode.add(baoDongKichCauNode);
         rootNode.add(baoDongHetHangNode);
@@ -111,7 +110,7 @@ public class ReportDomain extends AbstractDomain {
         rootNode.add(importStoreNode);
         rootNode.add(custDebtHistNode);
         rootNode.add(supDebtHistNode);
-        rootNode.add(unsoldProductNode);
+        // rootNode.add(unsoldProductNode);
         rootNode.add(reportTestNode);
     }
 

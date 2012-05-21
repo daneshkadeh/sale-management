@@ -189,6 +189,20 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
         return Money.create(CurrencyEnum.VND, 0L);
     }
 
+    public Money getPayAmt4Invoice(Invoice invoice) {
+        // TODO: now only handle VND. should find out a way to handle multiple currencies
+        Money result = Money.create(CurrencyEnum.VND, 0L);
+        DetachedCriteria dc = DetachedCriteria.forClass(InvoicePayment.class).add(
+                Property.forName("invoice").eq(invoice));
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<InvoicePayment> invPaymentList = getDaoHelper().getDao(InvoicePayment.class).findAll();
+        for (InvoicePayment invoicePayment : invPaymentList) {
+            Money amt = invoicePayment.getAmount();
+            result = result.plus(amt);
+        }
+        return result;
+    }
+
     private ClosingFinanceEntry getLatestClosingFinanceEntry() {
         DetachedCriteria subselectDc = getDaoHelper().getDao(ClosingFinanceEntry.class).getCriteria();
         subselectDc.setProjection(Property.forName("closingDate").max());

@@ -19,6 +19,8 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.entity.store.ExportStoreForm;
@@ -71,9 +73,7 @@ public class ListExportStoreFormView extends ANonSearchListEntityView<ExportStor
             String title = ControlConfigUtils.getString("label.ExportDialog.title");
             String code = (String) JOptionPane.showInputDialog(this.getParent(), message, title,
                     JOptionPane.PLAIN_MESSAGE, null, null, null);
-            if (code == null) {
-                return false;
-            } else if ("".equals(code)) {
+            if (StringUtils.isEmpty(code)) {
                 return false;
             }
             Invoice invoice = serviceProvider.getService(InvoiceService.class).findInvoiceByCode(code);
@@ -93,7 +93,7 @@ public class ListExportStoreFormView extends ANonSearchListEntityView<ExportStor
                 JOptionPane.showMessageDialog(this.getParent(), message, title, JOptionPane.PLAIN_MESSAGE);
                 return false;
             default:
-                return false;
+                throw new RuntimeException("Export status of invoice is not supported");
             }
         }
         return true;
