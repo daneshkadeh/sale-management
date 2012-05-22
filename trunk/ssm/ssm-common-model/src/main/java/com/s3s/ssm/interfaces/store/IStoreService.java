@@ -73,7 +73,7 @@ public interface IStoreService {
 
     public ExportStoreForm getLatestExportStoreForm(String invoiceNumber);
 
-    public List<GroupDetailImportData> statisticImportStoreData(String salesContractCode, String storeCode,
+    public List<GroupDetailImportData> getStatisticImportStoreData(String salesContractCode, String storeCode,
             String productCode, Date fromDate, Date toDate);
 
     List<UnsoldProductDTO> statisticUnsoldProduct(List<Product> products, Store store, Date fromDate, Date toDate);
@@ -81,4 +81,15 @@ public interface IStoreService {
     ClosingStoreEntry getLatestClosingStoreEntry(Store store, Date date);
 
     List<MoveStoreOrder> getMoveStoreOrders();
+
+    /**
+     * @param salesContractCode
+     * @param storeCode
+     * @param productCode
+     * @param fromDate
+     * @param toDate
+     * @return
+     */
+    int getStatisticImportStoreDataCount(String salesContractCode, String storeCode, String productCode, Date fromDate,
+            Date toDate);
 }

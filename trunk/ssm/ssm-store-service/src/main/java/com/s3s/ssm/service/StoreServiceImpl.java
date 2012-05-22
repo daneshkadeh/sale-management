@@ -386,13 +386,14 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
     }
 
     @Override
-    public List<GroupDetailImportData> statisticImportStoreData(String salesContractCode, String storeCode,
+    public List<GroupDetailImportData> getStatisticImportStoreData(String salesContractCode, String storeCode,
             String productCode, Date fromDate, Date toDate) {
         DetachedCriteria dc = createStatisticImportStoreDataCriteria(salesContractCode, storeCode, productCode,
                 fromDate, toDate);
         return (List) getDaoHelper().getDao(DetailImportStore.class).findByCriteria(dc);
     }
 
+    @Override
     public int getStatisticImportStoreDataCount(String salesContractCode, String storeCode, String productCode,
             Date fromDate, Date toDate) {
         DetachedCriteria dc = createStatisticImportStoreDataCriteria(salesContractCode, storeCode, productCode,
@@ -403,29 +404,34 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
     public DetachedCriteria createStatisticImportStoreDataCriteria(String salesContractCode, String storeCode,
             String productCode, Date fromDate, Date toDate) {
         DetachedCriteria dc = getDaoHelper().getDao(DetailImportStore.class).getCriteria();
+        dc.createCriteria("importStoreForm", "isf").createCriteria("isf.salesContract", "sc")
+                .createCriteria("isf.store", "st").createCriteria("sc.supplier", "sup");
+        dc.createCriteria("product", "p");
+        dc.createCriteria("item", "it");
+        dc.createCriteria("uom", "u");
         ProjectionList projectionList = Projections.projectionList()
-                .add(Projections.property("importStoreForm.createdDate"), "importingDate")
-                .add(Projections.property("importStoreForm.salesContract.code"), "salesContractCode")
-                .add(Projections.property("importStoreForm.store.name"), "storeName")
-                .add(Projections.property("importStoreForm.salesContract.supplier.name"), "supplierName")
-                .add(Projections.property("product.name"), "productName")
-                .add(Projections.property("item.sumUomName"), "itemName")
-                .add(Projections.property("uom.name"), "uomName").add(Projections.property("quantity"), "quantity");
+                .add(Projections.property("isf.createdDate"), "importingDate")
+                .add(Projections.property("sc.code"), "salesContractCode")
+                .add(Projections.property("st.name"), "storeName")
+                .add(Projections.property("sup.name"), "supplierName")
+                .add(Projections.property("p.name"), "productName")
+                .add(Projections.property("it.sumUomName"), "itemName").add(Projections.property("u.name"), "uomName")
+                .add(Projections.property("quantity"), "quantity");
 
         if (StringUtils.isNotBlank(salesContractCode)) {
-            dc.add(Restrictions.ilike("salesContract.code", salesContractCode, MatchMode.ANYWHERE));
+            dc.add(Restrictions.ilike("sc.code", salesContractCode, MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotBlank(storeCode)) {
-            dc.add(Restrictions.ilike("store.code", storeCode, MatchMode.ANYWHERE));
+            dc.add(Restrictions.ilike("st.code", storeCode, MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotBlank(productCode)) {
             dc.add(Restrictions.ilike("p.code", productCode, MatchMode.ANYWHERE));
         }
         if (fromDate != null) {
-            dc.add(Restrictions.ge("form.createdDate", fromDate));
+            dc.add(Restrictions.ge("isf.createdDate", fromDate));
         }
         if (toDate != null) {
-            dc.add(Restrictions.le("form.createdDate", toDate));
+            dc.add(Restrictions.le("isf.createdDate", toDate));
         }
         dc.setProjection(projectionList);
         dc.setResultTransformer(new AliasToBeanResultTransformer(GroupDetailImportData.class));

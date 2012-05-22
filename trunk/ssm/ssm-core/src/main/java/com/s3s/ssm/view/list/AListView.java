@@ -260,8 +260,8 @@ public abstract class AListView<T> extends AbstractView implements IPageChangeLi
         pagingNavigator.addPageChangeListener(this);
         contentPane.add(pagingNavigator);
 
-        entities.removeAll(entities);
-        entities.addAll(loadData(0, getPageSize()));
+        // entities.removeAll(entities);
+        // entities.addAll(loadData(0, getPageSize()));
         refDataModel = initReferenceDataModel();
 
         // ///////////////// Init main table ////////////////////////////////
