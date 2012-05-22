@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
@@ -108,6 +109,10 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
         getDaoHelper().getDao(InvoicePayment.class).saveOrUpdate(payment);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void processClosingFinanceEntry() {
         List<Partner> partnerList = serviceProvider.getService(IContactService.class).getPartners();
         ClosingFinanceEntry newClosingEntry = new ClosingFinanceEntry();
@@ -128,6 +133,9 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
         getDaoHelper().getDao(ClosingFinanceEntry.class).saveOrUpdate(newClosingEntry);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<CustDebtHistoryDTO> getDebtHistory(String partnerCode, Date fromDate, Date toDate) {
         List<CustDebtHistoryDTO> result = new ArrayList<CustDebtHistoryDTO>();
@@ -176,6 +184,9 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Money getFirstTermDebt(Partner partner, Date date) {
         // DetachedCriteria subselectDc = getDaoHelper().getDao(DetailClosingFinance.class).getCriteria();
@@ -189,18 +200,32 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
         return Money.create(CurrencyEnum.VND, 0L);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Money getPayAmt4Invoice(Invoice invoice) {
         // TODO: now only handle VND. should find out a way to handle multiple currencies
         Money result = Money.create(CurrencyEnum.VND, 0L);
-        DetachedCriteria dc = DetachedCriteria.forClass(InvoicePayment.class).add(
-                Property.forName("invoice").eq(invoice));
-        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        List<InvoicePayment> invPaymentList = getDaoHelper().getDao(InvoicePayment.class).findAll();
+        List<InvoicePayment> invPaymentList = getInvoicePayment(invoice);
         for (InvoicePayment invoicePayment : invPaymentList) {
             Money amt = invoicePayment.getAmount();
             result = result.plus(amt);
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<InvoicePayment> getInvoicePayment(Invoice invoice) {
+        DetachedCriteria dc = DetachedCriteria.forClass(InvoicePayment.class).add(
+                Property.forName("invoice").eq(invoice));
+        dc.addOrder(Order.asc("paymentDate"));
+        dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<InvoicePayment> invPaymentList = getDaoHelper().getDao(InvoicePayment.class).findAll();
+        return invPaymentList;
     }
 
     private ClosingFinanceEntry getLatestClosingFinanceEntry() {

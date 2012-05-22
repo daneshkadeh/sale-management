@@ -21,6 +21,7 @@ import java.util.List;
 
 import com.s3s.ssm.dto.finance.CustDebtHistoryDTO;
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.finance.InvoicePayment;
 import com.s3s.ssm.entity.finance.PaymentContent;
 import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.finance.PaymentType;
@@ -49,4 +50,14 @@ public interface IFinanceService {
     public Money getFirstTermDebt(Partner partner, Date date);
 
     public Money getPayAmt4Invoice(Invoice invoice);
+
+    /**
+     * Get all payment of invoice
+     * 
+     * @param invoice
+     * @return payment list of invoice
+     */
+    public List<InvoicePayment> getInvoicePayment(Invoice invoice);
+
+    public void processClosingFinanceEntry();
 }
