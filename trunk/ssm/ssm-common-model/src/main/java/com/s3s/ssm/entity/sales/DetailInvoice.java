@@ -63,18 +63,21 @@ public class DetailInvoice extends AbstractIdOLObject {
     private Integer amount = 0;
 
     // TODO: don't know why we have a lot of properties for price?
-    private Money priceBeforeTax = Money.zero(CurrencyEnum.VND);
+    private Money basePrice = Money.zero(CurrencyEnum.VND);
+    private Money reducedMoney = Money.zero(CurrencyEnum.VND);
+    private Money priceBeforeTax = Money.zero(CurrencyEnum.VND); // = basePrice - reducedMoney
     private Money priceOfTax = Money.zero(CurrencyEnum.VND);
     private Money priceAfterTax = Money.zero(CurrencyEnum.VND);
     private Money moneyBeforeTax = Money.zero(CurrencyEnum.VND);
     private Money moneyOfTax = Money.zero(CurrencyEnum.VND);
-    private Money moneyAfterTax = Money.zero(CurrencyEnum.VND); // is this totalAmount?
+    // totalAmount of the detailInvoice = amount * priceAfterTax
+    private Money moneyAfterTax = Money.zero(CurrencyEnum.VND);
     private DetailInvoiceType type = DetailInvoiceType.SALES;
     private DetailInvoiceStatus status = DetailInvoiceStatus.OPEN;
 
     // Transient field
-    @Transient
-    private Money totalAmount = Money.create(CurrencyEnum.VND, 0L);
+    // @Transient
+    // private Money totalAmount = moneyAfterTax;
 
     // Product name is get from product by default.
     private String productName;
@@ -90,17 +93,18 @@ public class DetailInvoice extends AbstractIdOLObject {
 
     @Transient
     public Money getTotalAmount() {
-        return totalAmount;
+        return moneyAfterTax;
     }
 
-    // Please remove this set method because it has no meaning and can be raise potential bugs (its value is calculated
-    // from the other). Remember to set editable is false if using this field in List view
+    // TODO: Because of hitory problem, I must keep this transient value. Will be removed when stablize project.
+    @Transient
     public void setTotalAmount(Money totalAmount) {
-        this.totalAmount = totalAmount;
+        this.moneyAfterTax = totalAmount;
     }
 
     private void updateTotalAmount() {
-        totalAmount = Money.multiply(amount, priceAfterTax);
+        priceAfterTax = basePrice.minus(reducedMoney);
+        moneyAfterTax = Money.multiply(amount, priceAfterTax);
     }
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -195,6 +199,28 @@ public class DetailInvoice extends AbstractIdOLObject {
     public void setAmount(Integer amount) {
         this.amount = amount;
         updateTotalAmount();
+    }
+
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "base_price")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_base_price")) })
+    public Money getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(Money basePrice) {
+        this.basePrice = basePrice;
+    }
+
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "reduced_money")),
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "currency_reduced_money")) })
+    public Money getReducedMoney() {
+        return reducedMoney;
+    }
+
+    public void setReducedMoney(Money reducedMoney) {
+        this.reducedMoney = reducedMoney;
     }
 
     @Embedded

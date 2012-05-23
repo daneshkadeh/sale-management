@@ -57,6 +57,7 @@ import com.s3s.ssm.view.edit.DetailDataModel;
 import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
 import com.s3s.ssm.view.edit.IComponentInfo;
 import com.s3s.ssm.view.edit.ListComponentInfo;
+import com.s3s.ssm.view.list.finance.ListInvoicePaymentView;
 import com.s3s.ssm.view.list.store.ListExportStoreFormView;
 import com.s3s.ssm.view.util.SalesViewHelper;
 
@@ -106,6 +107,7 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         // TODO: editable = false not work for rawAttribute
         detailDataModel.addRawAttribute("contact.info", DetailFieldType.TEXTAREA)
                 .value(getContactInfo(entity.getContact())).editable(false);
+        detailDataModel.addAttribute("remark", DetailFieldType.TEXTAREA).newColumn();
 
         // detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER).mandatory(true)
         // .componentInfo(ComponentFactory.createOperatorComponentInfo());
@@ -290,7 +292,7 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Map<String, Object> params = new HashMap<>();
-                params.put("invoice", getEntity());
+                params.put(ListInvoicePaymentView.INVOICE_FORM, getEntity());
                 EditInvoicePaymentView invoicePaymentForm = new EditInvoicePaymentView(params);
                 JDialog frame = new JDialog();
                 frame.add(invoicePaymentForm);

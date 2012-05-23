@@ -1,5 +1,6 @@
 package com.s3s.ssm.view.util;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,9 @@ import com.s3s.ssm.view.edit.ListComponentInfo;
 
 public class SalesViewHelper extends ViewHelper {
     public static List<InvoicePayment> createPaymentComponentData(Invoice invoice) {
+        if (!invoice.isPersisted()) {
+            return Collections.emptyList();
+        }
         return serviceProvider.getService(InvoiceService.class).getInvoicePayments(invoice);
     }
 
@@ -30,6 +34,9 @@ public class SalesViewHelper extends ViewHelper {
     }
 
     public static List<ExportStoreForm> createExportStoreComponentData(Invoice invoice) {
+        if (!invoice.isPersisted()) {
+            return Collections.emptyList();
+        }
         return serviceProvider.getService(InvoiceService.class).getInvoiceExportStores(invoice);
     }
 }

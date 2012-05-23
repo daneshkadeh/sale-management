@@ -68,6 +68,7 @@ public class EditInvoiceSupporteeView extends AbstractSingleEditView<Invoice> {
         // TODO: editable = false not work for rawAttribute
         detailDataModel.addRawAttribute("contact.info", DetailFieldType.TEXTAREA)
                 .value(getContactInfo(entity.getContact())).editable(false);
+        detailDataModel.addAttribute("remark", DetailFieldType.TEXTAREA).newColumn();
 
         detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER).mandatory(true)
                 .componentInfo(ComponentFactory.createOperatorComponentInfo());

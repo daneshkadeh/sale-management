@@ -77,15 +77,17 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
         listDataModel.addColumn("amount", ListRendererType.TEXT).summarized();
         listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UOM)
                 .notEditable();
+        listDataModel.addColumn("basePrice", ListRendererType.TEXT, ListEditorType.MONEY).referenceDataId(REF_CURRENCY)
+                .width(120);
+        listDataModel.addColumn("reducedMoney", ListRendererType.TEXT, ListEditorType.MONEY)
+                .referenceDataId(REF_CURRENCY).width(120);
         listDataModel.addColumn("priceAfterTax", ListRendererType.TEXT, ListEditorType.MONEY)
-                .referenceDataId(REF_CURRENCY).width(120);
-        listDataModel.addColumn("moneyAfterTax", ListRendererType.TEXT, ListEditorType.MONEY)
-                .referenceDataId(REF_CURRENCY).width(120);
+                .referenceDataId(REF_CURRENCY).width(120).notEditable();
         listDataModel.addColumn("type", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
                 REF_D_INVOICE_TYPE);
         listDataModel.addColumn("status", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(
                 REF_D_INVOICE_STATUS);
-        listDataModel.addColumn("totalAmount", ListRendererType.TEXT).notEditable().summarized();
+        listDataModel.addColumn("moneyAfterTax", ListRendererType.TEXT).notEditable().summarized();
 
     }
 
