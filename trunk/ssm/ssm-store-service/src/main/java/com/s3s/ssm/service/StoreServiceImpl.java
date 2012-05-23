@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.s3s.ssm.context.OrgSalesContextProvider;
 import com.s3s.ssm.dto.store.GroupDetailExportData;
 import com.s3s.ssm.dto.store.GroupDetailImportData;
-import com.s3s.ssm.dto.store.UnsoldProductDTO;
+import com.s3s.ssm.dto.store.ProductInStoreDTO;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
@@ -325,9 +325,9 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
      * {@inheritDoc}
      */
     @Override
-    public List<UnsoldProductDTO>
+    public List<ProductInStoreDTO>
             statisticUnsoldProduct(List<Product> products, Store store, Date fromDate, Date toDate) {
-        List<UnsoldProductDTO> result = new ArrayList<UnsoldProductDTO>();
+        List<ProductInStoreDTO> result = new ArrayList<ProductInStoreDTO>();
         // Lay hang ton o lan kiem ke hoac lan ket xuat truoc
         for (Product product : products) {
             for (Item item : product.getListItems()) {
@@ -339,7 +339,7 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
                 Integer lastQty = firstQty + importQty - exportQty;
                 Long priceUnit = item.getOriginPrice().getValue();
                 Long priceUnitTotal = lastQty * priceUnit;
-                UnsoldProductDTO dto = new UnsoldProductDTO();
+                ProductInStoreDTO dto = new ProductInStoreDTO();
                 dto.setProductCode(product.getCode());
                 dto.setProductName(product.getName());
                 dto.setItemName(item.getSumUomName());

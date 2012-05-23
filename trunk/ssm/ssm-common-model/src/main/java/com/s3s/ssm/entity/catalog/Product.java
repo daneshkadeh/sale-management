@@ -35,14 +35,14 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import com.s3s.ssm.entity.AbstractCodeOLObject;
+import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
 import com.s3s.ssm.entity.config.UploadFile;
 
 @Entity
 @Table(name = "ca_product")
 @Inheritance(strategy = InheritanceType.JOINED)
 @AttributeOverride(name = "id", column = @Column(name = "id", nullable = false, insertable = false, updatable = false))
-public class Product extends AbstractCodeOLObject {
+public class Product extends AbstractActiveCodeOLObject {
     private static final long serialVersionUID = 242255088169346711L;
     private String name;
 

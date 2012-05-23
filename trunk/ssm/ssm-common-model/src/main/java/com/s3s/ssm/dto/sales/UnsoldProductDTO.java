@@ -14,7 +14,7 @@
  * agreements you entered into with HBASoft.
  */
 
-package com.s3s.ssm.dto.catalog;
+package com.s3s.ssm.dto.sales;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,7 +23,7 @@ import java.util.Date;
  * @author Le Thanh Hoang
  * 
  */
-public class LongUnsoldProductDTO implements Serializable {
+public class UnsoldProductDTO implements Serializable {
     private static final long serialVersionUID = -5126009500663282937L;
     private String goodsCode;
     private String goodsName;

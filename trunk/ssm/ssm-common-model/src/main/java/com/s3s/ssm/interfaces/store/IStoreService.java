@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.s3s.ssm.dto.store.GroupDetailImportData;
-import com.s3s.ssm.dto.store.UnsoldProductDTO;
+import com.s3s.ssm.dto.store.ProductInStoreDTO;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.store.ClosingStoreEntry;
@@ -76,7 +76,7 @@ public interface IStoreService {
     public List<GroupDetailImportData> getStatisticImportStoreData(String salesContractCode, String storeCode,
             String productCode, Date fromDate, Date toDate);
 
-    List<UnsoldProductDTO> statisticUnsoldProduct(List<Product> products, Store store, Date fromDate, Date toDate);
+    List<ProductInStoreDTO> statisticUnsoldProduct(List<Product> products, Store store, Date fromDate, Date toDate);
 
     ClosingStoreEntry getLatestClosingStoreEntry(Store store, Date date);
 

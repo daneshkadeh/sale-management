@@ -1,5 +1,6 @@
 package com.s3s.ssm.service.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -7,9 +8,11 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.s3s.ssm.dto.sales.UnsoldProductDTO;
 import com.s3s.ssm.entity.finance.InvoicePayment;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
@@ -79,5 +82,25 @@ public class InvoiceServiceImpl extends AbstractModuleServiceImpl implements Inv
         dc.add(Restrictions.eq("invoice", invoice));
         dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return getDaoHelper().getDao(ExportStoreForm.class).findByCriteria(dc);
+    }
+
+    @Override
+    public List<UnsoldProductDTO> statisticUnsoldProduct() {
+        // creating dummy data
+        UnsoldProductDTO dto1 = new UnsoldProductDTO();
+        dto1.setGoodsCode("WRT 7101");
+        dto1.setGoodsName("Vot Tennis Wilson Five BLX");
+        dto1.setLatestSellDate(DateTime.now().minusMonths(1).toDate());
+        dto1.setMustSoldPeriod(15L);
+        dto1.setUnsoldDayNum(15);
+
+        UnsoldProductDTO dto2 = new UnsoldProductDTO();
+        dto2.setGoodsCode("Z4704");
+        dto2.setGoodsName("Da quan can AIRE Overgrip");
+        dto2.setLatestSellDate(DateTime.now().minusMonths(2).toDate());
+        dto2.setMustSoldPeriod(30L);
+        dto2.setUnsoldDayNum(30);
+
+        return Arrays.asList(dto1, dto2);
     }
 }
