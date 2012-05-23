@@ -80,6 +80,7 @@ public class EditInvoiceRefundView extends AbstractSingleEditView<Invoice> {
         // TODO: editable = false not work for rawAttribute
         detailDataModel.addRawAttribute("contact.info", DetailFieldType.TEXTAREA)
                 .value(getContactInfo(entity.getContact())).editable(false);
+        detailDataModel.addAttribute("remark", DetailFieldType.TEXTAREA).newColumn();
 
         detailDataModel.addAttribute("staff", DetailFieldType.SEARCHER).mandatory(true)
                 .componentInfo(ComponentFactory.createOperatorComponentInfo());
@@ -87,7 +88,7 @@ public class EditInvoiceRefundView extends AbstractSingleEditView<Invoice> {
         detailDataModel.addAttribute("detailInvoices", DetailFieldType.LIST).componentInfo(
                 createInvoiceDetailsComponentInfo());
 
-        detailDataModel.tab(ControlConfigUtils.getString("tab.EditInvoiceView.commissions"), null, null);
+        // detailDataModel.tab(ControlConfigUtils.getString("tab.EditInvoiceView.commissions"), null, null);
         detailDataModel.addAttribute("commissions", DetailFieldType.LIST)
                 .componentInfo(createCommissionComponentInfo());
 

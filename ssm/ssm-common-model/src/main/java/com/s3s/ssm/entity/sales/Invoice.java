@@ -64,6 +64,8 @@ public class Invoice extends AbstractIdOLObject {
     // list commissions which are apply to this invoice
     private Set<Commission> commissions = new HashSet<>();
 
+    private String remark;
+
     // Invoice type SUPPORTEE, TRIAL, RENT, customers must return the goods at usedEndDate.
     private Long usedTimeSpan = 0L;
     private Date usedStartDate = new Date();
@@ -223,6 +225,15 @@ public class Invoice extends AbstractIdOLObject {
 
     public void setCommissions(Set<Commission> commissions) {
         this.commissions = commissions;
+    }
+
+    @Column(name = "remark", length = 1024)
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Column(name = "used_timespan")

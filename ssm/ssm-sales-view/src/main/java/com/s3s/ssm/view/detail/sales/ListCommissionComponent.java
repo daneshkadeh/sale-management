@@ -64,6 +64,11 @@ public class ListCommissionComponent extends AListComponent<Commission> {
         calSumCommission(getData());
     }
 
+    @Override
+    protected int getVisibleRowCount() {
+        return 4;
+    }
+
     private void calSumCommission(List<Commission> entities) {
         sumCommissionAmount = Money.zero(CurrencyEnum.VND);
         for (Commission commission : entities) {

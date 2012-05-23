@@ -88,12 +88,6 @@ public class EditInvoicePaymentView extends AbstractSingleEditView<InvoicePaymen
     @Override
     protected InvoicePayment loadForCreate(Map<String, Object> request) {
         InvoicePayment entity = super.loadForCreate(request);
-        if (request.get("invoice") != null) {
-            entity.setInvoice((Invoice) request.get("invoice"));
-        }
-        if (entity.getInvoice() != null) {
-            entity.setPartner(entity.getInvoice().getContact());
-        }
         Invoice invoice = (Invoice) request.get(ListInvoicePaymentView.INVOICE_FORM);
         FinanceViewHelper.initInvoicePayment(entity, invoice);
         return entity;

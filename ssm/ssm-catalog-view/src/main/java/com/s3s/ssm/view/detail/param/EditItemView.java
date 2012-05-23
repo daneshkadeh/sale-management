@@ -16,6 +16,7 @@ package com.s3s.ssm.view.detail.param;
 
 import java.util.Map;
 
+import com.s3s.ssm.entity.catalog.Goods;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.ItemPropertyValue;
 import com.s3s.ssm.entity.catalog.Product;
@@ -25,6 +26,7 @@ import com.s3s.ssm.entity.catalog.ProductPropertyElement;
 import com.s3s.ssm.entity.config.UnitOfMeasure;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.util.CacheId;
+import com.s3s.ssm.util.DaoHelperImpl;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -50,12 +52,7 @@ public class EditItemView extends AbstractSingleEditView<Item> {
 
     @Override
     protected void initialPresentationView(DetailDataModel detailDataModel, Item entity, Map<String, Object> request) {
-        if (request.get(PARAM_PARENT_ID) != null) {
-            if (entity.getProduct() == null) {
-                entity.setProduct(daoHelper.getDao(Product.class).findById(
-                        Long.valueOf(request.get(PARAM_PARENT_ID).toString())));
-            }
-        } else {
+        if (entity.getProduct() == null) {
             detailDataModel.addAttribute("product", DetailFieldType.DROPDOWN).referenceDataId(REF_PRODUCT_ID);
         }
 
@@ -75,6 +72,24 @@ public class EditItemView extends AbstractSingleEditView<Item> {
         }
         detailDataModel.addAttribute("listItemPrices", DetailFieldType.LIST).componentInfo(
                 createListItemPriceComponent());
+    }
+
+    @Override
+    protected Item loadForCreate(Map<String, Object> request) {
+        Item entity = super.loadForCreate(request);
+        if (request.get(PARAM_PARENT_ID) != null) {
+            Product product = daoHelper.getDao(Product.class).findById(
+                    Long.valueOf(request.get(PARAM_PARENT_ID).toString()));
+            entity.setProduct(product);
+            if (product.getType().getProductFamilyType() == ProductFamilyType.GOODS) {
+                Goods goods = DaoHelperImpl.downCast(Goods.class, product);
+                entity.setCode(goods.getCode());
+                entity.setUom(goods.getMainUom());
+                entity.setBaseSellPrice(goods.getBaseSellPrice());
+                entity.setOriginPrice(goods.getOriginPrice());
+            }
+        }
+        return entity;
     }
 
     private IComponentInfo createListItemPriceComponent() {
