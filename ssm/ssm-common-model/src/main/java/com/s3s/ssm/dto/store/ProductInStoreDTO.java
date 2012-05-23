@@ -20,7 +20,7 @@ package com.s3s.ssm.dto.store;
  * @author Le Thanh Hoang
  * 
  */
-public class UnsoldProductDTO {
+public class ProductInStoreDTO {
     private String productCode;
     private String productName;
     private String itemName;

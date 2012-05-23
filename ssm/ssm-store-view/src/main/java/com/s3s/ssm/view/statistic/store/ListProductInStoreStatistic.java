@@ -29,7 +29,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXDatePicker;
 
-import com.s3s.ssm.dto.store.UnsoldProductDTO;
+import com.s3s.ssm.dto.store.ProductInStoreDTO;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.store.Store;
 import com.s3s.ssm.interfaces.catalog.ICatalogService;
@@ -45,7 +45,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * @author Le Thanh Hoang
  * 
  */
-public class ListUnsoldProductStatistic extends AListDataView<UnsoldProductDTO> {
+public class ListProductInStoreStatistic extends AListDataView<ProductInStoreDTO> {
     private static final long serialVersionUID = -1244668202484079391L;
     private MultiSelectionListBox mulStListBox;
     private JXDatePicker fromDateComp;
@@ -70,12 +70,12 @@ public class ListUnsoldProductStatistic extends AListDataView<UnsoldProductDTO> 
     }
 
     @Override
-    protected List<UnsoldProductDTO> loadData(int fistIndex, int maxResults) {
+    protected List<ProductInStoreDTO> loadData(int fistIndex, int maxResults) {
         Date fromDate = fromDateComp.getDate();
         Date toDate = toDateComp.getDate();
         Store selStore = (Store) cbStore.getSelectedItem();
         List<Product> selProducts = mulStListBox.getDestinationValues();
-        List<UnsoldProductDTO> result = serviceProvider.getService(IStoreService.class).statisticUnsoldProduct(
+        List<ProductInStoreDTO> result = serviceProvider.getService(IStoreService.class).statisticUnsoldProduct(
                 selProducts, selStore, fromDate, toDate);
         // return serviceProvider.getService(IStoreService.class).statisticImportStoreData(salesContractCode,
         // selectedStore.getCode(), selectedProduct.getCode(), fromDate, toDate);
@@ -110,13 +110,13 @@ public class ListUnsoldProductStatistic extends AListDataView<UnsoldProductDTO> 
         toDateComp.setDate(new Date());
         cbStore = new JComboBox(stores.toArray());
 
-        panel.add(new JLabel(ControlConfigUtils.getString("label.UnsoldProductDTO.store")), "right");
+        panel.add(new JLabel(ControlConfigUtils.getString("label.ProductInStoreDTO.store")), "right");
         panel.add(cbStore, "grow, wrap");
-        panel.add(new JLabel(ControlConfigUtils.getString("label.UnsoldProductDTO.fromDate")), "right");
+        panel.add(new JLabel(ControlConfigUtils.getString("label.ProductInStoreDTO.fromDate")), "right");
         panel.add(fromDateComp, "grow");
-        panel.add(new JLabel(ControlConfigUtils.getString("label.UnsoldProductDTO.toDate")), "right");
+        panel.add(new JLabel(ControlConfigUtils.getString("label.ProductInStoreDTO.toDate")), "right");
         panel.add(toDateComp, "grow,wrap");
-        panel.add(new JLabel(ControlConfigUtils.getString("label.UnsoldProductDTO.product")), "right");
+        panel.add(new JLabel(ControlConfigUtils.getString("label.ProductInStoreDTO.product")), "right");
         panel.add(mulStListBox, "grow");
 
         return panel;
