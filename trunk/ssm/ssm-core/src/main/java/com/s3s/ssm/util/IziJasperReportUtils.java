@@ -15,7 +15,6 @@
 
 package com.s3s.ssm.util;
 
-import java.awt.Dimension;
 import java.awt.Window;
 import java.util.Collection;
 import java.util.Map;
@@ -28,6 +27,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.swing.JRViewer;
+
+import com.s3s.ssm.util.view.WindowUtilities;
 
 /**
  * @author Phan Hong Phuc
@@ -59,7 +60,7 @@ public class IziJasperReportUtils {
                     param, ds);
             JRViewer jv = new JRViewer(jp);
             dialog.add(jv);
-            dialog.setSize(new Dimension(500, 500));
+            dialog.setSize(WindowUtilities.getFullScreenSize());
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
         } catch (JRException e1) {
