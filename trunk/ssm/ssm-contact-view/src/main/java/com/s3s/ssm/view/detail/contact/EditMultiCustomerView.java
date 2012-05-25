@@ -10,6 +10,7 @@ import com.s3s.ssm.view.TreeNodeWithView;
 import com.s3s.ssm.view.edit.AbstractMultiEditView;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.list.contact.ListContactDebtHistoryView;
+import com.s3s.ssm.view.list.contact.ListIndividualView;
 import com.s3s.ssm.view.list.contact.ListPartnerAddressView;
 
 public class EditMultiCustomerView extends AbstractMultiEditView<Partner> {
@@ -43,6 +44,15 @@ public class EditMultiCustomerView extends AbstractMultiEditView<Partner> {
         ListContactDebtHistoryView contactHistoryView = new ListContactDebtHistoryView(contactDebtHisRequest);
         nodeContactDebtHistory.setView(contactHistoryView);
         root.add(nodeContactDebtHistory);
+
+        TreeNodeWithView nodeIndividual = new TreeNodeWithView(
+                ControlConfigUtils.getString("JTree.SubMenu.Partner.Individual"));
+        Map<String, Object> individualParams = new HashMap<>();
+        individualParams.put(PARAM_PARENT_ID, entity.getId());
+        individualParams.put(PARAM_PARENT_CLASS, entity.getClass());
+        ListIndividualView individualView = new ListIndividualView(individualParams);
+        nodeIndividual.setView(individualView);
+        root.add(nodeIndividual);
 
         TreeNodeWithView nodeAddress = new TreeNodeWithView(
                 ControlConfigUtils.getString("JTree.SubMenu.Partner.Address"));

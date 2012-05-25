@@ -68,6 +68,7 @@ public class Partner extends AbstractActiveCodeOLObject {
     private String email;
     private Money debitLimit;// Payable Limit
     private UnitOfMeasure debitTimeUnit;// the unit of debit limit. Ex: date, month, year
+    private String taxCode;
     private BankAccount bankAccount;
     private Set<Individual> individuals = new HashSet<>();
     private Set<PartnerCategory> partnerCateSet = new HashSet<PartnerCategory>();
@@ -180,6 +181,15 @@ public class Partner extends AbstractActiveCodeOLObject {
 
     public void setDebitTimeUnit(UnitOfMeasure debitTimeUnit) {
         this.debitTimeUnit = debitTimeUnit;
+    }
+
+    @Column(name = "tax_code", length = 32)
+    public String getTaxCode() {
+        return taxCode;
+    }
+
+    public void setTaxCode(String taxCode) {
+        this.taxCode = taxCode;
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

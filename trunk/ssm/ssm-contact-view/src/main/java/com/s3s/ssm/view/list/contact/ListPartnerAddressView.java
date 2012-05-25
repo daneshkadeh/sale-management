@@ -36,7 +36,7 @@ public class ListPartnerAddressView extends ANonSearchListEntityView<PartnerAddr
         listDataModel.addColumn("address.district", ListRendererType.TEXT);
         listDataModel.addColumn("address.city", ListRendererType.TEXT);
         listDataModel.addColumn("address.postalCode", ListRendererType.TEXT);
-
+        listDataModel.addColumn("presenter", ListRendererType.TEXT);
     }
 
     @Override

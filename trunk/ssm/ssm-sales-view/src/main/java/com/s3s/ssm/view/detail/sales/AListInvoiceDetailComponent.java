@@ -23,6 +23,7 @@ import com.s3s.ssm.entity.catalog.SPackage;
 import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.DetailInvoiceStatus;
 import com.s3s.ssm.entity.sales.DetailInvoiceType;
+import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
@@ -37,6 +38,7 @@ import com.s3s.ssm.view.list.ColumnModel;
 import com.s3s.ssm.view.list.ListDataModel;
 import com.s3s.ssm.view.list.ListDataModel.ListEditorType;
 import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
+import com.s3s.ssm.view.util.SalesViewHelper;
 
 public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
     private static final long serialVersionUID = 7509501589404634796L;
@@ -72,8 +74,8 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
         listDataModel.addColumn("productName", ListRendererType.TEXT).notEditable();
 
         // TODO: first work on item, do not apply package.
-        listDataModel.addColumn("package", ListRendererType.TEXT).setRaw(true);
-        listDataModel.addColumn("packageLine", ListRendererType.TEXT).setRaw(true);
+        listDataModel.addColumn("package", ListRendererType.TEXT).notEditable().setRaw(true);
+        listDataModel.addColumn("packageLine", ListRendererType.TEXT).notEditable().setRaw(true);
         listDataModel.addColumn("amount", ListRendererType.TEXT).summarized();
         listDataModel.addColumn("uom", ListRendererType.TEXT, ListEditorType.COMBOBOX).referenceDataId(REF_UOM)
                 .notEditable();
@@ -100,6 +102,36 @@ public class AListInvoiceDetailComponent extends AListComponent<DetailInvoice> {
         } else {
             return super.getAttributeValue(entity, dataModel);
         }
+    }
+
+    @Override
+    public void setAttributeValue(DetailInvoice entity, ColumnModel dataModel, Object aValue) {
+        super.setAttributeValue(entity, dataModel, aValue);
+        if ("item".equals(dataModel.getName()) && entity.getItem() != null) {
+            entity.setBasePrice(entity.getItem().getBaseSellPrice());
+
+            // TODO: abstract AListComponent should by parent object by default.
+            // Bug here: when init for create screen, invoice is not set contact => contact is null util the invoice is
+            // save. Solution:
+            // 1. the AListInvoiceDetailComponent should listen the EditInvoiceView2 so that when
+            // invoice changes, the detail invoice also changes.
+            // 2. parentObject is the same entity as invoice screen if bug in bindingValue(..) of
+            // AbstractSingleEditView
+            Invoice invoice = getParentObject();
+            if (invoice != null && invoice.getContact() != null) {
+                Money sellPrice = SalesViewHelper.getMinimumPrice(entity.getItem(), invoice.getContact());
+                entity.setPriceAfterTax(sellPrice);
+                entity.setReducedMoney(entity.getBasePrice().minus(sellPrice));
+            } else {
+                entity.setPriceAfterTax(entity.getItem().getBaseSellPrice());
+            }
+        } else if ("reducedMoney".equals(dataModel.getName())) {
+            entity.setPriceAfterTax(entity.getBasePrice().minus(entity.getReducedMoney()));
+        }
+    }
+
+    protected Invoice getParentObject() {
+        return (Invoice) getRequest().get("parentObject");
     }
 
     @Override

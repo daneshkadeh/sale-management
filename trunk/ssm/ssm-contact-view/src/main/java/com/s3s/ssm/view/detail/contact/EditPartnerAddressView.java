@@ -1,10 +1,14 @@
 package com.s3s.ssm.view.detail.contact;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.s3s.ssm.entity.config.Address;
+import com.s3s.ssm.entity.contact.Individual;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.contact.PartnerAddressLink;
+import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.view.edit.AbstractSingleEditView;
 import com.s3s.ssm.view.edit.DetailAttribute;
 import com.s3s.ssm.view.edit.DetailDataModel;
@@ -18,6 +22,7 @@ import com.s3s.ssm.view.edit.DetailDataModel.DetailFieldType;
  */
 public class EditPartnerAddressView extends AbstractSingleEditView<PartnerAddressLink> {
 
+    private static final String REF_PRESENTER = "REF_PRESENTER";
     /**
      * 
      */
@@ -38,6 +43,15 @@ public class EditPartnerAddressView extends AbstractSingleEditView<PartnerAddres
         detailDataModel.addAttribute("address.fixPhone", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("address.fax", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("address.remark", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("presenter", DetailFieldType.DROPDOWN).referenceDataId(REF_PRESENTER);
+    }
+
+    @Override
+    protected void setReferenceDataModel(ReferenceDataModel refDataModel, PartnerAddressLink entity) {
+        super.setReferenceDataModel(refDataModel, entity);
+        List<Individual> individuals = new ArrayList<Individual>(((Partner) getParentObject()).getIndividuals());
+        // individuals.add(0, null);
+        refDataModel.putRefDataList(REF_PRESENTER, individuals);
     }
 
     @Override

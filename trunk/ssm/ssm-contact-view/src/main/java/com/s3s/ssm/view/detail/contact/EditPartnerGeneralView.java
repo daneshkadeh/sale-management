@@ -62,6 +62,7 @@ public class EditPartnerGeneralView<T extends Partner> extends AbstractSingleEdi
                 "Common information of supplier", IziImageUtils.getMediumIcon(IziImageConstants.USER_ICON));
         detailDataModel.addAttribute("code", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("name", DetailFieldType.TEXTBOX);
+        detailDataModel.addAttribute("taxCode", DetailFieldType.TEXTBOX);
         detailDataModel.addAttribute("active", DetailFieldType.CHECKBOX).newColumn();
         addIndividualGroup(detailDataModel);
 

@@ -18,6 +18,7 @@ package com.s3s.ssm.view;
 
 import com.s3s.ssm.util.CacheDataService;
 import com.s3s.ssm.util.ConfigProvider;
+import com.s3s.ssm.util.DaoHelper;
 import com.s3s.ssm.util.ServiceProvider;
 
 /**
@@ -26,7 +27,9 @@ import com.s3s.ssm.util.ServiceProvider;
  */
 public abstract class ViewHelper {
 
+    protected static DaoHelper daoHelper = ConfigProvider.getInstance().getDaoHelper();
+
     protected static ServiceProvider serviceProvider = ConfigProvider.getInstance().getServiceProvider();
 
-    protected CacheDataService cacheDataService = ConfigProvider.getInstance().getCacheDataService();
+    protected static CacheDataService cacheDataService = ConfigProvider.getInstance().getCacheDataService();
 }

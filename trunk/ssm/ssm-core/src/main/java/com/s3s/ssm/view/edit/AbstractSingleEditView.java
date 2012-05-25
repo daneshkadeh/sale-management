@@ -578,6 +578,8 @@ public abstract class AbstractSingleEditView<T extends AbstractBaseIdObject> ext
             dataField.setEnabled(!isReadOnly());
             JLabel errorIcon = new JLabel(IziImageUtils.getIcon(IziImageConstants.ERROR_ICON));
             errorIcon.setVisible(false);
+
+            // TODO: add listener here for listening attribute updated
             name2AttributeComponent.put(attribute.getName(), new AttributeComponent(lblLabel, dataField, errorIcon));
             if (attribute.getType() != DetailFieldType.LIST) {
                 pnlEdit.add(dataField, "split 2");

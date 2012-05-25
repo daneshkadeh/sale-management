@@ -24,8 +24,6 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.math.RandomUtils;
-
 /**
  * This class for object with id primary key.
  * 
@@ -84,7 +82,7 @@ public abstract class AbstractBaseIdObject implements Serializable {
 
     @Override
     public int hashCode() {
-        return id == null ? RandomUtils.nextInt() : id.hashCode();
+        return id == null ? super.hashCode() : id.hashCode();
     }
 
 }
