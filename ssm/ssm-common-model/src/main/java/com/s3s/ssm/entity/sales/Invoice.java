@@ -36,6 +36,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cascade;
 
 import com.s3s.ssm.entity.AbstractIdOLObject;
+import com.s3s.ssm.entity.contact.Individual;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.operator.Operator;
 import com.s3s.ssm.model.CurrencyEnum;
@@ -49,7 +50,8 @@ public class Invoice extends AbstractIdOLObject {
     private String invoiceNumber;
     private InvoiceType type;
     private Invoice originInvoice;
-    private Partner contact;
+    private Partner contact; // nguoi, to chuc thanh toan tien hang
+    private Individual individual; // ca nhan nhan hang hoa
     private Operator staff;
     private Date createdDate;
     private Money moneyBeforeTax = Money.zero(CurrencyEnum.VND);
@@ -113,6 +115,16 @@ public class Invoice extends AbstractIdOLObject {
 
     public void setContact(Partner contact) {
         this.contact = contact;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "individual_id")
+    public Individual getIndividual() {
+        return individual;
+    }
+
+    public void setIndividual(Individual individual) {
+        this.individual = individual;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)

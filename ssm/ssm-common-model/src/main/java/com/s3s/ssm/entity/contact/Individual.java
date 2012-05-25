@@ -37,7 +37,7 @@ public class Individual extends AbstractIdOLObject {
     private IndividualRoleEnum role;
 
     @Column(name = "type")
-    @NotBlank
+    @NotNull
     @Enumerated(EnumType.STRING)
     public IndividualTitleEnum getTitle() {
         return title;
@@ -98,7 +98,7 @@ public class Individual extends AbstractIdOLObject {
     }
 
     @Column(name = "role")
-    @NotBlank
+    @NotNull
     @Enumerated(EnumType.STRING)
     public IndividualRoleEnum getRole() {
         return role;
@@ -108,4 +108,8 @@ public class Individual extends AbstractIdOLObject {
         this.role = role;
     }
 
+    @Override
+    public String toString() {
+        return getFullName();
+    }
 }

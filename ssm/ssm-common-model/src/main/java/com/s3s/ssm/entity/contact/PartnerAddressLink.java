@@ -27,6 +27,7 @@ public class PartnerAddressLink extends AbstractBaseIdObject {
     private static final long serialVersionUID = 1362302176719848939L;
     private Partner partner;
     private Address address;
+    private Individual presenter;
     private Boolean isMain = false;
 
     @NotNull
@@ -49,6 +50,16 @@ public class PartnerAddressLink extends AbstractBaseIdObject {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "presenter_id")
+    public Individual getPresenter() {
+        return presenter;
+    }
+
+    public void setPresenter(Individual presenter) {
+        this.presenter = presenter;
     }
 
     @Column(name = "is_main")
