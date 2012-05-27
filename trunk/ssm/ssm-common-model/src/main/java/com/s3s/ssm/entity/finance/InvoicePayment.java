@@ -32,6 +32,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.s3s.ssm.entity.sales.Invoice;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 
 /**
@@ -43,9 +44,9 @@ import com.s3s.ssm.model.Money;
 @PrimaryKeyJoinColumn(name = "invoice_payment_id")
 public class InvoicePayment extends Payment {
     private static final long serialVersionUID = -1695893616913760376L;
-    private Money prePaidAmt;
-    private Money remainingAmt;
-    private Money custDebt;
+    private Money prePaidAmt = Money.zero(CurrencyEnum.VND);
+    private Money remainingAmt = Money.zero(CurrencyEnum.VND);;
+    private Money custDebt = Money.zero(CurrencyEnum.VND);;
     private Invoice invoice;
 
     @ManyToOne(fetch = FetchType.EAGER)
