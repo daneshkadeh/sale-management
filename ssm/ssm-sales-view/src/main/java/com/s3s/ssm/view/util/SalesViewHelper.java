@@ -79,4 +79,14 @@ public class SalesViewHelper extends ViewHelper {
         }
         return minPrice;
     }
+
+    public static InvoicePayment getFirstInvoicePayment(Invoice entity) {
+        if (entity == null || !entity.isPersisted()) {
+            return null;
+        }
+        DetachedCriteria dc = daoHelper.getDao(InvoicePayment.class).getCriteria();
+        dc.add(Restrictions.eq("invoice", entity));
+        dc.add(Restrictions.ne("prePaidAmt.value", 0L));
+        return daoHelper.getDao(InvoicePayment.class).findFirstByCriteria(dc);
+    }
 }

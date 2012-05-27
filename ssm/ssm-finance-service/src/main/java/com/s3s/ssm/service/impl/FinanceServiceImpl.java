@@ -210,7 +210,9 @@ public class FinanceServiceImpl extends AbstractModuleServiceImpl implements IFi
         List<InvoicePayment> invPaymentList = getInvoicePayment(invoice);
         for (InvoicePayment invoicePayment : invPaymentList) {
             Money amt = invoicePayment.getAmount();
-            result = result.plus(amt);
+            if (amt != null) { // should mark as not null if needed
+                result = result.plus(amt);
+            }
         }
         return result;
     }

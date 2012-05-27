@@ -35,6 +35,7 @@ import javax.validation.constraints.NotNull;
 import com.s3s.ssm.entity.AbstractCodeOLObject;
 import com.s3s.ssm.entity.contact.Partner;
 import com.s3s.ssm.entity.operator.Operator;
+import com.s3s.ssm.model.CurrencyEnum;
 import com.s3s.ssm.model.Money;
 
 @Entity
@@ -47,7 +48,7 @@ public class Payment extends AbstractCodeOLObject {
     private Partner partner;
     private Operator operator;
     private PaymentMode paymentMode;
-    private Money amount;
+    private Money amount = Money.zero(CurrencyEnum.VND);
     private Double exchgValue; // compared to default currency
     private Integer rate;
     private String notes;

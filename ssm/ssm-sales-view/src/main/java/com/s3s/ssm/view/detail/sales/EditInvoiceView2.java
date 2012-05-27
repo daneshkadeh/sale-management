@@ -28,7 +28,11 @@ import com.s3s.ssm.dto.finance.TestDTO;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.PackageLine;
 import com.s3s.ssm.entity.config.Address;
+import com.s3s.ssm.entity.contact.ContactDebt;
 import com.s3s.ssm.entity.contact.Partner;
+import com.s3s.ssm.entity.finance.InvoicePayment;
+import com.s3s.ssm.entity.finance.PaymentContent;
+import com.s3s.ssm.entity.finance.PaymentMode;
 import com.s3s.ssm.entity.sales.DetailInvoice;
 import com.s3s.ssm.entity.sales.DetailInvoiceStatus;
 import com.s3s.ssm.entity.sales.DetailInvoiceType;
@@ -39,6 +43,8 @@ import com.s3s.ssm.entity.sales.InvoiceStatus;
 import com.s3s.ssm.entity.sales.InvoiceType;
 import com.s3s.ssm.interfaces.config.IConfigService;
 import com.s3s.ssm.interfaces.sales.InvoiceService;
+import com.s3s.ssm.model.CurrencyEnum;
+import com.s3s.ssm.model.Money;
 import com.s3s.ssm.model.ReferenceDataModel;
 import com.s3s.ssm.reports.bean.DetailInvoiceDataBean;
 import com.s3s.ssm.util.CacheId;
@@ -59,6 +65,7 @@ import com.s3s.ssm.view.edit.IComponentInfo;
 import com.s3s.ssm.view.edit.ListComponentInfo;
 import com.s3s.ssm.view.list.finance.ListInvoicePaymentView;
 import com.s3s.ssm.view.list.store.ListExportStoreFormView;
+import com.s3s.ssm.view.util.FinanceViewHelper;
 import com.s3s.ssm.view.util.SalesViewHelper;
 
 /**
@@ -79,6 +86,12 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
     private static final String REF_PAY_STATUS = "paymentStatus";
     private static final String REF_STORE_STATUS = "REF_STORE_STATUS";
 
+    private JButton createPaymentBtn;
+    private JButton createExStoreBtn;
+
+    // TODO: try to ask customer remove this field.
+    private InvoicePayment firstInvoicePayment;
+
     public EditInvoiceView2(Map<String, Object> entity) {
         super(entity);
     }
@@ -93,7 +106,40 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         detailDataModel.addAttribute("status", DetailFieldType.DROPDOWN).referenceDataId(REF_INVOICE_STATUS)
                 .newColumn();
 
-        detailDataModel.addAttribute("moneyAfterTax", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+        // search first payment by contactDebt
+        if (firstInvoicePayment == null) {
+            firstInvoicePayment = SalesViewHelper.getFirstInvoicePayment(entity);
+        }
+        if (firstInvoicePayment != null) {
+            detailDataModel.addAttribute("moneyAfterTax", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY)
+                    .editable(false);
+        } else {
+            detailDataModel.addAttribute("moneyAfterTax", DetailFieldType.MONEY).cacheDataId(CacheId.REF_LIST_CURRENCY);
+        }
+
+        if (firstInvoicePayment != null) {
+            detailDataModel.addRawAttribute("oldContactDebt", DetailFieldType.MONEY)
+                    .cacheDataId(CacheId.REF_LIST_CURRENCY).editable(false).value(firstInvoicePayment.getCustDebt())
+                    .newColumn();
+            detailDataModel.addRawAttribute("paymentAmount", DetailFieldType.MONEY)
+                    .cacheDataId(CacheId.REF_LIST_CURRENCY).editable(false).value(firstInvoicePayment.getPrePaidAmt());
+            detailDataModel.addRawAttribute("newContactDebt", DetailFieldType.MONEY)
+                    .cacheDataId(CacheId.REF_LIST_CURRENCY).editable(false)
+                    .value(firstInvoicePayment.getRemainingAmt());
+        } else {
+            Money oldContactDebt = Money.zero(CurrencyEnum.VND);
+            if (entity.getContact() != null) {
+                oldContactDebt = entity.getContact().getContactDebt().getDebtMoney();
+            }
+            detailDataModel.addRawAttribute("oldContactDebt", DetailFieldType.MONEY)
+                    .cacheDataId(CacheId.REF_LIST_CURRENCY).editable(false).value(oldContactDebt).newColumn();
+            detailDataModel.addRawAttribute("paymentAmount", DetailFieldType.MONEY)
+                    .cacheDataId(CacheId.REF_LIST_CURRENCY).value(Money.zero(CurrencyEnum.VND));
+
+            detailDataModel.addRawAttribute("newContactDebt", DetailFieldType.MONEY)
+                    .cacheDataId(CacheId.REF_LIST_CURRENCY).editable(false).value(Money.zero(CurrencyEnum.VND));
+        }
+
         detailDataModel.addAttribute("paymentStatus", DetailFieldType.DROPDOWN).referenceDataId(REF_PAY_STATUS)
                 .newColumn();
 
@@ -130,10 +176,10 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
                 .value(SalesViewHelper.createExportStoreComponentData(entity)).editable(false);
 
         // TODO: remove - Testing from Phuc
-        detailDataModel.tab(ControlConfigUtils.getString("Testing"), null, null);
-        detailDataModel.addRawAttribute("rawList", DetailFieldType.LIST)
-                .componentInfo(createTestPaymentComponentInfo()).value(createTestPaymentComponentData())
-                .editable(false);
+        // detailDataModel.tab(ControlConfigUtils.getString("Testing"), null, null);
+        // detailDataModel.addRawAttribute("rawList", DetailFieldType.LIST)
+        // .componentInfo(createTestPaymentComponentInfo()).value(createTestPaymentComponentData())
+        // .editable(false);
     }
 
     private List<TestDTO> createTestPaymentComponentData() {
@@ -187,6 +233,40 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         return invoice;
     }
 
+    @Override
+    protected Invoice loadForEdit(List<String> eagerLoadedProperties) {
+        return super.loadForEdit(eagerLoadedProperties);
+    }
+
+    @Override
+    protected void saveOrUpdate(Invoice entity) {
+        super.saveOrUpdate(entity);
+        createPaymentBtn.setVisible(true);
+        createExStoreBtn.setVisible(true);
+        AttributeComponent payAmountComponent = getName2AttributeComponent().get("paymentAmount");
+        MoneyComponent moneypayAmount = (MoneyComponent) payAmountComponent.getComponent();
+        if (firstInvoicePayment == null && moneypayAmount.getMoney().getValue() != 0) {
+            firstInvoicePayment = new InvoicePayment();
+            firstInvoicePayment.setCode("PF_" + entity.getInvoiceNumber());
+            FinanceViewHelper.initInvoicePayment(firstInvoicePayment, entity);
+            firstInvoicePayment.setPrePaidAmt(moneypayAmount.getMoney());
+            firstInvoicePayment.setAmount(moneypayAmount.getMoney());
+            firstInvoicePayment.setRemainingAmt(firstInvoicePayment.getCustDebt().plus(entity.getMoneyAfterTax())
+                    .minus(moneypayAmount.getMoney()));
+            firstInvoicePayment.setPaymentDate(new Date());
+            firstInvoicePayment.setOperator(entity.getStaff());
+            firstInvoicePayment.setPaymentMode(PaymentMode.CASH);
+            firstInvoicePayment.setPaymentContent(getDaoHelper().getDao(PaymentContent.class).findAll().get(0));
+            getDaoHelper().getDao(InvoicePayment.class).saveOrUpdate(firstInvoicePayment);
+            // TODO: not nice to update component here!
+            moneypayAmount.setEditable(false);
+
+            ContactDebt contactDebt = entity.getContact().getContactDebt();
+            contactDebt.setDebtMoney(firstInvoicePayment.getRemainingAmt());
+            getDaoHelper().getDao(ContactDebt.class).saveOrUpdate(contactDebt);
+        }
+    }
+
     private IComponentInfo createInvoiceDetailsComponentInfo() {
         Map<String, Object> params = new HashMap<>();
         params.put("parentObject", getEntity());
@@ -204,13 +284,29 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         super.bindingValue(entity, name, value, detailAttribute);
         // TODO: bad override component! Should change later to handle attribute only.
         // This business is only applied when "contact" lost focus.
+        // TODO Should be move to setAttributeValue() then FW will update component immediately (same as AListComponent)
+        AttributeComponent oldContactDebtComponent = getName2AttributeComponent().get("oldContactDebt");
+        MoneyComponent moneyOldContactDebt = (MoneyComponent) oldContactDebtComponent.getComponent();
+        AttributeComponent newContactDebtComponent = getName2AttributeComponent().get("newContactDebt");
+        MoneyComponent moneyNewContactDebt = (MoneyComponent) newContactDebtComponent.getComponent();
         if ("contact".equals(name)) {
             Partner contact = (Partner) value;
             AttributeComponent contactComponent = getName2AttributeComponent().get("contact.info");
             JScrollPane contactNameCom = (JScrollPane) contactComponent.getComponent();
             ((JTextArea) ((JViewport) contactNameCom.getComponent(0)).getView()).setText(getContactInfo(contact));
 
-            // TODO: add paymentAmount, contactDebt, newContactDebt
+            // TODO: add paymentAmount, oldContactDebt, newContactDebt
+
+            if (contact != null && contact.getContactDebt() != null) {
+                moneyOldContactDebt.setMoney(contact.getContactDebt().getDebtMoney());
+            }
+        } else if ("paymentAmount".equals(name)) {
+            Partner contact = entity.getContact();
+            if (contact != null && contact.getContactDebt() != null) {
+                moneyNewContactDebt.setMoney(moneyOldContactDebt.getMoney().plus(entity.getMoneyAfterTax())
+                        .minus((Money) value));
+            }
+
         }
     }
 
@@ -271,7 +367,8 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
             }
         });
 
-        JButton createExStoreBtn = new JButton(ControlConfigUtils.getString("EditInvoice.createExportStoreBtn"));
+        createExStoreBtn = new JButton(ControlConfigUtils.getString("EditInvoice.createExportStoreBtn"));
+        createExStoreBtn.setVisible(false);
         createExStoreBtn.addActionListener(new ActionListener() {
 
             @Override
@@ -286,8 +383,9 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
             }
         });
 
-        JButton createPayment = new JButton(ControlConfigUtils.getString("EditInvoice.createPaymentBtn"));
-        createPayment.addActionListener(new ActionListener() {
+        createPaymentBtn = new JButton(ControlConfigUtils.getString("EditInvoice.createPaymentBtn"));
+        createPaymentBtn.setVisible(false);
+        createPaymentBtn.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -302,9 +400,11 @@ public class EditInvoiceView2 extends AbstractSingleEditView<Invoice> {
         });
 
         tb.add(printBtn);
+        tb.add(createExStoreBtn);
+        tb.add(createPaymentBtn);
         if (getEntity().isPersisted()) {
-            tb.add(createExStoreBtn);
-            tb.add(createPayment);
+            createExStoreBtn.setVisible(true);
+            createPaymentBtn.setVisible(true);
         }
         return tb;
     }

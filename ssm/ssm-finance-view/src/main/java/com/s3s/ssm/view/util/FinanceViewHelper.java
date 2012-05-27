@@ -69,9 +69,12 @@ public class FinanceViewHelper extends ViewHelper {
         invPayment.setInvoice(invoice);
         // get debt of customer
         Partner customer = invoice.getContact();
-        Money custDebt = customer.getContactDebt().getDebtMoney();
-        invPayment.setCustDebt(custDebt);
-        invPayment.setPartner(customer);
+        if (customer != null) {
+            Money custDebt = customer.getContactDebt().getDebtMoney();
+            invPayment.setCustDebt(custDebt);
+            invPayment.setPartner(customer);
+        }
+
         invPayment.setInvoice(invoice);
         switch (invoice.getPaymentStatus()) {
         case NO_PAYMENT:
