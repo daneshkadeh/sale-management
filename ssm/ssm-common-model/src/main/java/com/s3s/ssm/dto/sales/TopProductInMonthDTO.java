@@ -17,19 +17,18 @@
 package com.s3s.ssm.dto.sales;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author Le Thanh Hoang
- * 
+ * @see
  */
-public class UnsoldProductDTO implements Serializable {
-    private static final long serialVersionUID = -5126009500663282937L;
+public class TopProductInMonthDTO implements Serializable {
+    private static final long serialVersionUID = 6356408916936099600L;
     private String goodsCode;
     private String goodsName;
-    private Date latestSellDate;
-    private Integer unsoldDayNum;
-    private Long mustSoldPeriod;
+    private Integer quotaQty = 0;
+    private Integer soldQty = 0;
+    private Float rate = 0F;
 
     public String getGoodsCode() {
         return goodsCode;
@@ -47,28 +46,28 @@ public class UnsoldProductDTO implements Serializable {
         this.goodsName = goodsName;
     }
 
-    public Date getLatestSellDate() {
-        return latestSellDate;
+    public Integer getQuotaQty() {
+        return quotaQty;
     }
 
-    public void setLatestSellDate(Date latestSellDate) {
-        this.latestSellDate = latestSellDate;
+    public void setQuotaQty(Integer quotaQty) {
+        this.quotaQty = quotaQty;
     }
 
-    public Integer getUnsoldDayNum() {
-        return unsoldDayNum;
+    public Integer getSoldQty() {
+        return soldQty;
     }
 
-    public void setUnsoldDayNum(Integer unsoldDayNum) {
-        this.unsoldDayNum = unsoldDayNum;
+    public void setSoldQty(Integer soldQty) {
+        this.soldQty = soldQty;
     }
 
-    public Long getMustSoldPeriod() {
-        return mustSoldPeriod;
+    public Float getRate() {
+        return rate;
     }
 
-    public void setMustSoldPeriod(Long mustSoldPeriod) {
-        this.mustSoldPeriod = mustSoldPeriod;
+    public void setRate(Float rate) {
+        this.rate = rate;
     }
 
 }

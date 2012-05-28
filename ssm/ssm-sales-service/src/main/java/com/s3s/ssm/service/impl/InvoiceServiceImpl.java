@@ -1,6 +1,7 @@
 package com.s3s.ssm.service.impl;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,9 @@ import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.s3s.ssm.dto.sales.UnsoldProductDTO;
+import com.s3s.ssm.dto.sales.TopProductInMonthDTO;
+import com.s3s.ssm.dto.sales.UnsoldProductByDayDTO;
+import com.s3s.ssm.dto.sales.UnsoldProductBySoldQtyDTO;
 import com.s3s.ssm.entity.finance.InvoicePayment;
 import com.s3s.ssm.entity.sales.Invoice;
 import com.s3s.ssm.entity.sales.InvoiceStatus;
@@ -85,16 +88,16 @@ public class InvoiceServiceImpl extends AbstractModuleServiceImpl implements Inv
     }
 
     @Override
-    public List<UnsoldProductDTO> statisticUnsoldProduct() {
+    public List<UnsoldProductByDayDTO> statisticUnsoldProductByDay() {
         // creating dummy data
-        UnsoldProductDTO dto1 = new UnsoldProductDTO();
+        UnsoldProductByDayDTO dto1 = new UnsoldProductByDayDTO();
         dto1.setGoodsCode("WRT 7101");
         dto1.setGoodsName("Vot Tennis Wilson Five BLX");
         dto1.setLatestSellDate(DateTime.now().minusMonths(1).toDate());
         dto1.setMustSoldPeriod(15L);
         dto1.setUnsoldDayNum(15);
 
-        UnsoldProductDTO dto2 = new UnsoldProductDTO();
+        UnsoldProductByDayDTO dto2 = new UnsoldProductByDayDTO();
         dto2.setGoodsCode("Z4704");
         dto2.setGoodsName("Da quan can AIRE Overgrip");
         dto2.setLatestSellDate(DateTime.now().minusMonths(2).toDate());
@@ -102,5 +105,21 @@ public class InvoiceServiceImpl extends AbstractModuleServiceImpl implements Inv
         dto2.setUnsoldDayNum(30);
 
         return Arrays.asList(dto1, dto2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UnsoldProductBySoldQtyDTO> statisticUnsoldProductBySoldQty() {
+        return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<TopProductInMonthDTO> statisticTopProductInMonth() {
+        return Collections.EMPTY_LIST;
     }
 }

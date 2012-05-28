@@ -32,7 +32,7 @@ public class GroupDetailImportData implements Serializable {
     private String productName;
     private String itemName;
     private String uomName;
-    private Integer quantity;
+    private Integer quantity = 0;
 
     public Date getImportingDate() {
         return importingDate;
