@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import com.s3s.ssm.dto.sales.UnsoldProductDTO;
+import com.s3s.ssm.dto.sales.UnsoldProductBySoldQtyDTO;
 import com.s3s.ssm.interfaces.sales.InvoiceService;
 import com.s3s.ssm.view.list.AListDataView;
 import com.s3s.ssm.view.list.ListDataModel;
@@ -30,8 +30,7 @@ import com.s3s.ssm.view.list.ListDataModel.ListRendererType;
  * @author Le Thanh Hoang
  * 
  */
-public class ListUnsoldProductStatistic extends AListDataView<UnsoldProductDTO> {
-    private static final long serialVersionUID = -2880770791519071704L;
+public class ListUnsoldProductBySoldQtyStatistic extends AListDataView<UnsoldProductBySoldQtyDTO> {
 
     /**
      * {@inheritDoc}
@@ -40,14 +39,13 @@ public class ListUnsoldProductStatistic extends AListDataView<UnsoldProductDTO> 
     protected void initialPresentationView(ListDataModel listDataModel) {
         listDataModel.addColumn("goodsCode", ListRendererType.TEXT);
         listDataModel.addColumn("goodsName", ListRendererType.TEXT);
-        listDataModel.addColumn("latestSellDate", ListRendererType.DATE);
-        listDataModel.addColumn("unsoldDayNum", ListRendererType.NUMBER);
-        listDataModel.addColumn("mustSoldPeriod", ListRendererType.NUMBER);
+        listDataModel.addColumn("quotaQty", ListRendererType.NUMBER);
+        listDataModel.addColumn("soldQty", ListRendererType.NUMBER);
     }
 
     @Override
-    protected List<UnsoldProductDTO> loadData(int fistIndex, int maxResults) {
-        return serviceProvider.getService(InvoiceService.class).statisticUnsoldProduct();
+    protected List<UnsoldProductBySoldQtyDTO> loadData(int fistIndex, int maxResults) {
+        return serviceProvider.getService(InvoiceService.class).statisticUnsoldProductBySoldQty();
     }
 
     /**

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.s3s.ssm.dto.store.GroupDetailImportData;
+import com.s3s.ssm.dto.store.LowProductInStoreDTO;
 import com.s3s.ssm.dto.store.ProductInStoreDTO;
 import com.s3s.ssm.entity.catalog.Product;
 import com.s3s.ssm.entity.sales.Invoice;
@@ -92,4 +93,6 @@ public interface IStoreService {
      */
     int getStatisticImportStoreDataCount(String salesContractCode, String storeCode, String productCode, Date fromDate,
             Date toDate);
+
+    List<LowProductInStoreDTO> statisticLowProductInStore();
 }

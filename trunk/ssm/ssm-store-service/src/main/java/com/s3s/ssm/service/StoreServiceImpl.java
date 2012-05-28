@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.s3s.ssm.context.OrgSalesContextProvider;
 import com.s3s.ssm.dto.store.GroupDetailExportData;
 import com.s3s.ssm.dto.store.GroupDetailImportData;
+import com.s3s.ssm.dto.store.LowProductInStoreDTO;
 import com.s3s.ssm.dto.store.ProductInStoreDTO;
 import com.s3s.ssm.entity.catalog.Item;
 import com.s3s.ssm.entity.catalog.Product;
@@ -325,8 +326,8 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
      * {@inheritDoc}
      */
     @Override
-    public List<ProductInStoreDTO>
-            statisticUnsoldProduct(List<Product> products, Store store, Date fromDate, Date toDate) {
+    public List<ProductInStoreDTO> statisticUnsoldProduct(List<Product> products, Store store, Date fromDate,
+            Date toDate) {
         List<ProductInStoreDTO> result = new ArrayList<ProductInStoreDTO>();
         // Lay hang ton o lan kiem ke hoac lan ket xuat truoc
         for (Product product : products) {
@@ -647,5 +648,13 @@ public class StoreServiceImpl extends AbstractModuleServiceImpl implements IStor
         dc.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<MoveStoreOrder> resultList = getDaoHelper().getDao(MoveStoreOrder.class).findByCriteria(dc);
         return resultList;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<LowProductInStoreDTO> statisticLowProductInStore() {
+        return Collections.EMPTY_LIST;
     }
 }

@@ -32,7 +32,7 @@ public class GroupDetailExportData implements Serializable {
     private static final long serialVersionUID = -2889698358659809510L;
     private Product product;
     private Item item;
-    private Integer quantity;
+    private Integer quantity = 0;
     private UnitOfMeasure uom;
 
     public Product getProduct() {
