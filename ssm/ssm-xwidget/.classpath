@@ -1,0 +1,76 @@
+<classpath>
+  <classpathentry kind="src" path="src/test/java" output="target/test-classes" including="**/*.java"/>
+  <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
+  <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="var" path="M2_REPO/antlr/antlr/2.7.7/antlr-2.7.7.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/jdesktop/beansbinding/1.2.1/beansbinding-1.2.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/divxdede/commons/0.2.1/commons-0.2.1.jar" sourcepath="M2_REPO/org/divxdede/commons/0.2.1/commons-0.2.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/D:/M2_REPO/org/divxdede/commons/0.2.1/commons-0.2.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.8.2/commons-beanutils-1.8.2.jar" sourcepath="M2_REPO/commons-beanutils/commons-beanutils/1.8.2/commons-beanutils-1.8.2-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/D:/M2_REPO/commons-beanutils/commons-beanutils/1.8.2/commons-beanutils-1.8.2-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/D:/M2_REPO/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.5/commons-lang-2.5.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.5/commons-lang-2.5-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/D:/M2_REPO/commons-lang/commons-lang/2.5/commons-lang-2.5-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/D:/M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" sourcepath="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/jhlabs/filters/2.0.235/filters-2.0.235.jar" sourcepath="M2_REPO/com/jhlabs/filters/2.0.235/filters-2.0.235-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/java/dev/glazedlists/glazedlists_java15/1.8.0/glazedlists_java15-1.8.0.jar" sourcepath="M2_REPO/net/java/dev/glazedlists/glazedlists_java15/1.8.0/glazedlists_java15-1.8.0-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/D:/M2_REPO/net/java/dev/glazedlists/glazedlists_java15/1.8.0/glazedlists_java15-1.8.0-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/divxdede/jbusycomponent/1.2.2/jbusycomponent-1.2.2.jar" sourcepath="M2_REPO/org/divxdede/jbusycomponent/1.2.2/jbusycomponent-1.2.2-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/D:/M2_REPO/org/divxdede/jbusycomponent/1.2.2/jbusycomponent-1.2.2-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/jfree/jcommon/1.0.15/jcommon-1.0.15.jar"/>
+  <classpathentry kind="var" path="M2_REPO/jfree/jfreechart/1.0.12/jfreechart-1.0.12.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar" sourcepath="M2_REPO/junit/junit/3.8.1/junit-3.8.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/swinglabs/jxlayer/3.0.4/jxlayer-3.0.4.jar" sourcepath="M2_REPO/org/swinglabs/jxlayer/3.0.4/jxlayer-3.0.4-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/D:/M2_REPO/org/swinglabs/jxlayer/3.0.4/jxlayer-3.0.4-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.14/log4j-1.2.14.jar" sourcepath="M2_REPO/log4j/log4j/1.2.14/log4j-1.2.14-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/apache/log4j-datedFileAppender/1.0.2/log4j-datedFileAppender-1.0.2.jar" sourcepath="M2_REPO/apache/log4j-datedFileAppender/1.0.2/log4j-datedFileAppender-1.0.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/miglayout/miglayout/3.7.3.1/miglayout-3.7.3.1-swing.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.5.2/slf4j-api-1.5.2.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.5.2/slf4j-api-1.5.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.5.2/slf4j-log4j12-1.5.2.jar" sourcepath="M2_REPO/org/slf4j/slf4j-log4j12/1.5.2/slf4j-log4j12-1.5.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/swinglabs/swing-worker/1.1/swing-worker-1.1.jar" sourcepath="M2_REPO/org/swinglabs/swing-worker/1.1/swing-worker-1.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/D:/M2_REPO/org/swinglabs/swing-worker/1.1/swing-worker-1.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/swinglabs/swingx/1.6.1/swingx-1.6.1.jar" sourcepath="M2_REPO/org/swinglabs/swingx/1.6.1/swingx-1.6.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/D:/M2_REPO/org/swinglabs/swingx/1.6.1/swingx-1.6.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/swinglabs/swingx/swingx-all/1.6.3/swingx-all-1.6.3.jar" sourcepath="M2_REPO/org/swinglabs/swingx/swingx-all/1.6.3/swingx-all-1.6.3-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/D:/M2_REPO/org/swinglabs/swingx/swingx-all/1.6.3/swingx-all-1.6.3-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/testng/testng/5.12.1/testng-5.12.1.jar" sourcepath="M2_REPO/org/testng/testng/5.12.1/testng-5.12.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" sourcepath="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2-sources.jar"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+</classpath>
