@@ -33,6 +33,12 @@
 		</snapshots>
 	</repository>
 	
+	<repository>
+      <id>mvn-public</id>
+      <name>MVNRepository</name>
+      <url>http://mvnrepository.com</url>
+    </repository>
+	
 	<!-- Java.net -->
 	<repository>
 		<snapshots>
