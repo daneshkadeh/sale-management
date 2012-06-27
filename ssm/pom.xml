@@ -6,7 +6,7 @@
   <packaging>pom</packaging>
   <version>${ssm.version}</version>
   <name>SuperSalesManagememt (Root)</name>
-  
+  <Test for jenkin build fail
   <repositories>
 	<repository>
       <id>repository.jboss.org</id>
