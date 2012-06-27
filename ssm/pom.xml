@@ -301,11 +301,11 @@
 			<artifactId>hibernate-commons-annotations</artifactId>
 			<version>${hibernate-commons-annotations.version}</version>
 		</dependency>
-		<dependency>
+		<!--dependency>
 		  <groupId>org.hibernate</groupId>
 		  <artifactId>hibernate-entitymanager</artifactId>
 		  <version>${hibernate-entitymanager.version}</version>
-		</dependency>
+		</dependency-->
 		<dependency>
 		  <groupId>org.hibernate</groupId>
 		  <artifactId>hibernate-validator</artifactId>
